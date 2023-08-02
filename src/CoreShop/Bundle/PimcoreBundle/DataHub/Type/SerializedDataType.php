@@ -22,7 +22,7 @@ use GraphQL\Type\Definition\ScalarType;
 
 class SerializedDataType extends ScalarType
 {
-    public $name = 'coreShopSerializedData';
+    public string $name = 'coreShopSerializedData';
 
     public function serialize($value)
     {

@@ -67,14 +67,14 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
      */
     protected $salutations = [];
 
-    public function __construct(
-        ) {
+    public function __construct()
+    {
         $this->initializeTranslationsCollection();
     }
 
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return (string)$this->getName();
     }
 
     public function getId(): ?int
@@ -104,6 +104,22 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
         $this->getTranslation($language, false)->setName($name);
 
         return $this;
+    }
+
+    /**
+     * @return StateInterface[]|Collection
+     */
+    public function getStates(): Collection|array
+    {
+        return $this->states;
+    }
+
+    /**
+     * @param StateInterface[]|Collection $states
+     */
+    public function setStates(Collection|array $states): void
+    {
+        $this->states = $states;
     }
 
     public function getAddressFormat()

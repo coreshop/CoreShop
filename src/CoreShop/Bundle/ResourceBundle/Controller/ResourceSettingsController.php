@@ -21,6 +21,7 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,6 +43,7 @@ class ResourceSettingsController extends AdminController
         return $this->viewHandler->handle(['success' => true, 'data' => $result]);
     }
 
+
     public function getConfigAction(): Response
     {
         $config = [
@@ -49,11 +51,11 @@ class ResourceSettingsController extends AdminController
             'stack' => [],
         ];
 
-        if ($this->container->get('parameter_bag')->has('coreshop.all.pimcore_classes')) {
+        if ($this->parameterBag->has('coreshop.all.pimcore_classes')) {
             /**
              * @var array $classes
              */
-            $classes = $this->getParameter('coreshop.all.pimcore_classes');
+            $classes = $this->parameterBag->get('coreshop.all.pimcore_classes');
 
             foreach ($classes as $key => $definition) {
                 if (!isset($definition['classes']['type'])) {
