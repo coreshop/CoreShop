@@ -1,7 +1,7 @@
 name: Docs
 on:
   push:
-    branches: [ 'next' ]
+    branches: [ '4.0' ]
     paths:
       - 'docs/**'
 
@@ -30,8 +30,8 @@ jobs:
 
     - name: Upload Folder
       uses: 'google-github-actions/upload-cloud-storage@v0'
-      if: github.ref == 'refs/heads/next'
+      if: github.ref == 'refs/heads/4.0'
       with:
         path: 'docs/build/'
-        destination: 'cors-wolke-coreshop-docs/next'
+        destination: 'cors-wolke-coreshop-docs/4.0.0'
         parent: false

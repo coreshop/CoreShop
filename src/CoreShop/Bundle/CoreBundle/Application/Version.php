@@ -20,18 +20,19 @@ namespace CoreShop\Bundle\CoreBundle\Application;
 
 final class Version
 {
-    public const MAJOR_VERSION = '3';
+    public const MAJOR_VERSION = '4';
 
-    public const MINOR_VERSION = '1';
+    public const MINOR_VERSION = '0';
 
     public const RELEASE_VERSION = '1';
 
-    public const EXTRA_VERSION = '';
+    public const EXTRA_VERSION = 'beta.1';
 
     public static function getVersion(): string
     {
         $version = sprintf('%s.%s.%s', self::MAJOR_VERSION, self::MINOR_VERSION, self::RELEASE_VERSION);
 
+        /** @psalm-suppress RedundantCondition */
         if (self::EXTRA_VERSION !== '') {
             $version = sprintf('%s-%s', $version, self::EXTRA_VERSION);
         }
