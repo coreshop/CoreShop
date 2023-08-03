@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'CoreShop - Pimcore eCommerce - Documentation',
+  title: 'CoreShop 4.0.x - Pimcore eCommerce - Documentation',
   tagline: 'CoreShop - Pimcore eCommerce - Documentation',
   favicon: 'img/favicon.png',
 
@@ -14,7 +14,7 @@ const config = {
   url: 'https://docs.coreshop.org',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/next/',
+  baseUrl: '/4.0.0/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
