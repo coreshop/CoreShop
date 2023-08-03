@@ -1,3 +1,13 @@
+# 3.1.1
+
+## Bugs
+ - [PaymentRules] fix decoration of PaymentProviderResolver (https://github.com/coreshop/CoreShop/pull/2317)
+ - [Notes] fix note title translation (https://github.com/coreshop/CoreShop/pull/2335)
+ - [Menu] making it easer to have more independent bundles with the same main-menu (https://github.com/coreshop/CoreShop/pull/2344)
+ - [FrontendBundle] fix: don't require permissions to render partials (https://github.com/coreshop/CoreShop/pull/2329)
+ - [VariantBundle] fix null values in ValidAttributesValidator (https://github.com/coreshop/CoreShop/pull/2348)
+ - [OrderBundle] don't modify CartItem twice (https://github.com/coreshop/CoreShop/pull/2355)
+
 # 3.1.0
 
 ## BC Breaks:
