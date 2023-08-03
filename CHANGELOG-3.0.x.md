@@ -1,3 +1,8 @@
+# 3.0.7
+
+## Bugs
+ - [CartPriceRule] fix issue with deleted price rule (https://github.com/coreshop/CoreShop/pull/2332)
+
 # 3.0.6
 
 ## Bugs
