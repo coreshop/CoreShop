@@ -38,6 +38,7 @@ services:
             - '@CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface'
             - '@CoreShop\Behat\Page\Frontend\Account\ChangeProfilePageInterface'
             - '@CoreShop\Behat\Service\NotificationCheckerInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\ChangeAddressPageInterface'
         tags:
             - { name: fob.context_service }
 
