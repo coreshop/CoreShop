@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController as BaseOrderCreationController;
+use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
