@@ -67,14 +67,14 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
      */
     protected $salutations = [];
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeTranslationsCollection();
     }
 
     public function __toString(): string
     {
-        return (string)$this->getName();
+        return (string) $this->getName();
     }
 
     public function getId(): ?int
