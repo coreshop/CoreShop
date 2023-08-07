@@ -131,6 +131,42 @@ final class CustomerContext implements Context
         $this->sharedStorage->set('address', $address);
     }
 
+    /**
+     * @Then /^the (customer "[^"]+") address is (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
+     * @Then /^the (customer) address is (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
+     */
+    public function theCustomersAddress(
+        CustomerInterface $customer,
+        CountryInterface $country,
+        $postcode,
+        $city,
+        $street,
+        $nr,
+    ): bool {
+        $found = false;
+        $addresses = $customer->getAddresses();
+
+        foreach ($addresses as $address) {
+            if ($address->getStreet() != $street) {
+                continue;
+            }
+            if ($address->getPostcode() != $postcode) {
+                continue;
+            }
+            if ($address->getCity() != $city) {
+                continue;
+            }
+            if ($address->getNumber() === $nr) {
+                $found = true;
+            }
+            if ($address->getCountry() == $country) {
+                $found = true;
+            }
+        }
+
+        return $found;
+    }
+
     private function createCustomer(string $email): CustomerInterface
     {
         /** @var CustomerInterface $customer */
