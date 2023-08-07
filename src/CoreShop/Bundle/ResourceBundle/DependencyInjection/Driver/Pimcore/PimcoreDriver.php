@@ -84,10 +84,11 @@ final class PimcoreDriver extends AbstractDriver
                 '$repository' => new Reference($metadata->getServiceId('repository')),
                 '$factory' => new Reference($metadata->getServiceId('factory')),
                 '$viewHandler' => new Reference(ViewHandlerInterface::class),
-                '$parameterBag' => new Reference(ParameterBagInterface::class)
+                '$parameterBag' => new Reference(ParameterBagInterface::class),
             ])
             ->addTag('controller.service_arguments')
-            ->addTag('container.service_subscriber');
+            ->addTag('container.service_subscriber')
+        ;
 
         $serviceId = $metadata->getServiceId('pimcore_controller');
 
