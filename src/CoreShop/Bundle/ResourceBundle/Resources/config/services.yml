@@ -100,7 +100,11 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
 
-    CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller: ~
+    CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller:
+        decorates: 'cache.default_marshaller'
+        decoration_priority: 100
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller.inner'
 
     CoreShop\Bundle\ResourceBundle\Slug\ResourceConfigurationSlugGenerator:
         decorates: 'CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface'
