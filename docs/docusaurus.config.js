@@ -43,7 +43,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/coreshop/CoreShop/tree/next/docs',
+            'https://github.com/coreshop/CoreShop/tree/4.0/docs',
         },
         blog: false,
         theme: {
