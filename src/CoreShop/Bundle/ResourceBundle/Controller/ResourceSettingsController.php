@@ -21,7 +21,6 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,7 +41,6 @@ class ResourceSettingsController extends AdminController
 
         return $this->viewHandler->handle(['success' => true, 'data' => $result]);
     }
-
 
     public function getConfigAction(): Response
     {

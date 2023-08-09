@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Form\DataMapper;
 
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataMapperInterface;
 
 /**

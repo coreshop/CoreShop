@@ -18,9 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
-use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Bundle\ResourceBundle\Controller\EventDispatcherInterface;
-use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactoryInterface;
 use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
@@ -87,10 +85,11 @@ abstract class AbstractDriver implements DriverInterface
                 '$resourceFormFactory' => new Reference(ResourceFormFactoryInterface::class),
                 '$formErrorSerializer' => new Reference(ErrorSerializer::class),
                 '$tokenStorage' => new Reference(TokenStorageInterface::class),
-                '$parameterBag' => new Reference(ParameterBagInterface::class)
+                '$parameterBag' => new Reference(ParameterBagInterface::class),
             ])
             ->addTag('controller.service_arguments')
-            ->addTag('container.service_subscriber');
+            ->addTag('container.service_subscriber')
+        ;
 
         $container->setDefinition($metadata->getServiceId('admin_controller'), $definition);
     }
@@ -129,7 +128,8 @@ abstract class AbstractDriver implements DriverInterface
         $definition = new Definition(Metadata::class);
         $definition
             ->setFactory([new Reference(RegistryInterface::class), 'get'])
-            ->setArguments([$metadata->getAlias()]);
+            ->setArguments([$metadata->getAlias()])
+        ;
 
         return $definition;
     }

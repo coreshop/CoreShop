@@ -29,10 +29,9 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
 {
     public function __construct(
         \Psr\Container\ContainerInterface $container,
-        protected ViewHandlerInterface    $viewHandler,
-        protected ParameterBagInterface   $parameterBag,
-    )
-    {
+        protected ViewHandlerInterface $viewHandler,
+        protected ParameterBagInterface $parameterBag,
+    ) {
         $this->container = $container;
     }
 
