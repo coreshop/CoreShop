@@ -24,13 +24,10 @@ interface SluggableInterface
 {
     public function getId(): ?int;
 
-    /**
-     * @return string
-     */
-    public function getKey();
+    public function getKey(): ?string;
 
     /**
-     * @return UrlSlug[]
+     * @return UrlSlug[]|null
      */
     public function getSlug(?string $language = null): ?array;
 

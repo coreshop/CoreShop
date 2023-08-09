@@ -3,37 +3,31 @@ services:
         public: true
 
     CoreShop\Bundle\CoreBundle\Controller\SettingsController:
-        arguments:
-          $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ReportsController:
-        arguments:
-            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\PortletsController:
-        arguments:
-            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ProductValidationController:
-        arguments:
-            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController:
-        arguments:
-            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController:
-        arguments:
-            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }

@@ -22,14 +22,12 @@ use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
-use CoreShop\Component\Address\Formatter\AddressFormatter;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
-use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -38,8 +36,6 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
-use CoreShop\Component\Shipping\Resolver\CarriersResolver;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Security\User\TokenStorageUserResolver;
@@ -58,7 +54,7 @@ class OrderCreationController extends PimcoreController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
     ): Response {
-        $this->isGrantedOr403();
+        //$this->isGrantedOr403();
 
         $customerId = $this->getParameterFromRequest($request, 'customerId');
         $customer = $customerRepository->find($customerId);
@@ -109,6 +105,7 @@ class OrderCreationController extends PimcoreController
         ErrorSerializer $errorSerializer,
         StateMachineManagerInterface $manager,
     ): Response {
+        // TODO: fails with must not be accessed before initialization
         $this->isGrantedOr403();
 
         $type = $this->getParameterFromRequest($request, 'saleType', OrderSaleTransitions::TRANSITION_CART);
@@ -310,6 +307,7 @@ class OrderCreationController extends PimcoreController
     public function setAddressFormatter(AddressFormatterInterface $addressFormatter): void
     {
         $this->addressFormatter = $this->container->get('CoreShop\Component\Address\Formatter\AddressFormatter');
+        //$this->addressFormatter = $addressFormatter;
     }
 
     protected function getPermission(): string
@@ -319,11 +317,9 @@ class OrderCreationController extends PimcoreController
 
     public static function getSubscribedServices(): array
     {
-        return array_merge(parent::getSubscribedServices(), [
-                new SubscribedService('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface', CarriersResolver::class, attributes: new Autowire(service:'CoreShop\Component\Shipping\Resolver\CarriersResolverInterface')),
-                new SubscribedService('CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface', TaxedShippingCalculatorInterface::class, attributes: new Autowire(service: 'CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface')),
-                new SubscribedService('CoreShop\Component\Order\Cart\CartContextResolverInterface', CartContextResolverInterface::class, attributes: new Autowire(service: 'CoreShop\Component\Order\Cart\CartContextResolverInterface')),
-                new SubscribedService('CoreShop\Component\Address\Formatter\AddressFormatter', AddressFormatter::class, attributes: new Autowire(service:'CoreShop\Component\Address\Formatter\AddressFormatter')),
-            ]);
+        return parent::getSubscribedServices() + [
+                new SubscribedService('Pimcore\Security\User\TokenStorageUserResolver', TokenStorageUserResolver::class, attributes: new Autowire(service:'Pimcore\Security\User\TokenStorageUserResolver')),
+                new SubscribedService('CoreShop\Component\Address\Formatter\AddressFormatter', TokenStorageUserResolver::class, attributes: new Autowire(service:'CoreShop\Component\Address\Formatter\AddressFormatter')),
+            ];
     }
 }

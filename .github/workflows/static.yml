@@ -1,9 +1,9 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ '2.2', '3.0', '3.1', 'next' ]
+    branches: [ '4.0' ]
   pull_request:
-    branches: [ '2.2', '3.0', '3.1', 'next' ]
+    branches: [ '4.0' ]
   release:
     types: [ created ]
   schedule:

@@ -42,7 +42,6 @@ final class CoreShopCustomerBundle extends AbstractResourceBundle
         $collection->addBundle(new PimcoreNewsletterBundle(), 10);
     }
 
-
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

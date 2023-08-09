@@ -16,26 +16,10 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\PimcoreBundle\DataHub\Type;
+namespace CoreShop\Bundle\ResourceBundle\DataHub\QueryType;
 
-use GraphQL\Type\Definition\ScalarType;
+use Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Multihref;
 
-class SerializedDataType extends ScalarType
+class CoreShopRelations extends Multihref
 {
-    public string $name = 'coreShopSerializedData';
-
-    public function serialize($value)
-    {
-        return $value;
-    }
-
-    public function parseValue($value)
-    {
-        return $value;
-    }
-
-    public function parseLiteral($valueNode, ?array $variables = null)
-    {
-        return $valueNode->value;
-    }
 }

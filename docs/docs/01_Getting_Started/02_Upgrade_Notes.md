@@ -2,6 +2,12 @@
 
 Always check this page for some important upgrade notes before updating to the latest coreshop build.
 
+# 4.0.0-beta.1
+
+> CoreShop 4.0.0 is the same as 3.1.0, but with Pimcore 11 compatibility. Updating CoreShop therefore is quite easy. Since Symfony now doesn't have a full container anymore, we use Service Containers now for our Controllers. So your overwritten Controllers probably need changes.
+
+- Pimcore 11 Compatibility (https://github.com/coreshop/CoreShop/pull/2252, https://github.com/coreshop/CoreShop/pull/2340, https://github.com/coreshop/CoreShop/pull/2345, https://github.com/coreshop/CoreShop/pull/2352, https://github.com/coreshop/CoreShop/pull/2321, https://github.com/coreshop/CoreShop/pull/2347)
+
 ## Pimcore 10.6
 If you update to Pimcore 10.6 and you get following error: ```"You have requested a non-existent parameter "coreshop.model.user.class"``` then check if you have this config in your `security.yaml`:
 
@@ -1128,7 +1134,7 @@ After you have migrated to the latest version you also have to remove them:
   - `CoreShop\Component\Customer\Model\UserInterface::ROLE_SUPER_ADMIN` renamed `CoreShop\Component\Customer\Model\UserInterface::CORESHOP_ROLE_SUPER_ADMIN`
 
 - **BC break** Shipment / Invoice Creation via API changed
-  - Before adding a new Shipment / Invoice you need to dispatch a request state to your order. Read more about it [here](./03_Development/06_Order/05_Invoice/01_Invoice_Creation.md) and [here](./03_Development/06_Order/06_Shipment/01_Shipment_Creation.md).
+  - Before adding a new Shipment / Invoice you need to dispatch a request state to your order. Read more about it [here](../03_Development/06_Order/05_Invoice/01_Invoice_Creation.md) and [here](../03_Development/06_Order/06_Shipment/01_Shipment_Creation.md).
 - **BC break** getName in `CoreShop\Component\Index\Model\IndexableInterface` has been changed to `getIndexableName` as `getName` could eventually conflict with a non localized Pimcore Field
 - **BC break** getEnabled in `CoreShop\Component\Index\Model\IndexableInterface` has been changed to `getIndexableEnabled` as `getEnabled` could eventually conflict with a localized Pimcore Field
 
