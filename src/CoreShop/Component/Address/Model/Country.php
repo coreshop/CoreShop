@@ -106,6 +106,22 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
         return $this;
     }
 
+    /**
+     * @return StateInterface[]|Collection
+     */
+    public function getStates(): Collection|array
+    {
+        return $this->states;
+    }
+
+    /**
+     * @param StateInterface[]|Collection $states
+     */
+    public function setStates(Collection|array $states): void
+    {
+        $this->states = $states;
+    }
+
     public function getAddressFormat()
     {
         return $this->addressFormat;

@@ -29,6 +29,7 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -84,6 +85,7 @@ abstract class AbstractDriver implements DriverInterface
                 '$resourceFormFactory' => new Reference(ResourceFormFactoryInterface::class),
                 '$formErrorSerializer' => new Reference(ErrorSerializer::class),
                 '$tokenStorage' => new Reference(TokenStorageInterface::class),
+                '$parameterBag' => new Reference(ParameterBagInterface::class),
             ])
             ->addTag('controller.service_arguments')
             ->addTag('container.service_subscriber')

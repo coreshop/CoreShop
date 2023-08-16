@@ -23,6 +23,7 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\User;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class PimcoreController extends AdminController
@@ -33,8 +34,9 @@ class PimcoreController extends AdminController
         protected FactoryInterface $factory,
         ContainerInterface $container,
         ViewHandlerInterface $viewHandler,
+        ParameterBagInterface $parameterBag,
     ) {
-        parent::__construct($container, $viewHandler);
+        parent::__construct($container, $viewHandler, $parameterBag);
     }
 
     /**

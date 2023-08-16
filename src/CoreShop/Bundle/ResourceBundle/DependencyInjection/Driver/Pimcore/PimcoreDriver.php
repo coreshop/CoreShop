@@ -28,6 +28,7 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class PimcoreDriver extends AbstractDriver
@@ -83,6 +84,7 @@ final class PimcoreDriver extends AbstractDriver
                 '$repository' => new Reference($metadata->getServiceId('repository')),
                 '$factory' => new Reference($metadata->getServiceId('factory')),
                 '$viewHandler' => new Reference(ViewHandlerInterface::class),
+                '$parameterBag' => new Reference(ParameterBagInterface::class),
             ])
             ->addTag('controller.service_arguments')
             ->addTag('container.service_subscriber')

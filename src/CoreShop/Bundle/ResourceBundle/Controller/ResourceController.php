@@ -28,6 +28,7 @@ use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
 use Pimcore\Security\User\User;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,8 +48,9 @@ class ResourceController extends AdminController
         protected ResourceFormFactoryInterface $resourceFormFactory,
         protected ErrorSerializer $formErrorSerializer,
         protected TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
     ) {
-        parent::__construct($container, $viewHandler);
+        parent::__construct($container, $viewHandler, $parameterBag);
     }
 
     /**
@@ -77,6 +79,10 @@ class ResourceController extends AdminController
 
     public function listAction(Request $request): JsonResponse
     {
+        $start = $request->query->get('start', 0);
+        $limit = $request->query->get('limit', 25);
+
+        // TODO: use start and limit as soon as Admin UI has pagination
         $data = $this->repository->findAll();
 
         return $this->viewHandler->handle($data, ['group' => 'List']);
