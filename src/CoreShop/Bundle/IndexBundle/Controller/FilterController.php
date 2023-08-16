@@ -25,10 +25,8 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class FilterController extends ResourceController
 {
@@ -94,7 +92,6 @@ class FilterController extends ResourceController
 
         return $this->viewHandler->handle(false);
     }
-
 
     /**
      * @return array<string, string>

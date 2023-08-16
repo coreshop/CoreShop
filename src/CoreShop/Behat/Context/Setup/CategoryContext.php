@@ -21,7 +21,6 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationService;
-use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -35,12 +34,12 @@ final class CategoryContext implements Context
         private FactoryInterface $categoryFactory,
         private ConfigurationService $configurationService,
     ) {
-
     }
+
     /**
      * @Given /^the site has a configuration$/
      */
-    public function thisSiteHasAFixture():void
+    public function thisSiteHasAFixture(): void
     {
         $configurations = [
             'system.guest.checkout' => true,
