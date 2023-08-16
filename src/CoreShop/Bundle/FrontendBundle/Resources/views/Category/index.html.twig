@@ -18,10 +18,10 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="display">
-                    <a href="{{ pimcore_url({'type': 'list'})  }}" class="{% if type == 'list' %} active {% endif %}">
+                    <a href="{{ pimcore_url({'type': 'list'})  }}" class="{% if type == 'list' %} active {% endif %}" {{ coreshop_test_html_attribute('view-list') }}>
                         <i class="fa fa-th-list" title="" data-original-title="{{ 'coreshop.ui.list_view'|trans }}"></i>
                     </a>
-                    <a href="{{ pimcore_url({'type': 'grid'})  }}" class="{% if type == 'grid' %} active {% endif %}">
+                    <a href="{{ pimcore_url({'type': 'grid'})  }}" class="{% if type == 'grid' %} active {% endif %}" {{ coreshop_test_html_attribute('view-grid') }}>
                         <i class="fa fa-th" title="" data-original-title="{{ 'coreshop.ui.grid_view'|trans }}"></i>
                     </a>
                 </div>
@@ -33,7 +33,7 @@
                 {#
                     TODO: Maybe use form for this?
                 #}
-                <select class="form-control site-reload" name="sort">
+                <select class="form-control site-reload" name="sort" {{ coreshop_test_html_attribute('order-selection') }}>
                     {% for value in validSortElements %}
                         {% set asc = value ~ '_asc' %}
                         {% set desc = value ~ '_desc' %}

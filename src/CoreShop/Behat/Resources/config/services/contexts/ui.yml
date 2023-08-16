@@ -110,3 +110,10 @@ services:
             - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.ui.category:
+        class: CoreShop\Behat\Context\Ui\Frontend\CategoryContext
+        arguments:
+           - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+        tags:
+            - { name: fob.context_service }

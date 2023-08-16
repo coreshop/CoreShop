@@ -44,6 +44,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.factory.category'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: fob.context_service }
 

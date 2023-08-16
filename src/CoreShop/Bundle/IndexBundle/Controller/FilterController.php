@@ -25,8 +25,10 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class FilterController extends ResourceController
 {
@@ -61,7 +63,7 @@ class FilterController extends ResourceController
         return $this->viewHandler->handle(false);
     }
 
-    public function getValuesForFilterFieldAction(Request $request, RepositoryInterface $indexRepository, ServiceRegistry $workerRegistry, ListingFactoryInterface $listingFactory): Response
+    public function getValuesForFilterFieldAction(Request $request, RepositoryInterface $indexRepository, ServiceRegistry $indexWorkersRegistry, ListingFactoryInterface $listingFactory): Response
     {
         $index = $indexRepository->find($this->getParameterFromRequest($request, 'index'));
 
@@ -69,7 +71,7 @@ class FilterController extends ResourceController
             /**
              * @var WorkerInterface $worker
              */
-            $worker = $workerRegistry->get($index->getWorker());
+            $worker = $indexWorkersRegistry->get($index->getWorker());
             $list = $listingFactory->createList($index);
             $list->setLocale($request->getLocale());
             $filterGroupHelper = $worker->getFilterGroupHelper();
@@ -92,6 +94,7 @@ class FilterController extends ResourceController
 
         return $this->viewHandler->handle(false);
     }
+
 
     /**
      * @return array<string, string>

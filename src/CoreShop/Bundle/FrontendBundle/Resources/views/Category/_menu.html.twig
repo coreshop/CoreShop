@@ -10,7 +10,7 @@
                     {% set dropdown = category.hasChildCategories %}
 
                     <li class="nav-item{% if dropdown %} dropdown {% endif %}">
-                        <a href="{{ pimcore_object_path(category) }}" class="nav-link{% if dropdown %} dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10{%  endif %}">
+                        <a href="{{ pimcore_object_path(category) }}" class="nav-link{% if dropdown %} dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10{%  endif %}" {{  coreshop_test_html_attribute('category-menu-top',category.name) }}>
                             {{ category.name }}
                         </a>
 
@@ -19,7 +19,7 @@
                                 {% for childCategory in category.childCategories %}
                                     <li class="dropdown-item">
                                         <!-- TODO: URL -->
-                                        <a tabindex="-1" href="#">
+                                        <a tabindex="-1" href="#" {{  coreshop_test_html_attribute('category-menu-top',childCategory.name) }}>
                                             {{ childCategory.name }}
                                         </a>
                                     </li>

@@ -30,6 +30,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.category'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: fob.context_service }
 

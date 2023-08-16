@@ -17,6 +17,7 @@ default:
         - coreshop.behat.context.setup.store
         - coreshop.behat.context.setup.category
         - coreshop.behat.context.setup.product
+        - coreshop.behat.context.ui.category
 
         - coreshop.behat.context.ui.homepage
         - coreshop.behat.context.ui.product

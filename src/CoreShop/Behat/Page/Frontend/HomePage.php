@@ -84,6 +84,44 @@ class HomePage extends AbstractFrontendPage implements HomePageInterface
         );
     }
 
+    public function switchToCategoryOnMenuLeft(string $name) :void
+    {
+        $this->getElement('category_menu_left_selector', ['%name%' => $name])->click();
+    }
+    public function switchToCategoryOnMenuMain(string $name) :void
+    {
+        $this->getElement('category_menu_top_selector', ['%name%' => $name])->click();
+    }
+
+    public function getProductsInCategory(): array
+    {
+        return array_map(
+            function (NodeElement $element) {
+                return $element->getText();
+            },
+            $this->getElement('category_products')->findAll('css', '[data-test-cat_product-name]'),
+        );
+    }
+
+    public function switchView(string $name) :void
+    {
+        $this->getElement('view-'.$name)->click();
+    }
+    public function getProductsInCategoryGrid(): array
+    {
+        return array_map(
+            function (NodeElement $element) {
+                return $element->getText();
+            },
+            $this->getElement('category-products-grid')->findAll('css', '[data-test-cat_product-name-grid]'),
+        );
+    }
+
+    public function changeOrder(string $order) :void
+    {
+        $this->getElement('order-selection')->selectOption($order);
+    }
+
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
@@ -91,6 +129,13 @@ class HomePage extends AbstractFrontendPage implements HomePageInterface
             'logout_button' => '[data-test-logout-button]',
             'currency_selector' => '[data-test-currency-selector]',
             'currency_selector_code' => '[data-test-currency-selector-code="%code%"]',
+            'category_menu_left_selector' => '[data-test-category-menu-left="%name%"]',
+            'category_products' => '[data-test-category-products]',
+            'category_menu_top_selector' => '[data-test-category-menu-top="%name%"]',
+            'view-list' => '[data-test-view-list]',
+            'view-grid' => '[data-test-view-grid]',
+            'category-products-grid' => '[data-test-category-products-grid]',
+            'order-selection' => '[data-test-order-selection]',
         ]);
     }
 }
