@@ -62,6 +62,26 @@ class CategoryPage extends AbstractFrontendPage implements CategoryPageInterface
         $this->getElement('order-selection')->selectOption($order);
     }
 
+    public function getFilterLabel()
+    {
+        return $this->getElement('category-filter-label')->getText();
+    }
+
+    public function iSelectFilterOption(string $name): void
+    {
+        $this->getElement('category-filter-select', ['%name%' => $name])->click();
+    }
+
+    public function clickFilterSubmit(): void
+    {
+        $this->getElement('category-filter-submit')->click();
+    }
+
+    public function setSearchField(string $query): void
+    {
+        $this->getElement('category-search-field')->setValue($query);
+    }
+
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
@@ -70,6 +90,10 @@ class CategoryPage extends AbstractFrontendPage implements CategoryPageInterface
             'order-selection' => '[data-test-order-selection]',
             'view-list' => '[data-test-view-list]',
             'view-grid' => '[data-test-view-grid]',
+            'category-filter-label' => '[data-test-category-filter-label]',
+            'category-filter-select' => '[data-test-category-filter-select="%name%"]',
+            'category-filter-submit' => '[data-test-category-filter-submit]',
+            'category-search-field' => '[data-test-category-search-field]',
         ]);
     }
 }

@@ -96,4 +96,13 @@ final class CategoryContext implements Context
         $product = explode(',', $products);
         Assert::same($this->categoryPage->getProductsInCategoryGrid(), $product);
     }
+
+    /**
+     * @Then /^I should see a filter with label in order "([^"]+)" in grid$/
+     */
+    public function iShouldSeeFilter(string $products): void
+    {
+        $product = explode(',', $products);
+        Assert::same($this->categoryPage->getProductsInCategoryGrid(), $product);
+    }
 }

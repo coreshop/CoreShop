@@ -95,6 +95,48 @@ final class FilterContext implements Context
     }
 
     /**
+     * @Given /the (filter) has a condition with label "([^"]+)" and type "([^"]+)"$/
+     * @Given /the (filter) has a condition with label "([^"]+)" and type "([^"]+)" and a preselect for "([^"]+)"$/
+     * @Given /the (filter) has a condition with label "([^"]+)" and type "([^"]+)" on field "([^"]+)"$/
+     */
+    public function theFilterHasNameSelect(FilterInterface $filter, string $label, string $type, string $preselect = null, $field = null)
+    {
+        $condition = $this->filterConditionFactory->createNew();
+        $condition->setType($type);
+        $condition->setLabel($label);
+
+        $filter->setOrderDirection('asc');
+        $filter->setOrderKey('id');
+
+        $condition->setConfiguration([
+            'field' => 'internalName',
+            'preSelect' => $preselect,
+            'type' => 'string',
+            'fields' => ['internalName'],
+            'name' => 'dummy',
+            'searchTerm' => '',
+            'pattern' => 'both',
+            'concatenator' => 'OR',
+        ]);
+
+        $filter->addCondition($condition);
+
+        $this->objectManager->persist($condition);
+
+        $this->saveFilter($filter);
+    }
+
+    /**
+     * @Given /the (filter) gets added to (category "[^"]+")$/
+     */
+    public function theFilterAddedToCategory(FilterInterface $filter, CategoryInterface $category = null, $includeAllChilds = ''): void
+    {
+        $category->setFilter($filter);
+
+        $category->save();
+    }
+
+    /**
      * @param string         $name
      */
     private function createFilter($name, IndexInterface $index): void
@@ -105,7 +147,6 @@ final class FilterContext implements Context
         $filter = $this->filterFactory->createNew();
         $filter->setName($name);
         $filter->setIndex($index);
-
         $this->saveFilter($filter);
     }
 

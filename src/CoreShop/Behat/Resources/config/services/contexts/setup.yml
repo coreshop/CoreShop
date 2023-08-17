@@ -185,6 +185,7 @@ services:
             - '@coreshop.factory.index'
             - '@coreshop.registry.index.worker'
             - '@coreshop.factory.index_column'
+            - '@CoreShop\Component\Index\Service\IndexUpdaterServiceInterface'
         tags:
             - { name: fob.context_service }
 

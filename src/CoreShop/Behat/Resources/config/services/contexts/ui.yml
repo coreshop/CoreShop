@@ -118,3 +118,9 @@ services:
            - '@CoreShop\Behat\Page\Frontend\CategoryPageInterface'
         tags:
             - { name: fob.context_service }
+    coreshop.behat.context.ui.filter:
+        class: CoreShop\Behat\Context\Ui\Frontend\FilterContext
+        arguments:
+            - '@CoreShop\Behat\Page\Frontend\CategoryPageInterface'
+        tags:
+            - { name: fob.context_service }
