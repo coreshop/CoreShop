@@ -144,12 +144,12 @@ final class FilterContext implements Context
     }
 
     /**
-     * @param string         $name
+     * @param string $name
      */
     private function createFilter($name, IndexInterface $index): void
     {
         /**
-         * @var FilterInterface $filter
+         * @var IndexInterface $index
          */
         $filter = $this->filterFactory->createNew();
         $filter->setName($name);
