@@ -31,4 +31,16 @@ interface CategoryPageInterface
     public function getProductsInCategoryGrid(): array;
 
     public function changeOrder(string $order): void;
+
+    public function setSearchField(string $query): void;
+
+    public function clickFilterSubmit(): void;
+
+    public function iSelectFilterOption(string $name): void;
+    public function getFilterLabel();
+
+
+
+
+
 }
