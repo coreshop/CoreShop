@@ -27,7 +27,7 @@ final class CategoryContext implements Context
 {
     public function __construct(
         private HomePageInterface $homePage,
-        private CategoryPageInterface $categoryPage,
+        private CategoryPageInterface $categoryPage
     ) {
     }
 

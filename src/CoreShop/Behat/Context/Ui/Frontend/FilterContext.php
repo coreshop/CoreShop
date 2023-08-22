@@ -25,7 +25,7 @@ use Webmozart\Assert\Assert;
 final class FilterContext implements Context
 {
     public function __construct(
-        private CategoryPageInterface $categoryPage,
+        private CategoryPageInterface $categoryPage
     ) {
     }
 

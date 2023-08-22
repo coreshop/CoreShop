@@ -1,5 +1,5 @@
 @ui @category
-Feature: Viewing a product details
+Feature: Filter and Indexes
 
   Background:
     Given the site operates on a store in "Austria"
@@ -32,7 +32,7 @@ Feature: Viewing a product details
     When I check latest products
     Then I should see 6 products in the list
 
-  Scenario:
+  Scenario: Filter with category list
     Given the site has a index "myindex" for class "CoreShopProduct" with type "mysql"
     And  the index has following fields:
       | key   | name            | type            | getter          | interpreter   | columnType   |
@@ -49,7 +49,7 @@ Feature: Viewing a product details
     And I select filter option "Rain Coat"
     Then I should see 1 products in the category list
 
-  Scenario:
+  Scenario: Filter with search field
     Given the site has a index "myindex" for class "CoreShopProduct" with type "mysql"
     And  the index has following fields:
       | key   | name            | type            | getter          | interpreter   | columnType   |

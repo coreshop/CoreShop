@@ -39,4 +39,5 @@ interface CategoryPageInterface
     public function iSelectFilterOption(string $name): void;
 
     public function getFilterLabel();
+
 }

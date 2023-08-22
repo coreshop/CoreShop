@@ -22,11 +22,12 @@ default:
         - coreshop.behat.context.setup.product
         - coreshop.behat.context.setup.index
         - coreshop.behat.context.setup.filter
-        - coreshop.behat.context.ui.category
-        - coreshop.behat.context.setup.pimcore_class
 
+
+        - coreshop.behat.context.ui.category
         - coreshop.behat.context.ui.homepage
         - coreshop.behat.context.ui.product
         - coreshop.behat.context.ui.filter
+
       filters:
         tags: "@ui&&@category"
