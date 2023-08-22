@@ -102,6 +102,9 @@ final class FilterContext implements Context
      */
     public function theFilterHasNameSelect(FilterInterface $filter, string $label, string $type, string $preselect = null, $field = null)
     {
+        /**
+         * @var FilterInterface $filter
+         */
         $condition = $this->filterConditionFactory->createNew();
         $condition->setType($type);
         $condition->setLabel($label);
@@ -132,6 +135,9 @@ final class FilterContext implements Context
      */
     public function theFilterAddedToCategory(FilterInterface $filter, CoreCategoryInterface $category = null, $includeAllChilds = ''): void
     {
+        /**
+         * @var CoreCategoryInterface $category
+         */
         $category->setFilter($filter);
 
         $category->save();
@@ -153,6 +159,9 @@ final class FilterContext implements Context
 
     private function saveFilter(FilterInterface $filter): void
     {
+        /**
+         * @var FilterInterface $filter
+         */
         $this->objectManager->persist($filter);
         $this->objectManager->flush();
 
