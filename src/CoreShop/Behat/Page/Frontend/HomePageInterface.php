@@ -39,7 +39,8 @@ interface HomePageInterface extends FrontendPageInterface
     public function switchLocale(string $localeCode): void;
 
     public function getLatestProductsNames(): array;
-    public function switchToCategoryOnMenuLeft(string $name): void;
-    public function switchToCategoryOnMenuMain(string $name): void;
 
+    public function switchToCategoryOnMenuLeft(string $name): void;
+
+    public function switchToCategoryOnMenuMain(string $name): void;
 }

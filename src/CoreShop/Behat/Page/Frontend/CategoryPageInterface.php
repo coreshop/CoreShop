@@ -37,10 +37,6 @@ interface CategoryPageInterface
     public function clickFilterSubmit(): void;
 
     public function iSelectFilterOption(string $name): void;
+
     public function getFilterLabel();
-
-
-
-
-
 }

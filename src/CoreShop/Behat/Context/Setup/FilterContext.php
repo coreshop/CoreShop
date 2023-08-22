@@ -21,6 +21,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CategoryInterface  as CoreCategoryInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -129,7 +130,7 @@ final class FilterContext implements Context
     /**
      * @Given /the (filter) gets added to (category "[^"]+")$/
      */
-    public function theFilterAddedToCategory(FilterInterface $filter, CategoryInterface $category = null, $includeAllChilds = ''): void
+    public function theFilterAddedToCategory(FilterInterface $filter, CoreCategoryInterface $category = null, $includeAllChilds = ''): void
     {
         $category->setFilter($filter);
 
