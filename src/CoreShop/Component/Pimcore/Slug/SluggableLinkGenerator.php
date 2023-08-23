@@ -70,8 +70,8 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
             throw new LinkGenerationNotPossibleException(sprintf('No Valid Slug found for object "%s"', $object->getFullPath()));
         }
 
-        $basePath = $this->requestStack->getMainRequest()->getBaseUrl();
-
+        $basePath = $this->requestStack->getMainRequest()?->getBaseUrl() ?? '';
+        
         return sprintf('%s%s', $basePath, $slug ? $slug->getSlug() : $fallbackSlug->getSlug());
     }
 }
