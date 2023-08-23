@@ -123,7 +123,5 @@ final class CategoryContext implements Context
         $category->setPublished(true);
         $category->save();
         $this->sharedStorage->set('category', $category);
-
-        var_dump($category);
     }
 }
