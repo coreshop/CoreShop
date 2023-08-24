@@ -22,6 +22,8 @@ use Behat\Mink\Element\NodeElement;
 
 class CategoryPage extends AbstractFrontendPage implements CategoryPageInterface
 {
+    use SluggablePageTrait;
+
     public function getRouteName(): string
     {
         return 'coreshop_index';
@@ -62,7 +64,7 @@ class CategoryPage extends AbstractFrontendPage implements CategoryPageInterface
         $this->getElement('order-selection')->selectOption($order);
     }
 
-    public function getFilterLabel()
+    public function getFilterLabel(): string
     {
         return $this->getElement('category-filter-label')->getText();
     }

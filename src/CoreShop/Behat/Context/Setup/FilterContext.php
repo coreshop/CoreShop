@@ -139,7 +139,6 @@ final class FilterContext implements Context
          * @var CoreCategoryInterface $category
          */
         $category->setFilter($filter);
-
         $category->save();
     }
 
@@ -149,6 +148,7 @@ final class FilterContext implements Context
     private function createFilter($name, IndexInterface $index): void
     {
         /**
+         * @var FilterInterface $filter
          * @var IndexInterface $index
          */
         $filter = $this->filterFactory->createNew();

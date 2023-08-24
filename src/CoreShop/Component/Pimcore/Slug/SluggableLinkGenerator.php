@@ -71,7 +71,7 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
         }
 
         $basePath = $this->requestStack->getMainRequest()?->getBaseUrl() ?? '';
-        
+
         return sprintf('%s%s', $basePath, $slug ? $slug->getSlug() : $fallbackSlug->getSlug());
     }
 }

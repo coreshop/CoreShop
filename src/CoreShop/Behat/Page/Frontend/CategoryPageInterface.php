@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
-interface CategoryPageInterface
+interface CategoryPageInterface extends FrontendPageInterface
 {
     public function getRouteName(): string;
 
@@ -38,6 +38,5 @@ interface CategoryPageInterface
 
     public function iSelectFilterOption(string $name): void;
 
-    public function getFilterLabel();
-
+    public function getFilterLabel(): string;
 }

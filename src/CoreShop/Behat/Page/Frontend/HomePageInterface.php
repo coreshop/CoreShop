@@ -20,8 +20,8 @@ namespace CoreShop\Behat\Page\Frontend;
 
 interface HomePageInterface extends FrontendPageInterface
 {
-
     public function getRouteName(): string;
+
     public function getContent(): string;
 
     public function hasLogoutButton(): bool;
