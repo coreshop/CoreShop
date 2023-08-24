@@ -51,6 +51,18 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
+    public function purgeSlugs(): void
+    {
+        Cache::clearAll();
+        Cache\RuntimeCache::clear();
+
+        //Force
+        $this->connection->executeQuery('DELETE FROM object_url_slugs');
+    }
+
+    /**
+     * @BeforeScenario
+     */
     public function purgeObjects(): void
     {
         Cache::clearAll();

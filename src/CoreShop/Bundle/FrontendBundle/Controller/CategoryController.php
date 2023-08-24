@@ -252,7 +252,7 @@ class CategoryController extends FrontendController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
             new SubscribedService('validSortProperties', 'array', attributes: new Autowire('%coreshop.frontend.category.valid_sort_options%')),
             new SubscribedService('defaultSortName', 'string', attributes: new Autowire('%coreshop.frontend.category.default_sort_name%')),
             new SubscribedService('defaultSortDirection', 'string', attributes: new Autowire('%coreshop.frontend.category.default_sort_direction%')),
@@ -260,8 +260,10 @@ class CategoryController extends FrontendController
             ConfigurationServiceInterface::class,
             PaginatorInterface::class,
             TrackerInterface::class,
+            FilteredListingFactoryInterface::class,
+            FilterProcessorInterface::class,
             new SubscribedService('coreshop.repository.product', ProductRepositoryInterface::class),
-        ];
+        ]);
     }
 
     protected function getRepository(): CategoryRepositoryInterface

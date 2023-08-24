@@ -75,3 +75,11 @@ services:
     CoreShop\Behat\Page\Frontend\WishlistPageInterface: '@CoreShop\Behat\Page\Frontend\WishlistPage'
     CoreShop\Behat\Page\Frontend\WishlistPage:
         parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Account\ChangeAddressPageInterface: '@CoreShop\Behat\Page\Frontend\Account\ChangeAddressPage'
+    CoreShop\Behat\Page\Frontend\Account\ChangeAddressPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\CategoryPageInterface: '@CoreShop\Behat\Page\Frontend\CategoryPage'
+    CoreShop\Behat\Page\Frontend\CategoryPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage

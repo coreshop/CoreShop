@@ -53,11 +53,13 @@ class SecurityController extends FrontendController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() +
+        return array_merge(
+            parent::getSubscribedServices(),
             [
                 AuthenticationUtils::class => AuthenticationUtils::class,
                 ShopperContextInterface::class => ShopperContextInterface::class,
-            ];
+            ],
+        );
     }
 
     public function checkAction(Request $request): void

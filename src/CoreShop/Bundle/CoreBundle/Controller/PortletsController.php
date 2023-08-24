@@ -81,8 +81,8 @@ class PortletsController extends AdminController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
             new SubscribedService('coreshop.registry.portlets', ServiceRegistryInterface::class, attributes: new Autowire(service: 'coreshop.registry.portlets')),
-        ];
+        ]);
     }
 }

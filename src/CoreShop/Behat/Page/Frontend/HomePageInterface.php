@@ -20,6 +20,8 @@ namespace CoreShop\Behat\Page\Frontend;
 
 interface HomePageInterface extends FrontendPageInterface
 {
+    public function getRouteName(): string;
+
     public function getContent(): string;
 
     public function hasLogoutButton(): bool;
@@ -39,4 +41,8 @@ interface HomePageInterface extends FrontendPageInterface
     public function switchLocale(string $localeCode): void;
 
     public function getLatestProductsNames(): array;
+
+    public function switchToCategoryOnMenuLeft(string $name): void;
+
+    public function switchToCategoryOnMenuMain(string $name): void;
 }

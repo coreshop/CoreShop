@@ -388,7 +388,8 @@ class CartController extends FrontendController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() +
+        return array_merge(
+            parent::getSubscribedServices(),
             [
                 new SubscribedService('coreshop.repository.stack.purchasable', StackRepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.stack.purchasable')),
                 new SubscribedService('coreshop.factory.order_item', OrderItemFactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.order_item')),
@@ -401,7 +402,8 @@ class CartController extends FrontendController
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService('coreshop.repository.cart_price_rule_voucher_code', CartPriceRuleVoucherRepositoryInterface::class),
                 new SubscribedService(CartPriceRuleProcessorInterface::class, CartPriceRuleProcessorInterface::class),
-            ];
+            ],
+        );
     }
 
     private function getCartItemErrors(OrderItemInterface $cartItem): ConstraintViolationListInterface

@@ -364,14 +364,14 @@ class CustomerController extends FrontendController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
                 ShopperContextInterface::class,
                 AddressAssignmentManagerInterface::class,
                 new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
                 new SubscribedService('coreshop.repository.address', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.address')),
                 new SubscribedService('coreshop.factory.address', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.address')),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
-            ];
+            ]);
     }
 
     protected function fireEvent(Request $request, mixed $object, string $eventName): void

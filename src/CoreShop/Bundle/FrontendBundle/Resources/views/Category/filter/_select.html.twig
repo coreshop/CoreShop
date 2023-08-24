@@ -1,7 +1,7 @@
 {% if values|length > 0 %}
 <div class="list-group">
     {% if label %}
-        <div class="list-group-item">
+        <div class="list-group-item" {{ coreshop_test_html_attribute('category-filter-label') }}>
             {{ label|trans }}
         </div>
     {% endif %}
@@ -10,7 +10,7 @@
         <div class="filter-group filter-group-checkbox">
             {% for value in values %}
                 <label class="radio">
-                    <input name="{{ fieldName }}" type="radio" value="{{ value['value'] }}" {% if currentValue == value['value'] %} checked="checked" {% endif %}>
+                    <input name="{{ fieldName }}" type="radio" value="{{ value['value'] }}" {% if currentValue == value['value'] %} checked="checked" {% endif %} {{ coreshop_test_html_attribute('category-filter-select',value['value']) }}>
                     {{ value['value']|trans }} {% if quantityUnit %} {{ quantityUnit.abbreviation }} {% endif %}
                 </label>
             {% endfor %}

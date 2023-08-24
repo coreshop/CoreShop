@@ -234,7 +234,7 @@ class OrderInvoiceController extends PimcoreController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
                 new SubscribedService('coreshop.repository.order', ProcessableInterface::class, attributes: new Autowire(service:'coreshop.repository.order')),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
@@ -244,6 +244,6 @@ class OrderInvoiceController extends PimcoreController
                 new SubscribedService('coreshop.order.transformer.order_to_invoice', OrderDocumentTransformerInterface::class, attributes: new Autowire('@CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer')),
                 new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_invoice')),
                 new SubscribedService(StateMachineManagerInterface::class, StateMachineManagerInterface::class),
-            ];
+            ]);
     }
 }

@@ -172,13 +172,13 @@ class OrderPaymentController extends PimcoreController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
                 new SubscribedService('coreshop.state_machine_manager', StateMachineManagerInterface::class),
                 new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
                 new SubscribedService('coreshop.repository.payment', PaymentRepositoryInterface::class),
                 new SubscribedService('doctrine.orm.entity_manager', EntityManager::class, attributes: new Autowire(service:'doctrine.orm.entity_manager')),
                 new SubscribedService('coreshop.repository.payment_provider', PaymentProviderRepositoryInterface::class),
                 new SubscribedService('coreshop.factory.payment', FactoryInterface::class, attributes: new Autowire(service:'coreshop.factory.payment')),
-            ];
+            ]);
     }
 }

@@ -61,7 +61,7 @@ class FilterController extends ResourceController
         return $this->viewHandler->handle(false);
     }
 
-    public function getValuesForFilterFieldAction(Request $request, RepositoryInterface $indexRepository, ServiceRegistry $workerRegistry, ListingFactoryInterface $listingFactory): Response
+    public function getValuesForFilterFieldAction(Request $request, RepositoryInterface $indexRepository, ServiceRegistry $indexWorkersRegistry, ListingFactoryInterface $listingFactory): Response
     {
         $index = $indexRepository->find($this->getParameterFromRequest($request, 'index'));
 
@@ -69,7 +69,7 @@ class FilterController extends ResourceController
             /**
              * @var WorkerInterface $worker
              */
-            $worker = $workerRegistry->get($index->getWorker());
+            $worker = $indexWorkersRegistry->get($index->getWorker());
             $list = $listingFactory->createList($index);
             $list->setLocale($request->getLocale());
             $filterGroupHelper = $worker->getFilterGroupHelper();

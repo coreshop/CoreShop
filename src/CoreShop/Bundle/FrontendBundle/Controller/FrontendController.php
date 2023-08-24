@@ -42,14 +42,14 @@ abstract class FrontendController extends AbstractController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
             TemplateConfiguratorInterface::class => TemplateConfiguratorInterface::class,
             ShopperContextInterface::class => ShopperContextInterface::class,
             CartContextInterface::class => CartContextInterface::class,
             'translator' => TranslatorInterface::class,
             RequestHelper::class => RequestHelper::class,
             SEOPresentationInterface::class => SEOPresentationInterface::class,
-        ];
+        ]);
     }
 
     /**
