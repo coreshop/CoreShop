@@ -31,7 +31,7 @@ final class PimcoreCachePass implements CompilerPassInterface
             $container->findDefinition('pimcore.cache.adapter.doctrine_dbal')->setArgument(4, []);
             $container->findDefinition('pimcore.cache.adapter.doctrine_dbal')->setArgument(
                 5,
-                new Reference(CacheResourceMarshaller::class)
+                new Reference(CacheResourceMarshaller::class),
             );
         }
     }
