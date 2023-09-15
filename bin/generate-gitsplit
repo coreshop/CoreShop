@@ -30,9 +30,10 @@ $config = [
     'cache_url' => 'file://cache',
     'project_url' => 'https://@github.com/coreshop/CoreShop.git',
     'origins' => [
-        '^master$',
-        '^\d+\.\d+$', #CoreShop Branches
-        '^\d+\.\d+\.\d+$', #Tags
+        '^next$', // main branch
+        '^\d+\.\d+$', // CoreShop Branches
+        '^\d+\.\d+\.\d+$', // releases
+        '^\d+\.\d+\.\d+(?:-?(?:alpha|beta|rc)\.?\d*)?$', // pre-releases
     ],
     'splits' => [],
 ];
