@@ -10,15 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.menu.coreshop');
-
-coreshop.menu.plugin = Class.create(pimcore.plugin.admin, {
-    initialize: function () {
-        document.addEventListener(pimcore.events.pimcoreReady, (e) => {
-            if (coreshop.menu.coreshop.coreshop) {
-                new coreshop.menu.coreshop.coreshop();
-            }
-        });
-    },
+document.addEventListener(pimcore.events.pimcoreReady, (e) => {
+    if (coreshop.menu.coreshop.coreshop) {
+        new coreshop.menu.coreshop.coreshop();
+    }
 });
-new coreshop.menu.plugin();
