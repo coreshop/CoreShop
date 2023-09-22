@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
+use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
 use Pimcore\Model;
@@ -26,7 +27,10 @@ use Pimcore\Model\DataObject\Concrete;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement, RedundantCondition
  */
-class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface, Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
+class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
+    Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface,
+    Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface,
+    CacheMarshallerInterface
 {
     /**
      * Static type of this element.
@@ -300,6 +304,27 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         }
 
         return false;
+    }
+
+    public function marshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        if (!$data instanceof Money) {
+            return $data;
+        }
+
+        return [
+            'value'    => $data->getValue(),
+            'currency' => $data->getCurrency()->getId(),
+        ];
+    }
+
+    public function unmarshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        return new Money($data['value'], $this->getCurrencyById($data['currency']));
     }
 
     /**
