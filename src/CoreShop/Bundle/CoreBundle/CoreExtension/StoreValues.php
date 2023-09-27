@@ -870,7 +870,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
      */
     protected function getFormFactory()
     {
-        return \Pimcore::getContainer()->get('form.factory');
+        return \Pimcore::getContainer()->get('coreshop.form.factory');
     }
 
     /**
