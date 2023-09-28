@@ -38,7 +38,6 @@ use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreShopProductQuantityPriceRulesBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\SEOBundle\CoreShopSEOBundle;
 use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
@@ -52,7 +51,7 @@ use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopCoreBundle extends AbstractResourceBundle implements ComposerPackageBundleInterface
+final class CoreShopCoreBundle extends AbstractResourceBundle
 {
     public function getSupportedDrivers(): array
     {

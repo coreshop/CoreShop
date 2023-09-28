@@ -36,6 +36,10 @@ final class CartRuleAutoProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        if ($cart->isImmutable()) {
+            return;
+        }
+
         $eligibleRules = $this->cartPriceRuleRepository->findNonVoucherRules();
 
         /**

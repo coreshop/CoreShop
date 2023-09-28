@@ -28,6 +28,13 @@ services:
         tags:
             - { name: coreshop.cart_processor, priority: 600 }
 
+    CoreShop\Component\Core\Order\Processor\CartItemsImmutableProcessor:
+        arguments:
+            - '@CoreShop\Component\Core\Order\Processor\CartItemProcessor'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+        tags:
+            - { name: coreshop.cart_processor, priority: 605 }
+
     CoreShop\Component\Core\Order\Processor\CartSubtotalProcessor:
         tags:
             - { name: coreshop.cart_processor, priority: 580 }

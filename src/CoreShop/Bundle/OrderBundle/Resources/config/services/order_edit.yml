@@ -1,0 +1,20 @@
+services:
+  CoreShop\Component\Order\OrderEditPossibleInterface: '@CoreShop\Component\Order\OrderEditPossible'
+  CoreShop\Component\Order\OrderEditPossible:
+    arguments:
+      - '%coreshop.order.allow_edit%'
+
+  CoreShop\Bundle\OrderBundle\Form\Type\OrderType:
+    arguments:
+      - '%coreshop.model.order.class%'
+      - '%coreshop.form.type.cart.validation_groups%'
+    tags:
+      - { name: form.type }
+
+  CoreShop\Bundle\OrderBundle\Form\Type\OrderItemType:
+    arguments:
+      - '%coreshop.model.order_item.class%'
+      - '%coreshop.form.type.cart_item.validation_groups%'
+      - '@CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper'
+    tags:
+      - { name: form.type }

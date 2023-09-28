@@ -71,6 +71,13 @@ coreshop_admin_order_get_order:
     options:
         expose: true
 
+coreshop_admin_order_update:
+    path: /%coreshop.admin.route.base%/order/update/{id}
+    defaults: { _controller: 'coreshop.pimcore_controller.order:updateAction'}
+    methods: POST
+    options:
+        expose: true
+
 coreshop_admin_order_find:
     path: /%coreshop.admin.route.base%/order/find
     defaults: { _controller: 'coreshop.pimcore_controller.order:findOrderAction'}

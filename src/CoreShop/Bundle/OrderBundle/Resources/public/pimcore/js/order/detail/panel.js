@@ -60,9 +60,36 @@ coreshop.order.order.detail.panel = Class.create({
                 var res = Ext.decode(response.responseText);
 
                 if (res.success) {
-                    me.updateSale(res.sale);
+                    me.updateSale(res.data);
                 } else {
-                    Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
+                    Ext.Msg.alert(t('error'), t('error'));
+                }
+
+                me.layout.setLoading(false);
+            }.bind(this)
+        });
+    },
+
+    save: function () {
+        var me = this;
+
+        me.layout.setLoading(t('loading'));
+
+        var data = {};
+
+        Ext.Object.each(me.blocks, function(id, block) {
+            data = Ext.apply({}, data, block.getUpdateValues());
+        });
+
+        Ext.Ajax.request({
+            url: Routing.generate('coreshop_admin_order_update', {id: me.sale.o_id}),
+            jsonData: data,
+            method: 'post',
+            success: function (response) {
+                var res = Ext.decode(response.responseText);
+
+                if (res.success) {
+                    me.updateSale(res.data);
                 }
 
                 me.layout.setLoading(false);
@@ -102,6 +129,16 @@ coreshop.order.order.detail.panel = Class.create({
             }];
             var items = this.getItems();
             buttons = buttons.concat(this.getTopButtons());
+
+            if (this.sale.editable) {
+                buttons.push({
+                    iconCls: 'pimcore_icon_save',
+                    text: t('save'),
+                    handler: function () {
+                        this.save();
+                    }.bind(this)
+                });
+            }
 
             // create new panel
             this.layout = new Ext.panel.Panel({

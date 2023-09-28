@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Resource\Model\ImmutableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -26,7 +27,8 @@ interface OrderItemInterface extends
     PimcoreModelInterface,
     AdjustableInterface,
     ConvertedAdjustableInterface,
-    StorageListItemInterface
+    StorageListItemInterface,
+    ImmutableInterface
 {
     public function getOrder(): ?OrderInterface;
 

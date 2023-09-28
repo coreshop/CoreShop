@@ -12,6 +12,7 @@ services:
             - ['setOrderInvoiceRepository', ['@coreshop.repository.order_invoice']]
             - ['setOrderShipmentRepository', ['@coreshop.repository.order_shipment']]
             - ['setPaymentRepository', ['@coreshop.repository.payment']]
+            - ['setOrderEditPossible', ['@CoreShop\Component\Order\OrderEditPossibleInterface']]
 
     CoreShop\Bundle\OrderBundle\Controller\OrderCreationController:
         abstract: true

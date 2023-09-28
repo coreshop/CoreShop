@@ -20,6 +20,8 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\OrderBundle\Events;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\OrderType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryLogger;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
@@ -34,17 +36,20 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\OrderEditPossibleInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use JMS\Serializer\ArrayTransformerInterface;
@@ -54,6 +59,7 @@ use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\User;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Workflow\StateMachine;
@@ -80,6 +86,7 @@ class OrderController extends PimcoreController
     protected OrderShipmentRepositoryInterface $orderShipmentRepository;
 
     protected PaymentRepositoryInterface $paymentRepository;
+    protected OrderEditPossibleInterface $orderEditPossible;
 
     public function getStatesAction(Request $request): Response
     {
@@ -263,6 +270,35 @@ class OrderController extends PimcoreController
         return $this->viewHandler->handle(['success' => true, 'sale' => $jsonSale]);
     }
 
+    public function updateAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        FormFactoryInterface $formFactory,
+        CartProcessorInterface $cartProcessor,
+    ): Response {
+        $this->isGrantedOr403();
+
+        $orderId = $this->getParameterFromRequest($request, 'id');
+        $order = $orderRepository->find($orderId);
+        $form = $formFactory->createNamed('', OrderType::class, $order);
+
+        if ($request->getMethod() === 'POST') {
+            $handledForm = $form->handleRequest($request);
+
+            $cart = $handledForm->getData();
+
+            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart) {
+                $cartProcessor->process($cart);
+            });
+
+            $json = $this->getDetails($cart);
+
+            return $this->viewHandler->handle(['success' => true, 'data' => $json]);
+        }
+
+        return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+    }
+
     public function findOrderAction(Request $request, OrderRepositoryInterface $orderRepository): Response
     {
         $this->isGrantedOr403();
@@ -432,7 +468,7 @@ class OrderController extends PimcoreController
 
         $invoices = $this->getInvoices($order);
 
-        $jsonSale['editable'] = count($invoices) > 0 ? false : true;
+        $jsonSale['editable'] = $this->orderEditPossible->isOrderEditable($order);
         $jsonSale['invoices'] = $invoices;
         $jsonSale['payments'] = $this->getPayments($order);
         $jsonSale['shipments'] = $this->getShipments($order);
@@ -727,6 +763,15 @@ class OrderController extends PimcoreController
         ];
     }
 
+    public static function getSubscribedServices()
+    {
+        $services = parent::getSubscribedServices();
+
+        $services[OrderEditPossibleInterface::class] = OrderEditPossibleInterface::class;
+
+        return $services;
+    }
+
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -775,5 +820,10 @@ class OrderController extends PimcoreController
     public function setPaymentRepository(PaymentRepositoryInterface $paymentRepository): void
     {
         $this->paymentRepository = $paymentRepository;
+    }
+
+    public function setOrderEditPossible(OrderEditPossibleInterface $orderEditPossible): void
+    {
+        $this->orderEditPossible = $orderEditPossible;
     }
 }

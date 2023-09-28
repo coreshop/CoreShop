@@ -114,6 +114,22 @@ final class OrderContext implements Context
     }
 
     /**
+     * @Then /^(the order) total tax should be "([^"]+)"$/
+     */
+    public function orderTotalTaxShouldBe(OrderInterface $order, $total): void
+    {
+        Assert::eq(
+            $total,
+            $order->getTotalTax(),
+            sprintf(
+                'Order total tax is expected to be %s, but it is %s',
+                $total,
+                $order->getTotalTax(),
+            ),
+        );
+    }
+
+    /**
      * @Then /^(the order) should weigh ([^"]+)kg$/
      */
     public function orderShouldWeigh(OrderInterface $order, $kg): void
@@ -320,4 +336,23 @@ final class OrderContext implements Context
 
         Assert::true($workflow->can($order, $transition));
     }
+
+    /**
+     * @Then /^(the order) should be immutable$/
+     */
+    public function theOrderShouldBeImmutable(OrderInterface $order): void
+    {
+        Assert::true(
+            $order->isImmutable(),
+            'Order is mutable, but should be immutable!'
+        );
+
+        foreach ($order->getItems() as $item) {
+            Assert::true(
+                $item->isImmutable(),
+                'Order Item is mutable, but should be immutable!'
+            );
+        }
+    }
+
 }
