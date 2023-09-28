@@ -25,6 +25,7 @@ use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -104,7 +105,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON products.o_id = orderItems.mainObjectId
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
-                WHERE products.o_type = 'object' AND `order`.store = $storeId" . (($orderStateFilter !== null) ? ' AND `order`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `order`.orderDate > ? AND `order`.orderDate < ?
+                WHERE products.o_type = 'object' AND `order`.store = $storeId" . (($orderStateFilter !== null) ? ' AND `order`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `order`.orderDate > ? AND `order`.orderDate < ? AND saleState='" . OrderSaleStates::STATE_ORDER . "'
                 GROUP BY products.o_id
             LIMIT $offset,$limit";
         } else {

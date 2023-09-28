@@ -21,6 +21,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
@@ -75,7 +76,8 @@ class CarriersReport implements ReportInterface
                     ON o.o_id = `order`.oo_id  
                   WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
                 ) t 
-              WHERE store = $storeId AND carrier IS NOT NULL AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp GROUP BY carrier";
+              WHERE store = $storeId AND carrier IS NOT NULL AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp AND saleState='" . OrderSaleStates::STATE_ORDER . "' 
+              GROUP BY carrier";
 
         $results = $this->db->fetchAllAssociative($sql);
         $data = [];

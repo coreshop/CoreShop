@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -75,7 +76,7 @@ class PaymentProvidersReport implements ReportInterface
                 ON o.o_id = `order`.oo_id  
               WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
             ) t 
-          WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp 
+          WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp AND saleState='" . OrderSaleStates::STATE_ORDER . "' 
           GROUP BY paymentProvider";
 
         $results = $this->db->fetchAllAssociative($sql);
