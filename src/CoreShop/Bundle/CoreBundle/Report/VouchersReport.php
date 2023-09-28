@@ -24,6 +24,7 @@ use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -79,7 +80,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
               FROM object_collection_CoreShopProposalCartPriceRuleItem_$classId as orderVouchers
               INNER JOIN object_query_$classId as orders ON orders.oo_id = orderVouchers.o_id 
               LEFT JOIN coreshop_cart_price_rule AS priceRule ON orderVouchers.cartPriceRule = priceRule.id 
-              WHERE orderVouchers.voucherCode <> '' AND orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ?
+              WHERE orderVouchers.voucherCode <> '' AND orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND saleState='" . OrderSaleStates::STATE_ORDER . "'
               ORDER BY orders.orderDate DESC
               LIMIT $offset,$limit";
 
