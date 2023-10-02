@@ -48,11 +48,11 @@ final class CartTextProcessor implements CartProcessorInterface
                 $item->setName($product->getName($locale), $locale);
             }
 
-            $item->setObjectId((float)$product->getId());
+            $item->setObjectId((float) $product->getId());
 
             if (($product instanceof AbstractObject) && $product->getType() === AbstractObject::OBJECT_TYPE_VARIANT) {
                 $mainProduct = $this->findVariantMain($product);
-                $item->setMainObjectId((float)$mainProduct->getId());
+                $item->setMainObjectId((float) $mainProduct->getId());
             }
         }
     }
