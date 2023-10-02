@@ -80,7 +80,6 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-next": "4.0-dev",
       "dev-master": "4.0-dev"
     }
   },
