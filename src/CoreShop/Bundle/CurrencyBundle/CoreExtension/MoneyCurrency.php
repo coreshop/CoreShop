@@ -300,7 +300,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
         }
 
         return [
-            'value'    => $data->getValue(),
+            'value' => $data->getValue(),
             'currency' => $data->getCurrency()->getId(),
         ];
     }
