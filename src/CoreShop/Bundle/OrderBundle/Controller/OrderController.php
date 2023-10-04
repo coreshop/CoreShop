@@ -31,6 +31,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -274,6 +275,7 @@ class OrderController extends PimcoreController
         Request $request,
         OrderRepositoryInterface $orderRepository,
         FormFactoryInterface $formFactory,
+        CartManagerInterface $cartManager,
         CartProcessorInterface $cartProcessor,
     ): Response {
         $this->isGrantedOr403();
@@ -282,18 +284,25 @@ class OrderController extends PimcoreController
         $order = $orderRepository->find($orderId);
         $form = $formFactory->createNamed('', OrderType::class, $order);
 
+        $previewOnly = $request->query->getBoolean('preview');
+
         if ($request->getMethod() === 'POST') {
             $handledForm = $form->handleRequest($request);
 
             $cart = $handledForm->getData();
 
-            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart) {
-                $cartProcessor->process($cart);
+            InheritanceHelper::useInheritedValues(static function () use ($cartManager, $cartProcessor, $previewOnly, $cart) {
+                if ($previewOnly) {
+                    $cartProcessor->process($cart);
+                }
+                else {
+                    $cartManager->persistCart($cart);
+                }
             });
 
             $json = $this->getDetails($cart);
 
-            return $this->viewHandler->handle(['success' => true, 'data' => $json]);
+            return $this->viewHandler->handle(['success' => true, 'sale' => $json]);
         }
 
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);

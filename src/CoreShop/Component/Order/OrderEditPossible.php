@@ -34,6 +34,16 @@ class OrderEditPossible implements OrderEditPossibleInterface
         }
 
         if ($order->getSaleState() === OrderSaleStates::STATE_ORDER) {
+            /**
+             * Order that has been paid, cannot be edited anymore. Changing the order also
+             * means that the remaining amount has to be paid as well, that is currently not reflectable
+             * Allowing that, also means that we have to find a way to do further Payments to the Order
+             * Might come in the future
+             */
+            if ($order->getPaymentState() === OrderPaymentStates::STATE_PAID) {
+                return false;
+            }
+
             return $order->getOrderState() !== OrderStates::STATE_COMPLETE;
         }
 
