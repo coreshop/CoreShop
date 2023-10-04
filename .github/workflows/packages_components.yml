@@ -1,9 +1,9 @@
 name: Packages Components
 on:
   push:
-    branches: [ '2.2', '3.0', '3.1', 'master' ]
+    branches: [ '2.2', '3.0', '3.1', '3.2', 'master' ]
   pull_request:
-    branches: [ '2.2', '3.0', '3.1', 'master' ]
+    branches: [ '2.2', '3.0', '3.1', '3.2', 'master' ]
   release:
     types: [ created ]
   schedule:
