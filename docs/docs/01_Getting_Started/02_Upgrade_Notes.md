@@ -20,6 +20,25 @@ pimcore:
 
 If you have that, remove that entry. CoreShop internally sets that anyway.
 
+Also check the priority of which the `CoreShopCoreBundle` gets loaded. It has to be loaded before Pimcore, so set the priority to '1000':
+
+```php
+<?php
+
+namespace App;
+
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Pimcore\Kernel as PimcoreKernel;
+
+class Kernel extends PimcoreKernel
+{
+    public function registerBundlesToCollection(BundleCollection $collection)
+    {
+        $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(), 1000);
+    }
+}
+```
+
 ## 3.0.x
 ### 3.0.4
 
