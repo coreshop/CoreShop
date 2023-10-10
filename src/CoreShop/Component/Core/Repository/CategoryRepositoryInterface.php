@@ -45,6 +45,11 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
     public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store): array;
 
     /**
+     * @return int[]
+     */
+    public function findRecursiveChildCategoryIdsForStoreByCategories(array $categories, StoreInterface $store): array;
+
+    /**
      * @return CategoryInterface[]
      */
     public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array;

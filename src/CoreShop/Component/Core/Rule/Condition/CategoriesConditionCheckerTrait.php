@@ -37,21 +37,7 @@ trait CategoriesConditionCheckerTrait
         $categoryIdsToCheck = $categories;
 
         if ($recursive) {
-            foreach ($categories as $categoryId) {
-                $category = $this->categoryRepository->find($categoryId);
-
-                if (!$category instanceof CategoryInterface) {
-                    continue;
-                }
-
-                $subCategories = $this->categoryRepository->findRecursiveChildCategoryIdsForStore($category, $store);
-
-                foreach ($subCategories as $child) {
-                    if (!in_array($child, $categoryIdsToCheck)) {
-                        $categoryIdsToCheck[] = $child;
-                    }
-                }
-            }
+            $categoryIdsToCheck = $this->categoryRepository->findRecursiveChildCategoryIdsForStoreByCategories($categories, $store);
         }
 
         return $categoryIdsToCheck;
