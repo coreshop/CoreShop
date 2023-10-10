@@ -61,6 +61,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list = $this->getList();
         $dao = $list->getDao();
 
+        /** @psalm-suppress InternalMethod */
         $query = "
             SELECT oo_id as id FROM (
                 SELECT CONCAT(o_path, o_key) as realFullPath FROM objects WHERE o_id IN (:products)
