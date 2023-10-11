@@ -45,7 +45,7 @@ class DeepCopySubscriber implements EventSubscriberInterface
          * @var DeepCopy $copier
          */
         $copier = $event->getArgument('copier');
-        
+
         //Only add if not already been added
         if (!($context['defaultFilters'] ?? false)) {
             $copier->addFilter(
@@ -74,6 +74,7 @@ class DeepCopySubscriber implements EventSubscriberInterface
              * We have to do it in this order since Pimcore first does the DeepCopy and then
              * default Symfony Marshalling, meaning for us, we cannot simply do it in one place either
              */
+            /** @psalm-suppress MissingClosureParamType */
             $copier->addTypeFilter(
                 new \DeepCopy\TypeFilter\ReplaceFilter(
                     function ($currentValue) {
