@@ -41,12 +41,13 @@ class DeepCopySubscriber implements EventSubscriberInterface
     {
         $context = $event->getArgument('context');
 
+        /**
+         * @var DeepCopy $copier
+         */
+        $copier = $event->getArgument('copier');
+        
         //Only add if not already been added
         if (!($context['defaultFilters'] ?? false)) {
-            /**
-             * @var DeepCopy $copier
-             */
-            $copier = $event->getArgument('copier');
             $copier->addFilter(
                 new DoctrineCollectionFilter(),
                 new PropertyTypeMatcher('Doctrine\Common\Collections\Collection'),
