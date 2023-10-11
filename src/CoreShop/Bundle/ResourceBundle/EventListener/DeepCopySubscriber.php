@@ -66,7 +66,7 @@ class DeepCopySubscriber implements EventSubscriberInterface
              * Why not simply use one for all and make it easier to extend or overwrite
              *
              * The Idea behind this is: this marshall's (sort of) the information for caching
-             * (We don't want to serialize all doctrine entities into cache, to slow, too much unnecessary queries)
+             * (We don't want to serialize all doctrine entities into cache, too slow, too much unnecessary queries)
              *
              * The CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller then
              * is responsible for unmarshalling the data again
