@@ -24,6 +24,7 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -54,6 +55,42 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         return $list->getObjects();
     }
+
+    public function findRecursiveVariantIdsForProductAndStoreByProducts(array $products, StoreInterface $store): array
+    {
+        $list = $this->getList();
+        $dao = $list->getDao();
+
+        /** @psalm-suppress InternalMethod */
+        $query = "
+            SELECT oo_id as id FROM (
+                SELECT CONCAT(o_path, o_key) as realFullPath FROM objects WHERE o_id IN (:products)
+            ) as products
+            INNER JOIN ".$dao->getTableName()." variants ON variants.o_path LIKE CONCAT(products.realFullPath, '/%')
+        ";
+
+        $params = [
+            'products' => $products,
+        ];
+        $paramTypes = [
+            'products' => Connection::PARAM_STR_ARRAY,
+        ];
+
+        $resultProducts = $this->connection->fetchAllAssociative($query, $params, $paramTypes);
+
+        $variantIds = [];
+
+        foreach ($products as $productId) {
+            $variantIds[$productId] = true;
+        }
+
+        foreach ($resultProducts as $result) {
+            $variantIds[$result['id']] = true;
+        }
+
+        return array_keys($variantIds);
+    }
+
 
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {

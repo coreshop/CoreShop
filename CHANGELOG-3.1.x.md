@@ -1,3 +1,10 @@
+# 3.1.2
+
+## Bugs
+ - [Cache] "apply CacheResourceMarshaller to doctrine_dbal adapter, add cache marshaller to MoneyCurrency (https://github.com/coreshop/CoreShop/pull/2373)
+ - [Core] re-add mainObjectId and objectId (https://github.com/coreshop/CoreShop/pull/2380)
+ - [Reports] fix reports to only select actual orders (https://github.com/coreshop/CoreShop/pull/2381)
+
 # 3.1.1
 
 ## Bugs
