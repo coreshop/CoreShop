@@ -55,7 +55,7 @@ class DeepCopySubscriber implements EventSubscriberInterface
             $event->setArgument('copier', $copier);
         }
 
-        if (($context['source'] ?? false) === 'Pimcore\Cache\Core\CoreCacheHandler::storeCacheData') {
+        if (false && ($context['source'] ?? false) === 'Pimcore\Cache\Core\CoreCacheHandler::storeCacheData') {
             /**
              * This honestly absolutely sucks:
              *
