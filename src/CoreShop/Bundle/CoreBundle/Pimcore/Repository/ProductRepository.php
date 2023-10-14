@@ -24,6 +24,7 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
@@ -73,7 +74,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             'products' => $products,
         ];
         $paramTypes = [
-            'products' => Connection::PARAM_STR_ARRAY,
+            'products' => ArrayParameterType::STRING,
         ];
 
         $resultProducts = $this->connection->fetchAllAssociative($query, $params, $paramTypes);

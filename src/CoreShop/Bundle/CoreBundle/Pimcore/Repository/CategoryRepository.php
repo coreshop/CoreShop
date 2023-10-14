@@ -22,6 +22,7 @@ use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository as BaseC
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\Listing;
 
@@ -73,7 +74,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
             'categories' => $categories,
         ];
         $paramTypes = [
-            'categories' => Connection::PARAM_STR_ARRAY,
+            'categories' => ArrayParameterType::STRING,
         ];
 
         $resultCategories = $this->connection->fetchAllAssociative($query, $params, $paramTypes);
