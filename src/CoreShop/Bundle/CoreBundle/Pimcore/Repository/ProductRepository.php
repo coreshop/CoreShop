@@ -65,7 +65,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         /** @psalm-suppress InternalMethod */
         $query = "
             SELECT oo_id as id FROM (
-                SELECT CONCAT(path, `key`) as realFullPath FROM objects WHERE o_id IN (:products)
+                SELECT CONCAT(path, `key`) as realFullPath FROM objects WHERE id IN (:products)
             ) as products
             INNER JOIN ".$dao->getTableName()." variants ON variants.path LIKE CONCAT(products.realFullPath, '/%')
         ";

@@ -65,7 +65,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         /** @psalm-suppress InternalMethod */
         $query = "
             SELECT oo_id as id FROM (
-                SELECT CONCAT(path, `key`) as realFullPath FROM objects WHERE o_id IN (:categories)
+                SELECT CONCAT(path, `key`) as realFullPath FROM objects WHERE id IN (:categories)
             ) as categories
             INNER JOIN ".$dao->getTableName()." variants ON variants.path LIKE CONCAT(categories.realFullPath, '/%')
         ";
