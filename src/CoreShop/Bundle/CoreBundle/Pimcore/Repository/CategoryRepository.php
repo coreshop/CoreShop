@@ -23,7 +23,6 @@ use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\Listing;
 
 class CategoryRepository extends BaseCategoryRepository implements CategoryRepositoryInterface
@@ -63,11 +62,11 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         $dao = $list->getDao();
 
         /** @psalm-suppress InternalMethod */
-        $query = "
+        $query = '
             SELECT oo_id as id FROM (
                 SELECT CONCAT(path, `key`) as realFullPath FROM objects WHERE id IN (:categories)
             ) as categories
-            INNER JOIN ".$dao->getTableName()." variants ON variants.path LIKE CONCAT(categories.realFullPath, '/%')
+            INNER JOIN ' . $dao->getTableName() . " variants ON variants.path LIKE CONCAT(categories.realFullPath, '/%')
         ";
 
         $params = [
