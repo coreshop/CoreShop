@@ -24,9 +24,9 @@ final class Version
 
     public const MINOR_VERSION = '0';
 
-    public const RELEASE_VERSION = '2';
+    public const RELEASE_VERSION = '0';
 
-    public const EXTRA_VERSION = 'beta.1';
+    public const EXTRA_VERSION = 'beta.2';
 
     public static function getVersion(): string
     {
