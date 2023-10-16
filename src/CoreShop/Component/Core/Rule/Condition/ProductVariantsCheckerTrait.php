@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Rule\Condition;
 
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 

@@ -25,7 +25,6 @@ use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -63,11 +62,11 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $dao = $list->getDao();
 
         /** @psalm-suppress InternalMethod */
-        $query = "
+        $query = '
             SELECT oo_id as id FROM (
                 SELECT CONCAT(path, `key`) as realFullPath FROM objects WHERE id IN (:products)
             ) as products
-            INNER JOIN ".$dao->getTableName()." variants ON variants.path LIKE CONCAT(products.realFullPath, '/%')
+            INNER JOIN ' . $dao->getTableName() . " variants ON variants.path LIKE CONCAT(products.realFullPath, '/%')
         ";
 
         $params = [
@@ -91,7 +90,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         return array_keys($variantIds);
     }
-
 
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
