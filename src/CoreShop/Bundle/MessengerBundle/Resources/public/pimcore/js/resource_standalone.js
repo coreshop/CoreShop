@@ -28,7 +28,7 @@ if (coreshop.resource === undefined) {
                 var item = e.detail.item;
                 var type = e.detail.type;
 
-                if (type === 'coreshop.messenger' && item.attributes.function === 'list') {
+                if (type === 'coreshop.coreshop' && item.id === 'coreshop_messenger' && item.attributes.function === 'list') {
                     me.openList();
                 }
             });
