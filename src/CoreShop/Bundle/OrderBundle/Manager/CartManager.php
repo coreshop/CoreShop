@@ -38,17 +38,22 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
 
     public function persist(StorageListInterface $storageList): void
     {
+        /**
+         * @var OrderInterface $storageList
+         */
         Assert::isInstanceOf($storageList, OrderInterface::class);
 
         $this->persistCart($storageList);
     }
 
-    public function persistCart(OrderInterface $cart): void
+    public function persistCart(OrderInterface $cart/*, array $params = []*/): void
     {
         $cartsFolder = $this->folderCreationService->createFolderForResource($cart, [
             'suffix' => date('Y/m/d'),
             'path' => 'cart',
         ]);
+
+        $params = func_get_arg(1) ?? [];
 
         VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
             if (!$cart->getId()) {
@@ -94,6 +99,6 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
             }
 
             $cart->save();
-        }, false);
+        }, $params['enable_versioning'] ?? false);
     }
 }
