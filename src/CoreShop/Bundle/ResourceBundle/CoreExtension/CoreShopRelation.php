@@ -28,8 +28,9 @@ use Pimcore\Model\Element;
 class CoreShopRelation extends Data\ManyToOneRelation
 {
     public string|null $stack = null;
-
     public bool $returnConcrete = false;
+    public bool $objectsAllowed = true;
+    public array $classes = [];
 
     public function getFieldType(): string
     {
@@ -106,28 +107,13 @@ class CoreShopRelation extends Data\ManyToOneRelation
         return $this;
     }
 
-    public function getObjectsAllowed(): bool
-    {
-        return true;
-    }
 
-    public function getDocumentsAllowed(): bool
+    public static function __set_state(array $data): static
     {
-        return false;
-    }
+        $obj = parent::__set_state($data);
+        $obj->classes = $obj->getClasses();
+        $obj->objectsAllowed = true;
 
-    public function getDocumentTypes(): array
-    {
-        return [];
-    }
-
-    public function getAssetsAllowed(): bool
-    {
-        return false;
-    }
-
-    public function getAssetTypes(): array
-    {
-        return [];
+        return $obj;
     }
 }
