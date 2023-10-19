@@ -335,3 +335,7 @@ body.pimcore_version_10 .coreshop-detail-grid .x-column-header {
 .coreshop-order-create-revise-link {
     font-weight: bold;
 }
+
+.coreshop_preview_mode {
+    background-color: #ff9e81;
+}

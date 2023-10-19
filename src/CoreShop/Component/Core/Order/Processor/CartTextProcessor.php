@@ -34,10 +34,18 @@ final class CartTextProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        if ($cart->isImmutable()) {
+            return;
+        }
+
         /**
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
+            if ($item->isImmutable()) {
+                continue;
+            }
+
             $product = $item->getProduct();
 
             if (!$product instanceof PurchasableInterface) {

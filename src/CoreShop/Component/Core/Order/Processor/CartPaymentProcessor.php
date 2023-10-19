@@ -42,6 +42,10 @@ final class CartPaymentProcessor implements CartProcessorInterface
             (int) round((round($cart->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
         );
 
+        if ($cart->isImmutable()) {
+            return;
+        }
+
         if ($cart->getPaymentProvider()) {
             $context = $this->cartContextResolver->resolveCartContext($cart);
 

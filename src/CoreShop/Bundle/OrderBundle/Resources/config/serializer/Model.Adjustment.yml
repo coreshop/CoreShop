@@ -2,12 +2,6 @@ CoreShop\Component\Order\Model\Adjustment:
     exclusion_policy: ALL
     xml_root_name: cart_price_rule
     virtual_properties:
-        id:
-            serialized_name: id
-            exp: object.getId()
-            type: integer
-            xml_attribute: true
-            groups: [List, Detailed]
         amountNet:
             serialized_name: amountNet
             exp: object.getAmount(false)

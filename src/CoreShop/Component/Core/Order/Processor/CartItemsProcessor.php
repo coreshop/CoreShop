@@ -48,6 +48,10 @@ final class CartItemsProcessor implements CartProcessorInterface
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
+            if ($item->isImmutable()) {
+                continue;
+            }
+            
             if ($item->getIsGiftItem()) {
                 $this->cartItemProcessor->processCartItem(
                     $item,
@@ -86,8 +90,7 @@ final class CartItemsProcessor implements CartProcessorInterface
                         $itemPrice,
                         $context,
                     );
-                } catch (NoRuleFoundException) {
-                } catch (NoPriceFoundException) {
+                } catch (NoRuleFoundException|NoPriceFoundException) {
                 }
             }
 

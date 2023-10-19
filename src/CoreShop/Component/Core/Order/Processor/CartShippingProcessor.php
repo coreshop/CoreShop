@@ -48,6 +48,10 @@ final class CartShippingProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        if ($cart->isImmutable()) {
+            return;
+        }
+
         if (!$cart instanceof CoreOrderInterface) {
             return;
         }
