@@ -1,3 +1,11 @@
+# 3.1.3
+
+* [Cart] fix using right context for performance increase by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2387
+* [Core] Optimize Category recursive and Product Variants Condition Checker by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2388
+* [ResourceBundle] fix cache marshalling issues with CoreShop Doctrine … by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2389
+* [Cache] cache improvements - decorate Pimcore CoreCacheHandler by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2398
+* [Messenger] fix menu in standalone mode by @jdreesen in https://github.com/coreshop/CoreShop/pull/2393
+
 # 3.1.2
 
 ## Bugs
