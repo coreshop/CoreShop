@@ -56,6 +56,5 @@ public/bundles
 public/var
 drivers
 vendor/
-cache/
 docs/generated-docs
 node_modules

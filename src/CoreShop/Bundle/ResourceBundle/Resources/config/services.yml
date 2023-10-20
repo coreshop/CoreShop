@@ -91,9 +91,6 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
 
-    CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller:
-        decorates: cache.default_marshaller
-
     CoreShop\Bundle\ResourceBundle\Slug\ResourceConfigurationSlugGenerator:
         decorates: 'CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface'
         arguments:
@@ -105,3 +102,12 @@ services:
         arguments:
             - '@CoreShop\Component\Resource\Pimcore\ResourceSlugLinkGenerator.inner'
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+
+    CoreShop\Bundle\ResourceBundle\Cache\CoreCacheHandlerDecorator:
+        decorates: 'Pimcore\Cache\Core\CoreCacheHandler'
+        arguments:
+            - '@pimcore.cache.pool'
+            - '@Pimcore\Cache\Core\WriteLock'
+            - '@event_dispatcher'
+        calls:
+            - [ setLogger, [ '@logger' ] ]
