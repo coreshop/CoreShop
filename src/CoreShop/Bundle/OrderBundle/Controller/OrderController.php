@@ -46,6 +46,7 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
@@ -274,6 +275,7 @@ class OrderController extends PimcoreController
     public function updateAction(
         Request $request,
         OrderRepositoryInterface $orderRepository,
+        OrderItemRepositoryInterface $orderItemRepository,
         FormFactoryInterface $formFactory,
         CartManagerInterface $cartManager,
         CartProcessorInterface $cartProcessor,
@@ -282,6 +284,11 @@ class OrderController extends PimcoreController
 
         $orderId = $this->getParameterFromRequest($request, 'id');
         $order = $orderRepository->find($orderId);
+
+        if (!$order instanceof OrderInterface) {
+            throw $this->createNotFoundException();
+        }
+
         $form = $formFactory->createNamed('', OrderType::class, $order);
 
         $previewOnly = $request->query->getBoolean('preview');
@@ -289,18 +296,63 @@ class OrderController extends PimcoreController
         if ($request->getMethod() === 'POST') {
             $handledForm = $form->handleRequest($request);
 
-            $cart = $handledForm->getData();
+            /**
+             * @var OrderInterface&DataObject\Concrete $order
+             */
+            $order = $handledForm->getData();
 
-            InheritanceHelper::useInheritedValues(static function () use ($cartManager, $cartProcessor, $previewOnly, $cart) {
+            InheritanceHelper::useInheritedValues(
+                function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository) {
                 if ($previewOnly) {
-                    $cartProcessor->process($cart);
+                    $cartProcessor->process($order);
                 }
                 else {
-                    $cartManager->persistCart($cart);
+                    $commentEntity = $this->objectNoteService->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_BACKEND_UPDATE_SAVE);
+                    $commentEntity->setTitle('Order Backend Update');
+                    $commentEntity->setDescription('Order has been updated manually from backend');
+
+                    $items = $order->getItems();
+
+                    /**
+                     * @var OrderItemInterface&DataObject\Concrete $orderItem
+                     */
+                    foreach ($items as $index => $orderItem) {
+                        $originalCartItem = $orderItemRepository->forceFind($orderItem->getId());
+
+                        if (!$originalCartItem instanceof $orderItem) {
+                            continue;
+                        }
+
+                        if ($originalCartItem->getQuantity() !== $orderItem->getQuantity()) {
+                            $commentEntity->addData('item_from_'.$index, 'text', $originalCartItem->getQuantity());
+                            $commentEntity->addData('item_to_'.$index, 'text', $orderItem->getQuantity());
+
+                            $itemNote = $this->objectNoteService->createPimcoreNoteInstance($orderItem, Notes::NOTE_ORDER_BACKEND_UPDATE_SAVE);
+                            $itemNote->setTitle('Order Item Backend Update');
+                            $itemNote->setDescription('Order Item has been updated manually from backend');
+                            $itemNote->addData('from', 'text', $originalCartItem->getQuantity());
+                            $itemNote->addData('to', 'text', $orderItem->getQuantity());
+
+                            $this->objectNoteService->storeNote($itemNote, ['item' => $orderItem, 'originalItem' => $originalCartItem]);
+                        }
+                    }
+
+                    /**
+                     * @psalm-suppress TooManyArguments
+                     * @phpstan-ignore-next-line
+                     */
+                    $cartManager->persistCart($order, ['enable_versioning' => true]);
+
+                    $this->objectNoteService->storeNote($commentEntity, ['order' => $order]);
                 }
             });
 
-            $json = $this->getDetails($cart);
+            $this->eventDispatcher->dispatch(
+                new GenericEvent($order),
+                $previewOnly ? Events::ORDER_BACKEND_UPDATE_PREVIEW : Events::ORDER_BACKEND_UPDATE_SAVE
+            );
+
+            $json = $this->getDetails($order);
 
             return $this->viewHandler->handle(['success' => true, 'sale' => $json]);
         }

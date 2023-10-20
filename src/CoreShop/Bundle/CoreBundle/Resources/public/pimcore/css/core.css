@@ -210,7 +210,8 @@ body.pimcore_version_10 .coreshop_nav_icon_customer_to_company_assign_to_existin
     background: url(../img/store-mail.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_backendCreated {
+.coreshop_rule_icon_condition_backendCreated,
+.coreshop_rule_icon_condition_backendUpdated {
     background: url(../img/orders-backend.svg) center center no-repeat !important;
 }
 
