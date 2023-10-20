@@ -38,7 +38,8 @@ final class CacheContext implements Context
     {
         if ($object instanceof Concrete) {
             Cache::getHandler()->removeClearedTags(['object_'.$object->getId()]);
-            }
+            Cache::getHandler()->removeClearedTags(['cs_'.$object->getClassId()]);
+        }
 
         Assert::true(Cache::getHandler()->save($key, $object, ['behat'], null, 0, true));
 

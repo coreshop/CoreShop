@@ -82,22 +82,22 @@ final class CacheContext implements Context
             $itemData = serialize($itemData);
         }
 
-        $unserializedNull = unserialize($itemData, ['allowed_classes' => false]);
+        $serializedNull = unserialize($itemData, ['allowed_classes' => false]);
 
-        function convertToStdClass(\__PHP_Incomplete_Class $object)
+        $convertToStdClass = static function(\__PHP_Incomplete_Class $object)
         {
-            $fixKey = function ($matches) {
-                return ":".strlen($matches[1]).":\"".$matches[1]."\"";
-            };
-
             $dump = serialize($object);
             $dump = preg_replace('/^O:\d+:"[^"]++"/', 'O:8:"stdClass"', $dump);
-            $dump = preg_replace_callback('/:\d+:"\0.*?\0([^"]+)"/', $fixKey, $dump);
+            $dump = preg_replace_callback(
+                '/:\d+:"\0.*?\0([^"]+)"/',
+                static fn($matches) => ":".strlen($matches[1]).":\"".$matches[1]."\"",
+                $dump
+            );
 
             return unserialize($dump);
-        }
+        };
 
-        $stdClass = convertToStdClass($unserializedNull);
+        $stdClass = $convertToStdClass($serializedNull);
 
         $cacheValue = $stdClass->{$property};
 
