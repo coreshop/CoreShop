@@ -53,7 +53,10 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
             'path' => 'cart',
         ]);
 
-        $params = func_get_arg(1) ?? [];
+        $params = [];
+        if (func_num_args() === 2) {
+            $params = func_get_arg(1) ?? [];
+        }
 
         VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
             if (!$cart->getId()) {
