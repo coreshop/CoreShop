@@ -382,3 +382,10 @@ services:
             - '%kernel.project_dir%/etc/build'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.cache:
+        class: CoreShop\Behat\Context\Setup\CacheContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }

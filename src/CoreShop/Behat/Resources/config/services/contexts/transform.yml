@@ -220,3 +220,10 @@ services:
             - '@coreshop.repository.attribute_value'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.cache:
+        class: CoreShop\Behat\Context\Transform\CacheContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
