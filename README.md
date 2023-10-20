@@ -75,7 +75,7 @@ SYMFONY_ENV=test vendor/bin/phpstan analyse -c phpstan.neon src -l 3 --memory-li
 
 ### BEHAT Domain
 ```
-CORESHOP_SKIP_DB_SETUP=1 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-next/coreshop4___behat vendor/bin/behat -c behat.yml.dist -p default
+CORESHOP_SKIP_DB_SETUP=1 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-4/coreshop4___behat vendor/bin/behat -c behat.yml.dist -p default
 ```
 
 ### BEHAT UI

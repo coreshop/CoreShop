@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\OrderBundle\Events;
+use CoreShop\Bundle\OrderBundle\Form\Type\OrderType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryLogger;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
@@ -29,22 +30,27 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\OrderEditPossibleInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use JMS\Serializer\SerializerInterface;
@@ -56,6 +62,7 @@ use Pimcore\Model\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Workflow\StateMachine;
@@ -264,6 +271,94 @@ class OrderController extends PimcoreController
         $jsonSale = $this->getDetails($order);
 
         return $this->viewHandler->handle(['success' => true, 'sale' => $jsonSale]);
+    }
+
+    public function updateAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        OrderItemRepositoryInterface $orderItemRepository,
+        FormFactoryInterface $formFactory,
+        CartManagerInterface $cartManager,
+        CartProcessorInterface $cartProcessor,
+    ): Response {
+        $this->isGrantedOr403();
+
+        $orderId = $this->getParameterFromRequest($request, 'id');
+        $order = $orderRepository->find($orderId);
+
+        if (!$order instanceof OrderInterface) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $formFactory->createNamed('', OrderType::class, $order);
+
+        $previewOnly = $request->query->getBoolean('preview');
+
+        if ($request->getMethod() === 'POST') {
+            $handledForm = $form->handleRequest($request);
+
+            /**
+             * @var OrderInterface&DataObject\Concrete $order
+             */
+            $order = $handledForm->getData();
+
+            InheritanceHelper::useInheritedValues(
+                function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository) {
+                if ($previewOnly) {
+                    $cartProcessor->process($order);
+                }
+                else {
+                    $commentEntity = $this->container->get(NoteServiceInterface::class)->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_BACKEND_UPDATE_SAVE);
+                    $commentEntity->setTitle('Order Backend Update');
+                    $commentEntity->setDescription('Order has been updated manually from backend');
+
+                    $items = $order->getItems();
+
+                    /**
+                     * @var OrderItemInterface&DataObject\Concrete $orderItem
+                     */
+                    foreach ($items as $index => $orderItem) {
+                        $originalCartItem = $orderItemRepository->forceFind($orderItem->getId());
+
+                        if (!$originalCartItem instanceof $orderItem) {
+                            continue;
+                        }
+
+                        if ($originalCartItem->getQuantity() !== $orderItem->getQuantity()) {
+                            $commentEntity->addData('item_from_'.$index, 'text', $originalCartItem->getQuantity());
+                            $commentEntity->addData('item_to_'.$index, 'text', $orderItem->getQuantity());
+
+                            $itemNote = $this->container->get(NoteServiceInterface::class)->createPimcoreNoteInstance($orderItem, Notes::NOTE_ORDER_BACKEND_UPDATE_SAVE);
+                            $itemNote->setTitle('Order Item Backend Update');
+                            $itemNote->setDescription('Order Item has been updated manually from backend');
+                            $itemNote->addData('from', 'text', $originalCartItem->getQuantity());
+                            $itemNote->addData('to', 'text', $orderItem->getQuantity());
+
+                            $this->container->get(NoteServiceInterface::class)->storeNote($itemNote, ['item' => $orderItem, 'originalItem' => $originalCartItem]);
+                        }
+                    }
+
+                    /**
+                     * @psalm-suppress TooManyArguments
+                     * @phpstan-ignore-next-line
+                     */
+                    $cartManager->persistCart($order, ['enable_versioning' => true]);
+
+                    $this->container->get(NoteServiceInterface::class)->storeNote($commentEntity, ['order' => $order]);
+                }
+            });
+
+            $this->container->get('event_dispatcher')->dispatch(
+                new GenericEvent($order),
+                $previewOnly ? Events::ORDER_BACKEND_UPDATE_PREVIEW : Events::ORDER_BACKEND_UPDATE_SAVE
+            );
+
+            $json = $this->getDetails($order);
+
+            return $this->viewHandler->handle(['success' => true, 'sale' => $json]);
+        }
+
+        return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
     public function findOrderAction(Request $request, OrderRepositoryInterface $orderRepository): Response
@@ -486,7 +581,7 @@ class OrderController extends PimcoreController
 
         $invoices = $this->getInvoices($order);
 
-        $jsonSale['editable'] = count($invoices) > 0 ? false : true;
+        $jsonSale['editable'] = $this->container->get(OrderEditPossibleInterface::class)->isOrderEditable($order);
         $jsonSale['invoices'] = $invoices;
         $jsonSale['payments'] = $this->getPayments($order);
         $jsonSale['shipments'] = $this->getShipments($order);
@@ -811,6 +906,7 @@ class OrderController extends PimcoreController
         ];
     }
 
+
     public static function getSubscribedServices(): array
     {
         /** @psalm-suppress ArgumentTypeCoercion */
@@ -843,6 +939,7 @@ class OrderController extends PimcoreController
                 new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_shipment')),
                 new SubscribedService('coreshop.repository.payment', PaymentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.payment')),
                 HistoryLogger::class,
+                OrderEditPossibleInterface::class,
             ]);
     }
 }

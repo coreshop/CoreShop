@@ -29,6 +29,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
             margin: '0 0 20 0',
             iconCls: 'coreshop_icon_product',
         });
+
     },
 
     getPriority: function () {
@@ -52,7 +53,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
 
         this.detailsInfo.removeAll();
 
-        detailItems = [this.generateItemGrid(), this.generateSummaryGrid()];
+        detailItems = [this.generateItemGridObject(), this.generateSummaryGrid()];
 
         if (this.sale.priceRule) {
             detailItems.splice(1, 0, this.generatePriceRuleItem(this.sale.priceRule));
@@ -61,8 +62,22 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
         this.detailsInfo.add(detailItems);
     },
 
-    generateItemGrid: function () {
+    onRowEditingFinished: function(editor, context, eOpts) {
+        var qty = editor.editor.form.findField('quantity');
 
+        context.record.set('quantity', qty.getValue());
+    },
+
+    generateItemGridObject: function () {
+        var cartPanelGrid = Ext.create(this.generateItemGrid());
+        cartPanelGrid.on('edit', function (editor, context, eOpts) {
+            this.onRowEditingFinished(editor, context, eOpts);
+        }.bind(this));
+
+        return cartPanelGrid;
+    },
+
+    generateItemGrid: function() {
         var _ = this,
             hasAdditionalData = false;
 
@@ -73,6 +88,50 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     return false;
                 }
             })
+        }
+
+        var plugins = [];
+
+        if (this.sale.editable) {
+            plugins.push(Ext.create('Ext.grid.plugin.RowEditing'));
+        }
+
+        if (hasAdditionalData) {
+            plugins.push({
+                ptype: 'rowexpander',
+                expandOnDblClick: false,
+                rowBodyTpl: new Ext.XTemplate(
+                    '<table style="width: 50%;" class="coreshop-item-additional-details">',
+                    '<tpl for="additional_details">',
+                    '<tr>',
+                    '<tpl foreach=".">',
+                    '<td>',
+                    '<span>{[ this.formatData(values) ]}</span>',
+                    '</td>',
+                    '</tpl>',
+                    '</tr>',
+                    '</tpl>',
+                    '</table>',
+                    {
+                        formatData: function (row) {
+                            var label = null, value = null;
+                            if (row.type === 'string') {
+                                value = row.value;
+                            } else if (row.type === 'price') {
+                                value = coreshop.util.format.currency(_.sale.baseCurrency.isoCode, row.value)
+                            } else {
+                                value = '--';
+                            }
+
+                            if (row.label !== null) {
+                                label = row.translate_label ? t(row.label) : row.label;
+                            }
+
+                            return label === null ? value : (label + ': ' + value);
+                        }
+                    }
+                )
+            });
         }
 
         return {
@@ -97,41 +156,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     }
                 }
             },
-            plugins: hasAdditionalData === true ? [{
-                ptype: 'rowexpander',
-                expandOnDblClick: false,
-                rowBodyTpl: new Ext.XTemplate(
-                    '<table style="width: 50%;" class="coreshop-item-additional-details">',
-                        '<tpl for="additional_details">',
-                           '<tr>',
-                                '<tpl foreach=".">',
-                                    '<td>',
-                                        '<span>{[ this.formatData(values) ]}</span>',
-                                    '</td>',
-                                '</tpl>',
-                            '</tr>',
-                        '</tpl>',
-                    '</table>',
-                    {
-                        formatData: function (row) {
-                            var label = null, value = null;
-                            if (row.type === 'string') {
-                                value = row.value;
-                            } else if (row.type === 'price') {
-                                value = coreshop.util.format.currency(_.sale.baseCurrency.isoCode, row.value)
-                            } else {
-                                value = '--';
-                            }
-
-                            if (row.label !== null) {
-                                label = row.translate_label ? t(row.label) : row.label;
-                            }
-
-                            return label === null ? value : (label + ': ' + value);
-                        }
-                    }
-                )
-            }] : [],
+            plugins: plugins,
             columns: [
                 {
                     xtype: 'gridcolumn',
@@ -146,10 +171,10 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     width: 150,
                     align: 'right',
                     renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.isoCode),
-                    field: {
-                        xtype: 'numberfield',
-                        decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
-                    }
+                    // field: {
+                    //     xtype: 'numberfield',
+                    //     decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
+                    // }
                 },
                 {
                     xtype: 'gridcolumn',
@@ -296,8 +321,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
     },
 
     generateActions: function () {
-
-        return [
+        var actions = [
             {
                 iconCls: 'pimcore_icon_open',
                 tooltip: t('open'),
@@ -308,5 +332,21 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                 }
             }
         ];
-    }
+
+        return actions;
+    },
+
+    getUpdateValues: function () {
+        return {
+            items: this.getCartProducts()
+        };
+    },
+
+    getCartProducts: function () {
+        return this.detailsStore.getRange().map(function (record) {
+            return {
+                quantity: record.get('quantity'),
+            };
+        });
+    },
 });

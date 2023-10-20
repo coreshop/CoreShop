@@ -47,6 +47,8 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
+        $container->setParameter('coreshop.order.allow_edit', $configs['allow_order_edit']);
+
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
         $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
 

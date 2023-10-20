@@ -3167,6 +3167,41 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "name": "immutable",
+                                "title": "coreshop.order.immutable",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "fieldtype": "booleanSelect",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false,
+                                "yesLabel": "yes",
+                                "noLabel": "no",
+                                "emptyLabel": "null",
+                                "options": [
+                                    {
+                                        "key": "no",
+                                        "value": 0
+                                    },
+                                    {
+                                        "key": "yes",
+                                        "value": 1
+                                    },
+                                    {
+                                        "key": "null",
+                                        "value": -1
+                                    }
+                                ],
+                                "width": ""
                             }
                         ],
                         "locked": false,

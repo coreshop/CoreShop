@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Model\ImmutableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
@@ -31,6 +32,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     use AdjustableTrait;
     use ConvertedAdjustableTrait;
     use ProposalPriceRuleTrait;
+    use ImmutableTrait;
 
     public function equals(StorageListItemInterface $storageListItem): bool
     {

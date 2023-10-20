@@ -20,6 +20,7 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Model\ImmutableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -32,6 +33,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     use AdjustableTrait;
     use ProposalPriceRuleTrait;
     use ConvertedAdjustableTrait;
+    use ImmutableTrait;
 
     public function hasItems(): bool
     {
