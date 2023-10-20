@@ -68,11 +68,11 @@ class DeepCopySubscriber implements EventSubscriberInterface
              * The Idea behind this is: this marshall's (sort of) the information for caching
              * (We don't want to serialize all doctrine entities into cache, too slow, too much unnecessary queries)
              *
-             * The CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller then
+             * The CoreShop\Bundle\ResourceBundle\Cache\CoreCacheHandlerDecorator then
              * is responsible for unmarshalling the data again
              *
              * We have to do it in this order since Pimcore first does the DeepCopy and then
-             * default Symfony Marshalling, meaning for us, we cannot simply do it in one place either
+             * Pimcore CoreCacheHandler Marshalling, meaning for us, we cannot simply do it in one place either
              */
             /** @psalm-suppress MissingClosureParamType */
             $copier->addTypeFilter(
