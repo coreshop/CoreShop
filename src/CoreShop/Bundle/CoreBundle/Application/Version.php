@@ -32,6 +32,7 @@ final class Version
     {
         $version = sprintf('%s.%s.%s', self::MAJOR_VERSION, self::MINOR_VERSION, self::RELEASE_VERSION);
 
+        /** @psalm-suppress RedundantCondition */
         if (self::EXTRA_VERSION !== '') {
             $version = sprintf('%s-%s', $version, self::EXTRA_VERSION);
         }
