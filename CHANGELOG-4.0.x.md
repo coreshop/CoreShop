@@ -1,3 +1,13 @@
+# 4.0.0-beta.3
+- CoreShop 4.0.0 is the same as 3.2.0 will be, it contains all bug-fixes and feature from 3.1 and 3.2
+
+## Bugs
+ - [ResourceBundle] fix CoreShopRelation and CoreShopRelations dynamic classes setter by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2396
+
+## Features
+### From 3.2
+- [Order] Backend Order Editing by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2397, https://github.com/coreshop/CoreShop/pull/2382
+
 # 4.0.0-beta.2
  - CoreShop 4.0.0 is the same as 3.2.0 will be, it contains all bug-fixes and feature from 3.1 and 3.2
 
