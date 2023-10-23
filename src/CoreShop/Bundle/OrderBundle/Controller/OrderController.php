@@ -304,53 +304,54 @@ class OrderController extends PimcoreController
 
             InheritanceHelper::useInheritedValues(
                 function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository) {
-                if ($previewOnly) {
-                    $cartProcessor->process($order);
-                }
-                else {
-                    $commentEntity = $this->container->get(NoteServiceInterface::class)->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_BACKEND_UPDATE_SAVE);
-                    $commentEntity->setTitle('Order Backend Update');
-                    $commentEntity->setDescription('Order has been updated manually from backend');
+                    if ($previewOnly) {
+                        $cartProcessor->process($order);
+                    } else {
+                        $commentEntity = $this->container->get(NoteServiceInterface::class)->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_BACKEND_UPDATE_SAVE);
+                        $commentEntity->setTitle('Order Backend Update');
+                        $commentEntity->setDescription('Order has been updated manually from backend');
 
-                    $items = $order->getItems();
+                        $items = $order->getItems();
 
-                    /**
-                     * @var OrderItemInterface&DataObject\Concrete $orderItem
-                     */
-                    foreach ($items as $index => $orderItem) {
-                        $originalCartItem = $orderItemRepository->forceFind($orderItem->getId());
+                        /**
+                         * @var OrderItemInterface&DataObject\Concrete $orderItem
+                         */
+                        foreach ($items as $index => $orderItem) {
+                            $originalCartItem = $orderItemRepository->forceFind($orderItem->getId());
 
-                        if (!$originalCartItem instanceof $orderItem) {
-                            continue;
+                            if (!$originalCartItem instanceof $orderItem) {
+                                continue;
+                            }
+
+                            if ($originalCartItem->getQuantity() !== $orderItem->getQuantity()) {
+                                $commentEntity->addData('item_from_' . $index, 'text', $originalCartItem->getQuantity());
+                                $commentEntity->addData('item_to_' . $index, 'text', $orderItem->getQuantity());
+
+                                $itemNote = $this->container->get(NoteServiceInterface::class)->createPimcoreNoteInstance($orderItem, Notes::NOTE_ORDER_BACKEND_UPDATE_SAVE);
+                                $itemNote->setTitle('Order Item Backend Update');
+                                $itemNote->setDescription('Order Item has been updated manually from backend');
+                                $itemNote->addData('from', 'text', $originalCartItem->getQuantity());
+                                $itemNote->addData('to', 'text', $orderItem->getQuantity());
+
+                                $this->container->get(NoteServiceInterface::class)->storeNote($itemNote, ['item' => $orderItem, 'originalItem' => $originalCartItem]);
+                            }
                         }
 
-                        if ($originalCartItem->getQuantity() !== $orderItem->getQuantity()) {
-                            $commentEntity->addData('item_from_'.$index, 'text', $originalCartItem->getQuantity());
-                            $commentEntity->addData('item_to_'.$index, 'text', $orderItem->getQuantity());
+                        /**
+                         * @psalm-suppress TooManyArguments
+                         *
+                         * @phpstan-ignore-next-line
+                         */
+                        $cartManager->persistCart($order, ['enable_versioning' => true]);
 
-                            $itemNote = $this->container->get(NoteServiceInterface::class)->createPimcoreNoteInstance($orderItem, Notes::NOTE_ORDER_BACKEND_UPDATE_SAVE);
-                            $itemNote->setTitle('Order Item Backend Update');
-                            $itemNote->setDescription('Order Item has been updated manually from backend');
-                            $itemNote->addData('from', 'text', $originalCartItem->getQuantity());
-                            $itemNote->addData('to', 'text', $orderItem->getQuantity());
-
-                            $this->container->get(NoteServiceInterface::class)->storeNote($itemNote, ['item' => $orderItem, 'originalItem' => $originalCartItem]);
-                        }
+                        $this->container->get(NoteServiceInterface::class)->storeNote($commentEntity, ['order' => $order]);
                     }
-
-                    /**
-                     * @psalm-suppress TooManyArguments
-                     * @phpstan-ignore-next-line
-                     */
-                    $cartManager->persistCart($order, ['enable_versioning' => true]);
-
-                    $this->container->get(NoteServiceInterface::class)->storeNote($commentEntity, ['order' => $order]);
-                }
-            });
+                },
+            );
 
             $this->container->get('event_dispatcher')->dispatch(
                 new GenericEvent($order),
-                $previewOnly ? Events::ORDER_BACKEND_UPDATE_PREVIEW : Events::ORDER_BACKEND_UPDATE_SAVE
+                $previewOnly ? Events::ORDER_BACKEND_UPDATE_PREVIEW : Events::ORDER_BACKEND_UPDATE_SAVE,
             );
 
             $json = $this->getDetails($order);
@@ -905,7 +906,6 @@ class OrderController extends PimcoreController
             'detail' => $detail,
         ];
     }
-
 
     public static function getSubscribedServices(): array
     {

@@ -30,7 +30,8 @@ final class OrderType extends AbstractResourceType
         $builder
             ->add('items', CollectionType::class, [
                 'entry_type' => OrderItemType::class,
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

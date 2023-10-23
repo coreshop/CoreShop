@@ -37,6 +37,6 @@ trait ImmutableTrait
 
     public function isImmutable(): bool
     {
-        return (bool)$this->immutable;
+        return (bool) $this->immutable;
     }
 }

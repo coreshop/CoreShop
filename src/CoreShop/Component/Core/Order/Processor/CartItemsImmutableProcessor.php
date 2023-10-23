@@ -30,8 +30,7 @@ class CartItemsImmutableProcessor implements CartProcessorInterface
     public function __construct(
         private CartItemProcessorInterface $cartItemProcessor,
         private CartContextResolverInterface $cartContextResolver,
-    )
-    {
+    ) {
     }
 
     public function process(OrderInterface $cart): void
@@ -66,7 +65,7 @@ class CartItemsImmutableProcessor implements CartProcessorInterface
                 $itemRetailPrice,
                 $itemDiscountPrice,
                 $itemDiscount,
-                $context
+                $context,
             );
         }
     }

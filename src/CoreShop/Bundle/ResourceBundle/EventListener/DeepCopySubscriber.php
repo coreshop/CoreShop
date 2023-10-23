@@ -91,14 +91,14 @@ class DeepCopySubscriber implements EventSubscriberInterface
 
                             $currentValue->setObjectVar(
                                 $fd->getName(),
-                                $fd->marshalForCache($currentValue, $currentValue->getObjectVar($fd->getName()))
+                                $fd->marshalForCache($currentValue, $currentValue->getObjectVar($fd->getName())),
                             );
                         }
 
                         return $currentValue;
-                    }
+                    },
                 ),
-                new TypeMatcher(Concrete::class)
+                new TypeMatcher(Concrete::class),
             );
         }
     }
