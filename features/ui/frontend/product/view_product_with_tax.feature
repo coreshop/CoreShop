@@ -2,7 +2,7 @@
 Feature: Viewing product detail with tax
 
     Background:
-        Given the site operates on a store in "Austria"
+        Given the site operates on a store in "Austria" with gross values
         And the store "Austria" is the default store
         And the site has a tax rate "AT" with "20%" rate
         And the site has a tax rule group "AT"
