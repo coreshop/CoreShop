@@ -22,9 +22,9 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 class OrderEditPossible implements OrderEditPossibleInterface
 {
-
-    public function __construct(private bool $orderEditEnabled)
-    {
+    public function __construct(
+        private bool $orderEditEnabled,
+    ) {
     }
 
     public function isOrderEditable(OrderInterface $order): bool

@@ -57,7 +57,7 @@ final class CacheContext implements Context
             $value = $value->getId();
         }
 
-        Assert::same((string)$objectValue, (string)$value);
+        Assert::same((string) $objectValue, (string) $value);
     }
 
     /**
@@ -69,7 +69,6 @@ final class CacheContext implements Context
 
         Assert::isInstanceOf($objectValue, ResourceInterface::class);
     }
-
 
     /**
      * @Then /^the (cache item) serialized should have a property "([^"]+)" with value "([^"]+)"/
@@ -84,14 +83,13 @@ final class CacheContext implements Context
 
         $serializedNull = unserialize($itemData, ['allowed_classes' => false]);
 
-        $convertToStdClass = static function(\__PHP_Incomplete_Class $object)
-        {
+        $convertToStdClass = static function (\__PHP_Incomplete_Class $object) {
             $dump = serialize($object);
             $dump = preg_replace('/^O:\d+:"[^"]++"/', 'O:8:"stdClass"', $dump);
             $dump = preg_replace_callback(
                 '/:\d+:"\0.*?\0([^"]+)"/',
-                static fn($matches) => ":".strlen($matches[1]).":\"".$matches[1]."\"",
-                $dump
+                static fn ($matches) => ':' . strlen($matches[1]) . ':"' . $matches[1] . '"',
+                $dump,
             );
 
             return unserialize($dump);
@@ -105,6 +103,6 @@ final class CacheContext implements Context
             $value = $value->getId();
         }
 
-        Assert::same((string)$cacheValue, (string)$value);
+        Assert::same((string) $cacheValue, (string) $value);
     }
 }

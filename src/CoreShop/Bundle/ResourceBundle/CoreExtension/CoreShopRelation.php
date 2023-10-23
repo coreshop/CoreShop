@@ -28,8 +28,11 @@ use Pimcore\Model\Element;
 class CoreShopRelation extends Data\ManyToOneRelation
 {
     public string|null $stack = null;
+
     public bool $returnConcrete = false;
+
     public bool $objectsAllowed = true;
+
     public array $classes = [];
 
     public function getFieldType(): string
@@ -106,7 +109,6 @@ class CoreShopRelation extends Data\ManyToOneRelation
 
         return $this;
     }
-
 
     public static function __set_state(array $data): static
     {

@@ -344,15 +344,14 @@ final class OrderContext implements Context
     {
         Assert::true(
             $order->isImmutable(),
-            'Order is mutable, but should be immutable!'
+            'Order is mutable, but should be immutable!',
         );
 
         foreach ($order->getItems() as $item) {
             Assert::true(
                 $item->isImmutable(),
-                'Order Item is mutable, but should be immutable!'
+                'Order Item is mutable, but should be immutable!',
             );
         }
     }
-
 }

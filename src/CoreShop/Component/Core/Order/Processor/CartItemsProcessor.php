@@ -51,7 +51,7 @@ final class CartItemsProcessor implements CartProcessorInterface
             if ($item->isImmutable()) {
                 continue;
             }
-            
+
             if ($item->getIsGiftItem()) {
                 $this->cartItemProcessor->processCartItem(
                     $item,

@@ -26,7 +26,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 class CoreShopRelations extends Data\ManyToManyRelation
 {
     public string|null $stack;
+
     public bool $objectsAllowed = true;
+
     public array $classes = [];
 
     public function getFieldType(): string
