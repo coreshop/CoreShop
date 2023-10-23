@@ -27,10 +27,58 @@
    ```
    composer require coreshop/core-shop:^4.0
    ```
- - Run enable Bundle command
+ - Enable the bundle in `config/bundles.php`
    ```
-   php bin/console pimcore:bundle:enable CoreShopCoreBundle
+   <?php
+   
+   return [
+      ...
+       \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle::class => ['all' => true],
+   ];
    ```
+ - Update `config/packages/security.yaml` to allow access to the CoreShop Backend.
+   - Add the CoreShop Frontend parameter:
+     ```
+     parameters:
+         coreshop.security.frontend_regex: "^/(?!admin)[^/]*
+     ```
+   - Add the Authentication Provider:
+     ```
+      providers:
+        coreshop_user:
+            id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
+     ```
+   - Add the Firewall Config:
+     ```
+      firewalls:
+        coreshop_frontend:
+            provider: coreshop_user
+            pattern: '%coreshop.security.frontend_regex%'
+            context: shop
+            form_login:
+                login_path: coreshop_login
+                check_path: coreshop_login_check
+                provider: coreshop_user
+                failure_path: coreshop_login
+                default_target_path: coreshop_index
+                use_forward: false
+                use_referer: true
+            remember_me:
+                secret: "%secret%"
+                name: APP_CORESHOP_REMEMBER_ME
+                lifetime: 31536000
+                remember_me_parameter: _remember_me
+            logout:
+                path: coreshop_logout
+                target: coreshop_login
+                invalidate_session: false
+     ```
+   - Add the Access Control:
+     ```
+      access_control:
+        - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
+     ```
  - Run Install Command
    ```
    php bin/console coreshop:install
