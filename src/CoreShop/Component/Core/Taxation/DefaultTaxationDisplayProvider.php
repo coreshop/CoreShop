@@ -18,10 +18,16 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Taxation;
 
+use CoreShop\Component\Core\Model\StoreInterface;
+
 class DefaultTaxationDisplayProvider implements TaxationDisplayProviderInterface
 {
     public function displayWithTax(array $context): bool
     {
+        $store = $context['store'] ?? null;
+        if ($store instanceof StoreInterface) {
+            return $store->getUseGrossPrice();
+        }
         return true;
     }
 }
