@@ -85,7 +85,7 @@ class OrderCommentController extends PimcoreController
     {
         $commentId = $this->getParameterFromRequest($request, 'id');
         $objectNoteService = $this->get(NoteServiceInterface::class);
-        $commentEntity = $objectNoteService->getNoteById($commentId);
+        $commentEntity = $objectNoteService->getNoteById((int) $commentId);
 
         if ($commentEntity instanceof Note) {
             /** @psalm-suppress InternalMethod */
