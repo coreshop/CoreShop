@@ -22,7 +22,7 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class Category extends AbstractPimcoreModel implements CategoryInterface
 {
-    public function getChildCategories(): array
+    public function getChildCategories(): \Traversable
     {
         /**
          * @var CategoryInterface[] $childs

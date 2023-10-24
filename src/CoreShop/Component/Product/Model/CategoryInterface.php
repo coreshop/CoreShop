@@ -41,7 +41,7 @@ interface CategoryInterface extends PimcoreModelInterface, SluggableInterface, K
     /**
      * @return CategoryInterface[]
      */
-    public function getChildCategories(): array;
+    public function getChildCategories(): \Traversable;
 
     public function hasChildCategories(): bool;
 
