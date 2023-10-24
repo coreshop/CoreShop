@@ -29,7 +29,7 @@ trait CustomerExpiryRepositoryTrait
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDays($days);
 
-        $conditions = ['o_modificationDate < ?'];
+        $conditions = ['modificationDate < ?'];
         $queryParams = [$daysTimestamp->getTimestamp()];
         $groupCondition = [];
 
