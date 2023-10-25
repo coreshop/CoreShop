@@ -19,22 +19,18 @@ declare(strict_types=1);
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use Pimcore\Model\DataObject\Listing;
 
 abstract class Category extends AbstractPimcoreModel implements CategoryInterface
 {
-    public function getChildCategories(): array
+    public function getChildCategories(): Listing
     {
-        /**
-         * @var CategoryInterface[] $childs
-         */
-        $childs = $this->getChildren();
-
-        return $childs;
+        return $this->getChildren();
     }
 
     public function hasChildCategories(): bool
     {
-        return count($this->getChildren()) > 0;
+        return $this->getChildren()->getTotalCount()> 0;
     }
 
     public function getNameForSlug(string $language = null): ?string
