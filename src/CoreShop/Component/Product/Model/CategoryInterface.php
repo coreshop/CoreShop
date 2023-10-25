@@ -39,10 +39,7 @@ interface CategoryInterface extends PimcoreModelInterface, SluggableInterface, K
 
     public function setParentCategory(?self $parentCategory);
 
-    /**
-     * @return Listing<Category>
-     */
-    public function getChildCategories():  Listing;
+    public function getChildCategories(): Listing;
 
     public function hasChildCategories(): bool;
 

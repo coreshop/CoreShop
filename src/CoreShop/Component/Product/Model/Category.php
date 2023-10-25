@@ -25,17 +25,12 @@ abstract class Category extends AbstractPimcoreModel implements CategoryInterfac
 {
     public function getChildCategories(): Listing
     {
-        /**
-         * @var CategoryInterface[] $childs
-         */
-        $childs = $this->getChildren();
-
-        return $childs;
+        return $this->getChildren();
     }
 
     public function hasChildCategories(): bool
     {
-        return count($this->getChildren()) > 0;
+        return $this->getChildren()->getTotalCount()> 0;
     }
 
     public function getNameForSlug(string $language = null): ?string
