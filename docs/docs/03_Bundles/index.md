@@ -5,6 +5,7 @@ CoreShop is a set of Bundles that provide different functionality. Each Bundle i
  - [Address Bundle](./Address_Bundle.md)
  - [Configuration Bundle](./Configuration_Bundle.md)
  - [Core Bundle](./Core_Bundle.md)
+ - [Class Definition Patch](./ClassDefinitionPatch_Bundle.md)
  - [Currency Bundle](./Currency_Bundle.md)
  - [Customer Bundle](./Customer_Bundle.md)
  - [Frontend Bundle](./Frontend_Bundle.md)
