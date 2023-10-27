@@ -68,6 +68,9 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
             $this->removeCartItem($cart, $cartItem);
         }
 
+        /**
+         * @var \CoreShop\Component\Core\Model\OrderItemInterface $item
+         */
         $item = $this->cartItemFactory->createWithCart($cart, $product);
         $item->setQuantity(1);
         $item->setIsGiftItem(true);
