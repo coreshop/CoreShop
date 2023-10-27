@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
@@ -27,6 +28,7 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 
 final class GiftProductActionProcessor implements CartPriceRuleActionProcessorInterface
@@ -69,6 +71,15 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         $item = $this->cartItemFactory->createWithCart($cart, $product);
         $item->setQuantity(1);
         $item->setIsGiftItem(true);
+
+        if (
+            $product instanceof ProductInterface &&
+            $product->hasUnitDefinitions() &&
+            $product->getUnitDefinitions()?->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface
+        ) {
+            $item->setUnitDefinition($product->getUnitDefinitions()?->getDefaultUnitDefinition());
+            $item->setDefaultUnitQuantity(1);
+        }
 
         $adjustment = $this->adjustmentFactory->createWithData(
             $key,
