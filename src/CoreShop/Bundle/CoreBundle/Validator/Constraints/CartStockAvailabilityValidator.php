@@ -22,6 +22,7 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -46,32 +47,36 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
         $productsChecked = [];
         $insufficientProduct = null;
 
-        /**
-         * @var OrderItemInterface $cartItem
-         */
-        foreach ($value->getItems() as $cartItem) {
-            $product = $cartItem->getProduct();
+        if ($value->getSaleState() !== OrderSaleStates::STATE_ORDER) {
 
-            if (!$product instanceof StockableInterface) {
-                continue;
+            /**
+             * @var OrderItemInterface $cartItem
+             */
+            foreach ($value->getItems() as $cartItem) {
+                $product = $cartItem->getProduct();
+
+                if (!$product instanceof StockableInterface) {
+                    continue;
+                }
+
+                if (in_array($product->getId(), $productsChecked, true)) {
+                    continue;
+                }
+
+                $isStockSufficient = $this->availabilityChecker->isStockSufficient(
+                    $product,
+                    $this->getExistingCartItemQuantityFromCart($value, $cartItem),
+                );
+
+                $productsChecked[] = $product->getId();
+
+                if (!$isStockSufficient) {
+                    $insufficientProduct = $product;
+
+                    break;
+                }
             }
 
-            if (in_array($product->getId(), $productsChecked, true)) {
-                continue;
-            }
-
-            $isStockSufficient = $this->availabilityChecker->isStockSufficient(
-                $product,
-                $this->getExistingCartItemQuantityFromCart($value, $cartItem),
-            );
-
-            $productsChecked[] = $product->getId();
-
-            if (!$isStockSufficient) {
-                $insufficientProduct = $product;
-
-                break;
-            }
         }
 
         if (!$isStockSufficient && $insufficientProduct instanceof StockableInterface) {
