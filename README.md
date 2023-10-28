@@ -15,7 +15,7 @@
 ![CoreShop Interface](docs/img/screenshot5.png)
 
 # Requirements 
- - Pimcore `^11.0`
+ - Pimcore `^11.1`
 
 # Installation
  - Allow dev version to be installed:

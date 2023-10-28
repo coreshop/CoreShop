@@ -101,10 +101,10 @@
     "payum/payum-bundle": "^2.5",
     "php-http/guzzle7-adapter": "^1.0",
     "php-http/message-factory": "^1.1",
-    "pimcore/admin-ui-classic-bundle": "^1.0",
+    "pimcore/admin-ui-classic-bundle": "^1.2",
     "pimcore/google-marketing-bundle": "^1.0",
     "pimcore/newsletter-bundle": "^1.0",
-    "pimcore/pimcore": "^11.0",
+    "pimcore/pimcore": "^11.1",
     "rinvex/countries": "^7.3",
     "sebastian/diff": "^4.0 | ^5.0",
     "stof/doctrine-extensions-bundle": "^1.6",
@@ -137,8 +137,7 @@
     "vimeo/psalm": "^4.10"
   },
   "conflict": {
-    "jms/serializer-bundle": "4.1.0",
-    "league/csv": ">= 9.11"
+    "jms/serializer-bundle": "4.1.0"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
