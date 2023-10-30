@@ -30,7 +30,7 @@ abstract class Category extends AbstractPimcoreModel implements CategoryInterfac
 
     public function hasChildCategories(): bool
     {
-        return $this->getChildren()->getTotalCount()> 0;
+        return $this->getChildren()->getTotalCount() > 0;
     }
 
     public function getNameForSlug(string $language = null): ?string
