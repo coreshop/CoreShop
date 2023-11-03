@@ -45,8 +45,8 @@ final class CustomerAndStoreBasedStorageListContext implements StorageListContex
     public function getStorageList(): StorageListInterface
     {
         if ($this->restoreCustomerStorageListOnlyOnLogin &&
-            $this->requestHelper->getMainRequest() &&
-            $this->requestHelper->getMainRequest()->get('_route') !== 'coreshop_login_check'
+            $this->requestHelper->hasMainRequest() &&
+            $this->requestHelper->getMainRequest()->attributes->get('_route') !== 'coreshop_login_check'
         ) {
             throw new CartNotFoundException('CustomerAndStoreBasedCartContext can only be applied in coreshop_login_check route.');
         }
