@@ -1,3 +1,10 @@
+# 4.0.0-beta.4
+* [Pimcore11] remove o_ column usages by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2413
+* [Pimcore11] fix return type for getChildCategories by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2414
+* can not save store shop settings by @sevarozh in https://github.com/coreshop/CoreShop/pull/2415
+* [Pimcore] require Pimcore 11.1 as minimum by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2423
+* Fix error in the filter functionality for multiselects by @hethehe in https://github.com/coreshop/CoreShop/pull/2426
+
 # 4.0.0-beta.3
 - CoreShop 4.0.0 is the same as 3.2.0 will be, it contains all bug-fixes and feature from 3.1 and 3.2
 
