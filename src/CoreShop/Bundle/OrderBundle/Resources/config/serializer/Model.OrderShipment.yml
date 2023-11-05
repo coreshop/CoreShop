@@ -25,7 +25,7 @@ CoreShop\Component\Order\Model\OrderShipment:
         trackingCode:
             serialized_name: trackingCode
             exp: object.getTrackingCode()
-            type: integer
+            type: string
             groups: [Detailed]
         items:
             serialized_name: items
