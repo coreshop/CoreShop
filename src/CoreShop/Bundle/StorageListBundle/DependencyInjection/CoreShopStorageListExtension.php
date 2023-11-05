@@ -36,6 +36,7 @@ use CoreShop\Component\StorageList\Maintenance\ExpireTask;
 use CoreShop\Component\StorageList\StorageListsManager;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
+use Pimcore\Http\RequestHelper;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -167,6 +168,8 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                     $customerAndStoreBasedContextDefinition->setArgument('$customerContext', new Reference('coreshop.context.customer'));
                     $customerAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference('coreshop.context.store'));
                     $customerAndStoreBasedContextDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
+                    $customerAndStoreBasedContextDefinition->setArgument('$requestHelper', new Reference(RequestHelper::class));
+                    $customerAndStoreBasedContextDefinition->setArgument('$restoreCustomerStorageListOnlyOnLogin', $list['context']['restore_customer_list_only_on_login']);
                     $customerAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => -777]);
 
                     $container->setDefinition('coreshop.storage_list.context.customer_and_store_based.' . $name, $customerAndStoreBasedContextDefinition);

@@ -20,12 +20,16 @@ namespace CoreShop\Component\StorageList\Core\Context;
 
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
+use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 use CoreShop\Component\StorageList\Core\Repository\CustomerAndStoreAwareRepositoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
+use Pimcore\Http\RequestHelper;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RequestContext;
 
 final class CustomerAndStoreBasedStorageListContext implements StorageListContextInterface
 {
@@ -33,11 +37,20 @@ final class CustomerAndStoreBasedStorageListContext implements StorageListContex
         private CustomerContextInterface $customerContext,
         private StoreContextInterface $storeContext,
         private CustomerAndStoreAwareRepositoryInterface $repository,
+        private RequestHelper $requestHelper,
+        private bool $restoreCustomerStorageListOnlyOnLogin,
     ) {
     }
 
     public function getStorageList(): StorageListInterface
     {
+        if ($this->restoreCustomerStorageListOnlyOnLogin &&
+            $this->requestHelper->hasMainRequest() &&
+            $this->requestHelper->getMainRequest()->attributes->get('_route') !== 'coreshop_login_check'
+        ) {
+            throw new CartNotFoundException('CustomerAndStoreBasedCartContext can only be applied in coreshop_login_check route.');
+        }
+
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException) {
