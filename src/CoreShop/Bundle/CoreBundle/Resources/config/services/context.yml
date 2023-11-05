@@ -36,7 +36,7 @@ services:
 
     # country store resolver
     CoreShop\Component\Core\Context\StoreBasedCartContext:
-        decorates: CoreShop\Component\Order\Context\CompositeCartContext
+        decorates: coreshop.storage_list.context.factory.order
         arguments:
             - '@CoreShop\Component\Core\Context\StoreBasedCartContext.inner'
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'

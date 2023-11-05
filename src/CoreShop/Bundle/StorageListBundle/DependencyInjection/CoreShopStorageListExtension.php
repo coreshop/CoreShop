@@ -39,6 +39,7 @@ use CoreShop\Component\StorageList\StorageListsManager;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
+use Pimcore\Http\RequestHelper;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -171,13 +172,15 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                     $customerAndStoreBasedContextDefinition->setArgument('$customerContext', new Reference(CustomerContextInterface::class));
                     $customerAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference(StoreContextInterface::class));
                     $customerAndStoreBasedContextDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
+                    $customerAndStoreBasedContextDefinition->setArgument('$requestHelper', new Reference(RequestHelper::class));
+                    $customerAndStoreBasedContextDefinition->setArgument('$restoreCustomerStorageListOnlyOnLogin', $list['context']['restore_customer_list_only_on_login']);
                     $customerAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => -777]);
 
                     $container->setDefinition('coreshop.storage_list.context.customer_and_store_based.' . $name, $customerAndStoreBasedContextDefinition);
 
                     if ($list['services']['enable_default_store_based_decorator']) {
                         $storeBasedContextDefinition = new Definition(StoreBasedStorageListContext::class);
-                        $storeBasedContextDefinition->setDecoratedService($contextCompositeServiceName);
+                        $storeBasedContextDefinition->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
                         $storeBasedContextDefinition->setArgument(
                             '$context',
                             new Reference('coreshop.storage_list.context.store_based.' . $name . '.inner'),
@@ -265,7 +268,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $sessionContext->setArgument('$requestStack', new Reference('request_stack'));
                 $sessionContext->setArgument('$sessionKeyName', $list['session']['key']);
                 $sessionContext->setArgument('$repository', new Reference($list['resource']['repository']));
-                $sessionContext->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
+                $sessionContext->addTag($list['context']['tag'], ['priority' => -555]);
 
                 $container->setDefinition('coreshop.storage_list.context.' . $name . '.session', $sessionContext);
             }

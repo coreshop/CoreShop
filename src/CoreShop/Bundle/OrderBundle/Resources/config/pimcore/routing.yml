@@ -138,6 +138,8 @@ coreshop_admin_order_comments_add:
 coreshop_admin_order_comments_delete:
     path: /%coreshop.admin.route.base%/order-comment/delete
     defaults: { _controller: 'coreshop.pimcore_controller.order_comment::deleteAction'}
+    options:
+        expose: true
 
 ##### ORDER SHIPMENT
 coreshop_admin_order_shipment_get_processable_items:

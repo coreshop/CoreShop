@@ -44,6 +44,10 @@ class OrderEditPossible implements OrderEditPossibleInterface
                 return false;
             }
 
+            if ($order->getOrderState() === OrderStates::STATE_CANCELLED) {
+                return false;
+            }
+
             return $order->getOrderState() !== OrderStates::STATE_COMPLETE;
         }
 

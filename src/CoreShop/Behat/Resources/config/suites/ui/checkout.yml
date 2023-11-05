@@ -45,7 +45,7 @@ default:
                 - coreshop.behat.context.ui.cart
                 - coreshop.behat.context.ui.product
                 - coreshop.behat.context.ui.user
-                - coreshop.behat.context.ui.register
+                - coreshop.behat.context.ui.login
                 - coreshop.behat.context.ui.store
                 - coreshop.behat.context.ui.currency
             filters:

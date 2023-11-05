@@ -59,6 +59,7 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('interface')->defaultValue(StorageListContextInterface::class)->end()
                                     ->scalarNode('composite')->defaultValue(CompositeStorageListContext::class)->end()
                                     ->scalarNode('tag')->cannotBeEmpty()->end()
+                                    ->booleanNode('restore_customer_list_only_on_login')->defaultFalse()->end()
                                 ->end()
                             ->end()
                             ->arrayNode('services')
