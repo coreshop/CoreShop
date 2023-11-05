@@ -173,7 +173,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
 
                     if ($list['services']['enable_default_store_based_decorator']) {
                         $storeBasedContextDefinition = new Definition(StoreBasedStorageListContext::class);
-                        $storeBasedContextDefinition->setDecoratedService($contextCompositeServiceName);
+                        $storeBasedContextDefinition->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
                         $storeBasedContextDefinition->setArgument(
                             '$context',
                             new Reference('coreshop.storage_list.context.store_based.' . $name . '.inner'),
@@ -261,7 +261,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $sessionContext->setArgument('$requestStack', new Reference('request_stack'));
                 $sessionContext->setArgument('$sessionKeyName', $list['session']['key']);
                 $sessionContext->setArgument('$repository', new Reference($list['resource']['repository']));
-                $sessionContext->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
+                $sessionContext->addTag($list['context']['tag'], ['priority' => -555]);
 
                 $container->setDefinition('coreshop.storage_list.context.' . $name . '.session', $sessionContext);
             }
