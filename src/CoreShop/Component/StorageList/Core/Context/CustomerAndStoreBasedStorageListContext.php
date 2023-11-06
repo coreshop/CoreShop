@@ -28,8 +28,6 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use Pimcore\Http\RequestHelper;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RequestContext;
 
 final class CustomerAndStoreBasedStorageListContext implements StorageListContextInterface
 {
