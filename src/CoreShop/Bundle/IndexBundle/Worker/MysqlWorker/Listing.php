@@ -434,7 +434,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         }
 
         foreach ($this->orders as $order) {
-            $queryBuilder->add('orderBy', $this->getWorker()->renderOrder($order, 'q'));
+            $queryBuilder->add('orderBy', $this->getWorker()->renderOrder($order, 'q'), true);
         }
     }
 
