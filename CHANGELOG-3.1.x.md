@@ -4,6 +4,8 @@
 * fix comment delete request by @solverat in https://github.com/coreshop/CoreShop/pull/2407
 * [Core] add unit to GiftProductAction by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2422
 * [Cart] fix wrong decoration of cart-context by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2432
+* Bugfix listing order by by @BlackbitDevs in https://github.com/coreshop/CoreShop/pull/2370
+* [Order expiration] Use orderDate for confirmed orders, not o_creationDate by @BlackbitDevs in
 
 # 3.1.3
 
