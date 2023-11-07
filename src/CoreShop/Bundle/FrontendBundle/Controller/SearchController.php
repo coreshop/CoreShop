@@ -19,11 +19,13 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class SearchController extends FrontendController
 {
@@ -90,5 +92,17 @@ class SearchController extends FrontendController
     protected function getPaginator(): PaginatorInterface
     {
         return $this->container->get(PaginatorInterface::class);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                new SubscribedService(StoreContextInterface::class, StoreContextInterface::class),
+                new SubscribedService('coreshop.repository.product', ProductRepositoryInterface::class),
+                new SubscribedService(PaginatorInterface::class, PaginatorInterface::class),
+            ],
+        );
     }
 }
