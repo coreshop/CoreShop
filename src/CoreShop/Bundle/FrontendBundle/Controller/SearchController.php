@@ -46,7 +46,7 @@ class SearchController extends FrontendController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $text = $formData['text'];
-            $page = $this->getParameterFromRequest($request, 'page', 1);
+            $page = (int) $this->getParameterFromRequest($request, 'page', 1);
             $itemsPerPage = 10;
 
             $query = [
