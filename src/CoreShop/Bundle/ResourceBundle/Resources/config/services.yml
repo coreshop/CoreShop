@@ -56,11 +56,6 @@ services:
         tags:
             - { name: jms_serializer.handler, type: carbon, direction: serialization, format: json, method: serializeRelation }
 
-    CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation\HttpFoundationRequestHandler:
-        decorates: form.type_extension.form.request_handler
-        decoration_priority: 256
-        public: false
-
     CoreShop\Bundle\ResourceBundle\Controller\AdminController:
         abstract: true
         arguments:
