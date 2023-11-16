@@ -27,6 +27,7 @@ final class SessionBasedListContext implements StorageListContextInterface
     private ?StorageListInterface $storageList = null;
 
     public function __construct(
+        private StorageListContextInterface $inner,
         private RequestStack $requestStack,
         private StorageListRepositoryInterface $repository,
         private string $sessionKeyName,
@@ -42,7 +43,7 @@ final class SessionBasedListContext implements StorageListContextInterface
         $request = $this->requestStack->getMainRequest();
 
         if (!$request) {
-            throw new StorageListNotFoundException('CoreShop was not able to find the List in session');
+            return $this->inner->getStorageList();
         }
 
         $session = $request->getSession();
@@ -50,16 +51,16 @@ final class SessionBasedListContext implements StorageListContextInterface
         $sessionId = $session->get($this->sessionKeyName);
 
         if (null === $sessionId) {
-            throw new StorageListNotFoundException('CoreShop was not able to find the List in session');
+            $storageList = $this->inner->getStorageList();
+        } else {
+            $storageList = $this->repository->find($sessionId);
         }
-
-        $storageList = $this->repository->find($sessionId);
 
         if (!$storageList instanceof StorageListInterface) {
-            throw new StorageListNotFoundException('CoreShop was not able to find the List in session');
+            $this->storageList = $this->inner->getStorageList();
+        } else {
+            $this->storageList = $storageList;
         }
-
-        $this->storageList = $storageList;
 
         return $this->storageList;
     }
