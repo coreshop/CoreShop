@@ -268,7 +268,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $sessionContext->setArgument('$requestStack', new Reference('request_stack'));
                 $sessionContext->setArgument('$sessionKeyName', $list['session']['key']);
                 $sessionContext->setArgument('$repository', new Reference($list['resource']['repository']));
-                $sessionContext->addTag($list['context']['tag'], ['priority' => -555]);
+                $sessionContext->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
 
                 $container->setDefinition('coreshop.storage_list.context.' . $name . '.session', $sessionContext);
             }
