@@ -34,6 +34,7 @@ use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductPriceNestedConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
@@ -420,6 +421,30 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('quantity', $configuration));
     }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition nested with operator "([^"]+)" with (product "[^"]+")$/
+     * @Given /^the (price rule) has a condition nested with operator "([^"]+)" with (product "[^"]+")$/
+     */
+    public function theProductsPriceRuleHasANestedConditionWithProduct(ProductPriceRuleInterface $rule, $operator, ProductInterface $product): void
+    {
+        $this->assertConditionForm(ProductPriceNestedConfigurationType::class, 'nested');
+
+        $this->addCondition($rule, $this->createConditionWithForm('nested', [
+            'operator' => $operator,
+            'conditions' => [
+                [
+                    'type' => 'products',
+                    'configuration' => [
+                        'products' => [
+                            $product->getId(),
+                        ],
+                    ],
+                ]
+            ],
+        ]));
+    }
+
 
     private function addCondition(ProductPriceRuleInterface $rule, ConditionInterface $condition): void
     {
