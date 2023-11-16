@@ -22,12 +22,16 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use Symfony\Component\Security\Core\Security;
 
 class VoucherConditionChecker extends AbstractConditionChecker
 {
     public function __construct(
-        private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+      private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+      private CartPriceRuleVoucherCodeUserRepositoryInterface $codePerUserRepository,
+      private Security $security,
     ) {
     }
 
@@ -38,6 +42,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
         }
 
         $maxUsagePerCode = $configuration['maxUsagePerCode'];
+        $maxUsagePerUser = $configuration['maxUsagePerUser'];
         $onlyOnePerCart = $configuration['onlyOnePerCart'];
 
         $storedCode = $this->voucherCodeRepository->findByCode($voucher->getCode());
@@ -46,9 +51,27 @@ class VoucherConditionChecker extends AbstractConditionChecker
             return false;
         }
 
+
         // max usage per code condition
         if (is_numeric($maxUsagePerCode)) {
             if ($maxUsagePerCode != 0 && $storedCode->getUses() >= $maxUsagePerCode) {
+                return false;
+            }
+        }
+
+        // max usage per user condtion
+        if (is_numeric($maxUsagePerUser)){
+
+            $user = $this->security->getUser();
+
+            if (!$user instanceof \Pimcore\Model\DataObject\CoreShopUser) {
+                return false;
+            }
+
+            $usesObject = $this->codePerUserRepository->findByUsesById($user->getId(), $voucher->getId());
+            $uses = $usesObject?->getUses() ?? 0;
+
+            if ($maxUsagePerUser != 0 && $uses >= $maxUsagePerUser) {
                 return false;
             }
         }

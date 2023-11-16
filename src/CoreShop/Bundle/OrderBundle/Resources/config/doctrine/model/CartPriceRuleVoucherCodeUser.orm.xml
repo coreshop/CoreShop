@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser"
+                       table="coreshop_cart_price_rule_voucher_code_user">
+        <indexes>
+            <index name="userId_idx" columns="userId"/>
+        </indexes>
+
+        <unique-constraints>
+            <unique-constraint name="voucherCodeId_userId" columns="voucherCodeId,userId"/>
+        </unique-constraints>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="userId" column="userId" type="integer"/>
+
+        <many-to-one field="voucherCode" target-entity="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface">
+            <join-column name="voucherCodeId" referenced-column-name="id"/>
+        </many-to-one>
+
+        <field name="uses" column="uses" type="integer"/>
+
+    </mapped-superclass>
+</doctrine-mapping>

@@ -20,6 +20,7 @@ imports:
     - { resource: services/payment.yml }
     - { resource: services/forms.yml }
     - { resource: services/checkout_listener.yml }
+    - { resource: services/voucher-code-user.yml }
     - { resource: services/controller.yml }
     - { resource: services/order_edit.yml }
 

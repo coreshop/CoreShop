@@ -29,6 +29,7 @@ use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderPaymentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleRepository;
+use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherCodeUserRepository;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleTranslationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
@@ -44,6 +45,8 @@ use CoreShop\Component\Order\Model\CartPriceRuleTranslation;
 use CoreShop\Component\Order\Model\CartPriceRuleTranslationInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
@@ -153,6 +156,21 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CartPriceRuleVoucherRepository::class)->end()
                                         //TODO: ->scalarNode('form')->defaultValue(CartPriceRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('cart_price_rule_voucher_code_user')
+                            ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->variableNode('options')->end()
+                                    ->arrayNode('classes')
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('model')->defaultValue(CartPriceRuleVoucherCodeUser::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('interface')->defaultValue(CartPriceRuleVoucherCodeUserInterface::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('repository')->defaultValue(CartPriceRuleVoucherCodeUserRepository::class)->end()
                                     ->end()
                                 ->end()
                             ->end()

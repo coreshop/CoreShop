@@ -1,0 +1,7 @@
+services:
+  CoreShop\Bundle\OrderBundle\EventListener\VoucherCodeUserListener:
+    arguments:
+      - '@coreshop.repository.cart_price_rule_voucher_code_user'
+      - '@Symfony\Component\Security\Core\Security'
+    tags:
+      - { name: kernel.event_listener, event: workflow.coreshop_order.entered.confirmed, method: increaseUsageOfVoucherCoderFromUser }
