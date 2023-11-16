@@ -18,20 +18,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StorageListBundle\EventListener;
 
-use CoreShop\Component\StorageList\Context\StorageListContextInterface;
-use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Cache;
-use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class CacheListener implements EventSubscriberInterface
 {
     public function __construct(
-        private PimcoreContextResolver $pimcoreContext,
-        private StorageListContextInterface $context,
+        private PimcoreRepositoryInterface $storageListRepository,
+        private PimcoreRepositoryInterface $storageListItemRepository,
     ) {
     }
 
@@ -44,41 +41,7 @@ final class CacheListener implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event): void
     {
-        if ($this->pimcoreContext->matchesPimcoreContext($event->getRequest(), PimcoreContextResolver::CONTEXT_ADMIN)) {
-            return;
-        }
-
-        if (!$event->isMainRequest()) {
-            return;
-        }
-
-        if ($event->getRequest()->attributes->get('_route') === '_wdt') {
-            return;
-        }
-
-        /** @var Request $request */
-        $request = $event->getRequest();
-
-        if (!$request->hasSession()) {
-            return;
-        }
-
-        try {
-            $list = $this->context->getStorageList();
-        } catch (StorageListNotFoundException) {
-            return;
-        }
-
-        if ($list->getId()) {
-            foreach ($list->getItems() as $item) {
-                if (!$item->getId()) {
-                    continue;
-                }
-
-                Cache::addIgnoredTagOnSave('object_' . $item->getId());
-            }
-
-            Cache::addIgnoredTagOnSave('object_' . $list->getId());
-        }
+        Cache::addIgnoredTagOnSave(sprintf('object_%s', $this->storageListRepository->getClassId()));
+        Cache::addIgnoredTagOnSave(sprintf('object_%s', $this->storageListItemRepository->getClassId()));
     }
 }

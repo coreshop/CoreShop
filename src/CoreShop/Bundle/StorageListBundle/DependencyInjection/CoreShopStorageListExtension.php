@@ -110,8 +110,8 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
             }
 
             $cacheSubscriber = new Definition(CacheListener::class, [
-                new Reference(PimcoreContextResolver::class),
-                new Reference($contextCompositeServiceName),
+                new Reference($list['resource']['repository']),
+                new Reference($list['resource']['item_repository'])
             ]);
             $cacheSubscriber->addTag('kernel.event_subscriber');
 
