@@ -41,7 +41,7 @@ final class CacheListener implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event): void
     {
-        Cache::addIgnoredTagOnSave(sprintf('object_%s', $this->storageListRepository->getClassId()));
-        Cache::addIgnoredTagOnSave(sprintf('object_%s', $this->storageListItemRepository->getClassId()));
+        Cache::addIgnoredTagOnSave(sprintf('class_%s', $this->storageListRepository->getClassId()));
+        Cache::addIgnoredTagOnSave(sprintf('class_%s', $this->storageListItemRepository->getClassId()));
     }
 }
