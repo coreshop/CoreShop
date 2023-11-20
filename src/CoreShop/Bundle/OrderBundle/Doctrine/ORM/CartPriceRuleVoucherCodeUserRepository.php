@@ -43,7 +43,7 @@ class CartPriceRuleVoucherCodeUserRepository extends EntityRepository implements
     {
         $voucherCodeUser = new CartPriceRuleVoucherCodeUser();
         $voucherCodeUser->setUserId($userId);
-        $voucherCodeUser->setUses(0);
+        $voucherCodeUser->setUses(1);
         $voucherCodeUser->setVoucherCode($voucherCode);
 
         $this->add($voucherCodeUser);
