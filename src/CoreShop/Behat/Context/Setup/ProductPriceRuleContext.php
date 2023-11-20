@@ -440,11 +440,10 @@ final class ProductPriceRuleContext implements Context
                             $product->getId(),
                         ],
                     ],
-                ]
+                ],
             ],
         ]));
     }
-
 
     private function addCondition(ProductPriceRuleInterface $rule, ConditionInterface $condition): void
     {
