@@ -9,6 +9,7 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Pimcore\Model\DataObject\CoreShopOrder;
+use Pimcore\Model\DataObject\CoreShopUser;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\Event\Event;
 
@@ -23,7 +24,7 @@ class VoucherCodeUserListener
     ) {
     }
 
-    public function increaseUsageOfVoucherCoderFromUser(Event $event)
+    public function addUsageOfVoucherCoderPerUser(Event $event): void
     {
         /** @var \Pimcore\Model\DataObject\CoreShopOrder $order */
         $order = $event->getSubject();
@@ -32,7 +33,13 @@ class VoucherCodeUserListener
             return;
         }
 
-        $userId = $this->security->getUser()->getId();
+        $user = $this->security->getUser();
+
+        if (!$user instanceof CoreShopUser) {
+            return;
+        }
+
+        $userId = $user->getId();
         $priceRuleItems = $order->getPriceRuleItems()->getItems();
         $voucherCodeObjects = $this->getVoucherCodesWithPerUserCondition($priceRuleItems);
 
