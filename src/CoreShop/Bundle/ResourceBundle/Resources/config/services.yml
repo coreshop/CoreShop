@@ -58,6 +58,8 @@ services:
 
     CoreShop\Bundle\ResourceBundle\Controller\AdminController:
         abstract: true
+        calls:
+            - [ 'setTokenResolver', [ '@Pimcore\Security\User\TokenStorageUserResolver' ] ]
         arguments:
             - '@service_container'
             - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'

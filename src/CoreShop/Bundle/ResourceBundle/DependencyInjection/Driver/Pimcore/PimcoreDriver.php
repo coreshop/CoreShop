@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
+use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
@@ -26,6 +27,7 @@ use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Factory\PimcoreRepositoryFactory;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -75,7 +77,15 @@ final class PimcoreDriver extends AbstractDriver
 
     protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, string $classValue, string $suffix = null): void
     {
-        $definition = new Definition($classValue);
+        $parents = array_values(class_parents($classValue));
+
+        if (in_array(AdminController::class, $parents, true)) {
+            $definition = new ChildDefinition(AdminController::class);
+        }
+        else {
+            $definition = new Definition();
+        }
+
         $definition
             ->setClass($classValue)
             ->setPublic(true)

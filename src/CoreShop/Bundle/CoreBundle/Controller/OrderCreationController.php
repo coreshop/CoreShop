@@ -149,6 +149,8 @@ class OrderCreationController extends BaseOrderCreationController
                 new SubscribedService('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface', CarriersResolver::class, attributes: new Autowire('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface')),
                 TaxedShippingCalculatorInterface::class,
                 CartContextResolverInterface::class,
+                CarriersResolverInterface::class,
+                TaxedShippingCalculatorInterface::class,
             ];
     }
 }
