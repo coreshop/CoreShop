@@ -1,4 +1,4 @@
-# CoreShop Payum Ominpay Bridge
+# Payum Ominpay Bridge
 
 [Here](https://github.com/thephpleague/omnipay#payment-gateways) is a list of all available Omnipay Payment Providers.
 

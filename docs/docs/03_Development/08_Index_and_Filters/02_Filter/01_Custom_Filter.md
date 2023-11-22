@@ -1,4 +1,4 @@
-# CoreShop Filter - Create Custom Filter
+# Filter - Create Custom Filter
 
 **1**. We need to create 2 new files:
     - FormType for processing the Input Data

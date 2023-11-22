@@ -1,4 +1,4 @@
-# CoreShop Inventory
+# Inventory
 
 ## Twig Helper
 There are some Helpers to check the product inventory.

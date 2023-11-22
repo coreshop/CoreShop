@@ -4,7 +4,7 @@ The Developer’s guide to leveraging the flexibility of CoreShop. Here you will
 
 ## Introduction
 
-## CoreShop Resources
+## Resources
 
 CoreShop uses Doctrine ORM for Custom Resources. ORM enables us great flexibility and extendability for simple models like Currencies and Countries.
 CoreShop currently implements these Resources as ORM Model:
@@ -22,7 +22,7 @@ CoreShop currently implements these Resources as ORM Model:
 
 Everytime something is called a Resource, we talk about ORM Models.
 
-## CoreShop Pimcore Models
+## Pimcore Models
 
 CoreShop also takes advantage of Pimcores flexible data-model.
 Objects that are heavily used and changed are implemented using Data Objects:

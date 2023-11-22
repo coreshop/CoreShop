@@ -1,4 +1,4 @@
-# CoreShop Index and Filter
+# Index and Filter
 
 This guide should lead you through how CoreShop handles Indices and Filters.
 

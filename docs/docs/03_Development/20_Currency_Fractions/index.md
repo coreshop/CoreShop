@@ -1,4 +1,4 @@
-# CoreShop Fraction Digits
+# Fraction Digits
 CoreShop allows you working with more than 2 digits for Currency Values. The default configuration looks like this:
 
 ```yml

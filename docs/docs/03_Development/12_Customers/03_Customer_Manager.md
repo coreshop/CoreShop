@@ -1,4 +1,4 @@
-# CoreShop Customer Manager
+# Customer Manager
 CoreShop already implements a Customer Manager which handles creating a Customer with Addresses. 
 The Customer Manager implements the Interface `CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface` and CoreShop implements it using the service `coreshop.customer.manager`.
 

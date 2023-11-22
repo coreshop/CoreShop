@@ -1,4 +1,4 @@
-# CoreShop Store Front Controller
+# Store Front Controller
 
 If you use CoreShop FrontendBundle, you can change the Controllers it uses. Simply change the configuration for the controller:
 

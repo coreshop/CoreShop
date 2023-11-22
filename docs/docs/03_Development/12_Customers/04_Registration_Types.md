@@ -1,4 +1,4 @@
-# CoreShop Customer Registration Types
+# Customer Registration Types
 By default, a customer needs to provide a unique and valid email address to pass a registration.
 
 ## Register By Email

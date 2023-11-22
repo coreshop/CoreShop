@@ -1,4 +1,4 @@
-# CoreShop Filter
+# Filter
 
 After creating the index, you can configure the Filters.
 

@@ -1,4 +1,4 @@
-# CoreShop Checkout Step
+# Checkout Step
 
 If you want to implement a custom checkout step, you need to implement the interface ```CoreShop\Component\Order\Checkout\CheckoutStepInterface```
 and register your step into your Cart Manager:

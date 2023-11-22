@@ -1,4 +1,4 @@
-# CoreShop Taxes
+# Taxes
 
 > Taxes are divided into Tax Rates and Tax Rules. Tax Rules are responsible for the real Tax Rate determination based on Country and State.
 

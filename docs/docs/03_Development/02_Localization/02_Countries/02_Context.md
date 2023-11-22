@@ -1,4 +1,4 @@
-# CoreShop Country Context
+# Country Context
 
 For CoreShop to determine the current country the visitor or customer comes from,
 it uses a concept called context and context resolver.

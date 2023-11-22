@@ -1,4 +1,4 @@
-# CoreShop Currencies
+# Currencies
 
 ## Create
 If you want to create a Currency via API, you can do following:

@@ -1,4 +1,4 @@
-# CoreShop Localization
+# Localization
 
 CoreShop provides you with a set of tools for better localization of your eCommerce. These tools exist of following parts:
 

@@ -1,4 +1,4 @@
-# CoreShop Carrier
+# Carrier
 
 This guide should lead you through how CoreShop handles Carriers.
 

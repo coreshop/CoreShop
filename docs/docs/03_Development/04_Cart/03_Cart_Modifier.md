@@ -1,4 +1,4 @@
-# CoreShop Cart Modifier
+# Cart Modifier
 
 CoreShop provides you with a helper service to modify the cart. It handles following for you:
 

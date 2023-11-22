@@ -1,3 +1,3 @@
-# CoreShop Zones
+# Zones
 
 1. [Create, Update, Read, Delete](./01_CRUD.md)

@@ -1,4 +1,4 @@
-# CoreShop State Machine - Available Workflows
+# State Machine - Available Workflows
 
 ## Order Sale Workflow
 

@@ -1,4 +1,4 @@
-# CoreShop Stores Theming
+# Stores Theming
 
 CoreShop Stores are designed to allow different Themes. Therefore you can have a true Multi-Store Environment with different Themes.
 

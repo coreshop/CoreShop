@@ -1,4 +1,4 @@
-# CoreShop Countries
+# Countries
 
 ## Create
 If you want to create a Country via API, you can do following:

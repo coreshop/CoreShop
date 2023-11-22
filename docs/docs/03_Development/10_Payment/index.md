@@ -1,4 +1,4 @@
-# CoreShop Payment
+# Payment
 
 CoreShop contains a very flexible payments management system with support for many gateways (payment providers).
 We are using a payment abstraction library - [Payum](https://github.com/payum/payum),

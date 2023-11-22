@@ -1,4 +1,4 @@
-# CoreShop Tax Rule
+# Tax Rule
 
 > The Tax Rule handles different Taxes based on Country and State.
 

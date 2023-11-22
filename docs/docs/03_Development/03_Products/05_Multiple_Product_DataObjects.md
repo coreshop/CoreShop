@@ -1,4 +1,4 @@
-# CoreShop Multiple Product DataObjects
+# Multiple Product DataObjects
 
 CoreShop comes with one pre-installed Product Class (CoreShopProduct), which in most cases is enough. In some cases, you might want to use separated classes with different purposes. For example a ProductSet, which consists of multiple Products but also needs to be available for complex price calculations like Price Rules.
 

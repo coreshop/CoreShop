@@ -1,4 +1,4 @@
-# CoreShop Checkout
+# Checkout
 
 This guide should lead you through how CoreShop handles the Checkout.
 

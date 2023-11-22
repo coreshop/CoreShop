@@ -1,4 +1,4 @@
-# CoreShop Product Price Rules
+# Product Price Rules
 
 CoreShop gives you the ability of very complex price calculation methods.
 Price Rules always consist of Conditions and Actions.

@@ -1,4 +1,4 @@
-# CoreShop Countries
+# Countries
 
 > CoreShop is a multi-country able eCommerce Framework. Therefore it is possible to create and use different Countries.
 

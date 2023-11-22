@@ -1,4 +1,4 @@
-# CoreShop Order Purchasable
+# Order Purchasable
 
 Items, you want to add to your Cart/Order/Quote, need to implement [```CoreShop\Component\Order\Model\PurchasableInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Model/PurchasableInterface.php).
 

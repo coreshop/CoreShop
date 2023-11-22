@@ -1,4 +1,4 @@
-# CoreShop State Machine - Important Things to Know
+# State Machine - Important Things to Know
 
 ## Canceling Orders
 Within the CoreShop workflow architecture a lot of orders may stay forever in the `new` or `confirmed` state.

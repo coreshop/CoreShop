@@ -1,6 +1,6 @@
-# CoreShop Checkout Manager
+# Checkout Manager
 
-# CoreShop Checkout
+# Checkout
 
 CoreShop uses a CheckoutManager to handle Checkout steps. The default installation comes with following Steps:
 

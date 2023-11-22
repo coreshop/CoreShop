@@ -1,4 +1,4 @@
-# CoreShop Events
+# Events
 
 CoreShop comes with a lot of build-in events.
 

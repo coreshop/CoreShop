@@ -1,4 +1,4 @@
-# CoreShop eCommerce Tracking
+# eCommerce Tracking
 
 CoreShop currently implements Tracking for Analytics and Google Tag Manager.
 Tracking is automatically available (but not enabled), as soon as you enable Tag Manager or Analytics in Pimcore.

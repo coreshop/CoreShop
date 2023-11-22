@@ -1,4 +1,4 @@
-# CoreShop Shipping Rules
+# Shipping Rules
 
 ## Default Conditions and Actions
 

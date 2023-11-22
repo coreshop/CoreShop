@@ -1,4 +1,4 @@
-# CoreShop Customer Context
+# Customer Context
 
 CoreShop Customer Security uses [Symfony Firewall](https://symfony.com/doc/current/components/security/firewall.html) to handle authentication.
 

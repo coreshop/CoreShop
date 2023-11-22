@@ -1,4 +1,4 @@
-# CoreShop Stores
+# Stores
 
 ## Create
 If you want to create a Store via API, you can do following:

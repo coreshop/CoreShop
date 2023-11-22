@@ -1,4 +1,4 @@
-# CoreShop Custom
+# Custom
 
 CoreShop uses Pimcore Data Objects to persist Customer Information. But, it adds a little wrapper around it to be mire
 dynamic and configurable. It uses a Factory and Repository Pattern to do that.

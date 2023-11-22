@@ -1,4 +1,4 @@
-# CoreShop Product Units
+# Product Units
 
 Units for Products can be defined globally in the Pimcore Backend on CoreShopMenu > Product > Product Units.
 

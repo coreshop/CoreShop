@@ -1,4 +1,4 @@
-# CoreShop Cart Manager
+# Cart Manager
 
 The Cart Manager helps you managing Carts. It handles:
 

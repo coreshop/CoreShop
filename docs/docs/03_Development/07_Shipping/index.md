@@ -1,4 +1,4 @@
-# CoreShop Shipping
+# Shipping
 
 This guide should lead you through how CoreShop handles Shipping and Shipping Calculation.
 

@@ -1,4 +1,4 @@
-# CoreShop State Machine - Callbacks
+# State Machine - Callbacks
 
 It's really simple to create a custom state machine callback.
 

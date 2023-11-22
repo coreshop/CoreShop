@@ -1,4 +1,4 @@
-# CoreShop Customer Company Extension
+# Customer Company Extension
 The Company Entity allows you to append customers to a given company.
 After a customer has been connected to a company by using the 1to1 relation `company`, it's possible to share addresses between company and the self-assigned addresses.
 

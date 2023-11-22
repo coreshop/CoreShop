@@ -1,4 +1,4 @@
-# CoreShop Product Price Calculation
+# Product Price Calculation
 
 CoreShop uses multiple Price Calculators to determine the correct price for a product. Per default following Calculators are used
 

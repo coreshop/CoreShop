@@ -1,4 +1,4 @@
-# CoreShop Index
+# Index
 
 To create a rich layered navigation (faceted navigation), you need to create an index of your Products.
 

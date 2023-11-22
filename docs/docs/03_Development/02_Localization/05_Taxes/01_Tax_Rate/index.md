@@ -1,4 +1,4 @@
-# CoreShop Tax Rate
+# Tax Rate
 
 > The Tax Rate only represents a single Tax Rate Number. For example: 20%.
 

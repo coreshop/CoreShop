@@ -1,4 +1,4 @@
-# CoreShop Order Number Generator
+# Order Number Generator
 
 When an order is completed, a number is generated for that order. This happens at the `CoreShop\Component\Core\Order\Committer\OrderCommitter`, which uses a `NumberGeneratorInterface` service.
 

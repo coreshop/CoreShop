@@ -1,4 +1,4 @@
-# CoreShop Order Template/Twig Helper
+# Order Template/Twig Helper
 
 ## Order State
 

@@ -1,4 +1,4 @@
-# CoreShop Products
+# Products
 
 This guide should lead you through how CoreShop handles Product information and how it does price calculations.
 

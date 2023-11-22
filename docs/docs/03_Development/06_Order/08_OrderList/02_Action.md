@@ -1,4 +1,4 @@
-# CoreShop Order List Actions
+# Order List Actions
 
 Actions allows you to process orders rapidly, right in the order grid view.
 

@@ -1,4 +1,4 @@
-# CoreShop Notification Rules
+# Notification Rules
 
 Notification Rules are responsible for all types of notification triggered by CoreShop.
 It handles notification for following types:

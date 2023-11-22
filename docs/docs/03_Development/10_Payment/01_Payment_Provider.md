@@ -1,4 +1,4 @@
-# CoreShop Payment Providers
+# Payment Providers
 
 A Payment Provider represents a way that your customer pays during the checkout process.
 It holds a reference to a specific gateway with custom configuration.

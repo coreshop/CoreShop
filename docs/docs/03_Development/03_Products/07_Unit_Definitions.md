@@ -1,4 +1,4 @@
-# CoreShop Product Unit Definitions
+# Product Unit Definitions
 
 CoreShop has a great new feature for product units. E.g. you can sell items "per meter" etc.
 

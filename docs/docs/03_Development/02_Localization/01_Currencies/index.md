@@ -1,4 +1,4 @@
-# CoreShop Currencies
+# Currencies
 
 > CoreShop is a multi-currency able eCommerce Framework. Therefore it is possible to create and use different currencies.
 

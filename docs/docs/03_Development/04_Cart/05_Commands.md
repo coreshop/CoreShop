@@ -1,4 +1,4 @@
-# CoreShop Cart Commands
+# Cart Commands
 
 ## Expire Abandoned Carts
 

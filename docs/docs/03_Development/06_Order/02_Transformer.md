@@ -1,4 +1,4 @@
-# CoreShop Transfomers
+# Transfomers
 
 Transfomers, as the name say, transform Data from different formats. A transformer converts between Object Types. For example: Cart -> Order. Following implementation do exist right now:
 

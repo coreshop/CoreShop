@@ -1,4 +1,4 @@
-# CoreShop Cart
+# Cart
 
 This guide should lead you through how CoreShop handles the Cart.
 

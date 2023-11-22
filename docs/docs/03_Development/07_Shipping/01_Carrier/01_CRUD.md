@@ -1,4 +1,4 @@
-# CoreShop Carrier
+# Carrier
 
 ## Create
 If you want to create a Carrier via API, you can do following:

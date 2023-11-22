@@ -1,4 +1,4 @@
-# CoreShop Customer
+# Customer
 This guide should lead you through how CoreShop handles Customer Information.
 
  1. [Create, Read, Update, Delete](./01_CRUD.md)

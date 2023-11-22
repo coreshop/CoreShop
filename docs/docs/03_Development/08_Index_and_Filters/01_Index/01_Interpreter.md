@@ -1,4 +1,4 @@
-# CoreShop Index Interpreter
+# Index Interpreter
 
 To prepare your index and transform data, you use one of the existing Interpreter or create one yourself.
 

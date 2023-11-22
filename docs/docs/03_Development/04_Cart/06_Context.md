@@ -1,4 +1,4 @@
-# CoreShop Cart Context
+# Cart Context
 
 For CoreShop to determine the current cart it uses a concept called context and context resolver.
 

@@ -1,4 +1,4 @@
-# CoreShop Stores
+# Stores
 
 CoreShop Stores help you create a multi-store based eCommerce System with different Themes across these Stores.
 

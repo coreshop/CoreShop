@@ -1,4 +1,4 @@
-# CoreShop Store Context
+# Store Context
 
 For CoreShop to determine the current store the visitor or customer comes from
 it uses a concept called context and context resolver.

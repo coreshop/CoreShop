@@ -1,4 +1,4 @@
-# CoreShop Currency Context
+# Currency Context
 
 For CoreShop to determine the current currency it uses a concept called context and context resolver.
 
