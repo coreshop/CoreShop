@@ -94,23 +94,51 @@ const config = {
                 label: 'Documentation',
                 to: '/',
               },
+              {
+                label: '2.0',
+                to: 'https://docs.coreshop.org/2.0.0/',
+              },
+              {
+                label: '2.1',
+                to: 'https://docs.coreshop.org/2.1.0/',
+              },
+              {
+                label: '2.2',
+                to: 'https://docs.coreshop.org/2.2.0/',
+              },
+              {
+                label: '3.0',
+                to: 'https://docs.coreshop.org/3.0.0/',
+              },
+              {
+                label: '3.1',
+                to: 'https://docs.coreshop.org/3.1.0/',
+              },
+              {
+                label: 'latest',
+                to: 'https://docs.coreshop.org/latest/',
+              },
             ],
           },
           {
             title: 'Community',
             items: [
               {
-                label: 'Pimcore',
+                label: 'Pimcore GitHub',
                 href: 'https://github.com/pimcore/pimcore',
-              }
+              },
+              {
+                label: 'CoreShop GitHub',
+                href: 'https://github.com/coreshop/CoreShop',
+              },
             ],
           },
           {
             title: 'More',
             items: [
               {
-                label: 'GitHub',
-                href: 'https://github.com/coreshop/CoreShop',
+                label: 'CoreShop Website',
+                href: 'https://www.coreshop.org',
               },
             ],
           },
