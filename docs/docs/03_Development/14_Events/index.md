@@ -117,7 +117,7 @@ Replace symbol (*) with one of those controller:
 - `tax_rule_group`
 
 ## Workflow Events
-There are events vor every state machine transition. Read more about it [here](../17_State_Machine/index.md).
+There are events vor every state machine transition. Read more about it [here](../06_Order/16_State_Management.md).
 
 ## Model Events
 You can use Pimcore Events for CoreShops Pimcore Models: [Pimcore Events](https://www.pimcore.org/docs/5.0.0/Extending_Pimcore/Event_API_and_Event_Manager.html)

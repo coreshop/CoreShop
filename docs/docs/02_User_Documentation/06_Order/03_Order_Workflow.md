@@ -1,6 +1,6 @@
 # Order Workflow
 
-> [Technical Overview](../../03_Development/17_State_Machine/index.md) of CoreShop Workflows.
+> [Technical Overview](../../03_Development/06_Order/16_State_Management.md) of CoreShop Workflows.
 
 ## Change States
 States can be changed for: Order, Payment, Shipment and Invoice.
@@ -31,7 +31,7 @@ In CoreShop it's possible to create orders in Back-End. Instead of adding sensit
 you're able to provide a revise link to your customer which then works the same as the Front-End revise process
 (except that your customer is not able to restore a cart since there never was one).
 
-Please read more about the canceling process [here](../../03_Development/17_State_Machine/03_Things_To_Know.md)
+Please read more about the canceling process [here](../../03_Development/06_Order/16_State_Management/03_Things_To_Know.md)
 
 ## Payment Workflow
 

@@ -1,8 +1,4 @@
 # Invoice Creation
-
-See [Order Transformer](../02_Transformer.md) for more.
-
-
 ## Add a Invoice to an Order
 
 ```php

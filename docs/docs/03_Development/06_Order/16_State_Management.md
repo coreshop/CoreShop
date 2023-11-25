@@ -1,4 +1,4 @@
-# State Machine
+# State Management
 
 The CoreShop [State Machine](https://symfony.com/doc/current/workflow/state-machines.html) is a important core feature which allows to determinate complex workflows securely and in a most modern way.
 Unlike the most eCommerce Frameworks out there, CoreShop does not work with the messy and hard do extend "state/status" concept.
@@ -34,7 +34,7 @@ If a transition has been dispatched, it cannot be transformed back unless it has
 
 So let's start:
 
- - [Available Workflows](./01_Available_Workflows.md)
- - [Create Callbacks](./02_Create_Callbacks.md)
- - [Things to Know (!)](./03_Things_To_Know.md)
- - [Extend Workflows](./04_Extend_Workflows.md)
+- [Available Workflows](./16_State_Management/01_Available_Workflows.md)
+- [Create Callbacks](./16_State_Management/02_Create_Callbacks.md)
+- [Things to Know (!)](./16_State_Management/03_Things_To_Know.md)
+- [Extend Workflows](./16_State_Management/04_Extend_Workflows.md)

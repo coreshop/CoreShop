@@ -8,7 +8,7 @@ CoreShop will automatically cancel orders older than `20` days under following c
 - Order State is `initialized` or `new` or `confirmed`
 - Order Payment State is not `paid`
 
-Read more about automation [here](../../02_User_Documentation/10_Automation/index.md).
+Read more about automation [here](../../../02_User_Documentation/10_Automation/index.md).
 
 #### Expire Orders via Backend
 There is also a `cancel` button in the order detail section.

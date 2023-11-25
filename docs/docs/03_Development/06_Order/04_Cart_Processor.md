@@ -1,6 +1,6 @@
 # Cart Processor
 
-The Cart Processor takes care about refreshing the state and prices of carts for you. Everytime the ```persistCart``` function of the [Cart-Manager](./02_Cart_Manager.md) is called
+The Cart Processor takes care about refreshing the state and prices of carts for you. Everytime the ```persistCart``` function of the [Cart-Manager](./08_Cart_Manager.md) is called
 on a Cart, it gets triggered and re-calculates the cart.
 
 Following Processors are implemented by default:

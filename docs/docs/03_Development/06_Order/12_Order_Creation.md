@@ -11,5 +11,3 @@ $factory = $container->get('coreshop.factory.order')->createNew();
 ```
 
 You can now fill the Order with all necessary information.
-
-The more usual way to create Orders is through Carts or Quotes. Therefore CoreShop implements [Transformer](./02_Transformer.md) for that.

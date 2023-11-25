@@ -12,4 +12,4 @@ No cart gets deleted by default. This allows you to:
 - check abandoned cart statistics
 - build your own business logic in case you want to inform customers within a follow-up email for example
 
-There is a expire cart command to remove abandoned carts, please checkout the [development section](../../03_Development/04_Cart/05_Commands.md).
+There is a expire cart command to remove abandoned carts, please checkout the [development section](../../03_Development/06_Order/20_Commands.md).
