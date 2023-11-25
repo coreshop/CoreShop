@@ -2,6 +2,11 @@
 
 Storage List Component helps you with Lists/Collections of Objects like a Cart, Wishlist or Compare List.
 
+## Installation
+```bash
+$ composer require coreshop/storage-list-bundle:^4.0
+```
+
 ## Usage
 To use it you need to have 3 models:
 

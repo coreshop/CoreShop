@@ -5,7 +5,7 @@ The CoreShop Optimistic Entity Lock Bundle is a package for the CoreShop e-comme
 
 ## Installation
 ```bash
-$ composer require optimistic-entity-lock-bundle
+$ composer require coreshop/optimistic-entity-lock-bundle:^4.0
 ```
 
 ### Adding required bundles to kernel

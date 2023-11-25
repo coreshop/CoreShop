@@ -2,7 +2,7 @@
 
 ## Installation
 ```bash
-$ composer require coreshop/pimcore-bundle:^3.0
+$ composer require coreshop/pimcore-bundle:^4.0
 ```
 
 ### Activating Bundle
@@ -35,12 +35,12 @@ With Pimcore, every bundle needs to take care about loading static assets themse
 
 namespace AppBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class AppExtension extends AbstractModelExtension
+class AppExtension extends AbstractPimcoreExtension
 {
     public function load(array $config, ContainerBuilder $container)
     {

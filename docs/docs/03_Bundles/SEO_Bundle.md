@@ -2,7 +2,7 @@
 
 ## Installation
 ```bash
-$ composer require coreshop/seo-bundle:^3.0
+$ composer require coreshop/seo-bundle:^4.0
 ```
 
 ### Activating Bundle

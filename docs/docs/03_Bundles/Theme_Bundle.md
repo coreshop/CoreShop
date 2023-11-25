@@ -4,7 +4,7 @@ CoreShop Theme Bundle provides you with a flexible and extensible way of having 
 
 ## Installation
 ```bash
-$ composer require coreshop/theme-bundle:^3.0
+$ composer require coreshop/theme-bundle:^4.0
 ```
 
 ### Adding required bundles to kernel

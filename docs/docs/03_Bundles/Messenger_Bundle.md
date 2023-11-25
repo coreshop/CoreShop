@@ -6,7 +6,7 @@ CoreShop Messenger Bundle provides you with a nice UI to see what Messenger Task
 
 ## Installation
 ```bash
-$ composer require coreshop/messenger-bundle:^3.0
+$ composer require coreshop/messenger-bundle:^4.0
 ```
 
 ### Adding required bundles to kernel

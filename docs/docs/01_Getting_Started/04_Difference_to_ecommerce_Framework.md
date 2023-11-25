@@ -1,12 +1,12 @@
 # CoreShop vs. eCommerce Framework
 
-The idea behind CoreShop is totally different to the eCommerce framework. The eCommerce framework gives you skeleton for building
-eCommerce applications and heavily depends on you doing all the things.
+CoreShop and the eCommerce framework are designed with different ideologies in mind. The eCommerce framework acts as a skeleton for building eCommerce applications, requiring significant custom development.
 
-CoreShop, on the other hand, comes full-featured with a rich toolset of optional Components which you can use, or not use, for your
-ecommerce Application. In other words: CoreShop is the framework on steroids :)
+CoreShop, in contrast, is a full-featured platform that comes with a rich toolset of optional components. You can choose to use these components as needed for your eCommerce application. In simpler terms, CoreShop is like an enhanced version of the framework.
 
-Feature Comparison
+## Feature Comparison
+
+The table below compares the features of both CoreShop and the eCommerce framework:
 
 | Feature                       | eCommerce Framework | CoreShop  |
 | ----------------------------- |:-------------------:|:---------:|
@@ -21,25 +21,6 @@ Feature Comparison
 | Country Management            |         X           |    √    |
 | Taxation                      |         √           |    √    |
 | Payment Management            |         √           |    √    |
-| Supported Payment Providers   |                     |         |
-|  - Wirecard Qpay              |         √           |    √    |
-|  - Wirecard Seamless          |         √           |    √    |
-|  - Datatrans                  |         √           |    √    |
-|  - Klarna                     |         √           |    √    |
-|  - Recurring Payments         |         √           |    √    |
-|  - PayPal Express             |         X           |    √    |
-|  - PayPal Pro Checkout        |         X           |    √    |
-|  - PayPal Pro Hosted          |         X           |    √    |
-|  - PayPal Masspay             |         X           |    √    |
-|  - PayPal Rest                |         X           |    √    |
-|  - Stripe.js                  |         X           |    √    |
-|  - Stripe Checkout            |         X           |    √    |
-|  - Authorize.NET AIM          |         X           |    √    |
-|  - Be2Bill Credit Card        |         X           |    √    |
-|  - Be2Bill Offsite            |         X           |    √    |
-|  - Payex                      |         X           |    √    |
-|  - Offline                    |         X           |    √    |
-|  - Payum and Omnipay          |         X           |    √    |
 | Voucher Codes                 |         √           |    √    |
 | Catalog Price Rules           |         √           |    √    |
 | Product Specific Price Rules  |         X           |    √    |
@@ -76,6 +57,4 @@ Feature Comparison
 | Modular/Componentized         |         X (partial) |    √    |
 | Extendable                    |         √           |    √    |
 
-To be fair, both Systems have their purpose and you can do the same with both systems. The ecommerce Framework is designed
-to be very good extendable but you still need to implement a lot of stuff yourself. CoreShop gives you a lot of out-of-the-box
-features to quickly create rich ecommerce systems.
+Both systems serve their respective purposes well. The eCommerce Framework is designed to be highly extendable, but it requires more custom development. CoreShop, on the other hand, offers a plethora of out-of-the-box features, enabling the quick creation of comprehensive eCommerce systems.

@@ -1,46 +1,46 @@
 # CoreShop Architecture
 
-CoreShop is completely open source (GPl license) and free, maintained by diverse and creative community of developers and companies.
+CoreShop is an open-source (GPL license) eCommerce solution, maintained and financed by CoreShop GmbH. It benefits from a diverse community of developers and companies contributing to its development.
 
-What are our core values and what makes us different from other solutions?
+## Core Values and Distinctions
 
- - Components based approach
- - Unlimited flexibility and simple customization
- - Developer-friendly, using latest technologies
- - Highest quality of code
+
+CoreShop stands out for its:
+
+- **Components-Based Approach**: Offering modularity and flexibility.
+- **Unlimited Flexibility and Customization**: Easily tailored to specific needs.
+- **Developer-Friendly**: Incorporates the latest technologies.
+- **High-Quality Code**: Focus on robust and reliable coding practices.
 
 # The Three Natures of CoreShop
 
-CoreShop is constructed from fully decoupled and flexible e-commerce components for PHP.
-It is also a set of Symfony bundles, which integrate the components into the full-stack framework.
-On top of that, CoreShop is also a complete eCommerce suite crafted from all these building blocks.
 
-It is your choice how to use CoreShop, you can benefit from the components with any framework,
-integrate selected bundles into existing or new Pimcore app or built your application on top of CoreShop Suite.
+CoreShop combines three distinct elements:
+
+1. **Decoupled eCommerce Components**: Written in PHP for flexibility.
+2. **Symfony Bundles**: Integrating components into the full-stack Symfony framework.
+3. **Complete eCommerce Suite**: A cohesive solution crafted from these building blocks.
+
+CoreShop can be utilized in various ways: as standalone components in any framework, as bundles in a new or existing Pimcore application, or as a full-stack suite.
 
 # CoreShop Suite
 
-This book is about our full-stack eCommerce suite, which is a standard Pimcore Bundle providing the most common webshop and a foundation for custom systems.
+This documentation focuses on the CoreShop full-stack eCommerce suite. As a standard Pimcore Bundle, it provides the foundation for common webshop functionality and custom systems.
 
 # Leveraging Symfony Bundles
 
-If you prefer to build your very custom system step by step and from scratch,
-you can integrate the standalone Symfony bundles.
-For the installation instructions, please refer to the appropriate bundle documentation.
+For custom systems built from scratch, CoreShop's standalone Symfony bundles can be integrated into your project. Installation instructions are available in each bundle's documentation.
 
-## Difference to the official Pimcore eCommerce Framework
+## Difference to the Official Pimcore eCommerce Framework
 
-The eCommerce Framework provides you with a basic Toolset for eCommerce Development.
-CoreShop gives you a feature-rich Toolset of common needed Tools for rich and complex eCommerce Solutions.
+While the Pimcore eCommerce Framework offers a basic toolset for eCommerce development, CoreShop extends this with a feature-rich set of tools for complex and rich eCommerce solutions.
 
-> **Example I:** the Framework does'nt give you the full opportunity for calculating complex Shipping Prices.
-> You need to code it by yourself. CoreShop provides you with Carriers and Shipping Rules to do that.
+> **Example I:** The Framework does not fully support complex shipping price calculations. This requires custom coding. CoreShop, however, includes Carriers and Shipping Rules for such functionality.
 
-CoreShops Bundles are build to be used individually. The CoreBundle combines all the Features.
+CoreShop's bundles are designed for individual use, with the CoreBundle combining all features for a comprehensive solution.
 
 # Architecture Overview
 
-CoreShop Suite is build on CoreShop Components and Bundles.
-The CoreBundle and CoreComponent glues all different Bundles and Components into one eCommerce Suite for B2B and B2C Solutions.
+CoreShop Suite is built upon CoreShop Components and Bundles. The CoreBundle and CoreComponent unify these elements into a cohesive eCommerce Suite for both B2B and B2C solutions.
 
 ![Architecture](img/architecture.png)

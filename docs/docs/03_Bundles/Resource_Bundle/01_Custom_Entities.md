@@ -1,4 +1,6 @@
-# Adding a new custom entity
+# Adding a new custom doctrine entity
+
+This is the more advanced way of adding a new custom doctrine entity if you want to use it in a Bundle.
 
 ## Create Translatable Entity
 

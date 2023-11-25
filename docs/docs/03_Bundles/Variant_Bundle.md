@@ -4,7 +4,7 @@ CoreShop Variant Bundle allows you to manage different Variants of a Product.
 
 ## Installation
 ```bash
-  composer require coreshop/variant-bundle
+  composer require coreshop/variant-bundle:^4.0
 ```
 
 ### Adding required bundles to kernel

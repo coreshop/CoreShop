@@ -4,7 +4,7 @@ CoreShop Class Definition Patch Bundle allows you to patch class definitions fro
 
 ## Installation
 ```bash
-$ composer require coreshop/class-definitions-patch-bundle:^3.0
+$ composer require coreshop/class-definitions-patch-bundle:^4.0
 ```
 
 ### Adding required bundles to kernel
