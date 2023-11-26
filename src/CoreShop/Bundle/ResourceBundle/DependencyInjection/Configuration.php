@@ -61,7 +61,7 @@ final class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
                                     ->scalarNode('interface')->cannotBeEmpty()->end()
-                                    ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                    ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                     ->scalarNode('repository')->cannotBeEmpty()->end()
                                     ->scalarNode('factory')->defaultValue(Factory::class)->end()
                                 ->end()

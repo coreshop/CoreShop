@@ -65,6 +65,8 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
             $loader->load('services/data_hub.yml');
         }
 
+        $container->setParameter('coreshop.resources', []);
+        
         $this->loadPersistence($configs['drivers'], $configs['resources'], $loader);
         $this->loadResources($configs['resources'], $container);
         $this->loadPimcoreModels($configs['pimcore'], $container);
@@ -76,7 +78,6 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
             'priority' => 10,
         ]);
 
-        $container->setParameter('coreshop.resources', []);
         $container->setDefinition('coreshop.body_listener', $bodyListener);
 
         $container
