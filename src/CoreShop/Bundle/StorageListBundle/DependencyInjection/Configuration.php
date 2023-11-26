@@ -53,6 +53,7 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->arrayPrototype()
                         ->children()
+                            ->booleanNode('disable_caching')->defaultFalse()->end()
                             ->arrayNode('context')
                                 ->addDefaultsIfNotSet()
                                 ->children()
