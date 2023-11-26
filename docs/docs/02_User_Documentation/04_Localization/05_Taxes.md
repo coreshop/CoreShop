@@ -1,4 +1,4 @@
-# CoreShop Taxes Configuration
+# Taxes Configuration
 
 In CoreShop, tax rates are crucial for accurately calculating the applicable taxes on products and services. Each tax rate is defined by the following attributes:
 

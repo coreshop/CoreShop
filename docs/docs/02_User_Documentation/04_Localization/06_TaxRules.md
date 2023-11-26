@@ -1,4 +1,4 @@
-# CoreShop Tax Rules
+# Tax Rules
 
 Tax Rules in CoreShop are instrumental in determining the appropriate Tax Rate based on the customer's country or state. These rules ensure that the correct tax is applied to products during transactions.
 

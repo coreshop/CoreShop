@@ -1,4 +1,4 @@
-# CoreShop Currencies
+# Currencies
 
 In CoreShop, the configuration of a currency involves several key attributes essential for international transactions and currency management.
 

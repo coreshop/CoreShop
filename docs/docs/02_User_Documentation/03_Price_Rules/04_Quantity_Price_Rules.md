@@ -1,4 +1,4 @@
-# CoreShop Quantity Price Rules Documentation
+# Quantity Price Rules Documentation
 
 CoreShop Quantity Price Rules offer a dynamic way to incentivize bulk purchases in your e-commerce store with CoreShop. These rules enable you to apply volume-based discounts to specific products, with tiered pricing that varies based on the quantity purchased. This guide will help you in effectively creating and managing quantity price rules within CoreShop.
 

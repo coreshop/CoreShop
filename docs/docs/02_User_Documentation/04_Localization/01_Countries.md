@@ -1,4 +1,4 @@
-# CoreShop Country Configuration
+# Country Configuration
 
 In CoreShop, each country is defined by a set of attributes that determine how it interacts with your store. Here's what each attribute represents:
 

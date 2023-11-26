@@ -1,4 +1,4 @@
-# CoreShop Sales Report Overview
+# Sales Report Overview
 
 The CoreShop Sales Report provides a comprehensive analysis of sales data, enabling you to track and understand sales trends over different time periods.
 

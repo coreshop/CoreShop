@@ -1,4 +1,4 @@
-# CoreShop State Configuration
+# State Configuration
 
 In CoreShop, a State (or County) is defined by several key attributes essential for regional management within your store. These attributes include:
 

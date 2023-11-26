@@ -1,16 +1,20 @@
-#  Messenger Bundle
+# Messenger Bundle
 
-CoreShop Messenger Bundle provides you with a nice UI to see what Messenger Tasks are queued in which queues:
+The CoreShop Messenger Bundle provides a user-friendly interface to view queued Messenger tasks across different queues.
 
 ![Messenger](img/messenger.png)
 
-## Installation
+## Installation Process
+
+To install the Messenger Bundle, use Composer:
+
 ```bash
 $ composer require coreshop/messenger-bundle:^4.0
 ```
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel.
+### Integrating with the Kernel
+
+To enable the bundle, update the `AppKernel.php` file:
 
 ```php
 <?php

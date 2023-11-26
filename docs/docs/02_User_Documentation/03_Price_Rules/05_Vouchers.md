@@ -1,4 +1,4 @@
-# CoreShop Vouchers
+# Vouchers
 
 > **Info**: In CoreShop, vouchers are a type of Price Rule.
 > To utilize or generate Vouchers, you need to create a Cart Price Rule.

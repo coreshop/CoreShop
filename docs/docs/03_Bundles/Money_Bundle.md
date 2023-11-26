@@ -1,12 +1,18 @@
-#  Money Bundle
+# Money Bundle
 
-## Installation
+The Money Bundle provides an efficient way to handle and format monetary values within CoreShop.
+
+## Installation Process
+
+To install the Money Bundle, use Composer:
+
 ```bash
 $ composer require coreshop/money-bundle:^4.0
 ```
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel
+### Integrating with the Kernel
+
+To enable the bundle, update the `AppKernel.php` file:
 
 ```php
 <?php
@@ -21,13 +27,16 @@ public function registerBundlesToCollection(BundleCollection $collection)
 }
 ```
 
-## Usage
+## Usage Instructions
 
-Money Bundle adds a new core-extension to pimcore which allows you to store currency values as integer.
+The Money Bundle introduces a core extension in Pimcore, allowing you to store currency values as integers. This approach ensures precision and consistency in financial data handling.
 
-You also get a Twig Extension to format money values.
+### Twig Extension for Money Formatting
+
+The bundle includes a Twig extension for formatting money values:
 
 ```twig
 {{ value|coreshop_format_money('€', 'de'); }}
 ```
 
+This extension allows for easy and flexible formatting of monetary values within your templates, enhancing the display and readability of prices and financial figures in CoreShop.

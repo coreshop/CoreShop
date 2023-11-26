@@ -1,4 +1,4 @@
-# CoreShop Price Rules Conditions
+# Price Rules Conditions
 
 Get a brief overview of all the available *Price Rule Conditions* in CoreShop.
 

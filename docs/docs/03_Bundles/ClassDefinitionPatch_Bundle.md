@@ -1,6 +1,6 @@
 #  Class Definition Patch Bundle
 
-CoreShop Class Definition Patch Bundle allows you to patch class definitions from other bundles. This is useful if you want to add new properties to existing classes with a configuration.
+The CoreShop Class Definition Patch Bundle provides a convenient way to modify class definitions from other bundles. This is particularly useful for adding new properties to existing classes through a configuration setup.
 
 ## Installation
 ```bash
@@ -23,9 +23,10 @@ public function registerBundlesToCollection(BundleCollection $collection)
 }
 ```
 
-### Usage
+## Usage
+### Configuration for Patching
 
-Add a configuration to patch a certain pimcore class definition:
+To patch a Pimcore class definition, add a configuration like the following:
 
 ```yaml
 core_shop_class_definition_patch:
@@ -40,7 +41,9 @@ core_shop_class_definition_patch:
                         title: coreshop.company.name2
 ```
 
-If you want to patch CoreShop classes, you can also use the parameters that CoreShop creates and provides for you:
+### Patching CoreShop Classes
+
+For patching CoreShop classes, leverage the parameters provided by CoreShop:
 
 ```yaml
 core_shop_class_definition_patch:
@@ -53,18 +56,21 @@ core_shop_class_definition_patch:
                         fieldtype: coreShopMoney
                         title: Total 2
 ```
-### Preview
 
-You can then run the command to preview the changes that will be applied:
+### Preview Changes
+
+Before applying the changes, preview them using:
 
 ```bash
 bin/console coreshop:patch:classes --dump
 ```
 
-### Execution
+### Applying the Patch
 
-If you are happy with what you see, you can apply the patch. Since the patch is applied to your local definitions, and they should be part of your git repository, you should commit the changes and don't have to run the patch command on the deployment.
+Once you're satisfied with the preview, apply the patch:
 
 ```bash
 bin/console coreshop:patch:classes --force
 ```
+
+> **Note** that the patch modifies your local definitions, which should be part of your version control (e.g., git repository). After applying the patch, commit these changes. There's no need to run the patch command during deployment.

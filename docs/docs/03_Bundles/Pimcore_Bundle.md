@@ -127,7 +127,7 @@ your class needs to implement `CoreShop\Component\Pimcore\Slug\SluggableInterfac
 
 If you want to change the generated slug or prefix it, you can use the `CoreShop\Component\Pimcore\Event\SlugGenerationEvent` Event.
 
-```
+```php
 <?php
 
 declare(strict_types=1);

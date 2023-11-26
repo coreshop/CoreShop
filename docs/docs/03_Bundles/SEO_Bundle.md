@@ -1,12 +1,18 @@
-#  SEO Bundle
+# SEO Bundle
 
-## Installation
+The SEO Bundle in CoreShop provides tools and services to enhance the search engine optimization capabilities of your site. It is designed to work seamlessly with Pimcore's HeadLink and HeadMeta helpers.
+
+## Installation Process
+
+To install the SEO Bundle, use Composer:
+
 ```bash
 $ composer require coreshop/seo-bundle:^4.0
 ```
 
-### Activating Bundle
-You need to enable the bundle inside the kernel or with the Pimcore Extension Manager.
+### Activating the Bundle
+
+Enable the bundle inside the kernel or use the Pimcore Extension Manager:
 
 ```php
 <?php
@@ -16,81 +22,60 @@ You need to enable the bundle inside the kernel or with the Pimcore Extension Ma
 public function registerBundlesToCollection(BundleCollection $collection)
 {
     $collection->addBundles([
-        new \CoreShop\Bundle\SEOBundle\CoreShopSEOBundle()
+        new \CoreShop\Bundle\SEOBundle\CoreShopSEOBundle(),
     ]);
 }
 ```
 
 ## Usage
 
-The SEO Bundle provides you with services to make SEO more manageable. It depends on Pimcore's HeadLink and HeadMeta Helper.
+### Updating SEO Information
 
-There are multiple ways of making use of this bundle:
-
- - Implement SEO interfaces provided with this bundle
- - Implement Custom Extractors and add them to the SEOMetadata Model
-
-To update the SEO Information, you need to use the service ```coreshop.seo.presentation```:
+Utilize the `coreshop.seo.presentation` service to update SEO metadata:
 
 ```php
-
-//From a Controller
+// From a Controller
 $this->get('coreshop.seo.presentation')->updateSeoMetadata($object);
 ```
 
-### Implement SEO Interfaces
-SEO Bundle comes with 3 SEO Aware interfaces you can take advantage of:
+### Implementing SEO Interfaces
 
- - `CoreShop\Component\SEO\Model\SEOAwareInterface` for meta-title and meta-description
- - `CoreShop\Component\SEO\Model\SEOImageAwareInterface` for og-image attribute
- - `CoreShop\Component\SEO\Model\SEOImageAwareInterface` for og-title, og-type and pg-description attribute
+The SEO Bundle includes several interfaces:
 
-### Implement SEO Extractors
-To add a new Extractor, you need to implement the interface ```CoreShop\Component\SEO\Extractor\ExtractorInterface``` and register your class with the tag ```coreshop.seo.extractor```:
+- `CoreShop\Component\SEO\Model\SEOAwareInterface`: For meta-title and meta-description.
+- `CoreShop\Component\SEO\Model\SEOImageAwareInterface`: For the og-image attribute.
+- `CoreShop\Component\SEO\Model\SEOImageAwareInterface`: For og-title, og-type, and pg-description attributes.
 
-#### Example
-Let's implement a custom extractor for our Product class with a Video.
+### Implementing SEO Extractors
 
+To create a custom extractor, implement the `ExtractorInterface` and register it with the tag `coreshop.seo.extractor`.
+
+#### Example: Custom Extractor for Product Class
+
+Implement a custom extractor for the Product class:
 
 ```php
 <?php
-//src/AppBundle/SEO/Extractor/ProductVideoExtractor.php
+// src/AppBundle/SEO/Extractor/ProductVideoExtractor.php
 
 namespace AppBundle\SEO\Extractor;
 
-use Pimcore\Model\DataObject\Product;
-use Pimcore\Tool;
+//...
 
 final class ProductVideoExtractor implements ExtractorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($object)
-    {
-        return $object instanceof Product && $object->getVideoUrl();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
-    {
-        /**
-         * @var $object Product
-         */
-        $seoMetadata->addExtraProperty('og:video', Tool::getHostUrl() . $object->getVideoUrl());
-    }
+    // Your implementation
 }
 ```
 
-Now we need to register the service
+Register the service in your `services.yml`:
 
 ```yml
 # src/AppBundle/Resources/config/services.yml
 services:
-    AppBundle\SEO\Extractor:
+    AppBundle\SEO\Extractor\ProductVideoExtractor:
         tags:
             - { name: coreshop.seo.extractor, type: product_video }
-
 ```
+
+This bundle simplifies the process of implementing effective SEO strategies, making your CoreShop site more discoverable and enhancing its online presence.

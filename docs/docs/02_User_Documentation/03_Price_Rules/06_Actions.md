@@ -1,4 +1,4 @@
-# CoreShop Price Rule Actions
+# Price Rule Actions
 
 Get a brief overview of all the available *Price Rule Actions* in CoreShop.
 
