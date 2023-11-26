@@ -113,14 +113,16 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $container->setDefinition('coreshop.storage_list.session_subscriber.' . $name, $sessionSubscriber);
             }
 
-            $cacheSubscriber = new Definition(CacheListener::class, [
-                new Reference(PimcoreContextResolver::class),
-                new Reference($contextCompositeServiceName),
-            ]);
-            $cacheSubscriber->addTag('kernel.event_subscriber');
+            if ($list['disable_caching']) {
+                $cacheSubscriber = new Definition(CacheListener::class, [
+                    new Reference($list['resource']['repository']),
+                    new Reference($list['resource']['item_repository'])
+                ]);
 
-            $container->setDefinition('coreshop.storage_list.cache_subscriber.' . $name, $cacheSubscriber);
-
+                $cacheSubscriber->addTag('kernel.event_subscriber');
+                $container->setDefinition('coreshop.storage_list.cache_subscriber.' . $name, $cacheSubscriber);
+            }
+            
             if ($list['controller']['enabled']) {
                 $class = $list['controller']['class'];
 
