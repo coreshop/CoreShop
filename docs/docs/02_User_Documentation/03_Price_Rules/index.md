@@ -1,4 +1,4 @@
-# CoreShop Price Rules
+# Price Rules
 
 CoreShop Price Rules are powerful tools for price calculation. This section provides a detailed overview of how price calculation works in CoreShop.
 

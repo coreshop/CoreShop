@@ -1,4 +1,4 @@
-# CoreShop Automation
+# Automation
 In CoreShop there are several automation mechanism implemented.
 
 ## Order Cancellation
