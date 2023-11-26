@@ -1,6 +1,7 @@
 # SEO Bundle
 
-The SEO Bundle in CoreShop provides tools and services to enhance the search engine optimization capabilities of your site. It is designed to work seamlessly with Pimcore's HeadLink and HeadMeta helpers.
+The SEO Bundle in CoreShop provides tools and services to enhance the search engine optimization capabilities of your
+site. It is designed to work seamlessly with Pimcore's HeadLink and HeadMeta helpers.
 
 ## Installation Process
 
@@ -78,4 +79,5 @@ services:
             - { name: coreshop.seo.extractor, type: product_video }
 ```
 
-This bundle simplifies the process of implementing effective SEO strategies, making your CoreShop site more discoverable and enhancing its online presence.
+This bundle simplifies the process of implementing effective SEO strategies, making your CoreShop site more discoverable
+and enhancing its online presence.

@@ -1,3 +1,4 @@
 # Order Workflow
 
-CoreShop uses Symfony Workflow to apply states. Here is the detail information about the [State Machine](./16_State_Management.md).
+CoreShop uses Symfony Workflow to apply states. Here is the detail information about
+the [State Machine](./16_State_Management.md).

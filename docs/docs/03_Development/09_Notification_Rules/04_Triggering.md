@@ -1,6 +1,7 @@
 # Notification Trigger Notifications
 
-Triggering Notification events is quite easy, you can use the ```CoreShop\Component\Notification\Processor\RulesProcessorInterface``` implemented by service
+Triggering Notification events is quite easy, you can use
+the ```CoreShop\Component\Notification\Processor\RulesProcessorInterface``` implemented by service
 ```@coreshop.notification_rule.processor```
 
 You also need to add different kinds of parameters based on your Notification Type.

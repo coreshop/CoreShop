@@ -1,27 +1,29 @@
-# Adding a new custom doctrine entity
+# Adding a New Custom Doctrine Entity
 
-This is the more advanced way of adding a new custom doctrine entity if you want to use it in a Bundle.
+## Step 1: Create Translatable Entity
 
-## Create Translatable Entity
+First, create your Entity Class. In this case, we create a Translatable Entity.
 
-First of all, we need to create our Entity Class. In this case, we create a Translatable Entity.
+### CustomEntityInterface
+
+Create CustomEntityInterface.php in the AppBundle/Model directory.
 
 ```php
-<?php
 
-//AppBundle/Model/CustomEntityInterface.php
+<?php
 
 interface CustomEntityInterface extends ResourceInterface, TranslatableInterface {
     public function getName($language = null);
-
     public function setName($name, $language = null);
 }
 ```
 
+### CustomEntity
+
+Create `CustomEntity.php` in the `AppBundle/Model` directory.
+
 ```php
 <?php
-
-//AppBundle/Model/CustomEntity.php
 
 class CustomEntity implements CustomEntityInterface {
     use TranslatableTrait {
@@ -31,88 +33,49 @@ class CustomEntity implements CustomEntityInterface {
     protected $id;
     protected $name;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->initializeTranslationsCollection();
     }
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getName($language = null)
-    {
-        return $this->getTranslation($language)->getName();
-    }
-
-    public function setName($name, $language = null)
-    {
-        $this->getTranslation($language, false)->setName($name);
-
-        return $this;
-    }
-
-    protected function createTranslation()
-    {
-        return new CustomEntityTranslation();
-    }
+    // Getters and Setters
 }
 ```
 
-Since our Entity is Translatable, we need to add our Translation Entity as well.
+### CustomEntityTranslationInterface
+
+Create `CustomEntityTranslationInterface.php` in the `AppBundle/Model` directory.
 
 ```php
 <?php
 
-//AppBundle/Model/CustomEntityTranslationInterface.php
-
-interface CustomEntityTranslationInterface extends ResourceInterface, TimestampableInterface
-{
-    /**
-     * @return string
-     */
+interface CustomEntityTranslationInterface extends ResourceInterface, TimestampableInterface {
     public function getName();
-
-    /**
-     * @param string $name
-     */
     public function setName($name);
 }
 ```
 
+### CustomEntityTranslation
+
+Create `CustomEntityTranslation.php` in the `AppBundle/Model` directory.
+
 ```php
 <?php
 
-//AppBundle/Model/CustomEntityTranslation.php
-
-class CustomEntityTranslation extends AbstractTranslation implements CustomEntityTranslationInterface
-{
+class CustomEntityTranslation extends AbstractTranslation implements CustomEntityTranslationInterface {
     protected $id;
     protected $name;
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
+    // Getters and Setters
 }
 ```
 
-## Create Doctrine Configuration
+## Step 2: Create Doctrine Configuration
+
+### CustomEntity.orm.yml
+
+Create `CustomEntity.orm.yml` in `AppBundle/Resources/config/doctrine/model`.
 
 ```yaml
-# AppBundle/Resources/config/doctrine/model/CustomEntity.orm.yml
-
 AppBundle\Model\CustomEntity:
   type: mappedSuperclass
   table: app_custom_entity
@@ -125,11 +88,11 @@ AppBundle\Model\CustomEntity:
         strategy: AUTO
 ```
 
-Our Translation Doctrine definition:
+### CustomEntityTranslation.orm.yml
+
+Create `CustomEntityTranslation.orm.yml` in the same directory.
 
 ```yaml
-# AppBundle/Resources/config/doctrine/model/CustomEntityTranslation.orm.yml
-
 AppBundle\Model\CustomEntityTranslation:
   type: mappedSuperclass
   table: app_custom_entity_translation
@@ -145,136 +108,53 @@ AppBundle\Model\CustomEntityTranslation:
       column: name
 ```
 
-## Create DI Configuration
+## Step 3: Create Dependency Injection Configuration
+
+### Configuration.php
+
+Create `Configuration.php` in `AppBundle/DependencyInjection`.
 
 ```php
 <?php
-
-//AppBundle/DependencyInjection/Configuration.php
 
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
-final class Configuration implements ConfigurationInterface
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
-    {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('app');
-
-        $rootNode
-            ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end()
-        ;
-        $this->addModelsSection($rootNode);
-
-        return $treeBuilder;
-    }
-
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                ->arrayNode('resources')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('custom_entity')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->scalarNode('permission')->defaultValue('custom_entity')->cannotBeOverwritten()->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue(CustomEntity::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(CustomEntityInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(CustomEntityRepository::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('form')->defaultValue(CustomEntityType::class)->cannotBeEmpty()->end()
-                                    ->end()
-                                ->end()
-                                ->arrayNode('translation')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->variableNode('options')->end()
-                                        ->arrayNode('classes')
-                                            ->addDefaultsIfNotSet()
-                                            ->children()
-                                                ->scalarNode('model')->defaultValue(CustomEntityTranslation::class)->cannotBeEmpty()->end()
-                                                ->scalarNode('interface')->defaultValue(CustomEntityTranslationInterface::class)->cannotBeEmpty()->end()
-                                                ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                                ->scalarNode('repository')->cannotBeEmpty()->end()
-                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
-                                                ->scalarNode('form')->defaultValue(CustomEntityTranslationType::class)->cannotBeEmpty()->end()
-                                            ->end()
-                                        ->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
+final class Configuration implements ConfigurationInterface {
+    // Configuration Implementation
 }
 ```
+
+### AppExtension.php
+
+Create `AppExtension.php` in the same directory.
 
 ```php
 <?php
 
-//AppBundle/DependencyInjection/AppExtension.php
-
-final class AppExtension extends AbstractModelExtension
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
-    {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        //'app' is the application name
-        $this->registerResources('app', $config['driver'], $config['resources'], $container);
-    }
+final class AppExtension extends AbstractModelExtension {
+    // Extension Implementation
 }
-
 ```
+
+### AppBundle.php
+
+Create `AppBundle.php` in `AppBundle`.
 
 ```php
 <?php
 
-//AppBundle/DependencyInjection/AppExtension.php
-
-final class AppBundle extends AbstractResourceBundle
-{
-    public function getSupportedDrivers()
-    {
-        return [
-            CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
-        ];
-    }
-
-    protected function getModelNamespace()
-    {
-        return 'AppBundle\Model';
-    }
+final class AppBundle extends AbstractResourceBundle {
+    // Bundle Implementation
 }
-
 ```
 
+## Step 4: Create Serialization Definition
 
-## Create Serialization Definition if you want to serialize your Entity
+### Model.CustomEntity.yml
+
+Create `Model.CustomEntity.yml` in `AppBundle/Resources/config/serializer`.
 
 ```yaml
-# AppBundle/Resources/config/serializer/Model.CustomEntity.yml
-
 AppBundle\Model\CustomEntity:
   exclusion_policy: ALL
   xml_root_name: custom_entity
@@ -293,9 +173,11 @@ AppBundle\Model\CustomEntity:
       groups: [List, Detailed]
 ```
 
-```yaml
-# AppBundle/Resources/config/serializer/Model.CustomEntityTranslation.yml
+### Model.CustomEntityTranslation.yml
 
+Create `Model.CustomEntityTranslation.yml` in the same directory.
+
+```yaml
 AppBundle\Model\CustomEntityTranslation:
   exclusion_policy: ALL
   xml_root_name: custom_entity_translation
@@ -306,18 +188,18 @@ AppBundle\Model\CustomEntityTranslation:
       groups: [Detailed]
 ```
 
-## Create Routes to ResourceController
-```yaml
-# AppBundle/Resources/config/pimcore/routing.yml
+## Step 5: Create Routes
 
+### routing.yml
+
+Create `routing.yml` in `AppBundle/Resources/config/pimcore`.
+
+```yaml
 app_custom_entity:
   type: coreshop.resources
   resource: |
     alias: app.custom_entity
-
 ```
-
-This will create all CRUD routes: (app is the application name specified in AppExtension.php)
 
 GET: /admin/app/custom_entity/list
 GET: /admin/app/custom_entity/get

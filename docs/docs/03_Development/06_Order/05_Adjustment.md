@@ -1,12 +1,16 @@
 # Adjustments
 
-Adjustments are a way to add additional costs or discounts to your Order. They are used for example for Taxes, Shipping or Discounts.
+Adjustments are a way to add additional costs or discounts to your Order. They are used for example for Taxes, Shipping
+or Discounts.
 
 ## Add a new Adjustment
 
-It is best practice to add/remove adjustments within Cart Processors. You can find more information about Cart Processors [here](./07_Cart_Processor.md).
+It is best practice to add/remove adjustments within Cart Processors. You can find more information about Cart
+Processors [here](./07_Cart_Processor.md).
 
-To add a new Adjustment, you need to create a new Adjustment Model, which implements the interface [```CoreShop\Component\Order\Model\AdjustmentInterface```]. You should use the Factory [```CoreShop\Component\Order\Factory\AdjustmentFactoryInterface```] to create a new Adjustment.
+To add a new Adjustment, you need to create a new Adjustment Model, which implements the
+interface [```CoreShop\Component\Order\Model\AdjustmentInterface```]. You should use the
+Factory [```CoreShop\Component\Order\Factory\AdjustmentFactoryInterface```] to create a new Adjustment.
 
 ```php
 /**

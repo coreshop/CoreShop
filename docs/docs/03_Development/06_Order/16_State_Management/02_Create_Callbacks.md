@@ -3,7 +3,9 @@
 It's really simple to create a custom state machine callback.
 
 ## After Callbacks
-In this example we want to register a simple listener which gets triggered **after** a customer successfully placed a order:
+
+In this example we want to register a simple listener which gets triggered **after** a customer successfully placed a
+order:
 
 ```yml
 core_shop_workflow:
@@ -18,12 +20,12 @@ core_shop_workflow:
                         priority: -10 # fire action early!
 ```
 
-| Name | Description |
-|:-----|:------------|
-| `on` | transition name |
-| `do` | service and method to dispatch |
-| `args` | `object` or `event`. Object type depends on state machine type. |
-| `priority` | set priority. default is `0` |
+| Name       | Description                                                     |
+|:-----------|:----------------------------------------------------------------|
+| `on`       | transition name                                                 |
+| `do`       | service and method to dispatch                                  |
+| `args`     | `object` or `event`. Object type depends on state machine type. |
+| `priority` | set priority. default is `0`                                    |
 
 And your Service:
 
@@ -54,7 +56,9 @@ final class SpecialListener
 ```
 
 ## Before Callbacks
-In this example we want to register a simple listener which gets triggered **before** a the shipment transaction `ready` gets applied:
+
+In this example we want to register a simple listener which gets triggered **before** a the shipment transaction `ready`
+gets applied:
 
 ```yml
 core_shop_workflow:
@@ -69,12 +73,12 @@ core_shop_workflow:
                         priority: 0
 ```
 
-| Name | Description |
-|:-----|:------------|
-| `on` | transition name |
-| `do` | service and method to dispatch |
-| `args` | `object` or `event`. Object type depends on state machine type. |
-| `priority` | set priority. default is `0` |
+| Name       | Description                                                     |
+|:-----------|:----------------------------------------------------------------|
+| `on`       | transition name                                                 |
+| `do`       | service and method to dispatch                                  |
+| `args`     | `object` or `event`. Object type depends on state machine type. |
+| `priority` | set priority. default is `0`                                    |
 
 As you can see in the class below, the `checkSomething()` method throws an exception.
 This prevents the state machine from switching to the `ready` state.

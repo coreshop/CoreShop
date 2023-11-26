@@ -1,6 +1,7 @@
 # CoreShop User Documentation
 
-Welcome to the CoreShop User Documentation! This section provides a comprehensive guide to get you started with CoreShop, covering various key aspects of the platform.
+Welcome to the CoreShop User Documentation! This section provides a comprehensive guide to get you started with
+CoreShop, covering various key aspects of the platform.
 
 ## Quick Start Topics
 

@@ -6,8 +6,8 @@ To create a rich layered navigation (faceted navigation), you need to create an 
 
 CoreShop currently supports two type of indexes:
 
- - Mysql
- - ~~Elasticsearch~~
+- Mysql
+- ~~Elasticsearch~~
 
 ### Add Fields
 
@@ -21,14 +21,14 @@ Every field has some properties that needs to be configured
 
 ![Field](img/field.png)
 
-| Field         | Description |
-| ------------- |-------------|
-| Key           | Pimcore Field Name |
-| Name          | Name in the Index |
-| Getter Class  | Getter Class is important for field-types like "Localized Fields", "Classification Store", "Object Brick" and "Field Collection". CoreShop needs it to get the right value for the index |
-| [Interpreter](./01_Interpreter.md)   | Using Interpreters helps you to transform values before they get stored in the index. For example: Resolving dependencies, create a similarity Index |
-| Type          | Type of the field in the index, depends on which Index-Type you are using. [MySql](http://dev.mysql.com/doc/refman/5.7/en/data-types.html) or [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html) |
-| Getter Config | Configuration depends on Getter, for example: Language for Localized Fields |
+| Field                              | Description                                                                                                                                                                                                                                       |
+|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Key                                | Pimcore Field Name                                                                                                                                                                                                                                |
+| Name                               | Name in the Index                                                                                                                                                                                                                                 |
+| Getter Class                       | Getter Class is important for field-types like "Localized Fields", "Classification Store", "Object Brick" and "Field Collection". CoreShop needs it to get the right value for the index                                                          |
+| [Interpreter](./01_Interpreter.md) | Using Interpreters helps you to transform values before they get stored in the index. For example: Resolving dependencies, create a similarity Index                                                                                              |
+| Type                               | Type of the field in the index, depends on which Index-Type you are using. [MySql](http://dev.mysql.com/doc/refman/5.7/en/data-types.html) or [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html) |
+| Getter Config                      | Configuration depends on Getter, for example: Language for Localized Fields                                                                                                                                                                       |
 
 ## Re-Index
 

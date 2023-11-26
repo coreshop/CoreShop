@@ -1,6 +1,7 @@
 # Stores
 
 ## Create
+
 If you want to create a Store via API, you can do following:
 
 ```php
@@ -49,6 +50,7 @@ $container->get('coreshop.manager.store')->flush();
 ```
 
 ## Delete
+
 If you want to update and existing Store, you need to do following:
 
 ```php

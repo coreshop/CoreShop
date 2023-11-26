@@ -1,6 +1,8 @@
 # Payment Distribution Report
 
-The CoreShop Payment Distribution Report offers a detailed analysis of the various payment methods used in your e-commerce store. Presented as a pie chart, this report is essential for understanding customer payment preferences and optimizing your payment options.
+The CoreShop Payment Distribution Report offers a detailed analysis of the various payment methods used in your
+e-commerce store. Presented as a pie chart, this report is essential for understanding customer payment preferences and
+optimizing your payment options.
 
 ![Payment Distribution](img/payments.png)
 
@@ -9,8 +11,8 @@ The CoreShop Payment Distribution Report offers a detailed analysis of the vario
 This report utilizes a pie chart format to provide a visual overview of payment distribution.
 
 | Type      | Has Pagination |
-|:----------|:--------------|
-| Pie Chart | No            |
+|:----------|:---------------|
+| Pie Chart | No             |
 
 ## Applying Filters for Detailed Insights
 
@@ -32,4 +34,5 @@ Customize your report using the following filters to focus on specific data poin
 
 The Payment Distribution Report includes the following field:
 
-- **Payment Provider Distribution**: This field visualizes the usage frequency of each payment provider, enabling you to assess which payment methods are most popular among your customers.
+- **Payment Provider Distribution**: This field visualizes the usage frequency of each payment provider, enabling you to
+  assess which payment methods are most popular among your customers.

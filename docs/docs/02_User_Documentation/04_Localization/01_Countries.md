@@ -1,6 +1,7 @@
 # Country Configuration
 
-In CoreShop, each country is defined by a set of attributes that determine how it interacts with your store. Here's what each attribute represents:
+In CoreShop, each country is defined by a set of attributes that determine how it interacts with your store. Here's what
+each attribute represents:
 
 - **Name**: The official name of the country.
 - **ISO-Code**: The standardized international code for the country.

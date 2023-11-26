@@ -7,6 +7,7 @@ A gateway is configured for each payment method separately using the payment met
 ## Payment Gateway configuration
 
 ### Payment Gateways that already have a CoreShop bridge
+
 First you need to create the configuration form type for your gateway.
 Have a look at the configuration form types of *Paypal* and *Sofort*.
 
@@ -31,8 +32,8 @@ After that it will be available in the admin panel in the gateway choice dropdow
 As an example, we add *Sofort* as a payment gateway factory.
 To add a new gateway configuration you need to add 2 files:
 
- - A new FormType for configuration values
- - A new Javascript File for ExtJs Form
+- A new FormType for configuration values
+- A new Javascript File for ExtJs Form
 
 **1**: Form Type for Configuration Values:
 

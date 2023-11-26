@@ -4,8 +4,8 @@ It's possible to extend all available CoreShop Workflow.
 
 ## Example A: Extend Shipment Workflow
 
-
 ### Workflow Configuration
+
 ```yml
 core_shop_workflow:
     state_machine:
@@ -39,6 +39,7 @@ coreshop.ui.workflow.state.coreshop_shipment.reviewed: 'Shipment under Review'
 ```
 
 ### Inform CoreShop about new Transition of Shipment Workflow
+
 Not all transitions should be available in backend.
 To allow the transition to show up, you need to implement a simple event listener:
 
@@ -71,17 +72,21 @@ class WorkflowListener
 
 ## Example B: Change default Transition Behaviour of Shipment Workflow
 
-> **Note:** Be careful while changing transitions. Test your application if a workflow still runs smoothly after changing it!
+> **Note:** Be careful while changing transitions. Test your application if a workflow still runs smoothly after
+> changing it!
 
 In this example we want to change the default shipping behavior.
 
 ### Workflow before:
+
 `ready` -> `shipped` -> `cancelled`
 
 ### Workflow after:
+
 `ready` -> `reviewed` -> `shipped` -> `cancelled`
 
 ### Workflow Configuration
+
 ```yml
 core_shop_workflow:
     state_machine:
@@ -107,6 +112,7 @@ core_shop_workflow:
 ```
 
 ### Example C: Callback Listener
+
 If you need to implement some further business logic after the `coreshop_shipment` state has changed to `reviewed`
 you need to define a callback:
 

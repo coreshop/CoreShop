@@ -1,14 +1,19 @@
-#  Variant Bundle
+# Variant Bundle in CoreShop
 
-CoreShop Variant Bundle allows you to manage different Variants of a Product.
+The CoreShop Variant Bundle provides a robust framework for managing different variants of a product in your e-commerce
+application.
 
-## Installation
+## Installation Process
+
+To install the Variant Bundle, use Composer:
+
 ```bash
-  composer require coreshop/variant-bundle:^4.0
+composer require coreshop/variant-bundle:^4.0
 ```
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel.
+### Integrating with the Kernel
+
+Enable the bundle in the kernel by updating the `AppKernel.php` file:
 
 ```php
 <?php
@@ -24,40 +29,46 @@ public function registerBundlesToCollection(BundleCollection $collection)
 ```
 
 ## Abstract
-Pimcore already supports variants. But it doesn't define what a Variant is, or how a variant differs from the Parent Product or other Variants.
 
-In classical e-commerce scenarios, you usually have different Variation Types like Size and Color with different Values like `XL` or `Red`.
+Pimcore supports variants but does not define the specifics of what a variant is or how it differs from the parent
+product or other variants. CoreShop addresses this by introducing two entities:
 
-CoreShop describes these two types of entities as `Group` (`CoreShop\Component\Variant\Model\AttributeGroupInterface`) and `Value` (`CoreShop\Component\Variant\Model\AttributeValueInterface`
+1. **Attribute Group** (`CoreShop\Component\Variant\Model\AttributeGroupInterface`): Defines types like size or color.
+2. **Attribute Value** (`CoreShop\Component\Variant\Model\AttributeValueInterface`): Represents values like `XL`
+   or `Red`.
 
-The "Product" itself than is a sort-of abstract entity that is used to define what Attribute Groups are allowed. The Pimcore Variants then, need to have the values of thse Groups filled.
+The product is an abstract entity specifying the allowed attribute groups, with its variants needing to have these group
+values filled.
 
-Example:
+### Example
 
- - AttributeGroup Color
-   -AttributeValue Red
-   -AttributeValue Blue
-
- - product (defines allowed groups for color)
-   - variant-red (defines the AttributeValue Red in attributes)
-   - variant-blue (defines the AttributeValue Blue in attributes)
+- **AttributeGroup Color**: Contains `AttributeValue Red` and `AttributeValue Blue`.
+- **Product**: Defines allowed groups for color.
+    - **Variant-Red**: Defines the `AttributeValue Red` in attributes.
+    - **Variant-Blue**: Defines the `AttributeValue Blue` in attributes.
 
 ## Usage
-CoreShop Variant Bundle does NOT come with a Installer for certain Resources it requires. That is on purpose and you need to manually install what you need.
 
-Per Default, it comes with 3 different Classes:
+### Class Installation
 
- - `CoreShopAttributeGroup`
- - `CoreShopAttributeColor`
- - `CoreShopAttributeValue`
+The Variant Bundle does not come with an installer for required resources. You need to install what you need manually.
+By default, it includes three classes:
 
-Whereas `Color` and `Value` are two Value types and `Group` is a Group type.
+- `CoreShopAttributeGroup`
+- `CoreShopAttributeColor`
+- `CoreShopAttributeValue`
 
-You can manually import the classes from this dir ```vendor/coreshop/variant-bundle/Resources/install/pimcore/classes```
+The classes `Color` and `Value` represent value types, while `Group` is a group type. Manually import the classes
+from `vendor/coreshop/variant-bundle/Resources/install/pimcore/classes`.
 
-To create a "Product" Class, you need to implement the interface ```CoreShop\Component\Variant\Model\ProductVariantAwareInterface```. The Class requires you to have these fields:
+### Creating a "Product" Class
 
- - attributes - ManyToManyObjectRelation for `CoreShopAttributeColor`/`CoreShopAttributeValue`
- - allowedAttributeGroups - ManyToManyObjectRelation for `CoreShopAttributeGroup`
- - mainVariant - ManyToOneRelation for `Product` (eg. your Class where you implemented the interface)
+Implement the `CoreShop\Component\Variant\Model\ProductVariantAwareInterface` for your "Product" class. It should
+include these fields:
 
+- **attributes**: ManyToManyObjectRelation for `CoreShopAttributeColor`/`CoreShopAttributeValue`.
+- **allowedAttributeGroups**: ManyToManyObjectRelation for `CoreShopAttributeGroup`.
+- **mainVariant**: ManyToOneRelation for `Product` (i.e., your class implementing the interface).
+
+The Variant Bundle significantly enhances the flexibility of product management in CoreShop, allowing for detailed and
+diverse product variant configurations.

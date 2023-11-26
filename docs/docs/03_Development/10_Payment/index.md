@@ -8,19 +8,21 @@ On CoreShop side, we integrate it into our checkout and manage all the payment d
 
 ## Available Payment Gateways for CoreShop
 
-| Name | State | Link | Support | Offsite | Supports Server-Notification | Supports Refund |
-|------|------|-------|---------|---------|------------------------------|-----------------|
-| **Heidelpay** | stable | [Github](https://github.com/coreshop/PayumHeidelpayBundle) | PayPal, Klarna Sofort, Credit Card | No | Yes | No |
-| **SaferPay** | stable | [Github](https://github.com/coreshop/PayumSaferpayBundle) | [Supported Payment Methods](https://saferpay.github.io/sndbx/index.html#paymentmethods) | Yes | Yes | Partially |
-| **PostFinance** | stable | [Github](https://github.com/coreshop/PayumPostFinanceBundle) | PostFinance Card, PostFinance E-Finance, Visa, MasterCard, Diners Club, American Express, JCB, PayPal, TWINT | Yes | Yes | No |
-| **PowerPay** | dev | [Github](https://github.com/coreshop/PayumPowerpayBundle) | invoice, automatic credit check | No | No (not required) | No |
-| **CuraBill** | dev | [Github](https://github.com/coreshop/PayumCurabillBundle) | invoice, instalments via iframe | No | No (not required) | No |
+| Name            | State  | Link                                                         | Support                                                                                                      | Offsite | Supports Server-Notification | Supports Refund |
+|-----------------|--------|--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|---------|------------------------------|-----------------|
+| **Heidelpay**   | stable | [Github](https://github.com/coreshop/PayumHeidelpayBundle)   | PayPal, Klarna Sofort, Credit Card                                                                           | No      | Yes                          | No              |
+| **SaferPay**    | stable | [Github](https://github.com/coreshop/PayumSaferpayBundle)    | [Supported Payment Methods](https://saferpay.github.io/sndbx/index.html#paymentmethods)                      | Yes     | Yes                          | Partially       |
+| **PostFinance** | stable | [Github](https://github.com/coreshop/PayumPostFinanceBundle) | PostFinance Card, PostFinance E-Finance, Visa, MasterCard, Diners Club, American Express, JCB, PayPal, TWINT | Yes     | Yes                          | No              |
+| **PowerPay**    | dev    | [Github](https://github.com/coreshop/PayumPowerpayBundle)    | invoice, automatic credit check                                                                              | No      | No (not required)            | No              |
+| **CuraBill**    | dev    | [Github](https://github.com/coreshop/PayumCurabillBundle)    | invoice, instalments via iframe                                                                              | No      | No (not required)            | No              |
 
 ## Payment
+
 Every payment in CoreShop, successful or failed, is represented by the payment model,
 which contains basic information and a reference to appropriate order.
 
 ## Create a Payment programmatically
+
 As usually, use a factory to create a new PaymentMethod and give it a unique code.
 
 ```php
@@ -34,6 +36,6 @@ $this->container->get('coreshop.repository.payment')->add($payment);
 
 ## More
 
- - [Payment Provider](./01_Payment_Provider.md)
- - [Ominpay Bridge](./02_Omnipay_Bridge.md)
- - [Payum Providers](./03_Payum_Providers.md)
+- [Payment Provider](./01_Payment_Provider.md)
+- [Ominpay Bridge](./02_Omnipay_Bridge.md)
+- [Payum Providers](./03_Payum_Providers.md)

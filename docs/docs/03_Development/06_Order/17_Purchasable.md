@@ -1,16 +1,21 @@
 # Order Purchasable
 
-Items, you want to add to your Cart/Order/Quote, need to implement [```CoreShop\Component\Order\Model\PurchasableInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Model/PurchasableInterface.php).
+Items, you want to add to your Cart/Order/Quote, need to
+implement [```CoreShop\Component\Order\Model\PurchasableInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Model/PurchasableInterface.php).
 
-The concept of Purchasable allows us to decouple CoreShops Order Component from the Product Component and makes the Cart/Quote/Order more flexible
+The concept of Purchasable allows us to decouple CoreShops Order Component from the Product Component and makes the
+Cart/Quote/Order more flexible
 in ways of which object types can be used.
 
 > A Purchasable does not a have Price directly
-> You need create a class that implements [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
+> You need create a class that
+> implements [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
 > in order to calculate price
 
 # Implementation of a new Purchasable Price Calculator
-To implement a new custom Purchasable Price Calculator, you need to implement the interface [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
+
+To implement a new custom Purchasable Price Calculator, you need to implement the
+interface [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
 
 As an example, we create a ProductSetCalculator, which takes prices of each consisting Product:
 

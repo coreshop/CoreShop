@@ -5,7 +5,8 @@
 
 ## How to Create Vouchers
 
-To create a voucher, start by making a new [cart price rule](./01_Cart_Price_Rules.md) and activate the "Is Voucher Rule" option. This will enable the "Voucher Codes" tab.
+To create a voucher, start by making a new [cart price rule](./01_Cart_Price_Rules.md) and activate the "Is Voucher
+Rule" option. This will enable the "Voucher Codes" tab.
 
 ![Voucher](./img/vouchers-1.png)
 
@@ -15,10 +16,10 @@ For more control over Voucher handling, add the "Voucher" condition.
 
 ![Voucher](./img/vouchers-2.png)
 
-| Name                         | Description                                                  |
-|:-----------------------------|:-------------------------------------------------------------|
-| Max. Usage per Code          | Define the maximum usage for each voucher code.              |
-| Allow only one Voucher per Code | Limit to one voucher per cart if checked.              |
+| Name                            | Description                                     |
+|:--------------------------------|:------------------------------------------------|
+| Max. Usage per Code             | Define the maximum usage for each voucher code. |
+| Allow only one Voucher per Code | Limit to one voucher per cart if checked.       |
 
 ### Voucher Codes
 
@@ -48,11 +49,11 @@ Create an individual voucher code. Note that duplicate strings are not allowed a
 
 For bulk generation, use the Voucher Codes Generator:
 
-| Name                      | Description                                         |
-|:--------------------------|:----------------------------------------------------|
-| Amount                    | Number of voucher codes to generate.                |
-| Length                    | Length of each voucher code.                        |
-| Format                    | Format of the code: `Alphanumeric`, `Alphabetic`, `Numeric`. |
-| Prefix                    | A prefix for each code, e.g., `SHOP-`.              |
-| Suffix                    | A suffix for each code, e.g., `-SHOP`.              |
-| Hyphens every X characters | Inserts a dash (`-`) after every X characters.     |
+| Name                       | Description                                                  |
+|:---------------------------|:-------------------------------------------------------------|
+| Amount                     | Number of voucher codes to generate.                         |
+| Length                     | Length of each voucher code.                                 |
+| Format                     | Format of the code: `Alphanumeric`, `Alphabetic`, `Numeric`. |
+| Prefix                     | A prefix for each code, e.g., `SHOP-`.                       |
+| Suffix                     | A suffix for each code, e.g., `-SHOP`.                       |
+| Hyphens every X characters | Inserts a dash (`-`) after every X characters.               |

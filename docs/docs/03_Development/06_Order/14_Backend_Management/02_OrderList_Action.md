@@ -16,6 +16,7 @@ AppBundle\CoreShop\OrderList\Action\Demo:
 ```
 
 ## Create PHP Class
+
 In this example we want to apply the shipment transition "ship" to selected orders.
 
 ```php

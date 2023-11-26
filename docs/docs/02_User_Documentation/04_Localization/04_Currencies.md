@@ -1,6 +1,7 @@
 # Currencies
 
-In CoreShop, the configuration of a currency involves several key attributes essential for international transactions and currency management.
+In CoreShop, the configuration of a currency involves several key attributes essential for international transactions
+and currency management.
 
 - **Name**: The official name of the currency.
 - **ISO Code**: The standardized international three-letter code representing the currency.
@@ -11,6 +12,8 @@ In CoreShop, the configuration of a currency involves several key attributes ess
 
 ## Exchange Rates
 
-CoreShop supports automated calculation of exchange rates, simplifying the process of maintaining current and accurate currency information. This feature is particularly useful for stores that handle transactions in multiple currencies and need to ensure consistent and fair pricing across different regions.
+CoreShop supports automated calculation of exchange rates, simplifying the process of maintaining current and accurate
+currency information. This feature is particularly useful for stores that handle transactions in multiple currencies and
+need to ensure consistent and fair pricing across different regions.
 
 > **Important**: Regular updates of exchange rates are necessary for accurate currency conversion.

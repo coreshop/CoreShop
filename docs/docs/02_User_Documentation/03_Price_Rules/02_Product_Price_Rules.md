@@ -1,6 +1,9 @@
 # Product Price Rules Documentation
 
-CoreShop provides a dynamic and flexible approach to implementing discounts and special pricing for products in your e-commerce store, leveraging the capabilities of the Pimcore platform. These product price rules can be tailored based on a variety of conditions, allowing you to apply them to specific products, categories, or customer groups. This guide will help you navigate the process of creating and managing these rules in CoreShop.
+CoreShop provides a dynamic and flexible approach to implementing discounts and special pricing for products in your
+e-commerce store, leveraging the capabilities of the Pimcore platform. These product price rules can be tailored based
+on a variety of conditions, allowing you to apply them to specific products, categories, or customer groups. This guide
+will help you navigate the process of creating and managing these rules in CoreShop.
 
 ![Product Price Rules](img/product-pricerule.png)
 

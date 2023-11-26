@@ -1,38 +1,51 @@
-#  Storage List Bundle
+# Storage List Bundle in CoreShop
 
-Storage List Component helps you with Lists/Collections of Objects like a Cart, Wishlist or Compare List.
+The Storage List Bundle assists in managing lists and collections of objects, such as carts, wishlists, or compare
+lists, in CoreShop.
 
-## Installation
+## Installation Process
+
+To install the Storage List Bundle, use Composer:
+
 ```bash
 $ composer require coreshop/storage-list-bundle:^4.0
 ```
 
 ## Usage
-To use it you need to have 3 models:
 
-- a Storage List: the collection ([```CoreShop\Component\StorageList\Model\StorageListInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListInterface.php))
-- a Storage Item: the item within the collection which could store additional information (eg. prices for a cart) ([```CoreShop\Component\StorageList\Model\StorageListItemInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListItemInterface.php))
-- a Storage Product: the actual product (eg. object) being stored inside the Item. ([```CoreShop\Component\StorageList\Model\StorageListProductInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListProductInterface.php))
+The bundle requires three models to function effectively:
 
-The component already provides you with a basic implementation of [```Storage List```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageList.php) and [```Storage Item```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageItem.php).
-You need to implement the StorageListProduct yourself.
+1. **Storage List** - Represents the collection. Implement
+   the [`StorageListInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListInterface.php).
+2. **Storage Item** - The item within the collection, which can store additional information, such as prices for a cart.
+   Implement
+   the [`StorageListItemInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListItemInterface.php).
+3. **Storage Product** - The actual product being stored inside the item. Implement
+   the [`StorageListProductInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListProductInterface.php).
 
-To now mutate lists, the component gives you a [```Storage List Modifier```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/StorageListModifier.php), which takes care about creating and persisting the List.
+CoreShop provides basic implementations
+of [`Storage List`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageList.php)
+and [`Storage Item`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageItem.php).
+You will need to implement the StorageListProduct yourself.
 
-## Basic usage, Wishist example
-For now, lets create a very basic Session based Wishlist:
+### Mutating Lists
 
-We need to have following things:
+Use
+the [`Storage List Modifier`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/StorageListModifier.php)
+to create and persist lists.
 
-- A Factory class for the Wishlist
-- A Factory class for the Wishlist Item
-- A StorageListManager to get the current list (more like a repository actually)
-- A StoreListModifier
+### Example: Basic Session-Based Wishlist
 
-CoreShop gives you Basic classes for these 4 things, we just need to instantiate them:
+Let's create a session-based wishlist with the following components:
+
+- Factory class for the Wishlist
+- Factory class for the Wishlist Item
+- StorageListManager (repository-like)
+- StoreListModifier
+
+CoreShop provides basic classes for these components:
 
 ```php
-
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use CoreShop\Component\StorageList\Model\StorageList;
@@ -50,22 +63,20 @@ $wishlistItemFactory = new Factory(StorageListItem::class);
 $wishlistManager = new SessionStorageManager($session, 'wishlist', $wishlistFactory);
 $wishlistModifier = new SessionStorageListModifier($wishlistItemFactory, $wishlistManager);
 
-//Now we can start putting data into our List
+// Adding data to our List
 $list = $wishlistManager->getStorageList();
-
-//Fetch our Product which implements CoreShop\Component\StorageList\Model\StorageListProductInterface
-$product = $productRepository->find(1);
-
+$product = $productRepository->find(1); // Assumes StorageListProductInterface implementation
 
 $listItem = $wishlistItemFactory->createNew();
 $listItem->setProduct($product);
 $listItem->setQuantity($quantity);
 
-//Lets add our Product
+// Adding a Product
 $wishlistModifier->addToList($list, $listItem);
 
-//If we now want to remove it, we can either use the $listItem, or the Product
-//To do that with our item, we simply call
+// Removing a Product
 $wishlistModifier->removeFromList($list, $listItem);
-
 ```
+
+This bundle simplifies the management of various storage lists within CoreShop, enhancing the functionality and user
+experience of your e-commerce platform.

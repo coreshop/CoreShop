@@ -1,8 +1,11 @@
 # Customer Manager
-CoreShop already implements a Customer Manager which handles creating a Customer with Addresses. 
-The Customer Manager implements the Interface `CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface` and CoreShop implements it using the service `coreshop.customer.manager`.
+
+CoreShop already implements a Customer Manager which handles creating a Customer with Addresses.
+The Customer Manager implements the Interface `CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface` and
+CoreShop implements it using the service `coreshop.customer.manager`.
 
 ## Usage
+
 To use the Service, you need to pass a Customer.
 In our example, we gonna do that from a Controller with a FormType.
 

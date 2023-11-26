@@ -1,6 +1,8 @@
 # Carrier Distribution Report
 
-The CoreShop Carrier Distribution Report provides a visual representation of how different carriers are utilized for shipping in your e-commerce store. This report, presented as a pie chart, is crucial for analyzing shipping preferences and efficiency.
+The CoreShop Carrier Distribution Report provides a visual representation of how different carriers are utilized for
+shipping in your e-commerce store. This report, presented as a pie chart, is crucial for analyzing shipping preferences
+and efficiency.
 
 ![Carrier Distribution](img/carriers.png)
 
@@ -9,8 +11,8 @@ The CoreShop Carrier Distribution Report provides a visual representation of how
 The report is displayed as a pie chart, offering a clear visual breakdown of carrier usage.
 
 | Type      | Has Pagination |
-|:----------|:--------------|
-| Pie Chart | No            |
+|:----------|:---------------|
+| Pie Chart | No             |
 
 ## Customizing the Report with Filters
 
@@ -32,4 +34,5 @@ Apply various filters to refine your data analysis:
 
 The Carrier Distribution Report includes the following field:
 
-- **Carrier Distribution**: This field visualizes the proportion of each carrier used for shipping orders, helping you to understand which carriers are most popular or efficient for your store.
+- **Carrier Distribution**: This field visualizes the proportion of each carrier used for shipping orders, helping you
+  to understand which carriers are most popular or efficient for your store.

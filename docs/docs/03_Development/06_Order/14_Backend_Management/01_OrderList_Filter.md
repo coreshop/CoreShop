@@ -14,6 +14,7 @@ AppBundle\CoreShop\OrderList\Filter\DemoFilter:
 ```
 
 ## Create PHP Class
+
 In this example we want to filter orders with available shipments in state "ready".
 
 ```php

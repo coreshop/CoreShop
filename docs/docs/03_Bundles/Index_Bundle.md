@@ -1,6 +1,7 @@
 # Index Bundle
 
-The Index Bundle integrates the Index Component into Symfony and Doctrine, offering tools for indexing Pimcore models, managing filters, and creating conditions. It includes ListingServices and FilterServices.
+The Index Bundle integrates the Index Component into Symfony and Doctrine, offering tools for indexing Pimcore models,
+managing filters, and creating conditions. It includes ListingServices and FilterServices.
 
 ## Installation Process
 
@@ -87,4 +88,5 @@ $this->get('coreshop.filter.processor')->processConditions($filter, $filteredLis
 $filteredList->load();
 ```
 
-This Index Bundle is crucial for managing indexing and filtering of data within CoreShop, ensuring efficient data handling and retrieval.
+This Index Bundle is crucial for managing indexing and filtering of data within CoreShop, ensuring efficient data
+handling and retrieval.

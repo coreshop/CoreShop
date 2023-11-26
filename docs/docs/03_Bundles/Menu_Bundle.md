@@ -1,6 +1,7 @@
 # Menu Bundle
 
-The Menu Bundle simplifies the creation of Pimcore menus based on permissions, enhancing the user interface and navigation experience.
+The Menu Bundle simplifies the creation of Pimcore menus based on permissions, enhancing the user interface and
+navigation experience.
 
 ## Installation Process
 
@@ -68,7 +69,8 @@ public function registerBundlesToCollection(BundleCollection $collection)
 ### Implementing the ExtJs JavaScript Part
 
 1. **Add a JavaScript File**:
-   In your bundle's `Bundle.php` file, add the JavaScript file to the `jsPaths` array: `/admin/coreshop/coreshop.my_menu/menu.js`
+   In your bundle's `Bundle.php` file, add the JavaScript file to the `jsPaths`
+   array: `/admin/coreshop/coreshop.my_menu/menu.js`
 2. **Instantiate the Menu**:
    In your `startup.js` file, instantiate the menu:
 

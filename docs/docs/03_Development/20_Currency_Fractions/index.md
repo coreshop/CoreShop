@@ -1,4 +1,5 @@
 # Fraction Digits
+
 CoreShop allows you working with more than 2 digits for Currency Values. The default configuration looks like this:
 
 ```yml
@@ -15,11 +16,13 @@ Having a global precision of 2
 
 Displaying Currency with a factor of 100 (in Pimcore Backend).
 
-> *WARNING* If you change these settings in an existing Installation with Orders/Products etc. you also have to create 
+> *WARNING* If you change these settings in an existing Installation with Orders/Products etc. you also have to create
 > a migration to change all the values from a precision of 2 to your new setting.
 
-In order to handle payment values with a precision of for example 4, we introduced a new Order Property called `paymentTotal`.
-Within a Payment, you cannot deal with a precision > 2, since a currency only has eg. 100 Cents. Therefore, we round the `total`
+In order to handle payment values with a precision of for example 4, we introduced a new Order Property
+called `paymentTotal`.
+Within a Payment, you cannot deal with a precision > 2, since a currency only has eg. 100 Cents. Therefore, we round
+the `total`
 Cart/Order value to a precision of 2 into the `paymentTotal` Value.
 
 For example:
@@ -40,4 +43,5 @@ If you want to display the payment total in your cart, you can use this template
 </tr>
 {% endif %}
 ```
+
 c

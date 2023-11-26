@@ -14,12 +14,12 @@ You can even create [Custom Filters](01_Custom_Filter.md)
 
 ![Filter Settings](./img/filter-settings.png)
 
-| Field            | Description |
-| ---------------- |-------------|
-| Name             | Name of the Filter-Set |
-| Index            | Which Index should be used |
-| Order            | Order of the products |
-| Order Key        | Order key (index-field) to sort from |
+| Field            | Description                                                                               |
+|------------------|-------------------------------------------------------------------------------------------|
+| Name             | Name of the Filter-Set                                                                    |
+| Index            | Which Index should be used                                                                |
+| Order            | Order of the products                                                                     |
+| Order Key        | Order key (index-field) to sort from                                                      |
 | Results per Page | How many products should be displayed per page, you can use Shop Settings, or override it |
 
 ### Pre-Conditions
@@ -32,14 +32,15 @@ You can define pre-filters for the index.
 
 ![Filter Conditions](./img/filter-conditions.png)
 
-Here you can define different kind of filters. These filters will be displayed on the front-page for customers to find products.
+Here you can define different kind of filters. These filters will be displayed on the front-page for customers to find
+products.
 
 CoreShop currently supports 4 types of filters:
 
- - **Select**
- - **Multiselect**
- - **Range**
- - **Boolean**
+- **Select**
+- **Multiselect**
+- **Range**
+- **Boolean**
 
 #### Select Condition
 

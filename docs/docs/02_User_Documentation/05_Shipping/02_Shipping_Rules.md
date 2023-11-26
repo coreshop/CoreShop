@@ -1,10 +1,13 @@
 # Shipping Rules
 
-CoreShop Shipping Rules are a key feature within the CoreShop e-commerce framework on the Pimcore platform, enabling you to define shipping costs through customizable rules. These rules can be based on various conditions such as weight, price, dimensions, and shipping destination.
+CoreShop Shipping Rules are a key feature within the CoreShop e-commerce framework on the Pimcore platform, enabling you
+to define shipping costs through customizable rules. These rules can be based on various conditions such as weight,
+price, dimensions, and shipping destination.
 
 ## Overview
 
 Shipping rules in CoreShop are composed of conditions and actions:
+
 - **Conditions**: Determine the applicability of a rule.
 - **Actions**: Define the adjustments to shipping costs when a rule is applied.
 
@@ -18,7 +21,8 @@ You can create a variety of rules, each tailored to specific shipping scenarios.
 
 ## Configuring Conditions
 
-Conditions are criteria that must be met for a shipping rule to apply. CoreShop supports multiple conditions per rule, including:
+Conditions are criteria that must be met for a shipping rule to apply. CoreShop supports multiple conditions per rule,
+including:
 
 - **Weight**: Based on the total weight of the order.
 - **Price**: Based on the total price of the order.
@@ -36,7 +40,8 @@ Example: For orders over 10kg, add a weight condition with a minimum weight of 1
 
 ## Configuring Actions
 
-Actions determine how shipping costs are modified when a rule is triggered. CoreShop allows for multiple actions per rule, such as:
+Actions determine how shipping costs are modified when a rule is triggered. CoreShop allows for multiple actions per
+rule, such as:
 
 - **Discount Amount**: A fixed discount on shipping costs.
 - **Discount Percentage**: A percentage discount on shipping costs.
@@ -52,4 +57,6 @@ Example: For a 20% shipping discount, add a discount percentage action and set i
 
 ## Summary
 
-CoreShop Shipping Rules provide a versatile and robust mechanism to manage shipping costs in your e-commerce store. By leveraging various conditions and actions, you can tailor shipping costs to meet diverse requirements and offer precise shipping estimates to your customers.
+CoreShop Shipping Rules provide a versatile and robust mechanism to manage shipping costs in your e-commerce store. By
+leveraging various conditions and actions, you can tailor shipping costs to meet diverse requirements and offer precise
+shipping estimates to your customers.

@@ -29,7 +29,8 @@ public function registerBundlesToCollection(BundleCollection $collection)
 
 ## Usage Instructions
 
-The Money Bundle introduces a core extension in Pimcore, allowing you to store currency values as integers. This approach ensures precision and consistency in financial data handling.
+The Money Bundle introduces a core extension in Pimcore, allowing you to store currency values as integers. This
+approach ensures precision and consistency in financial data handling.
 
 ### Twig Extension for Money Formatting
 
@@ -39,4 +40,5 @@ The bundle includes a Twig extension for formatting money values:
 {{ value|coreshop_format_money('€', 'de'); }}
 ```
 
-This extension allows for easy and flexible formatting of monetary values within your templates, enhancing the display and readability of prices and financial figures in CoreShop.
+This extension allows for easy and flexible formatting of monetary values within your templates, enhancing the display
+and readability of prices and financial figures in CoreShop.

@@ -1,11 +1,13 @@
-#  Pimcore Bundle
+# Pimcore Bundle
 
 ## Installation
+
 ```bash
 $ composer require coreshop/pimcore-bundle:^4.0
 ```
 
 ### Activating Bundle
+
 You need to enable the bundle inside the kernel or with the Pimcore Extension Manager.
 
 ```php
@@ -23,10 +25,13 @@ public function registerBundlesToCollection(BundleCollection $collection)
 
 ## Usage
 
-The CoreShopPimcoreBundle integrates the CoreShop Pimcore Component into Symfony automatically registers a lot of services for you.
+The CoreShopPimcoreBundle integrates the CoreShop Pimcore Component into Symfony automatically registers a lot of
+services for you.
 
 ### JS/CSS Resource Loading
-With Pimcore, every bundle needs to take care about loading static assets themselve. PimcoreBundle helps you out here, follow these steps to use it:
+
+With Pimcore, every bundle needs to take care about loading static assets themselve. PimcoreBundle helps you out here,
+follow these steps to use it:
 
 - Create a DependencyInjection Extension class like:
 
@@ -116,16 +121,20 @@ final class Configuration implements ConfigurationInterface
 ### DataObject Extensions
 
 #### Serialized Data
+
 This extension allows you to store SerializedData inside a Pimcore DataObject.
 
 ### Slug
 
-Pimcore comes with quite useful objects slugs. But it doesn't come with a Slug Generator. CoreShop for the rescue. In Order to use it,
-your class needs to implement `CoreShop\Component\Pimcore\Slug\SluggableInterface` and CoreShop automatically generates slugs for you.
+Pimcore comes with quite useful objects slugs. But it doesn't come with a Slug Generator. CoreShop for the rescue. In
+Order to use it,
+your class needs to implement `CoreShop\Component\Pimcore\Slug\SluggableInterface` and CoreShop automatically generates
+slugs for you.
 
 #### Extensions / Influence the slug generation
 
-If you want to change the generated slug or prefix it, you can use the `CoreShop\Component\Pimcore\Event\SlugGenerationEvent` Event.
+If you want to change the generated slug or prefix it, you can use
+the `CoreShop\Component\Pimcore\Event\SlugGenerationEvent` Event.
 
 ```php
 <?php
@@ -155,10 +164,10 @@ final class SlugEventListener implements EventSubscriberInterface
 }
 ```
 
-
 ### Data Object Features
 
 #### Class Converter and Data Migrate
+
 Class converter is a small utility, which lets you migrate all Data from one class to another. Usage:
 
 ```php
@@ -183,6 +192,7 @@ Migrate::migrateData($currentClassName, $newClassName);
 ```
 
 #### Class Installer
+
 Class Installer helps you importing Classes/FieldCollections/ObjectBricks into Pimcore based of a JSON Definition:
 
 ```php
@@ -203,6 +213,7 @@ $installer->createFieldCollection($pathToJson, $fcName);
 ```
 
 #### Class/Brick/Field Collection Updater
+
 Definition Updaters help you in migrating your Pimcore Class/Bricks or Field Collection Definitions to be properly
 migrated from Release to Release.
 
@@ -248,11 +259,14 @@ if (!$classUpdater->hasField('paymentSettings')) {
 
 ```
 
-Thats it, the same works for FieldCollections with the class `CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate`
+Thats it, the same works for FieldCollections with the
+class `CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate`
 and for Bricks with the class `CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate`
 
 #### Inheritance Helper
-Inhertiance Helper is a small little but very useful helper class to enable Pimcore inheritance only with a closure function like this:
+
+Inhertiance Helper is a small little but very useful helper class to enable Pimcore inheritance only with a closure
+function like this:
 
 ```php
 
@@ -265,6 +279,7 @@ $inheritedValue = InheritanceHelper::useInheritedValues(function() use($object) 
 ```
 
 #### Version Helper
+
 Version Helper is a small little but very useful helper class to disabling or enablind Pimcore Versioning.
 
 ```php
@@ -279,6 +294,7 @@ VersionHelper::useVersioning(function() use($object) {
 ```
 
 #### Unpublished Helper
+
 Unpublsihed Helper is a small little but very useful helper class to get unpublished objects in Pimcore Frontend.
 
 ```php
@@ -293,6 +309,7 @@ $allProducts = UnpublishedHelper::hideUnpublished(function() use($object) {
 ```
 
 ### Expression Language Features
+
 CoreShop adds some features to the Symfony Expression language like:
 
 - PimcoreLanguageProvider: to get Pimcore Objects, Assets or Documents inside a Expression Language Query
@@ -300,6 +317,7 @@ CoreShop adds some features to the Symfony Expression language like:
 ### Migration Features
 
 #### Pimcore Shared Translations
+
 Helps you to install new Shared Translations during Migration:
 
 ```php

@@ -1,12 +1,19 @@
-#  Sequence Bundle
+# Sequence Bundle in CoreShop
 
-## Installation
+The Sequence Bundle is a vital component within CoreShop that facilitates sequence generation, integrating seamlessly
+with Symfony and Doctrine.
+
+## Installation Process
+
+To install the Sequence Bundle, use Composer:
+
 ```bash
 $ composer require coreshop/sequence-bundle:^4.0
 ```
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel
+### Integrating with the Kernel
+
+Enable the bundle in the kernel by updating the `AppKernel.php` file:
 
 ```php
 <?php
@@ -21,8 +28,9 @@ public function registerBundlesToCollection(BundleCollection $collection)
 }
 ```
 
-### Updating database schema
-Run the following command.
+### Updating the Database Schema
+
+After installation, update the database schema with the following command:
 
 ```bash
 $ php bin/console doctrine:schema:update --force
@@ -30,17 +38,20 @@ $ php bin/console doctrine:schema:update --force
 
 ## Usage
 
-This Bundle integrates Sequence Component into Symfony and Doctrine
+The Sequence Bundle integrates the Sequence Component into Symfony and Doctrine, providing essential tools for
+generating sequences within your application.
 
-The sequence Bundle provides you with basic information needed for sequence generation.
+### Doctrine Entities
 
-## Doctrine Entities
- - Sequence
+The primary entity used in the Sequence Bundle is `Sequence`.
 
-## Get a new Sequence
+### Generating a New Sequence
+
+To generate a new sequence, use the sequence generator service:
 
 ```php
-
 $container->get('coreshop.sequence.generator')->getNextSequenceForType('my_sequence');
-
 ```
+
+This bundle enhances the functionality of CoreShop, enabling efficient and orderly sequence generation for various
+operational needs.

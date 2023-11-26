@@ -1,6 +1,7 @@
 # Notification Rule Custom Type
 
-Notification Types are registered dynamically by using tag-attributes on conditions and actions. If you want to have your own
+Notification Types are registered dynamically by using tag-attributes on conditions and actions. If you want to have
+your own
 type, you can do so by adding a new condition or action and specify your own type:
 
 ```yaml

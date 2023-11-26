@@ -7,12 +7,12 @@ Per default configuration, all the ecommerce trackers are disabled. You need to 
 
 ## Available Trackers
 
- * google-analytics-enhanced-ecommerce
- * google-analytics-universal-ecommerce
- * google-gtag-enhanced-ecommerce
- * google-gtm-classic-ecommerce
- * google-gtm-enhanced-ecommerce
- * matomo (piwik)
+* google-analytics-enhanced-ecommerce
+* google-analytics-universal-ecommerce
+* google-gtag-enhanced-ecommerce
+* google-gtm-classic-ecommerce
+* google-gtm-enhanced-ecommerce
+* matomo (piwik)
 
 ## Enabling Trackers
 
@@ -34,6 +34,7 @@ core_shop_tracking:
 ```
 
 ### External
+
 - [Google Enhanced E-Commerce](https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce)
 - [Google Enhanced E-Commerce with gtag.js](https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce)
 - [Google Tag Manager Enhanced E-Commerce](https://developers.google.com/tag-manager/enhanced-ecommerce)
@@ -43,36 +44,43 @@ core_shop_tracking:
 #### Actions
 
 ##### Product Impression
+
 ```php
 $this->get('coreshop.tracking.manager')->trackProductImpression($product);
 ```
 
 ##### Product View
+
 ```php
 $this->get('coreshop.tracking.manager')->trackProduct($product);
 ```
 
 ##### Product Action Add from Cart
+
 ```php
 $this->get('coreshop.tracking.manager')->trackCartAdd($cart, $product);
 ```
 
 ##### Product Action Remove from Cart
+
 ```php
 $this->get('coreshop.tracking.manager')->trackCartRemove($cart, $product);
 ```
 
 ##### Checkout Step
+
 ```php
 $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $stepIdentifier, $isFirstStep, $checkoutOption)
 ```
 
 ##### Checkout Complete
+
 ```php
 $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order)
 ```
 
 ## Add a custom Tracker
+
 To add a custom tracker you need to implement the interface `CoreShop\Component\Tracking\Tracker\TrackerInterface`
 
 ```yaml
@@ -84,15 +92,20 @@ app.tracking.tracker.my_tracker:
 ```
 
 ## Google Tag Manager
-If you have enabled the gtm in backend, CoreShop sends some data to a `dataLayer` object which submits the object to gtm.
+
+If you have enabled the gtm in backend, CoreShop sends some data to a `dataLayer` object which submits the object to
+gtm.
 
 ### GTM Classic eCommerce
+
 If you enable the classic mode only the order gets submitted if user has successfully reached the "thank-you" page.
 
 ### GTM Enhanced eCommerce
+
 There are six Impressions/Events for Google Tag Manager Enhanced eCommerce:
 
 #### Product Impression
+
 **Tag Config Example**:
 <pre>
 Tag type : Universal Analytics
@@ -103,6 +116,7 @@ Trigger: event equals <b>gtm.dom</b>
 </pre>
 
 #### Product Detail View
+
 **Tag Config Example**:
 <pre>
 Tag type : Universal Analytics
@@ -113,6 +127,7 @@ Trigger: event equals <b>gtm.dom</b>
 </pre>
 
 #### Checkout Step:
+
 > **Event-Name**: `csCheckout`
 
 **Tag Config Example**:
@@ -127,6 +142,7 @@ Trigger: event equals <b>csCheckout</b>
 </pre>
 
 #### Checkout Complete (Purchase):
+
 **Tag Config Example**:
 <pre>
 Tag type : Universal Analytics
@@ -137,6 +153,7 @@ Trigger: event equals <b>gtm.dom</b>
 </pre>
 
 #### Remove Item from Cart
+
 > **Event-Name**: `csRemoveFromCart`
 
 **Tag Config Example**:
@@ -151,6 +168,7 @@ Trigger: event equals <b>csRemoveFromCart</b>
 </pre>
 
 #### Add Item to Cart
+
 > **Event-Name**: `csAddToCart`
 
 **Tag Config Example**:

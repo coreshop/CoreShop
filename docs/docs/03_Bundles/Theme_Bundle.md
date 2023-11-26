@@ -1,14 +1,19 @@
-#  Theme Bundle
+# Theme Bundle in CoreShop
 
-CoreShop Theme Bundle provides you with a flexible and extensible way of having multiple themes in a Pimcore installation.
+The CoreShop Theme Bundle offers a flexible and extensible approach to managing multiple themes within a Pimcore
+installation.
 
-## Installation
+## Installation Process
+
+To install the Theme Bundle, use Composer:
+
 ```bash
 $ composer require coreshop/theme-bundle:^4.0
 ```
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel.
+### Integrating with the Kernel
+
+Enable the bundle in the kernel by updating the `AppKernel.php` file:
 
 ```php
 <?php
@@ -24,7 +29,8 @@ public function registerBundlesToCollection(BundleCollection $collection)
 ```
 
 ## Configuration
-Per Default, no Theme Resolver is enabled, you can enable on or multiples like:
+
+By default, no Theme Resolver is enabled. You can enable one or more resolvers in your configuration:
 
 ```yaml
 core_shop_theme:
@@ -33,14 +39,17 @@ core_shop_theme:
       pimcore_document_property: true
 ```
 
-### Pimcore Site
-Resolves the Theme based on the Key of the Root Document of a Pimcore Site. So if the Site's Root Document is called "demo" it tries to find a theme called the same.
+### Theme Resolvers
 
-### Pimcore Document Property
-Resolves the Theme based on a Document Property of the Site. The Property is called "theme".
+1. **Pimcore Site**: Resolves the theme based on the key of the root document of a Pimcore site. For example, if the
+   site's root document is named "demo," it looks for a theme with the same name.
 
-### Custom Resolvers
-You can also add custom resolvers like:
+2. **Pimcore Document Property**: Resolves the theme based on a document property of the site, specifically the property
+   named "theme."
+
+### Implementing Custom Resolvers
+
+You can create custom resolvers:
 
 ```php
 <?php
@@ -51,14 +60,12 @@ namespace App\Theme;
 
 use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
-use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 final class CustomThemeResolver implements ThemeResolverInterface
 {
     public function resolveTheme(): string
     {
         if(rand() === 1) {
-            // if you cannot resolve the theme, throw an exception
             throw new ThemeNotResolvedException();
         }
     
@@ -67,14 +74,11 @@ final class CustomThemeResolver implements ThemeResolverInterface
 }
 ```
 
-You also need to Register the Theme Resolver:
-
+Register your custom theme resolver:
 
 ```yaml
 services:
   App\Theme\CustomThemeResolver:
     tags:
       - { name: coreshop.theme.resolver, type: custom, priority: 20 }
-
-
 ```

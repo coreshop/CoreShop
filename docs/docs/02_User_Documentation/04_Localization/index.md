@@ -1,6 +1,8 @@
 # Localization
 
-CoreShop provides comprehensive options for localization, ensuring that your e-commerce store can cater to a global audience with region-specific settings. Below are the key components of CoreShop's localization system, each linked to detailed documentation:
+CoreShop provides comprehensive options for localization, ensuring that your e-commerce store can cater to a global
+audience with region-specific settings. Below are the key components of CoreShop's localization system, each linked to
+detailed documentation:
 
 - **Countries**: Configure countries. [Learn More](./01_Countries.md)
 - **States**: Manage state or county settings within each country. [Learn More](./02_States.md)

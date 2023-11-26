@@ -2,7 +2,8 @@
 
 [Here](https://github.com/thephpleague/omnipay#payment-gateways) is a list of all available Omnipay Payment Providers.
 
-> As of now, Omnipay is not compatible with Symfony 3. They are already working on it, but will need some time to be finished.
+> As of now, Omnipay is not compatible with Symfony 3. They are already working on it, but will need some time to be
+> finished.
 > But: You can use the dev-master Version Omnipay to add the Bridge
 
 To add the Omnipay Bridge, do following:

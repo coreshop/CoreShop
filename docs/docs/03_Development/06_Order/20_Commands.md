@@ -14,6 +14,7 @@ $ bin/console coreshop:cart:expire --days=20
 ```
 
 ## Expire Abandoned Carts via maintenance job
+
 By default, this feature is disabled.
 If you want to delete abandoned carts, you need to define an expiration date:
 

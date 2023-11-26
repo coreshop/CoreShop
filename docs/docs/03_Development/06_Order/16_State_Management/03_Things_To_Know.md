@@ -1,6 +1,7 @@
 # State Machine - Important Things to Know
 
 ## Canceling Orders
+
 Within the CoreShop workflow architecture a lot of orders may stay forever in the `new` or `confirmed` state.
 CoreShop will automatically cancel orders older than `20` days under following conditions:
 
@@ -11,9 +12,11 @@ CoreShop will automatically cancel orders older than `20` days under following c
 Read more about automation [here](../../../02_User_Documentation/10_Automation/index.md).
 
 #### Expire Orders via Backend
+
 There is also a `cancel` button in the order detail section.
 
 #### Expire Orders via Command
+
 There is also a command for that:
 
 ```bash

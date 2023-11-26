@@ -1,25 +1,34 @@
-# Adding a new Pimcore Entity with automated installation
+# Adding a New Pimcore Entity with Automated Installation
 
-1. Add a new Pimcore Class in Pimcore.
-2. Add a Parent Class to your Pimcore Entity
-3. Export Class Definition to ```AppBundle/Resources/install/pimcore/classes/PimcoreEntity.json```
+## Step 1: Add a New Pimcore Class in Pimcore
 
-## Create Parent Class
+1. Create a new class in Pimcore.
+2. Add a Parent Class to your Pimcore Entity.
+3. Export Class Definition to AppBundle/Resources/install/pimcore/classes/PimcoreEntity.json.
+
+## Step 2: Create Parent Class
+
+### PimcoreEntityInterface
+
+Create PimcoreEntityInterface.php in the AppBundle/Model directory.
 
 ```php
 <?php
-//AppBundle/Model/PimcoreEntityInterface.php
+// AppBundle/Model/PimcoreEntityInterface.php
 
-interface PimcoreEntityInterface extends ResourceInterface
+interface PimcoreEntityInterface extends ResourceInterface {
     public function getName($language = null);
-
     public function setName($name, $language = null);
 }
 ```
 
+### PimcoreEntity
+
+Create PimcoreEntity.php in the AppBundle/Model directory.
+
 ```php
 <?php
-//AppBundle/Model/PimcoreEntity.php
+// AppBundle/Model/PimcoreEntity.php
 
 class PimcoreEntity extends AbstractPimcoreModel implements PimcoreEntityInterface, PimcoreModelInterface {
     public function getName($language = null) {
@@ -32,7 +41,11 @@ class PimcoreEntity extends AbstractPimcoreModel implements PimcoreEntityInterfa
 }
 ```
 
-## Create Dependency Injection Configuration
+## Step 3: Create Dependency Injection Configuration
+
+### Configuration.php
+
+Create Configuration.php in AppBundle/DependencyInjection.
 
 ```php
 <?php
@@ -87,6 +100,10 @@ final class Configuration implements ConfigurationInterface
 }
 ```
 
+### AppBundleExtension.php
+
+Create AppBundleExtension.php in the same directory.
+
 ```php
 <?php
 //AppBundle/DependencyInjection/AppBundleExtension.php
@@ -97,22 +114,23 @@ final class AppBundleExtension extends AbstractModelExtension
 {
     public function load(array $config, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $this->registerPimcoreModels('app', $config['pimcore'], $container);
     }
 }
-
 ```
 
+## Step 4: Use Your Pimcore Entity
 
-## Use your Pimcore Entity
+You can either use Pimcore Listing Classes or the automatically generated Factory/Repository Classes.
 
-You can either use Pimcore Listing Classes like:
+### Using Pimcore Listing Classes
 
 ```php
 $list = new Pimcore\Model\Object\PimcoreEntity\Listing();
 ```
 
-or use automated generated Factory/Repository Classes
+### Using Factory/Repository Classes
 
 ```php
 $pimcoreEntityObject = $container->get('app.repository.pimcore_entity')->findBy($id);

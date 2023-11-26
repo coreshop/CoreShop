@@ -1,6 +1,7 @@
 # Index Extension
 
-In order to make the index more flexible, it is possible for you to write extensions. Extensions allow you to do following things:
+In order to make the index more flexible, it is possible for you to write extensions. Extensions allow you to do
+following things:
 
     - Add more "default" columns and corresponding data
     - Pre Filter an mysql index
