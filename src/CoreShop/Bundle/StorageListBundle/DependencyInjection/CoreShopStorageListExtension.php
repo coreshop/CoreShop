@@ -116,13 +116,13 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
             if ($list['disable_caching']) {
                 $cacheSubscriber = new Definition(CacheListener::class, [
                     new Reference($list['resource']['repository']),
-                    new Reference($list['resource']['item_repository'])
+                    new Reference($list['resource']['item_repository']),
                 ]);
 
                 $cacheSubscriber->addTag('kernel.event_subscriber');
                 $container->setDefinition('coreshop.storage_list.cache_subscriber.' . $name, $cacheSubscriber);
             }
-            
+
             if ($list['controller']['enabled']) {
                 $class = $list['controller']['class'];
 

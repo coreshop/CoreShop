@@ -66,7 +66,7 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
         }
 
         $container->setParameter('coreshop.resources', []);
-        
+
         $this->loadPersistence($configs['drivers'], $configs['resources'], $loader);
         $this->loadResources($configs['resources'], $container);
         $this->loadPimcoreModels($configs['pimcore'], $container);
