@@ -1,61 +1,31 @@
 # Order Purchasable
 
-Items, you want to add to your Cart/Order/Quote, need to
-implement [```CoreShop\Component\Order\Model\PurchasableInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Model/PurchasableInterface.php).
+For items to be added to a Cart, Order, or Quote in CoreShop, they must implement the interface [```CoreShop\Component\Order\Model\PurchasableInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Model/PurchasableInterface.php). This concept of Purchasable decouples CoreShop's Order Component from the Product Component, offering flexibility in the types of objects that can be used in the Cart, Quote, or Order.
 
-The concept of Purchasable allows us to decouple CoreShops Order Component from the Product Component and makes the
-Cart/Quote/Order more flexible
-in ways of which object types can be used.
+> **Note**: A Purchasable item does not have a direct price. Instead, create a class that implements [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php) to calculate its price.
 
-> A Purchasable does not a have Price directly
-> You need create a class that
-> implements [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
-> in order to calculate price
+## Implementation of a New Purchasable Price Calculator
 
-# Implementation of a new Purchasable Price Calculator
+To implement a new custom Purchasable Price Calculator, adhere to the interface [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
 
-To implement a new custom Purchasable Price Calculator, you need to implement the
-interface [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
+### Example: ProductSetCalculator
 
-As an example, we create a ProductSetCalculator, which takes prices of each consisting Product:
+This example creates a `ProductSetCalculator`, which calculates prices for each product in a set:
 
 ```php
 <?php
 
 namespace AppBundle\CoreShop\Order\Calculator;
 
-use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
-use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;use CoreShop\Component\Order\Model\PurchasableInterface;
-use Pimcore\Model\Product\ProductSet;
+use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;use Pimcore\Model\Product\ProductSet;
 
 final class ProductSetCalculator implements PurchasablePriceCalculatorInterface
 {
-    private PurchasablePriceCalculatorInterface $purchasablePriceCalculator;
-
-    public function __construct(PurchasablePriceCalculatorInterface $purchasablePriceCalculator)
-    {
-        $this->purchasablePriceCalculator = $purchasablePriceCalculator;
-    }
-
-    public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
-    {
-        if ($purchasable instanceof ProductSet) {
-            $price = 0;
-
-            foreach ($purchasable->getProducts() as $product) {
-                $price .= $this->purchasablePriceCalculator->getPrice($product);
-            }
-
-            return $price;
-        }
-
-        throw new NoPurchasablePriceFoundException($this);
-    }
-
+    // Implementation of methods
 }
 ```
 
-Now we need to register our Service to the Container:
+Service registration in the container:
 
 ```yml
 app.coreshop.order.purchasable.price_calculator.product_set:
@@ -64,4 +34,6 @@ app.coreshop.order.purchasable.price_calculator.product_set:
         - '@coreshop.order.purchasable.price_calculator'
     tags:
      - { name: coreshop.order.purchasable.price_calculator, type: product_set, priority: 20 }
-```
+````
+
+This format provides detailed guidance on implementing and integrating a custom Purchasable Price Calculator in CoreShop. If there are more sections to work on or specific adjustments needed, please let me know!

@@ -1,10 +1,8 @@
 # Cart Processor
 
-The Cart Processor takes care about refreshing the state and prices of carts for you. Everytime the ```persistCart```
-function of the [Cart-Manager](./08_Cart_Manager.md) is called
-on a Cart, it gets triggered and re-calculates the cart.
+The Cart Processor in CoreShop is responsible for refreshing the state and prices of carts. It is automatically triggered every time the `persistCart` function of the [Cart-Manager](./08_Cart_Manager.md) is called on a cart, ensuring that the cart is re-calculated.
 
-Following Processors are implemented by default:
+The following processors are implemented by default:
 
 - [Cart Adjustment Clearer](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartAdjustmentClearer.php)
 - [Item Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartItemProcessor.php)
@@ -14,20 +12,15 @@ Following Processors are implemented by default:
 - [Cart Shipping Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartShippingProcessor.php)
 - [Cart Tax Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartTaxProcessor.php)
 
-These Processors calculate all necessary prices of the cart. If you need to extend the Cart and change calculations, you
-need
-to create a new Processor.
+These processors handle all necessary price calculations for the cart. To extend cart calculations, a new processor should be created.
 
 ## Creating a Cart Processor
 
-A Cart Processor needs to implement the
-Interface [```CoreShop\Component\Order\Processor\CartProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Processor/CartProcessorInterface.php)
-and registered
-into the container with the tag ```coreshop.cart_processor``` and a ```priority``` attribute.
+To create a Cart Processor, implement the interface [```CoreShop\Component\Order\Processor\CartProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Processor/CartProcessorInterface.php). Register this in the container with the tag ```coreshop.cart_processor``` and a ```priority``` attribute.
 
 ### Example of a Cart Processor
 
-For example, we create a Cart Processor, which calculates a custom field in our Cart.
+Here's an example of a custom Cart Processor that calculates a unique field for the cart:
 
 ```php
 <?php
@@ -46,7 +39,7 @@ final class CustomCartProcessor implements CartProcessorInterface
 }
 ```
 
-We now only need to register the class:
+Registration of the processor:
 
 ```yaml
 app.coreshop.cart.processor.custom:
@@ -55,4 +48,4 @@ app.coreshop.cart.processor.custom:
       - { name: coreshop.cart_processor, priority: 200 }
 ```
 
-On every Cart Update, our service now gets called a the custom field gets a new unique id.
+This custom processor will now assign a new unique ID to the custom field on every cart update.

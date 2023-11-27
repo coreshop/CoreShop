@@ -1,10 +1,10 @@
 # Storage List
 
-Order/Cart/Quote and Wishlist are basically the same, thats why abstracted the funcionality into it's own Bundle.
+In CoreShop, the functionalities of Order, Cart, Quote, and Wishlist are unified, thanks to the abstraction into a dedicated Bundle.
 
 ## Configuration
 
-The default Order StorageList Configuration looks like this:
+The default configuration for the Order StorageList is as follows:
 
 ```yaml
 core_shop_storage_list:

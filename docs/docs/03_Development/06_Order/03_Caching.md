@@ -1,18 +1,18 @@
 # Caching
 
-Pimcore has some issues with concurrency and caching. Pimcore is Caching the DataObjects after the Request has been sent
-and PHP is terminating. This means if you have a complex Order Object, or somehting weird is going on in the Marshalling
-of the Cache, it can take couple of seconds to create and store. In the meantime, another request might already come in
-using the old cached verison of the Order Object. This can lead to some weird issues.
+Pimcore faces challenges with concurrency and caching, especially when handling DataObjects. The caching of DataObjects
+in Pimcore occurs post-request during PHP termination. This can lead to delays if, for instance, complex Order Objects
+are involved or if there are issues in the cache marshalling process. Subsequently, a new request may access an outdated
+cached version of the Order Object, potentially causing inconsistencies.
 
-To control this, CoreShop has a special Configuration that allows you to disabling the caching completely for the
-Storage List and Storage List Item Object:
+To mitigate these issues, CoreShop provides a specific configuration option to disable caching for Storage List and
+Storage List Item Objects:
 
 ```yaml
 core_shop_storage_list:
-    list:
-        order:
-          disable_caching: true
-        wishlist:
-          disable_caching: true
+  list:
+    order:
+      disable_caching: true
+    wishlist:
+      disable_caching: true
 ```

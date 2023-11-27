@@ -1,7 +1,8 @@
-# One Object to Rule them all
+# One Object to Rule Them All
 
-CoreShop uses on DataObject Class for Order, Cart and Quote. This is the ```CoreShopOrder``` Class.
+CoreShop utilizes a single DataObject class for managing Orders, Carts, and Quotes. This is the `CoreShopOrder` class.
 
 ## From Cart to Order
 
-When a Cart is converted to an Order, the `SaleState` Workflow is triggered.
+The conversion of a Cart into an Order triggers the `SaleState` Workflow, facilitating the transition within the
+CoreShop system.

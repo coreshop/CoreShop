@@ -1,29 +1,25 @@
 # Order Number Generator
 
-When an order is completed, a number is generated for that order. This happens at
-the `CoreShop\Component\Core\Order\Committer\OrderCommitter`, which uses a `NumberGeneratorInterface` service.
+CoreShop generates a unique number for each completed order. This generation is handled by the `CoreShop\Component\Core\Order\Committer\OrderCommitter`, utilizing a `NumberGeneratorInterface` service.
 
-If the CoreBundle is installed, the `coreshop.order.number_generator.prefix_suffix` service is injected. It decorates
-the `coreshop.order.number_generator.default` and extends it with the feature to manage a prefix and suffix via the
-CoreShop settings.
+If the CoreBundle is installed, the `coreshop.order.number_generator.prefix_suffix` service is used. This service decorates the `coreshop.order.number_generator.default` and adds the capability to manage a prefix and suffix through CoreShop settings.
 
-To create a custom number generator, a service must be created which also decorates
-the `coreshop.order.number_generator.default`. To set the order of the decorations, use `decoration_priority`.
+To implement a custom number generator, create a service that decorates the `coreshop.order.number_generator.default`. The `decoration_priority` setting determines the order in which decorators are called.
 
-Choosing `decoration_priority` higher or equal zero, the order of called decoraters would
-be  `PrefixSuffix Generator > CustomNumberGenerator > DefaultSequenceGenerator`.
-If you choose a `decoration_priority` below zero, the order of called decoraters would change
-to `CustomNumberGenerator > PrefixSuffix Generator > DefaultSequenceGenerator`.
+- A `decoration_priority` higher or equal to zero results in this order: `PrefixSuffix Generator > CustomNumberGenerator > DefaultSequenceGenerator`.
+- A `decoration_priority` below zero changes the order to: `CustomNumberGenerator > PrefixSuffix Generator > DefaultSequenceGenerator`.
 
-Example for custom implementation of NumberGenerator, that adds padding to the number
+### Example: Custom Number Generator with Padding
+
+This example shows a custom implementation that adds padding to the number:
 
 ```php
 final class CustomNumberGenerator implements NumberGeneratorInterface
 {
-    public function __construct(
-        private NumberGeneratorInterface $numberGenerator, # decorated service
-    ) {
-    }
+public function __construct(
+private NumberGeneratorInterface $numberGenerator, // decorated service
+) {
+}
 
     public function generate(ResourceInterface $model): string
     {
@@ -34,7 +30,7 @@ final class CustomNumberGenerator implements NumberGeneratorInterface
 }
 ```
 
-Symfony service definition
+Symfony service definition:
 
 ```yaml
   App\Order\CustomNumberGenerator:
@@ -43,3 +39,5 @@ Symfony service definition
     arguments:
       - '@.inner'
 ```
+
+This format should provide clarity on the customization of the Order Number Generator in CoreShop. If you have more sections to work on or need further adjustments, please let me know!

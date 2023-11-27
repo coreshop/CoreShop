@@ -1,31 +1,29 @@
 # State Management
 
-The CoreShop [State Machine](https://symfony.com/doc/current/workflow/state-machines.html) is a important core feature
-which allows to determinate complex workflows securely and in a most modern way.
-Unlike the most eCommerce Frameworks out there, CoreShop does not work with the messy and hard do extend "state/status"
-concept.
-Every order-section and of course the order itself provides its own state machine which allows us to build a super
-strong state workflow.
+CoreShop employs a sophisticated [State Machine](https://symfony.com/doc/current/workflow/state-machines.html) as a core
+feature, enabling the management of complex workflows in a secure and modern manner. Unlike many eCommerce frameworks
+that use a cumbersome and rigid "state/status" concept, CoreShop's approach offers a more dynamic and extendable state
+workflow.
 
 ## Places
 
-In State Machine context, the well-known "Status" Property is called "Places".
-Every Workflow comes with a pre-defined set of Places.
+In the context of a State Machine, the traditional "Status" is referred to as "Places". Each workflow comes with its
+predefined set of Places.
 
 ## Transition
 
-To change the Place of a workflow we need to apply a transition.
-If the transition is valid the new place gets stored.
+Transitions are used to change the Place of a workflow. A transition is considered valid if it successfully updates the
+workflow to a new place.
 
 ## Callbacks
 
-There are several events for each transition which can be also extend by every project.
-**Example:**: If all order payments has been successfully transformed to the `completed` place,
-the `coreshop_order_payment` workflow will automatically change to `paid`.
+Several events can be triggered for each transition, and these can be extended for specific project needs. **Example**:
+When all order payments reach the `completed` place, the `coreshop_order_payment` workflow automatically transitions
+to `paid`.
 
 ## Workflows
 
-There are seven implemented Workflows:
+CoreShop includes seven implemented workflows:
 
 - `coreshop_order`
 - `coreshop_order_payment`
@@ -35,11 +33,10 @@ There are seven implemented Workflows:
 - `coreshop_shipment`
 - `coreshop_invoice`
 
-Workflows are connected among themselves so every transition will trigger another Workflow and so on.
-If a transition has been dispatched, it cannot be transformed back unless it has been defined in the available
-transitions.
+These workflows are interconnected, so any transition in one can trigger transitions in others. Once a transition is
+dispatched, it cannot be reversed unless such an option is defined in the available transitions.
 
-So let's start:
+### Explore Further:
 
 - [Available Workflows](./16_State_Management/01_Available_Workflows.md)
 - [Create Callbacks](./16_State_Management/02_Create_Callbacks.md)

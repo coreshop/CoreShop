@@ -1,12 +1,12 @@
 # Cart Modifier
 
-CoreShop provides you with a helper service to modify the cart. It handles following for you:
+CoreShop includes a helper service, known as the Cart Modifier, to facilitate modifications to the cart. This service
+simplifies tasks such as:
 
-- adding items
-- removing items
-- change quantity of items
+- Adding items to the cart
+- Removing items from the cart
+- Changing the quantity of items in the cart
 
-The Modifier implements the
-interface [```CoreShop\Component\Order\Cart\CartModifierInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Cart/CartModifierInterface.php)
-and is implemented by the service
-```coreshop.cart.modifier```
+The Cart Modifier adheres to the
+interface [`CoreShop\Component\Order\Cart\CartModifierInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Cart/CartModifierInterface.php)
+and is implemented by the service `coreshop.cart.modifier`.

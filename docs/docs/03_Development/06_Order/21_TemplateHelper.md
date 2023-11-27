@@ -1,8 +1,10 @@
 # Order Template/Twig Helper
 
+CoreShop provides a Twig filter for obtaining the current state of an order.
+
 ## Order State
 
-There is one Filter which returns you the current state for an order:
+To get the current state of an order, use the following Twig filter:
 
 ```twig
 {{ dump(order|coreshop_order_state) }}
