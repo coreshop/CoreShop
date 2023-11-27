@@ -81,8 +81,7 @@ final class PimcoreDriver extends AbstractDriver
 
         if (in_array(AdminController::class, $parents, true)) {
             $definition = new ChildDefinition(AdminController::class);
-        }
-        else {
+        } else {
             $definition = new Definition();
         }
 
