@@ -1,4 +1,4 @@
-# Index and Filter in CoreShop
+# Index and Filter
 
 In CoreShop, managing indices and filters is essential for creating an efficient and user-friendly shopping experience.
 Indices enable the organization and retrieval of product data effectively, while filters allow customers to navigate

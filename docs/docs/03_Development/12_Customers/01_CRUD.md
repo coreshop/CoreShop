@@ -1,4 +1,4 @@
-# Custom Customer Management in CoreShop
+# Custom Customer Management
 
 CoreShop utilizes Pimcore Data Objects to manage customer information, enhancing it with a wrapper for increased
 dynamism and configurability. This approach leverages the Factory and Repository patterns for efficient data handling.

@@ -1,4 +1,4 @@
-# Money Values in CoreShop
+# Money Values
 
 CoreShop adopts an integer-based approach for storing money and currency values. This methodology is crucial for
 ensuring accuracy and avoiding common issues associated with floating-point values, particularly when it comes to

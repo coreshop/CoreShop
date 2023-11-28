@@ -1,4 +1,4 @@
-# CoreShop Upgrade Notes
+# Upgrade Notes
 
 Always check this page for some important upgrade notes before updating to the latest coreshop build.
 

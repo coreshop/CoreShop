@@ -1,4 +1,4 @@
-# CoreShop Frontend Bundle
+# Frontend Bundle
 
 The CoreShop Store Front, also known as the FrontendBundle, provides a default implementation that serves as a practical
 guide for working with the CoreShop Framework. It is designed to showcase how various functionalities can be implemented

@@ -133,9 +133,7 @@ Similar to Doctrine entities, you can register Pimcore DataObject Classes:
            interface: CoreShop\Component\Resource\Model\ResourceInterface
    ```
 
-3. **Usage**:
-
-Utilize CoreShop's repository service or Pimcore's listing classes for data manipulation and retrieval.
+3. **Usage**: Utilize CoreShop's repository service or Pimcore's listing classes for data manipulation and retrieval.
 
 The Resource Bundle is the backbone of CoreShop, enhancing its capabilities and providing a robust framework for
 managing models and data in Pimcore.

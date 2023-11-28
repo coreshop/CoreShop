@@ -3,7 +3,7 @@
 > In CoreShop, taxes are categorized into two main types: Tax Rates and Tax Rules. Tax Rates represent specific
 > percentage rates, while Tax Rules determine the applicable Tax Rate based on Country and State.
 
-## Tax Components in CoreShop
+## Tax Components
 
 1. **[Tax Rates](./01_Tax_Rate/index.md)**: This section covers the management of individual tax rates, including their
    creation, updating, reading, and deletion.

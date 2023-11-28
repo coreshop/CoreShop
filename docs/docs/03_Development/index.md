@@ -1,4 +1,4 @@
-# Developer’s Guide to CoreShop
+# Development
 
 This guide is intended for developers who aim to harness the flexibility and robust features of CoreShop. It outlines
 the key concepts and components used in CoreShop, providing insights into its architecture and how to effectively work
@@ -9,7 +9,7 @@ with it.
 CoreShop offers a rich set of tools and features for building sophisticated eCommerce solutions. Understanding the
 underlying concepts and models is crucial for leveraging its full potential.
 
-## Resources in CoreShop
+## Resources
 
 CoreShop utilizes Doctrine ORM for its custom resources, offering great flexibility and extendability for managing
 simple models such as currencies, countries, etc. Here are the primary resources implemented as ORM models in CoreShop:
@@ -27,7 +27,7 @@ simple models such as currencies, countries, etc. Here are the primary resources
 
 In CoreShop, the term 'Resource' refers to these ORM Models.
 
-## Pimcore Models in CoreShop
+## Pimcore Models
 
 Leveraging Pimcore's flexible data model, CoreShop uses Data Objects for frequently used and modified entities. The
 following are the key objects implemented using Pimcore Data Objects:

@@ -1,4 +1,4 @@
-# Adding a New Pimcore Entity with Automated Installation
+# Adding a New Pimcore Entity with Class Installation
 
 ## Step 1: Add a New Pimcore Class in Pimcore
 

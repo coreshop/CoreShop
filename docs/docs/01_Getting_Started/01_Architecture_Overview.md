@@ -1,4 +1,4 @@
-# CoreShop Architecture
+# Architecture
 
 CoreShop is an open-source (GPL license) eCommerce solution, maintained and financed by CoreShop GmbH. It benefits from
 a diverse community of developers and companies contributing to its development.

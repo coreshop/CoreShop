@@ -1,4 +1,4 @@
-# Shipping in CoreShop
+# Shipping
 
 Efficient and accurate shipping management is a critical component of any eCommerce operation. In CoreShop, shipping and
 shipping calculation are handled through a well-structured and flexible system, designed to cater to a wide range of

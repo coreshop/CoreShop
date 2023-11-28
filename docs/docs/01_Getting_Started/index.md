@@ -1,4 +1,4 @@
-# Getting Started with CoreShop
+# Getting Started
 
 This section provides a quick tutorial to get started with CoreShop. It covers the following topics:
 

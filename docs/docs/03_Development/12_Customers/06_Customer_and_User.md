@@ -1,4 +1,4 @@
-# Customer and User in CoreShop
+# Customer and User
 
 CoreShop distinguishes between two entities when it comes to customer data management: `Customer` and `User`.
 Understanding the difference between these two is crucial for effectively managing customer information and

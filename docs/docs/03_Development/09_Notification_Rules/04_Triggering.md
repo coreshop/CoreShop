@@ -1,4 +1,4 @@
-# Triggering Notification Events in CoreShop
+# Triggering Notification Events
 
 Triggering notification events in CoreShop is streamlined through the use of
 the `CoreShop\Component\Notification\Processor\RulesProcessorInterface`, implemented by the

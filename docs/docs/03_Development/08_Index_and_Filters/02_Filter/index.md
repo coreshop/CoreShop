@@ -1,4 +1,4 @@
-# Filter Configuration in CoreShop
+# Filter Configuration
 
 After setting up the product index, the next step is to configure filters. These filters enhance the user experience by
 enabling customers to easily find products based on various criteria.

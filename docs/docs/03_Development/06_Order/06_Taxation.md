@@ -1,9 +1,9 @@
-# Taxation in CoreShop
+# Taxation
 
 CoreShop's flexible taxation system enables you to configure tax rules based on countries, states, zip codes, and tax
 categories. This system is designed to handle complex tax scenarios across different regions and products.
 
-## Setting Up Taxation in CoreShop
+## Setting Up Taxation
 
 To configure taxation effectively in CoreShop, follow these essential steps:
 

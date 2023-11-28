@@ -1,4 +1,4 @@
-# Events in CoreShop
+# Events
 
 CoreShop is equipped with a wide array of built-in events across different functionalities.
 

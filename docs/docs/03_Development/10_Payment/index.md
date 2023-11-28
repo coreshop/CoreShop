@@ -1,4 +1,4 @@
-# Payment in CoreShop
+# Payment
 
 CoreShop features a highly flexible payment management system, supporting a wide range of gateways (payment providers).
 It utilizes [Payum](https://github.com/payum/payum), a payment abstraction library, to handle various aspects of payment
@@ -16,7 +16,7 @@ CoreShop supports several payment gateways, each with its own set of features an
 | **PowerPay**    | dev    | [Github](https://github.com/coreshop/PayumPowerpayBundle)    | invoice, automatic credit check                                                                              | No      | No (not required)            | No              |
 | **CuraBill**    | dev    | [Github](https://github.com/coreshop/PayumCurabillBundle)    | invoice, instalments via iframe                                                                              | No      | No (not required)            | No              |
 
-## Payment Model in CoreShop
+## Payment Model
 
 Each payment in CoreShop, whether successful or failed, is represented by a payment model. This model contains essential
 information and a reference to the relevant order.

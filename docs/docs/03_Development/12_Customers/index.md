@@ -1,4 +1,4 @@
-# Customer Management in CoreShop
+# Customer Management
 
 In the dynamic and customer-centric world of eCommerce, effectively managing customer information is crucial. CoreShop
 offers a comprehensive system for handling customer data, ensuring that every aspect of customer interaction and

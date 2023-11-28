@@ -1,4 +1,4 @@
-# Carriers in CoreShop
+# Carriers
 
 Effective management of carriers is a vital component of any eCommerce operation. CoreShop offers a robust and flexible
 system for handling carriers, encompassing everything from the creation of new carrier records to complex calculations

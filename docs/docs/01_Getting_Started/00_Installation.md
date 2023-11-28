@@ -1,4 +1,4 @@
-# CoreShop Installation
+# Installation
 
 To install CoreShop, ensure you have a running instance of Pimcore on your system. Follow these steps to set up
 CoreShop:

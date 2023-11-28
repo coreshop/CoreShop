@@ -88,12 +88,25 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Docs (maintained)',
             items: [
               {
                 label: 'Documentation',
                 to: '/',
               },
+              {
+                label: '3.1',
+                to: 'https://docs.coreshop.org/3.1.0/',
+              },
+              {
+                label: 'latest',
+                to: 'https://docs.coreshop.org/latest/',
+              },
+            ],
+          },
+          {
+            title: 'Docs (unmainainted)',
+            items: [
               {
                 label: '2.0',
                 to: 'https://docs.coreshop.org/2.0.0/',
@@ -109,15 +122,7 @@ const config = {
               {
                 label: '3.0',
                 to: 'https://docs.coreshop.org/3.0.0/',
-              },
-              {
-                label: '3.1',
-                to: 'https://docs.coreshop.org/3.1.0/',
-              },
-              {
-                label: 'latest',
-                to: 'https://docs.coreshop.org/latest/',
-              },
+              }
             ],
           },
           {
@@ -148,6 +153,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ['php'],
       },
     }),
   plugins: [

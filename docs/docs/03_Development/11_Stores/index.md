@@ -1,4 +1,4 @@
-# Stores in CoreShop
+# Stores
 
 CoreShop's Stores functionality is a powerful feature that allows you to create and manage a multi-store eCommerce
 system within a single installation. This capability is particularly beneficial for businesses looking to cater to

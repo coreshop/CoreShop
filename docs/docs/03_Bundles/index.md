@@ -1,4 +1,4 @@
-# CoreShop Bundles Overview
+# Bundles Overview
 
 CoreShop offers a suite of bundles that address various non-e-commerce specific functionalities. These bundles are
 versatile and can be utilized in any Pimcore installation, extending beyond the scope of typical e-commerce solutions.
