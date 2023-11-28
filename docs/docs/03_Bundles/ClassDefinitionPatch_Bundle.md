@@ -78,4 +78,5 @@ bin/console coreshop:patch:classes --force
 ```
 
 > **Note** that the patch modifies your local definitions, which should be part of your version control (e.g., git
-> repository). After applying the patch, commit these changes. There's no need to run the patch command during deployment.
+> repository). After applying the patch, commit these changes. There's no need to run the patch command during
+> deployment.

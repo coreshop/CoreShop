@@ -1,6 +1,7 @@
 # States
 
-Managing states in CoreShop involves various operations, including create, read, update, and delete. Below are the guidelines for each of these operations.
+Managing states in CoreShop involves various operations, including create, read, update, and delete. Below are the
+guidelines for each of these operations.
 
 ## Create
 

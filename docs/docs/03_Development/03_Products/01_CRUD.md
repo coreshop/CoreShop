@@ -1,6 +1,7 @@
 # Product
 
-CoreShop leverages Pimcore Data Objects for persisting Product Information but adds a layer of dynamism and configurability through a Factory and Repository Pattern.
+CoreShop leverages Pimcore Data Objects for persisting Product Information but adds a layer of dynamism and
+configurability through a Factory and Repository Pattern.
 
 ## Create
 

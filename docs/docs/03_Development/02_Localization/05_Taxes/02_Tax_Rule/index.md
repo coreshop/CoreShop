@@ -4,4 +4,5 @@
 
 ## Managing Tax Rules in CoreShop
 
-1. **[Create, Update, Read, Delete](./01_CRUD.md)**: This section provides detailed instructions for performing the basic CRUD (Create, Read, Update, Delete) operations on tax rules within CoreShop.
+1. **[Create, Update, Read, Delete](./01_CRUD.md)**: This section provides detailed instructions for performing the
+   basic CRUD (Create, Read, Update, Delete) operations on tax rules within CoreShop.

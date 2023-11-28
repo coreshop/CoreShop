@@ -1,6 +1,7 @@
 # Storage List
 
-In CoreShop, the functionalities of Order, Cart, Quote, and Wishlist are unified, thanks to the abstraction into a dedicated Bundle.
+In CoreShop, the functionalities of Order, Cart, Quote, and Wishlist are unified, thanks to the abstraction into a
+dedicated Bundle.
 
 ## Configuration
 

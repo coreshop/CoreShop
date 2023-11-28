@@ -1,14 +1,18 @@
 # Developer’s Guide to CoreShop
 
-This guide is intended for developers who aim to harness the flexibility and robust features of CoreShop. It outlines the key concepts and components used in CoreShop, providing insights into its architecture and how to effectively work with it.
+This guide is intended for developers who aim to harness the flexibility and robust features of CoreShop. It outlines
+the key concepts and components used in CoreShop, providing insights into its architecture and how to effectively work
+with it.
 
 ## Introduction
 
-CoreShop offers a rich set of tools and features for building sophisticated eCommerce solutions. Understanding the underlying concepts and models is crucial for leveraging its full potential.
+CoreShop offers a rich set of tools and features for building sophisticated eCommerce solutions. Understanding the
+underlying concepts and models is crucial for leveraging its full potential.
 
 ## Resources in CoreShop
 
-CoreShop utilizes Doctrine ORM for its custom resources, offering great flexibility and extendability for managing simple models such as currencies, countries, etc. Here are the primary resources implemented as ORM models in CoreShop:
+CoreShop utilizes Doctrine ORM for its custom resources, offering great flexibility and extendability for managing
+simple models such as currencies, countries, etc. Here are the primary resources implemented as ORM models in CoreShop:
 
 - **Currency**: Handling various currencies.
 - **Country and State**: Geographical models for location-based functionality.
@@ -25,7 +29,8 @@ In CoreShop, the term 'Resource' refers to these ORM Models.
 
 ## Pimcore Models in CoreShop
 
-Leveraging Pimcore's flexible data model, CoreShop uses Data Objects for frequently used and modified entities. The following are the key objects implemented using Pimcore Data Objects:
+Leveraging Pimcore's flexible data model, CoreShop uses Data Objects for frequently used and modified entities. The
+following are the key objects implemented using Pimcore Data Objects:
 
 - **Product**: The core entity in any eCommerce platform.
 - **Product Category**: Organizing products into categories.

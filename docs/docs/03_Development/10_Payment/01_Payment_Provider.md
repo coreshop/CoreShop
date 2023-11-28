@@ -52,7 +52,7 @@ To add Sofort as a new gateway configuration, create the following files:
  }
  ```
 
-   Then, register the FormType in the service container:
+Then, register the FormType in the service container:
 
 ```yaml
 services:
@@ -76,7 +76,7 @@ coreshop.provider.gateways.sofort = Class.create(coreshop.provider.gateways.abst
 });
  ```
 
-   Register the new JavaScript file:
+Register the new JavaScript file:
 
 ```yaml
 core_shop_payment:

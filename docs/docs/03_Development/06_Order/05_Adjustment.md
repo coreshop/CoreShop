@@ -1,12 +1,16 @@
 # Adjustments
 
-Adjustments in CoreShop provide a mechanism to add extra costs or discounts to your Order, such as Taxes, Shipping, or Discounts.
+Adjustments in CoreShop provide a mechanism to add extra costs or discounts to your Order, such as Taxes, Shipping, or
+Discounts.
 
 ## Add a New Adjustment
 
-The best practice for adding or removing adjustments is within Cart Processors. More information about Cart Processors can be found [here](./07_Cart_Processor.md).
+The best practice for adding or removing adjustments is within Cart Processors. More information about Cart Processors
+can be found [here](./07_Cart_Processor.md).
 
-To add a new Adjustment, you should create a new Adjustment Model that implements the interface [`CoreShop\Component\Order\Model\AdjustmentInterface`]. Use the Factory [`CoreShop\Component\Order\Factory\AdjustmentFactoryInterface`] to create a new Adjustment.
+To add a new Adjustment, you should create a new Adjustment Model that implements the
+interface [`CoreShop\Component\Order\Model\AdjustmentInterface`]. Use the
+Factory [`CoreShop\Component\Order\Factory\AdjustmentFactoryInterface`] to create a new Adjustment.
 
 ```php
 /**

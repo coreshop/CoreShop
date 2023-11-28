@@ -1,6 +1,7 @@
 # Filter - Create Custom Filter
 
 **1**. We need to create 2 new files:
+
 - FormType for processing the Input Data
 - And a FilterConditionProcessorInterface, which checks if a cart fulfills the condition.
 
