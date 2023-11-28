@@ -2,7 +2,7 @@
 
 In CoreShop, Cart Price Rules provide a mechanism to apply discounts to a shopping cart. This is achieved by creating
 Cart Price Rules and then adding Cart Price Rule Vouchers to the cart. For a detailed understanding of Cart Price Rules,
-refer to [Cart Price Rules](../../02_User_Documentation/03_Cart_Price_Rules/01_Cart_Price_Rules.md).
+refer to [Cart Price Rules](./../../02_User_Documentation/03_Price_Rules/01_Cart_Price_Rules.md).
 
 ## Discount and Surcharge Application
 

@@ -14,7 +14,7 @@ installation:
 - **[Money Bundle](./Money_Bundle.md)**: Provides tools for handling monetary values.
 - **[Messenger Bundle](./Messenger_Bundle.md)**: Enhances message handling and delivery.
 - **[Optimistic Entity Lock Bundle](./OptimisticEntityLock_Bundle.md)**: Implements optimistic locking for entities.
-- **[Resource Bundle](./Resource_Bundle.md)**: Streamlines repetitive tasks like CRUD operations.
+- **[Resource Bundle](./Resource_Bundle/index.md)**: Streamlines repetitive tasks like CRUD operations.
 - **[SEO Bundle](./SEO_Bundle.md)**: Offers features for search engine optimization.
 - **[Sequence Bundle](./Sequence_Bundle.md)**: Manages sequential number generation.
 - **[Storage List Bundle](./StorageList_Bundle.md)**: Handles complex data storage requirements.

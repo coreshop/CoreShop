@@ -33,9 +33,9 @@ Explore these topics to familiarize yourself with the CoreShop platform:
     - [Order Workflow](./06_Order/03_Order_Workflow.md)
     - [Order Comments](./06_Order/04_Order_Comments.md)
 8. **Catalog Management**: Managing your product catalog.
-    - [Products](./07_Catalog/01_Products.md)
-    - [Product Variants](./07_Catalog/02_Product_Variants.md)
-    - [Categories](./07_Catalog/03_Categories.md)
+    - [Products](./07_Catalog/index.md)
+    - [Product Variants](./07_Catalog/index.md)
+    - [Categories](./07_Catalog/index.md)
 9. **[Inventory](./08_Inventory/index.md)**: Inventory management insights.
 10. **Reports**: Understanding reporting tools for data analysis.
     - [Sales](./09_Reports/01_Sales.md)

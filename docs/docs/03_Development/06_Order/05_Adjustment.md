@@ -6,7 +6,7 @@ Discounts.
 ## Add a New Adjustment
 
 The best practice for adding or removing adjustments is within Cart Processors. More information about Cart Processors
-can be found [here](./07_Cart_Processor.md).
+can be found [here](./04_Cart_Processor.md).
 
 To add a new Adjustment, you should create a new Adjustment Model that implements the
 interface [`CoreShop\Component\Order\Model\AdjustmentInterface`]. Use the
