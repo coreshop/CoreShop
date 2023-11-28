@@ -1,12 +1,12 @@
-# Payment
+# Payment in CoreShop
 
-CoreShop contains a very flexible payments management system with support for many gateways (payment providers).
-We are using a payment abstraction library - [Payum](https://github.com/payum/payum),
-which handles all sorts of capturing, refunding and recurring payments logic.
-
-On CoreShop side, we integrate it into our checkout and manage all the payment data.
+CoreShop features a highly flexible payment management system, supporting a wide range of gateways (payment providers).
+It utilizes [Payum](https://github.com/payum/payum), a payment abstraction library, to handle various aspects of payment
+processing, including capturing, refunding, and recurring payments.
 
 ## Available Payment Gateways for CoreShop
+
+CoreShop supports several payment gateways, each with its own set of features and capabilities:
 
 | Name            | State  | Link                                                         | Support                                                                                                      | Offsite | Supports Server-Notification | Supports Refund |
 |-----------------|--------|--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|---------|------------------------------|-----------------|
@@ -16,14 +16,14 @@ On CoreShop side, we integrate it into our checkout and manage all the payment d
 | **PowerPay**    | dev    | [Github](https://github.com/coreshop/PayumPowerpayBundle)    | invoice, automatic credit check                                                                              | No      | No (not required)            | No              |
 | **CuraBill**    | dev    | [Github](https://github.com/coreshop/PayumCurabillBundle)    | invoice, instalments via iframe                                                                              | No      | No (not required)            | No              |
 
-## Payment
+## Payment Model in CoreShop
 
-Every payment in CoreShop, successful or failed, is represented by the payment model,
-which contains basic information and a reference to appropriate order.
+Each payment in CoreShop, whether successful or failed, is represented by a payment model. This model contains essential
+information and a reference to the relevant order.
 
-## Create a Payment programmatically
+## Creating a Payment Programmatically
 
-As usually, use a factory to create a new PaymentMethod and give it a unique code.
+To create a new payment method programmatically, use a factory and assign a unique code:
 
 ```php
 $payment = $this->container->get('coreshop.factory.payment')->createNew();
@@ -34,8 +34,9 @@ $payment->setCurrencyCode('EUR');
 $this->container->get('coreshop.repository.payment')->add($payment);
 ```
 
-## More
+## Additional Resources
 
-- [Payment Provider](./01_Payment_Provider.md)
-- [Ominpay Bridge](./02_Omnipay_Bridge.md)
-- [Payum Providers](./03_Payum_Providers.md)
+For more information on payment integration and management in CoreShop:
+
+- **[Payment Provider](./01_Payment_Provider.md)**
+- **[Payum Providers](./03_Payum_Providers.md)**

@@ -1,42 +1,44 @@
 # Customer Registration Types
 
-By default, a customer needs to provide a unique and valid email address to pass a registration.
+In CoreShop, the customer registration process can be configured to suit different requirements. By default,
+registration requires a unique and valid email address, but you can customize this to use other identifiers like a
+username.
 
 ## Register By Email
 
-> This is the default setting!
+The default registration method in CoreShop is by using a unique and valid email address.
 
-To switch to registration by a unique and valid email address, you need set the identifier:
+To configure registration by email, set the login identifier as follows:
 
 ```yaml
 core_shop_customer:
-    login_identifier: 'email'
+  login_identifier: 'email'
 ```
 
 ## Register By Username
 
-First, you need to make sure your customer object provides a `username` field.
-By default, coreshop **does not** install this field to prevent unnecessary confusion.
-To implement the username field, just open your class editor and add a text field called `username` and you're good to
-go!
+To enable registration via a unique username:
 
-To switch to registration by a unique username, you need change the identifier:
+1. **Add a `username` field**: Ensure that your customer data object has a `username` field. By default, CoreShop does
+   not include this field to avoid confusion. You can add a text field named `username` in your class editor.
+
+2. **Change the identifier**: Set the login identifier to `username`:
 
 ```yaml
 core_shop_customer:
-    login_identifier: 'username'
+  login_identifier: 'username'
 ```
 
-## Security
+## Security Measures
 
-### Form (Frontend)
+### Frontend Form Constraints
 
-CoreShop comes with a preinstalled constraint which will tell your customer, if an email address or username - depending
-on your settings - is valid or not.
+CoreShop includes built-in constraints that inform customers whether the email address or username they enter (depending
+on your configuration) is valid and unique.
 
-### Backend / API
+### Backend/API Validation
 
-Plus, if you're going to update a customer by API or Backend, coreshop also checks if your customer entity has unique
-data.
+In addition to frontend validation, CoreShop also ensures the uniqueness of customer data when updating customer
+entities via the API or backend.
 
-> Note: Both checks only apply to non-guest entities!
+> **Note**: These uniqueness checks apply only to non-guest entities.

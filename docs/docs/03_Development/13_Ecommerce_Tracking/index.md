@@ -1,39 +1,43 @@
 # eCommerce Tracking
 
-CoreShop currently implements Tracking for Analytics and Google Tag Manager.
-Tracking is automatically available (but not enabled), as soon as you enable Tag Manager or Analytics in Pimcore.
-
-Per default configuration, all the ecommerce trackers are disabled. You need to enable them manually.
+CoreShop implements tracking for analytics and Google Tag Manager, integrating seamlessly as soon as Tag Manager or
+Analytics is enabled in Pimcore. By default, all ecommerce trackers are disabled and need to be manually activated.
 
 ## Available Trackers
 
-* google-analytics-enhanced-ecommerce
-* google-analytics-universal-ecommerce
-* google-gtag-enhanced-ecommerce
-* google-gtm-classic-ecommerce
-* google-gtm-enhanced-ecommerce
-* matomo (piwik)
+CoreShop supports a variety of trackers, including:
+
+- google-analytics-enhanced-ecommerce
+- google-analytics-universal-ecommerce
+- google-gtag-enhanced-ecommerce
+- google-gtm-classic-ecommerce
+- google-gtm-enhanced-ecommerce
+- matomo (piwik)
 
 ## Enabling Trackers
 
+To enable a specific tracker, modify the configuration as follows:
+
 ```yml
 core_shop_tracking:
-    trackers:
-        google-analytics-enhanced-ecommerce:
-            enabled: false
-        google-analytics-universal-ecommerce:
-            enabled: false
-        google-gtag-enhanced-ecommerce:
-            enabled: false
-        google-gtm-classic-ecommerce:
-            enabled: false
-        google-gtm-enhanced-ecommerce:
-            enabled: false
-        matomo:
-            enabled: true
+   trackers:
+      google-analytics-enhanced-ecommerce:
+        enabled: false
+      google-analytics-universal-ecommerce:
+        enabled: false
+      google-gtag-enhanced-ecommerce:
+        enabled: false
+      google-gtm-classic-ecommerce:
+        enabled: false
+      google-gtm-enhanced-ecommerce:
+        enabled: false
+      matomo:
+        enabled: true
 ```
 
-### External
+### External Resources
+
+For more information on these tracking methods:
 
 - [Google Enhanced E-Commerce](https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce)
 - [Google Enhanced E-Commerce with gtag.js](https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce)
@@ -79,105 +83,40 @@ $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $stepIdentifie
 $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order)
 ```
 
-## Add a custom Tracker
+## Adding a Custom Tracker
 
-To add a custom tracker you need to implement the interface `CoreShop\Component\Tracking\Tracker\TrackerInterface`
+To add a custom tracker:
+
+1. Implement the interface `CoreShop\Component\Tracking\Tracker\TrackerInterface`.
+
+2. Register the tracker as a service:
 
 ```yaml
 app.tracking.tracker.my_tracker:
-    class: AppBundle\Tracker\CustomTracker
-    parent: coreshop.tracking.tracker.ecommerce_tracker
-    tags:
-        - { name: coreshop.tracking.tracker, type: app-custom-tracker }
+  class: AppBundle\Tracker\CustomTracker
+  parent: coreshop.tracking.tracker.ecommerce_tracker
+  tags:
+    - { name: coreshop.tracking.tracker, type: app-custom-tracker }
 ```
 
 ## Google Tag Manager
 
-If you have enabled the gtm in backend, CoreShop sends some data to a `dataLayer` object which submits the object to
-gtm.
+CoreShop sends data to a `dataLayer` object for Google Tag Manager, which then submits the object to GTM.
 
 ### GTM Classic eCommerce
 
-If you enable the classic mode only the order gets submitted if user has successfully reached the "thank-you" page.
+In classic mode, only the order gets submitted when the user reaches the "thank-you" page.
 
 ### GTM Enhanced eCommerce
 
-There are six Impressions/Events for Google Tag Manager Enhanced eCommerce:
+For Google Tag Manager Enhanced eCommerce, there are six Impressions/Events:
 
-#### Product Impression
+- Product Impression
+- Product Detail View
+- Checkout Step
+- Checkout Complete (Purchase)
+- Remove Item from Cart
+- Add Item to Cart
 
-**Tag Config Example**:
-<pre>
-Tag type : Universal Analytics
-Track type : Pageview
-Enable Enhanced Ecommerce Features: <b>true</b>
-Use Data Layer: <b>true</b>
-Trigger: event equals <b>gtm.dom</b>
-</pre>
-
-#### Product Detail View
-
-**Tag Config Example**:
-<pre>
-Tag type : Universal Analytics
-Track type : Pageview
-Enable Enhanced Ecommerce Features: <b>true</b>
-Use Data Layer: <b>true</b>
-Trigger: event equals <b>gtm.dom</b>
-</pre>
-
-#### Checkout Step:
-
-> **Event-Name**: `csCheckout`
-
-**Tag Config Example**:
-<pre>
-Tag type : Universal Analytics
-Track type : Event
-Event Category: <b>Ecommerce</b>
-Event Action: <b>Checkout</b>
-Enable Enhanced Ecommerce Features: <b>true</b>
-Use Data Layer: <b>true</b>
-Trigger: event equals <b>csCheckout</b>
-</pre>
-
-#### Checkout Complete (Purchase):
-
-**Tag Config Example**:
-<pre>
-Tag type : Universal Analytics
-Track type : Pageview
-Enable Enhanced Ecommerce Features: <b>true</b>
-Use Data Layer: <b>true</b>
-Trigger: event equals <b>gtm.dom</b>
-</pre>
-
-#### Remove Item from Cart
-
-> **Event-Name**: `csRemoveFromCart`
-
-**Tag Config Example**:
-<pre>
-Tag type : Universal Analytics
-Track type : Event
-Event Category: <b>Ecommerce</b>
-Event Action: <b>Remove from Cart</b>
-Enable Enhanced <b>Ecommerce Features: true</b>
-Use Data Layer: <b>true</b>
-Trigger: event equals <b>csRemoveFromCart</b>
-</pre>
-
-#### Add Item to Cart
-
-> **Event-Name**: `csAddToCart`
-
-**Tag Config Example**:
-<pre>
-Tag type : Universal Analytics
-Track type : Event
-Event Category: <b>Ecommerce</b>
-Event Action: <b>Add to Cart</b>
-Enable Enhanced <b>Ecommerce Features: true</b>
-Use Data Layer: <b>true</b>
-Trigger: event equals <b>csAddToCart</b>
-</pre>
+Each impression/event has specific configurations for GTM tagging, as outlined in the detailed tag config examples
+provided.
