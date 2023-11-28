@@ -1,85 +1,81 @@
 # Order Detail
 
-## State / Price Overview
+The Order Detail section in CoreShop provides comprehensive information about individual orders, including their states,
+price overview, and other relevant details.
 
-Please read more about the order workflow process [here](./03_Order_Workflow.md)
+## State and Price Overview
 
-Besides some useful information about the order store and the total order amount,
-there're also several order states:
+For an in-depth understanding of the order workflow process, refer to
+the [Order Workflow documentation](./03_Order_Workflow.md).
 
-### State
-This is the main state and represents the summary of all order states.
+### Key Information
 
-| Name | Description |
-|:-----|:-----------|
-| new | New order has been placed. |
-| confirmed | New order has been successfully created (after a offline order or a customer returns from payment gateway regardless of its state). |
-| cancelled | Order has been cancelled. |
-| complete | Order is complete. |
+- **Order Store**: Indicates the store where the order was placed.
+- **Total Order Amount**: The complete amount for the order.
 
-### Payment State
-Global payment states per order and represents the summary of all order payments:
+### Order States
 
-| Name | Description |
-|:-----|:-----------|
-| new | New payment has been created. |
-| awaiting_payment | Waiting for payment: User is on payment offsite or payment is offline. |
-| partially_paid | Some order payments have been paid. |
-| paid | All payments have been paid. |
-| cancelled | Order is complete. |
-| partially_refunded | Some order payments have been refunded. |
-| refunded | All payments have been refunded. |
+#### Main State
 
-### Shipment State
-Global shipment states per order and represents the summary of all order shipments:
+The primary state summarizing the overall status of the order.
 
-| Name | Description |
-|:-----|:-----------|
-| new | New shipment has been placed. |
-| cancelled | Shipment has been cancelled |
-| partially_shipped | Some order items have been shipped. |
-| shipped | All items have been shipped. |
+| Name      | Description                 |
+|:----------|:----------------------------|
+| new       | Newly placed order.         |
+| confirmed | Order successfully created. |
+| cancelled | Order has been cancelled.   |
+| complete  | Order is complete.          |
 
-### Invoice State
-Global invoice states per order and represents the summary of all order invoices:
+#### Payment State
 
-| Name | Description |
-|:-----|:-----------|
-| new | New invoice has been created. |
-| cancelled | Invoice has been cancelled |
-| partially_invoiced | Some invoices have been invoiced. |
-| invoiced | All invoices have been invoiced. |
+Reflects the overall payment status of the order.
 
+| Name               | Description                    |
+|:-------------------|:-------------------------------|
+| new                | New payment initiated.         |
+| awaiting_payment   | Awaiting payment confirmation. |
+| partially_paid     | Partial payment received.      |
+| paid               | Full payment received.         |
+| cancelled          | Payment cancelled.             |
+| partially_refunded | Partial refund processed.      |
+| refunded           | Full refund processed.         |
 
-## Carrier/Payment Provider Info
-- Currency of Order
-- Overall weight of Order Items
-- Carrier
-- Total Amount
+#### Shipment State
 
-## Order History
-The Order History shows you when specific states have been changed.
+Indicates the shipping status of the order.
 
-## Payments
---
+| Name              | Description                 |
+|:------------------|:----------------------------|
+| new               | New shipment initiated.     |
+| cancelled         | Shipment cancelled.         |
+| partially_shipped | Partial shipment completed. |
+| shipped           | Full shipment completed.    |
 
-## Shipments
---
+#### Invoice State
 
-## Invoices
---
+Summarizes the invoicing status of the order.
 
-## Mail Correspondence
---
+| Name               | Description                  |
+|:-------------------|:-----------------------------|
+| new                | New invoice created.         |
+| cancelled          | Invoice cancelled.           |
+| partially_invoiced | Partial invoicing completed. |
+| invoiced           | Full invoicing completed.    |
 
-## Customer
---
+## Carrier and Payment Provider Information
 
-## Comments
---
+- **Currency**: The currency used for the order.
+- **Total Weight**: The cumulative weight of all order items.
+- **Carrier**: The shipping provider used.
+- **Total Amount**: The total amount for the order.
 
-## Additional Data
---
+## Additional Sections
 
-## Products
---
+- **Order History**: Tracks changes in order states.
+- **Payments**: Details about payment transactions.
+- **Shipments**: Information on shipment progress.
+- **Invoices**: Records of invoicing.
+- **Mail Correspondence**: Log of emails related to the order.
+- **Customer**: Customer details.
+- **Comments**: Any comments or notes on the order.
+- **Products**: List of products included in the order.

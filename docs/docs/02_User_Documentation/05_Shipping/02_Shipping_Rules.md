@@ -1,53 +1,62 @@
-# CoreShop Shipping Rules Documentation
+# Shipping Rules
 
-CoreShop Shipping Rules is a powerful feature within the CoreShop e-commerce framework built on the Pimcore platform. It allows you to create flexible and customizable shipping rules that define shipping costs based on various conditions such as weight, price, dimensions, and shipping destination.
+CoreShop Shipping Rules are a key feature within the CoreShop e-commerce framework on the Pimcore platform, enabling you
+to define shipping costs through customizable rules. These rules can be based on various conditions such as weight,
+price, dimensions, and shipping destination.
 
 ## Overview
 
-Shipping rules in CoreShop can be composed of conditions and actions. Conditions determine whether a rule should be applied, while actions define the changes to the shipping costs.
+Shipping rules in CoreShop are composed of conditions and actions:
 
-CoreShop provides a user-friendly interface for creating and managing shipping rules. You can create multiple rules, each with different conditions and actions, to cover various scenarios.
+- **Conditions**: Determine the applicability of a rule.
+- **Actions**: Define the adjustments to shipping costs when a rule is applied.
+
+You can create a variety of rules, each tailored to specific shipping scenarios.
 
 ## Creating Shipping Rules
 
- - Navigate to the "Shipping" tab and click on "Shipping Rules."
- - Click the "Add new" button to create a new shipping rule.
- - Enter a name for the rule and configure the other available options as needed.
+1. **Access Shipping Rules**: Navigate to the "Shipping" tab and select "Shipping Rules."
+2. **Add New Rule**: Click "Add new" to start creating a rule.
+3. **Configure Rule**: Name the rule and adjust settings according to your requirements.
 
 ## Configuring Conditions
 
-Conditions determine whether the shipping rule should be applied to an order. You can create multiple conditions for a single rule, and all conditions must be met for the rule to be applied. CoreShop offers several types of conditions, including:
+Conditions are criteria that must be met for a shipping rule to apply. CoreShop supports multiple conditions per rule,
+including:
 
- - Weight: Based on the total weight of the order.
- - Price: Based on the total price of the order.
- - Dimension: Based on the dimensions (length, width, and height) of the order.
- - Quantity: Based on the total quantity of items in the order.
- - Countries: Based on the shipping destination country.
- - Zones: Based on the shipping destination zone (a group of countries). 
+- **Weight**: Based on the total weight of the order.
+- **Price**: Based on the total price of the order.
+- **Dimension**: Based on order dimensions (length, width, height).
+- **Quantity**: Based on the total quantity of items.
+- **Countries**: Targeting specific shipping destinations.
+- **Zones**: Focusing on particular geographic zones.
 
-To add a condition to your shipping rule:
+### Setting Up a Condition
 
- - Click the "Add Condition" button in the "Conditions" section of the shipping rule.
- - Choose the desired condition type from the dropdown menu.
- - Configure the condition parameters as needed.
- 
-For example, if you want to apply a shipping rule only to orders with a total weight of over 10kg, you would add a weight condition and set the minimum weight to 10kg.
+- Click "Add Condition" in the rule's "Conditions" section.
+- Select a condition type and configure its parameters.
+
+Example: For orders over 10kg, add a weight condition with a minimum weight of 10kg.
 
 ## Configuring Actions
-Actions define the changes to the shipping costs when a rule is applied. You can create multiple actions for a single rule. CoreShop offers several types of actions, including:
 
- - Discount Amount: Apply a fixed discount amount to the shipping cost.
- - Discount Percentage: Apply a percentage discount to the shipping cost.
- - Add Amount: Add a fixed amount to the shipping cost.
- - Add Percentage: Add a percentage amount to the shipping cost.
+Actions determine how shipping costs are modified when a rule is triggered. CoreShop allows for multiple actions per
+rule, such as:
 
-To add an action to your shipping rule:
+- **Discount Amount**: A fixed discount on shipping costs.
+- **Discount Percentage**: A percentage discount on shipping costs.
+- **Add Amount**: An additional fixed amount to the shipping costs.
+- **Add Percentage**: An extra percentage to the shipping costs.
 
- - Click the "Add Action" button in the "Actions" section of the shipping rule.
- - Choose the desired action type from the dropdown menu.
- - Configure the action parameters as needed.
+### Setting Up an Action
 
-For example, if you want to apply a 20% discount to the shipping cost when the rule is applied, you would add a discount percentage action and set the percentage value to 20.
+- Click "Add Action" in the rule's "Actions" section.
+- Choose an action type and set the necessary parameters.
 
-# Summary
-CoreShop Shipping Rules offer a powerful and flexible way to define and manage shipping costs for your e-commerce store. By creating various conditions and actions, you can customize shipping costs based on factors such as weight, price, dimensions, and destination. This allows you to cater to different customer needs and provide more accurate shipping estimates.
+Example: For a 20% shipping discount, add a discount percentage action and set it to 20%.
+
+## Summary
+
+CoreShop Shipping Rules provide a versatile and robust mechanism to manage shipping costs in your e-commerce store. By
+leveraging various conditions and actions, you can tailor shipping costs to meet diverse requirements and offer precise
+shipping estimates to your customers.

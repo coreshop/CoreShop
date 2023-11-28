@@ -4,7 +4,9 @@ CoreShop has a great new feature for product units. E.g. you can sell items "per
 
 First, add some product units in Pimcore > CoreShop > Product > Product Units. Click "Add" and fill all the fields.
 
-Then you can add product-units directly in the product-objects inside Pimcore (take a look at the "Price"-tab). There, you can also add multiple product units (eg: 1 box contains of 12 items - CoreShop will show you different order-possibilities in the add-to-cart section in the webshop)
+Then you can add product-units directly in the product-objects inside Pimcore (take a look at the "Price"-tab). There,
+you can also add multiple product units (eg: 1 box contains of 12 items - CoreShop will show you different
+order-possibilities in the add-to-cart section in the webshop)
 
 Using the API for product units:
 
@@ -33,8 +35,6 @@ $product->setUnitDefinitions($unitDefinitions);
 $product->save();
 ```
 
-
-
 ## Update Default UnitDefinition
 
 ```php
@@ -57,11 +57,10 @@ $product->setUnitDefinitions($unitDefinitions);
 $product->save();
 ```
 
-
-
 ## Delete UnitDefinition
 
-Deleting a UnitDefiniton from a product is done by finding the UnitDefinitions for the product in the product_unit_definitions repository and then deleting it.
+Deleting a UnitDefiniton from a product is done by finding the UnitDefinitions for the product in the
+product_unit_definitions repository and then deleting it.
 
 ```php
 /** @var DataObject\CoreShopProduct $product */

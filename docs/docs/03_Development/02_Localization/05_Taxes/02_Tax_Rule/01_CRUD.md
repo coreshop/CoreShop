@@ -1,62 +1,58 @@
 # Tax Rules
 
+Managing tax rules in CoreShop involves various operations, including create, read, update, and delete. Below are the
+guidelines for each of these operations.
+
 ## Create
-If you want to create a Tax Rule via API, you can do following:
+
+To create a new tax rule via the API:
 
 ```php
 $newTaxRule = $container->get('coreshop.factory.tax_rule')->createNew();
 ```
 
-Now you have a new Tax Rule, if you want to persist it, you need to do following:
+After creating a new Tax Rule instance, persist it using:
 
 ```php
 $container->get('coreshop.manager.tax_rule')->persist($newTaxRule);
 $container->get('coreshop.manager.tax_rule')->flush();
 ```
 
-You now have a new persisted Tax Rule.
+You now have a new persisted tax rule.
 
 ## Read
 
-If you want to query for Tax Rules, you can do following:
+To query for tax rules:
 
 ```php
 $ruleRepository = $container->get('coreshop.repository.tax_rule');
-
 $queryBuilder = $ruleRepository->createQueryBuilder('c');
-
 // You can now create your query
-
 // And get the result
-
 $rules = $queryBuilder->getQuery()->getResult();
-
 ```
 
 ## Update
 
-If you want to update and existing Tax Rule, you need to do following:
+To update an existing tax rule:
 
 ```php
 // Fetch Tax Rule
-
 $rule = $ruleRepository->findById(1);
 $rule->setName('Euro');
-
 // And Persist it
 $container->get('coreshop.manager.tax_rule')->persist($rule);
 $container->get('coreshop.manager.tax_rule')->flush();
 ```
 
 ## Delete
-If you want to update and existing Tax Rule, you need to do following:
+
+To delete an existing tax rule:
 
 ```php
 // Fetch Tax Rule
-
 $rule = $ruleRepository->findById(1);
-
-// And Persist it
+// And Remove it
 $container->get('coreshop.manager.tax_rule')->remove($rule);
-$container->get('coreshop.manager.tax_rule')->flush();
+$container->get('coreshop.manager.tax_rule')->flush;
 ```

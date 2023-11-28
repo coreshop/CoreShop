@@ -1,14 +1,19 @@
-#  Menu Bundle
+# Menu Bundle
 
-Menu Bundle makes it easy creating Pimcore Menus based on permissions.
+The Menu Bundle simplifies the creation of Pimcore menus based on permissions, enhancing the user interface and
+navigation experience.
 
-## Installation
+## Installation Process
+
+To install the Menu Bundle, use Composer:
+
 ```bash
-$ composer require coreshop/menu-bundle:^3.0
+$ composer require coreshop/menu-bundle:^4.0
 ```
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel
+### Integrating with the Kernel
+
+Enable the bundle in the kernel by updating the `AppKernel.php` file:
 
 ```php
 <?php
@@ -23,72 +28,63 @@ public function registerBundlesToCollection(BundleCollection $collection)
 }
 ```
 
-### Usage
+## Usage Instructions
 
-Create a new Menu by creating a new Class, let's call it `MyMenuBuilder`
+### Creating a New Menu
 
-```php
+1. **Define a Menu Builder Class**:
+   Create a new class for your menu, such as `MyMenuBuilder`.
 
-namespace AppBundle\Menu;
+   ```php
+   <?php
+   namespace AppBundle\Menu;
 
-use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
-use Knp\Menu\FactoryInterface;
-use Knp\Menu\ItemInterface;
+   use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
+   use Knp\Menu\FactoryInterface;
+   use Knp\Menu\ItemInterface;
 
-class MyMenuBuilder implements MenuBuilderInterface
-{
-    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type) 
-    {
-        //Create a new direct sub-menu item
-        $menuItem
-            ->addChild('my-menu-item')
-            ->setLabel('my-menu-item')
-            ->setAttribute('permission', 'my_menu_item')
-            ->setAttribute('iconCls', 'pimcore_icon_delete')
-        ;
-    }
-}
-```
+   class MyMenuBuilder implements MenuBuilderInterface
+   {
+       public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type) 
+       {
+           $menuItem
+               ->addChild('my-menu-item')
+               ->setLabel('my-menu-item')
+               ->setAttribute('permission', 'my_menu_item')
+               ->setAttribute('iconCls', 'pimcore_icon_delete');
+       }
+   }
+   ```
 
-You then need to register your class to the symfony container:
+2. **Register the Menu Builder**:
+   Register your menu builder class in the Symfony container.
 
-```yml 
-    app.my_menu:
-        class: AppBundle\Menu\MyMenuBuilder
-        tags:
-            - { name: coreshop.menu, type: my_menu, menu: my_menu }
+   ```yml 
+   app.my_menu:
+       class: AppBundle\Menu\MyMenuBuilder
+       tags:
+           - { name: coreshop.menu, type: my_menu, menu: my_menu }
+   ```
 
-```
+### Implementing the ExtJs JavaScript Part
 
-Where the `menu` attribute defines your unique identifier for your menu. You can also register multiple Builders
-for your Menu with the same `menu` attribute, this will load them one after another.
+1. **Add a JavaScript File**:
+   In your bundle's `Bundle.php` file, add the JavaScript file to the `jsPaths`
+   array: `/admin/coreshop/coreshop.my_menu/menu.js`
+2. **Instantiate the Menu**:
+   In your `startup.js` file, instantiate the menu:
 
-Now, lets do the ExtJs Javascript part. In your Bundle. I assume you already have a working Bundle for that. In your
-`Bundle.php` file, add this file to the `jsPaths` array:
-
-```
-'/admin/coreshop/coreshop.my_menu/menu.js'
-```
-
-Where `my_menu` here again is your defined identifier. This will load a basic helper file that will build your menu.
-Now, let's actually build the menu.
-
-You should already have a `startup.js` somehwere in your Bundle. In there, you can instantiate the menu by calling:
-
-```
-new coreshop.menu.coreshop.my_menu();
-```
-
-That will build the menu automatically for you.
-
-In order now to do something when a menu-item is clicked, you can attach to the event that is fired:
-
-```javascript
-pimcore.eventDispatcher.registerTarget('coreshopMenuOpen', new (Class.create({
-    coreshopMenuOpen: function(type, item) {
+   ```javascript
+    new coreshop.menu.coreshop.my_menu();
+   
+    pimcore.eventDispatcher.registerTarget('coreshopMenuOpen', new (Class.create({
+        coreshopMenuOpen: function(type, item) {
         if (item.id === 'my-menu-item') {
             alert('My Menu Item has been clicked');
         }
     }
-})));
-```
+
+   ```
+
+
+

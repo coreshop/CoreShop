@@ -3,23 +3,27 @@ slug: /
 title: Introduction
 ---
 
-# Introduction
+# Introduction to CoreShop - Pimcore eCommerce Framework
 
-> This documentation section provides all information you need to use the CoreShop - Pimcore eCommerce Framework
->
-> We've aimed this part of the documentation at a developer's audience.
+Welcome to the CoreShop documentation. This section is designed for developers and provides comprehensive information on
+utilizing CoreShop within Pimcore, a powerful and flexible eCommerce solution.
 
-CoreShop provides a fully flexible and extendable eCommerce Solution for Pimcore. If you want to know more about Pimcore, please visit [pimcore.com](https://pimcore.com).
+## Quick Navigation Guide
 
-## Documentation Overview
+Our documentation is organized into easy-to-navigate sections, each tailored to different aspects of CoreShop:
 
-The Core Framework documentation is divided into three sections that aim to guide the reader through its first use of the platform:
+- **Getting Started**: Visit the [Getting Started](./01_Getting_Started/index.md) section for an introduction to
+  CoreShop, including installation instructions.
+- **Bundles Overview**: Explore the [Bundles](./03_Bundles/index.md) section to understand the various CoreShop Bundles
+  and their functionalities.
+- **User Documentation**: For configuration details and user-oriented instructions, see
+  the [User Documentation](./02_User_Documentation/index.md).
+- **Developer Guide**: If you're looking to develop with CoreShop, check out
+  our [Development](./03_Development/index.md) section for in-depth technical information.
 
-* See the [Getting Started](./01_Getting_Started/index.md) section for an overview and information about the installation process.
-* See the [Bundles](./03_Bundles/index.md) section for details about the different Bundles CoreShop provides.
-* See the [User Documentation](./02_User_Documentation/index.md) section for documentation configuration of CoreShop.
-* See the [Development](./03_Development/index.md) section for documentation about developing with CoreShop.
+## Explore CoreShop in Action
 
-## Additional resources for getting started with CoreShop
-- [CoreShop Demo](https://demo3.coreshop.org): See CoreShop in action and also use it as a blueprint application for your own implementations.
+- **Live Demo**: Experience CoreShop firsthand and use our [CoreShop Demo](https://demo4.coreshop.org) as a blueprint
+  for your implementations.
 
+For more information about Pimcore itself, visit [pimcore.com](https://pimcore.com).

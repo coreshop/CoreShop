@@ -1,29 +1,40 @@
-# CoreShop Customers Report
+# Customers Report
+
+The CoreShop Customers Report provides an in-depth view of customer interactions within your e-commerce store. It offers
+valuable insights into customer purchasing patterns, helping to tailor marketing and sales strategies effectively.
 
 ![Customers Report](img/customers.png)
 
+## Report Format
+
+This report is formatted as a list, providing a detailed breakdown of customer activities.
+
 | Type | Has Pagination |
-|:-----|:-----------|
-| List | No |
+|:-----|:---------------|
+| List | No             |
 
-## Available Filters
+## Customizing the Report with Filters
 
-| Name | Description |
-|:-----|:------------|
-| Store | Filter by Store |
-| Day | Shortcut Filter by current Day |
-| Month | Shortcut Filter by current Month |
-| Year | Shortcut Filter by current Year |
-| Day -1 | Shortcut Filter by last Day |
-| Month -1 | Shortcut Filter by last Month |
-| Year -1 | Shortcut Filter by last Year |
-| From | Date to Start Filter |
-| To | Date to End Filter |
+Enhance your analysis with various filters to focus on specific customer segments or timeframes:
 
-## Available Grid Fields
+| Name     | Description                                    |
+|:---------|:-----------------------------------------------|
+| Store    | Filter data by specific Store.                 |
+| Day      | Filter for transactions on the current Day.    |
+| Month    | Filter for transactions in the current Month.  |
+| Year     | Filter for transactions in the current Year.   |
+| Day -1   | Filter for transactions on the previous Day.   |
+| Month -1 | Filter for transactions in the previous Month. |
+| Year -1  | Filter for transactions in the previous Year.  |
+| From     | Start date for the filter period.              |
+| To       | End date for the filter period.                |
 
-| Name | Description |
-|:-----|:------------|
-| Name | Customer Name |
-| Order Count | Amount of Orders |
-| Sales | Sales |
+## Key Grid Fields
+
+The report includes critical fields to understand customer engagement:
+
+| Name        | Description                                    |
+|:------------|:-----------------------------------------------|
+| Name        | The name of the customer.                      |
+| Order Count | Total number of orders placed by the customer. |
+| Sales       | Total sales attributed to the customer.        |

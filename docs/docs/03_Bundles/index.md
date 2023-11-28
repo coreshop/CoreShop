@@ -1,39 +1,36 @@
-#  Bundles
+# CoreShop Bundles Overview
 
-CoreShop is a set of Bundles that provide different functionality. Each Bundle is supposed to be independent and can be used without the other Bundles. Glued together, they provide a full e-commerce solution.
+CoreShop offers a suite of bundles that address various non-e-commerce specific functionalities. These bundles are
+versatile and can be utilized in any Pimcore installation, extending beyond the scope of typical e-commerce solutions.
 
- - [Address Bundle](./Address_Bundle.md)
- - [Configuration Bundle](./Configuration_Bundle.md)
- - [Core Bundle](./Core_Bundle.md)
- - [Class Definition Patch](./ClassDefinitionPatch_Bundle.md)
- - [Currency Bundle](./Currency_Bundle.md)
- - [Customer Bundle](./Customer_Bundle.md)
- - [Frontend Bundle](./Frontend_Bundle.md)
- - [Index Bundle](./Index_Bundle.md)
- - [Inventory Bundle](./Inventory_Bundle.md)
- - [Locale Bundle](./Locale_Bundle.md)
- - [Money Bundle](./Money_Bundle.md)
- - [Messenger Bundle](./Messenger_Bundle.md) !
- - [Money Bundle](./Money_Bundle.md) !
- - [Notification Bundle](./Notification_Bundle.md) !
- - [Optimistic Entity Lock Bundle](./OptimisticEntityLock_Bundle.md) !
- - [Order Bundle](./Order_Bundle.md)
- - [Payment Bundle](./Payment_Bundle.md)
- - [Payum Payment Bundle](./PayumPayment_Bundle.md) !
- - [Product Bundle](./Product_Bundle.md)
- - [Product Quantity Price Rules Bundle](./ProductQuantityPriceRules_Bundle.md)
- - [Resource Bundle](./Resource_Bundle)
- - [Rule Bundle](./Rule_Bundle.md)
- - [SEO Bundle](./SEO_Bundle.md)
- - [Sequence Bundle](./Sequence_Bundle.md)
- - [Shipping Bundle](./Shipping_Bundle.md)
- - [Storage List Bundle](./StorageList_Bundle.md)
- - [Store Bundle](./Store_Bundle.md)
- - [Taxation Bundle](./Taxation_Bundle.md)
- - [Theme Bundle](./Theme_Bundle.md)
- - [Tracking Bundle](./Tracking_Bundle.md)
- - [User Bundle](./User_Bundle.md)
- - [Variant Bundle](./Variant_Bundle.md)
- - [Wishlist Bundle](./Wishlist_Bundle.md)
- - [Workflow Bundle](./Workflow_Bundle.md)
- - [Class Definition Patch Bundle](./ClassDefinitionPatch_Bundle.md)
+## Available Bundles
+
+Explore the range of bundles provided by CoreShop, each designed to fulfill specific roles within your Pimcore
+installation:
+
+- **[Class Definition Patch Bundle](./ClassDefinitionPatch_Bundle.md)**: Enables patching of class definitions from
+  other bundles.
+- **[Index Bundle](./Index_Bundle.md)**: Facilitates advanced indexing capabilities.
+- **[Money Bundle](./Money_Bundle.md)**: Provides tools for handling monetary values.
+- **[Messenger Bundle](./Messenger_Bundle.md)**: Enhances message handling and delivery.
+- **[Optimistic Entity Lock Bundle](./OptimisticEntityLock_Bundle.md)**: Implements optimistic locking for entities.
+- **[Resource Bundle](./Resource_Bundle.md)**: Streamlines repetitive tasks like CRUD operations.
+- **[SEO Bundle](./SEO_Bundle.md)**: Offers features for search engine optimization.
+- **[Sequence Bundle](./Sequence_Bundle.md)**: Manages sequential number generation.
+- **[Storage List Bundle](./StorageList_Bundle.md)**: Handles complex data storage requirements.
+- **[Theme Bundle](./Theme_Bundle.md)**: Facilitates theme management and customization.
+- **[Variant Bundle](./Variant_Bundle.md)**: Manages product variants effectively.
+
+### Focus on Resource Bundle
+
+One of CoreShop's primary objectives is to provide a flexible framework. The Resource Bundle is a foundational component
+that simplifies many common tasks:
+
+- Automates the creation of CRUD controllers (`ResourceController`).
+- Streamlines the generation of factories, repositories, routes, and resource controllers for CoreShop resources.
+
+This bundle proves invaluable not only for CoreShop-specific functionalities but also for any Pimcore bundle, offering
+extensive utility across various applications. For more details on the Resource Bundle, [click here](./Resource_Bundle).
+
+These bundles collectively enhance the capabilities of your Pimcore installation, providing powerful tools to meet
+diverse requirements in a streamlined and efficient manner.

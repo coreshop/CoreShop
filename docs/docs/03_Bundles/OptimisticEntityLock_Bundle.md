@@ -1,15 +1,20 @@
-#  Optimistic Entity Lock Bundle
+# Optimistic Entity Lock Bundle
 
-The CoreShop Optimistic Entity Lock Bundle is a package for the CoreShop e-commerce framework, based on the Pimcore platform, designed to handle optimistic entity locking. This bundle helps prevent conflicts when multiple users try to edit the same entity concurrently by implementing an optimistic locking strategy.
-![Messenger](img/messenger.png)
+The CoreShop Optimistic Entity Lock Bundle is a specialized package for the CoreShop e-commerce framework, designed for
+handling optimistic entity locking on the Pimcore platform. This bundle is crucial for preventing editing conflicts when
+multiple users attempt to modify the same entity simultaneously.
 
-## Installation
+## Installation Process
+
+To install the Optimistic Entity Lock Bundle, use Composer:
+
 ```bash
-$ composer require optimistic-entity-lock-bundle
+$ composer require coreshop/optimistic-entity-lock-bundle:^4.0
 ```
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel.
+### Integrating with the Kernel
+
+Enable the bundle in the kernel by updating the `AppKernel.php` file:
 
 ```php
 <?php
@@ -24,10 +29,22 @@ public function registerBundlesToCollection(BundleCollection $collection)
 }
 ```
 
-## Usage
+## Usage Instructions
 
-Your Pimcore DataObject Class needs to implement the Interface `CoreShop\Bundle\OptimisticEntityLockBundle\Model\OptimisticLockedInterface`.
+### Implementing the Interface
 
-You can therefore add the field `optimisticLockVersion` to your Pimcore Class Definition.
+Your Pimcore DataObject Class needs to implement
+the `CoreShop\Bundle\OptimisticEntityLockBundle\Model\OptimisticLockedInterface`.
 
-From now on, everytime the DataObject gets saved, CoreShop compares the Versions and increases it before saving. If the version is different, someone else saved the entity before you and you get a exception.
+### Adding the Field to Class Definition
+
+Add the field `optimisticLockVersion` to your Pimcore Class Definition. This field is pivotal for the locking mechanism.
+
+### Functionality
+
+Once implemented, every time the DataObject is saved, CoreShop checks and increments the version number. If the version
+differs from the last saved state (indicating another user has saved changes), an exception is thrown, preventing
+overwrite conflicts.
+
+This bundle ensures data integrity and consistency in scenarios where concurrent editing might occur, safeguarding your
+e-commerce data against inadvertent overwrites.

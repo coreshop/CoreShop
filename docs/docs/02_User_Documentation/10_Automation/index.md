@@ -1,12 +1,20 @@
-# CoreShop Automation
-In CoreShop there are several automation mechanism implemented.
+# Automation
 
-## Order Cancellation
-> Execution Time: Once per day via maintenance job
+CoreShop implements several automated mechanisms to streamline operations and maintain order within the system. These
+automations are executed daily via maintenance jobs.
 
-CoreShop will automatically cancel orders older than `20` days.
+## Order Cancellation Automation
 
-#### Change Orders Expiration Date
+**Execution Time**: Once per day.
+
+### Default Behavior
+
+CoreShop automatically cancels orders that are older than 20 days.
+
+### Customizing Order Expiration
+
+To change the expiration period for orders, modify the configuration as follows:
+
 ```yml
 core_shop_storage_list:
     list:
@@ -17,15 +25,19 @@ core_shop_storage_list:
                         days: 30
 ```
 
-## Expired Carts
-> Execution Time: Once per day via maintenance job
+## Expired Carts Cleanup
 
-> **Note**: By default, this feature is disabled.
+**Execution Time**: Once per day.
 
-By default, this feature is disabled (`days = 0`) so no carts will be removed by default.
-If you want to remove older carts, just enable it via configuration:
+> **Note**: By default, cart cleanup is disabled (set to 0 days).
 
-#### Change Cart Expiration Date
+Expired carts are not removed unless you enable and configure this feature. Set a specific timeframe after which
+inactive carts should be cleaned up to manage cart data effectively.
+
+#### Enabling Cart Cleanup
+
+To activate and set a specific time frame for cart cleanup:
+
 ```yml
 core_shop_storage_list:
     list:
@@ -40,14 +52,17 @@ core_shop_storage_list:
 ```
 
 ## Expired Wishlists
-> Execution Time: Once per day via maintenance job
 
-> **Note**: By default, this feature is disabled.
+**Execution Time**: Once per day.
+> **Note**: Wishlist expiration is disabled by default.
 
-By default, this feature is disabled (`days = 0`) so no wishlists will be removed by default.
-If you want to remove older wishlists, just enable it via configuration:
+Similar to carts, wishlists also do not expire by default. You can enable this feature and set an expiration period for
+wishlists, helping to maintain a clean and current wishlist database.
 
-#### Change Wishlist Expiration Date
+#### Setting Wishlist Expiration
+
+To enable and configure the expiration for wishlists:
+
 ```yml
 core_shop_storage_list:
     list:
@@ -61,10 +76,10 @@ core_shop_storage_list:
                     customer: false
 ```
 
-## Expired Rules
-> Execution Time: Once per day via maintenance job
+## Expired Rules Management
 
-If you're having a lot of active rules in your system, you may want to disable them via automation.
-CoreShop already comes with a time-span check, which means all rules with time-span elements will be disabled if they're outdated.
-If you want do implement some further availability logic, you could use the `coreshop.rule.availability_check` Event to define
-the availability of the rule. Just use the `setAvailability()` method to override the system availability suggestion.
+**Execution Time**: Once per day.
+
+CoreShop automatically disables rules that are beyond their valid time-span. This feature helps in keeping your rule set
+relevant and up-to-date. For more complex rule availability logic, CoreShop provides an
+event (`coreshop.rule.availability_check`) that allows for custom implementation of rule availability criteria.

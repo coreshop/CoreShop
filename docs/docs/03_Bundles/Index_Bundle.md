@@ -1,12 +1,19 @@
-#  Index Bundle
+# Index Bundle
 
-## Installation
+The Index Bundle integrates the Index Component into Symfony and Doctrine, offering tools for indexing Pimcore models,
+managing filters, and creating conditions. It includes ListingServices and FilterServices.
+
+## Installation Process
+
+To install the bundle, use Composer:
+
 ```bash
-$ composer require coreshop/index-bundle:^3.0
+$ composer require coreshop/index-bundle:^4.0
 ```
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel
+### Integrating with the Kernel
+
+Enable the bundle in the kernel by updating the `AppKernel.php` file:
 
 ```php
 <?php
@@ -21,27 +28,59 @@ public function registerBundlesToCollection(BundleCollection $collection)
 }
 ```
 
-### Updating database schema
-Run the following command.
+### Updating the Database Schema
+
+Update the database schema with the following command:
 
 ```bash
 $ php bin/console doctrine:schema:update --force
 ```
 
-## Usage
+## Usage Guidelines
 
-This Bundle integrates Index Component into Symfony and Doctrine
+### Creating an Indexable Class
 
-The Index Bundle provides you with basic information needed for a Indexing Pimcore Models: Index, Filters and Conditions
-
-It also provides you with ListingServices and FilterServices
-
-### Get Listing from Index
-
-How to get a Listing from an Index?
+Define a class that implements the `CoreShop\Component\Index\Model\IndexableInterface` interface:
 
 ```php
-$filter = $this->get('coreshop.repository.filter')->find(1); //Get Filter by ID 1
+<?php
+
+declare(strict_types=1);
+
+namespace App\Model;
+
+use CoreShop\Component\Index\Model\IndexableInterface;
+
+class MyPimcoreDataObject implements IndexableInterface
+{
+    // Defines if the Indexable is enabled for the given Index
+    public function getIndexableEnabled(IndexInterface $index): bool 
+    {
+        return true;
+    }
+
+    // Defines if the Indexable should be indexed for the given Index
+    public function getIndexable(IndexInterface $index): bool 
+    {
+        return true;
+    }
+
+    // Defines the name of the Indexable for the given Index and Language
+    public function getIndexableName(IndexInterface $index, string $language): ?string 
+    {
+        return $this->getName($language);
+    }
+}
+```
+
+Ensure that `App\Model\MyPimcoreDataObject` is set as your parent class for your Pimcore Data-Object.
+
+### Retrieving Listings from an Index
+
+Fetch a listing from an index:
+
+```php
+$filter = $this->get('coreshop.repository.filter')->find(1); // Get Filter by ID 1
 $filteredList = $this->get('coreshop.factory.filter.list')->createList($filter, $request->request);
 $filteredList->setVariantMode(ListingInterface::VARIANT_MODE_HIDE);
 $filteredList->setCategory($category);
@@ -49,14 +88,5 @@ $this->get('coreshop.filter.processor')->processConditions($filter, $filteredLis
 $filteredList->load();
 ```
 
-## Pimcore UI
-
- - Index Configuration
- - Filter Configuration
-
-How to use?
-
-```javascript
-coreshop.global.resource.open('coreshop.index', 'index');
-coreshop.global.resource.open('coreshop.index', 'filter');
-```
+This Index Bundle is crucial for managing indexing and filtering of data within CoreShop, ensuring efficient data
+handling and retrieval.

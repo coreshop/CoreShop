@@ -1,79 +1,58 @@
 # Payment Providers
 
-A Payment Provider represents a way that your customer pays during the checkout process.
-It holds a reference to a specific gateway with custom configuration.
-A gateway is configured for each payment method separately using the payment method form.
+A Payment Provider in CoreShop represents a method your customer uses to pay during the checkout process. It links to a
+specific gateway with custom configurations. Each payment method is configured separately using the payment method form
+in the admin panel.
 
-## Payment Gateway configuration
+## Payment Gateway Configuration
 
-### Payment Gateways that already have a CoreShop bridge
-First you need to create the configuration form type for your gateway.
-Have a look at the configuration form types of *Paypal* and *Sofort*.
+### Payment Gateways with CoreShop Bridges
 
-Then you should register its configuration form type with `coreshop.gateway_configuration_type` tag.
-After that it will be available in the admin panel in the gateway choice dropdown.
+To configure a payment gateway that already has a CoreShop bridge:
 
-> If you are not sure how your configuration form type should look like,
-> head to [Payum documentation](https://github.com/Payum/Payum).
+1. **Create a Configuration Form Type**: Look at the existing configuration form types for gateways like Paypal and
+   Sofort for reference.
 
-### Other Payment Gateways
+2. **Register the Configuration Form Type**: Use the `coreshop.gateway_configuration_type` tag to make the gateway
+   available in the admin panel's dropdown.
 
-> Learn more about integrating payment gateways in the [Payum docs](https://github.com/Payum/Payum).
+   > For guidance on configuration form types, refer to the [Payum documentation](https://github.com/Payum/Payum).
 
-> You’ll probably need also this kind of configuration in your `app/config/config.yml` for the gateway’s factory:
-> ```yaml
-> payum:
->     gateways:
->        yourgateway:
->            factory: yourgateway
->```
+### Integrating Other Payment Gateways
 
-As an example, we add *Sofort* as a payment gateway factory.
-To add a new gateway configuration you need to add 2 files:
+To learn more about integrating other payment gateways, consult the [Payum docs](https://github.com/Payum/Payum).
 
- - A new FormType for configuration values
- - A new Javascript File for ExtJs Form
+You may also need to add configuration in `app/config/config.yml` for the gateway’s factory:
 
-**1**: Form Type for Configuration Values:
-
-```php
-
-namespace AppBundle\CoreShop\Form\Type;
-
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints\NotBlank;
-
-final class SofortGatewayConfigurationType extends AbstractType
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('config_key', TextType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'groups' => 'coreshop',
-                    ]),
-                ],
-            ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                $data = $event->getData();
-
-                $data['payum.http_client'] = '@coreshop.payum.http_client';
-            })
-        ;
-    }
-}
-
+```yaml
+payum:
+  gateways:
+    yourgateway:
+      factory: yourgateway
 ```
 
-Now we register the FormType into the container
+Example: Adding Sofort as a Payment Gateway Factory
+
+To add Sofort as a new gateway configuration, create the following files:
+
+1. **Form Type for Configuration Values**:
+
+ ```php
+ namespace AppBundle\CoreShop\Form\Type;
+
+ use Symfony\Component\Form\AbstractType;
+ // ... other use statements ...
+
+ final class SofortGatewayConfigurationType extends AbstractType
+ {
+     public function buildForm(FormBuilderInterface $builder, array $options)
+     {
+         // Form build logic...
+     }
+ }
+ ```
+
+Then, register the FormType in the service container:
 
 ```yaml
 services:
@@ -84,37 +63,27 @@ services:
       - { name: form.type }
 ```
 
-**2**: Create the corresponding ExtJs Form:
+2. **ExtJs Form for Sofort**:
 
-> You need to use the ```type``` attribute as identifier here
+   Create a JavaScript file for the ExtJs Form:
 
-```js
+ ```js
 pimcore.registerNS('coreshop.provider.gateways.sofort');
 coreshop.provider.gateways.sofort = Class.create(coreshop.provider.gateways.abstract, {
-
-    getLayout: function (config) {
-        return [
-            {
-                xtype: 'textfield',
-                fieldLabel: t('config_key'),
-                name: 'gatewayConfig.config.config_key',
-                length: 255,
-                value: config.config_key ? config.config_key : ""
-            }
-        ];
-    }
-
+  getLayout: function (config) {
+      // Form layout logic...
+  }
 });
+ ```
 
-```
-
-Next we need to register our new Gateway JS file to be loaded:
+Register the new JavaScript file:
 
 ```yaml
 core_shop_payment:
-    pimcore_admin:
-        js:
-            sofort_gateway: '/bundles/app/pimcore/js/sofort.js'
+  pimcore_admin:
+    js:
+      sofort_gateway: '/bundles/app/pimcore/js/sofort.js'
 ```
 
-Thats it, now after reloading Pimcore, you'll see a new Factory.
+After reloading Pimcore, you should see the new Factory available.
+

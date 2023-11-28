@@ -142,7 +142,7 @@ interface OrderItemInterface extends
 
     public function setConvertedTotal(int $total, bool $withTax = true);
 
-    public function setConvertedSubtotal(int $total, bool $withTax = true);
+    public function setConvertedSubtotal(int $subtotal, bool $withTax = true);
 
     public function getConvertedItemDiscountPrice(bool $withTax = true): int;
 

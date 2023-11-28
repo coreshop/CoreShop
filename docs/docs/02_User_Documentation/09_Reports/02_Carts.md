@@ -1,28 +1,40 @@
-# CoreShop Cart/Order Conversion Report
+# Sales Report Overview
 
-![Carts Report](img/carts.png)
+The CoreShop Sales Report provides a comprehensive analysis of sales data, enabling you to track and understand sales
+trends over different time periods.
 
-| Type | Has Pagination |
-|:-----|:-----------|
-| Cartesian Chart | No |
+![Sales Report](img/sales.png)
 
-## Available Filters
+## Report Format
 
-| Name | Description |
-|:-----|:------------|
-| Store | Filter by Store |
-| Day | Shortcut Filter by current Day |
-| Month | Shortcut Filter by current Month |
-| Year | Shortcut Filter by current Year |
-| Day -1 | Shortcut Filter by last Day |
-| Month -1 | Shortcut Filter by last Month |
-| Year -1 | Shortcut Filter by last Year |
-| From | Date to Start Filter |
-| To | Date to End Filter |
+The Sales Report is presented in a Cartesian Chart format.
 
-## Available Chart Fields
+| Type            | Has Pagination |
+|:----------------|:---------------|
+| Cartesian Chart | No             |
 
-| Name | Description |
-|:-----|:------------|
-| Y | Amount (Cart, Order) |
-| X | Date |
+## Filters for Tailored Analysis
+
+Customize your sales data view using a variety of filters:
+
+| Name     | Description                                 |
+|:---------|:--------------------------------------------|
+| Store    | Filter sales by specific Store.             |
+| Day      | Filter sales for the current Day.           |
+| Month    | Filter sales for the current Month.         |
+| Year     | Filter sales for the current Year.          |
+| Day -1   | Filter sales for the previous Day.          |
+| Month -1 | Filter sales for the previous Month.        |
+| Year -1  | Filter sales for the previous Year.         |
+| From     | Start date for the sales filter period.     |
+| To       | End date for the sales filter period.       |
+| Group By | Group sales data by `Day`, `Month`, `Year`. |
+
+## Chart Data Fields
+
+The sales chart includes the following data fields:
+
+| Name | Description         |
+|:-----|:--------------------|
+| Y    | Total Sales Amount. |
+| X    | Date of Sales.      |

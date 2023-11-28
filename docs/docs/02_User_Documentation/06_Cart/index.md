@@ -1,15 +1,21 @@
-# CoreShop Cart
+# Cart
 
-## Inventory Change
-If a customer adds a item to the cart CoreShop will check if product stock is sufficient. If not, a form error will show up.
+## Inventory Check on Cart Addition
 
-## Disable / Delete Products
-If a product gets disabled or deleted in backend CoreShop will automatically remove this product from all active carts.
-A form error will notify every customer in frontend if the cart has been modified.
+When a customer adds an item to their cart, CoreShop verifies product stock availability. In cases where stock is
+insufficient, the customer is informed through a form error.
 
-## Abandoned Carts
-No cart gets deleted by default. This allows you to:
-- check abandoned cart statistics
-- build your own business logic in case you want to inform customers within a follow-up email for example
+## Auto-Removal of Disabled or Deleted Products
 
-There is a expire cart command to remove abandoned carts, please checkout the [development section](../../03_Development/04_Cart/05_Commands.md).
+Should a product be disabled or deleted from the backend, CoreShop will automatically remove it from all active carts.
+Customers with modified carts will receive a form error notification in the frontend.
+
+## Handling Abandoned Carts
+
+By default, carts are not deleted in CoreShop. This approach allows for:
+
+- Analysis of abandoned cart statistics.
+- Development of customized follow-up strategies, such as email notifications to customers.
+
+For managing abandoned carts, including their removal, refer to
+the [expire cart command](../../03_Development/06_Order/20_Commands.md) in the development section.

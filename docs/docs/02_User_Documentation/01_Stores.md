@@ -1,30 +1,45 @@
-# CoreShop Stores
-Every CoreShop Installation is bounded to a default Store.
-By default a store is connected with a pimcore Site.
+# Stores
+
+In CoreShop, each installation is linked to a default store, typically associated with a Pimcore site. Understanding how
+stores function is crucial for managing different aspects of your e-commerce platform.
 
 ![Stores](img/stores.png)
 
-## Domain based Store
-This is CoreShops default behaviour. One store for your default page, which is also your default store.
-If you have multiple Domains it's possible to add a store to each domain.
+## Domain-Based Store Setup
 
-> **Tip:** Learn more about pimcore multi sites: [Pimcore Sites](https://pimcore.com/docs/pimcore/current/Development_Documentation/MVC/Routing_and_URLs/Working_with_Sites.html)
+CoreShop's default setup involves one store per domain. This means your main website domain corresponds to your default
+store. If your platform operates across multiple domains, you can assign a separate store to each.
+
+> **Tip:** For more information on managing multiple sites with Pimcore,
+> see [Pimcore Sites](https://pimcore.com/docs/platform/Pimcore/MVC/Routing_and_URLs/Working_with_Sites/).
 
 ## Custom Store Locator
-Sometimes you have just one site installation but you want do use different Stores.
-Example: `/de-at` should use a austrian store and `/de-de` a german one.
-For that you need to build a custom store locator to do so, checkout the dev section to find out how this can be achieved.
 
-## Configure CoreShop Stores
-Open CoreShop Menu -> "Stores". There should be already a default store, connected to your default (main-domain) site.
-To create a new store, click on the "Add" button. Proceed wih configuring your new store.
+In scenarios where you have a single site but require different stores (for example, `/de-at` for an Austrian store
+and `/de-de` for a German store), you'll need a custom store locator. Detailed guidance on creating a custom store
+locator is available in the development section.
 
-## Examples
-Stores can be used in many ways, checkout the examples to find out which solution suits you most.
+## Setting Up CoreShop Stores
 
-### Example 1: Global Store
-Use a Store to handle multiple currencies, countries and tax calculations.
-Depending on your product and price strategy, it's possible to use it within one store.
+To configure stores in CoreShop:
 
-### Example 2: Country Store
-Use a Store for each Country. This allows you to restrict your shop within a country context.
+1. Navigate to CoreShop Menu -> "Stores".
+2. You'll see the default store linked to your main domain.
+3. To add a new store, click on the "Add" button and proceed with the setup.
+
+## Utilizing Stores Effectively
+
+Stores in CoreShop can be leveraged in various ways depending on your business needs:
+
+### Global Store
+
+- **Use Case**: Managing multiple currencies, countries, and tax calculations within a single store.
+- **Advantage**: Suitable for a unified product and price strategy across different regions.
+
+### Country Store
+
+- **Use Case**: Setting up a store for each country, allowing for country-specific restrictions and customizations.
+- **Advantage**: Ideal for businesses targeting specific national markets.
+
+By understanding and utilizing the store configurations in CoreShop, you can tailor your e-commerce experience to meet
+diverse regional requirements and customer preferences.

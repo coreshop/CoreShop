@@ -1,62 +1,58 @@
 # Tax Rates
 
+Managing tax rates in CoreShop involves various operations, including create, read, update, and delete. Below are the
+guidelines for each of these operations.
+
 ## Create
-If you want to create a Zone via API, you can do following:
+
+To create a new tax rate via the API:
 
 ```php
-$newZone = $container->get('coreshop.factory.tax_rate')->createNew();
+$newTaxRate = $container->get('coreshop.factory.tax_rate')->createNew();
 ```
 
-Now you have a new Zone, if you want to persist it, you need to do following:
+After creating a new Tax Rate instance, persist it using:
 
 ```php
-$container->get('coreshop.manager.tax_rate')->persist($newZone);
+$container->get('coreshop.manager.tax_rate')->persist($newTaxRate);
 $container->get('coreshop.manager.tax_rate')->flush();
 ```
 
-You now have a new persisted Zone.
+You now have a new persisted tax rate.
 
 ## Read
 
-If you want to query for Tax Rates, you can do following:
+To query for tax rates:
 
 ```php
 $rateRepository = $container->get('coreshop.repository.tax_rate');
-
 $queryBuilder = $rateRepository->createQueryBuilder('c');
-
 // You can now create your query
-
 // And get the result
-
 $rates = $queryBuilder->getQuery()->getResult();
-
 ```
 
 ## Update
 
-If you want to update and existing Zone, you need to do following:
+To update an existing tax rate:
 
 ```php
-// Fetch Zone
-
+// Fetch Tax Rate
 $rate = $rateRepository->findById(1);
 $rate->setName('Euro');
-
 // And Persist it
 $container->get('coreshop.manager.tax_rate')->persist($rate);
 $container->get('coreshop.manager.tax_rate')->flush();
 ```
 
 ## Delete
-If you want to update and existing Zone, you need to do following:
+
+To delete an existing tax rate:
 
 ```php
-// Fetch Zone
-
+// Fetch Tax Rate
 $rate = $rateRepository->findById(1);
-
-// And Persist it
+// And Remove it
 $container->get('coreshop.manager.tax_rate')->remove($rate);
 $container->get('coreshop.manager.tax_rate')->flush();
 ```

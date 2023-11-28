@@ -1,23 +1,27 @@
 # Index Interpreter
 
-To prepare your index and transform data, you use one of the existing Interpreter or create one yourself.
+In CoreShop, Index Interpreters are used to prepare and transform data for the product index. You can utilize existing
+interpreters or create custom ones to fit your specific needs.
 
-CoreShop currently has following Interpreters:
+## Existing CoreShop Interpreters
 
- - **Object**: converts an object or and object array to relations. It saves the values to the relations inex
- - **ObjectId**: converts an object to its ID
- - **ObjectIdSum**: calculates the sum of all IDs. (Could be used for similar products)
- - **ObjectProperty**: calls a getter method of the value
- - **Soundex**: calls PHP soundex function (Could be used for similar products)
+CoreShop comes equipped with several built-in interpreters:
 
-## Create a Custom Interpreter
+- **Object**: Converts an object or an object array to relations and saves the values to the relations index.
+- **ObjectId**: Transforms an object into its ID.
+- **ObjectIdSum**: Calculates the sum of all IDs, which can be useful for similar products.
+- **ObjectProperty**: Calls a getter method on the value.
+- **Soundex**: Applies the PHP `soundex` function, useful for finding similar products.
 
-**1** We need to create 2 new files:
- - FormType for processing the Input Data
- - And a InterpreterInterface, which interprets the data
+## Creating a Custom Interpreter
+
+To create a custom interpreter, you'll need to develop two key components:
+
+### 1. FormType for Input Data
+
+Create a FormType class to handle the input data for your interpreter:
 
 ```php
-
 namespace AppBundle\Index\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -28,23 +32,22 @@ use Symfony\Component\Validator\Constraints\Type;
 
 final class MyInterpreterType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('myInterpreterData', IntegerType::class, [
+            .add('myInterpreterData', IntegerType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
-            ])
-        ;
+            ]);
     }
 }
-
 ```
+
+### 2. Interpreter Interface Implementation
+
+Implement the `InterpreterInterface` to define how your interpreter processes data:
 
 ```php
 namespace AppBundle\CoreShop\Index\Interpreter;
@@ -53,19 +56,25 @@ use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 
 class MyInterpreter implements InterpreterInterface
 {
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = []) {
-        //Do some interpretation here
-
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    {
+        // Interpretation logic goes here
         return $value;
     }
 }
+
 ```
 
-**2**:Register MyInterpreter as service with tag ```coreshop.index.interpreter```, type and form
+### 3. Registering the Custom Interpreter
+
+Register your new interpreter as a service with the tag `coreshop.index.interpreter`, specifying its type and form:
 
 ```yaml
 app.index.interpreter.my_interpreter:
-    class: AppBundle\CoreShop\Index\Interpreter\MyInterpreter
-    tags:
-     - { name: coreshop.index.interpreter, type: my_interpreter, form-type: AppBundle\Index\Form\Type\MyInterpreterType}
+  class: AppBundle\CoreShop\Index\Interpreter\MyInterpreter
+  tags:
+    - { name: coreshop.index.interpreter, type: my_interpreter, form-type: AppBundle\Index\Form\Type\MyInterpreterType }
 ```
+
+With these steps, you can enhance the indexing process in CoreShop with custom logic, tailored to your specific
+requirements.

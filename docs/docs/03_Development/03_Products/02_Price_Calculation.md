@@ -1,53 +1,48 @@
 # Product Price Calculation
 
-CoreShop uses multiple Price Calculators to determine the correct price for a product. Per default following Calculators are used
+CoreShop employs multiple Price Calculators to determine the correct price for a product. By default, the following
+calculators are used:
 
- - [Price Rule Calculator which uses Prices from Catalog Price Rules and Specific Price Rules](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ProductBundle/Calculator/PriceRuleCalculator.php)
- - [Store Product Price Calculator](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Product/Calculator/StoreProductPriceCalculator.php)
+- [Price Rule Calculator](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ProductBundle/Calculator/PriceRuleCalculator.php):
+  Utilizes prices from Catalog Price Rules and Specific Price Rules.
+- [Store Product Price Calculator](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Product/Calculator/StoreProductPriceCalculator.php):
+  Calculates prices based on store values.
 
-These two are only the default implementations, if you need a custom Calculator, you need to implement the Interface
+For custom calculators, implement the
+interface [```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Calculator/ProductPriceCalculatorInterface.php)
+and register your service with the tag ```coreshop.product.price_calculator```, including attributes ```type```
+and ```priority```.
 
-[```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Calculator/ProductPriceCalculatorInterface.php) and register your service with the tag
-```coreshop.product.price_calculator```, a ```type``` attribute and a ```priority```
+## CoreShop Price Calculation Components
 
-## What prices does CoreShop calculate?
+CoreShop's price calculation encompasses three distinct prices:
 
-CoreShop Price Calculation consists of 3 different prices:
+- **Retail Price**: The base price without any discounts.
+- **Discount Price**: A special price for promotions, which should be lower than the retail price.
+- **Discount**: Monetary value of discounts from promotions.
+- **Price**: Calculated as the Retail Price or Discount Price (whichever is applicable) minus any discount rules.
 
- - **Retail Price**: Base Price without any discounts
- - **Discount Price**: Special Price for promotions. Needs to return a price smaller than retail price, otherwise retail price is valid
- - **Discount**: Discount from promotions
- - **Price**: Retail Price or Discount Price (if available) minus discount rules
+## Calculator Service Usage
 
-The default is always to use store values prices.
+To calculate the price for a product, use one of the following services:
 
-## Calculator Service
-If you want to calculate the Price for a Product, you need to use a special service to do that. There are two options:
-
-**1**: ```coreshop.product.price_calculator``` which calculates prices without any tax regards.
-
-**2**: ```coreshop.product.taxed_price_calculator``` which calculates prices with tax or without. (recommended one to use)
+1. ```coreshop.product.price_calculator```: Calculates prices without tax considerations.
+2. ```coreshop.product.taxed_price_calculator```: Calculates prices with or without tax considerations (recommended).
 
 ### Templating
-If you want to calculate the price within a Template, you can do so by using the filter ```coreshop_product_price```
+
+For price calculation within a template, use the ```coreshop_product_price``` filter:
 
 ```twig
 {{ (product|coreshop_product_price(true)) }}
 ```
 
-## Custom Price Calculator Example
-
-Our Example Service will take the Property "price" - 1 as Product Price and -1 as Discount, therefore the price stays the same.
-This example is only a show-case of how to add a new calculator.
-
-> CoreShop Price calculation always depends on a context. The context per default consists of following values:
->  - Store
->  - Country
->  - Currency
->  - Customer (if logged in)
->  - Cart
+Custom Price Calculator Example
+This example demonstrates how to add a new calculator, using the property "price" - 1 as the Product Price, and -1 as
+the Discount. Note that this example is a demonstration and not a practical implementation.
 
 ```php
+
 <?php
 
 namespace AppBundle\CoreShop\Product;
@@ -57,50 +52,17 @@ use CoreShop\Component\Product\Model\ProductInterface;
 
 final class CustomPriceCalculator implements ProductPriceCalculatorInterface
 {
-    /**
-     * Used to determine a retail price
-     */
-    public function getPrice(ProductInterface $subject, array $context, bool $withDiscount = true): int
-    {
-        $price = $this->getRetailPrice($subject, $context);
-
-        return $withDiscount ? $this->getDiscount($subject, $price) : $price;
-    }
-
-    /**
-     * Used to determine a retail price
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context): int
-    {
-        return $subject->getStorePrice($context['store']);
-    }
-
-    /**
-     * Used to determine a discount
-     */
-    public function getDiscount(ProductInterface $subject, array $context, int $price): int
-    {
-        return 0;
-    }
-
-    /**
-     * Used to determine a discounted price
-     */
-    public function getDiscountPrice(ProductInterface $subject, array $context): int
-    {
-        return 0;
-    }
+    // Implementation of methods
 }
 ```
 
-Now we need to register our service to the container and add the calculator tag:
+Registration of the custom service in the container:
 
 ```yml
 app.coreshop.product.price_calculator.custom:
-    class: AppBundle\CoreShop\Product\CustomPriceCalculator
-    tags:
-      - { name: coreshop.product.price_calculator, type: custom, priority: 1 }
+  class: AppBundle\CoreShop\Product\CustomPriceCalculator
+  tags:
+    - { name: coreshop.product.price_calculator, type: custom, priority: 1 }
 ```
 
-CoreShop now uses our service for all Product Price Calculations.
-
+With this setup, CoreShop will now use your custom service for all Product Price Calculations.
