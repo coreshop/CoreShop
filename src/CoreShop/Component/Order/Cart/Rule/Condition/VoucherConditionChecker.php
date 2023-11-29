@@ -18,26 +18,27 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
-use Symfony\Component\Security\Core\Security;
+use Pimcore\Model\DataObject\CoreShopCustomer;
+use Pimcore\Model\DataObject\CoreShopUser;
 
 class VoucherConditionChecker extends AbstractConditionChecker
 {
     public function __construct(
       private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
       private CartPriceRuleVoucherCodeUserRepositoryInterface $codePerUserRepository,
-      private Security $security,
     ) {
     }
 
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
-        if (null === $voucher) {
+        if ($voucher === null) {
             return false;
         }
 
@@ -59,16 +60,16 @@ class VoucherConditionChecker extends AbstractConditionChecker
             }
         }
 
-        // max usage per user condtion
+        // max usage per user condition
         if (is_numeric($maxUsagePerUser)){
 
-            $user = $this->security->getUser();
+            $customer = $cart->getCustomer();
 
-            if (!$user instanceof \Pimcore\Model\DataObject\CoreShopUser) {
+            if (!$customer instanceof CustomerInterface) {
                 return false;
             }
 
-            $usesObject = $this->codePerUserRepository->findByUsesById($user->getId(), $voucher->getId());
+            $usesObject = $this->codePerUserRepository->findUsesById($customer, $voucher->getId());
             $uses = $usesObject?->getUses() ?? 0;
 
             if ($maxUsagePerUser != 0 && $uses >= $maxUsagePerUser) {

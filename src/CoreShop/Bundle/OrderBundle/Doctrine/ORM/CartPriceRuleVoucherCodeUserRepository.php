@@ -19,33 +19,26 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
 
 class CartPriceRuleVoucherCodeUserRepository extends EntityRepository implements CartPriceRuleVoucherCodeUserRepositoryInterface
 {
-
-    public function findByUsesById(int $userId, int $voucherCodeId): ?CartPriceRuleVoucherCodeUserInterface
+    public function findUsesById(CustomerInterface $customer, int $voucherCodeId): ?CartPriceRuleVoucherCodeUserInterface
     {
         return $this->createQueryBuilder('o')
           ->where('o.voucherCode = :voucherCode')
           ->andWhere('o.userId = :userId')
           ->setParameter('voucherCode', $voucherCodeId)
-          ->setParameter('userId', $userId)
+          ->setParameter('userId', $customer->getId())
           ->getQuery()
           ->getOneOrNullResult()
           ;
     }
 
-    public function addCodeUserUsage(int $userId, CartPriceRuleVoucherCodeInterface $voucherCode): void
+    public function addCodeUserUsage(CartPriceRuleVoucherCodeUserInterface $voucherCodeUser): void
     {
-        $voucherCodeUser = new CartPriceRuleVoucherCodeUser();
-        $voucherCodeUser->setUserId($userId);
-        $voucherCodeUser->setUses(1);
-        $voucherCodeUser->setVoucherCode($voucherCode);
-
         $this->add($voucherCodeUser);
     }
 

@@ -4,13 +4,14 @@
 namespace CoreShop\Bundle\OrderBundle\EventListener;
 
 
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactoryInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use Pimcore\Model\DataObject\CoreShopCustomer;
 use Pimcore\Model\DataObject\CoreShopOrder;
 use Pimcore\Model\DataObject\CoreShopUser;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\Event\Event;
 
 class VoucherCodeUserListener
@@ -20,7 +21,8 @@ class VoucherCodeUserListener
     public function __construct(
         private CartPriceRuleVoucherCodeUserRepositoryInterface $codePerUserRepository,
         private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
-        private Security $security,
+        private CartPriceRuleVoucherCodeUserFactoryInterface $voucherCodeUserFactory
+
     ) {
     }
 
@@ -33,17 +35,16 @@ class VoucherCodeUserListener
             return;
         }
 
-        $user = $this->security->getUser();
+        $customer = $order->getCustomer();
 
-        if (!$user instanceof CoreShopUser) {
+        if (!$customer instanceof CustomerInterface) {
             return;
         }
 
-        $userId = $user->getId();
         $priceRuleItems = $order->getPriceRuleItems()->getItems();
         $voucherCodeObjects = $this->getVoucherCodesWithPerUserCondition($priceRuleItems);
 
-        $this->handleVoucherCodeUsage($userId, $voucherCodeObjects);
+        $this->handleVoucherCodeUsage($customer, $voucherCodeObjects);
     }
 
     /**
@@ -71,19 +72,18 @@ class VoucherCodeUserListener
         return $voucherCodeObjects;
     }
 
-
-
-    private function handleVoucherCodeUsage(int $userId, array $voucherCodes): void
+    private function handleVoucherCodeUsage(CustomerInterface $customer, array $voucherCodes): void
     {
         foreach ($voucherCodes as $voucherCode){
-            $perUserEntry = $this->codePerUserRepository->findByUsesById($userId, $voucherCode->getId());
+            $perUserEntry = $this->codePerUserRepository->findUsesById($customer, $voucherCode->getId());
 
             if ($perUserEntry instanceof CartPriceRuleVoucherCodeUserInterface){
                 $this->increaseVoucherCodeUsageByOne($perUserEntry->getId());
             }
 
             if ($perUserEntry === null){
-                $this->createNewVoucherCodePerUserEntry($userId, $voucherCode);
+                $voucherCodeUser = $this->voucherCodeUserFactory->createWithInitialData($customer,$voucherCode);
+                $this->createNewVoucherCodePerUserEntry($voucherCodeUser);
             }
         }
     }
@@ -93,8 +93,8 @@ class VoucherCodeUserListener
         $this->codePerUserRepository->updateCodeUserUsage($perUserEntryId);
     }
 
-    private function createNewVoucherCodePerUserEntry(int $userId, CartPriceRuleVoucherCodeInterface $voucherCode): void
+    private function createNewVoucherCodePerUserEntry(CartPriceRuleVoucherCodeUserInterface $voucherCodeUser): void
     {
-            $this->codePerUserRepository->addCodeUserUsage($userId, $voucherCode);
+        $this->codePerUserRepository->addCodeUserUsage($voucherCodeUser);
     }
 }

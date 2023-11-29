@@ -101,6 +101,14 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Factory\AdjustmentFactory.inner'
 
+    CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactoryInterface: '@CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactory'
+    CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactory:
+      decorates: coreshop.factory.voucher_code_per_user
+      decoration_priority: 256
+      public: false
+      arguments:
+        - '@CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactory.inner'
+
     CoreShop\Component\Order\Factory\OrderItemFactory:
         decorates: coreshop.factory.order_item
         decoration_priority: 256

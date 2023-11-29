@@ -160,7 +160,7 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
-                        ->arrayNode('cart_price_rule_voucher_code_user')
+                        ->arrayNode('cart_price_rule_voucher_code_customer')
                             ->addDefaultsIfNotSet()
                                 ->children()
                                     ->variableNode('options')->end()

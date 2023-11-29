@@ -4,7 +4,7 @@
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
 
     <mapped-superclass name="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser"
-                       table="coreshop_cart_price_rule_voucher_code_user">
+                       table="coreshop_cart_price_rule_voucher_code_customer">
         <indexes>
             <index name="userId_idx" columns="userId"/>
         </indexes>

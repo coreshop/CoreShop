@@ -151,8 +151,7 @@ services:
     CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker:
         arguments:
             - '@coreshop.repository.cart_price_rule_voucher_code'
-            - '@coreshop.repository.cart_price_rule_voucher_code_user'
-            - '@Symfony\Component\Security\Core\Security'
+            - '@coreshop.repository.cart_price_rule_voucher_code_customer'
         tags:
             - { name: coreshop.cart_price_rule.condition, type: voucher, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType }
 
