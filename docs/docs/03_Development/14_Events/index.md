@@ -75,7 +75,7 @@ Events for rule operations:
 
 ## Workflow Events
 
-Events for workflow transitions. Read more about it [here](../06_Order/16_State_Management.md).
+Events for workflow transitions. Read more about it [here](../06_Order/16_State_Management/index.md).
 
 ## Backend Controller Events
 

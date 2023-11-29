@@ -2,7 +2,7 @@
 
 CoreShop provides a comprehensive workflow system for managing various states of orders, payments, shipments, and
 invoices. For a technical overview, refer to
-the [State Management documentation](../../03_Development/06_Order/16_State_Management.md).
+the [State Management documentation](../../03_Development/06_Order/16_State_Management/index.md).
 
 ## Changing States
 

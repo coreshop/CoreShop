@@ -38,7 +38,7 @@ dispatched, it cannot be reversed unless such an option is defined in the availa
 
 ### Explore Further:
 
-- [Available Workflows](./16_State_Management/01_Available_Workflows.md)
-- [Create Callbacks](./16_State_Management/02_Create_Callbacks.md)
-- [Things to Know (!)](./16_State_Management/03_Things_To_Know.md)
-- [Extend Workflows](./16_State_Management/04_Extend_Workflows.md)
+- [Available Workflows](./01_Available_Workflows.md)
+- [Create Callbacks](./02_Create_Callbacks.md)
+- [Things to Know (!)](./03_Things_To_Know.md)
+- [Extend Workflows](./04_Extend_Workflows.md)
