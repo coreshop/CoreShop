@@ -169,7 +169,7 @@ final class Configuration implements ConfigurationInterface
                                         ->children()
                                             ->scalarNode('model')->defaultValue(CartPriceRuleVoucherCodeUser::class)->cannotBeEmpty()->end()
                                             ->scalarNode('interface')->defaultValue(CartPriceRuleVoucherCodeUserInterface::class)->cannotBeEmpty()->end()
-                                            ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                             ->scalarNode('repository')->defaultValue(CartPriceRuleVoucherCodeUserRepository::class)->end()
                                     ->end()
                                 ->end()

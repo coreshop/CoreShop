@@ -3,6 +3,6 @@ services:
     arguments:
       - '@coreshop.repository.cart_price_rule_voucher_code_customer'
       - '@coreshop.repository.cart_price_rule_voucher_code'
-      - '@CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactory.inner'
+      - '@CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactory'
     tags:
       - { name: kernel.event_listener, event: workflow.coreshop_order.entered.confirmed, method: addUsageOfVoucherCoderPerUser }

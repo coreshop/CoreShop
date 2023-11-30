@@ -103,7 +103,7 @@ services:
 
     CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactoryInterface: '@CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactory'
     CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactory:
-      decorates: coreshop.factory.voucher_code_per_user
+      decorates: coreshop.factory.cart_price_rule_voucher_code_customer
       decoration_priority: 256
       public: false
       arguments:
