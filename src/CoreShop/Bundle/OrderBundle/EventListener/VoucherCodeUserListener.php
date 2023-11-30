@@ -4,7 +4,7 @@
 namespace CoreShop\Bundle\OrderBundle\EventListener;
 
 
-use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactoryInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;

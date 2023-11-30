@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Repository;
 
-use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 

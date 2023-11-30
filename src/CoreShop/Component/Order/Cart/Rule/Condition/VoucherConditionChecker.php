@@ -25,8 +25,6 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
-use Pimcore\Model\DataObject\CoreShopCustomer;
-use Pimcore\Model\DataObject\CoreShopUser;
 
 class VoucherConditionChecker extends AbstractConditionChecker
 {
