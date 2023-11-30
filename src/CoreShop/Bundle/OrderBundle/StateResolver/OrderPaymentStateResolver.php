@@ -24,7 +24,7 @@ use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
-use Symfony\Component\Workflow\Workflow;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 final class OrderPaymentStateResolver implements StateResolverInterface
 {
@@ -44,7 +44,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
         }
     }
 
-    private function applyTransition(Workflow $workflow, OrderInterface $subject, string $transition): void
+    private function applyTransition(WorkflowInterface $workflow, OrderInterface $subject, string $transition): void
     {
         if ($workflow->can($subject, $transition)) {
             $workflow->apply($subject, $transition);
