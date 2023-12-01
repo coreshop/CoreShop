@@ -21,19 +21,20 @@ namespace CoreShop\Component\Order\Factory;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class CartPriceRuleVoucherCodeCustomerFactory implements CartPriceRuleVoucherCodeCustomerFactoryInterface
 {
-
+    /**
+     * @psalm-param class-string $className
+     */
     public function __construct(
-        private FactoryInterface $voucherCodePerUserFactory,
+        private string $className,
     ) {
     }
 
     public function createNew()
     {
-        return $this->voucherCodePerUserFactory->createNew();
+        return new $this->className();
     }
 
     public function createWithInitialData(CustomerInterface $customer, CartPriceRuleVoucherCodeInterface $voucherCode): CartPriceRuleVoucherCodeCustomerInterface
