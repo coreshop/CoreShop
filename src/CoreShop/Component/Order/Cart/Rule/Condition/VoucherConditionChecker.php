@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
-use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -29,13 +29,17 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 class VoucherConditionChecker extends AbstractConditionChecker
 {
     public function __construct(
-      private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
-      private CartPriceRuleVoucherCodeCustomerRepositoryInterface $codePerUserRepository,
+        private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        private CartPriceRuleVoucherCodeCustomerRepositoryInterface $codePerUserRepository,
     ) {
     }
 
-    public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
-    {
+    public function isCartRuleValid(
+        OrderInterface $cart,
+        CartPriceRuleInterface $cartPriceRule,
+        ?CartPriceRuleVoucherCodeInterface $voucher,
+        array $configuration
+    ): bool {
         if ($voucher === null) {
             return false;
         }
@@ -80,7 +84,8 @@ class VoucherConditionChecker extends AbstractConditionChecker
             if ($cart->hasPriceRules()) {
                 foreach ($cart->getPriceRuleItems() as $rule) {
                     if ($rule instanceof PriceRuleItemInterface) {
-                        if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode() !== $storedCode->getCode()) {
+                        if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode(
+                            ) !== $storedCode->getCode()) {
                             $valid = false;
 
                             break;
