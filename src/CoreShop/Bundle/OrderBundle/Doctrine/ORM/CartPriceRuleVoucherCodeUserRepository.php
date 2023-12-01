@@ -20,35 +20,22 @@ namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
 
 class CartPriceRuleVoucherCodeUserRepository extends EntityRepository implements CartPriceRuleVoucherCodeUserRepositoryInterface
 {
-    public function findUsesById(CustomerInterface $customer, int $voucherCodeId): ?CartPriceRuleVoucherCodeUserInterface
-    {
+    public function findUsesByCustomer(
+        CustomerInterface $customer,
+        CartPriceRuleVoucherCodeInterface $voucherCode
+    ): ?CartPriceRuleVoucherCodeUserInterface {
         return $this->createQueryBuilder('o')
-          ->where('o.voucherCode = :voucherCode')
-          ->andWhere('o.userId = :userId')
-          ->setParameter('voucherCode', $voucherCodeId)
-          ->setParameter('userId', $customer->getId())
-          ->getQuery()
-          ->getOneOrNullResult()
-          ;
-    }
-
-    public function addCodeUserUsage(CartPriceRuleVoucherCodeUserInterface $voucherCodeUser): void
-    {
-        $this->add($voucherCodeUser);
-    }
-
-    public function updateCodeUserUsage(int $id): void
-    {
-        $existingEntry = $this->find($id);
-
-        if ($existingEntry instanceof CartPriceRuleVoucherCodeUserInterface){
-            $existingEntry->incrementUses();
-            $this->add($existingEntry);
-        }
+            ->where('o.voucherCode = :voucherCode')
+            ->andWhere('o.userId = :userId')
+            ->setParameter('voucherCode', $voucherCode)
+            ->setParameter('userId', $customer->getId())
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

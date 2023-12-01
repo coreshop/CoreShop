@@ -10,20 +10,20 @@
         </indexes>
 
         <unique-constraints>
-            <unique-constraint name="voucherCodeId_userId" columns="voucherCodeId,userId"/>
+            <unique-constraint name="voucherCodeId_userId" columns="voucherCodeId,customerId"/>
         </unique-constraints>
 
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="userId" column="userId" type="integer"/>
+        <field name="customerId" column="customerId" type="integer"/>
 
-        <many-to-one field="voucherCode" target-entity="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface">
+        <many-to-one field="voucherCode"
+                     target-entity="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface">
             <join-column name="voucherCodeId" referenced-column-name="id"/>
         </many-to-one>
 
         <field name="uses" column="uses" type="integer"/>
-
     </mapped-superclass>
 </doctrine-mapping>

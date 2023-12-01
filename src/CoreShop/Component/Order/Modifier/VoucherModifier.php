@@ -18,9 +18,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Modifier;
 
+use CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeUserFactoryInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -30,6 +33,8 @@ class VoucherModifier implements VoucherModifierInterface
     public function __construct(
         protected EntityManagerInterface $entityManager,
         protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        protected CartPriceRuleVoucherCodeUserRepositoryInterface $codePerUserRepository,
+        protected CartPriceRuleVoucherCodeUserFactoryInterface $voucherCodeUserFactory
     ) {
     }
 
@@ -59,6 +64,34 @@ class VoucherModifier implements VoucherModifierInterface
                 }
 
                 $this->entityManager->persist($voucherCode);
+            }
+
+            $customer = $order->getCustomer();
+
+            if (!$customer) {
+                continue;
+            }
+
+            foreach ($item->getCartPriceRule()?->getConditions() ?: [] as $conditions) {
+                if ($conditions->getType() === 'voucher') {
+                    $maxUsagePerCustomer = $conditions->getConfiguration()['maxUsagePerUser'];
+
+                    if ($maxUsagePerCustomer !== null) {
+                        $perCustomerEntry = $this->codePerUserRepository->findUsesByCustomer($customer, $voucherCode);
+
+                        if ($perCustomerEntry instanceof CartPriceRuleVoucherCodeUserInterface) {
+                            $perCustomerEntry->incrementUses();
+
+                            $this->entityManager->persist($perCustomerEntry);
+                        }
+
+                        if (null === $perCustomerEntry) {
+                            $perCustomerEntry = $this->voucherCodeUserFactory->createWithInitialData($customer, $voucherCode);
+
+                            $this->entityManager->persist($perCustomerEntry);
+                        }
+                    }
+                }
             }
         }
 
@@ -92,6 +125,28 @@ class VoucherModifier implements VoucherModifierInterface
                     }
 
                     $this->entityManager->persist($voucherCode);
+                }
+            }
+
+            $customer = $order->getCustomer();
+
+            if (!$customer) {
+                continue;
+            }
+
+            foreach ($item->getCartPriceRule()?->getConditions() ?: [] as $conditions) {
+                if ($conditions->getType() === 'voucher') {
+                    $maxUsagePerCustomer = $conditions->getConfiguration()['maxUsagePerUser'];
+
+                    if ($maxUsagePerCustomer !== null) {
+                        $perCustomerEntry = $this->codePerUserRepository->findUsesByCustomer($customer, $voucherCode);
+
+                        if ($perCustomerEntry instanceof CartPriceRuleVoucherCodeUserInterface) {
+                            $perCustomerEntry->incrementUses();
+
+                            $this->entityManager->persist($perCustomerEntry);
+                        }
+                    }
                 }
             }
         }

@@ -41,7 +41,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
         }
 
         $maxUsagePerCode = $configuration['maxUsagePerCode'];
-        $maxUsagePerUser = $configuration['maxUsagePerUser'];
+        $maxUsagePerUser = $configuration['maxUsagePerUser'] ?: null;
         $onlyOnePerCart = $configuration['onlyOnePerCart'];
 
         $storedCode = $this->voucherCodeRepository->findByCode($voucher->getCode());
@@ -59,18 +59,17 @@ class VoucherConditionChecker extends AbstractConditionChecker
         }
 
         // max usage per user condition
-        if (is_numeric($maxUsagePerUser)){
-
+        if (is_numeric($maxUsagePerUser)) {
             $customer = $cart->getCustomer();
 
             if (!$customer instanceof CustomerInterface) {
                 return false;
             }
 
-            $usesObject = $this->codePerUserRepository->findUsesById($customer, $voucher->getId());
+            $usesObject = $this->codePerUserRepository->findUsesByCustomer($customer, $voucher);
             $uses = $usesObject?->getUses() ?? 0;
 
-            if ($maxUsagePerUser != 0 && $uses >= $maxUsagePerUser) {
+            if ($maxUsagePerUser !== 0 && $uses >= $maxUsagePerUser) {
                 return false;
             }
         }

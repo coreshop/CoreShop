@@ -18,7 +18,7 @@ class CartPriceRuleVoucherCodeUser implements CartPriceRuleVoucherCodeUserInterf
     /** @var \CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface */
     protected $voucherCode;
 
-    protected int $userId;
+    protected int $customerId;
 
     protected int $uses;
 
@@ -52,14 +52,18 @@ class CartPriceRuleVoucherCodeUser implements CartPriceRuleVoucherCodeUserInterf
         $this->uses++;
     }
 
-    public function getUserId(): int
+    public function decrementUses(): void
     {
-        return $this->userId;
+        $this->uses--;
     }
 
-    public function setUserId(int $userId): void
+    public function getCustomerId(): int
     {
-        $this->userId = $userId;
+        return $this->customerId;
     }
 
+    public function setCustomerId(int $customerId): void
+    {
+        $this->customerId = $customerId;
+    }
 }
