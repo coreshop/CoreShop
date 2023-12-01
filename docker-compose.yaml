@@ -89,6 +89,7 @@ services:
       PHP_IDE_CONFIG: serverName=localhost
       XDEBUG_TRIGGER: PHPSTORM
       COMPOSER_HOME: /var/www/html
+      XDEBUG_HOST: 198.19.248.254
 
   php8:
     image: pimcore/pimcore:PHP8.0-fpm

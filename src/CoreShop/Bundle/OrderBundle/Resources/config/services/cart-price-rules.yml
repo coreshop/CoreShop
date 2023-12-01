@@ -223,4 +223,6 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@coreshop.repository.cart_price_rule_voucher_code_customer'
+            - '@coreshop.factory.cart_price_rule_voucher_code_customer'
 

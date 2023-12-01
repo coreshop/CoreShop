@@ -142,9 +142,14 @@ class VoucherModifier implements VoucherModifierInterface
                         $perCustomerEntry = $this->codePerUserRepository->findUsesByCustomer($customer, $voucherCode);
 
                         if ($perCustomerEntry instanceof CartPriceRuleVoucherCodeUserInterface) {
-                            $perCustomerEntry->incrementUses();
+                            $perCustomerEntry->decrementUses();
 
-                            $this->entityManager->persist($perCustomerEntry);
+                            if ($perCustomerEntry->getUses() === 0) {
+                                $this->entityManager->remove($perCustomerEntry);
+                            }
+                            else {
+                                $this->entityManager->persist($perCustomerEntry);
+                            }
                         }
                     }
                 }

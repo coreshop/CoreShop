@@ -6,11 +6,11 @@
     <mapped-superclass name="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser"
                        table="coreshop_cart_price_rule_voucher_code_customer">
         <indexes>
-            <index name="userId_idx" columns="userId"/>
+            <index name="customerId_idx" columns="customerId"/>
         </indexes>
 
         <unique-constraints>
-            <unique-constraint name="voucherCodeId_userId" columns="voucherCodeId,customerId"/>
+            <unique-constraint name="voucherCodeId_customerId" columns="voucherCodeId,customerId"/>
         </unique-constraints>
 
         <id name="id" column="id" type="integer">

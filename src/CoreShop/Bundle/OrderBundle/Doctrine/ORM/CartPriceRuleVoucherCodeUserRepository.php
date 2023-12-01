@@ -32,9 +32,9 @@ class CartPriceRuleVoucherCodeUserRepository extends EntityRepository implements
     ): ?CartPriceRuleVoucherCodeUserInterface {
         return $this->createQueryBuilder('o')
             ->where('o.voucherCode = :voucherCode')
-            ->andWhere('o.userId = :userId')
+            ->andWhere('o.customerId = :customerId')
             ->setParameter('voucherCode', $voucherCode)
-            ->setParameter('userId', $customer->getId())
+            ->setParameter('customerId', $customer->getId())
             ->getQuery()
             ->getOneOrNullResult();
     }
