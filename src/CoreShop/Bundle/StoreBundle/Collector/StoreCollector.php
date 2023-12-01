@@ -29,16 +29,12 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 final class StoreCollector extends DataCollector
 {
     public function __construct(
-        StoreRepositoryInterface $storeRepository,
+        private StoreRepositoryInterface $storeRepository,
         private StoreContextInterface $storeContext,
         private PimcoreContextResolver $pimcoreContext,
-        $storeChangeSupport = false,
+        private $storeChangeSupport = false,
     ) {
-        $this->data = [
-            'store' => null,
-            'stores' => $storeRepository->findAll(),
-            'store_change_support' => $storeChangeSupport,
-        ];
+
     }
 
     public function getStore(): ?StoreInterface
@@ -68,7 +64,12 @@ final class StoreCollector extends DataCollector
         }
 
         try {
-            $this->data['store'] = $this->storeContext->getStore();
+            $this->data = [
+                'store' => $this->storeContext->getStore(),
+                'stores' => $this->storeRepository->findAll(),
+                'store_change_support' => $this->storeChangeSupport,
+            ];
+
         } catch (\Exception) {
             //If some goes wrong, we just ignore it
         }
