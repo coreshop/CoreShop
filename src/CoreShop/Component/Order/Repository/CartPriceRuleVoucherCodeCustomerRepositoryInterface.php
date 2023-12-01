@@ -16,15 +16,17 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Order\Factory;
+namespace CoreShop\Component\Order\Repository;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
-interface CartPriceRuleVoucherCodeUserFactoryInterface extends FactoryInterface
+interface CartPriceRuleVoucherCodeCustomerRepositoryInterface extends RepositoryInterface
 {
-    public function createWithInitialData(CustomerInterface $customer, CartPriceRuleVoucherCodeInterface $voucherCode): CartPriceRuleVoucherCodeUser;
+    public function findUsesByCustomer(
+        CustomerInterface $customer,
+        CartPriceRuleVoucherCodeInterface $voucherCode
+    ): ?CartPriceRuleVoucherCodeCustomerInterface;
 }
-

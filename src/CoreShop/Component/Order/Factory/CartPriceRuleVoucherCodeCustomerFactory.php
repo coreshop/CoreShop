@@ -20,11 +20,10 @@ namespace CoreShop\Component\Order\Factory;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
-class CartPriceRuleVoucherCodeUserFactory implements CartPriceRuleVoucherCodeUserFactoryInterface
+class CartPriceRuleVoucherCodeCustomerFactory implements CartPriceRuleVoucherCodeCustomerFactoryInterface
 {
 
     public function __construct(
@@ -37,17 +36,17 @@ class CartPriceRuleVoucherCodeUserFactory implements CartPriceRuleVoucherCodeUse
         return $this->voucherCodePerUserFactory->createNew();
     }
 
-    public function createWithInitialData(CustomerInterface $customer, CartPriceRuleVoucherCodeInterface $voucherCode): CartPriceRuleVoucherCodeUser
+    public function createWithInitialData(CustomerInterface $customer, CartPriceRuleVoucherCodeInterface $voucherCode): CartPriceRuleVoucherCodeCustomerInterface
     {
         /**
-         * @var CartPriceRuleVoucherCodeUserInterface $voucherCodeUser
+         * @var CartPriceRuleVoucherCodeCustomerInterface $voucherCodeCustomer
          */
-        $voucherCodeUser = $this->createNew();
-        $voucherCodeUser->setCustomerId($customer->getId());
-        $voucherCodeUser->setUses(1);
-        $voucherCodeUser->setVoucherCode($voucherCode);
+        $voucherCodeCustomer = $this->createNew();
+        $voucherCodeCustomer->setCustomerId($customer->getId());
+        $voucherCodeCustomer->setUses(1);
+        $voucherCodeCustomer->setVoucherCode($voucherCode);
 
-        return $voucherCodeUser;
+        return $voucherCodeCustomer;
     }
 
 }

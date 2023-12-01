@@ -23,14 +23,14 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
-use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeCustomerRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class VoucherConditionChecker extends AbstractConditionChecker
 {
     public function __construct(
       private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
-      private CartPriceRuleVoucherCodeUserRepositoryInterface $codePerUserRepository,
+      private CartPriceRuleVoucherCodeCustomerRepositoryInterface $codePerUserRepository,
     ) {
     }
 

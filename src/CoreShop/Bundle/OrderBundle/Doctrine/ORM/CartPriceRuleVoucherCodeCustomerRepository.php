@@ -21,15 +21,15 @@ namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
-use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeUserRepositoryInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeCustomerRepositoryInterface;
 
-class CartPriceRuleVoucherCodeUserRepository extends EntityRepository implements CartPriceRuleVoucherCodeUserRepositoryInterface
+class CartPriceRuleVoucherCodeCustomerRepository extends EntityRepository implements CartPriceRuleVoucherCodeCustomerRepositoryInterface
 {
     public function findUsesByCustomer(
         CustomerInterface $customer,
         CartPriceRuleVoucherCodeInterface $voucherCode
-    ): ?CartPriceRuleVoucherCodeUserInterface {
+    ): ?CartPriceRuleVoucherCodeCustomerInterface {
         return $this->createQueryBuilder('o')
             ->where('o.voucherCode = :voucherCode')
             ->andWhere('o.customerId = :customerId')

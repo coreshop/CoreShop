@@ -20,7 +20,10 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 
-class CartPriceRuleVoucherCodeUser implements CartPriceRuleVoucherCodeUserInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class CartPriceRuleVoucherCodeCustomer implements CartPriceRuleVoucherCodeCustomerInterface
 {
     use SetValuesTrait;
 

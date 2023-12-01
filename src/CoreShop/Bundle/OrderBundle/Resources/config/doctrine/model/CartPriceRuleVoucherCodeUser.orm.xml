@@ -3,7 +3,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
 
-    <mapped-superclass name="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser"
+    <mapped-superclass name="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomer"
                        table="coreshop_cart_price_rule_voucher_code_customer">
         <indexes>
             <index name="customerId_idx" columns="customerId"/>

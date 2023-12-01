@@ -29,7 +29,7 @@ use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderPaymentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleRepository;
-use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherCodeUserRepository;
+use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherCodeCustomerRepository;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleTranslationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
@@ -38,15 +38,16 @@ use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderItemRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderShipmentRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeCustomerFactory;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartPriceRule;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleTranslation;
 use CoreShop\Component\Order\Model\CartPriceRuleTranslationInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomer;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUser;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeUserInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
@@ -167,10 +168,10 @@ final class Configuration implements ConfigurationInterface
                                     ->arrayNode('classes')
                                         ->addDefaultsIfNotSet()
                                         ->children()
-                                            ->scalarNode('model')->defaultValue(CartPriceRuleVoucherCodeUser::class)->cannotBeEmpty()->end()
-                                            ->scalarNode('interface')->defaultValue(CartPriceRuleVoucherCodeUserInterface::class)->cannotBeEmpty()->end()
-                                            ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                            ->scalarNode('repository')->defaultValue(CartPriceRuleVoucherCodeUserRepository::class)->end()
+                                            ->scalarNode('model')->defaultValue(CartPriceRuleVoucherCodeCustomer::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('interface')->defaultValue(CartPriceRuleVoucherCodeCustomerInterface::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('factory')->defaultValue(CartPriceRuleVoucherCodeCustomerFactory::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('repository')->defaultValue(CartPriceRuleVoucherCodeCustomerRepository::class)->end()
                                     ->end()
                                 ->end()
                             ->end()

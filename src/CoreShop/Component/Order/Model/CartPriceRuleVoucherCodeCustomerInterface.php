@@ -20,7 +20,7 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface CartPriceRuleVoucherCodeUserInterface extends ResourceInterface
+interface CartPriceRuleVoucherCodeCustomerInterface extends ResourceInterface
 {
     public function setVoucherCode(CartPriceRuleVoucherCodeInterface $voucherCode): void;
     
