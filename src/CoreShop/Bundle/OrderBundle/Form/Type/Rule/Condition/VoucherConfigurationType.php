@@ -37,6 +37,7 @@ final class VoucherConfigurationType extends AbstractType
     {
         $builder
             ->add('maxUsagePerCode', NumberType::class)
+            ->add('maxUsagePerUser', NumberType::class)
             ->add('onlyOnePerCart', CheckboxType::class)
         ;
     }
