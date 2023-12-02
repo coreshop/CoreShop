@@ -29,6 +29,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationTy
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
@@ -45,6 +46,7 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -445,6 +447,28 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition not combinable with (cart rule "[^"]+")$/
+     * @Given /^the (price rule) has a condition not combinable with (cart rule "[^"]+")$/
+     * @Given /^the (price rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
+     */
+    public function theCartPriceRuleHasANotCombinableCondition(ProductPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, CartPriceRuleInterface $notCombinable2 = null): void
+    {
+        $this->assertConditionForm(NotCombinableConfigurationType::class, 'not_combinable_with_cart_price_voucher_rule');
+
+        $configuration = [
+            'price_rules' => [
+                $notCombinable->getId(),
+            ],
+        ];
+
+        if (null !== $notCombinable2) {
+            $configuration['price_rules'][] = $notCombinable2->getId();
+        }
+
+        $this->addCondition($rule, $this->createConditionWithForm('not_combinable_with_cart_price_voucher_rule', $configuration));
+    }
 
     private function addCondition(ProductPriceRuleInterface $rule, ConditionInterface $condition): void
     {

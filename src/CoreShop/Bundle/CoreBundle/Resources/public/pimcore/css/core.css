@@ -88,6 +88,10 @@ body.pimcore_version_10 .coreshop_nav_icon_customer_to_company_assign_to_existin
     background: url(../img/customer.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_condition_not_combinable_with_cart_price_voucher_rule {
+    background: url(../img/not_combinable.svg) center center no-repeat !important;
+}
+
 .coreshop_rule_icon_condition_countries {
     background: url(../img/countries.svg) center center no-repeat !important;
 }

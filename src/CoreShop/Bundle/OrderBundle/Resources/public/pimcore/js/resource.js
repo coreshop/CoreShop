@@ -14,6 +14,7 @@ pimcore.registerNS('coreshop.order.resource');
 coreshop.order.resource = Class.create(coreshop.resource, {
     initialize: function () {
         coreshop.global.addStoreWithRoute('coreshop_cart_price_rules', 'coreshop_cart_price_rule_list');
+        coreshop.global.addStoreWithRoute('coreshop_cart_price_voucher_rules', 'coreshop_cart_price_rule_listVoucherRules');
 
         Ext.Ajax.request({
             url: Routing.generate('coreshop_admin_order_get_states'),
