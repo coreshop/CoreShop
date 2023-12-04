@@ -34,7 +34,6 @@ final class StoreCollector extends DataCollector
         private PimcoreContextResolver $pimcoreContext,
         private $storeChangeSupport = false,
     ) {
-
     }
 
     public function getStore(): ?StoreInterface
@@ -69,7 +68,6 @@ final class StoreCollector extends DataCollector
                 'stores' => $this->storeRepository->findAll(),
                 'store_change_support' => $this->storeChangeSupport,
             ];
-
         } catch (\Exception) {
             //If some goes wrong, we just ignore it
         }
