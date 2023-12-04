@@ -27,4 +27,6 @@ interface CartPriceRuleRepositoryInterface extends RuleRepositoryInterface
      * @return CartPriceRuleInterface[]
      */
     public function findNonVoucherRules(): array;
+
+    public function findVoucherRules(): array;
 }

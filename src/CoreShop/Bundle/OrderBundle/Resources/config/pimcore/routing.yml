@@ -8,6 +8,11 @@ coreshop_admin_cart_price_rule:
           action: getConfig
           methods:
             - GET
+        listVoucherRules:
+          path: list-voucher-rules
+          action: listVoucherRules
+          methods:
+            - GET
         cartItemConfig:
           path: get-cart-item-config
           action: getCartItemConfig

@@ -38,6 +38,12 @@ services:
             - { name: coreshop.product_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
             - { name: coreshop.product_specific_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
 
+    coreshop.rule.condition.not_combinable_with_cart_price_voucher_rule:
+        class: CoreShop\Component\Core\Product\Rule\Condition\NotCombinableWithCartPriceRuleVoucherConditionChecker
+        tags:
+            - { name: coreshop.product_price_rule.condition, type: not_combinable_with_cart_price_voucher_rule, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType }
+            - { name: coreshop.product_specific_price_rule.condition, type: not_combinable_with_cart_price_voucher_rule, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType }
+
     coreshop.product_price_rule.condition.categories:
         class: CoreShop\Component\Core\Product\Rule\Condition\CategoriesConditionChecker
         arguments:

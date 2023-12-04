@@ -98,6 +98,8 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Factory\AdjustmentFactory.inner'
 
+    CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeCustomerFactoryInterface: '@coreshop.factory.cart_price_rule_voucher_code_customer'
+
     CoreShop\Component\Order\Factory\OrderItemFactory:
         decorates: coreshop.factory.order_item
         decoration_priority: 256
