@@ -54,7 +54,8 @@ class OrderController extends FrontendController
         }
 
         $form = $this->getFormFactory()->createNamed('coreshop', PaymentType::class, $order, [
-            'payment_subject' => $order,
+            'payment_subject'   => $order,
+            'validation_groups' => ['coreshop_revise']
         ]);
 
         if ($request->isMethod('post')) {
