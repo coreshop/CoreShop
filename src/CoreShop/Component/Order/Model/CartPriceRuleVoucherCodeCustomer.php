@@ -39,7 +39,7 @@ class CartPriceRuleVoucherCodeCustomer implements CartPriceRuleVoucherCodeCustom
 
     protected int $uses;
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
