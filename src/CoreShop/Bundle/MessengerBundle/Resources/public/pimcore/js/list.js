@@ -63,18 +63,11 @@ coreshop.messenger.list = Class.create({
                         height: 200,
                         items: this.getChart()
                     }, {
-                        xtype: 'panel',
-                        layout: 'fit',
                         region: 'center',
+                        xtype: 'tabpanel',
                         items: [
-                            {
-                                xtype: 'tabpanel',
-                                layot: 'fit',
-                                items: [
-                                    this.getFailedGrid(),
-                                    this.getGrid(),
-                                ]
-                            }
+                            this.getFailedGrid(),
+                            this.getGrid(),
                         ]
                     }]
                 }]
@@ -194,6 +187,7 @@ coreshop.messenger.list = Class.create({
 
         var grid = new Ext.grid.Panel({
             xtype: 'grid',
+            layout: 'fit',
             store: this.failedMessagesStore,
             viewConfig: {
                 enableTextSelection: true
@@ -203,24 +197,24 @@ coreshop.messenger.list = Class.create({
             ],
             columns: [{
                 text: 'ID',
-                width: 150,
+                width: 75,
                 dataIndex: 'id'
             }, {
                 text: t('coreshop_messenger_class'),
-                flex: 1,
+                width: 400,
                 dataIndex: 'class'
             }, {
                 text: t('coreshop_messenger_failed_at'),
                 width: 100,
                 formatter: 'date("m/d/Y")',
-                dataIndex: 'failedAt'
+                dataIndex: 'failed_at'
             }, {
                 text: t('coreshop_messenger_error'),
-                width: 250,
+                flex: 1,
                 dataIndex: 'error'
             }, {
                 xtype: 'actioncolumn',
-                width: 80,
+                width: 100,
                 menuDisabled: true,
                 sortable: false,
                 items: [{
@@ -234,10 +228,30 @@ coreshop.messenger.list = Class.create({
                             height: 550,
                             title: t('info'),
                             modal: true,
-                            layout: "fit",
+                            layout: 'fit',
                             items: [{
                                 padding: 10,
+                                scrollable: true,
                                 html: record.data.serialized
+                            }]
+                        }).show();
+                    }
+                }, {
+                    iconCls: 'pimcore_icon_error',
+                    tooltip: t('coreshop_messenger_info'),
+                    handler: function (grid, rowIndex) {
+                        var record = grid.getStore().getAt(rowIndex);
+
+                        new Ext.Window({
+                            width: 500,
+                            height: 550,
+                            title: t('error'),
+                            modal: true,
+                            layout: 'fit',
+                            items: [{
+                                padding: 10,
+                                scrollable: true,
+                                html: record.data.error
                             }]
                         }).show();
                     }
@@ -290,8 +304,9 @@ coreshop.messenger.list = Class.create({
         });
 
         return {
+            layout: 'fit',
+            items: [grid],
             title: t('coreshop_messenger_failed_messages'),
-            items: [grid]
         };
     },
 
@@ -351,6 +366,7 @@ coreshop.messenger.list = Class.create({
 
         var grid = new Ext.grid.Panel({
             xtype: 'grid',
+            layout: 'fit',
             store: this.messagesStore,
             viewConfig: {
                 enableTextSelection: true
@@ -394,6 +410,7 @@ coreshop.messenger.list = Class.create({
         });
 
         return {
+            layout: 'fit',
             title: t('coreshop_messenger_pending_messages'),
             items: [grid]
         };
