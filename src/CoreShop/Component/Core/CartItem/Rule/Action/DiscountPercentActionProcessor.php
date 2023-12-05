@@ -41,7 +41,7 @@ class DiscountPercentActionProcessor implements CartItemPriceRuleActionProcessor
          */
         $store = $orderItem->getOrder()->getStore();
 
-        $discount = $this->getDiscount($orderItem, $configuration);
+        $discount = $this->getDiscount($orderItem, $configuration, $store->getUseGrossPrice());
 
         if ($discount <= 0) {
             return false;
