@@ -79,7 +79,7 @@ final class Version20230928104945 extends AbstractMigration implements Container
             'width' => '',
         ];
 
-        $classUpdater->insertFieldAfter('unitDefinition', $immutableField);
+        $classUpdater->insertFieldAfter('additionalData', $immutableField);
         $classUpdater->save();
     }
 
