@@ -1,5 +1,5 @@
 parameters:
-    coreshop.form.type.order.payment.validation_groups: [coreshop]
+    coreshop.form.type.order.payment.validation_groups: [coreshop_revise]
 
 services:
     _defaults:
