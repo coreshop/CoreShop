@@ -34,6 +34,9 @@ final class StoreCollector extends DataCollector
         private PimcoreContextResolver $pimcoreContext,
         private $storeChangeSupport = false,
     ) {
+        $this->data = [
+            'store' => null,
+        ];
     }
 
     public function getStore(): ?StoreInterface
