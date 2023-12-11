@@ -23,7 +23,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface CartPriceRuleVoucherCodeCustomerInterface extends ResourceInterface
 {
     public function setVoucherCode(CartPriceRuleVoucherCodeInterface $voucherCode): void;
-    
+
     public function getVoucherCode(): CartPriceRuleVoucherCodeInterface;
 
     public function getUses(): int;

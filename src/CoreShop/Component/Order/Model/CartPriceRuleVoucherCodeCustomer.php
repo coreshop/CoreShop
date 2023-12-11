@@ -66,12 +66,12 @@ class CartPriceRuleVoucherCodeCustomer implements CartPriceRuleVoucherCodeCustom
 
     public function incrementUses(): void
     {
-        $this->uses++;
+        ++$this->uses;
     }
 
     public function decrementUses(): void
     {
-        $this->uses--;
+        --$this->uses;
     }
 
     public function getCustomerId(): int

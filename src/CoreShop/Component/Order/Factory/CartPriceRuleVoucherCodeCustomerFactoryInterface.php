@@ -27,4 +27,3 @@ interface CartPriceRuleVoucherCodeCustomerFactoryInterface extends FactoryInterf
 {
     public function createWithInitialData(CustomerInterface $customer, CartPriceRuleVoucherCodeInterface $voucherCode): CartPriceRuleVoucherCodeCustomerInterface;
 }
-

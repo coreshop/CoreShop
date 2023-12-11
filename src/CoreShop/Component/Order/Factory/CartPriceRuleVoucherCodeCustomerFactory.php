@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Factory;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 class CartPriceRuleVoucherCodeCustomerFactory implements CartPriceRuleVoucherCodeCustomerFactoryInterface
 {
@@ -49,5 +49,4 @@ class CartPriceRuleVoucherCodeCustomerFactory implements CartPriceRuleVoucherCod
 
         return $voucherCodeCustomer;
     }
-
 }

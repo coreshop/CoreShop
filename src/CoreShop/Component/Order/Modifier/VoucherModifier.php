@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Modifier;
 
 use CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeCustomerFactoryInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeCustomerRepositoryInterface;
@@ -34,7 +34,7 @@ class VoucherModifier implements VoucherModifierInterface
         protected EntityManagerInterface $entityManager,
         protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
         protected CartPriceRuleVoucherCodeCustomerRepositoryInterface $codePerUserRepository,
-        protected CartPriceRuleVoucherCodeCustomerFactoryInterface $voucherCodeCustomerFactory
+        protected CartPriceRuleVoucherCodeCustomerFactoryInterface $voucherCodeCustomerFactory,
     ) {
     }
 
@@ -146,8 +146,7 @@ class VoucherModifier implements VoucherModifierInterface
 
                             if ($perCustomerEntry->getUses() === 0) {
                                 $this->entityManager->remove($perCustomerEntry);
-                            }
-                            else {
+                            } else {
                                 $this->entityManager->persist($perCustomerEntry);
                             }
                         }
