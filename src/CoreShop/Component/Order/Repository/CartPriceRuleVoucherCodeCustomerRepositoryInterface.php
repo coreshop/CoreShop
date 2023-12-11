@@ -19,14 +19,14 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Repository;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface CartPriceRuleVoucherCodeCustomerRepositoryInterface extends RepositoryInterface
 {
     public function findUsesByCustomer(
         CustomerInterface $customer,
-        CartPriceRuleVoucherCodeInterface $voucherCode
+        CartPriceRuleVoucherCodeInterface $voucherCode,
     ): ?CartPriceRuleVoucherCodeCustomerInterface;
 }

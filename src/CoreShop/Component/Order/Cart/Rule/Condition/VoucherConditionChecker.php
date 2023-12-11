@@ -38,7 +38,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
         OrderInterface $cart,
         CartPriceRuleInterface $cartPriceRule,
         ?CartPriceRuleVoucherCodeInterface $voucher,
-        array $configuration
+        array $configuration,
     ): bool {
         if ($voucher === null) {
             return false;
@@ -53,7 +53,6 @@ class VoucherConditionChecker extends AbstractConditionChecker
         if (!$storedCode instanceof CartPriceRuleVoucherCodeInterface) {
             return false;
         }
-
 
         // max usage per code condition
         if (is_numeric($maxUsagePerCode)) {
@@ -85,7 +84,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
                 foreach ($cart->getPriceRuleItems() as $rule) {
                     if ($rule instanceof PriceRuleItemInterface) {
                         if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode(
-                            ) !== $storedCode->getCode()) {
+                        ) !== $storedCode->getCode()) {
                             $valid = false;
 
                             break;
