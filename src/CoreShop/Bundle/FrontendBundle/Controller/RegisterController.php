@@ -48,7 +48,7 @@ class RegisterController extends FrontendController
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $form = $form->handleRequest($request);
 
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $customer = $form->getData();
                 $customer->setLocaleCode($this->get('coreshop.context.locale')->getLocaleCode());
 
