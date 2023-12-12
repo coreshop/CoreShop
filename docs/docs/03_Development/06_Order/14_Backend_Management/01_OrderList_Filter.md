@@ -38,7 +38,7 @@ class DemoFilter implements GridFilterInterface
         $list->onCreateQuery(function (QueryBuilder $select) use ($list) {
             $select->join(
                 ['shipment' => 'object_query_4'],
-                'shipment.order__id = object_' . $list->getClassId() . '.o_id'
+                'shipment.order__id = object_' . $list->getClassId() . '.id'
             );
         });
 
