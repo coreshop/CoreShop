@@ -44,9 +44,9 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         $item->setQuantity($cleanTargetQuantity);
 
         if ($item->hasUnitDefinition()) {
-            $item->setDefaultUnitQuantity($item->getUnitDefinition()->getConversionRate() * $item->getQuantity());
+            $item->setDefaultUnitQuantity(($item->getUnitDefinition()?->getConversionRate() ?? 1.0) * $item->getQuantity());
         } else {
-            $item->setDefaultUnitQuantity($item->getQuantity());
+            $item->setDefaultUnitQuantity($item->getQuantity() ?? 1.0);
         }
     }
 

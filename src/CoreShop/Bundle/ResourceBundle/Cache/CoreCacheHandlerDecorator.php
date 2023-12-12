@@ -51,15 +51,4 @@ class CoreCacheHandlerDecorator extends CoreCacheHandler
 
         return $data;
     }
-
-    protected function prepareCacheData($data): mixed
-    {
-        /**
-         * It is useless to prepare the data for cache here
-         * since the Pimcore CoreCacheHandler on line 502 loads
-         * the data-object completely fresh, so we still have to use
-         * DeepCopy approach
-         */
-        return $data;
-    }
 }

@@ -36,6 +36,8 @@ services:
 
     coreshop.expression_language:
         class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
+        arguments:
+            - '@cache.system'
 
     CoreShop\Component\Pimcore\ExpressionLanguage\PimcoreLanguageProvider:
         tags:
