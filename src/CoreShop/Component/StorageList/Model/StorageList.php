@@ -94,4 +94,9 @@ abstract class StorageList implements StorageListInterface
     {
         return count($this->items) > 0;
     }
+
+    public function count(): int
+    {
+        return count($this->items);
+    }
 }
