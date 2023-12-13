@@ -100,6 +100,18 @@ final class OrderPaymentStateResolver implements StateResolverInterface
             return OrderPaymentTransitions::TRANSITION_PARTIALLY_AUTHORIZE;
         }
 
+        // Processing payments
+        $processingPaymentTotal = 0;
+        $processingPayments = $this->getPaymentsWithState($order, PaymentInterface::STATE_PROCESSING);
+
+        foreach ($processingPayments as $payment) {
+            $processingPaymentTotal += $payment->getTotalAmount();
+        }
+
+        if (count($processingPayments) > 0  && $processingPaymentTotal >= $order->getPaymentTotal()) {
+            return OrderPaymentTransitions::TRANSITION_REQUEST_PAYMENT;
+        }
+
         return null;
     }
 
