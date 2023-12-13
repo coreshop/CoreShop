@@ -113,7 +113,7 @@
   "require-dev": {
     "behat/behat": "^3.8",
     "behat/mink": "^1.8",
-    "dbrekelmans/bdi": "^0.3.0",
+    "dbrekelmans/bdi": "^1.0",
     "friends-of-behat/mink-debug-extension": "^2.0",
     "friends-of-behat/mink-extension": "^2.4",
     "friends-of-behat/page-object-extension": "^0.3.2",
@@ -151,7 +151,10 @@
       "src/Kernel.php",
       "src/BehatKernel.php",
       "src/AppKernel.php"
-    ]
+    ],
+    "psr-4": {
+      "Pimcore\\Model\\DataObject\\": "var/classes/DataObject"
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
