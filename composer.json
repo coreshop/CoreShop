@@ -163,7 +163,10 @@
       "src/Kernel.php",
       "src/BehatKernel.php",
       "src/AppKernel.php"
-    ]
+    ],
+    "psr-4": {
+      "Pimcore\\Model\\DataObject\\": "var/classes/DataObject"
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
