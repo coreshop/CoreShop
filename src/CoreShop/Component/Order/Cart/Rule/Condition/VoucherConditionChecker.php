@@ -45,7 +45,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
         }
 
         $maxUsagePerCode = $configuration['maxUsagePerCode'];
-        $maxUsagePerUser = $configuration['maxUsagePerUser'] ?: null;
+        $maxUsagePerUser = $configuration['maxUsagePerUser'] ?? null;
         $onlyOnePerCart = $configuration['onlyOnePerCart'];
 
         $storedCode = $this->voucherCodeRepository->findByCode($voucher->getCode());
