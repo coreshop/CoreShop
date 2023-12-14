@@ -108,7 +108,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                     if (!$languageDocument instanceof Document) {
                         $languageDocument = new Document\Page();
                         $languageDocument->setParent($rootDocument);
-                        $languageDocument->setProperty('language', 'text', $language);
+                        $languageDocument->setProperty('language', $language, 'text', false, true);
                         $languageDocument->setKey(Service::getValidKey($language, 'document'));
                         $languageDocument->save();
                     }
@@ -163,7 +163,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 );
 
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
-                $document->setProperty('language', $language, 'text', true);
+                $document->setProperty('language', $language, 'text', false, true);
 
                 if ($document instanceof Document\PageSnippet) {
                     if ($document instanceof Document\Page && isset($properties['title'])) {
