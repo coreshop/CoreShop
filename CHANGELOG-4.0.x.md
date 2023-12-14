@@ -1,4 +1,13 @@
+# 4.0.0
+
+* add missing subscribed services by @hethehe in https://github.com/coreshop/CoreShop/pull/2439
+* [Docs] update docs by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2455
+* fix workflow.registry service argument by @hethehe in https://github.com/coreshop/CoreShop/pull/2457
+* [StoreBundle] fix StoreCollector for backend by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2466
+* [Core] fix o_id usages by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2473
+
 # 4.0.0-beta.4
+
 * [Pimcore11] remove o_ column usages by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2413
 * [Pimcore11] fix return type for getChildCategories by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2414
 * can not save store shop settings by @sevarozh in https://github.com/coreshop/CoreShop/pull/2415
