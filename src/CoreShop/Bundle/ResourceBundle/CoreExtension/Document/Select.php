@@ -27,7 +27,7 @@ use Pimcore\Model\Document\Editable;
  */
 class Select extends Editable
 {
-    public ResourceInterface|null $resource;
+    public ResourceInterface|null $resource = null;
 
     public function __construct(
         protected string $repositoryName,
