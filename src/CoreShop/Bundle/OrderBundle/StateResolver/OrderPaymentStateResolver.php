@@ -108,7 +108,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
             $processingPaymentTotal += $payment->getTotalAmount();
         }
 
-        if (count($processingPayments) > 0  && $processingPaymentTotal >= $order->getPaymentTotal()) {
+        if (count($processingPayments) > 0 && $processingPaymentTotal >= $order->getPaymentTotal()) {
             return OrderPaymentTransitions::TRANSITION_REQUEST_PAYMENT;
         }
 
