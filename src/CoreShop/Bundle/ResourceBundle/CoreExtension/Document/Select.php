@@ -27,7 +27,7 @@ use Pimcore\Model\Document\Editable;
  */
 class Select extends Editable
 {
-    public ResourceInterface|null $resource = null;
+    public int|null $resource = null;
 
     public function __construct(
         protected string $repositoryName,
@@ -46,7 +46,7 @@ class Select extends Editable
         return '';
     }
 
-    public function getData(): ?ResourceInterface
+    public function getData(): ?int
     {
         return $this->resource;
     }
