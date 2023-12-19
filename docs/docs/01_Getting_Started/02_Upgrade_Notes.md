@@ -146,7 +146,7 @@ CoreShop is now Licenced under CCL and GPLv3! (https://github.com/coreshop/CoreS
     - [Pimcore] 10.5 as min requirement (https://github.com/coreshop/CoreShop/pull/2067)
 
 - Bugs
-    - [VariantBundle] Serializer: Allow $innerObject to be
+    - [VariantBundle] Serializer: Allow `$innerObject` to be
       null (https://github.com/coreshop/CoreShop/pull/2058, https://github.com/coreshop/CoreShop/pull/2069)
     - [DataHub] Fix non unique typename (https://github.com/coreshop/CoreShop/pull/2004)
     - [Translations] Update admin-translations.yml (https://github.com/coreshop/CoreShop/pull/2064)
@@ -194,7 +194,7 @@ CoreShop is now Licenced under CCL and GPLv3! (https://github.com/coreshop/CoreS
     - [Tests] re-enable cart tests (https://github.com/coreshop/CoreShop/pull/1970)
     - [FrontendBundle] fix: paginator.html.twig prepends four spaces to
       URLs (https://github.com/coreshop/CoreShop/pull/1968)
-    - [IndexBundle] fix Argument #2 ($values) must be of type array, string
+    - [IndexBundle] fix Argument #2 (`$values`) must be of type array, string
       given (https://github.com/coreshop/CoreShop/pull/1967)
     - [CoreBundle] use themeHelper to resolve template in
       StoreMailActionProcessor (https://github.com/coreshop/CoreShop/pull/1973)
@@ -826,7 +826,7 @@ security:
 
 - Bugs:
     - [ThemeBundle] fix Undefined index: default_resolvers (https://github.com/coreshop/CoreShop/pull/1235)
-    - [IndexBundle]  $indexIds is always an array, hence the condition is now
+    - [IndexBundle] `$indexIds` is always an array, hence the condition is now
       empty (https://github.com/coreshop/CoreShop/pull/1241)
     - [Stan] fixes for 2.1 (https://github.com/coreshop/CoreShop/pull/1244)
     - [CurrencyBundle] fix money-currency type is rounding prices wrong (https://github.com/coreshop/CoreShop/pull/1238)
@@ -849,7 +849,7 @@ security:
     - [SEOBundle] add priority to extractors (https://github.com/coreshop/CoreShop/pull/1155)
     - [QuantityPriceRules] Allow Object Deletion without removing QPR
       first (https://github.com/coreshop/CoreShop/issues/1160)
-    - [CoreBundle] Improve Unit Definition <=> QPR Dependency (https://github.com/coreshop/CoreShop/pull/1161)
+    - [CoreBundle] Improve Unit Definition `<=>` QPR Dependency (https://github.com/coreshop/CoreShop/pull/1161)
     - [StorageList] introduce service to resolve if cart-items are
       equal (https://github.com/coreshop/CoreShop/pull/1188)
     - [OrderBundle] Allow Item Data per Row in Order Overview (https://github.com/coreshop/CoreShop/pull/1193)
@@ -1436,12 +1436,9 @@ After you have migrated to the latest version you also have to remove them:
 ## 2.0.0-beta.2 to 2.0.0-beta.3
 
 - **BC break** Signature of following interfaces changed:
-    - `CoreShop\Component\Index\Interpreter\InterpreterInterface`: public function interpret($value, IndexableInterface
-      $object, IndexColumnInterface $config, $interpreterConfig = []);
-    - `CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface`: public function interpretForLanguage(
-      $language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
-    - `CoreShop\Component\Index\Interpreter\RelationInterpreterInterface`: public function interpretRelational($value,
-      IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
+    - `CoreShop\Component\Index\Interpreter\InterpreterInterface`: `public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);`
+    - `CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface`: `public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);`
+    - `CoreShop\Component\Index\Interpreter\RelationInterpreterInterface`: `public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);`
     - `CoreShop\Component\Customer\Model\UserInterface::ROLE_DEFAULT`
       renamed `CoreShop\Component\Customer\Model\UserInterface::CORESHOP_ROLE_DEFAULT`
     - `CoreShop\Component\Customer\Model\UserInterface::ROLE_SUPER_ADMIN`
@@ -1473,12 +1470,9 @@ After you have migrated to the latest version you also have to remove them:
 ## 2.0.0-alpha.4 to 2.0.0-beta.1
 
 - **BC break** Signature of following interfaces changed:
-    - `CoreShop\Component\Index\Interpreter\InterpreterInterface`: public function interpret($value, IndexableInterface
-      $object, IndexColumnInterface $config);
-    - `CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface`: public function interpretForLanguage(
-      $language, $value, IndexableInterface $object, IndexColumnInterface $config);
-    - `CoreShop\Component\Index\Interpreter\RelationInterpreterInterface`: public function interpretRelational($value,
-      IndexableInterface $indexable, IndexColumnInterface $config);
+    - `CoreShop\Component\Index\Interpreter\InterpreterInterface`: `public function interpret($value, IndexableInterface $object, IndexColumnInterface $config);`
+    - `CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface`: `public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config);`
+    - `CoreShop\Component\Index\Interpreter\RelationInterpreterInterface`: `public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config);`
 
 - **BC break** CoreShop now takes advantage of the dependent bundle feature introduced in Pimcore 5.1.2. Therefore,
   all bundles are now automatically loaded. This is a BC break, as when updating, you might run into issues.
