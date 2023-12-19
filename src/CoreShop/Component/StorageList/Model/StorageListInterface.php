@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\StorageList\Model;
 
-interface StorageListInterface
+interface StorageListInterface extends \Countable
 {
     public function getId(): ?int;
 

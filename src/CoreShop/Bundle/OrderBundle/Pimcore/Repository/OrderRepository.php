@@ -166,7 +166,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ?', [$customer->getId()]);
-        $list->setOrderKey('o_id');
+        $list->setOrderKey('id');
         $list->setOrder('DESC');
         $list->load();
 
@@ -186,7 +186,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDays($days);
 
-        $conditions = ['IFNULL(orderDate,o_creationDate) < ? AND saleState = ? AND orderState IN (?, ?, ?) AND paymentState <> ?'];
+        $conditions = ['IFNULL(orderDate,creationDate) < ? AND saleState = ? AND orderState IN (?, ?, ?) AND paymentState <> ?'];
         $params = [];
         $params[] = $daysTimestamp->getTimestamp();
         $params[] = OrderSaleStates::STATE_ORDER;

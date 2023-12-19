@@ -37,7 +37,8 @@ final class ConfirmOrderAction implements ActionInterface
         $payment = $request->getFirstModel();
         $order = $payment->getOrder();
         if ($payment->getState() === PaymentInterface::STATE_COMPLETED ||
-            $payment->getState() === PaymentInterface::STATE_AUTHORIZED
+            $payment->getState() === PaymentInterface::STATE_AUTHORIZED ||
+            $payment->getState() === PaymentInterface::STATE_PROCESSING
         ) {
             $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
 
