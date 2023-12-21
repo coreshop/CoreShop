@@ -118,7 +118,12 @@ class Patcher implements PatcherInterface
 
         foreach ($patch->getFields() as $field) {
             if ($classUpdater->hasField($field->getFieldName())) {
-                $classUpdater->replaceField($field->getFieldName(), $field->getDefinition());
+                if ($field->isReplace()) {
+                    $classUpdater->replaceField($field->getFieldName(), $field->getDefinition());
+                }
+                else {
+                    $classUpdater->replaceFieldProperties($field->getFieldName(), $field->getDefinition());
+                }
             } elseif ($field->getBefore()) {
                 $classUpdater->insertFieldBefore($field->getBefore(), $field->getDefinition());
             } elseif ($field->getAfter()) {

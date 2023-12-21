@@ -49,6 +49,7 @@ final class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('after')->end()
                                     ->scalarNode('before')->end()
+                                    ->booleanNode('replace')->defaultTrue()->end()
                                     ->variableNode('definition')->end()
                                 ->end()
                             ->end()
