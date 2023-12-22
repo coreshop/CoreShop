@@ -27,4 +27,6 @@ interface PatchFieldInterface
     public function getBefore(): ?string;
 
     public function getDefinition(): ?array;
+
+    public function isReplace(): bool;
 }
