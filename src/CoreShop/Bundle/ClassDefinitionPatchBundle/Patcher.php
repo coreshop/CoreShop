@@ -120,8 +120,7 @@ class Patcher implements PatcherInterface
             if ($classUpdater->hasField($field->getFieldName())) {
                 if ($field->isReplace()) {
                     $classUpdater->replaceField($field->getFieldName(), $field->getDefinition());
-                }
-                else {
+                } else {
                     $classUpdater->replaceFieldProperties($field->getFieldName(), $field->getDefinition());
                 }
             } elseif ($field->getBefore()) {
