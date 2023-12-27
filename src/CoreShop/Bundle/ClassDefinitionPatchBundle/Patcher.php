@@ -75,7 +75,7 @@ class Patcher implements PatcherInterface
         }
 
         if (null !== $patch->getInterface()) {
-            $interfaces = $classUpdater->getProperty('implementsInterfaces');
+            $interfaces = implode(',', $classUpdater->getProperty('implementsInterfaces'));
 
             if (null === $interfaces || !str_contains($interfaces, $patch->getInterface())) {
                 if (!$interfaces) {
@@ -89,7 +89,7 @@ class Patcher implements PatcherInterface
         }
 
         if (null !== $patch->getUseTraits()) {
-            $traits = $classUpdater->getProperty('useTraits');
+            $traits = implode(',', $classUpdater->getProperty('useTraits'));
 
             if (null === $traits || !str_contains($traits, $patch->getUseTraits())) {
                 if (!$traits) {
@@ -103,7 +103,7 @@ class Patcher implements PatcherInterface
         }
 
         if (null !== $patch->getListingParentClass()) {
-            $traits = $classUpdater->getProperty('listingParentClass');
+            $traits = implode(',', $classUpdater->getProperty('listingParentClass'));
 
             if (null === $traits || !str_contains($traits, $patch->getListingUseTraits())) {
                 if (!$traits) {
@@ -120,8 +120,7 @@ class Patcher implements PatcherInterface
             if ($classUpdater->hasField($field->getFieldName())) {
                 if ($field->isReplace()) {
                     $classUpdater->replaceField($field->getFieldName(), $field->getDefinition());
-                }
-                else {
+                } else {
                     $classUpdater->replaceFieldProperties($field->getFieldName(), $field->getDefinition());
                 }
             } elseif ($field->getBefore()) {
