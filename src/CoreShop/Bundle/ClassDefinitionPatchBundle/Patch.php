@@ -20,17 +20,30 @@ namespace CoreShop\Bundle\ClassDefinitionPatchBundle;
 
 class Patch implements PatchInterface
 {
+    private ?array $interface = null;
+    private ?array $useTraits = null;
+    private ?array $listingUseTraits = null;
+
     public function __construct(
         protected string $className,
-        protected ?string $interface,
+        string|array|null $interface,
         protected ?string $parentClass,
         protected ?string $group,
         protected ?string $description,
         protected ?string $listingParentClass,
-        protected ?string $useTraits,
-        protected ?string $listingUseTraits,
+        string|array|null $useTraits,
+        string|array|null $listingUseTraits,
         protected ?array $fields,
     ) {
+        if (is_string($interface)) {
+            $this->interface = [$interface];
+        }
+        if (is_string($useTraits)) {
+            $this->useTraits = [$useTraits];
+        }
+        if (is_string($listingUseTraits)) {
+            $this->listingUseTraits = [$listingUseTraits];
+        }
     }
 
     public function getClassName(): string
@@ -38,7 +51,7 @@ class Patch implements PatchInterface
         return $this->className;
     }
 
-    public function getInterface(): ?string
+    public function getInterface(): ?array
     {
         return $this->interface;
     }
@@ -63,12 +76,12 @@ class Patch implements PatchInterface
         return $this->listingParentClass;
     }
 
-    public function getUseTraits(): ?string
+    public function getUseTraits(): ?array
     {
         return $this->useTraits;
     }
 
-    public function getListingUseTraits(): ?string
+    public function getListingUseTraits(): ?array
     {
         return $this->listingUseTraits;
     }
