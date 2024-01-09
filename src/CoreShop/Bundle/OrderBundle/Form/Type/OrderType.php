@@ -30,6 +30,9 @@ final class OrderType extends AbstractResourceType
         $builder
             ->add('items', CollectionType::class, [
                 'entry_type' => OrderItemType::class,
+                'entry_options' => [
+                    'allow_zero_quantity' => $options['allow_zero_quantity'],
+                ]
             ]);
     }
 
@@ -39,6 +42,7 @@ final class OrderType extends AbstractResourceType
 
         $resolver->setDefaults([
             'csrf_protection' => false,
+            'allow_zero_quantity' => false,
         ]);
     }
 }

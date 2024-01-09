@@ -289,7 +289,9 @@ class OrderController extends PimcoreController
             throw $this->createNotFoundException();
         }
 
-        $form = $formFactory->createNamed('', OrderType::class, $order);
+        $form = $formFactory->createNamed('', OrderType::class, $order, [
+            'allow_zero_quantity' => true
+        ]);
 
         $previewOnly = $request->query->getBoolean('preview');
 
@@ -301,8 +303,10 @@ class OrderController extends PimcoreController
              */
             $order = $handledForm->getData();
 
+            $changedOrderItems = [];
+
             InheritanceHelper::useInheritedValues(
-                function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository) {
+                function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository, &$changedOrderItems) {
                 if ($previewOnly) {
                     $cartProcessor->process($order);
                 }
@@ -334,6 +338,13 @@ class OrderController extends PimcoreController
                             $itemNote->addData('to', 'text', $orderItem->getQuantity());
 
                             $this->objectNoteService->storeNote($itemNote, ['item' => $orderItem, 'originalItem' => $originalCartItem]);
+
+                            $changedOrderItems[] = [
+                                'orderItem' => $orderItem,
+                                'originalOrderItem' => $originalCartItem,
+                                'from' => $originalCartItem->getQuantity(),
+                                'to' => $orderItem->getQuantity(),
+                            ];
                         }
                     }
 
@@ -348,7 +359,9 @@ class OrderController extends PimcoreController
             });
 
             $this->eventDispatcher->dispatch(
-                new GenericEvent($order),
+                new GenericEvent($order, [
+                    'changedOrderItems' => $changedOrderItems,
+                ]),
                 $previewOnly ? Events::ORDER_BACKEND_UPDATE_PREVIEW : Events::ORDER_BACKEND_UPDATE_SAVE
             );
 
