@@ -75,45 +75,53 @@ class Patcher implements PatcherInterface
         }
 
         if (null !== $patch->getInterface()) {
-            $interfaces = implode(',', $classUpdater->getProperty('implementsInterfaces'));
+            $interfaces = $classUpdater->getProperty('implementsInterfaces');
 
-            if (null === $interfaces || !str_contains($interfaces, $patch->getInterface())) {
-                if (!$interfaces) {
-                    $interfaces = $patch->getInterface();
-                } else {
-                    $interfaces .= sprintf(',%s', $patch->getInterface());
+            foreach ($patch->getInterface() as $patchInterface) {
+                if (null === $interfaces || !str_contains($interfaces, $patchInterface)) {
+                    if (!$interfaces) {
+                        $interfaces = $patchInterface;
+                    } else {
+                        $interfaces .= sprintf(',%s', $patchInterface);
+                    }
+
                 }
-
-                $classUpdater->setProperty('implementsInterfaces', $interfaces);
             }
+
+            $classUpdater->setProperty('implementsInterfaces', $interfaces);
         }
 
         if (null !== $patch->getUseTraits()) {
-            $traits = implode(',', $classUpdater->getProperty('useTraits'));
+            $traits = $classUpdater->getProperty('useTraits');
 
-            if (null === $traits || !str_contains($traits, $patch->getUseTraits())) {
-                if (!$traits) {
-                    $traits = $patch->getUseTraits();
-                } else {
-                    $traits .= sprintf(',%s', $patch->getUseTraits());
+            foreach ($patch->getUseTraits() as $patchTrait) {
+                if (null === $traits || !str_contains($traits, $patchTrait)) {
+                    if (!$traits) {
+                        $traits = $patchTrait;
+                    } else {
+                        $traits .= sprintf(',%s', $patchTrait);
+                    }
+
                 }
-
-                $classUpdater->setProperty('useTraits', $traits);
             }
+
+            $classUpdater->setProperty('useTraits', $traits);
         }
 
         if (null !== $patch->getListingParentClass()) {
-            $traits = implode(',', $classUpdater->getProperty('listingParentClass'));
+            $traits = $classUpdater->getProperty('listingUseTraits');
 
-            if (null === $traits || !str_contains($traits, $patch->getListingUseTraits())) {
-                if (!$traits) {
-                    $traits = $patch->getListingUseTraits();
-                } else {
-                    $traits .= sprintf(',%s', $patch->getListingUseTraits());
+            foreach ($patch->getListingUseTraits() as $patchListingUseTrait) {
+                if (null === $traits || !str_contains($traits, $patchListingUseTrait)) {
+                    if (!$traits) {
+                        $traits = $patchListingUseTrait;
+                    } else {
+                        $traits .= sprintf(',%s', $patchListingUseTrait);
+                    }
                 }
-
-                $classUpdater->setProperty('listingParentClass', $traits);
             }
+
+            $classUpdater->setProperty('listingUseTraits', $traits);
         }
 
         foreach ($patch->getFields() as $field) {
