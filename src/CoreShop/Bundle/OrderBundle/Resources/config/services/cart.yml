@@ -29,6 +29,11 @@ services:
             - '@coreshop.cart_item.quantity_modifier'
             - '@coreshop.form.data_mapper.cart_item_quantity.property_mapper'
 
+    CoreShop\Bundle\OrderBundle\Form\DataMapper\BackendCartItemQuantityDataMapper:
+        arguments:
+            - '@coreshop.cart_item.quantity_modifier.backend'
+            - '@coreshop.form.data_mapper.cart_item_quantity.property_mapper'
+
     CoreShop\Bundle\OrderBundle\Form\Type\CartItemType:
         arguments:
             - '%coreshop.model.order_item.class%'

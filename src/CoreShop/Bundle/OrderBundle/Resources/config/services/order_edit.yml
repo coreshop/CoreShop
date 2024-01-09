@@ -16,5 +16,6 @@ services:
       - '%coreshop.model.order_item.class%'
       - '%coreshop.form.type.cart_item.validation_groups%'
       - '@CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper'
+      - '@CoreShop\Bundle\OrderBundle\Form\DataMapper\BackendCartItemQuantityDataMapper'
     tags:
       - { name: form.type }
