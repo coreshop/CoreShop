@@ -537,7 +537,7 @@ class ProductUnitDefinitions extends Data implements
      */
     private function getFormFactory()
     {
-        return \Pimcore::getContainer()->get('form.factory');
+        return \Pimcore::getContainer()->get('coreshop.form.factory');
     }
 
     /**
