@@ -1,3 +1,9 @@
+# 4.0.1
+
+* [Docs] Update docusaurus by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2490
+* [Resource] Update Select.php by @breakone in https://github.com/coreshop/CoreShop/pull/2489
+* [Product] use coreshop.form.factory in product unit definitions extension by @solverat in https://github.com/coreshop/CoreShop/pull/2501
+
 # 4.0.0
 
 * add missing subscribed services by @hethehe in https://github.com/coreshop/CoreShop/pull/2439
