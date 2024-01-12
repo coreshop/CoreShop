@@ -74,6 +74,11 @@ services:
     CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier
 
+    coreshop.cart_item.quantity_modifier.backend:
+        class: CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier
+        arguments:
+            - true
+
     CoreShop\Component\Core\Cart\CartContextResolver:
         decorates: 'CoreShop\Component\Order\Cart\CartContextResolver'
         arguments:

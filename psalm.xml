@@ -141,6 +141,7 @@
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::integerNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::variableNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarPrototype" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::end" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::arrayNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::booleanNode" />

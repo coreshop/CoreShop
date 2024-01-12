@@ -22,6 +22,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class OrderItemType extends AbstractResourceType
 {
@@ -29,6 +30,7 @@ final class OrderItemType extends AbstractResourceType
         string $dataClass,
         array $validationGroups,
         private DataMapperInterface $dataMapper,
+        private DataMapperInterface $zeroQuantityDataMapper,
     ) {
         parent::__construct($dataClass, $validationGroups);
     }
@@ -39,7 +41,15 @@ final class OrderItemType extends AbstractResourceType
             ->add('quantity', IntegerType::class, [
                 'attr' => ['min' => 1],
                 'label' => 'coreshop.ui.quantity',
-            ])->setDataMapper($this->dataMapper)
-        ;
+            ])->setDataMapper($options['allow_zero_quantity'] ? $this->zeroQuantityDataMapper : $this->dataMapper);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        parent::configureOptions($resolver);
+
+        $resolver->setDefaults([
+            'allow_zero_quantity' => false,
+        ]);
     }
 }

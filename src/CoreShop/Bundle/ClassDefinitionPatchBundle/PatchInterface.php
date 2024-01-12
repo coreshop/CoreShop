@@ -22,7 +22,7 @@ interface PatchInterface
 {
     public function getClassName(): string;
 
-    public function getInterface(): ?string;
+    public function getInterface(): ?array;
 
     public function getParentClass(): ?string;
 
@@ -32,9 +32,9 @@ interface PatchInterface
 
     public function getListingParentClass(): ?string;
 
-    public function getUseTraits(): ?string;
+    public function getUseTraits(): ?array;
 
-    public function getListingUseTraits(): ?string;
+    public function getListingUseTraits(): ?array;
 
     /**
      * @return PatchField[]|null
