@@ -149,6 +149,7 @@
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::integerNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::scalarNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::variableNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::scalarPrototype" />
             </errorLevel>
         </PossiblyUndefinedMethod>
 
