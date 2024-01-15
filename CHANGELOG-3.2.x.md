@@ -1,3 +1,9 @@
+# 3.2.1
+* [ClassDefinitionPatch] allow update of field-definitions instead of replace by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2494
+* [Product] assert range sort for qpr by @solverat in https://github.com/coreshop/CoreShop/pull/2498
+* [OrderEdit] allow 0 quantity by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2499
+* [ClassDefinitionPatch] Class patches array by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2496
+
 # 3.2.0
 
 * [Order] introduce feature to allow editing confirmed orders in backend by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2382
