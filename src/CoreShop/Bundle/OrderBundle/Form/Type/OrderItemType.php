@@ -41,7 +41,8 @@ final class OrderItemType extends AbstractResourceType
             ->add('quantity', IntegerType::class, [
                 'attr' => ['min' => 1],
                 'label' => 'coreshop.ui.quantity',
-            ])->setDataMapper($options['allow_zero_quantity'] ? $this->zeroQuantityDataMapper : $this->dataMapper);
+            ])->setDataMapper($options['allow_zero_quantity'] ? $this->zeroQuantityDataMapper : $this->dataMapper)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

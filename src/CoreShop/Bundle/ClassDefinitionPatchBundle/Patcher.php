@@ -84,7 +84,6 @@ class Patcher implements PatcherInterface
                     } else {
                         $interfaces .= sprintf(',%s', $patchInterface);
                     }
-
                 }
             }
 
@@ -101,7 +100,6 @@ class Patcher implements PatcherInterface
                     } else {
                         $traits .= sprintf(',%s', $patchTrait);
                     }
-
                 }
             }
 

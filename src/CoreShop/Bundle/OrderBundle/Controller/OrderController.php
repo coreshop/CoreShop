@@ -291,7 +291,7 @@ class OrderController extends PimcoreController
         }
 
         $form = $formFactory->createNamed('', OrderType::class, $order, [
-            'allow_zero_quantity' => true
+            'allow_zero_quantity' => true,
         ]);
 
         $previewOnly = $request->query->getBoolean('preview');

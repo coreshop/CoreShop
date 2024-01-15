@@ -27,8 +27,9 @@ use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
-    public function __construct(protected bool $allowZeroQuantity = false)
-    {
+    public function __construct(
+        protected bool $allowZeroQuantity = false,
+    ) {
     }
 
     public function modify(StorageListItemInterface $item, float $targetQuantity): void

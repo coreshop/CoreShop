@@ -32,8 +32,9 @@ final class OrderType extends AbstractResourceType
                 'entry_type' => OrderItemType::class,
                 'entry_options' => [
                     'allow_zero_quantity' => $options['allow_zero_quantity'],
-                ]
-            ]);
+                ],
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
