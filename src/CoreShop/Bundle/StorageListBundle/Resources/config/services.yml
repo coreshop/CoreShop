@@ -10,7 +10,6 @@ services:
   CoreShop\Component\StorageList\Manager\StorageListPimcoreModelManager:
     arguments:
       - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
-      - '@doctrine.dbal.default_connection'
 
   CoreShop\Component\StorageList\StorageListItemResolverInterface: '@CoreShop\Component\StorageList\StorageListItemResolver'
   CoreShop\Component\StorageList\StorageListItemResolver: ~
