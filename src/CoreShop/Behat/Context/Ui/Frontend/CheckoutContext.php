@@ -216,6 +216,14 @@ final class CheckoutContext implements Context
     }
 
     /**
+     * @When I re-capture payment for same order
+     */
+    public function IRecapturePaymentForSameOrder(): void
+    {
+        $this->thankYouPage->recapturePaymentForThisOrder();
+    }
+
+    /**
      * @Given I specify the guest checkout firstname :firstname
      */
     public function iSpecifyTheGuestCheckoutFirstname(?string $firstname = null): void
