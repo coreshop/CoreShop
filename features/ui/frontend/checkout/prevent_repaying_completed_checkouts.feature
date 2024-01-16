@@ -26,7 +26,6 @@ Feature: Use order tokens to capture payments
     And I submit the order
     And I should be on the thank you page
 
-  #
   Scenario: Re-visiting pay URL should work with order token
     Given I should be on the thank you page
     Then I re-capture payment for same order
