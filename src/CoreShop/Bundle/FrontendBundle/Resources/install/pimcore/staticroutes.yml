@@ -141,6 +141,13 @@ routes:
     variables: _locale,order
     priority: 2
 
+  coreshop_payment_with_token:
+    pattern: '/(\w+)\/shop\/pay\/(.*)$/'
+    reverse: '/%_locale/shop/pay/%token'
+    controller: 'CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction'
+    variables: _locale,token
+    priority: 1
+
   coreshop_switch_currency:
     pattern: '/(\w+)\/shop\/switch-currency\/(.*)$/'
     reverse: '/%_locale/shop/switch-currency/%currencyCode'
