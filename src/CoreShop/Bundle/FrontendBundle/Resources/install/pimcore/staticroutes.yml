@@ -134,12 +134,20 @@ routes:
     variables: _locale,token
     priority: 2
 
+  # Deprecated: this route will be removed in the next major release of CoreShop. Use coreshop_payment_token instead.
   coreshop_payment:
+    pattern: '/(\w+)\/shop\/pay\/([0-9]+)$/'
+    reverse: '/%_locale/shop/pay/%order'
+    controller: 'CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction'
+    variables: _locale,order
+    priority: 2
+
+  coreshop_payment_token:
     pattern: '/(\w+)\/shop\/pay\/(.*)$/'
     reverse: '/%_locale/shop/pay/%token'
     controller: 'CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction'
     variables: _locale,token
-    priority: 2
+    priority: 1
 
   coreshop_switch_currency:
     pattern: '/(\w+)\/shop\/switch-currency\/(.*)$/'

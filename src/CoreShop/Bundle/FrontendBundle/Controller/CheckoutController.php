@@ -230,7 +230,7 @@ class CheckoutController extends FrontendController
             return $event->getResponse();
         }
 
-        $response = $this->redirectToRoute('coreshop_payment', ['token' => (string) $order->getToken()]);
+        $response = $this->redirectToRoute('coreshop_payment_token', ['token' => (string) $order->getToken()]);
 
         if (0 === $order->getTotal()) {
             $orderStateMachine = $this->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order');
