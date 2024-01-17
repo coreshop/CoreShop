@@ -124,6 +124,10 @@ body.pimcore_version_11 .coreshop_nav_icon_customer_to_company_assign_to_existin
     background: url(../img/customer-group.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_condition_guest {
+    background: url(../img/guest.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_report {
     background: url(../img/charts.svg) center center no-repeat !important;
 }
