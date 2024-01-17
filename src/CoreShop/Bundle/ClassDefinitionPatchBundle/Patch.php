@@ -21,7 +21,9 @@ namespace CoreShop\Bundle\ClassDefinitionPatchBundle;
 class Patch implements PatchInterface
 {
     private ?array $interface = null;
+
     private ?array $useTraits = null;
+
     private ?array $listingUseTraits = null;
 
     public function __construct(
