@@ -32,7 +32,7 @@ final class GuestConditionChecker implements ConditionCheckerInterface
         array $params = [],
     ): bool {
         if (!array_key_exists('customer', $params) || !$params['customer'] instanceof CustomerInterface) {
-            return false;
+            return true;
         }
 
         return null === $params['customer']->getUser();

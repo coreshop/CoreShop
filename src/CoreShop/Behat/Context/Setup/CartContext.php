@@ -152,6 +152,7 @@ final class CartContext implements Context
 
     /**
      * @Given /^the cart belongs to (customer "[^"]+")$/
+     * @Given /^the cart belongs to (guest "[^"]+")$/
      */
     public function theCartBelongsToCustomer(CustomerInterface $customer): void
     {

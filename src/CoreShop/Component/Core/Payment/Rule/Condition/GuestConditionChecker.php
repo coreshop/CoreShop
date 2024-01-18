@@ -38,7 +38,7 @@ final class GuestConditionChecker extends AbstractConditionChecker
         $customer = $payable->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return false;
+            return true;
         }
 
         return null === $customer->getUser();

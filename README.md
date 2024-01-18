@@ -121,18 +121,23 @@ vendor/bin/psalm
 SYMFONY_ENV=test vendor/bin/phpstan analyse -c phpstan.neon src -l 3 --memory-limit=-1
 ```
 
-### BEHAT Domain
+### BEHAT
+- create database `coreshop4__behat`
+
+#### Install Pimcore and CoreShop in Test Env
+```
+APP_ENV=test PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-4/coreshop4___behat PIMCORE_INSTALL_ADMIN_USERNAME=admin PIMCORE_INSTALL_ADMIN_PASSWORD=admin PIMCORE_INSTALL_MYSQL_HOST_SOCKET=coreshop-4 PIMCORE_INSTALL_MYSQL_USERNAME=root PIMCORE_INSTALL_MYSQL_PASSWORD=ROOT PIMCORE_INSTALL_MYSQL_DATABASE=coreshop4___behat PIMCORE_INSTALL_MYSQL_PORT=3306 PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config -n
+APP_ENV=test PIMCORE_CLASS_DIRECTORY=var/tmp/behat/var/classes PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-4/coreshop4___behat bin/console coreshop:install
+```
+
+#### BEHAT Domain
 ```
 CORESHOP_SKIP_DB_SETUP=1 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-4/coreshop4___behat vendor/bin/behat -c behat.yml.dist -p default
 ```
 
-### BEHAT UI
+#### BEHAT UI
 ```
 vendor/bin/bdi detect drivers
-
-# Install Pimcore and CoreShop in Test Env
-APP_ENV=test PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-4/coreshop4___behat PIMCORE_INSTALL_ADMIN_USERNAME=admin PIMCORE_INSTALL_ADMIN_PASSWORD=admin PIMCORE_INSTALL_MYSQL_HOST_SOCKET=coreshop-4 PIMCORE_INSTALL_MYSQL_USERNAME=root PIMCORE_INSTALL_MYSQL_PASSWORD=ROOT PIMCORE_INSTALL_MYSQL_DATABASE=coreshop4___behat PIMCORE_INSTALL_MYSQL_PORT=3306 PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config -n
-APP_ENV=test PIMCORE_CLASS_DIRECTORY=var/tmp/behat/var/classes PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-4/coreshop4___behat bin/console coreshop:install
 
 # OUTSIDE CONTAINER
 # Run Symfony Server

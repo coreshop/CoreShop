@@ -40,7 +40,7 @@ final class GuestConditionChecker extends AbstractConditionChecker
         $customer = $shippable->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return false;
+            return true;
         }
 
         return null === $customer->getUser();
