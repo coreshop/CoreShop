@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;

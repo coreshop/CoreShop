@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Cart\Rule\Condition;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
@@ -28,10 +28,12 @@ final class GuestConditionChecker extends AbstractConditionChecker
 {
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
-        if (!$cart->getCustomer() instanceof CustomerInterface) {
+        $customer = $cart->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
             return false;
         }
 
-        return null === $cart->getCustomer()->getUser();
+        return null === $customer->getUser();
     }
 }
