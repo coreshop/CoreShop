@@ -23,4 +23,5 @@ use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
 interface ThankYouPageInterface extends FrontendPageInterface
 {
     public function getToken(): string;
+    public function recapturePaymentForThisOrder(): void;
 }
