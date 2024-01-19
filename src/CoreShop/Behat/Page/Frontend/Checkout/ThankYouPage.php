@@ -38,4 +38,9 @@ class ThankYouPage extends AbstractFrontendPage implements ThankYouPageInterface
             'order_token' => '[data-test-order-token]',
         ]);
     }
+
+    public function recapturePaymentForThisOrder(): void
+    {
+        $this->getSession()->visit($this->makePathAbsolute("en/shop/pay/{$this->getToken()}"));
+    }
 }
