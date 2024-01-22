@@ -46,18 +46,28 @@ use PHPStan\Type\BooleanType;
 class DoctrineProvider
 {
     public const JSON = 'Json';
+
     public const ARRAY = 'Array';
 
     /** @var Type[] */
     private static array|null $standardTypes = null;
+
     private array $doctrineMetadata = [];
+
     private array $types = [];
+
     private array $typeClass = [];
+
     private array $doctrineToName = [];
+
     private array $inputTypes = [];
+
     private array $inputTypesToName = [];
+
     private array $inputQueryFilterTypes = [];
+
     private array $identifierFields = [];
+
     private array $classMap = [];
 
     private $niceNameMap = [];
