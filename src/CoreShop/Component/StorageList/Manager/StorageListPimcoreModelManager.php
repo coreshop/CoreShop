@@ -23,7 +23,6 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
-use Doctrine\DBAL\Connection;
 
 final class StorageListPimcoreModelManager implements StorageListManagerInterface
 {
