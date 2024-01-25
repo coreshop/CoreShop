@@ -32,12 +32,16 @@ trait ProductVariantsCheckerTrait
         $this->productRepository = $productRepository;
     }
 
-    protected function getProductsToCheck(array $products, StoreInterface $store, bool $includeVariants): array
+    protected function getProductsToCheck(array $products, StoreInterface $store, bool $includeVariants, array $cacheTags = []): array
     {
         $productIdsToCheck = $products;
 
         if ($includeVariants) {
-            $productIdsToCheck = $this->productRepository->findRecursiveVariantIdsForProductAndStoreByProducts($products, $store);
+            $productIdsToCheck = $this->productRepository->findRecursiveVariantIdsForProductAndStoreByProducts(
+                $products,
+                $store,
+                $cacheTags
+            );
         }
 
         return $productIdsToCheck;

@@ -25,12 +25,15 @@ use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\DBAL\Connection;
+use Pimcore\Cache;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
+    public const VARIANT_RECURSIVE_QUERY_CACHE_TAG = 'coreshop_variant_recursive';
+
     public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
         $conditions = [
@@ -56,41 +59,50 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $list->getObjects();
     }
 
-    public function findRecursiveVariantIdsForProductAndStoreByProducts(array $products, StoreInterface $store): array
+    public function findRecursiveVariantIdsForProductAndStoreByProducts(array $products, StoreInterface $store, array $cacheTags = []): array
     {
-        $list = $this->getList();
-        $dao = $list->getDao();
+        $cacheKey = sprintf('cs_rvids_%s_%d', md5(implode('-', $products)), $store->getId());
 
-        /** @psalm-suppress InternalMethod */
-        $query = "
-            SELECT oo_id as id FROM (
-                SELECT CONCAT(o_path, o_key) as realFullPath FROM objects WHERE o_id IN (:products)
-            ) as products
-            INNER JOIN ".$dao->getTableName()." variants ON variants.o_path LIKE CONCAT(products.realFullPath, '/%')
-        ";
+        if (false === $variantIds = Cache::load($cacheKey)) {
+            $list = $this->getList();
+            $dao = $list->getDao();
 
-        $params = [
-            'products' => $products,
-        ];
-        $paramTypes = [
-            'products' => Connection::PARAM_STR_ARRAY,
-        ];
+            /** @psalm-suppress InternalMethod */
+            $query = "
+                SELECT oo_id as id FROM (
+                    SELECT CONCAT(o_path, o_key) as realFullPath FROM objects WHERE o_id IN (:products)
+                ) as products
+                INNER JOIN ".$dao->getTableName()." variants ON variants.o_path LIKE CONCAT(products.realFullPath, '/%')
+                WHERE variants.stores LIKE :store
+            ";
 
-        $resultProducts = $this->connection->fetchAllAssociative($query, $params, $paramTypes);
+            $params = [
+                'products' => $products,
+                'store' => '%,'.$store->getId().',%'
+            ];
+            $paramTypes = [
+                'products' => Connection::PARAM_STR_ARRAY,
+            ];
 
-        $variantIds = [];
+            $resultProducts = $this->connection->fetchAllAssociative($query, $params, $paramTypes);
 
-        foreach ($products as $productId) {
-            $variantIds[$productId] = true;
-        }
+            $variantIds = [];
 
-        foreach ($resultProducts as $result) {
-            $variantIds[$result['id']] = true;
+            foreach ($products as $productId) {
+                $variantIds[$productId] = true;
+            }
+
+            foreach ($resultProducts as $result) {
+                $variantIds[$result['id']] = true;
+            }
+
+            $cacheTags[] = self::VARIANT_RECURSIVE_QUERY_CACHE_TAG;
+
+            Cache::save($variantIds, $cacheKey, $cacheTags, 500, 0, true);
         }
 
         return array_keys($variantIds);
     }
-
 
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
