@@ -1,3 +1,9 @@
+# 4.0.2
+
+* [DataHub] only enable queries for selected entities by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2512
+* add address identifier repository to subscribed services by @solverat in https://github.com/coreshop/CoreShop/pull/2518
+* add guest condition by @breakone in https://github.com/coreshop/CoreShop/pull/2514
+
 # 4.0.1
 
 * [Docs] Update docusaurus by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2490
