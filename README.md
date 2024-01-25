@@ -1,4 +1,5 @@
-![CoreShop](etc/illustration.png)
+[![CoreShop](etc/illustration.png 'CoreSHop')](https://www.coreshop.org)
+
 
 ---
 
