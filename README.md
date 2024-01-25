@@ -1,4 +1,4 @@
-![CoreShop](etc/logo.png)
+![CoreShop](etc/illustration.png)
 
 ---
 
