@@ -49,7 +49,7 @@ final class RecursiveVariantCacheInvalidationEventListener implements EventSubsc
         }
 
         foreach ($resource->getConditions() as $condition) {
-            if ($condition->getId() !== 'products') {
+            if ($condition->getType() !== 'products') {
                 continue;
             }
 
