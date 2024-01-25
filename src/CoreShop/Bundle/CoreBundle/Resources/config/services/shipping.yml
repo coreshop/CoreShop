@@ -30,6 +30,10 @@ services:
         tags:
             - { name: coreshop.shipping_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
 
+    CoreShop\Component\Core\Shipping\Rule\Condition\GuestConditionChecker:
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: guest, form-type: CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType }
+
     CoreShop\Component\Core\Shipping\Rule\Condition\StoresConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }

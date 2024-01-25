@@ -39,6 +39,7 @@ use CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\AdditionPercentActionCon
 use CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
@@ -456,6 +457,17 @@ final class PaymentContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
             'customerGroups' => [$customerGroup->getId()],
         ]));
+    }
+
+    /**
+     * @Given /^the (payment-provider-rule "[^"]+") has a condition guest$/
+     * @Given /^the (payment-provider-rule) has a condition guest$/
+     */
+    public function thePaymentProviderRuleHasAGuestCondition(PaymentProviderRuleInterface $rule): void
+    {
+        $this->assertConditionForm(EmptyConfigurationFormType::class, 'guest');
+
+        $this->addCondition($rule, $this->createConditionWithForm('guest', []));
     }
 
     /**
