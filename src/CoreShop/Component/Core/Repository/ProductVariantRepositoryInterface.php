@@ -31,5 +31,5 @@ interface ProductVariantRepositoryInterface extends BaseProductRepositoryInterfa
 
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array|\Pimcore\Model\DataObject\Listing;
 
-    public function findRecursiveVariantIdsForProductAndStoreByProducts(array $products, StoreInterface $store): array;
+    public function findRecursiveVariantIdsForProductAndStoreByProducts(array $products, StoreInterface $store, array $cacheTags = []): array;
 }

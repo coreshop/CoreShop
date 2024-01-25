@@ -55,6 +55,7 @@ class ProductsConditionChecker implements ConditionCheckerInterface
             $configuration['products'],
             $params['store'],
             $configuration['include_variants'] ?: false,
+            [sprintf('cs_rule_variant_%s', $rule->getId())]
         );
 
         return in_array($subject->getId(), $productIdsToCheck);
