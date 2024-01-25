@@ -95,3 +95,7 @@ services:
             - '@router'
         tags:
             - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\CoreBundle\EventListener\RecursiveVariantCacheInvalidationEventListener:
+        tags:
+            - { name: kernel.event_subscriber }

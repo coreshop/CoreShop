@@ -30,6 +30,8 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class ProductsConditionChecker extends AbstractConditionChecker
 {
+    public const PAYMENT_PROVIDER_RULE_RECURSIVE_VARIANT_CACHE_TAG = 'cs_payment_provider_rule_recursive_variant';
+
     use ProductVariantsCheckerTrait {
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
     }
@@ -53,6 +55,7 @@ class ProductsConditionChecker extends AbstractConditionChecker
             $configuration['products'],
             $payable->getStore(),
             $configuration['include_variants'] ?: false,
+            [self::PAYMENT_PROVIDER_RULE_RECURSIVE_VARIANT_CACHE_TAG]
         );
 
         if (!$payable instanceof OrderInterface) {

@@ -30,6 +30,8 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class ProductsConditionChecker extends AbstractConditionChecker
 {
+    public const SHIPPING_RULE_RECURSIVE_VARIANT_CACHE_TAG = 'cs_shipping_rule_recursive_variant';
+
     use ProductVariantsCheckerTrait {
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
     }
@@ -54,6 +56,7 @@ class ProductsConditionChecker extends AbstractConditionChecker
             $configuration['products'],
             $shippable->getStore(),
             $configuration['include_variants'] ?: false,
+            [self::SHIPPING_RULE_RECURSIVE_VARIANT_CACHE_TAG]
         );
 
         $cartItems = $shippable->getItems();
