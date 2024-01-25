@@ -32,15 +32,15 @@ final class RecursiveVariantCacheInvalidationEventListener implements EventSubsc
     public static function getSubscribedEvents(): array
     {
         return [
-            'coreshop.product_price_rule.post_save' => ['invalidateRuleCacheAndPrePopulateCache'],
-            'coreshop.product_specific_price_rule.post_save' => ['invalidateRuleCacheAndPrePopulateCache'],
-            'coreshop.cart_price_rule.post_save' => ['invalidateRuleCacheAndPrePopulateCache'],
-            'coreshop.payment_provider_rule.post_save' => ['invalidateRuleCacheAndPrePopulateCache'],
-            'coreshop.shipping_rule.post_save' => ['invalidateRuleCacheAndPrePopulateCache'],
+            'coreshop.product_price_rule.post_save' => ['invalidateRuleCache'],
+            'coreshop.product_specific_price_rule.post_save' => ['invalidateRuleCache'],
+            'coreshop.cart_price_rule.post_save' => ['invalidateRuleCache'],
+            'coreshop.payment_provider_rule.post_save' => ['invalidateRuleCache'],
+            'coreshop.shipping_rule.post_save' => ['invalidateRuleCache'],
         ];
     }
 
-    public function invalidateRuleCacheAndPrePopulateCache(ResourceControllerEvent $event): void
+    public function invalidateRuleCache(ResourceControllerEvent $event): void
     {
         $resource = $event->getSubject();
 
