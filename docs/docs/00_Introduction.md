@@ -8,6 +8,8 @@ title: Introduction
 Welcome to the CoreShop documentation. This section is designed for developers and provides comprehensive information on
 utilizing CoreShop within Pimcore, a powerful and flexible eCommerce solution.
 
+![illustration.png](..%2Fimg%2Fillustration.png)
+
 ## Quick Navigation Guide
 
 Our documentation is organized into easy-to-navigate sections, each tailored to different aspects of CoreShop:
