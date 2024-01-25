@@ -58,6 +58,14 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/logo-white.svg',
+      announcementBar: {
+        id: 'support_us',
+        content:
+            'We launched our new Website, please check it out here <a target="_blank" rel="noopener noreferrer" href="https://www.coreshop.org">www.coreshop.org</a>',
+        backgroundColor: 'rgb(205, 16, 23)',
+        textColor: 'white',
+        isCloseable: false,
+      },
       navbar: {
         title: '',
         logo: {
