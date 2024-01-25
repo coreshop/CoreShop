@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Core\Payment\Rule\Condition\ProductsConditionChecker as PaymentRuleProductsConditionChecker;
+use CoreShop\Component\Core\Shipping\Rule\Condition\ProductsConditionChecker as ShippingRuleProductsConditionChecker;
 use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
@@ -64,7 +65,7 @@ final class RecursiveVariantCacheInvalidationEventListener implements EventSubsc
             }
 
             if ($resource instanceof ShippingRuleInterface) {
-                Cache::clearTag(PaymentRuleProductsConditionChecker::PAYMENT_PROVIDER_RULE_RECURSIVE_VARIANT_CACHE_TAG);
+                Cache::clearTag(ShippingRuleProductsConditionChecker::SHIPPING_RULE_RECURSIVE_VARIANT_CACHE_TAG);
                 continue;
             }
 
