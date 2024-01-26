@@ -2,6 +2,7 @@
 * [CartManager] create unique key for cart items by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2510
 * [Core] Use order tokens in payment capture by @yariksheptykin in https://github.com/coreshop/CoreShop/pull/2515
 * [Core] add caching for recursive variant checking by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2520
+* use null coalescing operator against maxUsagePerUser by @sovlerat in https://github.com/coreshop/CoreShop/pull/2524
 
 # 3.2.1
 * [ClassDefinitionPatch] allow update of field-definitions instead of replace by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2494
