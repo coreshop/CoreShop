@@ -13,7 +13,7 @@
 
 [CoreShop](https://www.coreshop.org) is a eCommerce Platform for [Pimcore](http://www.pimcore.org).
 
-![CoreShop Interface](docs/img/screenshot5.png)
+![CoreShop Interface](etc/screenshot5.png)
 
 # Requirements 
  - Pimcore `^11.1`
@@ -153,5 +153,5 @@ Copyright: [CoreShop GmbH](https://www.coreshop.org)
 For licensing details please visit [LICENSE.md](LICENSE.md) 
 
 ## Screenshots
-![CoreShop Interface](docs/img/screenshot5-2.png)
-![CoreShop Interface](docs/img/screenshot5-3.png)
+![CoreShop Interface](etc/screenshot5-2.png)
+![CoreShop Interface](etc/screenshot5-3.png)
