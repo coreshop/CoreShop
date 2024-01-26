@@ -80,6 +80,7 @@
                 <referencedMethod name="Symfony\Bundle\FrameworkBundle\Controller\AbstractController::get" />
                 <referencedMethod name="Pimcore\Bundle\AdminBundle\Controller\AdminController::decodeJson" />
                 <referencedMethod name="Pimcore\Bundle\AdminBundle\Controller\AdminController::getAdminUser" />
+                <referencedMethod name="Doctrine\DBAL\Query\QueryBuilder::getQueryPart" />
             </errorLevel>
         </DeprecatedMethod>
 
