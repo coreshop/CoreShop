@@ -74,7 +74,7 @@ class VoucherModifier implements VoucherModifierInterface
 
             foreach ($item->getCartPriceRule()?->getConditions() ?: [] as $conditions) {
                 if ($conditions->getType() === 'voucher') {
-                    $maxUsagePerCustomer = $conditions->getConfiguration()['maxUsagePerUser'];
+                    $maxUsagePerCustomer = $conditions->getConfiguration()['maxUsagePerUser'] ?? null;
 
                     if ($maxUsagePerCustomer !== null) {
                         $perCustomerEntry = $this->codePerUserRepository->findUsesByCustomer($customer, $voucherCode);
@@ -136,7 +136,7 @@ class VoucherModifier implements VoucherModifierInterface
 
             foreach ($item->getCartPriceRule()?->getConditions() ?: [] as $conditions) {
                 if ($conditions->getType() === 'voucher') {
-                    $maxUsagePerCustomer = $conditions->getConfiguration()['maxUsagePerUser'];
+                    $maxUsagePerCustomer = $conditions->getConfiguration()['maxUsagePerUser'] ?? null;
 
                     if ($maxUsagePerCustomer !== null) {
                         $perCustomerEntry = $this->codePerUserRepository->findUsesByCustomer($customer, $voucherCode);
