@@ -29,4 +29,3 @@ Our documentation is organized into easy-to-navigate sections, each tailored to 
   for your implementations.
 
 For more information about Pimcore itself, visit [pimcore.com](https://pimcore.com).
-
