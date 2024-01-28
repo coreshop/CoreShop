@@ -164,6 +164,13 @@ final class SlugEventListener implements EventSubscriberInterface
 }
 ```
 
+#### Pimcore Link Generation
+
+Pimcore includes a versatile Link Generator feature, designed for creating links associated with Pimcore Objects.
+CoreShop enhances this capability by introducing support for generating links for Sluggable entities.
+To leverage this extended functionality, modify the class definitions `Link Generator` setting to use
+`@CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator`.
+
 ### Data Object Features
 
 #### Class Converter and Data Migrate
