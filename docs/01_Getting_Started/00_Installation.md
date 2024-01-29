@@ -21,6 +21,13 @@ CoreShop:
       parameters:
           coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
       ```
+    - Add the Password Hasher:
+      ```yaml
+      pimcore:
+          security:
+              password_hasher_factories:
+                  Pimcore\Model\DataObject\CoreShopUser: coreshop.security.user.password_hasher_factories
+      ```
     - Add the Authentication Provider:
       ```yaml
        providers:
