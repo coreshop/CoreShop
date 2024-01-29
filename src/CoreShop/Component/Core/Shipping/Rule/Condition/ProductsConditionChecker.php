@@ -56,7 +56,7 @@ class ProductsConditionChecker extends AbstractConditionChecker
             $configuration['products'],
             $shippable->getStore(),
             $configuration['include_variants'] ?: false,
-            [self::SHIPPING_RULE_RECURSIVE_VARIANT_CACHE_TAG]
+            [self::SHIPPING_RULE_RECURSIVE_VARIANT_CACHE_TAG],
         );
 
         $cartItems = $shippable->getItems();

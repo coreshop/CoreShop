@@ -72,13 +72,13 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             SELECT oo_id as id FROM (
                 SELECT CONCAT(path, `key`) as realFullPath FROM objects WHERE id IN (:products)
             ) as products
-            INNER JOIN '.$dao->getTableName()." variants ON variants.path LIKE CONCAT(products.realFullPath, '/%')
+            INNER JOIN ' . $dao->getTableName() . " variants ON variants.path LIKE CONCAT(products.realFullPath, '/%')
             WHERE variants.stores LIKE :store
         ";
 
             $params = [
                 'products' => $products,
-                'store' => '%,'.$store->getId().',%'
+                'store' => '%,' . $store->getId() . ',%',
             ];
             $paramTypes = [
                 'products' => ArrayParameterType::STRING,
