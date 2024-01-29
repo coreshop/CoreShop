@@ -1,3 +1,6 @@
+# 3.2.3
+* [ProductBundle] fix ClearCachedPriceRulesListener - remove service definition
+
 # 3.2.2 
 * [CartManager] create unique key for cart items by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2510
 * [Core] Use order tokens in payment capture by @yariksheptykin in https://github.com/coreshop/CoreShop/pull/2515
