@@ -55,7 +55,7 @@ class ProductsConditionChecker extends AbstractConditionChecker
             $configuration['products'],
             $payable->getStore(),
             $configuration['include_variants'] ?: false,
-            [self::PAYMENT_PROVIDER_RULE_RECURSIVE_VARIANT_CACHE_TAG]
+            [self::PAYMENT_PROVIDER_RULE_RECURSIVE_VARIANT_CACHE_TAG],
         );
 
         if (!$payable instanceof OrderInterface) {

@@ -60,15 +60,18 @@ final class RecursiveVariantCacheInvalidationEventListener implements EventSubsc
 
             if ($resource instanceof PaymentProviderRuleInterface) {
                 Cache::clearTag(PaymentRuleProductsConditionChecker::PAYMENT_PROVIDER_RULE_RECURSIVE_VARIANT_CACHE_TAG);
+
                 continue;
             }
 
             if ($resource instanceof ShippingRuleInterface) {
                 Cache::clearTag(PaymentRuleProductsConditionChecker::PAYMENT_PROVIDER_RULE_RECURSIVE_VARIANT_CACHE_TAG);
+
                 continue;
             }
 
             Cache::clearTag(sprintf('cs_rule_variant_%s', $resource->getId()));
+
             break;
         }
     }

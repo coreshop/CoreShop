@@ -48,7 +48,7 @@ final class ProductsConditionChecker extends AbstractConditionChecker
             $configuration['products'],
             $orderItem->getOrder()->getStore(),
             $configuration['include_variants'] ?: false,
-            [sprintf('cs_rule_variant_%s', $cartPriceRule->getId())]
+            [sprintf('cs_rule_variant_%s', $cartPriceRule->getId())],
         );
 
         if ($orderItem->getIsGiftItem()) {

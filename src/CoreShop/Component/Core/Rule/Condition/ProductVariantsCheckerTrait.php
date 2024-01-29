@@ -39,7 +39,7 @@ trait ProductVariantsCheckerTrait
             $productIdsToCheck = $this->productRepository->findRecursiveVariantIdsForProductAndStoreByProducts(
                 $products,
                 $store,
-                $cacheTags
+                $cacheTags,
             );
         }
 
