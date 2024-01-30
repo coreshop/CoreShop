@@ -97,4 +97,15 @@ class OrderController extends FrontendController
     {
         return $this->container->get('form.factory');
     }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                'coreshop.repository.order' => OrderRepositoryInterface::class,
+                'coreshop.repository.payment' => PaymentRepositoryInterface::class
+            ]
+        );
+    }
 }
