@@ -19,93 +19,20 @@
  - Pimcore `^11.1`
 
 # Installation
- - Allow dev version to be installed:
-   ```
-   composer config "minimum-stability" "dev"
-   composer config "prefer-stable" "true"
-   ```
- - Install with composer 
-   ```
-   composer require coreshop/core-shop:^4.0
-   ```
- - Enable the bundle in `config/bundles.php`
-   ```
-   <?php
-   
-   return [
-      ...
-       \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle::class => ['all' => true],
-   ];
-   ```
- - Update `config/packages/security.yaml` to allow access to the CoreShop Backend.
-   - Add the CoreShop Frontend parameter:
-     ```
-     parameters:
-         coreshop.security.frontend_regex: "^/(?!admin)[^/]*
-     ```
-   - Add the Authentication Provider:
-     ```
-      providers:
-        coreshop_user:
-            id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
-     ```
-   - Add the Firewall Config:
-     ```
-      firewalls:
-        coreshop_frontend:
-            provider: coreshop_user
-            pattern: '%coreshop.security.frontend_regex%'
-            context: shop
-            form_login:
-                login_path: coreshop_login
-                check_path: coreshop_login_check
-                provider: coreshop_user
-                failure_path: coreshop_login
-                default_target_path: coreshop_index
-                use_forward: false
-                use_referer: true
-            remember_me:
-                secret: "%secret%"
-                name: APP_CORESHOP_REMEMBER_ME
-                lifetime: 31536000
-                remember_me_parameter: _remember_me
-            logout:
-                path: coreshop_logout
-                target: coreshop_login
-                invalidate_session: false
-     ```
-   - Add the Access Control:
-     ```
-      access_control:
-        - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
-        - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
-     ```
- - Run Install Command
-   ```
-   php bin/console coreshop:install
-   ```
- - Optional: Install Demo Data 
-   ```
-   php bin/console coreshop:install:demo
-   ```
-## Messenger
-CoreShop also uses Symfony Messenger for async tasks like sending E-Mails or Processing DataObjects for the Index. Please run these 2 transports to process the data
-```
-bin/console messenger:consume coreshop_notification coreshop_index --time-limit=300
-```
+Read our Documentation to get a Installation Guide [here](https://docs.coreshop.org/4.0.0/CoreShop/Getting_Started/Installation)
 
 # Further Information
  - [Website](https://www.coreshop.org)
  - [Documentation](https://docs.coreshop.org/latest)
- - [Pimcore Forum](https://talk.pimcore.org)
+ - [Pimcore Github](https://github.com/pimcore/pimcore)
 
 # Demo
-You can see a running demo here [CoreShop 3.x Demo](https://demo3.coreshop.org)
+You can see a running demo here [CoreShop 4.x Demo](https://demo4.coreshop.org)
 
 **Backend Credentials**
 
 ```
-Admin: https://demo3.coreshop.org/admin
+Admin: https://demo4.coreshop.org/admin
 
 Username: admin
 Password: coreshop
