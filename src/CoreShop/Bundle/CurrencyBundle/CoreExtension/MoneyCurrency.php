@@ -221,7 +221,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
 
     public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
     {
-        return $data;
+        return (string) $data;
     }
 
     public function checkValidity(mixed $data, bool $omitMandatoryCheck = false, array $params = []): void

@@ -250,7 +250,7 @@ class ProductUnitDefinition extends Data implements
 
     public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
     {
-        return $data;
+        return (string) $data;
     }
 
     public function getForCsvExport(Concrete|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|\Pimcore\Model\DataObject\Localizedfield $object, array $params = []): string
