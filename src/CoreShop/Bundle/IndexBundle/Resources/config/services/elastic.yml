@@ -1,0 +1,18 @@
+imports:
+  - { resource: services/elastic_condition_renderer.yml }
+  - { resource: services/elastic_order_renderer.yml }
+
+services:
+  CoreShop\Bundle\IndexBundle\Worker\ElasticsearchWorker:
+    arguments:
+      - '@coreshop.registry.index.extensions'
+      - '@coreshop.registry.index.getter'
+      - '@coreshop.registry.index.interpreter'
+      - '@CoreShop\Component\Index\Worker\FilterGroupHelperInterface'
+      - '@CoreShop\Component\Index\Condition\ConditionRendererInterface'
+      - '@CoreShop\Component\Index\Order\OrderRendererInterface'
+    shared: false
+    calls:
+      - { method: setLogger, arguments: [ '@logger' ] }
+    tags:
+      - { name: coreshop.index.worker, type: elasticsearch, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Worker\ElasticsearchWorkerType }

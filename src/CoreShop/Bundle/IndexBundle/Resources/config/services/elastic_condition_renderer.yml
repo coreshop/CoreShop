@@ -1,0 +1,39 @@
+services:
+  CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer:
+    abstract: true
+  
+  CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\CompareRenderer:
+    parent: CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+    tags:
+      - { name: coreshop.index.condition.renderer, type: elastic_compare }
+  
+  CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\ConcatRenderer:
+    arguments:
+      - '@CoreShop\Component\Index\Condition\ConditionRenderer'
+    tags:
+      - { name: coreshop.index.condition.renderer, type: elastic_concat }
+  
+  CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\InRenderer:
+    parent: CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+    tags:
+      - { name: coreshop.index.condition.renderer, type: elastic_in }
+  
+  CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\IsNullRenderer:
+    parent: CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+    tags:
+      - { name: coreshop.index.condition.renderer, type: elastic_is_null }
+  
+  CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\IsRenderer:
+    parent: CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+    tags:
+      - { name: coreshop.index.condition.renderer, type: elastic_is }
+  
+  CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\LikeRenderer:
+    parent: CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+    tags:
+      - { name: coreshop.index.condition.renderer, type: elastic_like }
+  
+  CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\RangeRenderer:
+    parent: CoreShop\Bundle\IndexBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+    tags:
+      - { name: coreshop.index.condition.renderer, type: elastic_range }

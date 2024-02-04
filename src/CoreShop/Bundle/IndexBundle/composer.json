@@ -34,7 +34,8 @@
     "dpfaffenbauer/process-manager": "<2.4"
   },
   "suggest": {
-    "dpfaffenbauer/process-manager": "Allows to start Indexing from within Pimcore UI and also tracks the status."
+    "dpfaffenbauer/process-manager": "Allows to start Indexing from within Pimcore UI and also tracks the status.",
+    "elasticsearch/elasticsearch": "Allows to use Elasticsearch as Indexing Engine."
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",

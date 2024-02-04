@@ -57,6 +57,11 @@ final class CoreShopIndexExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
+        //Enable elasticsearch if elasticsearch/elasticsearch is installed
+        if (@class_exists(\Elastic\Elasticsearch\Client::class)) {
+            $loader->load('services/elastic.yml');
+        }
+
         if (array_key_exists('ProcessManagerBundle', $bundles)) {
             $loader->load('services/process_manager.yml');
         }

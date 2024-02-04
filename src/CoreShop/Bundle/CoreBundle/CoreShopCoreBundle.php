@@ -26,7 +26,6 @@ use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
-use CoreShop\Bundle\IndexElasticBundle\ElasticsearchBundle;
 use CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
 use CoreShop\Bundle\InventoryBundle\CoreShopInventoryBundle;
@@ -103,7 +102,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
         $collection->addBundle(new PimcoreCustomReportsBundle(), 10);
         $collection->addBundle(new PimcoreNewsletterBundle(), 10);
-        $collection->addBundle(new ElasticsearchBundle(), 1400);
     }
 
     public function getPackageName(): string
