@@ -24,8 +24,9 @@ use Pimcore\Model\Element\ElementInterface;
 
 final class ElementContext implements Context
 {
-    public function __construct(protected SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        protected SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**

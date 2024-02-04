@@ -20,13 +20,14 @@ namespace CoreShop\Bundle\TestBundle\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
+use Pimcore\Bundle\NewsletterBundle\Model\Document\Newsletter;
 use Pimcore\Model\Document;
-use Webmozart\Assert\Assert;
 
 final class DocumentContext implements Context
 {
-    public function __construct(protected SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        protected SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**
@@ -44,13 +45,13 @@ final class DocumentContext implements Context
     public function createDocumentByType(string $type, string $path, string $key): Document
     {
         $classForType = match ($type) {
-            "page" => Document\Page::class,
-            "snippet" => Document\Snippet::class,
-            "link" => Document\Link::class,
-            "hardlink" => Document\Hardlink::class,
-            "folder" => Document\Folder::class,
-            "email" => Document\Email::class,
-            "newsletter" => Document\Newsletter::class,
+            'page' => Document\Page::class,
+            'snippet' => Document\Snippet::class,
+            'link' => Document\Link::class,
+            'hardlink' => Document\Hardlink::class,
+            'folder' => Document\Folder::class,
+            'email' => Document\Email::class,
+            'newsletter' => Newsletter::class,
             default => throw new \InvalidArgumentException($type . ' is not valid')
         };
 
@@ -103,14 +104,14 @@ final class DocumentContext implements Context
      */
     public function theDocumentHasEditable(Document\PageSnippet $document, string $name, string $type, string $data)
     {
-        $document->setRawEditable($name, $type, json_decode($data, true, 512, JSON_THROW_ON_ERROR));
+        $document->setRawEditable($name, $type, json_decode($data, true, 512, \JSON_THROW_ON_ERROR));
 
         $this->saveDocument($document);
 
         $this->sharedStorage->set('document-editable', $document->getEditable($name));
     }
 
-    protected function saveDocument(Document $document)
+    private function saveDocument(Document $document)
     {
         $document->save();
         $this->sharedStorage->set('document', $document);

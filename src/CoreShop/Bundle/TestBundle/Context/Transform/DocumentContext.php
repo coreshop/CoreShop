@@ -20,13 +20,15 @@ namespace CoreShop\Bundle\TestBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
+use Pimcore\Bundle\NewsletterBundle\Model\Document\Newsletter;
 use Pimcore\Model\Document;
 use Webmozart\Assert\Assert;
 
 final class DocumentContext implements Context
 {
-    public function __construct(protected SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        protected SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**
@@ -125,15 +127,14 @@ final class DocumentContext implements Context
         return $document;
     }
 
-
     /**
      * @Transform /^document-newsletter "([^"]+)"$/
      */
-    public function getDocumentNewsletterByFullPath(string $fullPath): Document\Newsletter
+    public function getDocumentNewsletterByFullPath(string $fullPath): Newsletter
     {
-        $document = Document\Newsletter::getByPath($fullPath);
+        $document = Newsletter::getByPath($fullPath);
 
-        Assert::isInstanceOf($document, Document\Newsletter::class);
+        Assert::isInstanceOf($document, Newsletter::class);
 
         return $document;
     }
@@ -161,7 +162,6 @@ final class DocumentContext implements Context
 
         return $document;
     }
-
 
     /**
      * @Transform /^document-snippet/
@@ -226,11 +226,11 @@ final class DocumentContext implements Context
     /**
      * @Transform /^document-newsletter/
      */
-    public function documentNewsletter(): Document\Newsletter
+    public function documentNewsletter(): Newsletter
     {
         $document = $this->sharedStorage->get('document');
 
-        Assert::isInstanceOf($document, Document\Newsletter::class);
+        Assert::isInstanceOf($document, Newsletter::class);
 
         return $document;
     }

@@ -695,6 +695,7 @@ class ClassContext implements Context
         $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
         /**
          * @var Concrete $instance
+         *
          * @psalm-suppress InvalidStringClass
          */
         $instance = new $className();
@@ -806,6 +807,7 @@ class ClassContext implements Context
                     foreach ($config['values'] as $itemValues) {
                         /**
                          * @psalm-suppress InvalidStringClass
+                         *
                          * @var Fieldcollection $collectionInstance
                          */
                         $collectionInstance = new $className();
@@ -851,11 +853,9 @@ class ClassContext implements Context
             $definitionUpdater = new BrickDefinitionUpdate($definition->getKey());
         } elseif ($definition instanceof Fieldcollection\Definition) {
             $definitionUpdater = new FieldCollectionDefinitionUpdate($definition->getKey());
-        }
-        else {
+        } else {
             throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', $definition::class));
         }
-
 
         return $definitionUpdater;
     }

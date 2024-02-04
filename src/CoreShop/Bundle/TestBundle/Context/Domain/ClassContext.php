@@ -27,8 +27,9 @@ use Webmozart\Assert\Assert;
 
 final class ClassContext implements Context
 {
-    public function __construct(private ClassStorageInterface $classStorage)
-    {
+    public function __construct(
+        private ClassStorageInterface $classStorage,
+    ) {
     }
 
     /**
@@ -83,7 +84,7 @@ final class ClassContext implements Context
             $field = $definition->getFieldDefinition($name);
         } else {
             throw new \InvalidArgumentException(
-                sprintf('Definition with type %s is not supported', null !== $definition ? $definition::class : 'null')
+                sprintf('Definition with type %s is not supported', null !== $definition ? $definition::class : 'null'),
             );
         }
 
@@ -101,9 +102,10 @@ final class ClassContext implements Context
     {
         if ($definition instanceof ClassDefinition) {
             $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
-            
+
             /**
              * @psalm-var class-string $class
+             *
              * @psalm-suppress InvalidStringClass
              */
             $instance = new $className();

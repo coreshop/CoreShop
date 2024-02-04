@@ -25,8 +25,9 @@ use Pimcore\Model\Element\ElementInterface;
 
 class PropertyContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**
@@ -37,6 +38,7 @@ class PropertyContext implements Context
         $element->setProperty($name, 'text', $value, false, false);
         $element->save();
     }
+
     /**
      * @Given /^the (element) has a text property with name "([^"]+)" value "([^"]+)" that inherits$/
      */
@@ -45,7 +47,7 @@ class PropertyContext implements Context
         $element->setProperty($name, 'text', $value, false, true);
         $element->save();
     }
-    
+
     /**
      * @Given /^the (element) has a object property with name "([^"]+)" and (object)$/
      */

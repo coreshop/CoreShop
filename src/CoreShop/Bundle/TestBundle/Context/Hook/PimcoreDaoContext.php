@@ -46,7 +46,6 @@ class PimcoreDaoContext implements Context
         \Pimcore::setKernel($this->kernel);
     }
 
-
     /**
      * @BeforeScenario
      */

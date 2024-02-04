@@ -25,8 +25,9 @@ use Pimcore\Model\Site;
 
 final class SiteContext implements Context
 {
-    public function __construct(protected SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        protected SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**
@@ -50,6 +51,7 @@ final class SiteContext implements Context
 
         $this->saveSite($site);
     }
+
     /**
      * @Given /^the (site) has additional-domains "([^"]+)"$/
      * @Given /^the (site "[^"]+") has additional-domains "([^"]+)"$/
@@ -61,7 +63,7 @@ final class SiteContext implements Context
         $this->saveSite($site);
     }
 
-    protected function saveSite(Site $site)
+    private function saveSite(Site $site)
     {
         $site->save();
         $this->sharedStorage->set('site', $site);

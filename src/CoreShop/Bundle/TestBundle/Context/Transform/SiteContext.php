@@ -25,8 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class SiteContext implements Context
 {
-    public function __construct(protected SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        protected SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**

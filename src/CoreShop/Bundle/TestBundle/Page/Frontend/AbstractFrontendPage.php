@@ -49,10 +49,11 @@ abstract class AbstractFrontendPage extends SymfonyPage implements FrontendPageI
   elem.scrollIntoView(false);
 })()
 JS;
+
         try {
             $this->getSession()->executeScript($function);
         } catch (\Exception) {
-            throw new \Exception("ScrollIntoView failed");
+            throw new \Exception('ScrollIntoView failed');
         }
 
         usleep(400);

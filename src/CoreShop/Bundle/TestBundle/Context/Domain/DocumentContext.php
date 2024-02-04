@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use Webmozart\Assert\Assert;
 
 final class DocumentContext implements Context
 {
