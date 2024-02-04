@@ -29,8 +29,9 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber
 {
     protected ?ReflectionService $reflectionService = null;
 
-    public function __construct(protected RegistryInterface $resourceRegistry)
-    {
+    public function __construct(
+        protected RegistryInterface $resourceRegistry,
+    ) {
     }
 
     protected function isResource(ClassMetadata $metadata): bool

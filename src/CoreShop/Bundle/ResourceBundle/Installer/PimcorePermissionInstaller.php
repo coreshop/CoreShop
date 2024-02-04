@@ -64,7 +64,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
 
             $columns = array_map(function (Column $column) {
                 return $column->getName();
-            }, $this->connection->getSchemaManager()->listTableColumns('users_permission_definitions'));
+            }, $this->connection->createSchemaManager()->listTableColumns('users_permission_definitions'));
 
             foreach ($permissionGroups as $group => $permissions) {
                 foreach ($permissions as $permission) {
@@ -73,16 +73,10 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
                     $permissionDefinition = Permission\Definition::getByKey($permission);
 
                     if (!$permissionDefinition instanceof Permission\Definition) {
-                        if (in_array('category', $columns, true)) {
-                            $this->connection->insert('users_permission_definitions', [
-                                'key' => $permission,
-                                'category' => sprintf('coreshop_permission_group_%s', $group),
-                            ]);
-                        } else {
-                            $this->connection->insert('users_permission_definitions', [
-                                'key' => $permission,
-                            ]);
-                        }
+                        $this->connection->insert('users_permission_definitions', [
+                            '`key`' => $permission,
+                            'category' => sprintf('coreshop_permission_group_%s', $group),
+                        ]);
                     }
 
                     $progress->advance();

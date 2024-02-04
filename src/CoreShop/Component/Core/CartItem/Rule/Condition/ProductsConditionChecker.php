@@ -32,8 +32,9 @@ final class ProductsConditionChecker extends AbstractConditionChecker
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
     }
 
-    public function __construct(ProductVariantRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        ProductVariantRepositoryInterface $productRepository,
+    ) {
         $this->__traitConstruct($productRepository);
     }
 
@@ -47,6 +48,7 @@ final class ProductsConditionChecker extends AbstractConditionChecker
             $configuration['products'],
             $orderItem->getOrder()->getStore(),
             $configuration['include_variants'] ?: false,
+            [sprintf('cs_rule_variant_%s', $cartPriceRule->getId())],
         );
 
         if ($orderItem->getIsGiftItem()) {

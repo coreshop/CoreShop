@@ -4,7 +4,7 @@
     <button type="button" class="btn btn-block btn-lg dropdown-toggle" data-toggle="dropdown">
         <i class="fa fa-shopping-cart"></i>
         <span id="cart-overview-total">
-            <span class="cart-badge">{% if cart.items %} {{ cart.items|length }} {% else %} 0 {% endif %}</span> {{ 'coreshop.ui.items'|trans }} -
+            <span class="cart-badge">{% if cart.items %} {{ cart|length }} {% else %} 0 {% endif %}</span> {{ 'coreshop.ui.items'|trans }} -
             <span class="cart-total"  {{ coreshop_test_html_attribute('cart-total') }}> {{ currency.convertAndFormat(cart.total) }}</span>
         </span>
     </button>
@@ -34,7 +34,7 @@
                         <td class="text-right">{{ currency.convertAndFormat(item.total) }}</td>
                         <td class="text-center">
                             {% if not item.isGiftItem %}
-                                <a href="{{ path('coreshop_cart_remove', {cartItem: item.id}) }}" class="removeFromCart" data-id="{{ item.id }}" data-refresh="true">
+                                <a href="{{ path('coreshop_cart_remove', {cartItem: item.id|coreshop_string}) }}" class="removeFromCart" data-id="{{ item.id }}" data-refresh="true">
                                     <i class="fa fa-times"></i>
                                 </a>
                             {% endif %}

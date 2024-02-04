@@ -60,7 +60,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     public function findByCartId(int $id): ?OrderInterface
     {
         $list = $this->getList();
-        $list->setCondition('o_id = ? AND saleState = ? ', [$id, OrderSaleStates::STATE_CART]);
+        $list->setCondition('id = ? AND saleState = ? ', [$id, OrderSaleStates::STATE_CART]);
         $list->load();
 
         if ($list->getTotalCount() > 0) {
@@ -91,7 +91,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND store = ? AND saleState = ? ', [$customer->getId(), $store->getId(), OrderSaleStates::STATE_CART]);
-        $list->setOrderKey('o_creationDate');
+        $list->setOrderKey('creationDate');
         $list->setOrder('DESC');
         $list->load();
 
@@ -102,6 +102,17 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         }
 
         return null;
+    }
+
+    public function findOrdersByCustomer(CustomerInterface $customer): array
+    {
+        $list = $this->getList();
+        $list->setCondition('customer__id = ? AND saleState = ?', [$customer->getId(), OrderSaleStates::STATE_ORDER]);
+        $list->setOrderKey('orderDate');
+        $list->setOrder('DESC');
+        $list->load();
+
+        return $list->getObjects();
     }
 
     public function findExpiredCarts(int $days, bool $anonymous, bool $customer): array
@@ -115,7 +126,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDays($days);
 
-        $conditions[] = 'o_creationDate < ?';
+        $conditions[] = 'creationDate < ?';
         $params[] = $daysTimestamp->getTimestamp();
 
         //Never delete carts with a order
@@ -155,7 +166,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ?', [$customer->getId()]);
-        $list->setOrderKey('o_id');
+        $list->setOrderKey('id');
         $list->setOrder('DESC');
         $list->load();
 
@@ -175,7 +186,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDays($days);
 
-        $conditions = ['o_creationDate < ? AND saleState = ? AND orderState IN (?, ?, ?) AND paymentState <> ?'];
+        $conditions = ['IFNULL(orderDate,creationDate) < ? AND saleState = ? AND orderState IN (?, ?, ?) AND paymentState <> ?'];
         $params = [];
         $params[] = $daysTimestamp->getTimestamp();
         $params[] = OrderSaleStates::STATE_ORDER;

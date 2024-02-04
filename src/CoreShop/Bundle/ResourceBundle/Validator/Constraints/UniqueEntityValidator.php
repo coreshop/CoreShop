@@ -39,7 +39,7 @@ final class UniqueEntityValidator extends ConstraintValidator
     protected function evaluateExpression(array $value): array
     {
         foreach ($value as $i => $item) {
-            $value[$i] = $this->evaluateExpression($item);
+            $value[$i] = $this->expressionLanguage->evaluate($item, ['container' => $this->container]);
         }
 
         return $value;

@@ -35,6 +35,10 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
         $values = [];
 
         foreach ($rawValues as $v) {
+            if ($v['value'] === null) {
+                continue;
+            }
+
             $explode = explode(',', $v['value']);
 
             foreach ($explode as $e) {
@@ -67,7 +71,7 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];
-        $values = $parameterBag->get($field);
+        $values = $parameterBag->all($field);
 
         if (empty($values)) {
             $values = $condition->getConfiguration()['preSelects'];

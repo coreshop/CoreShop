@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+  ~ @license    https://www.coreshop.org/license     GPLv3 and CCL
+  ~
+  -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,256,256" fill-rule="nonzero">
+    <defs>
+        <clipPath id="clip-1">
+            <path d="M0,256v-256h256v256zM181.33333,101.33333c-41.06667,0 -74.66667,33.6 -74.66667,74.66667c0,41.06667 33.6,74.66667 74.66667,74.66667c41.06667,0 74.66667,-33.6 74.66667,-74.66667z"
+                  id="overlayBgMask" fill="none" opacity="0.5"></path>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#clip-1)" fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+       stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+       font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+        <g transform="scale(5.33333,5.33333)" fill="#ffa726">
+            <path d="M44,20v-7c0,-2.2 -1.8,-4 -4,-4h-5.5c0,0.8 -0.7,1.5 -1.5,1.5c-0.8,0 -1.5,-0.7 -1.5,-1.5h-23.5c-2.2,0 -4,1.8 -4,4v7c2.2,0 4,1.8 4,4c0,2.2 -1.8,4 -4,4v7c0,2.2 1.8,4 4,4h23.5c0,-0.8 0.7,-1.5 1.5,-1.5c0.8,0 1.5,0.7 1.5,1.5h5.5c2.2,0 4,-1.8 4,-4v-7c-2.2,0 -4,-1.8 -4,-4c0,-2.2 1.8,-4 4,-4zM33,35.5c-0.8,0 -1.5,-0.7 -1.5,-1.5c0,-0.8 0.7,-1.5 1.5,-1.5c0.8,0 1.5,0.7 1.5,1.5c0,0.8 -0.7,1.5 -1.5,1.5zM33,30.5c-0.8,0 -1.5,-0.7 -1.5,-1.5c0,-0.8 0.7,-1.5 1.5,-1.5c0.8,0 1.5,0.7 1.5,1.5c0,0.8 -0.7,1.5 -1.5,1.5zM33,25.5c-0.8,0 -1.5,-0.7 -1.5,-1.5c0,-0.8 0.7,-1.5 1.5,-1.5c0.8,0 1.5,0.7 1.5,1.5c0,0.8 -0.7,1.5 -1.5,1.5zM33,20.5c-0.8,0 -1.5,-0.7 -1.5,-1.5c0,-0.8 0.7,-1.5 1.5,-1.5c0.8,0 1.5,0.7 1.5,1.5c0,0.8 -0.7,1.5 -1.5,1.5zM33,15.5c-0.8,0 -1.5,-0.7 -1.5,-1.5c0,-0.8 0.7,-1.5 1.5,-1.5c0.8,0 1.5,0.7 1.5,1.5c0,0.8 -0.7,1.5 -1.5,1.5z"></path>
+        </g>
+    </g>
+    <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
+       stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+       font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+        <g transform="translate(117.33333,112) scale(6.4,6.4)" id="overlay">
+            <g>
+                <path d="M20,10c0,5.5 -4.5,10 -10,10c-5.5,0 -10,-4.5 -10,-10c0,-5.5 4.5,-10 10,-10c5.5,0 10,4.5 10,10"
+                      fill="#ff3d00"></path>
+                <path d="M15.3,6.8l-2.1,-2.1l-3.2,3.2l-3.2,-3.2l-2.1,2.1l3.2,3.2l-3.2,3.2l2.1,2.1l3.2,-3.2l3.2,3.2l2.1,-2.1l-3.2,-3.2z"
+                      fill="#ffffff"></path>
+            </g>
+        </g>
+    </g>
+</svg>

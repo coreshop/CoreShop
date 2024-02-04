@@ -35,12 +35,12 @@ class AddressPage extends AbstractFrontendPage implements AddressPageInterface
 
     public function useShippingAddress(AddressInterface $shippingAddress): void
     {
-        $this->getElement('shipping_address')->selectOption($shippingAddress->getId());
+        $this->getElement('shipping_address')->selectOption((string) $shippingAddress->getId());
     }
 
     public function useInvoiceAddress(AddressInterface $invoiceAddress): void
     {
-        $this->getElement('invoice_address')->selectOption($invoiceAddress->getId());
+        $this->getElement('invoice_address')->selectOption((string) $invoiceAddress->getId());
     }
 
     public function shippingAddressVisible(): bool

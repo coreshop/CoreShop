@@ -1,0 +1,33 @@
+default:
+    suites:
+      ui_category:
+        contexts:
+          - coreshop.behat.context.hook.pimcore_setup
+          - coreshop.behat.context.hook.coreshop_setup
+
+          - coreshop.behat.context.hook.doctrine_orm
+          - coreshop.behat.context.hook.pimcore_dao
+
+          - coreshop.behat.context.transform.shared_storage
+          - coreshop.behat.context.transform.store
+          - coreshop.behat.context.transform.pimcore_class
+          - coreshop.behat.context.transform.product
+          - coreshop.behat.context.transform.category
+          - coreshop.behat.context.transform.index
+          - coreshop.behat.context.transform.filter
+
+
+          - coreshop.behat.context.setup.store
+          - coreshop.behat.context.setup.category
+          - coreshop.behat.context.setup.product
+          - coreshop.behat.context.setup.index
+          - coreshop.behat.context.setup.filter
+
+
+          - coreshop.behat.context.ui.category
+          - coreshop.behat.context.ui.homepage
+          - coreshop.behat.context.ui.product
+          - coreshop.behat.context.ui.filter
+
+        filters:
+          tags: "@ui&&@category"

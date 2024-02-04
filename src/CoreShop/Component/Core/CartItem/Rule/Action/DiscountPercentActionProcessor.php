@@ -26,8 +26,9 @@ use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 
 class DiscountPercentActionProcessor implements CartItemPriceRuleActionProcessorInterface
 {
-    public function __construct(protected CartItemRuleApplierInterface $cartItemRuleApplier)
-    {
+    public function __construct(
+        protected CartItemRuleApplierInterface $cartItemRuleApplier,
+    ) {
     }
 
     public function applyRule(
@@ -40,7 +41,7 @@ class DiscountPercentActionProcessor implements CartItemPriceRuleActionProcessor
          */
         $store = $orderItem->getOrder()->getStore();
 
-        $discount = $this->getDiscount($orderItem, $configuration);
+        $discount = $this->getDiscount($orderItem, $configuration, $store->getUseGrossPrice());
 
         if ($discount <= 0) {
             return false;

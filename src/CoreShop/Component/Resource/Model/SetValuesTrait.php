@@ -20,18 +20,16 @@ namespace CoreShop\Component\Resource\Model;
 
 trait SetValuesTrait
 {
-    public function setValues($data = [])
+    public function setValues(array $data = []): static
     {
-        if (is_array($data) && count($data) > 0) {
-            foreach ($data as $key => $value) {
-                $this->setValue($key, $value);
-            }
+        foreach ($data as $key => $value) {
+            $this->setValue($key, $value);
         }
 
         return $this;
     }
 
-    public function setValue($key, $value)
+    public function setValue(string $key, mixed $value, bool $ignoreEmptyValues = false): static
     {
         $method = 'set' . $key;
         if (method_exists($this, $method)) {

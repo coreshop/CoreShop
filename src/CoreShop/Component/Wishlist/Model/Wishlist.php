@@ -26,6 +26,11 @@ abstract class Wishlist extends AbstractPimcoreModel implements WishlistInterfac
 {
     use StoreAwareTrait;
 
+    public function listCanBeShared(): bool
+    {
+        return null !== $this->getId() && null !== $this->getToken();
+    }
+
     public function hasItems(): bool
     {
         return is_array($this->getItems()) && count($this->getItems()) > 0;
@@ -33,7 +38,12 @@ abstract class Wishlist extends AbstractPimcoreModel implements WishlistInterfac
 
     public function addItem($item): void
     {
+        /**
+         * @var WishlistItemInterface $item
+         */
         Assert::isInstanceOf($item, WishlistItemInterface::class);
+
+        $item->setWishlist($this);
 
         $items = $this->getItems();
         $items[] = $item;
@@ -71,5 +81,10 @@ abstract class Wishlist extends AbstractPimcoreModel implements WishlistInterfac
         }
 
         return false;
+    }
+
+    public function count(): int
+    {
+        return count($this->getItems() ?: []);
     }
 }

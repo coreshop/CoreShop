@@ -192,18 +192,26 @@ final class WkHtmlToPdf implements PdfRendererInterface
         return $pdfContent;
     }
 
-    private function unlinkFile($file): void
+    private function unlinkFile(?string $file): void
     {
-        @unlink($file);
+        if ($file === null) {
+            return;
+        }
+
+        if (!file_exists($file)) {
+            return;
+        }
+
+        unlink($file);
     }
 
     private function getWkHtmlToPdfBinary(): string
     {
-        return (string) Console::getExecutable('wkhtmltopdf', true);
+        return Console::getExecutable('wkhtmltopdf', true);
     }
 
     private function getXvfbBinary(): string
     {
-        return (string) Console::getExecutable('xvfb-run', false);
+        return Console::getExecutable('xvfb-run');
     }
 }

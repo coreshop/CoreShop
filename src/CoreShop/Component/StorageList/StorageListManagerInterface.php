@@ -22,5 +22,5 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 
 interface StorageListManagerInterface
 {
-    public function persist(StorageListInterface $storageList): void;
+    public function persist(StorageListInterface $storageList/*, array $params = []*/): void;
 }

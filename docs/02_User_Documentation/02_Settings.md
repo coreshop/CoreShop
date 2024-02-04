@@ -1,68 +1,64 @@
-CoreShop's Settings are divided into each "sub"-shop and some system settings.
+# Settings
 
-### Shop-Settings
+CoreShop's settings are categorized into individual shop settings and overarching system settings. These configurations
+are crucial for tailoring the functionality and behavior of your e-commerce store.
 
-Settings can be different for each Store.
+## Shop-Specific Settings
+
+Each store in CoreShop can have its unique settings.
 
 ![Settings](img/settings-shop.png)
 
-#### Base
+### Base Settings
 
-- Catalog-Mode: With catalog-mode enabled, the cart and checkout are disabled. Products can only be viewed.
-- Guest-Checkout: Enables or disables guest-checkout feature
+- **Catalog-Mode**: Enable to view products without cart and checkout functionalities.
+- **Guest-Checkout**: Toggle the guest-checkout feature.
 
-#### Customer Service
- - Customer Email Document: Email document used to send customer messages
- - Customer Re Email Document: Email document used to send customer reply messages
- - Contact Email Document: Email document used to send contact messages
- - Contact Sales: Default contact used for sales messages
- - Contact Technology: Default contact used for technology messages
+### Customer Service Settings
 
-#### Stock
- - Default Stock Behaviour: Describes the default stock behaviour for products
+- **Customer Email Documents**: Define email templates for customer communication.
+- **Contact Sales**: Set default contacts for sales-related inquiries.
+- **Contact Technology**: Set default contacts for technology-related inquiries.
 
-#### Tax
- - Validate VAT: Describes if the VAT-Number for European Countries should be validated
- - Disable VAT for Base Country: Disable VAT-Free Shopping for Customers, with valid Vat-Number, in Base Country
- - Taxation Address: Describes witch address is responsibly for taxation
+### Stock Settings
 
-#### Prices
- - Prices are gross prices: Determines if entered prices in CoreShop are with or without tax included.
+- **Default Stock Behaviour**: Set the general stock behavior for products.
 
-#### Shipping
- - Free Shipping starts at weight: Describes free shipping at weight. It's also much faster using this than price-rules
- - Free Shipping starts at Currency: Describes free shipping at cart value. It's also much faster using this than price-rules
- - Carrier Sort: Describes how the Carriers should be sorted
+### Tax Settings
 
-#### Product
- - Default Image: Defines an default image for products if no image is available.
- - Number of days as new: Defines the time of days a product is marked as new.
+- **Validate VAT**: Toggle VAT number validation for European countries.
+- **Disable VAT for Base Country**: Enable or disable VAT-Free shopping for eligible customers in the base country.
+- **Taxation Address**: Determine which address is used for taxation purposes.
 
-#### Category
- - Default Image: Defines an default image for categories if no image is available.
+### Price Settings
 
-#### Invoice
- - Create Invoice for Orders: Defines if invoices are going to be created on an paid order.
- - Prefix: Prefix string for Order and Invoice numbers
- - Suffix: Suffix string for Orders and Invoice numbers.
- - WKHTMLTOPDF Parameters: Parameters which will be passed to WKHTMLTOPDF
+- **Prices are gross prices**: Specify whether prices entered in CoreShop include tax.
 
-#### Mail Settings
- - admin email-addresses to send order notification (CSV): Email addresses which will be notified on new orders
- - Send OrderStates as BCC to admin email-addresses: Determines if order-state emails should also be sent to admin-emails
+### Shipping Settings
 
-#### Cart
- - Activate automatic cart cleanup: Activate automatic cart cleanup -> cleans inactive and empty carts
+- **Free Shipping Options**: Set conditions for free shipping based on weight or cart value.
+- **Carrier Sort**: Define the sorting order for carriers.
 
-### System - Settings
+### Product Settings
 
-System Settings are defined one time for all shops.
+- **Default Image**: Set a default image for products without images.
+- **Number of days as new**: Define the duration for marking a product as new.
 
-![System Settings](img/settings-system.png)
+### Category Settings
 
-#### System Settings
- - Send Usagelog to CoreShop: Sends an anonymous usagelog to CoreShop Developer
+- **Default Image**: Set a default image for categories without images.
 
-#### Currency
- - Automatic Exchange Rates: Describes if exchange rates should be fetched automatically
- - Exchange Rate Provider: Describes which exchange rate provider should be used.
+### Invoice Settings
+
+- **Invoice Creation**: Set conditions for automatic invoice creation.
+- **Invoice Number Formatting**: Define prefixes and suffixes for order and invoice numbers.
+- **WKHTMLTOPDF Parameters**: Specify parameters for the WKHTMLTOPDF tool.
+
+### Mail Settings
+
+- **Order Notification Emails**: Define admin email addresses for order notifications.
+- **Send OrderStates as BCC**: Choose whether to send order-state emails to admin-emails.
+
+### Cart Settings
+
+- **Automatic Cart Cleanup**: Toggle the automatic cleanup of inactive and empty carts.

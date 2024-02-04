@@ -3,43 +3,31 @@ services:
         public: true
 
     CoreShop\Bundle\CoreBundle\Controller\SettingsController:
-        arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-          - [setContainer, ['@service_container']]
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ReportsController:
-        arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-          - [setContainer, ['@service_container']]
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\PortletsController:
-        arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-          - [setContainer, ['@service_container']]
-
-    CoreShop\Bundle\CoreBundle\Controller\ProductPreviewController:
-        arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-            - [setContainer, ['@service_container']]
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ProductValidationController:
-        arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-            - [setContainer, ['@service_container']]
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController:
-        arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-            - [setContainer, ['@service_container']]
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController:
-        arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-            - [setContainer, ['@service_container']]
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
+        tags:
+            - { name: container.service_subscriber }

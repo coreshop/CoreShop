@@ -1,6 +1,6 @@
 @domain @cart
 Feature: Adding a new cart rule
-  In order to give the customer discounts
+  In order to give the customer surcharge
   based on the cart, we add a new rule
 
   Background:

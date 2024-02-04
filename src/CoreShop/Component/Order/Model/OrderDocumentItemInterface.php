@@ -23,6 +23,8 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface OrderDocumentItemInterface extends ResourceInterface, PimcoreModelInterface
 {
+    public function getId(): ?int;
+
     public function getDocument(): OrderDocumentInterface;
 
     public function getOrderItem(): ?OrderItemInterface;

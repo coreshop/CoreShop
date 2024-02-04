@@ -1,16 +1,23 @@
-# CoreShop Customer Manager
-CoreShop already implements a Customer Manager which handles creating a Customer with Addresses. 
-The Customer Manager implements the Interface `CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface` and CoreShop implements it using the service `coreshop.customer.manager`.
+# Customer Manager
 
-## Usage
-To use the Service, you need to pass a Customer.
-In our example, we gonna do that from a Controller with a FormType.
+CoreShop provides a robust Customer Manager that simplifies the process of creating customers along with their
+addresses. This feature is an integral part of the CoreShop suite, ensuring streamlined customer data management.
+
+## CoreShop's Implementation of Customer Manager
+
+The Customer Manager in CoreShop adheres to the `CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface`
+interface. CoreShop implements this interface through the service `coreshop.customer.manager`.
+
+## Utilizing the Customer Manager
+
+The Customer Manager service can be used in various contexts, such as within a controller paired with a form type.
+Here’s an example of its usage:
 
 ```php
 $customer = $this->getCustomer();
 
 if ($customer instanceof CustomerInterface && null === $customer->getUser()) {
-    return $this->redirectToRoute('coreshop_customer_profile');
+return $this->redirectToRoute('coreshop_customer_profile');
 }
 
 $form = $this->get('form.factory')->createNamed('customer', CustomerRegistrationType::class, $this->get('coreshop.factory.customer')->createNew());
@@ -18,7 +25,7 @@ $form = $this->get('form.factory')->createNamed('customer', CustomerRegistration
 $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_customer_profile'));
 
 if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
-    $form = $form->handleRequest($request);
+$form = $form->handleRequest($request);
 
     if ($form->isValid()) {
         $customer = $form->getData();
@@ -31,6 +38,10 @@ if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
 }
 
 return $this->render($this->templateConfigurator->findTemplate('Register/register.html'), [
-    'form' => $form->createView(),
+'form' => $form->createView(),
 ]);
 ```
+
+In this example, the Customer Manager service is used to handle customer data obtained from a form. The customer is
+created or updated based on form submissions, demonstrating the flexibility and ease of use provided by CoreShop's
+customer management system.

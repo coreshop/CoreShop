@@ -18,44 +18,51 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Variant\Model\AttributeColorInterface;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\Data\RgbaColor;
 use Pimcore\Model\DataObject\Service;
 use Pimcore\Tool;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AttributeGroupsFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class AttributeGroupsFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private RepositoryInterface $attributeGroupRepository,
+        private FactoryInterface $attributeGroupFactory,
+        private FactoryInterface $attributeColorFactory,
+        private FactoryInterface $attributeValueFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
 
     public function load(ObjectManager $manager): void
     {
-        if (!count($this->container->get('coreshop.repository.attribute_group')->findAll())) {
+        if (!count($this->attributeGroupRepository->findAll())) {
             $data = [
                 'color' => [
-                    'red', 'blue', 'black',
+                    'red',
+                    'blue',
+                    'black',
                 ],
                 'size' => [
-                    's', 'm', 'l', 'xl',
+                    's',
+                    'm',
+                    'l',
+                    'xl',
                 ],
                 'season' => [
-                    'winter', 'summer',
+                    'winter',
+                    'summer',
                 ],
             ];
 
@@ -71,7 +78,7 @@ class AttributeGroupsFixture extends AbstractFixture implements ContainerAwareIn
                 /**
                  * @var AttributeGroupInterface $attributeGroup
                  */
-                $attributeGroup = $this->container->get('coreshop.factory.attribute_group')->createNew();
+                $attributeGroup = $this->attributeGroupFactory->createNew();
                 $attributeGroup->setKey($key);
                 $attributeGroup->setPublished(true);
                 $attributeGroup->setParent(Service::createFolderByPath('/demo/attributes'));
@@ -92,8 +99,8 @@ class AttributeGroupsFixture extends AbstractFixture implements ContainerAwareIn
                      * @var AttributeInterface $attribute
                      */
                     $attribute = $key === 'color' ?
-                        $this->container->get('coreshop.factory.attribute_color')->createNew() :
-                        $this->container->get('coreshop.factory.attribute_value')->createNew();
+                        $this->attributeColorFactory->createNew() :
+                        $this->attributeValueFactory->createNew();
 
                     $attribute->setParent($attributeGroup);
                     $attribute->setKey($attributeKey);

@@ -44,13 +44,14 @@ final class CartItemsProcessor implements CartProcessorInterface
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);
 
-        $subtotalGross = 0;
-        $subtotalNet = 0;
-
         /**
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
+            if ($item->isImmutable()) {
+                continue;
+            }
+
             if ($item->getIsGiftItem()) {
                 $this->cartItemProcessor->processCartItem(
                     $item,
@@ -89,8 +90,7 @@ final class CartItemsProcessor implements CartProcessorInterface
                         $itemPrice,
                         $context,
                     );
-                } catch (NoRuleFoundException) {
-                } catch (NoPriceFoundException) {
+                } catch (NoRuleFoundException|NoPriceFoundException) {
                 }
             }
 
@@ -121,14 +121,6 @@ final class CartItemsProcessor implements CartProcessorInterface
                 $itemDiscount,
                 $context,
             );
-
-            $subtotalGross += $item->getTotal(true);
-            $subtotalNet += $item->getTotal(false);
         }
-
-        $cart->setSubtotal($subtotalGross, true);
-        $cart->setSubtotal($subtotalNet, false);
-
-        $cart->recalculateAdjustmentsTotal();
     }
 }

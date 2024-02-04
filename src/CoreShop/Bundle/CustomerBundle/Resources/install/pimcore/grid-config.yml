@@ -330,8 +330,8 @@ grid_config:
                         key: "#5e39a1e53b225"
                     isOperator: true
             onlyDirectChildren: false
-            pimcore_version: dev-master
-            pimcore_revision: 6c4d88cb49291736418dcbf89a9b4ba03d6b8d47
+            shareGlobally: true
+            setAsFavourite: true
 
     customer_de:
         name: 'Kunden Übersicht'
@@ -664,6 +664,8 @@ grid_config:
                         key: "#5e39a1e53b225"
                     isOperator: true
             onlyDirectChildren: false
+            shareGlobally: true
+            setAsFavourite: true
 
     customer_group_en:
         name: 'Customer Group Overview'
@@ -722,8 +724,8 @@ grid_config:
                         key: "#5e39a078aa0ee"
                     isOperator: true
             onlyDirectChildren: false
-            pimcore_version: dev-master
-            pimcore_revision: 6c4d88cb49291736418dcbf89a9b4ba03d6b8d47
+            shareGlobally: true
+            setAsFavourite: true
 
     customer_group_de:
         name: 'Kunden Gruppen Übersicht'
@@ -782,5 +784,5 @@ grid_config:
                         key: "#5e39a078aa0ee"
                     isOperator: true
             onlyDirectChildren: false
-            pimcore_version: dev-master
-            pimcore_revision: 6c4d88cb49291736418dcbf89a9b4ba03d6b8d47
+            shareGlobally: true
+            setAsFavourite: true

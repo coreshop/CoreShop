@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\NotificationBundle;
 
+use CoreShop\Bundle\MessengerBundle\CoreShopMessengerBundle;
 use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleActionPass;
 use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
@@ -47,9 +48,8 @@ final class CoreShopNotificationBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopRuleBundle(),
-        ], 3500);
+        $collection->addBundle(new CoreShopRuleBundle(), 3500);
+        $collection->addBundle(new CoreShopMessengerBundle(), 3550);
     }
 
     protected function getModelNamespace(): string

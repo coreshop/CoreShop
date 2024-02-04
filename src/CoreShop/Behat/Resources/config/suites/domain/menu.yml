@@ -1,6 +1,6 @@
 default:
     suites:
-        domain_tracking:
+        domain_menu:
             contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup

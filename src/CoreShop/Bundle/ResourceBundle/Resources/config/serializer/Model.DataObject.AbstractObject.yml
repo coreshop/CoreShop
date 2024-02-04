@@ -6,11 +6,6 @@ Pimcore\Model\DataObject\AbstractObject:
             type: integer
             xml_attribute: true
             serialized_name: id
-        o_id:
-            exp: object.getId()
-            type: integer
-            xml_attribute: true
-            serialized_name: o_id
         creationDate:
             exp: object.getCreationDate()
             type: carbon
@@ -21,13 +16,3 @@ Pimcore\Model\DataObject\AbstractObject:
             type: carbon
             xml_attribute: true
             serialized_name: modificationDate
-        o_creationDate:
-            exp: object.getCreationDate()
-            type: carbon
-            xml_attribute: true
-            serialized_name: o_creationDate
-        o_modificationDate:
-            exp: object.getModificationDate()
-            type: carbon
-            xml_attribute: true
-            serialized_name: o_modificationDate

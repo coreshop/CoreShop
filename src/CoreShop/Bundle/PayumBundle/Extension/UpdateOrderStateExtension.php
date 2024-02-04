@@ -30,8 +30,9 @@ use Payum\Core\Request\Notify;
 
 final class UpdateOrderStateExtension implements ExtensionInterface
 {
-    public function __construct(private StateMachineManager $stateMachineManager)
-    {
+    public function __construct(
+        private StateMachineManager $stateMachineManager,
+    ) {
     }
 
     public function onPreExecute(Context $context): void
@@ -91,7 +92,8 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         }
 
         if ($value === PaymentInterface::STATE_COMPLETED ||
-            $value === PaymentInterface::STATE_AUTHORIZED
+            $value === PaymentInterface::STATE_AUTHORIZED ||
+            $value === PaymentInterface::STATE_PROCESSING
         ) {
             $order = $payment->getOrder();
             $this->confirmOrderState($order);

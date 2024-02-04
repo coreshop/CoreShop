@@ -6,5 +6,5 @@
             {{ form_row(form.text, {'label' : false,  'attr' : {'placeholder':'coreshop.ui.search'|trans,'class': 'form-control-lg'}}) }}
             <!--<input type="text" name="text" class="form-control form-control-lg" placeholder="{{ 'coreshop.ui.search'|trans }}">-->
         </div>
-    {{ form_end(form) }}
+    {{ form_end(form,{'method': 'GET'}) }}
 </div>

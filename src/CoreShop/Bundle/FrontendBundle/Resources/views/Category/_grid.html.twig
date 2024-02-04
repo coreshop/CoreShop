@@ -1,7 +1,7 @@
 {% import "@CoreShopFrontend/Common/Macro/product_price.html.twig" as product_price %}
 
 <div class="col-md-4 col-sm-6 mb-4">
-    <div class="d-flex flex-column product-col">
+    <div class="d-flex flex-column product-col" {{ coreshop_test_html_attribute('category-products-grid') }}>
         <div class="image">
             {% if product.image is pimcore_asset_image %}
                 <a href="{{ pimcore_object_path(product) }}">
@@ -11,7 +11,7 @@
         </div>
         <div class="caption mb-auto">
             <h4>
-                <a href="{{ pimcore_object_path(product) }}">{{ product.name }}</a>
+                <a href="{{ pimcore_object_path(product) }}" {{ coreshop_test_html_attribute('cat_product-name-grid') }}>{{ product.name }}</a>
             </h4>
             <div class="description">
                 {{ product.shortDescription }}
@@ -30,11 +30,11 @@
             <div class="price">
                 {{ product_price.display_product_price(product) }}
             </div>
-            {% if coreshop_add_to_cart_available(product) and is_granted('CORESHOP_CART_ADD_ITEM') %}
+            {% if coreshop_add_to_cart_available(product) and is_granted('CORESHOP_CART') and is_granted('CORESHOP_CART_ADD_ITEM') %}
                 <div class="cart-button btn-group">
                     {% if coreshop_inventory_is_available(product) %}
-                        {{ render(url('coreshop_partial_wishlist_add', {'product': product.id})) }}
-                        {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
+                        {{ render(url('coreshop_partial_wishlist_add', {'product': product.id|coreshop_string})) }}
+                        {{ render(url('coreshop_partial_cart_add', {'product': product.id|coreshop_string})) }}
                     {% endif %}
                 </div>
             {% endif %}

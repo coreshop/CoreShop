@@ -23,14 +23,15 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class NestedConditionChecker implements ConditionCheckerInterface
 {
-    public function __construct(protected RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
-    {
+    public function __construct(
+        protected RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor,
+    ) {
     }
 
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         $operator = $configuration['operator'];
-        $valid = $operator === 'and';
+        $valid = in_array($operator, ['and', 'not'], true);
 
         foreach ($configuration['conditions'] as $condition) {
             $conditionValid = $this->ruleConditionsValidationProcessor->isValid($subject, $rule, [$condition], $params);
@@ -38,6 +39,14 @@ class NestedConditionChecker implements ConditionCheckerInterface
             switch ($operator) {
                 case 'and':
                     if (!$conditionValid) {
+                        $valid = false;
+
+                        break 2;
+                    }
+
+                    break;
+                case 'not':
+                    if ($conditionValid) {
                         $valid = false;
 
                         break 2;
@@ -53,10 +62,6 @@ class NestedConditionChecker implements ConditionCheckerInterface
 
                     break;
             }
-        }
-
-        if ('not' === $operator) {
-            return !$valid;
         }
 
         return $valid;

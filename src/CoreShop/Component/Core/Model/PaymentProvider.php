@@ -30,8 +30,8 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
         __construct as storesAwareConstructor;
     }
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct();
 
         $this->storesAwareConstructor();

@@ -47,8 +47,14 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
+        $container->setParameter('coreshop.order.allow_edit', $configs['allow_order_edit']);
+
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
         $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
+
+//        if (class_exists(PimcoreDataHubBundle::class)) {
+//            $this->registerDependantBundles('coreshop', [PimcoreDataHubBundle::class], $container);
+//        }
 
         if (array_key_exists('pimcore_admin', $configs)) {
             $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
@@ -65,11 +71,6 @@ final class CoreShopOrderExtension extends AbstractModelExtension
         }
 
         $container->setParameter('coreshop.order.legacy_serialization', $configs['legacy_serialization']);
-        $container->setParameter('coreshop.cart.expiration.days', $configs['expiration']['cart']['days']);
-        $container->setParameter('coreshop.cart.expiration.anonymous', $configs['expiration']['cart']['anonymous']);
-        $container->setParameter('coreshop.cart.expiration.customer', $configs['expiration']['cart']['customer']);
-
-        $container->setParameter('coreshop.order.expiration.days', $configs['expiration']['order']['days']);
 
         $loader->load('services.yml');
 

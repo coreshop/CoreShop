@@ -28,8 +28,9 @@ use Webmozart\Assert\Assert;
 
 final class RecycleBinContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**
@@ -70,7 +71,7 @@ final class RecycleBinContext implements Context
 
         $item->restore();
 
-        $product = DataObject::getById($concrete->getId(), true);
+        $product = DataObject::getById($concrete->getId(), ['force' => true]);
 
         Assert::isInstanceOf($product, ProductInterface::class);
 

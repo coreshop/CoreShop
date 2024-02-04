@@ -24,8 +24,9 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 
 final class StorageListFactoryContext implements StorageListContextInterface
 {
-    public function __construct(private FactoryInterface $storageListFactory)
-    {
+    public function __construct(
+        private FactoryInterface $storageListFactory,
+    ) {
     }
 
     public function getStorageList(): StorageListInterface

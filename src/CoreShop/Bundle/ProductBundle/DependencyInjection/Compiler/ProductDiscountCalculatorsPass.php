@@ -24,8 +24,8 @@ final class ProductDiscountCalculatorsPass extends RegisterSimpleRegistryTypePas
 {
     public const PRODUCT_DISCOUNT_CALCULATOR_TAG = 'coreshop.product.discount_calculator';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.product.discount_calculators',
             'coreshop.product.discount_calculators',

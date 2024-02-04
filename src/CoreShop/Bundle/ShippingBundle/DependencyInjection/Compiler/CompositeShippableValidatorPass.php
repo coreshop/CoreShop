@@ -26,8 +26,8 @@ final class CompositeShippableValidatorPass extends PrioritizedCompositeServiceP
 {
     public const SHIPABLE_VALIDATOR_TAG = 'coreshop.shipping.carrier.validator';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             ShippableCarrierValidatorInterface::class,
             CompositeShippableCarrierValidator::class,

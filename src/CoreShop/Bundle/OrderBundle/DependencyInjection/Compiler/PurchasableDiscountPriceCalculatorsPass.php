@@ -24,8 +24,8 @@ final class PurchasableDiscountPriceCalculatorsPass extends RegisterSimpleRegist
 {
     public const PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG = 'coreshop.order.purchasable.discount_price_calculator';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.order.purchasable.discount_price_calculators',
             'coreshop.order.purchasable.discount_price_calculator',

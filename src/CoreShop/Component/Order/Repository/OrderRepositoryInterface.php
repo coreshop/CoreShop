@@ -39,6 +39,8 @@ interface OrderRepositoryInterface extends PimcoreRepositoryInterface, CustomerA
 
     public function findByCustomer(CustomerInterface $customer): array;
 
+    public function findOrdersByCustomer(CustomerInterface $customer): array;
+
     public function hasCustomerOrders(CustomerInterface $customer): bool;
 
     public function findExpiredOrders(int $days): array;

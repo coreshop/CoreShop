@@ -49,12 +49,12 @@ class ExchangeRate implements ExchangeRateInterface
      */
     protected $toCurrency;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->creationDate = new \DateTime();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -29,8 +29,9 @@ use Webmozart\Assert\Assert;
 
 final class OrderContext implements Context
 {
-    public function __construct(private StateMachineManager $stateMachineManager)
-    {
+    public function __construct(
+        private StateMachineManager $stateMachineManager,
+    ) {
     }
 
     /**
@@ -108,6 +109,22 @@ final class OrderContext implements Context
                 'Order subtotal is expected to be %s, but it is %s',
                 $total,
                 $order->getSubtotal(false),
+            ),
+        );
+    }
+
+    /**
+     * @Then /^(the order) total tax should be "([^"]+)"$/
+     */
+    public function orderTotalTaxShouldBe(OrderInterface $order, $total): void
+    {
+        Assert::eq(
+            $total,
+            $order->getTotalTax(),
+            sprintf(
+                'Order total tax is expected to be %s, but it is %s',
+                $total,
+                $order->getTotalTax(),
             ),
         );
     }
@@ -318,5 +335,23 @@ final class OrderContext implements Context
         $workflow = $this->stateMachineManager->get($order, OrderInvoiceTransitions::IDENTIFIER);
 
         Assert::true($workflow->can($order, $transition));
+    }
+
+    /**
+     * @Then /^(the order) should be immutable$/
+     */
+    public function theOrderShouldBeImmutable(OrderInterface $order): void
+    {
+        Assert::true(
+            $order->isImmutable(),
+            'Order is mutable, but should be immutable!',
+        );
+
+        foreach ($order->getItems() as $item) {
+            Assert::true(
+                $item->isImmutable(),
+                'Order Item is mutable, but should be immutable!',
+            );
+        }
     }
 }

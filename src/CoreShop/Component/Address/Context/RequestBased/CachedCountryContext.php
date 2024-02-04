@@ -25,8 +25,9 @@ final class CachedCountryContext implements RequestResolverInterface
 {
     private ?CountryInterface $country = null;
 
-    public function __construct(private RequestResolverInterface $inner)
-    {
+    public function __construct(
+        private RequestResolverInterface $inner,
+    ) {
     }
 
     public function findCountry(Request $request): CountryInterface

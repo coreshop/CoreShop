@@ -53,7 +53,7 @@ coreshop.order.order.createPayment = {
                             if (form.isValid()) {
                                 var formValues = form.getFieldValues();
 
-                                formValues['o_id'] = orderId;
+                                formValues['id'] = orderId;
 
                                 window.setLoading(t('loading'));
 

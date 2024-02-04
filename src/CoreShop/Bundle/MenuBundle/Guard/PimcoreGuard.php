@@ -19,13 +19,14 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MenuBundle\Guard;
 
 use Knp\Menu\ItemInterface;
-use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Model\User;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PimcoreGuard
 {
-    public function __construct(private TokenStorageUserResolver $tokenStorageUserResolver)
-    {
+    public function __construct(
+        private TokenStorageInterface $tokenStorage,
+    ) {
     }
 
     public function matchItem(ItemInterface $item): bool
@@ -34,7 +35,17 @@ class PimcoreGuard
             return true;
         }
 
-        $user = $this->tokenStorageUserResolver->getUser();
+        $token = $this->tokenStorage->getToken();
+
+        if (null === $token) {
+            return false;
+        }
+
+        $user = $token->getUser();
+
+        if ($user instanceof \Pimcore\Security\User\User) {
+            $user = $user->getUser();
+        }
 
         if ($user instanceof User) {
             return $user->isAllowed((string) $item->getAttribute('permission'));

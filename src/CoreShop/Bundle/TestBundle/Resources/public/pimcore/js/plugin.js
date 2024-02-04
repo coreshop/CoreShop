@@ -12,7 +12,7 @@
 
 pimcore.registerNS("coreshop.test");
 pimcore.registerNS("coreshop.test.plugin");
-coreshop.test.plugin = Class.create(pimcore.plugin.admin, {
+coreshop.test.plugin = Class.create({
     getClassName: function () {
         return "coreshop.test.plugin";
     },

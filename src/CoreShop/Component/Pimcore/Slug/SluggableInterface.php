@@ -22,20 +22,19 @@ use Pimcore\Model\DataObject\Data\UrlSlug;
 
 interface SluggableInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): ?int;
+
+    public function getKey(): ?string;
 
     /**
-     * @return UrlSlug[]
+     * @return UrlSlug[]|null
      */
-    public function getSlug($language = null): ?array;
+    public function getSlug(?string $language = null): ?array;
 
     /**
      * @param UrlSlug[] $slug
      */
-    public function setSlug(?array $slug, $language = null);
+    public function setSlug(?array $slug, ?string $language = null);
 
     public function getNameForSlug(string $language = null): ?string;
 }

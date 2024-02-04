@@ -18,13 +18,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Bundle\TestBundle\Page\Frontend\FrontendPageInterface;
 
 interface WishlistPageInterface extends FrontendPageInterface
 {
     public function isEmpty(): bool;
 
     public function hasItemNamed(string $name): bool;
+
+    public function hasShareWishlistLink(): bool;
+
+    public function getShareWishlistLink(): string;
 
     public function removeProduct(string $productName): void;
 }

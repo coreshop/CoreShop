@@ -30,7 +30,7 @@ class PaymentPage extends AbstractFrontendPage implements PaymentPageInterface
 
     public function selectPaymentProvider(PaymentProviderInterface $paymentProvider): void
     {
-        $this->getElement('payment_provider')->selectOption($paymentProvider->getId());
+        $this->getElement('payment_provider')->selectOption((string) $paymentProvider->getId());
     }
 
     public function submitStep(): void

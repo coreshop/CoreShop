@@ -83,7 +83,7 @@ coreshop.order.order.editShipment = {
                         style: 'margin: 5px 0;',
                         tooltip: t('open'),
                         handler: function (widgetColumn) {
-                            pimcore.helpers.openObject(shipment.get('o_id'), 'object');
+                            pimcore.helpers.openObject(shipment.get('id'), 'object');
                             window.close();
                         },
                         listeners: {

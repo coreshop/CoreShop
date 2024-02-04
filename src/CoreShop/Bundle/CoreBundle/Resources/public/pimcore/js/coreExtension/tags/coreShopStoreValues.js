@@ -30,13 +30,8 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
         this.data = data;
         this.fieldConfig = fieldConfig;
-        if (pimcore.eventDispatcher !== undefined) {
-            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
-        }
-        else {
-            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
-        }
 
+        document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
     },
 
     setObject: function (object) {

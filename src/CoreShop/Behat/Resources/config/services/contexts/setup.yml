@@ -44,6 +44,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.factory.category'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: fob.context_service }
 
@@ -184,6 +185,7 @@ services:
             - '@coreshop.factory.index'
             - '@coreshop.registry.index.worker'
             - '@coreshop.factory.index_column'
+            - '@CoreShop\Component\Index\Service\IndexUpdaterServiceInterface'
         tags:
             - { name: fob.context_service }
 
@@ -240,9 +242,14 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@coreshop.form_registry.payment_provider_rule.conditions'
+            - '@coreshop.form_registry.payment_provider_rule.actions'
             - '@coreshop.factory.payment'
             - '@coreshop.factory.payment_provider'
             - '@coreshop.factory.gateway_config'
+            - '@coreshop.factory.payment_provider_rule'
+            - '@coreshop.factory.payment_provider_rule_group'
         tags:
             - { name: fob.context_service }
 
@@ -350,7 +357,7 @@ services:
     coreshop.behat.context.setup.configuration:
         class: CoreShop\Behat\Context\Setup\ConfigurationContext
         arguments:
-            - '@coreshop.configuration.service'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: fob.context_service }
 
@@ -369,5 +376,12 @@ services:
         arguments:
             - '@behat.mink'
             - '%kernel.project_dir%/etc/build'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.cache:
+        class: CoreShop\Behat\Context\Setup\CacheContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }

@@ -64,6 +64,10 @@ final class SessionStoreStorageListSubscriber implements EventSubscriberInterfac
             return;
         }
 
+        if ($request->attributes->get('_stateless', false)) {
+            return;
+        }
+
         try {
             $storageList = $this->context->getStorageList();
         } catch (StorageListNotFoundException) {
@@ -74,7 +78,7 @@ final class SessionStoreStorageListSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        if (0 !== $storageList->getId() && null !== $storageList->getStore()) {
+        if (0 !== $storageList->getId() && null !== $storageList->getId() && null !== $storageList->getStore()) {
             $session = $request->getSession();
 
             $session->set(

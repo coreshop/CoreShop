@@ -18,11 +18,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Pimcore\Slug\KeyableSluggableInterface;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Pimcore\Model\DataObject\Listing;
 
-interface CategoryInterface extends PimcoreModelInterface, SluggableInterface
+interface CategoryInterface extends PimcoreModelInterface, SluggableInterface, KeyableSluggableInterface
 {
+    public function getId(): ?int;
+
     public function getName(?string $language = null): ?string;
 
     public function setName(?string $name, ?string $language = null);
@@ -35,10 +39,7 @@ interface CategoryInterface extends PimcoreModelInterface, SluggableInterface
 
     public function setParentCategory(?self $parentCategory);
 
-    /**
-     * @return CategoryInterface[]
-     */
-    public function getChildCategories(): array;
+    public function getChildCategories(): Listing;
 
     public function hasChildCategories(): bool;
 

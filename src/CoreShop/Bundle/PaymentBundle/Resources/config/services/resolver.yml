@@ -1,8 +1,0 @@
-services:
-    _defaults:
-        public: true
-
-    CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface: '@CoreShop\Component\Payment\Resolver\PaymentProviderResolver'
-    CoreShop\Component\Payment\Resolver\PaymentProviderResolver:
-        arguments:
-            - '@coreshop.repository.payment_provider'

@@ -27,19 +27,18 @@ use Pimcore\Model\Element;
  */
 class CoreShopRelation extends Data\ManyToOneRelation
 {
-    public $fieldtype = 'coreShopRelation';
+    public string|null $stack = null;
 
-    public $stack;
+    public bool $returnConcrete = false;
 
-    public $relationType = true;
+    public bool $objectsAllowed = true;
 
-    public $objectsAllowed = true;
+    public array $classes = [];
 
-    public $assetsAllowed = false;
-
-    public $documentsAllowed = false;
-
-    public $returnConcrete = false;
+    public function getFieldType(): string
+    {
+        return 'coreShopRelation';
+    }
 
     public function getStack()
     {
@@ -98,56 +97,25 @@ class CoreShopRelation extends Data\ManyToOneRelation
     }
 
     /**
-     * @param array $classes
-     *
      * @return $this
      */
-    public function setClasses($classes)
+    public function setClasses(array $classes): static
     {
         if (null === $this->stack) {
             return $this;
         }
 
-        return parent::setClasses(Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes'));
+        parent::setClasses(Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes'));
+
+        return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function getObjectsAllowed()
+    public static function __set_state(array $data): static
     {
-        return true;
-    }
+        $obj = parent::__set_state($data);
+        $obj->classes = $obj->getClasses();
+        $obj->objectsAllowed = true;
 
-    /**
-     * @return bool
-     */
-    public function getDocumentsAllowed()
-    {
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDocumentTypes()
-    {
-        return [];
-    }
-
-    /**
-     * @return bool
-     */
-    public function getAssetsAllowed()
-    {
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAssetTypes()
-    {
-        return [];
+        return $obj;
     }
 }

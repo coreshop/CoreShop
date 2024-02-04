@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Rule\Condition;
 
-use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
@@ -26,8 +25,9 @@ trait CategoriesConditionCheckerTrait
 {
     private CategoryRepositoryInterface $categoryRepository;
 
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
+    ) {
         $this->categoryRepository = $categoryRepository;
     }
 
@@ -36,21 +36,7 @@ trait CategoriesConditionCheckerTrait
         $categoryIdsToCheck = $categories;
 
         if ($recursive) {
-            foreach ($categories as $categoryId) {
-                $category = $this->categoryRepository->find($categoryId);
-
-                if (!$category instanceof CategoryInterface) {
-                    continue;
-                }
-
-                $subCategories = $this->categoryRepository->findRecursiveChildCategoryIdsForStore($category, $store);
-
-                foreach ($subCategories as $child) {
-                    if (!in_array($child, $categoryIdsToCheck)) {
-                        $categoryIdsToCheck[] = $child;
-                    }
-                }
-            }
+            $categoryIdsToCheck = $this->categoryRepository->findRecursiveChildCategoryIdsForStoreByCategories($categories, $store);
         }
 
         return $categoryIdsToCheck;

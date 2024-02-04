@@ -18,9 +18,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Modifier;
 
+use CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeCustomerFactoryInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherCodeCustomerRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -30,6 +33,8 @@ class VoucherModifier implements VoucherModifierInterface
     public function __construct(
         protected EntityManagerInterface $entityManager,
         protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        protected CartPriceRuleVoucherCodeCustomerRepositoryInterface $codePerUserRepository,
+        protected CartPriceRuleVoucherCodeCustomerFactoryInterface $voucherCodeCustomerFactory,
     ) {
     }
 
@@ -60,6 +65,34 @@ class VoucherModifier implements VoucherModifierInterface
 
                 $this->entityManager->persist($voucherCode);
             }
+
+            $customer = $order->getCustomer();
+
+            if (!$customer) {
+                continue;
+            }
+
+            foreach ($item->getCartPriceRule()?->getConditions() ?: [] as $conditions) {
+                if ($conditions->getType() === 'voucher') {
+                    $maxUsagePerCustomer = $conditions->getConfiguration()['maxUsagePerUser'] ?? null;
+
+                    if ($maxUsagePerCustomer !== null) {
+                        $perCustomerEntry = $this->codePerUserRepository->findUsesByCustomer($customer, $voucherCode);
+
+                        if ($perCustomerEntry instanceof CartPriceRuleVoucherCodeCustomerInterface) {
+                            $perCustomerEntry->incrementUses();
+
+                            $this->entityManager->persist($perCustomerEntry);
+                        }
+
+                        if (null === $perCustomerEntry) {
+                            $perCustomerEntry = $this->voucherCodeCustomerFactory->createWithInitialData($customer, $voucherCode);
+
+                            $this->entityManager->persist($perCustomerEntry);
+                        }
+                    }
+                }
+            }
         }
 
         $this->entityManager->flush();
@@ -77,6 +110,10 @@ class VoucherModifier implements VoucherModifierInterface
                 continue;
             }
 
+            if (!$item->getVoucherCode()) {
+                continue;
+            }
+
             $voucherCode = $this->voucherCodeRepository->findByCode($item->getVoucherCode());
             if ($voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                 if ($voucherCode->getUses() !== 0) {
@@ -88,6 +125,32 @@ class VoucherModifier implements VoucherModifierInterface
                     }
 
                     $this->entityManager->persist($voucherCode);
+                }
+            }
+
+            $customer = $order->getCustomer();
+
+            if (!$customer) {
+                continue;
+            }
+
+            foreach ($item->getCartPriceRule()?->getConditions() ?: [] as $conditions) {
+                if ($conditions->getType() === 'voucher') {
+                    $maxUsagePerCustomer = $conditions->getConfiguration()['maxUsagePerUser'] ?? null;
+
+                    if ($maxUsagePerCustomer !== null) {
+                        $perCustomerEntry = $this->codePerUserRepository->findUsesByCustomer($customer, $voucherCode);
+
+                        if ($perCustomerEntry instanceof CartPriceRuleVoucherCodeCustomerInterface) {
+                            $perCustomerEntry->decrementUses();
+
+                            if ($perCustomerEntry->getUses() === 0) {
+                                $this->entityManager->remove($perCustomerEntry);
+                            } else {
+                                $this->entityManager->persist($perCustomerEntry);
+                            }
+                        }
+                    }
                 }
             }
         }

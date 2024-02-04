@@ -25,10 +25,10 @@ use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
  */
 class CarrierMultiselect extends Multiselect
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCarrierMultiselect';
+    public string $fieldtype = 'coreShopCarrierMultiselect';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 }

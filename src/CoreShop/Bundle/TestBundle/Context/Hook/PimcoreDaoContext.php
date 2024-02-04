@@ -20,7 +20,6 @@ namespace CoreShop\Bundle\TestBundle\Context\Hook;
 
 use Behat\Behat\Context\Context;
 use Doctrine\DBAL\Connection;
-use Pimcore\Cache;
 use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -51,20 +50,10 @@ class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearCache(): void
+    public function clearRuntimeCacheScenario(): void
     {
-        Cache::clearAll();
-        /**
-         * @psalm-suppress DeprecatedClass
-         * @psalm-suppress DeprecatedMethod
-         */
-        Cache\Runtime::clear();
-
-        /**
-         * @psalm-suppress DeprecatedClass
-         * @psalm-suppress DeprecatedMethod
-         */
-        \Pimcore\Cache\Runtime::clear();
+        //Clearing it here is totally fine, since each scenario has its own separated context of objects
+        \Pimcore\Cache\RuntimeCache::clear();
     }
 
     /**
@@ -77,7 +66,7 @@ class PimcoreDaoContext implements Context
          */
         $list = new DataObject\Listing();
         $list->setUnpublished(true);
-        $list->setCondition('o_id <> 1');
+        $list->setCondition('id <> 1');
         $list->load();
 
         foreach ($list->getObjects() as $obj) {
@@ -85,7 +74,7 @@ class PimcoreDaoContext implements Context
         }
 
         //Force
-        $this->connection->executeQuery('DELETE FROM objects WHERE o_id <> 1');
+        $this->connection->executeQuery('DELETE FROM objects WHERE id <> 1');
     }
 
     /**
@@ -113,7 +102,6 @@ class PimcoreDaoContext implements Context
         $this->connection->executeQuery('DELETE FROM documents_link WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_newsletter WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_page WHERE id <> 1');
-        $this->connection->executeQuery('DELETE FROM documents_printpage WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_snippet WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_translations WHERE id <> 1');
     }
@@ -173,10 +161,7 @@ class PimcoreDaoContext implements Context
     {
         //We should not clear Pimcore Objects here, otherwise we lose the reference to it
         //and end up having the same object twice
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $copy = \Pimcore\Cache\Runtime::getInstance()->getArrayCopy();
+        $copy = \Pimcore\Cache\RuntimeCache::getInstance()->getArrayCopy();
         $keepItems = [];
 
         foreach ($copy as $key => $value) {
@@ -185,11 +170,7 @@ class PimcoreDaoContext implements Context
             }
         }
 
-        /**
-         * @psalm-suppress DeprecatedClass
-         * @psalm-suppress DeprecatedMethod
-         */
-        \Pimcore\Cache\Runtime::clear($keepItems);
+        \Pimcore\Cache\RuntimeCache::clear($keepItems);
     }
 
     /**

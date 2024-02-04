@@ -25,12 +25,8 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
         this.unitBuilder = {};
         this.unitStore = pimcore.globalmanager.get('coreshop_product_units');
         this.fieldConfig = fieldConfig;
-        if (pimcore.eventDispatcher !== undefined) {
-            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
-        }
-        else {
-            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
-        }
+
+        document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
     },
 
     getGridColumnEditor: function (field) {
@@ -120,13 +116,6 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
         this.unitStoreLoaded = true;
 
         this.component.expand();
-
-        // Add empty record to store to prevent always filling in product unit
-        this.unitStore.insert(0, [{
-            'fullLabel': '',
-            'id': null,
-            'name': '',
-        }]);
 
         this.unitBuilder = new coreshop.product.unit.builder(this.unitStore, this.fieldConfig, this.data, this.object.id);
         this.component.add([this.unitBuilder.getForm()]);

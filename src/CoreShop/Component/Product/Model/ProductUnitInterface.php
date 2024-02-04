@@ -24,6 +24,8 @@ use CoreShop\Component\Resource\Model\TranslatableInterface;
 
 interface ProductUnitInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface
 {
+    public function getId(): ?int;
+
     public function getName(): ?string;
 
     public function setName(string $name): void;

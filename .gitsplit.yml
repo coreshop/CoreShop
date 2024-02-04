@@ -1,0 +1,73 @@
+cache_url: 'file://cache'
+project_url: 'https://@github.com/coreshop/CoreShop.git'
+origins:
+    - ^next$
+    - ^\d+\.\d+$
+    - ^\d+\.\d+\.\d+$
+    - '^\d+\.\d+\.\d+(?:-?(?:alpha|beta|rc)\.?\d*)?$'
+splits:
+    - { prefix: src/CoreShop/Component/Address, target: 'https://${GH_TOKEN}@github.com/coreshop/Address.git' }
+    - { prefix: src/CoreShop/Bundle/AddressBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/AddressBundle.git' }
+    - { prefix: src/CoreShop/Bundle/ClassDefinitionPatchBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ClassDefinitionPatchBundle.git' }
+    - { prefix: src/CoreShop/Component/Configuration, target: 'https://${GH_TOKEN}@github.com/coreshop/Configuration.git' }
+    - { prefix: src/CoreShop/Bundle/ConfigurationBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ConfigurationBundle.git' }
+    - { prefix: src/CoreShop/Component/Core, target: 'https://${GH_TOKEN}@github.com/coreshop/Core.git' }
+    - { prefix: src/CoreShop/Bundle/CoreBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/CoreBundle.git' }
+    - { prefix: src/CoreShop/Component/Currency, target: 'https://${GH_TOKEN}@github.com/coreshop/Currency.git' }
+    - { prefix: src/CoreShop/Bundle/CurrencyBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/CurrencyBundle.git' }
+    - { prefix: src/CoreShop/Component/Customer, target: 'https://${GH_TOKEN}@github.com/coreshop/Customer.git' }
+    - { prefix: src/CoreShop/Bundle/CustomerBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/CustomerBundle.git' }
+    - { prefix: src/CoreShop/Bundle/FrontendBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/FrontendBundle.git' }
+    - { prefix: src/CoreShop/Component/Index, target: 'https://${GH_TOKEN}@github.com/coreshop/Index.git' }
+    - { prefix: src/CoreShop/Bundle/IndexBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/IndexBundle.git' }
+    - { prefix: src/CoreShop/Component/Inventory, target: 'https://${GH_TOKEN}@github.com/coreshop/Inventory.git' }
+    - { prefix: src/CoreShop/Bundle/InventoryBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/InventoryBundle.git' }
+    - { prefix: src/CoreShop/Component/Locale, target: 'https://${GH_TOKEN}@github.com/coreshop/Locale.git' }
+    - { prefix: src/CoreShop/Bundle/LocaleBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/LocaleBundle.git' }
+    - { prefix: src/CoreShop/Bundle/MenuBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/MenuBundle.git' }
+    - { prefix: src/CoreShop/Bundle/MessengerBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/MessengerBundle.git' }
+    - { prefix: src/CoreShop/Bundle/MoneyBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/MoneyBundle.git' }
+    - { prefix: src/CoreShop/Component/Notification, target: 'https://${GH_TOKEN}@github.com/coreshop/Notification.git' }
+    - { prefix: src/CoreShop/Bundle/NotificationBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/NotificationBundle.git' }
+    - { prefix: src/CoreShop/Bundle/OptimisticEntityLockBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/OptimisticEntityLockBundle.git' }
+    - { prefix: src/CoreShop/Component/Order, target: 'https://${GH_TOKEN}@github.com/coreshop/Order.git' }
+    - { prefix: src/CoreShop/Bundle/OrderBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/OrderBundle.git' }
+    - { prefix: src/CoreShop/Component/Payment, target: 'https://${GH_TOKEN}@github.com/coreshop/Payment.git' }
+    - { prefix: src/CoreShop/Bundle/PaymentBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/PaymentBundle.git' }
+    - { prefix: src/CoreShop/Bundle/PayumBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/PayumBundle.git' }
+    - { prefix: src/CoreShop/Component/PayumPayment, target: 'https://${GH_TOKEN}@github.com/coreshop/PayumPayment.git' }
+    - { prefix: src/CoreShop/Bundle/PayumPaymentBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/PayumPaymentBundle.git' }
+    - { prefix: src/CoreShop/Component/Pimcore, target: 'https://${GH_TOKEN}@github.com/coreshop/Pimcore.git' }
+    - { prefix: src/CoreShop/Bundle/PimcoreBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/PimcoreBundle.git' }
+    - { prefix: src/CoreShop/Component/Product, target: 'https://${GH_TOKEN}@github.com/coreshop/Product.git' }
+    - { prefix: src/CoreShop/Bundle/ProductBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ProductBundle.git' }
+    - { prefix: src/CoreShop/Component/ProductQuantityPriceRules, target: 'https://${GH_TOKEN}@github.com/coreshop/ProductQuantityPriceRules.git' }
+    - { prefix: src/CoreShop/Bundle/ProductQuantityPriceRulesBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ProductQuantityPriceRulesBundle.git' }
+    - { prefix: src/CoreShop/Component/Registry, target: 'https://${GH_TOKEN}@github.com/coreshop/Registry.git' }
+    - { prefix: src/CoreShop/Component/Resource, target: 'https://${GH_TOKEN}@github.com/coreshop/Resource.git' }
+    - { prefix: src/CoreShop/Bundle/ResourceBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ResourceBundle.git' }
+    - { prefix: src/CoreShop/Component/Rule, target: 'https://${GH_TOKEN}@github.com/coreshop/Rule.git' }
+    - { prefix: src/CoreShop/Bundle/RuleBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/RuleBundle.git' }
+    - { prefix: src/CoreShop/Component/SEO, target: 'https://${GH_TOKEN}@github.com/coreshop/SEO.git' }
+    - { prefix: src/CoreShop/Bundle/SEOBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/SEOBundle.git' }
+    - { prefix: src/CoreShop/Component/Sequence, target: 'https://${GH_TOKEN}@github.com/coreshop/Sequence.git' }
+    - { prefix: src/CoreShop/Bundle/SequenceBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/SequenceBundle.git' }
+    - { prefix: src/CoreShop/Component/Shipping, target: 'https://${GH_TOKEN}@github.com/coreshop/Shipping.git' }
+    - { prefix: src/CoreShop/Bundle/ShippingBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ShippingBundle.git' }
+    - { prefix: src/CoreShop/Component/StorageList, target: 'https://${GH_TOKEN}@github.com/coreshop/StorageList.git' }
+    - { prefix: src/CoreShop/Bundle/StorageListBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/StorageListBundle.git' }
+    - { prefix: src/CoreShop/Component/Store, target: 'https://${GH_TOKEN}@github.com/coreshop/Store.git' }
+    - { prefix: src/CoreShop/Bundle/StoreBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/StoreBundle.git' }
+    - { prefix: src/CoreShop/Component/Taxation, target: 'https://${GH_TOKEN}@github.com/coreshop/Taxation.git' }
+    - { prefix: src/CoreShop/Bundle/TaxationBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/TaxationBundle.git' }
+    - { prefix: src/CoreShop/Bundle/TestBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/TestBundle.git' }
+    - { prefix: src/CoreShop/Bundle/ThemeBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ThemeBundle.git' }
+    - { prefix: src/CoreShop/Component/Tracking, target: 'https://${GH_TOKEN}@github.com/coreshop/Tracking.git' }
+    - { prefix: src/CoreShop/Bundle/TrackingBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/TrackingBundle.git' }
+    - { prefix: src/CoreShop/Component/User, target: 'https://${GH_TOKEN}@github.com/coreshop/User.git' }
+    - { prefix: src/CoreShop/Bundle/UserBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/UserBundle.git' }
+    - { prefix: src/CoreShop/Component/Variant, target: 'https://${GH_TOKEN}@github.com/coreshop/Variant.git' }
+    - { prefix: src/CoreShop/Bundle/VariantBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/VariantBundle.git' }
+    - { prefix: src/CoreShop/Component/Wishlist, target: 'https://${GH_TOKEN}@github.com/coreshop/Wishlist.git' }
+    - { prefix: src/CoreShop/Bundle/WishlistBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/WishlistBundle.git' }
+    - { prefix: src/CoreShop/Bundle/WorkflowBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/WorkflowBundle.git' }

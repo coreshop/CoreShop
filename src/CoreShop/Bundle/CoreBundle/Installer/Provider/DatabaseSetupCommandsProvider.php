@@ -29,8 +29,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProviderInterface
 {
-    public function __construct(private Registry $doctrineRegistry)
-    {
+    public function __construct(
+        private Registry $doctrineRegistry,
+    ) {
     }
 
     public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): array
@@ -84,6 +85,6 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
          */
         $manager = $this->doctrineRegistry->getManager();
 
-        return $manager->getConnection()->getSchemaManager();
+        return $manager->getConnection()->createSchemaManager();
     }
 }

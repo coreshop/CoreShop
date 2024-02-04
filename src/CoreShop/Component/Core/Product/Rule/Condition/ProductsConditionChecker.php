@@ -33,8 +33,9 @@ class ProductsConditionChecker implements ConditionCheckerInterface
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
     }
 
-    public function __construct(ProductVariantRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        ProductVariantRepositoryInterface $productRepository,
+    ) {
         $this->__traitConstruct($productRepository);
     }
 
@@ -54,6 +55,7 @@ class ProductsConditionChecker implements ConditionCheckerInterface
             $configuration['products'],
             $params['store'],
             $configuration['include_variants'] ?: false,
+            [sprintf('cs_rule_variant_%s', $rule->getId())],
         );
 
         return in_array($subject->getId(), $productIdsToCheck);

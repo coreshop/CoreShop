@@ -1,21 +1,22 @@
-# CoreShop Checkout Manager
+# Checkout Manager
 
-# CoreShop Checkout
+# Checkout
 
 CoreShop uses a CheckoutManager to handle Checkout steps. The default installation comes with following Steps:
 
- - Cart
- - Customer
- - Address
- - Shipping
- - Payment
- - Summary
+- Cart
+- Customer
+- Address
+- Shipping
+- Payment
+- Summary
 
 ## Create a Custom CheckoutManager
 
 If you want to modify the Checkout Manager, you have two options:
- - Create a total different Checkout Manager configuration
- - Modify the default configuration
+
+- Create a total different Checkout Manager configuration
+- Modify the default configuration
 
 ### Create a total different Checkout Manager
 

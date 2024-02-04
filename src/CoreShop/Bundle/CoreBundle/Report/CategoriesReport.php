@@ -23,6 +23,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -81,7 +82,7 @@ class CategoriesReport implements ReportInterface
         $query = "
             SELECT SQL_CALC_FOUND_ROWS
               `categories`.oo_id as categoryId,
-              `categories`.o_key as categoryKey,
+              `categories`.key as categoryKey,
               `localizedCategories`.name as categoryName,
               `orders`.store,
               SUM(orderItems.totalGross) AS sales,
@@ -94,7 +95,7 @@ class CategoriesReport implements ReportInterface
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.sourceId
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
-            WHERE orders.store = $storeId" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = $storeId" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL AND saleState='" . OrderSaleStates::STATE_ORDER . "'
             GROUP BY categories.oo_id
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";
@@ -113,7 +114,7 @@ class CategoriesReport implements ReportInterface
             $query = "
             SELECT SQL_CALC_FOUND_ROWS
               `categories`.oo_id as categoryId,
-              `categories`.o_key as categoryKey,
+              `categories`.key as categoryKey,
               `localizedCategories`.name as categoryName,
               `orders`.store,
               SUM(orderItems.totalGross) AS sales,

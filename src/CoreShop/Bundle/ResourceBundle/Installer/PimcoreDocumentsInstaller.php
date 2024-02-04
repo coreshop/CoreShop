@@ -31,8 +31,9 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
-    public function __construct(private KernelInterface $kernel)
-    {
+    public function __construct(
+        private KernelInterface $kernel,
+    ) {
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
@@ -107,7 +108,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                     if (!$languageDocument instanceof Document) {
                         $languageDocument = new Document\Page();
                         $languageDocument->setParent($rootDocument);
-                        $languageDocument->setProperty('language', 'text', $language);
+                        $languageDocument->setProperty('language', 'text', $language, false, true);
                         $languageDocument->setKey(Service::getValidKey($language, 'document'));
                         $languageDocument->save();
                     }
@@ -162,7 +163,6 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 );
 
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
-                $document->setProperty('language', $language, 'text', true);
 
                 if ($document instanceof Document\PageSnippet) {
                     if ($document instanceof Document\Page && isset($properties['title'])) {

@@ -1,11 +1,11 @@
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/form.yml }
     - { resource: services/listeners.yml }
     - { resource: services/commands.yml }
     - { resource: services/pimcore.yml }
     - { resource: services/condition_renderer.yml }
     - { resource: services/order_renderer.yml }
+    - { resource: services/messenger.yml }
 
 services:
     _defaults:
@@ -107,6 +107,7 @@ services:
 
     coreshop.form_registry.index.interpreter:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
 
     # Filter Group Helper
     CoreShop\Component\Index\Worker\FilterGroupHelperInterface: '@CoreShop\Component\Index\Worker\FilterGroupHelper'

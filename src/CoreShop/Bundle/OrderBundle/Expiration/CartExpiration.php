@@ -19,11 +19,13 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
 
-final class CartExpiration implements OrderExpirationInterface
+final class CartExpiration implements StorageListExpirationInterface
 {
-    public function __construct(private OrderRepositoryInterface $cartRepository)
-    {
+    public function __construct(
+        private OrderRepositoryInterface $cartRepository,
+    ) {
     }
 
     public function expire(int $days, array $params = []): void

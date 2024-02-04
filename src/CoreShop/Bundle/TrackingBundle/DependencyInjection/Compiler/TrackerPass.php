@@ -24,8 +24,8 @@ final class TrackerPass extends RegisterSimpleRegistryTypePass
 {
     public const TRACKER_TAG = 'coreshop.tracking.tracker';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.tracking.tracker',
             'coreshop.tracking.trackers',

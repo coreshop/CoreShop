@@ -23,8 +23,9 @@ use Metadata\Driver\DriverInterface;
 
 class PimcoreDataObjectDriver implements DriverInterface
 {
-    public function __construct(protected DriverInterface $decorated)
-    {
+    public function __construct(
+        protected DriverInterface $decorated,
+    ) {
     }
 
     public function loadMetadataForClass(\ReflectionClass $class): ?ClassMetadata

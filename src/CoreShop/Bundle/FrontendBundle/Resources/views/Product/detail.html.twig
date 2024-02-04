@@ -102,18 +102,18 @@
                 <hr/>
             {% endif %}
 
-            {% set cart_allowed = is_granted('CORESHOP_CART_ADD_ITEM') %}
-            {% set wishlist_allowed = is_granted('CORESHOP_WISHLIST_ADD_ITEM') %}
+            {% set cart_allowed = is_granted('CORESHOP_CART') and is_granted('CORESHOP_CART_ADD_ITEM') %}
+            {% set wishlist_allowed = is_granted('CORESHOP_WISHLIST') and is_granted('CORESHOP_WISHLIST_ADD_ITEM') %}
 
             {% if coreshop_add_to_cart_available(product) and (cart_allowed or wishlist_allowed) %}
                 <div class="options">
                     <div class="cart-button btn-group">
                         {% if wishlist_allowed %}
-                            {{ render(url('coreshop_partial_wishlist_add', {'product': product.id})) }}
+                            {{ render(url('coreshop_partial_wishlist_add', {'product': product.id|coreshop_string})) }}
                         {% endif %}
 
                         {% if cart_allowed %}
-                            {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
+                            {{ render(url('coreshop_partial_cart_add', {'product': product.id|coreshop_string})) }}
                         {% endif %}
                     </div>
                 </div>

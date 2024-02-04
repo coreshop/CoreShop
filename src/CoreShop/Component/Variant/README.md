@@ -12,7 +12,7 @@ code. [Read more on coreshop.org](http://www.coreshop.org)
 Documentation
 -------------
 
-Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.1.0/Components/Variant_Component.html).
+Documentation is available on [**coreshop.org**](https://docs.coreshop.org/4.0.0).
 
 Bug tracking
 ------------

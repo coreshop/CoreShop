@@ -20,8 +20,9 @@ namespace CoreShop\Component\Index\Condition;
 
 class IsNullCondition implements ConditionInterface
 {
-    public function __construct(private string $fieldName)
-    {
+    public function __construct(
+        private string $fieldName,
+    ) {
     }
 
     public function getFieldName(): string

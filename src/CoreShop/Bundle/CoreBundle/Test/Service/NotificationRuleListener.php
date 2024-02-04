@@ -24,12 +24,15 @@ use Symfony\Component\Finder\Finder;
 
 final class NotificationRuleListener implements NotificationRuleListenerInterface
 {
-    public function __construct(private string $cacheDir)
-    {
+    public function __construct(
+        private string $cacheDir,
+    ) {
     }
 
     public function hasBeenFired(string $type): bool
     {
+        $this->checkDirExists();
+
         $finder = new Finder();
         $finder->files()->name(sprintf('*.%s.notification', $type))->in($this->cacheDir);
 
@@ -59,10 +62,15 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
             'arguments' => $type->getArguments(),
         ];
 
+        $this->checkDirExists();
+
+        file_put_contents(sprintf('%s/%s.%s.notification', $this->cacheDir, uniqid(), $type->getSubject()), serialize($data));
+    }
+
+    private function checkDirExists()
+    {
         if (!is_dir($this->cacheDir)) {
             mkdir($this->cacheDir, 0777, true);
         }
-
-        file_put_contents(sprintf('%s/%s.%s.notification', $this->cacheDir, uniqid(), $type->getSubject()), serialize($data));
     }
 }

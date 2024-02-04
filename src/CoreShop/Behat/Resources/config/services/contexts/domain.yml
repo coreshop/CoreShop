@@ -94,13 +94,24 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.domain.payment:
+        class: CoreShop\Behat\Context\Domain\PaymentProviderContext
+        arguments:
+            - '@coreshop.repository.payment_provider'
+            - '@coreshop.payment_provider_rule.processor'
+            - '@coreshop.factory.address'
+            - '@CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator'
+            - '@CoreShop\Component\Payment\Validator\PaymentProviderRuleValidatorInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.domain.country:
         class: CoreShop\Behat\Context\Domain\CountryContext
         arguments:
             - '@coreshop.repository.country'
             - '@CoreShop\Component\Address\Context\CountryContextInterface'
             - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
-            - '@CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver'
         tags:
             - { name: fob.context_service }
 
@@ -222,6 +233,13 @@ services:
 
     coreshop.behat.context.domain.variant:
         class: CoreShop\Behat\Context\Domain\VariantContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.cache:
+        class: CoreShop\Behat\Context\Domain\CacheContext
         arguments:
             - '@coreshop.behat.shared_storage'
         tags:

@@ -1,6 +1,7 @@
-# CoreShop Checkout Step
+# Checkout Step
 
-If you want to implement a custom checkout step, you need to implement the interface ```CoreShop\Component\Order\Checkout\CheckoutStepInterface```
+If you want to implement a custom checkout step, you need to implement the
+interface ```CoreShop\Component\Order\Checkout\CheckoutStepInterface```
 and register your step into your Cart Manager:
 
 ```yaml
@@ -14,12 +15,14 @@ core_shop_core:
                   priority: 50
 ```
 
-The [Checkout Controller](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/FrontendBundle/Controller/CheckoutController.php#L44) takes care about handling
+The [Checkout Controller](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/FrontendBundle/Controller/CheckoutController.php#L44)
+takes care about handling
 the Checkout for you then.
 
 ## Optional Checkout Step
 
-If you have an optional checkout step - depending on the cart, your Checkout Step can implement the interface ```CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface```.
+If you have an optional checkout step - depending on the cart, your Checkout Step can implement the
+interface ```CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface```.
 
 You need to implement the function ```isRequired(OrderInterface $cart)```
 

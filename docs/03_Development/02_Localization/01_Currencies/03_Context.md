@@ -1,20 +1,28 @@
-# CoreShop Currency Context
+# Currency Context
 
-For CoreShop to determine the current currency it uses a concept called context and context resolver.
+CoreShop utilizes a concept known as context and context resolvers to determine the current currency. This section
+explains the different types of contexts available and how to create a custom resolver.
 
-## Context
+## Context Types
 
-| Name | Priority | Tag | Description|
-|------|----------|-----|------------|
-| [FixedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Currency/Context/FixedCurrencyContext.php) | default | `coreshop.context.currency` | Used for testing purposes |
-| [StorageBasedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Currency/StorageBasedCurrencyContext.php) | default | `coreshop.context.currency` | check if a currency has been changed during a frontend request |
-| [CountryAwareCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Currency/CountryAwareCurrencyContext.php) | default | `coreshop.context.currency` | Mostly this context will apply since it will get the currency based on the current country context |
+CoreShop defines several contexts to identify the appropriate currency for the current request. Each context is
+characterized by its name, priority, associated tag, and a specific role. The following table outlines these contexts:
 
-These Contexts take care about finding the correct currency for the current request.
+| Name                                                                                                                                                         | Priority | Tag                         | Description                                                                       |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------------------------------------------------------------|
+| [FixedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Currency/Context/FixedCurrencyContext.php)                    | default  | `coreshop.context.currency` | Primarily used for testing purposes.                                              |
+| [StorageBasedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Currency/StorageBasedCurrencyContext.php) | default  | `coreshop.context.currency` | Checks if a currency has been changed during a frontend request.                  |
+| [CountryAwareCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Currency/CountryAwareCurrencyContext.php) | default  | `coreshop.context.currency` | Commonly used as it determines the currency based on the current country context. |
 
-## Create a Custom Resolver
+## Creating a Custom Currency Resolver
 
-A Currency Context needs to implement the interface `CoreShop\Component\Currency\Context\CurrencyContextInterface`.
-This interface consists of one method called `getCurrency` which returns a `CoreShop\Component\Currency\Model\CurrencyInterface` or throws an `CoreShop\Component\Currency\Context\CurrencyNotFoundException`
+To implement a custom Currency Context, follow these steps:
 
-To register your context, you need to use the tag: `coreshop.context.currency` with an optional `priority` attribute.
+1. **Implement the Interface**: Your custom context should implement
+   the `CoreShop\Component\Currency\Context\CurrencyContextInterface`.
+2. **Define the Method**: The interface requires the implementation of a method named `getCurrency`. This method should
+   return an instance of `CoreShop\Component\Currency\Model\CurrencyInterface` or throw
+   a `CoreShop\Component\Currency\Context\CurrencyNotFoundException` if the currency cannot be determined.
+3. **Register the Context**: Add your custom context to the system by using the tag `coreshop.context.currency`. You can
+   also assign a `priority` attribute, which is optional but can be used to define the order in which contexts are
+   evaluated.

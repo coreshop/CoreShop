@@ -32,8 +32,9 @@ use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
-    public function __construct(private CartContextInterface $cartContext)
-    {
+    public function __construct(
+        private CartContextInterface $cartContext,
+    ) {
     }
 
     /**
@@ -354,6 +355,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         Assert::isInstanceOf($cart, OrderInterface::class);
+        Assert::isInstanceOf($cart->getCarrier(), CarrierInterface::class);
 
         Assert::eq(
             $carrier->getId(),
@@ -457,6 +459,88 @@ final class CartContext implements Context
                 $item->getUnitDefinition()->getUnitName(),
                 $unit->getName(),
             ),
+        );
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") in (my cart) should have (unit "([^"]+)")$/
+     */
+    public function theProductInMyCartShouldHaveUnit(ProductInterface $product, OrderInterface $cart, ProductUnitInterface $unit): void
+    {
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = null;
+
+        foreach ($cart->getItems() as $item) {
+            if (!$item->getIsGiftItem()) {
+                continue;
+            }
+
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $cartItem = $item;
+
+                break;
+            }
+        }
+
+        Assert::notNull(
+            $cartItem,
+            sprintf(
+                'Product %s is not in the Cart or is not a gift',
+                $product->getName(),
+            ),
+        );
+
+        Assert::notNull(
+            $cartItem->getUnitDefinition(),
+            'Expected cart item to have a unit-definition, but it did not',
+        );
+
+        Assert::eq(
+            $cartItem->getUnitDefinition()?->getUnit(),
+            $unit,
+            sprintf(
+                'Expected cart item to have unit %s, but found %s',
+                $cartItem->getUnitDefinition()?->getUnitName(),
+                $unit->getName(),
+            ),
+        );
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") in (my cart) should have no unit$/
+     */
+    public function theProductInMyCartShouldHaveNoUnit(ProductInterface $product, OrderInterface $cart): void
+    {
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = null;
+
+        foreach ($cart->getItems() as $item) {
+            if (!$item->getIsGiftItem()) {
+                continue;
+            }
+
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $cartItem = $item;
+
+                break;
+            }
+        }
+
+        Assert::notNull(
+            $cartItem,
+            sprintf(
+                'Product %s is not in the Cart or is not a gift',
+                $product->getName(),
+            ),
+        );
+
+        Assert::null(
+            $cartItem->getUnitDefinition(),
+            'Expected cart item to have not a unit-definition, but it had one',
         );
     }
 

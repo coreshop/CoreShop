@@ -29,8 +29,9 @@ class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
     private array $cache = [];
 
-    public function __construct(private TaxCalculatorFactoryInterface $taxCalculatorFactory)
-    {
+    public function __construct(
+        private TaxCalculatorFactoryInterface $taxCalculatorFactory,
+    ) {
     }
 
     public function getTaxCalculatorForAddress(

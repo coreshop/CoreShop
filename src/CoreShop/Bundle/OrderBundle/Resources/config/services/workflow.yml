@@ -1,10 +1,10 @@
 parameters:
-    _defaults:
-        public: true
-
     coreshop.workflow.include_invoice_state_to_complete_order: false
 
 services:
+    _defaults:
+        public: true
+
     CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver:
         public: true
         arguments:
@@ -119,3 +119,6 @@ services:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.invoice_state'
+
+    CoreShop\Component\Order\Modifier\ImmutabilityModifierInterface: '@CoreShop\Component\Order\Modifier\ImmutabilityModifier'
+    CoreShop\Component\Order\Modifier\ImmutabilityModifier: ~

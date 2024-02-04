@@ -1,12 +1,16 @@
-# CoreShop Tax Rules
+# Tax Rules
 
-Tax Rules determine which Tax Rate should be used for the customers country/state. This Tax Rule is then applied to a product.
+Tax Rules in CoreShop are instrumental in determining the appropriate Tax Rate based on the customer's country or state.
+These rules ensure that the correct tax is applied to products during transactions.
 
-A Tax Rule consists of following values:
+## Key Components of a Tax Rule
 
- - Name
- - Active
- - Stores: In which Stores this Tax-Rule can be used.
- - Rules: Which Country and/or State should use which Tax Rate and what should happen when multiple Tax Rates apply.
+Each Tax Rule is characterized by several important attributes:
+
+- **Name**: The identifier for the Tax Rule.
+- **Active**: Indicates whether the Tax Rule is currently in use.
+- **Stores**: Specifies which stores can apply this Tax Rule.
+- **Rules**: Defines the relationship between Countries/States and Tax Rates, and the handling of scenarios where
+  multiple Tax Rates are applicable.
 
 ![Tax Rules](img/taxrules.png)

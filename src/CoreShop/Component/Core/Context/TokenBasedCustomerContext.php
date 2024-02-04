@@ -27,8 +27,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class TokenBasedCustomerContext implements CustomerContextInterface
 {
-    public function __construct(private TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private TokenStorageInterface $tokenStorage,
+    ) {
     }
 
     public function getCustomer(): CustomerInterface

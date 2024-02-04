@@ -23,8 +23,9 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class OrderRenderer implements OrderRendererInterface
 {
-    public function __construct(private ServiceRegistryInterface $registry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $registry,
+    ) {
     }
 
     public function render(WorkerInterface $worker, OrderInterface $condition, string $prefix = null)

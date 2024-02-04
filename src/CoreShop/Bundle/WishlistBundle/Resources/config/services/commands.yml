@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\WishlistBundle\Command\WishlistExpireCommand:
+        arguments:
+            - '@coreshop.storage_list.expiration.wishlist'
+            - '%coreshop.storage_list.expiration.wishlist.days%'
+            - '%coreshop.storage_list.expiration.wishlist.params%'
+        tags:
+          - { name: console.command, command: coreshop:wishlist:expire }

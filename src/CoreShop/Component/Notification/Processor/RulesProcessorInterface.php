@@ -18,10 +18,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Notification\Processor;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
+
 interface RulesProcessorInterface
 {
-    /**
-     * @param mixed  $subject
-     */
-    public function applyRules(string $type, $subject, array $params = []): void;
+    public function applyRules(string $type, ResourceInterface $subject, array $params = []): void;
 }

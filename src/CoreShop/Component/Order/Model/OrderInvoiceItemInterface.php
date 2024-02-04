@@ -20,6 +20,8 @@ namespace CoreShop\Component\Order\Model;
 
 interface OrderInvoiceItemInterface extends OrderDocumentItemInterface
 {
+    public function getId(): ?int;
+
     public function getTotal(bool $withTax = true): int;
 
     public function setTotal(int $total, bool $withTax = true);

@@ -24,8 +24,8 @@ final class ShippingPriceCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
     public const SHIPPING_PRICE_CALCULATOR_TAG = 'coreshop.shipping.price_calculator';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.shipping.price_calculators',
             'coreshop.shipping.price_calculators',

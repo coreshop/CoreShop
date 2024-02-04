@@ -24,7 +24,9 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 interface PurchasableInterface extends ResourceInterface
 {
-    public function getName($language = null): ?string;
+    public function getId(): ?int;
+
+    public function getName(?string $language = null): ?string;
 
     public function getWholesaleBuyingPrice(): ?Money;
 

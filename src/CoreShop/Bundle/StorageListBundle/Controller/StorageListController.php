@@ -24,10 +24,13 @@ use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\DTO\AddToStorageListInterface;
 use CoreShop\Component\StorageList\Factory\AddToStorageListFactoryInterface;
 use CoreShop\Component\StorageList\Factory\StorageListItemFactoryInterface;
+use CoreShop\Component\StorageList\Model\ShareableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -35,10 +38,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StorageListController extends AbstractController
 {
     public function __construct(
+        ContainerInterface $container,
         protected string $identifier,
         protected FormFactoryInterface $formFactory,
         protected RepositoryInterface $repository,
@@ -55,13 +62,26 @@ class StorageListController extends AbstractController
         protected string $indexRoute,
         protected string $templateAddToList,
         protected string $templateSummary,
+        protected TranslatorInterface $translator,
     ) {
+        $this->setContainer($container);
     }
 
     public function addItemAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier)));
+        $privilege = sprintf('CORESHOP_%s', strtoupper($this->identifier));
+        $privilegeAdd = sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier));
+        if ($request->isMethod('GET') && !($this->isGranted($privilege) && $this->isGranted($privilegeAdd))) {
+            return $this->render(
+                $this->getParameterFromRequest($request, 'template', $this->templateAddToList),
+                [
+                    'form' => null,
+                    'product' => null,
+                ],
+            );
+        }
+        $this->denyAccessUnlessGranted($privilege);
+        $this->denyAccessUnlessGranted($privilegeAdd);
 
         $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->summaryRoute));
         $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
@@ -99,7 +119,7 @@ class StorageListController extends AbstractController
                 $this->modifier->addToList($addToStorageList->getStorageList(), $addToStorageList->getStorageListItem());
                 $this->manager->persist($storageList);
 
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
+                $this->addFlash('success', $this->translator->trans('coreshop.ui.item_added'));
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
@@ -162,52 +182,81 @@ class StorageListController extends AbstractController
             return $this->redirectToRoute($this->indexRoute);
         }
 
-        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
+        $this->addFlash('success', $this->translator->trans('coreshop.ui.item_removed'));
 
         $this->modifier->removeFromList($storageList, $storageListItem);
         $this->manager->persist($storageList);
+
+        $request->attributes->set('product', $storageListItem->getProduct());
 
         return $this->redirectToRoute($this->summaryRoute);
     }
 
     public function summaryAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_SUMMARY', strtoupper($this->identifier)));
+        $repository = $this->repository;
+        $isSharedList = false;
 
-        $list = $this->context->getStorageList();
-        $form = $this->formFactory->createNamed('coreshop', $this->form, $list);
-        $form->handleRequest($request);
-
-        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted()) {
-            if ($form->isValid()) {
-                $list = $form->getData();
-
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
-
-                $this->manager->persist($list);
-
-                return $this->redirectToRoute($this->summaryRoute);
+        if ($request->attributes->get('identifier')) {
+            if (!$repository instanceof ShareableStorageListRepositoryInterface) {
+                throw new NotFoundHttpException();
             }
 
-            $session = $request->getSession();
+            $list = $repository->findByToken($request->attributes->get('identifier'));
+            $isSharedList = true;
 
-            if ($session instanceof Session) {
-                /**
-                 * @var FormError $error
-                 */
-                foreach ($form->getErrors() as $error) {
-                    $session->getFlashBag()->add('error', $error->getMessage());
-                }
-
-                return $this->redirectToRoute($this->summaryRoute);
+            if (null === $list) {
+                throw new NotFoundHttpException();
             }
+        } else {
+            $list = $this->context->getStorageList();
         }
 
-        return $this->render($this->templateSummary, [
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)), $list);
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_SUMMARY', strtoupper($this->identifier)), $list);
+
+        $params = [
             'storage_list' => $list,
-            'form' => $form->createView(),
-        ]);
+            'is_shared_list' => $isSharedList,
+        ];
+
+        if (!$isSharedList) {
+            $form = $this->formFactory->createNamed('coreshop', $this->form, $list);
+            $form->handleRequest($request);
+
+            if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted()) {
+                if ($form->isValid()) {
+                    $list = $form->getData();
+
+                    $this->addFlash('success', $this->translator->trans('coreshop.ui.cart_updated'));
+
+                    $this->manager->persist($list);
+
+                    return $this->redirectToRoute($this->summaryRoute);
+                }
+
+                $session = $request->getSession();
+
+                if ($session instanceof Session) {
+                    /**
+                     * @var FormError $error
+                     */
+                    foreach ($form->getErrors() as $error) {
+                        $session->getFlashBag()->add('error', $error->getMessage());
+                    }
+
+                    return $this->redirectToRoute($this->summaryRoute);
+                }
+            }
+
+            $params['form'] = $form->createView();
+        }
+
+        if (!$isSharedList && $list instanceof ShareableStorageListInterface && $list->listCanBeShared()) {
+            $params['share_link'] = $this->generateUrl($this->summaryRoute, ['identifier' => $list->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
+        return $this->render($this->templateSummary, $params);
     }
 
     protected function createAddToStorageList(

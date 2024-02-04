@@ -16,11 +16,16 @@ services:
 
     CoreShop\Bundle\IndexBundle\EventListener\IndexObjectListener:
         arguments:
-            - '@CoreShop\Component\Index\Service\IndexUpdaterService'
+            - '@messenger.default_bus'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.postAdd, method: onPostUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: onPostUpdate }
-            - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }
+
+    CoreShop\Bundle\IndexBundle\EventListener\IndexDeleteObjectListener:
+        arguments:
+            - '@messenger.default_bus'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: onPreDelete }
 
     CoreShop\Bundle\IndexBundle\EventListener\UpdateIndexListener:
         arguments:

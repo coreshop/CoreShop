@@ -1,5 +1,4 @@
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/form.yml }
     - { resource: services/profiler.yml }
     - { resource: services/pimcore.yml }
@@ -26,15 +25,6 @@ services:
 
     CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver:
         public: false
-
-    CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver:
-        public: false
-        arguments:
-            - '@coreshop.repository.country'
-            - '@Pimcore\Cache\Core\CoreCacheHandler'
-            - '%pimcore.geoip.db_file%'
-        tags:
-            - { name: coreshop.context.country.request_based.resolver, priority: 10 }
 
     CoreShop\Component\Address\Context\RequestBased\CachedCountryContext:
         decorates: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver

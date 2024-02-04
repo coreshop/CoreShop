@@ -19,7 +19,7 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
         if (!Ext.ClassManager.isCreated(modelName)) {
             Ext.define(modelName, {
                 extend: 'Ext.data.Model',
-                idProperty: 'o_id'
+                idProperty: 'id'
             });
         }
 
@@ -95,7 +95,7 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
                         queryMode: 'local',
                         width: 500,
                         displayField: 'name',
-                        valueField: 'o_id',
+                        valueField: 'id',
                         displayTpl: Ext.create('Ext.XTemplate', '<tpl for=".">', '{firstname} {lastname}, {postcode} {city}, {street} {number}', '</tpl>'),
                         listConfig: {
                             itemTpl: Ext.create('Ext.XTemplate', '', '{firstname} {lastname}, {postcode} {city}, {street} {number}', '')
@@ -157,7 +157,7 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
                         iconCls: 'coreshop_icon_open',
                         text: t('open'),
                         handler: function () {
-                            pimcore.helpers.openObject(address.o_id);
+                            pimcore.helpers.openObject(address.id);
                         }.bind(this)
                     }
                 ]

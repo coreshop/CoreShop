@@ -26,7 +26,7 @@ coreshop.product.workflow.variantUnitDefinitionSolidifier = Class.create({
         this.data = object.data;
 
         Ext.Ajax.request({
-            url: Routing.generate('coreshop_admin_purchsable_variant_unit_solidifier_check', {objectid: this.object.general.o_id}),
+            url: Routing.generate('coreshop_admin_purchsable_variant_unit_solidifier_check', {objectId: this.object.general.id}),
             method: 'GET',
             success: function (response) {
                 var res = Ext.decode(response.responseText);
@@ -58,7 +58,7 @@ coreshop.product.workflow.variantUnitDefinitionSolidifier = Class.create({
         this.panel.setLoading(t('loading'));
 
         Ext.Ajax.request({
-            url: Routing.generate('coreshop_admin_purchsable_variant_unit_solidifier_apply', {objectid: this.object.general.o_id}),
+            url: Routing.generate('coreshop_admin_purchsable_variant_unit_solidifier_apply', {objectId: this.object.general.id}),
             method: 'PUT',
             success: function (response) {
 

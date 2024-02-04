@@ -23,16 +23,17 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class AccessVoter extends Voter
 {
-    public function __construct(protected string $prefix = 'CORESHOP_')
-    {
+    public function __construct(
+        protected string $prefix = 'CORESHOP_',
+    ) {
     }
 
-    protected function supports(string $attribute, $subject)
+    protected function supports(string $attribute, $subject): bool
     {
         return str_starts_with($attribute, $this->prefix);
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         return true;
     }

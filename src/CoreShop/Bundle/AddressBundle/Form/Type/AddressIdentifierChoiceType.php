@@ -27,8 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressIdentifierChoiceType extends AbstractType
 {
-    public function __construct(private RepositoryInterface $addressIdentifierRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $addressIdentifierRepository,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

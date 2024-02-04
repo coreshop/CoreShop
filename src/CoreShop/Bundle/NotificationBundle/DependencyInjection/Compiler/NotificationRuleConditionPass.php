@@ -22,8 +22,8 @@ final class NotificationRuleConditionPass extends AbstractNotificationRulePass
 {
     public const NOTIFICATION_CONDITION_TAG = 'coreshop.notification_rule.condition';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.notification_rule.conditions',
             'coreshop.form_registry.notification_rule.conditions',

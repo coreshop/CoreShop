@@ -23,8 +23,9 @@ use Twig\TwigFunction;
 
 final class TestHtmlAttributeExtension extends AbstractExtension
 {
-    public function __construct(private string $env)
-    {
+    public function __construct(
+        private string $env,
+    ) {
     }
 
     public function getFunctions(): array

@@ -23,13 +23,20 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SluggableSlugger implements SluggableSluggerInterface
 {
-    public function __construct(protected SluggerInterface $slugger)
-    {
+    public function __construct(
+        protected SluggerInterface $slugger,
+    ) {
     }
 
     public function slug(SluggableInterface $sluggable, string $locale, string $suffix = null): string
     {
-        $name = $sluggable->getNameForSlug($locale) ?: (string) $sluggable->getId();
+        $fallback = (string) $sluggable->getId();
+
+        if ($sluggable instanceof KeyableSluggableInterface) {
+            $fallback = $sluggable->getKey();
+        }
+
+        $name = $sluggable->getNameForSlug($locale) ?: $fallback;
 
         if (!$name) {
             throw new SlugNotPossibleException('name is empty');

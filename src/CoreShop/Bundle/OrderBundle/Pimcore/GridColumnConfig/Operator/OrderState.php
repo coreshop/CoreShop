@@ -19,7 +19,9 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator;
 
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\Operator\AbstractOperator;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\ResultContainer;
+use Pimcore\Model\Element\ElementInterface;
 
 class OrderState extends AbstractOperator
 {
@@ -34,16 +36,11 @@ class OrderState extends AbstractOperator
         $this->highlightLabel = $config->highlightLabel;
     }
 
-    /**
-     * @param \Pimcore\Model\Element\ElementInterface $element
-     *
-     * @return \stdClass|string|null
-     */
-    public function getLabeledValue($element)
+    public function getLabeledValue(array|ElementInterface $element): ResultContainer|\stdClass|null
     {
         $result = new \stdClass();
         $result->label = $this->label;
-        $children = $this->getChilds();
+        $children = $this->getChildren();
 
         if (!$children) {
             return $result;

@@ -45,7 +45,8 @@ class HistoryLogger implements HistoryLoggerInterface
             $message = $this->translator->trans($message, [], 'admin');
         }
 
-        $note->setTitle(
+        $note->setTitle('coreshop_history_change');
+        $note->setDescription(
             sprintf(
                 '%s: %s',
                 $this->translator->trans('coreshop_workflow_history_logger_prefix', [], 'admin'),

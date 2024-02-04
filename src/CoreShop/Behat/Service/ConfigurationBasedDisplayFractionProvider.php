@@ -22,8 +22,9 @@ use CoreShop\Component\Currency\Display\DisplayFractionProviderInterface;
 
 class ConfigurationBasedDisplayFractionProvider implements DisplayFractionProviderInterface
 {
-    public function __construct(protected int $decimalPrecision)
-    {
+    public function __construct(
+        protected int $decimalPrecision,
+    ) {
     }
 
     public function getDisplayFraction(array $context): int

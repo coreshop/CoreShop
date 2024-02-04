@@ -24,8 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexColumnInterpreterChoiceType extends AbstractType
 {
-    public function __construct(private array $interpreters)
-    {
+    public function __construct(
+        private array $interpreters,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

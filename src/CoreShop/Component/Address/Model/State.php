@@ -51,8 +51,8 @@ class State extends AbstractResource implements StateInterface, \Stringable
      */
     protected $country;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeTranslationsCollection();
     }
 
@@ -61,10 +61,7 @@ class State extends AbstractResource implements StateInterface, \Stringable
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -81,12 +78,12 @@ class State extends AbstractResource implements StateInterface, \Stringable
         return $this;
     }
 
-    public function getName($language = null)
+    public function getName(?string $language = null)
     {
         return $this->getTranslation($language)->getName();
     }
 
-    public function setName($name, $language = null)
+    public function setName($name, ?string $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
 

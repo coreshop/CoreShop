@@ -24,8 +24,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class ViewHandler implements ViewHandlerInterface
 {
-    public function __construct(private SerializerInterface $serializer)
-    {
+    public function __construct(
+        private SerializerInterface $serializer,
+    ) {
     }
 
     public function handle($data, array $options = []): JsonResponse

@@ -48,3 +48,15 @@ core_shop_storage_list:
                 summary: '@CoreShopFrontend/Cart/summary.html.twig'
             controller:
                 enabled: false
+            expiration:
+                enabled: true
+                service: CoreShop\Bundle\OrderBundle\Expiration\OrderAndCartExpiration
+                days: 0
+                params:
+                    cart:
+                        days: 0
+                        params:
+                            anonymous: true
+                            customer: false
+                    order:
+                        days: 20

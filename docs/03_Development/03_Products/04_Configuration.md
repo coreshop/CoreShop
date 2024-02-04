@@ -1,4 +1,4 @@
-# CoreShop Product Configuration
+# Product Configuration
 
 ```yaml
 core_shop_product:

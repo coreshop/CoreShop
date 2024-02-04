@@ -26,8 +26,8 @@ final class CompositeCurrencyContextPass extends PrioritizedCompositeServicePass
 {
     public const CURRENCY_CONTEXT_SERVICE_TAG = 'coreshop.context.currency';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             CurrencyContextInterface::class,
             CompositeCurrencyContext::class,

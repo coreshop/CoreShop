@@ -26,8 +26,8 @@ final class CompositeThemeResolverPass extends PrioritizedCompositeServicePass
 {
     public const THEME_RESOLVER_TAG = 'coreshop.theme.resolver';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             ThemeResolverInterface::class,
             CompositeThemeResolver::class,

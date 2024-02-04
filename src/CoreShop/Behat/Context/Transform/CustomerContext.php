@@ -46,6 +46,18 @@ final class CustomerContext implements Context
     }
 
     /**
+     * @Transform /^guest "([^"]+)"$/
+     */
+    public function getGuestByEmail($email): CustomerInterface
+    {
+        $customer = $this->customerRepository->findGuestByEmail($email);
+
+        Assert::isInstanceOf($customer, CustomerInterface::class);
+
+        return $customer;
+    }
+
+    /**
      * @Transform /^customer$/
      */
     public function customer(): CustomerInterface

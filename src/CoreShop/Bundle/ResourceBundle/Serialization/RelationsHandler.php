@@ -26,8 +26,9 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
 {
-    public function __construct(private EntityManagerInterface $manager)
-    {
+    public function __construct(
+        private EntityManagerInterface $manager,
+    ) {
     }
 
     public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)

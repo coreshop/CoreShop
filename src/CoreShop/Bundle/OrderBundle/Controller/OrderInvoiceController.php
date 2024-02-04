@@ -22,6 +22,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -32,12 +33,17 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class OrderInvoiceController extends PimcoreController
 {
@@ -79,7 +85,7 @@ class OrderInvoiceController extends PimcoreController
 
                 $event = new GenericEvent($orderItem, $itemToReturn);
 
-                $this->get('event_dispatcher')->dispatch($event, 'coreshop.order.invoice.prepare_invoice_able');
+                $this->container->get('event_dispatcher')->dispatch($event, 'coreshop.order.invoice.prepare_invoice_able');
 
                 $itemsToReturn[] = $event->getArguments();
             }
@@ -92,7 +98,7 @@ class OrderInvoiceController extends PimcoreController
     {
         $orderId = $this->getParameterFromRequest($request, 'id');
 
-        $form = $this->get('form.factory')->createNamed('', OrderInvoiceCreationType::class);
+        $form = $this->container->get('form.factory')->createNamed('', OrderInvoiceCreationType::class);
 
         $handledForm = $form->handleRequest($request);
 
@@ -101,7 +107,7 @@ class OrderInvoiceController extends PimcoreController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
+                        'message' => $this->container->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
                     ],
                 );
             }
@@ -193,36 +199,51 @@ class OrderInvoiceController extends PimcoreController
 
     private function getProcessableHelper(): ProcessableInterface
     {
-        return $this->get('coreshop.order.invoice.processable');
+        return $this->container->get('coreshop.order.invoice.processable');
     }
 
     private function getOrderRepository(): OrderRepositoryInterface
     {
-        return $this->get('coreshop.repository.order');
+        return $this->container->get('coreshop.repository.order');
     }
 
     private function getOrderDocumentRenderer(): OrderDocumentRendererInterface
     {
-        return $this->get('coreshop.renderer.order.pdf');
+        return $this->container->get('coreshop.renderer.order.pdf');
     }
 
     private function getOrderInvoiceRepository(): OrderInvoiceRepositoryInterface
     {
-        return $this->get('coreshop.repository.order_invoice');
+        return $this->container->get('coreshop.repository.order_invoice');
     }
 
     private function getInvoiceFactory(): PimcoreFactoryInterface
     {
-        return $this->get('coreshop.factory.order_invoice');
+        return $this->container->get('coreshop.factory.order_invoice');
     }
 
     private function getOrderToInvoiceTransformer(): OrderDocumentTransformerInterface
     {
-        return $this->get('coreshop.order.transformer.order_to_invoice');
+        return $this->container->get('coreshop.order.transformer.order_to_invoice');
     }
 
     protected function getStateMachineManager(): StateMachineManager
     {
-        return $this->get('coreshop.state_machine_manager');
+        return $this->container->get(StateMachineManagerInterface::class);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+                new SubscribedService('coreshop.repository.order', ProcessableInterface::class, attributes: new Autowire(service:'coreshop.repository.order')),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+                new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
+                new SubscribedService('coreshop.order.invoice.processable', NoteServiceInterface::class, attributes: new Autowire(service:'coreshop.order.invoice.processable')),
+                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire(service:'coreshop.renderer.order.pdf')),
+                new SubscribedService('coreshop.factory.order_invoice', FactoryInterface::class, attributes: new Autowire(service:'coreshop.factory.order_invoice')),
+                new SubscribedService('coreshop.order.transformer.order_to_invoice', OrderDocumentTransformerInterface::class, attributes: new Autowire('@CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer')),
+                new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_invoice')),
+                new SubscribedService(StateMachineManagerInterface::class, StateMachineManagerInterface::class),
+            ]);
     }
 }

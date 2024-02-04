@@ -46,15 +46,12 @@ class TaxRate extends AbstractResource implements TaxRateInterface, \Stringable
      */
     protected $rate = 0;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeTranslationsCollection();
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

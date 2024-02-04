@@ -29,8 +29,8 @@ final class CompositeLocaleContext implements LocaleContextInterface
      */
     private PriorityQueue $localeContexts;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->localeContexts = new PriorityQueue();
     }
 

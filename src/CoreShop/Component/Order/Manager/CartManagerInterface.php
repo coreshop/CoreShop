@@ -22,5 +22,5 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartManagerInterface
 {
-    public function persistCart(OrderInterface $cart): void;
+    public function persistCart(OrderInterface $cart/*, array $params = []*/): void;
 }

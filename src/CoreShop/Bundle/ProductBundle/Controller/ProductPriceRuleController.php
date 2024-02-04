@@ -37,7 +37,7 @@ class ProductPriceRuleController extends ResourceController
      */
     protected function getConfigActions(): array
     {
-        return $this->container->getParameter('coreshop.product_price_rule.actions');
+        return $this->getParameter('coreshop.product_price_rule.actions');
     }
 
     /**
@@ -45,6 +45,6 @@ class ProductPriceRuleController extends ResourceController
      */
     protected function getConfigConditions(): array
     {
-        return $this->container->getParameter('coreshop.product_price_rule.conditions');
+        return $this->getParameter('coreshop.product_price_rule.conditions');
     }
 }

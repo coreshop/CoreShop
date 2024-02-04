@@ -24,8 +24,8 @@ class RegisterReportsPass extends RegisterSimpleRegistryTypePass
 {
     public const REPORT_TAG = 'coreshop.report';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.reports',
             'coreshop.reports',

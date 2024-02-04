@@ -1,9 +1,6 @@
 parameters:
     coreshop.workflow.manager.history_log_state_identifier: !php/const CoreShop\Bundle\WorkflowBundle\Notes::HISTORY_STATE_LOG
 
-imports:
-    - { resource: services_alias.yml }
-
 services:
     _defaults:
         public: true

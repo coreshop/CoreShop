@@ -22,4 +22,4 @@ services:
         decorates: 'doctrine.orm.default_metadata_driver'
         arguments:
             - '@CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriverChain.inner'
-            - '@coreshop.resource_registry'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'

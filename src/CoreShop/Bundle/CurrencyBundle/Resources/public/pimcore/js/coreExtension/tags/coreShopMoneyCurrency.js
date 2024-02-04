@@ -64,11 +64,11 @@ pimcore.object.tags.coreShopMoneyCurrency = Class.create(pimcore.object.tags.abs
         //container.width += container.labelWidth + valueField.width + currencyField.width;
 
         if (is_numeric(this.fieldConfig["minValue"])) {
-            input.minValue = this.fieldConfig.minValue;
+            valueField.minValue = this.fieldConfig.minValue;
         }
 
         if (is_numeric(this.fieldConfig["maxValue"])) {
-            input.maxValue = this.fieldConfig.maxValue;
+            valueField.maxValue = this.fieldConfig.maxValue;
         }
 
         container.items = [

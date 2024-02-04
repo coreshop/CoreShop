@@ -23,6 +23,11 @@ use CoreShop\Component\User\Model\User as BaseUser;
 
 abstract class User extends BaseUser implements UserInterface
 {
+    public function getUserIdentifier(): string
+    {
+        return $this->getLoginIdentifier();
+    }
+
     public function getRoles(): array
     {
         $roles = parent::getRoles();

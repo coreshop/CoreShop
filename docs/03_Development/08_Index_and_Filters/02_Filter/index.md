@@ -1,66 +1,71 @@
-# CoreShop Filter
+# Filter Configuration
 
-After creating the index, you can configure the Filters.
+After setting up the product index, the next step is to configure filters. These filters enhance the user experience by
+enabling customers to easily find products based on various criteria.
 
-## Create a new Filter
+## Creating a New Filter
 
-You can create different Filters for different Categories.
-
-A filter exists of different settings, pre-conditions, filters and similar products.
-
-You can even create [Custom Filters](01_Custom_Filter.md)
+Filters can be tailored for different categories in your store. Each filter comprises settings, pre-conditions, specific
+filters, and options for similar products. Custom filters can also be created as detailed
+in [Custom Filters](01_Custom_Filter.md).
 
 ### Filter Settings
 
+Configure the basic settings of your filter:
+
 ![Filter Settings](./img/filter-settings.png)
 
-| Field            | Description |
-| ---------------- |-------------|
-| Name             | Name of the Filter-Set |
-| Index            | Which Index should be used |
-| Order            | Order of the products |
-| Order Key        | Order key (index-field) to sort from |
-| Results per Page | How many products should be displayed per page, you can use Shop Settings, or override it |
+| Field            | Description                                                                                        |
+|------------------|----------------------------------------------------------------------------------------------------|
+| Name             | The name of the filter set.                                                                        |
+| Index            | The index to be used for filtering.                                                                |
+| Order            | The default order in which products are displayed.                                                 |
+| Order Key        | The index field used for sorting products.                                                         |
+| Results per Page | Number of products displayed per page. This can be set using shop settings or overridden manually. |
 
 ### Pre-Conditions
 
+Define pre-filters for the index:
+
 ![Filter Pre-Conditions](./img/filter-preconditions.png)
 
-You can define pre-filters for the index.
+These pre-filters refine the initial dataset before any user-driven filtering.
 
 ### Conditions
 
+Set up various filters that will be available to customers:
+
 ![Filter Conditions](./img/filter-conditions.png)
 
-Here you can define different kind of filters. These filters will be displayed on the front-page for customers to find products.
-
-CoreShop currently supports 4 types of filters:
-
- - **Select**
- - **Multiselect**
- - **Range**
- - **Boolean**
+CoreShop supports four main types of filters:
 
 #### Select Condition
 
-A select condition is basically just a simple dropdown field where customer can select one field.
+- **Description**: A dropdown field allowing the selection of a single option.
+- **Example**:
 
-![Filter Condition Select](./img/filter-condition-select.png)
+  ![Filter Condition Select](./img/filter-condition-select.png)
 
 #### Multiselect Condition
 
-A multi-select condition is basically a list of fields where customer can select multiple entries.
+- **Description**: A list where multiple options can be selected.
+- **Example**:
 
-![Filter Condition Select](./img/filter-condition-multiselect.png)
+  ![Filter Condition Multiselect](./img/filter-condition-multiselect.png)
 
 #### Range Condition
 
-A Range Condition is a slider of two ranges. The ranges are calculated automatically using MIN and MAX values.
+- **Description**: A slider representing a range, with automatic calculation of MIN and MAX values.
+- **Example**:
 
-![Filter Condition Select](./img/filter-condition-range.png)
+  ![Filter Condition Range](./img/filter-condition-range.png)
 
 #### Boolean Condition
 
-Boolean is a Condition where the customer can check different values.
+- **Description**: A set of checkboxes for selecting various boolean (true/false) options.
+- **Example**:
 
-![Filter Condition Select](./img/filter-condition-boolean.png)
+  ![Filter Condition Boolean](./img/filter-condition-boolean.png)
+
+With these filter configurations, customers can easily navigate and discover products in your store, enhancing their
+shopping experience.

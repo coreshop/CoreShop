@@ -24,8 +24,8 @@ class RegisterFilterPreConditionTypesPass extends RegisterRegistryTypePass
 {
     public const INDEX_FILTER_PRE_CONDITION_TAG = 'coreshop.filter.pre_condition_type';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.filter.pre_condition_types',
             'coreshop.form_registry.filter.pre_condition_types',

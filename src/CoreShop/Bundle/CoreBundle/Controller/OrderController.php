@@ -78,6 +78,14 @@ class OrderController extends BaseOrderController
             ];
         }
 
+        if ($order instanceof CoreOrderInterface && $order->getPaymentProviderFee() > 0) {
+            $serialized[] = [
+                'key' => 'payment_provider_fee',
+                'value' => $order->getPaymentProviderFee(),
+                'convertedValue' => $order->getConvertedPaymentProviderFee(),
+            ];
+        }
+
         return $serialized;
     }
 

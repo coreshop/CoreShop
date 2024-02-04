@@ -49,4 +49,9 @@ final class Notes
      * Note Identifier for order comments.
      */
     public const NOTE_ORDER_COMMENT = 'order_comment';
+
+    /**
+     * Note Identifier for backend order updates.
+     */
+    public const NOTE_ORDER_BACKEND_UPDATE_SAVE = 'order_backend_update_save';
 }

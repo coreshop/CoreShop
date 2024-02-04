@@ -1,20 +1,18 @@
-# CoreShop Product
+# Product
 
-CoreShop uses Pimcore Data Objects to persist Product Information. But, it adds a little wrapper around it to be more
-dynamic and configurable. It uses a Factory and Repository Pattern to do that.
+CoreShop leverages Pimcore Data Objects for persisting Product Information but adds a layer of dynamism and
+configurability through a Factory and Repository Pattern.
 
 ## Create
 
-If you want to create a new Product, we need to get our Factory Service for that:
+To create a new product, first obtain the Factory Service:
 
 ```php
 $productFactory = $container->get('coreshop.factory.product');
 $product = $productFactory->createNew();
 ```
 
-No we have our product and we can set all needed values.
-
-If you now want to save it, just call the save function
+After setting the necessary values on the product, save it:
 
 ```php
 $product->save();
@@ -22,29 +20,26 @@ $product->save();
 
 ## Read
 
-To get products, you need to use the Repository Service CoreShop provides you.
+Use the Repository Service provided by CoreShop to retrieve products:
 
 ```php
 $repository = $container->get('coreshop.repository.product');
-
 
 // Query by ID
 $productWithIdOne = $repository->findById(1);
 
-// Get a Listing how you know it from Pimcore
+// Get a Listing as in Pimcore
 $list = $repository->getList();
 $list->setCondition("active = 1");
 $products = $list->getObjects();
-
 ```
 
 ## Update
 
-Update works the same as you are used to in Pimcore
+Updating a product follows the same pattern as in Pimcore:
 
 ```php
 $repository = $container->get('coreshop.repository.product');
-
 
 // Query by ID
 $productWithIdOne = $repository->findById(1);
@@ -56,11 +51,10 @@ $productWithIdOne->save();
 
 ## Delete
 
-Delete works the same as you are used to in Pimcore
+Deleting a product also follows the familiar Pimcore process:
 
 ```php
 $repository = $container->get('coreshop.repository.product');
-
 
 // Query by ID
 $productWithIdOne = $repository->findById(1);

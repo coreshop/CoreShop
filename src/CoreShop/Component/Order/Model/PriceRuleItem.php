@@ -23,9 +23,9 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 
 abstract class PriceRuleItem extends AbstractPimcoreFieldcollection implements PriceRuleItemInterface
 {
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->getObject()->getId() . '_cart_price_rule_' . $this->getIndex();
+        return null;
     }
 
     public function getDiscount(bool $withTax = true): int

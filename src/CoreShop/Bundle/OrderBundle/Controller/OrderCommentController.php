@@ -21,12 +21,15 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class OrderCommentController extends PimcoreController
 {
@@ -35,7 +38,7 @@ class OrderCommentController extends PimcoreController
         $orderId = $this->getParameterFromRequest($request, 'id');
         $order = $this->getOrderRepository()->find($orderId);
 
-        $objectNoteService = $this->get(NoteServiceInterface::class);
+        $objectNoteService = $this->container->get(NoteServiceInterface::class);
         $notes = $objectNoteService->getObjectNotes($order, Notes::NOTE_ORDER_COMMENT);
 
         $parsedData = [];
@@ -68,7 +71,7 @@ class OrderCommentController extends PimcoreController
         }
 
         try {
-            $objectNoteService = $this->get(NoteServiceInterface::class);
+            $objectNoteService = $this->container->get(NoteServiceInterface::class);
             $commentEntity = $objectNoteService->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_COMMENT);
             $commentEntity->setTitle('Order Comment');
             $commentEntity->setDescription(nl2br($comment));
@@ -84,8 +87,9 @@ class OrderCommentController extends PimcoreController
     public function deleteAction(Request $request): JsonResponse
     {
         $commentId = $this->getParameterFromRequest($request, 'id');
-        $objectNoteService = $this->get(NoteServiceInterface::class);
-        $commentEntity = $objectNoteService->getNoteById($commentId);
+
+        $objectNoteService = $this->container->get(NoteServiceInterface::class);
+        $commentEntity = $objectNoteService->getNoteById((int) $commentId);
 
         if ($commentEntity instanceof Note) {
             /** @psalm-suppress InternalMethod */
@@ -97,6 +101,15 @@ class OrderCommentController extends PimcoreController
 
     private function getOrderRepository(): PimcoreRepositoryInterface
     {
-        return $this->get('coreshop.repository.order');
+        return $this->container->get('coreshop.repository.order');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+                new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+                new SubscribedService(NoteServiceInterface::class, NoteServiceInterface::class),
+            ]);
     }
 }

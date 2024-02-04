@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
+use CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -28,8 +29,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class InstallResourcesCommand extends Command
 {
-    public function __construct(protected ResourceInstallerInterface $resourceInstaller)
-    {
+    public function __construct(
+        protected ResourceInstallerInterface $resourceInstaller,
+    ) {
         parent::__construct();
     }
 
@@ -49,6 +51,12 @@ EOT
                 InputOption::VALUE_REQUIRED,
                 'Application Name',
             )
+            ->addOption(
+                'update-classes',
+                null,
+                InputOption::VALUE_NONE,
+                'Set this option to update class definitions if they already exist',
+            )
         ;
     }
 
@@ -66,7 +74,11 @@ EOT
             $kernel->getEnvironment(),
         ));
 
-        $this->resourceInstaller->installResources($output, $input->getOption('application-name'));
+        $this->resourceInstaller->installResources(
+            $output,
+            $input->getOption('application-name'),
+            [PimcoreClassInstaller::OPTION_UPDATE_CLASSES => $input->getOption('update-classes')],
+        );
 
         return 0;
     }

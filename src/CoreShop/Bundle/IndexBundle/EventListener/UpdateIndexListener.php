@@ -22,12 +22,12 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Symfony\Component\Intl\Exception\InvalidArgumentException;
 
 final class UpdateIndexListener
 {
-    public function __construct(private ServiceRegistryInterface $workerServiceRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $workerServiceRegistry,
+    ) {
     }
 
     public function onPreUpdate(IndexInterface $index, PreUpdateEventArgs $event): void
@@ -42,7 +42,7 @@ final class UpdateIndexListener
         $workerType = $index->getWorker();
 
         if (!$this->workerServiceRegistry->has($workerType)) {
-            throw new InvalidArgumentException(sprintf('%s Worker not found', $workerType));
+            throw new \InvalidArgumentException(sprintf('%s Worker not found', $workerType));
         }
 
         /**

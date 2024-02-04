@@ -24,8 +24,8 @@ final class ShippingTaxCalculationStrategyPass extends RegisterRegistryTypePass
 {
     public const SHIPPING_TAX_STRATEGY_TAG = 'coreshop.shipping.tax_calculation_strategy';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.shipping.tax_calculation_strategies',
             'coreshop.form_registry.shipping.tax_calculation_strategies',

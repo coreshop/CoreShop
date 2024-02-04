@@ -11,17 +11,27 @@
  */
 
 pimcore.registerNS('coreshop.selector.object');
-coreshop.selector.object = Class.create(pimcore.element.selector.object, {
+coreshop.selector.object = Class.create(pimcore.bundle.search.element.selector.object, {
+    fieldObject: {},
+    gridType: 'object',
+
+    initStore: function () {
+        return 0; // dummy
+    },
+
+    getTabTitle: function() {
+        return "object_search";
+    },
     getForm: function () {
-        var i;
+        let i;
 
         //set "Home" object ID for search grid column configuration
-        this.object  = new Object();
+        this.object  = {};
         this.object.id = 1;
 
         this.searchType = "search";
 
-        var compositeConfig = {
+        const compositeConfig = {
             xtype: "toolbar",
             items: [{
                 xtype: "textfield",
@@ -53,7 +63,7 @@ coreshop.selector.object = Class.create(pimcore.element.selector.object, {
         var selectedClassStore = [];
         for (i=0; i<possibleClassRestrictions.length; i++) {
             if(in_array(possibleClassRestrictions[i], this.parent.classes )) {
-                filterClassStore.push([possibleClassRestrictions[i], ts(possibleClassRestrictions[i])]);
+                filterClassStore.push([possibleClassRestrictions[i], t(possibleClassRestrictions[i])]);
                 selectedClassStore.push(possibleClassRestrictions[i]);
             }
         }
@@ -147,5 +157,3 @@ coreshop.selector.object = Class.create(pimcore.element.selector.object, {
         }
     },
 });
-
-pimcore.element.selector.object.addMethods(pimcore.element.helpers.gridColumnConfig);

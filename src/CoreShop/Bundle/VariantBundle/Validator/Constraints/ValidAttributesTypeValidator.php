@@ -27,8 +27,8 @@ use Webmozart\Assert\Assert;
 
 class ValidAttributesTypeValidator extends ConstraintValidator
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
     }
 
     public function validate($value, Constraint $constraint): void
@@ -53,7 +53,7 @@ class ValidAttributesTypeValidator extends ConstraintValidator
         }
 
         $concreteListing = new DataObject\Listing();
-        $concreteListing->setCondition('o_path LIKE \'' . $parent->getFullPath() . '/%\'');
+        $concreteListing->setCondition('path LIKE \'' . $parent->getFullPath() . '/%\'');
 
         foreach ($concreteListing as $child) {
             if (!$child instanceof AttributeInterface) {

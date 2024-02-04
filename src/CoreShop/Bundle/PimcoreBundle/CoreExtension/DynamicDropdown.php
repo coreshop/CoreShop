@@ -28,14 +28,14 @@ class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
 {
     use DynamicDropdownTrait;
 
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopDynamicDropdown';
+    public string $fieldtype = 'coreShopDynamicDropdown';
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
+
+    public function getDataFromEditmode(mixed $data, DataObject\Concrete $object = null, array $params = []): null|\Pimcore\Model\Asset|DataObject\AbstractObject|\Pimcore\Model\Document
     {
         return Element\Service::getElementById('object', $data);
     }

@@ -1,62 +1,58 @@
-# CoreShop Countries
+a# Countries
+
+In CoreShop, managing countries through the API involves several operations including create, read, update, and delete.
+Below are the guidelines for each of these operations.
 
 ## Create
-If you want to create a Country via API, you can do following:
+
+To create a new country via API:
 
 ```php
 $newCountry = $container->get('coreshop.factory.country')->createNew();
 ```
 
-Now you have a new Country, if you want to persist it, you need to do following:
+After creating a new Country instance, persist it using:
 
 ```php
 $container->get('coreshop.manager.country')->persist($newCountry);
 $container->get('coreshop.manager.country')->flush();
 ```
 
-You now have a new persisted Country.
+You now have a new persisted country.
 
 ## Read
 
-If you want to query for Countries, you can do following:
+To query for countries:
 
 ```php
 $countryRepository = $container->get('coreshop.repository.country');
-
 $queryBuilder = $countryRepository->createQueryBuilder('c');
-
 // You can now create your query
-
 // And get the result
-
 $countries = $queryBuilder->getQuery()->getResult();
-
 ```
 
 ## Update
 
-If you want to update and existing Country, you need to do following:
+To update an existing country:
 
 ```php
 // Fetch Country
-
 $country = $countryRepository->findById(1);
 $country->setName('Euro');
-
 // And Persist it
 $container->get('coreshop.manager.country')->persist($country);
 $container->get('coreshop.manager.country')->flush();
 ```
 
 ## Delete
-If you want to update and existing Country, you need to do following:
+
+To delete an existing country:
 
 ```php
 // Fetch Country
-
 $country = $countryRepository->findById(1);
-
-// And Persist it
+// And Remove it
 $container->get('coreshop.manager.country')->remove($country);
 $container->get('coreshop.manager.country')->flush();
 ```

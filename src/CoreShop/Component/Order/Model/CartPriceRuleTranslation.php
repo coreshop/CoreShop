@@ -38,7 +38,7 @@ class CartPriceRuleTranslation extends AbstractTranslation implements CartPriceR
      */
     protected $label;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

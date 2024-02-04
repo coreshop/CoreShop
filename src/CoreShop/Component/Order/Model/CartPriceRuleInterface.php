@@ -24,6 +24,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */
@@ -69,4 +71,8 @@ interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
      * @return bool
      */
     public function hasVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode);
+
+    public function getPriority(): int;
+
+    public function setPriority(int $priority): void;
 }

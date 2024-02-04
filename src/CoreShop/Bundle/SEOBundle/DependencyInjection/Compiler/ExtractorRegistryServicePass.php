@@ -24,8 +24,8 @@ final class ExtractorRegistryServicePass extends RegisterSimpleRegistryTypePass
 {
     public const EXTRACTOR_TAG = 'coreshop.seo.extractor';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.seo.extractor',
             'coreshop.seo.extractors',

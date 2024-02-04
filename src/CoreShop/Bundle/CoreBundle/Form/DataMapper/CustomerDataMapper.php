@@ -26,12 +26,12 @@ class CustomerDataMapper implements DataMapperInterface
 {
     private DataMapper $propertyPathDataMapper;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->propertyPathDataMapper = new DataMapper();
     }
 
-    public function mapDataToForms($viewData, $forms): void
+    public function mapDataToForms(mixed $viewData, \Traversable $forms): void
     {
         $formsOtherThanAddress = [];
 
@@ -50,11 +50,11 @@ class CustomerDataMapper implements DataMapperInterface
         }
 
         if (!empty($formsOtherThanAddress)) {
-            $this->propertyPathDataMapper->mapDataToForms($viewData, $formsOtherThanAddress);
+            $this->propertyPathDataMapper->mapDataToForms($viewData, new \ArrayObject($formsOtherThanAddress));
         }
     }
 
-    public function mapFormsToData($forms, &$viewData): void
+    public function mapFormsToData(\Traversable $forms, mixed &$viewData)
     {
         $formsOtherThanAddress = [];
 
@@ -73,7 +73,7 @@ class CustomerDataMapper implements DataMapperInterface
         }
 
         if (!empty($formsOtherThanAddress)) {
-            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanAddress, $viewData);
+            $this->propertyPathDataMapper->mapFormsToData(new \ArrayObject($formsOtherThanAddress), $viewData);
         }
     }
 }

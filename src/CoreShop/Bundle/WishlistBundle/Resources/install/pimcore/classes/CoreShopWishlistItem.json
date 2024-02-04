@@ -55,9 +55,6 @@
                         "assetTypes": [],
                         "documentTypes": [],
                         "classes": [
-                            {
-                                "classes": "CoreShopProduct"
-                            }
                         ],
                         "pathFormatterClass": "",
                         "name": "product",
@@ -89,7 +86,7 @@
                         "decimalSize": null,
                         "decimalPrecision": null,
                         "name": "quantity",
-                        "title": "coreshop.order_item.quantity",
+                        "title": "coreshop.wishlist_item.quantity",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": true,
@@ -102,6 +99,33 @@
                         "invisible": false,
                         "visibleGridView": false,
                         "visibleSearch": false
+                    },
+                    {
+                        "name": "wishlist",
+                        "title": "coreshop.wishlist_item.wishlist",
+                        "tooltip": "",
+                        "mandatory": false,
+                        "noteditable": false,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "permissions": null,
+                        "datatype": "data",
+                        "fieldtype": "coreShopRelation",
+                        "relationType": true,
+                        "invisible": false,
+                        "visibleGridView": false,
+                        "visibleSearch": false,
+                        "pathFormatterClass": "",
+                        "width": null,
+                        "assetUploadPath": null,
+                        "objectsAllowed": true,
+                        "assetsAllowed": false,
+                        "assetTypes": [],
+                        "documentsAllowed": false,
+                        "documentTypes": [],
+                        "stack": "coreshop.wishlist",
+                        "returnConcrete": false
                     }
                 ],
                 "locked": false,

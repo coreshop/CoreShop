@@ -48,7 +48,7 @@ coreshop.order.order.message = {
                             if (form.isValid()) {
                                 var formValues = form.getFieldValues();
 
-                                formValues['o_id'] = orderId;
+                                formValues['id'] = orderId;
 
                                 Ext.Ajax.request({
                                     url: '/admin/coreshop/order/send-message',

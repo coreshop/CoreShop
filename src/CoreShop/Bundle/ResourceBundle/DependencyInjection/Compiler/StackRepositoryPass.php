@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -62,9 +63,21 @@ final class StackRepositoryPass implements CompilerPassInterface
                 $classes,
             ]);
 
-            $container->setDefinition(sprintf('%s.repository.stack.%s', $applicationName, $name), $repositoryDefinition)
+            $serviceId = sprintf('%s.repository.stack.%s', $applicationName, $name);
+            $container->setDefinition($serviceId, $repositoryDefinition)
                 ->setPublic(true)
             ;
+
+            $container->registerAliasForArgument(
+                $serviceId,
+                StackRepository::class,
+                $alias . ' stack repository',
+            );
+            $container->registerAliasForArgument(
+                $serviceId,
+                StackRepositoryInterface::class,
+                $alias . ' stack repository',
+            );
         }
     }
 }

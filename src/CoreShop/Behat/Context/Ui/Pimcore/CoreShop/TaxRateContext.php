@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class TaxRateContext implements Context
 {
-    public function __construct(private TaxRatePageInterface $taxRatePage)
-    {
+    public function __construct(
+        private TaxRatePageInterface $taxRatePage,
+    ) {
     }
 
     /**

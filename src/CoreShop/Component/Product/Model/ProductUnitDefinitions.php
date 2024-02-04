@@ -43,16 +43,16 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     protected $defaultUnitDefinition;
 
     /**
-     * @var Collection|ProductUnitDefinitionInterface[]
+     * @var Collection<int, ProductUnitDefinitionInterface>|ProductUnitDefinitionInterface[]
      */
     protected $unitDefinitions;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->unitDefinitions = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

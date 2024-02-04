@@ -23,8 +23,9 @@ use Webmozart\Assert\Assert;
 
 final class MoneyFormatter implements MoneyFormatterInterface
 {
-    public function __construct(private int $decimalFactor)
-    {
+    public function __construct(
+        private int $decimalFactor,
+    ) {
     }
 
     public function format(int $amount, string $currencyCode, string $locale = 'en', int $fraction = 2, int $factor = null): string

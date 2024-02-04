@@ -72,14 +72,14 @@ class Carrier extends AbstractResource implements CarrierInterface
      */
     protected $shippingRules;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeTranslationsCollection();
 
         $this->shippingRules = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -94,7 +94,7 @@ class Carrier extends AbstractResource implements CarrierInterface
         $this->identifier = $identifier;
     }
 
-    public function getDescription($language = null)
+    public function getDescription(?string $language = null)
     {
         return $this->getTranslation($language)->getDescription();
     }

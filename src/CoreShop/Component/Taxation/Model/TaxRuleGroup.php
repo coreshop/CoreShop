@@ -47,8 +47,8 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface, \S
      */
     protected $taxRules;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->taxRules = new ArrayCollection();
     }
 
@@ -57,10 +57,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface, \S
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

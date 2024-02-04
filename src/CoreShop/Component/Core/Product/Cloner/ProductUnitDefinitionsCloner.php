@@ -25,8 +25,9 @@ use Pimcore\Model\DataObject\Concrete;
 
 class ProductUnitDefinitionsCloner implements ProductClonerInterface
 {
-    public function __construct(protected UnitMatcherInterface $unitMatcher)
-    {
+    public function __construct(
+        protected UnitMatcherInterface $unitMatcher,
+    ) {
     }
 
     public function clone(

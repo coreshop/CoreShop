@@ -33,8 +33,9 @@ final class DiscountAmountConfigurationType extends AbstractType
     /**
      * @param string[] $validationGroups
      */
-    public function __construct(protected array $validationGroups)
-    {
+    public function __construct(
+        protected array $validationGroups,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

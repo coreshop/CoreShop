@@ -1,71 +1,78 @@
-# CoreShop Price Rule Actions
+# Price Rule Actions
+
 Get a brief overview of all the available *Price Rule Actions* in CoreShop.
 
 ## Free Shipping
+
 > **Available for**: Cart Price Rules
 
-Add this action to allow free shipping.
+This action allows free shipping when added to a cart price rule.
 
 ## Gift Product
+
 > **Available for**: Cart Price Rules
 
-Add this action to place a gift in customers cart.
+Add a gift to the customer's cart with this action.
 
 #### Options
 
-| Name | Description|
-|:-----|:--------------------|
-| Gift Product | Needs to be a coreshop registered product object |
+| Name         | Description                                               |
+|:-------------|:----------------------------------------------------------|
+| Gift Product | The product must be a registered CoreShop product object. |
 
 ## Discount Amount
+
 > **Available for**: Cart Price Rules, Specific Product Price, Product Price
 
-Set a arbitrary amount of discount.
+Apply a fixed amount of discount.
 
 #### Options
 
-| Name | Description|
-|:-----|:--------------------|
-| Amount | Define Amount |
-| Gross | If given Amount has included VAT, check it |
-| Currency | Set Currency of given amount |
-| Apply On | Select Between `total` and `subtotal`. **Note:** This option is only available in the cart rule context |
+| Name     | Description                                                                               |
+|:---------|:------------------------------------------------------------------------------------------|
+| Amount   | Define the discount amount.                                                               |
+| Gross    | Check if the amount includes VAT.                                                         |
+| Currency | Specify the currency for the amount.                                                      |
+| Apply On | Choose between `total` and `subtotal`. **Note:** Only available in the cart rule context. |
 
 ## Discount Percent
+
 > **Available for**: Cart Price Rules, Specific Product Price, Product Price
 
-Set a arbitrary percentage amount of discount.
+Set a percentage-based discount.
 
 #### Options
 
-| Name | Description|
-|:-----|:--------------------|
-| Percent | Define Amount |
-| Apply On | Select Between `total` and `subtotal`. **Note:** This option is only available in the cart rule context |
-
+| Name     | Description                                                                               |
+|:---------|:------------------------------------------------------------------------------------------|
+| Percent  | Define the discount percentage.                                                           |
+| Apply On | Choose between `total` and `subtotal`. **Note:** Only available in the cart rule context. |
 
 ## New Price
+
 > **Available for**: Specific Product Price, Product Price
 
-Define a new Price.
-> **Note**: This will be used as a new price in frontend so there is no "special discount price" labelling.
-> If you need a highlighted discount price, use the `Discount Price` Action.
+Set a new price for a product.
+
+> **Note**: This is used as the new sale price in the frontend, without special discount labelling. For a highlighted
+> discount price, use the `Discount Price` action.
 
 #### Options
 
-| Name | Description|
-|:-----|:--------------------|
-| Price | Set new Price |
-| Currency | Set Currency of given amount |
+| Name     | Description           |
+|:---------|:----------------------|
+| Price    | Set the new price.    |
+| Currency | Specify the currency. |
 
 ## Discount Price
+
 > **Available for**: Specific Product Price, Product Price
 
-Define a discount Price.
+Define a discounted price for a product.
 
 #### Options
 
-| Name | Description|
-|:-----|:--------------------|
-| Price | Set discount Price |
-| Currency | Set Currency of given amount |
+| Name     | Description               |
+|:---------|:--------------------------|
+| Price    | Set the discounted price. |
+| Currency | Specify the currency.     |

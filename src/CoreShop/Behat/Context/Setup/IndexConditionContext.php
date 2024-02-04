@@ -39,8 +39,9 @@ use CoreShop\Component\Index\Condition\RangeCondition;
 
 final class IndexConditionContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**

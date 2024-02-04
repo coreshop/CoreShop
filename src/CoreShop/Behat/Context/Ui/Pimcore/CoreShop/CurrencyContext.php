@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
-    public function __construct(private CurrencyPageInterface $currencyPage)
-    {
+    public function __construct(
+        private CurrencyPageInterface $currencyPage,
+    ) {
     }
 
     /**

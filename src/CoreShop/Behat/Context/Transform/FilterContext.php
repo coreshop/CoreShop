@@ -23,8 +23,9 @@ use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 
 final class FilterContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**

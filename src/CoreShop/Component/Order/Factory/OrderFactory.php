@@ -18,12 +18,21 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Factory;
 
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderPaymentStates;
+use CoreShop\Component\Order\OrderSaleStates;
+use CoreShop\Component\Order\OrderShipmentStates;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 
 class OrderFactory implements FactoryInterface
 {
-    public function __construct(private FactoryInterface $cartFactory)
-    {
+    public function __construct(
+        private FactoryInterface $cartFactory,
+        private UniqueTokenGenerator $tokenGenerator,
+        private int $tokenLength = 10,
+    ) {
     }
 
     public function createNew()
@@ -31,6 +40,12 @@ class OrderFactory implements FactoryInterface
         $cart = $this->cartFactory->createNew();
         $cart->setKey(uniqid('cart', true));
         $cart->setPublished(true);
+        $cart->setToken($this->tokenGenerator->generate($this->tokenLength));
+        $cart->setSaleState(OrderSaleStates::STATE_CART);
+        $cart->setOrderState(OrderStates::STATE_INITIALIZED);
+        $cart->setShippingState(OrderShipmentStates::STATE_NEW);
+        $cart->setPaymentState(OrderPaymentStates::STATE_NEW);
+        $cart->setInvoiceState(OrderInvoiceStates::STATE_NEW);
 
         return $cart;
     }

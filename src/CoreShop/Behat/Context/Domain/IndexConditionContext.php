@@ -26,8 +26,9 @@ use Webmozart\Assert\Assert;
 
 final class IndexConditionContext implements Context
 {
-    public function __construct(private ServiceRegistryInterface $workerRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $workerRegistry,
+    ) {
     }
 
     /**

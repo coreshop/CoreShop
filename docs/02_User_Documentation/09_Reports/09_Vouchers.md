@@ -1,28 +1,40 @@
-# CoreShop Voucher Report
+# Voucher Report
+
+The CoreShop Voucher Report provides an analysis of voucher usage within your e-commerce store. This report is
+particularly useful for tracking the effectiveness of promotional campaigns and understanding customer response to
+vouchers.
+
+## Report Format
+
+The Voucher Report is presented in a list format with pagination available.
 
 | Type | Has Pagination |
-|:-----|:-----------|
-| List | Yes |
+|:-----|:---------------|
+| List | Yes            |
 
-## Available Filters
+## Customizing the Report with Filters
 
-| Name | Description |
-|:-----|:------------|
-| Store | Filter by Store |
-| Day | Shortcut Filter by current Day |
-| Month | Shortcut Filter by current Month |
-| Year | Shortcut Filter by current Year |
-| Day -1 | Shortcut Filter by last Day |
-| Month -1 | Shortcut Filter by last Month |
-| Year -1 | Shortcut Filter by last Year |
-| From | Date to Start Filter |
-| To | Date to End Filter |
+Use the following filters to refine and target your analysis:
 
-## Available Grid Fields
+| Name     | Description                                     |
+|:---------|:------------------------------------------------|
+| Store    | Filter vouchers used in a specific Store.       |
+| Day      | Filter for vouchers used on the current Day.    |
+| Month    | Filter for vouchers used in the current Month.  |
+| Year     | Filter for vouchers used in the current Year.   |
+| Day -1   | Filter for vouchers used on the previous Day.   |
+| Month -1 | Filter for vouchers used in the previous Month. |
+| Year -1  | Filter for vouchers used in the previous Year.  |
+| From     | Start date for the filter period.               |
+| To       | End date for the filter period.                 |
 
-| Name | Description |
-|:-----|:------------|
-| Code | Applied Code |
-| Discount | Amount of Discount |
-| Price Rule | Name of applied Price Rule |
-| Applied Date | Applied Date |
+## Key Grid Fields
+
+The report includes essential data fields for a comprehensive overview of voucher use:
+
+| Name         | Description                                        |
+|:-------------|:---------------------------------------------------|
+| Code         | The voucher code that was applied.                 |
+| Discount     | The amount of discount provided by the voucher.    |
+| Price Rule   | The name of the price rule applied by the voucher. |
+| Applied Date | The date when the voucher was applied.             |

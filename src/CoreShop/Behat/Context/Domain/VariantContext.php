@@ -27,8 +27,9 @@ use Webmozart\Assert\Assert;
 
 final class VariantContext implements Context
 {
-    public function __construct(protected SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        protected SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**

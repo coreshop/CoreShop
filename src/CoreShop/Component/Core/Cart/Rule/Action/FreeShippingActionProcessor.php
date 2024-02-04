@@ -26,8 +26,9 @@ use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 
 final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    public function __construct(private AdjustmentFactoryInterface $adjustmentFactory)
-    {
+    public function __construct(
+        private AdjustmentFactoryInterface $adjustmentFactory,
+    ) {
     }
 
     public function applyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool

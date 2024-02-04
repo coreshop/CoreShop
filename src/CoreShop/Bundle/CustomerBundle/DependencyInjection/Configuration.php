@@ -82,6 +82,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopCompany')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(CompanyInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CompanyRepository::class)->cannotBeEmpty()->end()

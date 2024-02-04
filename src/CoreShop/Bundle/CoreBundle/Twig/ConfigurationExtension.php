@@ -24,8 +24,9 @@ use Twig\TwigFunction;
 
 final class ConfigurationExtension extends AbstractExtension
 {
-    public function __construct(private ConfigurationServiceInterface $configurationService)
-    {
+    public function __construct(
+        private ConfigurationServiceInterface $configurationService,
+    ) {
     }
 
     public function getFunctions(): array

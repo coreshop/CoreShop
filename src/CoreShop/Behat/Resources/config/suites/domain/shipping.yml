@@ -23,6 +23,7 @@ default:
                 - coreshop.behat.context.transform.tax_rule_group
                 - coreshop.behat.context.transform.shipping
                 - coreshop.behat.context.transform.cart
+                - coreshop.behat.context.transform.cart_price_rule
 
                 - coreshop.behat.context.setup.product
                 - coreshop.behat.context.setup.product_price_rule
@@ -38,6 +39,7 @@ default:
                 - coreshop.behat.context.setup.tax_rule_group
                 - coreshop.behat.context.setup.shipping
                 - coreshop.behat.context.setup.cart
+                - coreshop.behat.context.setup.cart_price_rule
 
                 - coreshop.behat.context.domain.shipping
                 - coreshop.behat.context.domain.cart

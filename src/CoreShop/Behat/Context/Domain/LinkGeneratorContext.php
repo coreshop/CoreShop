@@ -25,8 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class LinkGeneratorContext implements Context
 {
-    public function __construct(private RouterInterface $router)
-    {
+    public function __construct(
+        private RouterInterface $router,
+    ) {
     }
 
     /**

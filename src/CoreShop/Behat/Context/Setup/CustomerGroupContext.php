@@ -47,7 +47,6 @@ final class CustomerGroupContext implements Context
     {
         /** @var CustomerGroupInterface $group */
         $group = $this->customerGroupFactory->createNew();
-
         $group->setKey(File::getValidFilename($name));
         $group->setParent(Folder::getByPath('/'));
         $group->setName($name);

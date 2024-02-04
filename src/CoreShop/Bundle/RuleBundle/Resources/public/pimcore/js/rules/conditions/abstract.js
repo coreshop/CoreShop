@@ -16,16 +16,6 @@ pimcore.registerNS('coreshop.rules.conditions.abstract');
 coreshop.rules.conditions.abstract = Class.create(coreshop.rules.abstract, {
     elementType: 'condition',
 
-    getFormattedStackClasses: function (stackClasses) {
-        var classes = [];
-        if (Ext.isArray(stackClasses)) {
-            Ext.Array.each(stackClasses, function (cClass) {
-                classes.push({classes: cClass});
-            });
-        }
-        return classes;
-    },
-
     getForm: function () {
 
         this.form = Ext.create('Ext.form.FieldContainer', {

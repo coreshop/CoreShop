@@ -20,13 +20,11 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Component\Address\Context\CountryContextInterface;
-use CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
@@ -35,7 +33,6 @@ final class CountryContext implements Context
         private CountryRepositoryInterface $countryRepository,
         private CountryContextInterface $countryContext,
         private AddressFormatterInterface $addressFormatter,
-        private GeoLiteBasedRequestResolver $geoLiteResolver,
     ) {
     }
 
@@ -106,27 +103,5 @@ final class CountryContext implements Context
                 $actualFormattedAddress,
             ),
         );
-    }
-
-    /**
-     * @Then /^when I check the geo-lite resolver with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
-     * @Then /^when I check the geo-lite resolver again with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
-     */
-    public function whenIcheckTheGeoLiteResolver($ipAddress, $countryIso): void
-    {
-        $request = Request::create(
-            'localhost',
-            'GET',
-            [],
-            [],
-            [],
-            [
-                'REMOTE_ADDR' => $ipAddress,
-            ],
-        );
-
-        $country = $this->geoLiteResolver->findCountry($request);
-
-        Assert::eq($country ? $country->getIsoCode() : null, $countryIso);
     }
 }

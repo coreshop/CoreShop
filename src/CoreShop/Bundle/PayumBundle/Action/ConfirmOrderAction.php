@@ -26,8 +26,9 @@ use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface
 {
-    public function __construct(private StateMachineApplier $stateMachineApplier)
-    {
+    public function __construct(
+        private StateMachineApplier $stateMachineApplier,
+    ) {
     }
 
     public function execute($request): void
@@ -36,7 +37,8 @@ final class ConfirmOrderAction implements ActionInterface
         $payment = $request->getFirstModel();
         $order = $payment->getOrder();
         if ($payment->getState() === PaymentInterface::STATE_COMPLETED ||
-            $payment->getState() === PaymentInterface::STATE_AUTHORIZED
+            $payment->getState() === PaymentInterface::STATE_AUTHORIZED ||
+            $payment->getState() === PaymentInterface::STATE_PROCESSING
         ) {
             $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
 

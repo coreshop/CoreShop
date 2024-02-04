@@ -39,6 +39,8 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
 
     public const STATE_UNKNOWN = 'unknown';
 
+    public function getId(): ?int;
+
     /**
      * @return PaymentProviderInterface
      */

@@ -15,7 +15,7 @@ Feature: In order to track ecommerce sales
   Scenario: Track Product Impression
     Then tracking product impression with tracker "google-analytics-enhanced-ecommerce" should generate:
       """
-      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addImpression', {"id": ##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"});
+      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addImpression', {"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"});
       """
 
   Scenario: Track Product

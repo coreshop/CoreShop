@@ -21,8 +21,7 @@ namespace CoreShop\Bundle\CoreBundle\Pimcore\GridColumnConfig\Operator\Factory;
 use CoreShop\Bundle\CoreBundle\Pimcore\GridColumnConfig\Operator\StorePrice;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\OperatorInterface;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterface;
 
 final class StorePriceFactory implements OperatorFactoryInterface
 {
@@ -32,7 +31,7 @@ final class StorePriceFactory implements OperatorFactoryInterface
     ) {
     }
 
-    public function build(\stdClass $configElement, $context = null): OperatorInterface
+    public function build(\stdClass $configElement, $context = null): StorePrice
     {
         return new StorePrice($this->storeRepository, $this->moneyFormatter, $configElement, $context);
     }

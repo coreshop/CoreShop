@@ -24,6 +24,7 @@ core_shop_resource:
             selector_object: '/bundles/coreshopresource/pimcore/js/selector/object.js'
             selector_selector: '/bundles/coreshopresource/pimcore/js/selector/selector.js'
             resource_creation: '/bundles/coreshopresource/pimcore/js/resource/creation.js'
+            events: '/bundles/coreshopresource/pimcore/js/events.js'
         css:
             resource: '/bundles/coreshopresource/pimcore/css/resource.css'
         editmode_js:

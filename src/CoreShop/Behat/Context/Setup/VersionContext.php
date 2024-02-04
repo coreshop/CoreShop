@@ -26,8 +26,9 @@ use Pimcore\Model\Version;
 
 final class VersionContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**
@@ -53,7 +54,7 @@ final class VersionContext implements Context
         $GLOBALS['data'] = $data;
 
         $db = Db::get();
-        $versionData = $db->fetchRow("SELECT id,date,versionCount FROM versions WHERE cid = ? AND ctype='object' ORDER BY `versionCount` DESC, `id` DESC LIMIT 1", $concrete->getId());
+        $versionData = $db->fetchAssociative("SELECT id,date,versionCount FROM versions WHERE cid = ? AND ctype='object' ORDER BY `versionCount` DESC, `id` DESC LIMIT 1", [$concrete->getId()]);
         $version = Version::getById($versionData['id']);
 
 //        $version = $concrete->getLatestVersion();
@@ -79,7 +80,7 @@ final class VersionContext implements Context
         $product = $this->sharedStorage->get('product');
         $id = $product->getId();
 
-        $this->sharedStorage->set('product', $product::getById($id, true));
+        $this->sharedStorage->set('product', $product::getById($id, ['force' => true]));
     }
 
     private function restoreVersion(Concrete $concrete, string $key): Concrete

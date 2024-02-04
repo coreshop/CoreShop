@@ -20,13 +20,14 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use Pimcore\Event\Model\DataObjectDeleteInfoEvent;
+use Pimcore\Bundle\AdminBundle\Event\Model\DataObjectDeleteInfoEvent;
 use Pimcore\Event\Model\DataObjectEvent;
 
 final class CustomerOrderDeletionListener
 {
-    public function __construct(private OrderRepositoryInterface $orderRepository)
-    {
+    public function __construct(
+        private OrderRepositoryInterface $orderRepository,
+    ) {
     }
 
     public function checkCustomerDeletionAllowed(DataObjectDeleteInfoEvent $event): void

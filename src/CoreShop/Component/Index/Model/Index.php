@@ -65,12 +65,12 @@ class Index extends AbstractResource implements IndexInterface
      */
     protected $indexLastVersion = false;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->columns = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

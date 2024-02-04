@@ -121,7 +121,7 @@ final class ResourceLoader implements LoaderInterface
     private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods, array $options): Route
     {
         $defaults = [
-            '_controller' => $metadata->getServiceId('admin_controller') . sprintf(':%sAction', $actionName),
+            '_controller' => $metadata->getServiceId('admin_controller') . sprintf('::%sAction', $actionName),
         ];
 
         return $this->routeFactory->createRoute($path, $defaults, [], $options, '', [], $methods);

@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\RouteConfiguration;
-use Pimcore\Model\Staticroute;
+use Pimcore\Bundle\StaticRoutesBundle\Model\Staticroute;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,8 +28,9 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreRoutesInstaller implements ResourceInstallerInterface
 {
-    public function __construct(private KernelInterface $kernel)
-    {
+    public function __construct(
+        private KernelInterface $kernel,
+    ) {
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void

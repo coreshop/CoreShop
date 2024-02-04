@@ -47,7 +47,7 @@ class OrderController extends FrontendController
 
         foreach ($this->getPaymentRepository()->findForPayable($order) as $payment) {
             if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
-                $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.order_already_paid'));
+                $this->addFlash('error', $this->container->get('translator')->trans('coreshop.ui.error.order_already_paid'));
 
                 return $this->redirectToRoute('coreshop_index');
             }
@@ -80,21 +80,32 @@ class OrderController extends FrontendController
             'form' => $form->createView(),
         ];
 
-        return $this->render($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Order/revise.html'), $args);
     }
 
     protected function getOrderRepository(): OrderRepositoryInterface
     {
-        return $this->get('coreshop.repository.order');
+        return $this->container->get('coreshop.repository.order');
     }
 
     private function getPaymentRepository(): PaymentRepositoryInterface
     {
-        return $this->get('coreshop.repository.payment');
+        return $this->container->get('coreshop.repository.payment');
     }
 
     protected function getFormFactory(): FormFactoryInterface
     {
-        return $this->get('form.factory');
+        return $this->container->get('form.factory');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                'coreshop.repository.order' => OrderRepositoryInterface::class,
+                'coreshop.repository.payment' => PaymentRepositoryInterface::class
+            ]
+        );
     }
 }

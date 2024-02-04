@@ -27,8 +27,9 @@ use Webmozart\Assert\Assert;
 
 final class OrderInventoryOperator implements OrderInventoryOperatorInterface
 {
-    public function __construct(private ObjectManager $productEntityManager)
-    {
+    public function __construct(
+        private ObjectManager $productEntityManager,
+    ) {
     }
 
     public function cancel(OrderInterface $order): void

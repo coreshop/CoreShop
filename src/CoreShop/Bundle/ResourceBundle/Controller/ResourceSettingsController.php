@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +28,7 @@ class ResourceSettingsController extends AdminController
 {
     public function getNicePathAction(Request $request): Response
     {
-        $targets = $this->decodeJson($this->getParameterFromRequest($request, 'targets'));
+        $targets = json_decode($this->getParameterFromRequest($request, 'targets'), true);
         $result = [];
 
         foreach ($targets as $target) {
@@ -48,19 +49,31 @@ class ResourceSettingsController extends AdminController
             'stack' => [],
         ];
 
-        if ($this->container->hasParameter('coreshop.all.pimcore_classes')) {
+        if ($this->parameterBag->has('coreshop.all.pimcore_classes')) {
             /**
              * @var array $classes
              */
-            $classes = $this->container->getParameter('coreshop.all.pimcore_classes');
+            $classes = $this->parameterBag->get('coreshop.all.pimcore_classes');
 
             foreach ($classes as $key => $definition) {
+                if (!isset($definition['classes']['type'])) {
+                    continue;
+                }
+
+                if ($definition['classes']['type'] !== CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT) {
+                    continue;
+                }
+
                 $alias = explode('.', $key);
                 $application = $alias[0];
                 $alias = $alias[1];
 
-                $class = str_replace('Pimcore\\Model\\DataObject\\', '', $definition['classes']['model']);
-                $class = str_replace('\\', '', $class);
+                if (isset($definition['classes']['pimcore_class_name'])) {
+                    $class = $definition['classes']['pimcore_class_name'];
+                } else {
+                    $fullClassName = $definition['classes']['model'];
+                    $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $fullClassName);
+                }
 
                 $config['classMap'][$application][$alias] = $class;
             }
@@ -68,7 +81,7 @@ class ResourceSettingsController extends AdminController
             /**
              * @var array $stack
              */
-            $stack = $this->container->getParameter('coreshop.all.stack.pimcore_class_names');
+            $stack = $this->getParameter('coreshop.all.stack.pimcore_class_names');
 
             foreach ($stack as $key => $impl) {
                 $alias = explode('.', $key);

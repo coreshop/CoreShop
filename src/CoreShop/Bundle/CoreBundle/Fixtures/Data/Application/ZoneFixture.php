@@ -18,26 +18,23 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ZoneFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class ZoneFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private FactoryInterface $zoneFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['application'];
     }
 
     public function load(ObjectManager $manager): void
@@ -56,7 +53,7 @@ class ZoneFixture extends AbstractFixture implements ContainerAwareInterface, Ve
         }
 
         foreach ($continents as $continent) {
-            $zone = $this->container->get('coreshop.factory.zone')->createNew();
+            $zone = $this->zoneFactory->createNew();
             $zone->setName($continent);
             $zone->setActive(true);
 

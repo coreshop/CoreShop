@@ -23,14 +23,14 @@ namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
  */
 class ItemSelector extends DynamicDropdownMultiple
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopItemSelector';
+    public string $fieldtype = 'coreShopItemSelector';
 
-    public function getObjectsAllowed()
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
+
+    public function getObjectsAllowed(): bool
     {
         return true;
     }

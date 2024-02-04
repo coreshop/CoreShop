@@ -1,0 +1,21 @@
+name: "Documentation"
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs.yaml'
+      - 'README.md'
+  push:
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs.yaml'
+      - 'README.md'
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    uses: coreshop/workflow-collection/.github/workflows/docs.yml@main
+    secrets:
+      DOCS_GENERATOR_ACCESS_TOKEN: ${{ secrets.DOCS_GENERATOR_ACCESS_TOKEN }}

@@ -46,13 +46,7 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
         this.conditions = data.conditions;
         this.actions = data.actions;
 
-        if (pimcore.eventDispatcher !== undefined) {
-            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
-        }
-        else {
-            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
-        }
-
+        document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
         this.clipboardManager = new coreshop.product_quantity_price_rules.clipboardManager();
     },
 

@@ -32,8 +32,9 @@ final class ResourceTranslationsType extends AbstractType
 
     private string $defaultLocaleCode;
 
-    public function __construct(TranslationLocaleProviderInterface $localeProvider)
-    {
+    public function __construct(
+        TranslationLocaleProviderInterface $localeProvider,
+    ) {
         $this->definedLocalesCodes = $localeProvider->getDefinedLocalesCodes();
         $this->defaultLocaleCode = $localeProvider->getDefaultLocaleCode();
     }

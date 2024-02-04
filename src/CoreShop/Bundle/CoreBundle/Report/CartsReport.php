@@ -91,10 +91,10 @@ class CartsReport implements ReportInterface, PortletInterface
                 $join OUTER JOIN (
                   SELECT
                     COUNT(*) as cartCount,
-                    DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
+                    DATE(FROM_UNIXTIME(creationDate)) as cartDateTimestamp
                   FROM object_$orderClassId AS carts
-                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp and carts.saleState = '" . OrderSaleStates::STATE_CART . "'
-                  GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
+                  WHERE store = $storeId AND creationDate > $fromTimestamp AND creationDate < $toTimestamp and carts.saleState = '" . OrderSaleStates::STATE_CART . "'
+                  GROUP BY DATE(FROM_UNIXTIME(creationDate))
                 ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
             ";
         }
@@ -107,7 +107,7 @@ class CartsReport implements ReportInterface, PortletInterface
             $day['datetext'] = $date->toDateString();
         }
 
-        return array_values($data);
+        return $data;
     }
 
     public function getTotal(): int

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Payment\Model\PaymentProviderRuleGroup"
+                       table="coreshop_payment_provider_rule_group">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="priority" column="priority" type="integer"/>
+        <field name="stopPropagation" column="stopPropagation" type="boolean"/>
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <many-to-one field="paymentProvider" target-entity="CoreShop\Component\Payment\Model\PaymentProviderInterface" inversed-by="paymentProviderRules">
+            <join-column name="paymentProviderId" referenced-column-name="id" nullable="false"/>
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+
+        <many-to-one field="paymentProviderRule" target-entity="CoreShop\Component\Payment\Model\PaymentProviderRuleInterface">
+            <join-column name="paymentProviderRuleId" referenced-column-name="id" nullable="true"/>
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

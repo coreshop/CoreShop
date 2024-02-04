@@ -20,6 +20,7 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Model\ImmutableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -32,6 +33,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     use AdjustableTrait;
     use ProposalPriceRuleTrait;
     use ConvertedAdjustableTrait;
+    use ImmutableTrait;
 
     public function hasItems(): bool
     {
@@ -40,7 +42,12 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
 
     public function addItem($item): void
     {
+        /**
+         * @var OrderItemInterface $item
+         */
         Assert::isInstanceOf($item, OrderItemInterface::class);
+
+        $item->setOrder($this);
 
         $items = $this->getItems();
         $items[] = $item;
@@ -158,6 +165,16 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     public function getConvertedShipping(bool $withTax = true): int
     {
         return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
+    }
+
+    public function getConvertedPaymentProviderFee(): int
+    {
+        return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::PAYMENT, false);
+    }
+
+    public function count(): int
+    {
+        return count($this->getItems() ?: []);
     }
 
     public function getTotalNet(): int

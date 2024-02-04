@@ -46,16 +46,16 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     protected $product;
 
     /**
-     * @var Collection|ProductUnitDefinitionPriceInterface[]
+     * @var Collection<int, ProductUnitDefinitionPriceInterface>|ProductUnitDefinitionPriceInterface[]
      */
     protected $productUnitDefinitionPrices;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->productUnitDefinitionPrices = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -1,5 +1,4 @@
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/routing.yml }
     - { resource: services/controller.yml }
     - { resource: services/installer.yml }
@@ -11,6 +10,8 @@ services:
     _defaults:
         public: true
 
+    coreshop.form.factory: '@form.factory'
+
     CoreShop\Component\Resource\Metadata\RegistryInterface: '@CoreShop\Component\Resource\Metadata\Registry'
     CoreShop\Component\Resource\Metadata\Registry: ~
 
@@ -20,51 +21,56 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: jms_serializer.handler, type: relation, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation}
-            - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: relation, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation }
+            - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreObjectHandler:
         tags:
-            - { name: jms_serializer.handler, type: pimcoreObject, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreObject, direction: deserialization, format: json, method: deserializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreObject<?>, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreObject<?>, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreObject, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreObject, direction: deserialization, format: json, method: deserializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreObject<?>, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreObject<?>, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreDocumentHandler:
         tags:
-            - { name: jms_serializer.handler, type: pimcoreDocument, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreDocument, direction: deserialization, format: json, method: deserializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreDocument, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreDocument, direction: deserialization, format: json, method: deserializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreAssetHandler:
-         tags:
-             - { name: jms_serializer.handler, type: pimcoreAsset, direction: serialization, format: json, method: serializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset, direction: deserialization, format: json, method: deserializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: serialization, format: json, method: serializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: deserialization, format: json, method: deserializeRelation}
+        tags:
+            - { name: jms_serializer.handler, type: pimcoreAsset, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreAsset, direction: deserialization, format: json, method: deserializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreSiteHandler:
         tags:
-            - { name: jms_serializer.handler, type: pimcoreSite, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreSite, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreSite, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreSite, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\CarbonHandler:
         tags:
             - { name: jms_serializer.handler, type: carbon, direction: serialization, format: json, method: serializeRelation }
 
-    CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation\HttpFoundationRequestHandler:
-        decorates: form.type_extension.form.request_handler
-        decoration_priority: 256
-        public: false
+    CoreShop\Bundle\ResourceBundle\Controller\AdminController:
+        abstract: true
+        calls:
+            - [ 'setTokenResolver', [ '@Pimcore\Security\User\TokenStorageUserResolver' ] ]
+        arguments:
+            - '@service_container'
+            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+            - '@Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface'
 
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
-        arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         calls:
-          - [setContainer, ['@service_container']]
+            - [ 'setPimcoreSerializer', [ '@pimcore.serializer' ] ]
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer:
         arguments:
@@ -91,5 +97,23 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
 
-    CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller: ~
+    CoreShop\Bundle\ResourceBundle\Slug\ResourceConfigurationSlugGenerator:
+        decorates: 'CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface'
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Slug\ResourceConfigurationSlugGenerator.inner'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
 
+    CoreShop\Component\Resource\Pimcore\ResourceSlugLinkGenerator:
+        decorates: 'CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator'
+        arguments:
+            - '@CoreShop\Component\Resource\Pimcore\ResourceSlugLinkGenerator.inner'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+
+    CoreShop\Bundle\ResourceBundle\Cache\CoreCacheHandlerDecorator:
+        decorates: 'Pimcore\Cache\Core\CoreCacheHandler'
+        arguments:
+            - '@pimcore.cache.pool'
+            - '@Pimcore\Cache\Core\WriteLock'
+            - '@event_dispatcher'
+        calls:
+            - [ setLogger, [ '@logger' ] ]

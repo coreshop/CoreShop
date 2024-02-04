@@ -26,8 +26,9 @@ use Webmozart\Assert\Assert;
 
 final class CartPriceRuleContext implements Context
 {
-    public function __construct(private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidationProcessor)
-    {
+    public function __construct(
+        private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidationProcessor,
+    ) {
     }
 
     /**

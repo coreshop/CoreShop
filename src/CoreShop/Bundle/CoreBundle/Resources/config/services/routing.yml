@@ -8,6 +8,8 @@ services:
             - 'product'
             - 'coreshop_product_detail'
             - '@router'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+            - '@CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator'
 
     coreshop.object.link_generator.category:
         class: CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator\DataObjectLinkGenerator
@@ -15,3 +17,12 @@ services:
             - 'category'
             - 'coreshop_category_list'
             - '@router'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+            - '@CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator'
+
+    CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator\ResourceConfigurationLinkGenerator:
+        arguments:
+            - '@router'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+        tags:
+            - { name: coreshop.link_generator, type: resource-configuration, priority: 10 }

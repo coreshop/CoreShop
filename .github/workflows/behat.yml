@@ -1,9 +1,14 @@
 name: Behat
 on:
   push:
-    branches: [ 'master' ]
+    branches: [ '4.0' ]
   pull_request:
-    branches: [ 'master' ]
+    branches: [ '4.0' ]
+  release:
+    types: [ created ]
+  schedule:
+    - cron: "0 1 * * 1"
+
 
 jobs:
   behat:
@@ -21,20 +26,19 @@ jobs:
       PIMCORE_INSTALL_MYSQL_PORT: "3306"
       PIMCORE_KERNEL_CLASS: 'Kernel'
       PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
-      PIMCORE_WRITE_TARGET_STATICROUTES: 'settings-store'
 
     strategy:
       matrix:
-        php: [ 8.0, 8.1 ]
-        pimcore: [ ^10.5 ]
-        dependencies: [ highest, lowest ]
+        php: [ 8.1, 8.2 ]
+        pimcore: [ ^11.1 ]
+        dependencies: [ highest ]
         exclude:
           - php: 8.1
             dependencies: lowest
 
     services:
       database:
-        image: "mariadb:10.5"
+        image: "mysql:8"
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
@@ -43,7 +47,7 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2
@@ -61,10 +65,10 @@ jobs:
 
     - name: Get composer cache directory
       id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Cache composer dependencies
-      uses: actions/cache@v1
+      uses: actions/cache@v4
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
@@ -89,7 +93,7 @@ jobs:
       run: bin/console assets:install --symlink
 
     - name: Install Pimcore
-      run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
+      run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
 
     - name: Install CoreShop
       run: |

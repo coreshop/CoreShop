@@ -23,13 +23,18 @@ use Behat\Gherkin\Node\TableNode;
 use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
+use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Persistence\ObjectManager;
+use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition;
+use Pimcore\Model\DataObject\Listing;
 
 final class IndexContext implements Context
 {
@@ -40,6 +45,7 @@ final class IndexContext implements Context
         private FactoryInterface $indexFactory,
         private ServiceRegistryInterface $workerServiceRegistry,
         private FactoryInterface $indexColumnFactory,
+        private IndexUpdaterServiceInterface $indexUpdater,
     ) {
     }
 
@@ -193,5 +199,37 @@ final class IndexContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('index', $index);
+    }
+
+    /**
+     * @Then /I generate (index "[^"]+") for products$/
+     */
+    public function iGenerateIndex(IndexInterface $index)
+    {
+        $class = $index->getClass();
+        $class = ucfirst($class);
+        /**
+         * @psalm-var class-string $list
+         */
+        $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
+        /**
+         * @var Listing $list
+         *
+         * @psalm-suppress UndefinedClass
+         */
+        $list = new $list();
+
+        $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
+        $list->setUnpublished(true);
+
+        $perLoop = 10;
+
+        $batchList = new DataObjectBatchListing($list, $perLoop);
+        foreach ($batchList as $object) {
+            if (!$object instanceof IndexableInterface) {
+                continue;
+            }
+            $this->indexUpdater->updateIndices($object);
+        }
     }
 }

@@ -23,6 +23,7 @@ use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier;
@@ -30,6 +31,7 @@ use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -37,10 +39,12 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,12 +52,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CartController extends FrontendController
 {
     public function widgetAction(Request $request): Response
     {
-        return $this->render($this->templateConfigurator->findTemplate('Cart/_widget.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/_widget.html'), [
             'cart' => $this->getCart(),
         ]);
     }
@@ -75,7 +81,7 @@ class CartController extends FrontendController
         $this->denyAccessUnlessGranted('CORESHOP_CART_SUMMARY');
 
         $cart = $this->getCart();
-        $form = $this->get('form.factory')->createNamed('coreshop', CartType::class, $cart);
+        $form = $this->container->get('form.factory')->createNamed('coreshop', CartType::class, $cart);
         $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted()) {
@@ -96,7 +102,7 @@ class CartController extends FrontendController
                     if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                         $this->addFlash(
                             'error',
-                            $this->get('translator')->trans('coreshop.ui.error.voucher.not_found'),
+                            $this->container->get('translator')->trans('coreshop.ui.error.voucher.not_found'),
                         );
 
                         return $this->redirectToRoute('coreshop_cart_summary');
@@ -108,16 +114,16 @@ class CartController extends FrontendController
                         $this->getCartManager()->persistCart($cart);
                         $this->addFlash(
                             'success',
-                            $this->get('translator')->trans('coreshop.ui.success.voucher.stored'),
+                            $this->container->get('translator')->trans('coreshop.ui.success.voucher.stored'),
                         );
                     } else {
-                        $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.voucher.invalid'));
+                        $this->addFlash('error', $this->container->get('translator')->trans('coreshop.ui.error.voucher.invalid'));
                     }
                 } else {
-                    $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
+                    $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.cart_updated'));
                 }
 
-                $this->get('event_dispatcher')->dispatch(new GenericEvent($cart), 'coreshop.cart.update');
+                $this->container->get('event_dispatcher')->dispatch(new GenericEvent($cart), 'coreshop.cart.update');
                 $this->getCartManager()->persistCart($cart);
 
                 return $this->redirectToRoute('coreshop_cart_summary');
@@ -134,7 +140,7 @@ class CartController extends FrontendController
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Cart/summary.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/summary.html'), [
             'cart' => $cart,
             'form' => $form->createView(),
         ]);
@@ -146,7 +152,7 @@ class CartController extends FrontendController
         $this->denyAccessUnlessGranted('CORESHOP_CART_CALCULATE_SHIPMENT');
 
         $cart = $this->getCart();
-        $form = $this->get('form.factory')->createNamed('coreshop', ShippingCalculatorType::class, null, [
+        $form = $this->container->get('form.factory')->createNamed('coreshop', ShippingCalculatorType::class, null, [
             'action' => $this->generateUrl('coreshop_cart_check_shipment'),
         ]);
 
@@ -156,11 +162,11 @@ class CartController extends FrontendController
         //check if there is a shipping calculation request
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted() && $form->isValid()) {
             $shippingCalculatorFormData = $form->getData();
-            $carrierPriceCalculator = $this->get(TaxedShippingCalculatorInterface::class);
-            $carriersResolver = $this->get(CarriersResolverInterface::class);
+            $carrierPriceCalculator = $this->container->get(TaxedShippingCalculatorInterface::class);
+            $carriersResolver = $this->container->get(CarriersResolverInterface::class);
 
             /** @var AddressInterface $virtualAddress */
-            $virtualAddress = $this->get('coreshop.factory.address')->createNew();
+            $virtualAddress = $this->container->get('coreshop.factory.address')->createNew();
             $virtualAddress->setCountry($shippingCalculatorFormData['country']);
             $virtualAddress->setPostcode($shippingCalculatorFormData['zip']);
 
@@ -181,7 +187,7 @@ class CartController extends FrontendController
             });
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
             'cart' => $cart,
             'form' => $form->createView(),
             'availableCarriers' => $availableCarriers,
@@ -190,12 +196,21 @@ class CartController extends FrontendController
 
     public function addItemAction(Request $request): Response
     {
+        if ($request->isMethod('GET') && !($this->isGranted('CORESHOP_CART') && $this->isGranted('CORESHOP_CART_ADD_ITEM'))) {
+            return $this->render(
+                $this->getParameterFromRequest($request, 'template', $this->getTemplateConfigurator()->findTemplate('Product/_addToCart.html')),
+                [
+                    'form' => null,
+                    'product' => null,
+                ],
+            );
+        }
         $this->denyAccessUnlessGranted('CORESHOP_CART');
         $this->denyAccessUnlessGranted('CORESHOP_CART_ADD_ITEM');
 
         $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_index'));
 
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
+        $product = $this->container->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
 
         if (!$product instanceof PurchasableInterface) {
             if ($request->isXmlHttpRequest()) {
@@ -207,13 +222,13 @@ class CartController extends FrontendController
             return $this->redirect($redirect);
         }
 
-        $cartItem = $this->get('coreshop.factory.order_item')->createWithPurchasable($product);
+        $cartItem = $this->container->get('coreshop.factory.order_item')->createWithPurchasable($product);
 
         $this->getQuantityModifer()->modify($cartItem, 1);
 
         $addToCart = $this->createAddToCart($this->getCart(), $cartItem);
 
-        $form = $this->get('form.factory')->createNamed('coreshop-' . $product->getId(), AddToCartType::class, $addToCart);
+        $form = $this->container->get('form.factory')->createNamed('coreshop-' . $product->getId(), AddToCartType::class, $addToCart);
 
         if ($request->isMethod('POST')) {
             $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_cart_summary'));
@@ -229,13 +244,13 @@ class CartController extends FrontendController
                 $this->getCartModifier()->addToList($addToCart->getCart(), $addToCart->getCartItem());
                 $this->getCartManager()->persistCart($this->getCart());
 
-                $this->get(TrackerInterface::class)->trackCartAdd(
+                $this->container->get(TrackerInterface::class)->trackCartAdd(
                     $addToCart->getCart(),
                     $addToCart->getCartItem()->getProduct(),
                     $addToCart->getCartItem()->getQuantity(),
                 );
 
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
+                $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.item_added'));
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
@@ -269,7 +284,7 @@ class CartController extends FrontendController
         }
 
         return $this->render(
-            $this->getParameterFromRequest($request, 'template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
+            $this->getParameterFromRequest($request, 'template', $this->getTemplateConfigurator()->findTemplate('Product/_addToCart.html')),
             [
                 'form' => $form->createView(),
                 'product' => $product,
@@ -282,7 +297,7 @@ class CartController extends FrontendController
         $this->denyAccessUnlessGranted('CORESHOP_CART');
         $this->denyAccessUnlessGranted('CORESHOP_CART_REMOVE_ITEM');
 
-        $cartItem = $this->get('coreshop.repository.order_item')->find($this->getParameterFromRequest($request, 'cartItem'));
+        $cartItem = $this->container->get('coreshop.repository.order_item')->find($this->getParameterFromRequest($request, 'cartItem'));
 
         if (!$cartItem instanceof OrderItemInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -292,12 +307,14 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
+        $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.item_removed'));
 
         $this->getCartModifier()->removeFromList($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get(TrackerInterface::class)->trackCartRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
+        $request->attributes->set('product', $cartItem->getProduct());
+
+        $this->container->get(TrackerInterface::class)->trackCartRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -326,32 +343,32 @@ class CartController extends FrontendController
 
     protected function createAddToCart(OrderInterface $cart, OrderItemInterface $cartItem): AddToCartInterface
     {
-        return $this->get(AddToCartFactoryInterface::class)->createWithCartAndCartItem($cart, $cartItem);
+        return $this->container->get(AddToCartFactoryInterface::class)->createWithCartAndCartItem($cart, $cartItem);
     }
 
     protected function getCartPriceRuleProcessor(): CartPriceRuleProcessorInterface
     {
-        return $this->get(CartPriceRuleProcessorInterface::class);
+        return $this->container->get(CartPriceRuleProcessorInterface::class);
     }
 
     protected function getCartPriceRuleUnProcessor(): CartPriceRuleUnProcessorInterface
     {
-        return $this->get(CartPriceRuleUnProcessorInterface::class);
+        return $this->container->get(CartPriceRuleUnProcessorInterface::class);
     }
 
     protected function getCartModifier(): CartModifierInterface
     {
-        return $this->get(CartModifierInterface::class);
+        return $this->container->get(CartModifierInterface::class);
     }
 
     protected function getQuantityModifer(): StorageListItemQuantityModifierInterface
     {
-        return $this->get(CartItemQuantityModifier::class);
+        return $this->container->get(CartItemQuantityModifier::class);
     }
 
     protected function getCartPriceRuleVoucherRepository(): CartPriceRuleVoucherRepositoryInterface
     {
-        return $this->get('coreshop.repository.cart_price_rule_voucher_code');
+        return $this->container->get('coreshop.repository.cart_price_rule_voucher_code');
     }
 
     protected function getCart(): OrderInterface
@@ -361,19 +378,40 @@ class CartController extends FrontendController
 
     protected function getCartContext(): CartContextInterface
     {
-        return $this->get(CartContextInterface::class);
+        return $this->container->get(CartContextInterface::class);
     }
 
     protected function getCartManager(): CartManagerInterface
     {
-        return $this->get(CartManagerInterface::class);
+        return $this->container->get(CartManagerInterface::class);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                new SubscribedService('coreshop.repository.stack.purchasable', StackRepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.stack.purchasable')),
+                new SubscribedService('coreshop.factory.order_item', OrderItemFactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.order_item')),
+                new SubscribedService('coreshop.repository.order_item', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.order_item')),
+                new SubscribedService(CartItemQuantityModifier::class, CartItemQuantityModifier::class),
+                new SubscribedService(AddToCartFactoryInterface::class, AddToCartFactoryInterface::class),
+                new SubscribedService(CartModifierInterface::class, CartModifierInterface::class),
+                new SubscribedService(CartManagerInterface::class, CartManagerInterface::class),
+                new SubscribedService(TrackerInterface::class, TrackerInterface::class),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+                new SubscribedService('coreshop.repository.cart_price_rule_voucher_code', CartPriceRuleVoucherRepositoryInterface::class),
+                new SubscribedService(CartPriceRuleProcessorInterface::class, CartPriceRuleProcessorInterface::class),
+                new SubscribedService(CartPriceRuleUnProcessorInterface::class, CartPriceRuleUnProcessorInterface::class),
+            ],
+        );
     }
 
     private function getCartItemErrors(OrderItemInterface $cartItem): ConstraintViolationListInterface
     {
         return $this
-            ->get('validator')
-            ->validate($cartItem, null, $this->container->getParameter('coreshop.form.type.cart_item.validation_groups'))
+            ->container->get('validator')
+            ->validate($cartItem, null, $this->getParameter('coreshop.form.type.cart_item.validation_groups'))
         ;
     }
 }

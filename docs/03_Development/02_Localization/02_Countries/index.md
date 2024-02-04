@@ -1,6 +1,10 @@
-# CoreShop Countries
+# Countries
 
-> CoreShop is a multi-country able eCommerce Framework. Therefore it is possible to create and use different Countries.
+> CoreShop is a multi-country capable eCommerce Framework, enabling the creation and utilization of various countries.
 
-1. [Create, Update, Read, Delete](./01_CRUD.md)
-2. [Country Context](./02_Context.md)
+## Managing Countries
+
+1. **[Create, Update, Read, Delete](./01_CRUD.md)**: Comprehensive guidelines for performing basic CRUD (Create, Read,
+   Update, Delete) operations on countries within CoreShop.
+2. **[Country Context](./02_Context.md)**: Detailed information on how CoreShop determines the country context for a
+   visitor or customer, including the implementation and customization of country contexts and resolvers.

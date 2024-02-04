@@ -23,8 +23,9 @@ use Twig\TwigFunction;
 
 final class TestFormAttributeExtension extends AbstractExtension
 {
-    public function __construct(private string $environment)
-    {
+    public function __construct(
+        private string $environment,
+    ) {
     }
 
     public function getFunctions(): array

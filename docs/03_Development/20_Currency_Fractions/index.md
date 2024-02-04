@@ -1,32 +1,26 @@
-# CoreShop Fraction Digits
-CoreShop allows you working with more than 2 digits for Currency Values. The default configuration looks like this:
+# Fraction Digits
+
+CoreShop allows you to work with more than two digits for currency values. The default configuration looks like this:
 
 ```yml
 core_shop_currency:
-    money_decimal_precision: 2
-    money_decimal_factor: 100
+money_decimal_precision: 2
+money_decimal_factor: 100
 ```
 
-> `money_decimal_precision: 2`
+- `money_decimal_precision: 2`: This setting specifies a global precision of 2.
+- `money_decimal_factor: 100`: This setting is for displaying currency with a factor of 100 in the Pimcore Backend.
 
-Having a global precision of 2
+> *WARNING*: If you change these settings in an existing installation with orders, products, etc., you also need to
+> create a migration to change all the values from a precision of 2 to your new setting.
 
-> `money_decimal_factor: 100`
+For handling payment values with a precision of, for example, 4, a new order property called `paymentTotal` is
+introduced. In payments, dealing with a precision greater than 2 isn't feasible since a currency only has, for example,
+100 cents. Therefore, the `total` Cart/Order value is rounded to a precision of 2 in the `paymentTotal` value.
 
-Displaying Currency with a factor of 100 (in Pimcore Backend).
+For example, if your Cart/Order total is "€ 1,000.5498", the payment total would be "€ 1,000.55".
 
-> *WARNING* If you change these settings in an existing Installation with Orders/Products etc. you also have to create 
-> a migration to change all the values from a precision of 2 to your new setting.
-
-In order to handle payment values with a precision of for example 4, we introduced a new Order Property called `paymentTotal`.
-Within a Payment, you cannot deal with a precision > 2, since a currency only has eg. 100 Cents. Therefore, we round the `total`
-Cart/Order value to a precision of 2 into the `paymentTotal` Value.
-
-For example:
-
-Your Cart/Order is "€ 1.000,5498", your payment total then is: "€ 1.000,55".
-
-If you want to display the payment total in your cart, you can use this template:
+To display the payment total in your cart, you can use this template:
 
 ```twig
 {% if currency.convertAndFormat(cart.total) != currency.convertAndFormat(cart.paymentTotal, 2, 100) %}
@@ -40,4 +34,3 @@ If you want to display the payment total in your cart, you can use this template
 </tr>
 {% endif %}
 ```
-c

@@ -29,19 +29,18 @@ use CoreShop\Component\Order\CheckoutEvents;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
 use CoreShop\Component\Order\OrderPaymentTransitions;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderTransitions;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CheckoutController extends FrontendController
 {
-    public function __construct(protected CheckoutManagerFactoryInterface $checkoutManagerFactory)
-    {
-    }
-
     public function processAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('CORESHOP_CHECKOUT');
@@ -50,7 +49,7 @@ class CheckoutController extends FrontendController
             return $this->redirectToRoute('coreshop_cart_summary');
         }
 
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+        $checkoutManager = $this->getCheckoutManagerFactory()->createCheckoutManager($this->getCart());
 
         $stepIdentifier = $this->getParameterFromRequest($request, 'stepIdentifier');
         $step = $checkoutManager->getStep($stepIdentifier);
@@ -64,7 +63,7 @@ class CheckoutController extends FrontendController
         //Check all previous steps if they are valid, if not, redirect back
         foreach ($checkoutManager->getPreviousSteps($stepIdentifier) as $previousStep) {
             if ($previousStep instanceof ValidationCheckoutStepInterface && !$previousStep->validate($cart)) {
-                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $previousStep->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', $this->stepParams($request, $previousStep->getIdentifier()));
             }
         }
 
@@ -72,13 +71,13 @@ class CheckoutController extends FrontendController
         if ($isValid && $step->doAutoForward($cart)) {
             $nextStep = $checkoutManager->getNextStep($stepIdentifier);
             if ($nextStep) {
-                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', $this->stepParams($request, $nextStep->getIdentifier()));
             }
         }
 
         $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier]);
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_PRE);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_PRE);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -101,7 +100,7 @@ class CheckoutController extends FrontendController
                         $nextStep = $checkoutManager->getNextStep($stepIdentifier);
 
                         if ($nextStep) {
-                            $response = $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                            $response = $this->redirectToRoute('coreshop_checkout', $this->stepParams($request, $nextStep->getIdentifier()));
                         }
                     }
 
@@ -118,7 +117,7 @@ class CheckoutController extends FrontendController
         }
 
         $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
-        $this->get(TrackerInterface::class)->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
+        $this->container->get(TrackerInterface::class)->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
@@ -130,7 +129,7 @@ class CheckoutController extends FrontendController
 
         $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier, 'step_params' => $dataForStep]);
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_POST);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_POST);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -147,7 +146,7 @@ class CheckoutController extends FrontendController
 
     protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, string $stepIdentifier, array $dataForStep): Response
     {
-        $template = $this->templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
+        $template = $this->getTemplateConfigurator()->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
 
         return $this->render($template, $dataForStep);
     }
@@ -157,7 +156,7 @@ class CheckoutController extends FrontendController
         $this->denyAccessUnlessGranted('CORESHOP_ORDER_CREATE');
 
         $cart = $this->getCart();
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
+        $checkoutManager = $this->getCheckoutManagerFactory()->createCheckoutManager($cart);
 
         /*
          * after the last step, we come here
@@ -183,13 +182,13 @@ class CheckoutController extends FrontendController
             $step = $checkoutManager->getStep($stepIdentifier);
 
             if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
-                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', $this->stepParams($request, $step->getIdentifier()));
             }
         }
 
         $event = new CheckoutEvent($this->getCart());
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_PRE);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_PRE);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -206,15 +205,33 @@ class CheckoutController extends FrontendController
          */
         $order = $this->getCart();
 
-        $workflow = $this->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
+        $workflow = $this->container->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
 
-        $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
+        if ($order->getSaleState() !== OrderSaleStates::STATE_ORDER) {
+            $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
+        }
 
-        $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
+        $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
+
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_PAYMENT_PRE);
+
+        if ($event->isStopped()) {
+            $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+        }
+
+        if ($event->hasResponse()) {
+            return $event->getResponse();
+        }
+
+        $response = $this->redirectToRoute('coreshop_payment_token', ['token' => (string) $order->getToken()]);
 
         if (0 === $order->getTotal()) {
-            $orderStateMachine = $this->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order');
-            $orderPaymentStateMachine = $this->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order_payment');
+            $orderStateMachine = $this->container->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order');
+            $orderPaymentStateMachine = $this->container->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order_payment');
 
             if ($orderStateMachine->can($order, OrderTransitions::TRANSITION_CONFIRM)) {
                 $orderStateMachine->apply($order, OrderTransitions::TRANSITION_CONFIRM);
@@ -224,14 +241,14 @@ class CheckoutController extends FrontendController
                 $orderPaymentStateMachine->apply($order, OrderPaymentTransitions::TRANSITION_PAY);
             }
 
-            $this->get('event_dispatcher')->dispatch(new CheckoutEvent($this->getCart(), ['order' => $order]), CheckoutEvents::CHECKOUT_DO_POST);
+            $this->container->get('event_dispatcher')->dispatch(new CheckoutEvent($this->getCart(), ['order' => $order]), CheckoutEvents::CHECKOUT_DO_POST);
 
             $response = $this->redirectToRoute('coreshop_checkout_thank_you', ['token' => $order->getToken()]);
         }
 
         $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_POST);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_POST);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -257,17 +274,36 @@ class CheckoutController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $order = $this->get('coreshop.repository.order')->findByToken($orderToken);
+        $order = $this->container->get('coreshop.repository.order')->findByToken($orderToken);
 
         if (null === $order) {
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $this->get(TrackerInterface::class)->trackCheckoutComplete($order);
+        $this->container->get(TrackerInterface::class)->trackCheckoutComplete($order);
 
-        return $this->render($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                'coreshop.checkout_manager.factory' => CheckoutManagerFactoryInterface::class,
+                'coreshop.repository.order' => OrderRepositoryInterface::class,
+                'event_dispatcher' => EventDispatcherInterface::class,
+                TrackerInterface::class => TrackerInterface::class,
+                StateMachineManagerInterface::class,
+            ],
+        );
+    }
+
+    protected function getCheckoutManagerFactory(): CheckoutManagerFactoryInterface
+    {
+        return $this->container->get('coreshop.checkout_manager.factory');
     }
 
     protected function addEventFlash(string $type, string $message = null, array $parameters = []): void
@@ -283,6 +319,14 @@ class CheckoutController extends FrontendController
         }
 
         $this->addFlash($type, $actualMessage);
+    }
+
+    protected function stepParams(Request $request, string $stepIdentifier)
+    {
+        $params = [];
+        $params['stepIdentifier'] = $stepIdentifier;
+
+        return $params;
     }
 
     private function prepareMessage(string $message, array $parameters): array
@@ -305,11 +349,11 @@ class CheckoutController extends FrontendController
 
     protected function getCartContext(): CartContextInterface
     {
-        return $this->get(CartContextInterface::class);
+        return $this->container->get(CartContextInterface::class);
     }
 
     protected function getPayum(): Payum
     {
-        return $this->get('payum');
+        return $this->container->get('payum');
     }
 }

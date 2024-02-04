@@ -24,8 +24,8 @@ class RuleAvailabilityAssessorPass extends RegisterSimpleRegistryTypePass
 {
     public const RULE_AVAILABILITY_ASSESSOR_TAG = 'coreshop.registry.rule_availability_assessor';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.rule_availability_assessor',
             'coreshop.registry.rule_availability_assessors',

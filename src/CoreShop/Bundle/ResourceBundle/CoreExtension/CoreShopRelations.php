@@ -25,17 +25,16 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
  */
 class CoreShopRelations extends Data\ManyToManyRelation
 {
-    public $fieldtype = 'coreShopRelations';
+    public string|null $stack;
 
-    public $stack;
+    public bool $objectsAllowed = true;
 
-    public $relationType = true;
+    public array $classes = [];
 
-    public $objectsAllowed = true;
-
-    public $assetsAllowed = false;
-
-    public $documentsAllowed = false;
+    public function getFieldType(): string
+    {
+        return 'coreShopRelations';
+    }
 
     public function getStack()
     {
@@ -89,7 +88,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
         return '?\\' . $stack[$this->stack] . '[]';
     }
 
-    public function getClasses()
+    public function getClasses(): array
     {
         if (null === $this->stack) {
             return [];
@@ -107,43 +106,12 @@ class CoreShopRelations extends Data\ManyToManyRelation
         return $return;
     }
 
-    /**
-     * @return bool
-     */
-    public function getObjectsAllowed()
+    public static function __set_state(array $data): static
     {
-        return true;
-    }
+        $obj = parent::__set_state($data);
+        $obj->classes = $obj->getClasses();
+        $obj->objectsAllowed = true;
 
-    /**
-     * @return bool
-     */
-    public function getDocumentsAllowed()
-    {
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDocumentTypes()
-    {
-        return [];
-    }
-
-    /**
-     * @return bool
-     */
-    public function getAssetsAllowed()
-    {
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAssetTypes()
-    {
-        return [];
+        return $obj;
     }
 }

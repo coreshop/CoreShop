@@ -24,13 +24,14 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class CustomerLoginService implements CustomerLoginServiceInterface
 {
-    public function __construct(private TokenStorageInterface $securityTokenStorage)
-    {
+    public function __construct(
+        private TokenStorageInterface $securityTokenStorage,
+    ) {
     }
 
     public function loginCustomer(UserInterface $user): void
     {
-        $token = new UsernamePasswordToken($user, null, 'coreshop_frontend', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'coreshop_frontend', $user->getRoles());
         $this->securityTokenStorage->setToken($token);
     }
 }

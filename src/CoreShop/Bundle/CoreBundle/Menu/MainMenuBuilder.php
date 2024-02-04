@@ -289,7 +289,7 @@ class MainMenuBuilder implements MenuBuilderInterface
         $productsMenu
             ->addChild('coreshop_product_units')
             ->setLabel('coreshop_product_units')
-            ->setAttribute('permission', 'coreshop_product_unit')
+            ->setAttribute('permission', 'coreshop_permission_product_unit')
             ->setAttribute('iconCls', 'coreshop_nav_icon_product_units')
             ->setAttribute('resource', 'coreshop.product')
             ->setAttribute('function', 'product_unit')
@@ -363,13 +363,32 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setExtra('order', 80)
         ;
 
-        $menuItem->addChild('coreshop_payment_providers')
+        $paymentMenu = $menuItem
+            ->addChild('coreshop_payment_providers')
+            ->setLabel('coreshop_payment_providers')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider')
+            ->setAttribute('container', true)
+            ->setExtra('order', 90)
+        ;
+
+        $paymentMenu
+            ->addChild('coreshop_payment_providers')
             ->setLabel('coreshop_payment_providers')
             ->setAttribute('permission', 'coreshop_permission_payment_provider')
             ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider')
             ->setAttribute('resource', 'coreshop.payment')
             ->setAttribute('function', 'payment_provider')
-            ->setExtra('order', 90)
+            ->setExtra('order', 10)
+        ;
+
+        $paymentMenu
+            ->addChild('coreshop_payment_provider_rule')
+            ->setLabel('coreshop_payment_provider_rule')
+            ->setAttribute('permission', 'coreshop_permission_payment_provider_rule')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider_rule')
+            ->setAttribute('resource', 'coreshop.payment')
+            ->setAttribute('function', 'payment_provider_rule')
+            ->setExtra('order', 20)
         ;
 
         $menuItem->addChild('coreshop_stores')
@@ -379,6 +398,16 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('resource', 'coreshop.store')
             ->setAttribute('function', 'store')
             ->setExtra('order', 100)
+        ;
+
+        $menuItem
+            ->addChild('coreshop_messenger')
+            ->setLabel('coreshop_messenger')
+            ->setAttribute('permission', 'coreshop_permission_messenger')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_messenger')
+            ->setAttribute('resource', 'coreshop.messenger')
+            ->setAttribute('function', 'list')
+            ->setExtra('order', 110)
         ;
 
         $menuItem->addChild('coreshop_about')

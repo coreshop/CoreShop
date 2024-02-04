@@ -25,7 +25,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
  */
 interface StorageListItemInterface
 {
-    public function getId();
+    public function getId(): ?int;
 
     public function equals(self $storageListItem): bool;
 
@@ -37,5 +37,7 @@ interface StorageListItemInterface
 
     public function setQuantity(?float $quantity);
 
-    public function getStorageList(): StorageListInterface;
+    public function getStorageList(): ?StorageListInterface;
+
+    public function setStorageList(StorageListInterface $storageList);
 }

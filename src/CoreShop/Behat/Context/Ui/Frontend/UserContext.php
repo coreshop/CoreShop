@@ -23,8 +23,9 @@ use CoreShop\Behat\Page\Frontend\HomePageInterface;
 
 final class UserContext implements Context
 {
-    public function __construct(private HomePageInterface $homePage)
-    {
+    public function __construct(
+        private HomePageInterface $homePage,
+    ) {
     }
 
     /**

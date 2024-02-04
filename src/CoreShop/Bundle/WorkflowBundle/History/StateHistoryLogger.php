@@ -36,20 +36,22 @@ final class StateHistoryLogger implements StateHistoryLoggerInterface
     {
         $transition = $event->getTransition();
 
+        if (null === $transition) {
+            return;
+        }
+
         $from = $this->getFrom($transition->getFroms());
         $to = $this->getTo($transition->getTos());
 
         $fromValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $from;
         $toValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $to;
 
-        $objectIdInfo = ' (Id ' . $object->getId() . ')';
-
         $note = $this->noteService->createPimcoreNoteInstance($object, $this->noteIdentifier);
-        $note->setTitle(
+        $note->setTitle('coreshop_history_change');
+        $note->setDescription(
             sprintf(
-                '%s%s: %s %s %s %s',
+                '%s: %s %s %s %s',
                 $this->translator->trans('coreshop_workflow_name_' . $event->getWorkflowName(), [], 'admin'),
-                $objectIdInfo,
                 $this->translator->trans('coreshop_workflow_state_changed_from', [], 'admin'),
                 $this->translator->trans($fromValue, [], 'admin'),
                 $this->translator->trans('coreshop_workflow_state_changed_to', [], 'admin'),

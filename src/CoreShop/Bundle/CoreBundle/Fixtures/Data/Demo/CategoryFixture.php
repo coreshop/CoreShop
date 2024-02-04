@@ -18,28 +18,30 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\Service;
 use Pimcore\Tool;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CategoryFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class CategoryFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private CategoryRepositoryInterface $categoryRepository,
+        private StoreRepositoryInterface $storeRepository,
+        private FactoryInterface $categoryFactory,
+        private ObjectServiceInterface $objectService,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
 
     public function load(ObjectManager $manager): void
@@ -67,21 +69,21 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
             ],
         ];
 
-        if (!count($this->container->get('coreshop.repository.category')->findAll())) {
+        if (!count($this->categoryRepository->findAll())) {
             $categoriesCount = 5;
 
             for ($i = 0; $i < $categoriesCount; ++$i) {
                 /**
                  * @var CategoryInterface $category
                  */
-                $category = $this->container->get('coreshop.factory.category')->createNew();
+                $category = $this->categoryFactory->createNew();
 
                 foreach (Tool::getValidLanguages() as $language) {
                     $category->setName($names[$i][$language] ?? $names[$i]['en'], $language);
                 }
 
-                $category->setParent($this->container->get(ObjectServiceInterface::class)->createFolderByPath('/demo/categories'));
-                $category->setStores([$this->container->get('coreshop.repository.store')->findStandard()->getId()]);
+                $category->setParent($this->objectService->createFolderByPath('/demo/categories'));
+                $category->setStores([$this->storeRepository->findStandard()->getId()]);
                 $category->setPublished(true);
                 $category->setKey($category->getName());
                 $category->setKey(Service::getUniqueKey($category));

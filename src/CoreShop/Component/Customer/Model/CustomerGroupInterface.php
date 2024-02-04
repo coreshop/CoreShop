@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface CustomerGroupInterface extends PimcoreModelInterface
 {
+    public function getId(): ?int;
+
     public function getName(): ?string;
 
     public function setName(?string $name);

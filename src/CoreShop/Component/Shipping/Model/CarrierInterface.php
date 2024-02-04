@@ -26,6 +26,8 @@ use Pimcore\Model\Asset;
 
 interface CarrierInterface extends ResourceInterface, TimestampableInterface, TranslatableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

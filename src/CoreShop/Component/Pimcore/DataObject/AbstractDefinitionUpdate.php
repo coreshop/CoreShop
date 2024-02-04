@@ -26,18 +26,30 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
     protected array $jsonDefinition;
 
+    protected array $originalJsonDefinition;
+
     protected array $fieldDefinitions;
 
     protected string $childrenPath = 'childs';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         if (class_exists(Version20211117173000::class)) {
             $this->childrenPath = 'children';
         }
     }
 
     abstract public function save(): bool;
+
+    public function getJsonDefinition(): array
+    {
+        return $this->jsonDefinition;
+    }
+
+    public function getOriginalJsonDefinition(): array
+    {
+        return $this->originalJsonDefinition;
+    }
 
     public function getProperty(string $property): mixed
     {

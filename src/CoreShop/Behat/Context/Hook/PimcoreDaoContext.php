@@ -18,14 +18,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Hook;
 
-use CoreShop\Bundle\TestBundle\Context\Hook\PimcoreDaoContext as BasePimcoreDaContext;
+use CoreShop\Bundle\TestBundle\Context\Hook\PimcoreDaoContext as BasePimcoreDaoContext;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-final class PimcoreDaoContext extends BasePimcoreDaContext
+final class PimcoreDaoContext extends BasePimcoreDaoContext
 {
     public function __construct(
         private KernelInterface $kernel,
@@ -38,8 +38,23 @@ final class PimcoreDaoContext extends BasePimcoreDaContext
     /**
      * @BeforeScenario
      */
+    public function purgeSlugs(): void
+    {
+        Cache::clearAll();
+        Cache\RuntimeCache::clear();
+
+        //Force
+        $this->connection->executeQuery('DELETE FROM object_url_slugs');
+    }
+
+    /**
+     * @BeforeScenario
+     */
     public function purgeObjects(): void
     {
+        Cache::clearAll();
+        Cache\RuntimeCache::clear();
+
         /**
          * Delete Orders first, otherwise the CustomerDeletionListener would trigger.
          *
