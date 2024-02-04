@@ -693,6 +693,9 @@ class ClassContext implements Context
      */
     public function thereIsAnInstanceofClassWithKey(ClassDefinition $definition, $key): void
     {
+        /**
+         * @var class-string $className
+         */
         $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
         /**
          * @var Concrete $instance
@@ -782,6 +785,9 @@ class ClassContext implements Context
                 case 'brick':
                     $config = json_decode(stripslashes($row['value']), true);
                     $type = $this->classStorage->get($config['type']);
+                    /**
+                     * @var class-string $className
+                     */
                     $className = sprintf('Pimcore\\Model\\DataObject\\Objectbrick\\Data\\%s', $type);
 
                     $brickInstance = new $className($object);
@@ -796,11 +802,17 @@ class ClassContext implements Context
                 case 'collection':
                     $config = json_decode(stripslashes($row['value']), true);
                     $type = $this->classStorage->get($config['type']);
+                    /**
+                     * @var class-string $className
+                     */
                     $className = sprintf('Pimcore\\Model\\DataObject\\Fieldcollection\\Data\\%s', $type);
 
                     $items = new Fieldcollection();
 
                     foreach ($config['values'] as $itemValues) {
+                        /**
+                         * @var Fieldcollection\Data\AbstractData $collectionInstance
+                         */
                         $collectionInstance = new $className();
 
                         foreach ($itemValues as $key => $value) {
@@ -828,6 +840,9 @@ class ClassContext implements Context
         $definitionUpdater->save();
     }
 
+    /**
+     * @psalm-suppress RedundantCondition
+     */
     private function getUpdater(ClassDefinition|Objectbrick\Definition|Fieldcollection\Definition $definition): ClassUpdateInterface
     {
         $definitionUpdater = null;
@@ -841,7 +856,7 @@ class ClassContext implements Context
         }
 
         if (!$definitionUpdater instanceof ClassUpdateInterface) {
-            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', null !== $definition ? $definition::class : 'null'));
+            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', $definition::class));
         }
 
         return $definitionUpdater;

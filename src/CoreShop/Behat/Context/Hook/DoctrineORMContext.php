@@ -34,13 +34,9 @@ final class DoctrineORMContext implements Context
      */
     public function purgeDatabase(): void
     {
-        /***
-         * @psalm-suppress DeprecatedMethod
-         */
-        $this->entityManager
-            ->getConnection()
-            ->getConfiguration()
-            ->setSQLLogger(null);
+        $this->entityManager->getConnection()->getConfiguration()->setMiddlewares(
+            [new \Doctrine\DBAL\Logging\Middleware(new \Psr\Log\NullLogger())]
+        );
 
         $purger = new ORMPurger($this->entityManager);
         $purger->purge();
