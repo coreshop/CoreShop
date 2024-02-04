@@ -118,7 +118,7 @@ final class ClassContext implements Context
          * @psalm-suppress DeprecatedClass
          * @psalm-suppress DeprecatedMethod
          */
-        Runtime::clear();
+        RuntimeCache::clear();
 
         $name = $this->sharedStorage->get('pimcore_definition_name');
         $class = $this->sharedStorage->get('pimcore_definition_class');
