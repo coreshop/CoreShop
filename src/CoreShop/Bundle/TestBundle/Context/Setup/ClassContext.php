@@ -113,7 +113,7 @@ class ClassContext implements Context
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -129,7 +129,7 @@ class ClassContext implements Context
                         "bodyStyle": null,
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [],
+                        "children": [],
                         "locked": false
                     }
                 ],
@@ -193,7 +193,7 @@ class ClassContext implements Context
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -209,7 +209,7 @@ class ClassContext implements Context
                         "bodyStyle": null,
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [],
+                        "children": [],
                         "locked": false
                     }
                 ],
@@ -251,7 +251,7 @@ class ClassContext implements Context
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -267,7 +267,7 @@ class ClassContext implements Context
                         "bodyStyle": null,
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [],
+                        "children": [],
                         "locked": false
                     }
                 ],
@@ -471,6 +471,7 @@ class ClassContext implements Context
         $jsonDefinition = sprintf('
             {
                 "fieldtype": "checkbox",
+                "datatype": "data",
                 "defaultValue": 0,
                 "name": "%s",
                 "title": "%s",
@@ -501,7 +502,7 @@ class ClassContext implements Context
             {
                 "fieldtype": "localizedfields",
                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "input",
                         "width": null,
@@ -561,7 +562,7 @@ class ClassContext implements Context
             {
                 "fieldtype": "localizedfields",
                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "textarea",
                         "width": "",
@@ -624,7 +625,7 @@ class ClassContext implements Context
                 "fieldtype": "objectbricks",
                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Objectbrick",
                 "allowedTypes": [],
-                "maxItems": "",
+                "maxItems": null,
                 "name": "%s",
                 "title": "%s",
                 "tooltip": "",
@@ -662,7 +663,7 @@ class ClassContext implements Context
                     "%s"
                 ],
                 "lazyLoading": true,
-                "maxItems": "",
+                "maxItems": null,
                 "disallowAddRemove": false,
                 "disallowReorder": false,
                 "collapsed": false,
@@ -695,8 +696,6 @@ class ClassContext implements Context
         $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
         /**
          * @var Concrete $instance
-         *
-         * @psalm-suppress InvalidStringClass
          */
         $instance = new $className();
         $instance->setKey($key);
@@ -785,9 +784,6 @@ class ClassContext implements Context
                     $type = $this->classStorage->get($config['type']);
                     $className = sprintf('Pimcore\\Model\\DataObject\\Objectbrick\\Data\\%s', $type);
 
-                    /**
-                     * @psalm-suppress InvalidStringClass
-                     */
                     $brickInstance = new $className($object);
 
                     foreach ($config['values'] as $key => $value) {
@@ -805,20 +801,12 @@ class ClassContext implements Context
                     $items = new Fieldcollection();
 
                     foreach ($config['values'] as $itemValues) {
-                        /**
-                         * @psalm-suppress InvalidStringClass
-                         *
-                         * @var Fieldcollection $collectionInstance
-                         */
                         $collectionInstance = new $className();
 
                         foreach ($itemValues as $key => $value) {
                             $collectionInstance->setValue($key, $value);
                         }
 
-                        /**
-                         * @psalm-suppress InvalidArgument
-                         */
                         $items->add($collectionInstance);
                     }
 
@@ -844,17 +832,16 @@ class ClassContext implements Context
     {
         $definitionUpdater = null;
 
-        /**
-         * @psalm-suppress RedundantCondition
-         */
         if ($definition instanceof ClassDefinition) {
             $definitionUpdater = new ClassUpdate($definition->getName());
         } elseif ($definition instanceof Objectbrick\Definition) {
             $definitionUpdater = new BrickDefinitionUpdate($definition->getKey());
         } elseif ($definition instanceof Fieldcollection\Definition) {
             $definitionUpdater = new FieldCollectionDefinitionUpdate($definition->getKey());
-        } else {
-            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', $definition::class));
+        }
+
+        if (!$definitionUpdater instanceof ClassUpdateInterface) {
+            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', null !== $definition ? $definition::class : 'null'));
         }
 
         return $definitionUpdater;
