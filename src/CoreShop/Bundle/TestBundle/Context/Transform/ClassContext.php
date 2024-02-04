@@ -21,7 +21,7 @@ namespace CoreShop\Bundle\TestBundle\Context\Transform;
 use Behat\Behat\Context\Context;
 use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
-use Pimcore\Cache\Runtime;
+use Pimcore\Cache\RuntimeCache;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection\Definition;
@@ -40,11 +40,7 @@ final class ClassContext implements Context
      */
     public function class($name): ClassDefinition
     {
-        /**
-         * @psalm-suppress DeprecatedClass
-         * @psalm-suppress DeprecatedMethod
-         */
-        Runtime::clear();
+        RuntimeCache::clear();
 
         /**
          * @psalm-suppress UndefinedConstant

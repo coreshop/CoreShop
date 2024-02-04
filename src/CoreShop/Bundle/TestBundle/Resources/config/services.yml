@@ -37,7 +37,10 @@ services:
   coreshop.security_service.backend:
     class: CoreShop\Bundle\TestBundle\Service\PimcoreSecurityService
     arguments:
+      - '@session.factory'
+      - '@request_stack'
       - '@CoreShop\Bundle\TestBundle\Service\PimcoreCookieSetter'
+      - 'pimcore_admin'
 
   CoreShop\Bundle\TestBundle\Service\NotificationAccessorInterface: '@CoreShop\Bundle\TestBundle\Service\NotificationAccessor'
   CoreShop\Bundle\TestBundle\Service\NotificationAccessor:
