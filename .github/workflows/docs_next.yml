@@ -17,4 +17,3 @@ permissions:
 jobs:
   docs:
     uses: coreshop/workflow-collection/.github/workflows/docs.yml@main
-    secrets: inherit
