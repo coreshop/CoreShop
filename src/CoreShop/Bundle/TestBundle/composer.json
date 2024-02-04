@@ -38,7 +38,8 @@
     "friends-of-behat/page-object-extension": "^0.3.2",
     "friends-of-behat/symfony-extension": "^2.1",
     "lakion/mink-debug-extension": "^2.0",
-    "symfony/panther": "^2.0"
+    "symfony/panther": "^2.0",
+    "webmozart/assert": "^1.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",
