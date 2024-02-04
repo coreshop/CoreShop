@@ -711,7 +711,7 @@ class ClassContext implements Context
      */
     public function iReloadTheObjectInstanceIntoObjectInstance2(Concrete $dataObject): void
     {
-        $newInstance = $dataObject::getById($dataObject->getId(), true);
+        $newInstance = $dataObject::getById($dataObject->getId(), ['force' => true]);
 
         $this->sharedStorage->set('object-instance-2', $newInstance);
     }

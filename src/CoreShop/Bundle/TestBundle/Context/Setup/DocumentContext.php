@@ -104,6 +104,9 @@ final class DocumentContext implements Context
      */
     public function theDocumentHasEditable(Document\PageSnippet $document, string $name, string $type, string $data)
     {
+        /**
+         * @psalm-suppress InternalMethod
+         */
         $document->setRawEditable($name, $type, json_decode($data, true, 512, \JSON_THROW_ON_ERROR));
 
         $this->saveDocument($document);
