@@ -104,8 +104,8 @@ class OrderController extends FrontendController
             parent::getSubscribedServices(),
             [
                 'coreshop.repository.order' => OrderRepositoryInterface::class,
-                'coreshop.repository.payment' => PaymentRepositoryInterface::class
-            ]
+                'coreshop.repository.payment' => PaymentRepositoryInterface::class,
+            ],
         );
     }
 }
