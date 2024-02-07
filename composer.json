@@ -81,7 +81,8 @@
     "coreshop/payum-payment-bundle": "self.version",
     "coreshop/optimistic-entity-lock-bundle": "self.version",
     "coreshop/messenger-bundle": "self.version",
-    "coreshop/class-definition-patch-bundle": "self.version"
+    "coreshop/class-definition-patch-bundle": "self.version",
+    "coreshop/test-bundle": "self.version"
   },
   "require": {
     "php": "^8.0",

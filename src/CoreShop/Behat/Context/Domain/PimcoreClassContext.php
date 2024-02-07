@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\ClassStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Objectbrick;
