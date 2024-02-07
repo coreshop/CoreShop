@@ -10,6 +10,9 @@ payum:
         offline:
             factory: concurrency
 
+core_shop_address:
+    autoconfigure_with_attributes: true
+
 services:
     _defaults:
         public: true
@@ -86,3 +89,5 @@ services:
         tags:
             - { name: payum.gateway_factory_builder, factory: concurrency }
 
+    CoreShop\Behat\Service\SampleCountryContext:
+        autoconfigure: true

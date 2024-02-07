@@ -75,6 +75,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('legacy_serialization')->defaultTrue()->end()
                 ->booleanNode('allow_order_edit')->defaultFalse()->end()
+                ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
             ->end()
         ;
         $this->addModelsSection($rootNode);
