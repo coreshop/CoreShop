@@ -1,9 +1,9 @@
 name: Behat
 on:
   push:
-    branches: [ '4.0' ]
+    branches: [ '4.0', 'next' ]
   pull_request:
-    branches: [ '4.0' ]
+    branches: [ '4.0', 'next' ]
   release:
     types: [ created ]
   schedule:
