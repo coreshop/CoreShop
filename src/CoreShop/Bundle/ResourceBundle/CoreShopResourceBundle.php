@@ -20,8 +20,6 @@ namespace CoreShop\Bundle\ResourceBundle;
 
 use Composer\InstalledVersions;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\PimcoreCachePass;
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\PublicPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreRepositoriesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreResourcesPass;
@@ -63,8 +61,6 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $container->addCompilerPass(new StackRepositoryPass());
         $container->addCompilerPass(new RegisterPimcoreRepositoriesPass());
         $container->addCompilerPass(new ValidatorAutoMappingFixPass());
-        $container->addCompilerPass(new PimcoreCachePass());
-        $container->addCompilerPass(new PublicPass());
     }
 
     public static function registerDependentBundles(BundleCollection $collection): void
