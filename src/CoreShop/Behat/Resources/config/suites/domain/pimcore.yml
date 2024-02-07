@@ -15,5 +15,6 @@ default:
 
                 - CoreShop\Bundle\TestBundle\Context\Domain\ClassContext
                 - CoreShop\Bundle\TestBundle\Context\Domain\PimcoreContext
+                - coreshop.behat.context.domain.resource
             filters:
                 tags: "@domain&&@pimcore"

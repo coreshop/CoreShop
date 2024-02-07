@@ -13,6 +13,10 @@ jms_serializer:
     property_naming:
         id: 'jms_serializer.identical_property_naming_strategy'
 
+core_shop_resource:
+    mapping:
+        - '%kernel.project_dir%/src/Model'
+
 pimcore:
     objects:
         class_definitions:
