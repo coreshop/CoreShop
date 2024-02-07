@@ -65,7 +65,7 @@ class MyProduct extends AbstractPimcoreModel implements PurchasableInterface
 ```
 
 For this to work, you have to make sure that your `core_shop_resource` Mapping Path is set.
-per default it points to `%kernel.project_dir%/src/Model`.
+Per default, it points to `%kernel.project_dir%/src/Model`.
 
 You can change this configuration by adding the following to your Symfony Config:
 
