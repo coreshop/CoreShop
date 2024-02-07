@@ -15,7 +15,8 @@ jms_serializer:
 
 core_shop_resource:
     mapping:
-        - '%kernel.project_dir%/src/Model'
+        paths:
+            - '%kernel.project_dir%/src/Model'
 
 pimcore:
     objects:
