@@ -25,11 +25,7 @@ final class ClassReflection
     public static function getResourcesByPaths(array $paths): iterable
     {
         foreach ($paths as $resourceDirectory) {
-            $resources = self::getResourcesByPath($resourceDirectory);
-
-            foreach ($resources as $className) {
-                yield $className;
-            }
+            yield from self::getResourcesByPath($resourceDirectory);
         }
     }
 
