@@ -31,6 +31,11 @@ final class ClassReflection
 
     public static function getResourcesByPath(string $path): iterable
     {
+        //Silently ignore non-existing directories
+        if (is_dir($path) === false) {
+            return;
+        }
+
         $finder = new Finder();
         $finder->files()->in($path)->name('*.php')->sortByName(true);
 
