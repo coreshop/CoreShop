@@ -105,7 +105,7 @@ class ProductSpecificPriceRules extends Data implements
             }
         }
 
-        return $data;
+        return $data ?? [];
     }
 
     public function createDataCopy(Concrete $object, $data)
