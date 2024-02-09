@@ -245,3 +245,10 @@ services:
             - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.resource:
+        class: CoreShop\Behat\Context\Domain\ResourceContext
+        arguments:
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+        tags:
+            - { name: fob.context_service }
