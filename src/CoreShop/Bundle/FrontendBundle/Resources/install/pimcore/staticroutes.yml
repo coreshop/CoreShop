@@ -147,7 +147,7 @@ routes:
     reverse: '/%_locale/shop/pay/%token'
     controller: 'CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction'
     variables: _locale,token
-    priority: 1
+    priority: 3
 
   coreshop_switch_currency:
     pattern: '/(\w+)\/shop\/switch-currency\/(.*)$/'
