@@ -32,6 +32,7 @@ use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderTransitions;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\Request;
@@ -208,7 +209,16 @@ class CheckoutController extends FrontendController
          */
         $order = $this->getCart();
 
-        $workflow = $this->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
+        //Fallback for Orders/Carts without token (eg. legacy carts)
+        //will be removed in future
+        //@Todo: remove with CoreShop 5.0
+        if (!$order->getToken()) {
+            $tokenGenerator = new UniqueTokenGenerator();
+            $order->setToken($tokenGenerator->generate(10));
+            $order->save();
+        }
+
+        $workflow = $this->container->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
 
         if ($order->getSaleState() !== OrderSaleStates::STATE_ORDER) {
             $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
