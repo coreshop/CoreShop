@@ -57,7 +57,7 @@
                         "columnLength": 190,
                         "regex": "",
                         "regexFlags": [],
-                        "unique": false,
+                        "unique": true,
                         "showCharCount": false,
                         "defaultValueGenerator": ""
                     },
