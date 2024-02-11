@@ -3,12 +3,12 @@ on:
   pull_request:
     paths:
       - 'docs/**'
-      - '.github/workflows/docs_next.yaml'
+      - '.github/workflows/docs_next.yml'
       - 'README.md'
   push:
     paths:
       - 'docs/**'
-      - '.github/workflows/docs_next.yaml'
+      - '.github/workflows/docs_next.yml'
       - 'README.md'
 
 permissions:
