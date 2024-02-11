@@ -16,4 +16,6 @@ permissions:
 
 jobs:
   docs:
-    uses: coreshop/workflow-collection/.github/workflows/docs.yml@main
+    uses: coreshop/workflow-collection/.github/workflows/docs.yml@v1
+    secrets:
+      DOCS_GENERATOR_ACCESS_TOKEN: ${{ secrets.DOCS_GENERATOR_ACCESS_TOKEN }}
