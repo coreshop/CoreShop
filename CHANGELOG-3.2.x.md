@@ -1,3 +1,8 @@
+# 3.2.4
+* [CoreBundle] fix priority of coreshop_payment_token route by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2542
+* [Frontend] create order-token if not yet exists by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2543
+* [ProductBundle] default return empty array instead of null in preGetData by @breakone in https://github.com/coreshop/CoreShop/pull/2544
+
 # 3.2.3
 * [ProductBundle] fix ClearCachedPriceRulesListener - remove service definition
 
