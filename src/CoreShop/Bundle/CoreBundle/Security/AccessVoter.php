@@ -28,6 +28,9 @@ class AccessVoter extends Voter
     ) {
     }
 
+    /**
+     * @phpstan-ignore-next-line
+     */
     protected function supports(string $attribute, $subject)
     {
         return str_starts_with($attribute, $this->prefix);
