@@ -4,13 +4,13 @@
 
 1. Create a new class in Pimcore.
 2. Add a Parent Class to your Pimcore Entity.
-3. Export Class Definition to AppBundle/Resources/install/pimcore/classes/PimcoreEntity.json.
+3. Export Class Definition to `AppBundle/Resources/install/pimcore/classes/PimcoreEntity.json`.
 
 ## Step 2: Create Parent Class
 
 ### PimcoreEntityInterface
 
-Create PimcoreEntityInterface.php in the AppBundle/Model directory.
+Create `PimcoreEntityInterface.php` in the `AppBundle/Model` directory.
 
 ```php
 <?php
@@ -24,7 +24,7 @@ interface PimcoreEntityInterface extends ResourceInterface {
 
 ### PimcoreEntity
 
-Create PimcoreEntity.php in the AppBundle/Model directory.
+Create `PimcoreEntity.php` in the `AppBundle/Model` directory.
 
 ```php
 <?php
@@ -45,7 +45,7 @@ class PimcoreEntity extends AbstractPimcoreModel implements PimcoreEntityInterfa
 
 ### Configuration.php
 
-Create Configuration.php in AppBundle/DependencyInjection.
+Create `Configuration.php` in `AppBundle/DependencyInjection`.
 
 ```php
 <?php
@@ -102,7 +102,7 @@ final class Configuration implements ConfigurationInterface
 
 ### AppBundleExtension.php
 
-Create AppBundleExtension.php in the same directory.
+Create `AppBundleExtension.php` in the same directory.
 
 ```php
 <?php
