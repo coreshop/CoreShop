@@ -1,3 +1,6 @@
+# 3.2.5
+* [Migration] [Migration] fix Staticroute Migration for Pimcore 10 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2550
+
 # 3.2.4
 * [CoreBundle] fix priority of coreshop_payment_token route by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2542
 * [Frontend] create order-token if not yet exists by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2543
