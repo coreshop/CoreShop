@@ -6,10 +6,9 @@ First, create your Entity Class. In this case, we create a Translatable Entity.
 
 ### CustomEntityInterface
 
-Create CustomEntityInterface.php in the AppBundle/Model directory.
+Create `CustomEntityInterface.php` in the `AppBundle/Model` directory.
 
 ```php
-
 <?php
 
 interface CustomEntityInterface extends ResourceInterface, TranslatableInterface {
@@ -201,8 +200,9 @@ app_custom_entity:
     alias: app.custom_entity
 ```
 
-GET: /admin/app/custom_entity/list
-GET: /admin/app/custom_entity/get
-POST: /admin/app/custom_entity/add
-POST: /admin/app/custom_entity/save
-DELETE: /admin/app/custom_entity/delete
+It will define the following routes:
+- `GET`: `/admin/app/custom_entity/list`
+- `GET`: `/admin/app/custom_entity/get`
+- `POST`: `/admin/app/custom_entity/add`
+- `POST`: `/admin/app/custom_entity/save`
+- `DELETE`: `/admin/app/custom_entity/delete`
