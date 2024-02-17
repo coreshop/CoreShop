@@ -1,4 +1,4 @@
-# Sequence Bundle in CoreShop
+# Sequence Bundle
 
 The Sequence Bundle is a vital component within CoreShop that facilitates sequence generation, integrating seamlessly
 with Symfony and Doctrine.
