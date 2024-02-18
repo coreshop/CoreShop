@@ -16,13 +16,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Order\Calculator;
+namespace CoreShop\Component\Product\Rule\Action;
 
-interface PurchasableCalculatorInterface extends 
-    PurchasablePriceCalculatorInterface,
-    PurchasableDiscountCalculatorInterface,
-    PurchasableDiscountPriceCalculatorInterface,
-    PurchasableRetailPriceCalculatorInterface,
-    PurchasableCustomAttributesCalculatorInterface
+interface ProductCustomAttributesActionProcessorInterface extends ActionProcessorInterface
 {
+    public function getCustomAttributes($subject, array $context, array $configuration): array;
 }

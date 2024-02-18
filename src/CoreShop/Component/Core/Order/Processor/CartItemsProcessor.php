@@ -98,6 +98,7 @@ final class CartItemsProcessor implements CartProcessorInterface
             $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product, $context);
             $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
             $itemDiscount = $this->productPriceCalculator->getDiscount($product, $context, $itemPriceWithoutDiscount);
+            $customAttributes = $this->productPriceCalculator->getCustomAttributes($product, $context);
 
             if (null === $item->getCustomItemDiscount()) {
                 $item->setCustomItemDiscount(0);

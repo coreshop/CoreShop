@@ -38,31 +38,29 @@ final class CartPaymentProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        if (!$cart->isImmutable()) {
+            if ($cart->getPaymentProvider()) {
+                $context = $this->cartContextResolver->resolveCartContext($cart);
+
+                $price = $this->priceCalculator->getPrice(
+                    $cart->getPaymentProvider(),
+                    $cart,
+                    $context,
+                );
+
+                $cart->addAdjustment(
+                    $this->adjustmentFactory->createWithData(
+                        AdjustmentInterface::PAYMENT,
+                        'PaymentProvider fee',
+                        $price,
+                        $price,
+                    ),
+                );
+            }
+        }
+
         $cart->setPaymentTotal(
             (int) round((round($cart->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
         );
-
-        if ($cart->isImmutable()) {
-            return;
-        }
-
-        if ($cart->getPaymentProvider()) {
-            $context = $this->cartContextResolver->resolveCartContext($cart);
-
-            $price = $this->priceCalculator->getPrice(
-                $cart->getPaymentProvider(),
-                $cart,
-                $context,
-            );
-
-            $cart->addAdjustment(
-                $this->adjustmentFactory->createWithData(
-                    AdjustmentInterface::PAYMENT,
-                    'PaymentProvider fee',
-                    $price,
-                    $price,
-                ),
-            );
-        }
     }
 }

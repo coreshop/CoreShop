@@ -18,11 +18,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Calculator;
 
-interface PurchasableCalculatorInterface extends 
-    PurchasablePriceCalculatorInterface,
-    PurchasableDiscountCalculatorInterface,
-    PurchasableDiscountPriceCalculatorInterface,
-    PurchasableRetailPriceCalculatorInterface,
-    PurchasableCustomAttributesCalculatorInterface
+use CoreShop\Component\Order\Model\OrderItemAttributeInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
+
+interface PurchasableCustomAttributesCalculatorInterface
 {
+    public function getCustomAttributes(PurchasableInterface $purchasable, array $context): array;
 }

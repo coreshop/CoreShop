@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\OrderBundle\Attribute\AsCartPriceRuleActionProcessor;
 use CoreShop\Bundle\OrderBundle\Attribute\AsCartPriceRuleConditionChecker;
+use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableCustomAttributesCalculator;
 use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableDiscountCalculator;
 use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableDiscountPriceCalculator;
 use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasablePriceCalculator;
@@ -27,6 +28,7 @@ use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableRetailPriceCalculator;
 use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableWholesalePriceCalculator;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleConditionPass;
+use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableCustomAttributesCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasablePriceCalculatorsPass;
@@ -34,6 +36,7 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPr
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Order\Calculator\PurchasableCustomAttributesCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
@@ -111,6 +114,14 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             PurchasableDiscountPriceCalculatorInterface::class,
             PurchasableDiscountPriceCalculatorsPass::PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG,
             AsPurchasableDiscountPriceCalculator::class,
+            $configs['autoconfigure_with_attributes'],
+        );
+
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            PurchasableCustomAttributesCalculatorInterface::class,
+            PurchasableCustomAttributesCalculatorsPass::PURCHASABLE_CUSTOM_ATTRIBUTES__CALCULATOR_TAG,
+            AsPurchasableCustomAttributesCalculator::class,
             $configs['autoconfigure_with_attributes'],
         );
 

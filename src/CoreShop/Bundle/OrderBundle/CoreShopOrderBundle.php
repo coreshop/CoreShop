@@ -25,6 +25,7 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartItemPriceRuleAc
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartItemPriceRuleConditionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleConditionPass;
+use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableCustomAttributesCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasablePriceCalculatorsPass;
@@ -66,6 +67,7 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $container->addCompilerPass(new PurchasableDiscountPriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableRetailPriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableWholesalePriceCalculatorsPass());
+        $container->addCompilerPass(new PurchasableCustomAttributesCalculatorsPass());
     }
 
     public static function registerDependentBundles(BundleCollection $collection): void
