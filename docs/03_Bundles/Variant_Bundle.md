@@ -1,4 +1,4 @@
-# Variant Bundle in CoreShop
+# Variant Bundle
 
 The CoreShop Variant Bundle provides a robust framework for managing different variants of a product in your e-commerce
 application.

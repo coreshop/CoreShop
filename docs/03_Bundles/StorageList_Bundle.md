@@ -1,4 +1,4 @@
-# Storage List Bundle in CoreShop
+# Storage List Bundle
 
 The Storage List Bundle assists in managing lists and collections of objects, such as carts, wishlists, or compare
 lists, in CoreShop.

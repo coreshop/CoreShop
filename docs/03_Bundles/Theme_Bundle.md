@@ -1,4 +1,4 @@
-# Theme Bundle in CoreShop
+# Theme Bundle
 
 The CoreShop Theme Bundle offers a flexible and extensible approach to managing multiple themes within a Pimcore
 installation.
