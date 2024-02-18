@@ -1,4 +1,4 @@
-# Resource Bundle in CoreShop
+# Resource Bundle
 
 The Resource Bundle is a central component of CoreShop, handling the creation, reading, updating, and deleting (CRUD) of
 CoreShop models. It manages Doctrine ORM mappings, translations, routing, event dispatching, serialization, and CRUD

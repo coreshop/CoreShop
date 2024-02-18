@@ -24,11 +24,11 @@ transcends ordinary transactions.
 
 # Installation
 
-Read our Documentation for the Installation Guide [here](https://docs.coreshop.org/4.0.0/CoreShop/Getting_Started/Installation)
+Read our Documentation for the Installation Guide [here](https://docs.coreshop.org/CoreShop/Getting_Started/Installation)
 
 # Demo
 
-Discover the full potential of CoreShop through our interactive demos. Read more about this [here](https://docs.coreshop.org/4.0.0/CoreShop/Getting_Started/Demo)
+Discover the full potential of CoreShop through our interactive demos. Read more about this [here](https://docs.coreshop.org/CoreShop/Getting_Started/Demo)
 
 ## Copyright and license
 

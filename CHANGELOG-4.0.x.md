@@ -1,3 +1,8 @@
+# 4.0.3
+
+* [Core] Fixes in DataObject Extensions and Subscribed Services by @solverat in https://github.com/coreshop/CoreShop/pull/2528
+* [MessengerBundle] make FailedMessageDetails and MessageDetails JsonSerializable by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2530
+
 # 4.0.2
 
 * [DataHub] only enable queries for selected entities by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2512
