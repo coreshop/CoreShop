@@ -281,6 +281,15 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
+     * @Given /^the (specific price rule "[^"]+") has a action not-discountable$/
+     * @Given /^the (specific price rule) has a action not-discountable$/
+     */
+    public function theProductSpecificPriceRuleHasANotDiscountableAction(ProductSpecificPriceRuleInterface $rule): void
+    {
+        $this->addAction($rule, $this->createActionWithForm('notDiscountableCustomAttributes'));
+    }
+
+    /**
      * @Given /^the (specific price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
      * @Given /^the (specific price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
      */

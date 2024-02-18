@@ -42,23 +42,41 @@ class CartRuleApplier implements CartRuleApplierInterface
     ) {
     }
 
-    public function applyDiscount(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
-    {
-        $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, false);
+    public function applyDiscount(
+        OrderInterface $cart,
+        PriceRuleItemInterface $cartPriceRuleItem,
+        int $discount,
+        bool $withTax = false,
+        bool $includeNonDiscountableItems = false,
+    ): void {
+        $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, false, $includeNonDiscountableItems);
     }
 
-    public function applySurcharge(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
-    {
-        $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, true);
+    public function applySurcharge(
+        OrderInterface $cart,
+        PriceRuleItemInterface $cartPriceRuleItem,
+        int $discount,
+        bool $withTax = false,
+        bool $includeNonDiscountableItems = false,
+    ): void {
+        $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, true, $includeNonDiscountableItems);
     }
 
-    protected function apply(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
-    {
+    protected function apply(
+        OrderInterface $cart,
+        PriceRuleItemInterface $cartPriceRuleItem,
+        int $discount,
+        bool $withTax = false,
+        bool $positive = false,
+        bool $includeNonDiscountableItems = false
+    ): void {
         $context = $this->cartContextResolver->resolveCartContext($cart);
         $totalAmount = [];
         $totalDiscountPossible = 0;
 
-        foreach ($cart->getItems() as $item) {
+        $cartItems = $includeNonDiscountableItems ? $cart->getItems() : $this->getDiscountableItems($cart);
+
+        foreach ($cartItems as $item) {
             $totalAmount[] = $item->getTotal(false);
             $totalDiscountPossible += $item->getTotal($withTax);
         }
@@ -79,7 +97,7 @@ class CartRuleApplier implements CartRuleApplierInterface
         $totalDiscountGross = 0;
         $i = 0;
 
-        foreach ($cart->getItems() as $item) {
+        foreach ($cartItems as $item) {
             $applicableAmount = $distributedAmount[$i++];
 
             $itemDiscountGross = 0;
@@ -124,9 +142,9 @@ class CartRuleApplier implements CartRuleApplierInterface
             $totalDiscountGross += $itemDiscountGross;
         }
 
-        $totalDiscountNet = (int) round($totalDiscountNet);
-        $totalDiscountGross = (int) round($totalDiscountGross);
-        $totalDiscountFloat = (int) round($totalDiscountFloat);
+        $totalDiscountNet = (int)round($totalDiscountNet);
+        $totalDiscountGross = (int)round($totalDiscountGross);
+        $totalDiscountFloat = (int)round($totalDiscountFloat);
 
         //Add missing cents caused by rounding issues
         if ($totalDiscountFloat > ($withTax ? $totalDiscountNet : $totalDiscountGross)) {
@@ -140,7 +158,7 @@ class CartRuleApplier implements CartRuleApplierInterface
         $totalAmountNet = [];
         $totalAmountGross = [];
 
-        foreach ($cart->getItems() as $item) {
+        foreach ($cartItems as $item) {
             $totalAmountNet[] = $item->getTotal(false);
             $totalAmountGross[] = $item->getTotal(true);
         }
@@ -148,7 +166,7 @@ class CartRuleApplier implements CartRuleApplierInterface
         $distributedAmountNet = $this->distributor->distribute($totalAmountNet, $totalDiscountNet);
         $distributedAmountGross = $this->distributor->distribute($totalAmountGross, $totalDiscountGross);
 
-        foreach ($cart->getItems() as $index => $item) {
+        foreach ($cartItems as $index => $item) {
             $amountNet = $distributedAmountNet[$index];
             $amountGross = $distributedAmountGross[$index];
 
@@ -186,12 +204,14 @@ class CartRuleApplier implements CartRuleApplierInterface
                 }
             }
 
-            $item->addAdjustment($this->adjustmentFactory->createWithData(
-                AdjustmentInterface::CART_PRICE_RULE,
-                $cartPriceRuleItem->getCartPriceRule()->getName(),
-                $positive ? $amountGross : (-1 * $amountGross),
-                $positive ? $amountNet : (-1 * $amountNet),
-            ));
+            $item->addAdjustment(
+                $this->adjustmentFactory->createWithData(
+                    AdjustmentInterface::CART_PRICE_RULE,
+                    $cartPriceRuleItem->getCartPriceRule()->getName(),
+                    $positive ? $amountGross : (-1 * $amountGross),
+                    $positive ? $amountNet : (-1 * $amountNet),
+                )
+            );
         }
 
         $cartPriceRuleItem->setDiscount($positive ? $totalDiscountNet : (-1 * $totalDiscountNet), false);
@@ -205,5 +225,17 @@ class CartRuleApplier implements CartRuleApplierInterface
                 $cartPriceRuleItem->getDiscount(false),
             ),
         );
+    }
+
+    protected function getDiscountableItems(OrderInterface $order)
+    {
+        $discountableItems = [];
+        foreach ($order->getItems() as $item) {
+            if (null === $item->findAttribute('not_discountable')) {
+                $discountableItems[] = $item;
+            }
+        }
+
+        return $discountableItems;
     }
 }
