@@ -18,12 +18,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Calculator;
 
+use CoreShop\Component\Product\Model\ProductAttribute;
 use CoreShop\Component\Product\Model\ProductInterface;
 
 interface ProductCustomAttributesCalculatorInterface
 {
     /**
-     * @return array<string, scalar>
+     * @return array<ProductAttribute>
      */
     public function getCustomAttributes(ProductInterface $product, array $context): array;
 }

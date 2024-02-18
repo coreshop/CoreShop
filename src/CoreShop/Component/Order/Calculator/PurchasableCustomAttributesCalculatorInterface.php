@@ -23,5 +23,8 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface PurchasableCustomAttributesCalculatorInterface
 {
+    /**
+     * @return array<OrderItemAttributeInterface>
+     */
     public function getCustomAttributes(PurchasableInterface $purchasable, array $context): array;
 }

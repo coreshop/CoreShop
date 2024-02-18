@@ -16,16 +16,23 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Product\Rule\Action;
+namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Product\Model\ProductAttribute;
-
-class NotDiscountableCustomAttributeActionProcessor implements ProductCustomAttributesActionProcessorInterface
+class ProductAttribute
 {
-    public function getCustomAttributes($subject, array $context, array $configuration): array
+    public function __construct(
+        private string $attributeKey,
+        private mixed $attributeValue,
+    ) {
+    }
+
+    public function getAttributeKey(): string
     {
-        return [
-            new ProductAttribute('not_discountable', true),
-        ];
+        return $this->attributeKey;
+    }
+
+    public function getAttributeValue(): mixed
+    {
+        return $this->attributeValue;
     }
 }

@@ -20,22 +20,34 @@ namespace CoreShop\Component\Core\Order\Calculator;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCustomAttributesCalculatorInterface;
+use CoreShop\Component\Order\Model\OrderItemAttributeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Calculator\ProductCustomAttributesCalculatorInterface;
+use CoreShop\Component\Product\Model\ProductAttribute;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 final class PurchasableProductCustomAttributesCalculator implements PurchasableCustomAttributesCalculatorInterface
 {
     public function __construct(
         private ProductCustomAttributesCalculatorInterface $productPriceCalculator,
+        private FactoryInterface $orderItemAttributeFactory
     ) {
     }
 
     public function getCustomAttributes(PurchasableInterface $purchasable, array $context): array
     {
-        if ($purchasable instanceof ProductInterface) {
-            return $this->productPriceCalculator->getCustomAttributes($purchasable, $context);
+        if (!$purchasable instanceof ProductInterface) {
+            return [];
         }
 
-        return [];
+        $productAttributes = $this->productPriceCalculator->getCustomAttributes($purchasable, $context);
+
+        return array_map(function(ProductAttribute $productAttribute): OrderItemAttributeInterface {
+            $orderItemAttribute = $this->orderItemAttributeFactory->createNew();
+            $orderItemAttribute->setAttributeKey($productAttribute->getAttributeKey());
+            $orderItemAttribute->setAttributeValue($productAttribute->getAttributeValue());
+
+            return $orderItemAttribute;
+        }, $productAttributes);
     }
 }

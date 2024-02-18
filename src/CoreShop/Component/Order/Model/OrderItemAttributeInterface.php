@@ -16,16 +16,20 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Product\Rule\Action;
+namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Product\Model\ProductAttribute;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
-class NotDiscountableCustomAttributeActionProcessor implements ProductCustomAttributesActionProcessorInterface
+interface OrderItemAttributeInterface extends ResourceInterface
 {
-    public function getCustomAttributes($subject, array $context, array $configuration): array
-    {
-        return [
-            new ProductAttribute('not_discountable', true),
-        ];
-    }
+
+    public function getId(): ?int;
+
+    public function getAttributeKey(): ?string;
+
+    public function setAttributeKey(?string $attributeKey);
+
+    public function getAttributeValue();
+
+    public function setAttributeValue($attributeValue);
 }

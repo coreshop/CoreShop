@@ -18,8 +18,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\Order\Model\OrderItemAttributeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
+use Webmozart\Assert\Assert;
 
 class CompositePurchasableCustomAttributesCalculator implements PurchasableCustomAttributesCalculatorInterface
 {
@@ -36,7 +38,11 @@ class CompositePurchasableCustomAttributesCalculator implements PurchasableCusto
          * @var PurchasableCustomAttributesCalculatorInterface $calculator
          */
         foreach ($this->customAttributeCalculators->all() as $calculator) {
-            $customAttributes += $calculator->getCustomAttributes($purchasable, $context);
+            $attributes = $calculator->getCustomAttributes($purchasable, $context);
+
+            Assert::allIsInstanceOf($attributes, OrderItemAttributeInterface::class);
+
+            $customAttributes += $attributes;
         }
 
         return $customAttributes;
