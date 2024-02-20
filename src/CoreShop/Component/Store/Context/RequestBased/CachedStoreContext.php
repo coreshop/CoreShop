@@ -20,6 +20,7 @@ namespace CoreShop\Component\Store\Context\RequestBased;
 
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 final class CachedStoreContext implements StoreContextInterface
 {
