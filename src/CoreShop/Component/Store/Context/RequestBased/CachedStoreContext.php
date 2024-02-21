@@ -34,7 +34,7 @@ final class CachedStoreContext implements StoreContextInterface
 
     public function getStore(): StoreInterface
     {
-        if (null === $this->cachedStore) {
+        if (false === $this->initialized) {
             $this->initialized = true;
             $this->cachedStore = $this->requestBasedStoreContext->getStore();
         } elseif (!$this->cachedStore) {
