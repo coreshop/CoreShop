@@ -69,12 +69,12 @@ class CartItemsImmutableProcessor implements CartProcessorInterface
                 $context
             );
 
-            /**
+            /*
              * https://github.com/coreshop/CoreShop/issues/2572
              *
              * Since we are recalculating the items-total, we also need to respect the adjustments and
              * re-add them to the item total as well.
-            */
+             */
             $item->recalculateAdjustmentsTotal();
         }
     }
