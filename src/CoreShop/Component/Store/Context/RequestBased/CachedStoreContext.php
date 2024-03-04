@@ -19,12 +19,13 @@ declare(strict_types=1);
 namespace CoreShop\Component\Store\Context\RequestBased;
 
 use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 final class CachedStoreContext implements StoreContextInterface
 {
     private bool $initialized = false;
+
     private ?StoreInterface $cachedStore = null;
 
     public function __construct(
