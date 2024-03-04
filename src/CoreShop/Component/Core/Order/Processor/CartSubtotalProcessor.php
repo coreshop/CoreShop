@@ -33,7 +33,7 @@ final class CartSubtotalProcessor implements CartProcessorInterface
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            /**
+            /*
              * https://github.com/coreshop/CoreShop/issues/2572
              *
              * We have to use the subtotal here.
