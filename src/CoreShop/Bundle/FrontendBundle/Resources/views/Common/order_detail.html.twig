@@ -117,10 +117,10 @@
 
                         </td>
                         <td class="text-right">
-                            -{{ currency.format(priceRule.getDiscount(true), order.currency.isoCode) }}
+                            {{ currency.format(priceRule.getDiscount(true), order.currency.isoCode) }}
                         </td>
                         <td class="text-right">
-                            -{{ currency.format(priceRule.getDiscount(false), order.currency.isoCode) }}
+                            {{ currency.format(priceRule.getDiscount(false), order.currency.isoCode) }}
                         </td>
                     </tr>
                 {% endfor %}
@@ -226,7 +226,7 @@
                     <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
                 </td>
                 <td colspan="1"
-                    class="text-right cart-total-price">
+                    class="text-right cart-total-price" {{ coreshop_test_html_attribute('order-total') }}>
                     {{ currency.format(order.convertedTotal, order.currency.isoCode) }}
                 </td>
             </tr>

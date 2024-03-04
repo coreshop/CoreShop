@@ -24,4 +24,6 @@ interface ThankYouPageInterface extends FrontendPageInterface
 {
     public function getToken(): string;
     public function recapturePaymentForThisOrder(): void;
+
+    public function getOrderTotal(): string;
 }
