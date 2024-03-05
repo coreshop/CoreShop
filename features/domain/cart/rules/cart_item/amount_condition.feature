@@ -29,7 +29,7 @@ Feature: Adding a new cart item rule
     And the cart item action has a condition amount with value "90" to "150"
     And the cart item action has a action discount-percent with 10% discount
     Then I refresh my cart
-    And the cart discount should be "-1000" excluding tax
+    And the cart item discount should be "-1000" excluding tax
 
   Scenario: Add a new amount condition with is invalid cause of min value
     Given adding a cart price rule named "amount"

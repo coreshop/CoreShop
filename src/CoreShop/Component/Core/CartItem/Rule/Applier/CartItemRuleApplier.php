@@ -73,10 +73,12 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
         $discount = min($discount, $totalDiscountPossible);
 
         if ($withTax) {
-            $discount = min($discount, $orderItem->getTotal());
+            $total = $orderItem->getTotal() + $orderItem->getNeutralAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE);
         } else {
-            $discount = min($discount, $orderItem->getTotal(false));
+            $total = $orderItem->getTotal(false) + $orderItem->getNeutralAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, false);
         }
+
+        $discount = min($discount, $total);
 
         if (0 === $discount) {
             return;
