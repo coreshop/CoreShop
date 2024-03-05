@@ -6,5 +6,5 @@ interface OrderTokenGeneratorInterface
 {
     public function generate(int $length);
 
-    public function validateToken();
+    public function validateToken(string $token);
 }

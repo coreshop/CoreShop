@@ -140,7 +140,7 @@
                                 "width": null,
                                 "queryColumnType": "varchar",
                                 "columnType": "varchar",
-                                "columnLength": 190,
+                                "columnLength": 800,
                                 "phpdocType": "string",
                                 "regex": "",
                                 "unique": true,

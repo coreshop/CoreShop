@@ -79,7 +79,7 @@ final class UniqueTokenGenerator implements OrderTokenGeneratorInterface
         return 0 + $rnd;
     }
 
-    public function validateToken()
+    public function validateToken(string $token)
     {
         // TODO: Implement validateToken() method.
     }
