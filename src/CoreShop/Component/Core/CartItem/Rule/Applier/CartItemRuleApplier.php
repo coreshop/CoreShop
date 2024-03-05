@@ -72,6 +72,11 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
 
         $discount = min($discount, $totalDiscountPossible);
 
+        /*
+         * Cart Item Rules are always applied to the cart-item, but as neutral adjustments
+         * So to know how much our "virtual" total is, we need to get these cart-price rules values
+         * otherwise, we might end up with a negative total
+         */
         if ($withTax) {
             $total = $orderItem->getTotal() + $orderItem->getNeutralAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE);
         } else {
