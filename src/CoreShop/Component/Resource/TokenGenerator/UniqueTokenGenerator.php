@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\TokenGenerator;
 
-final class UniqueTokenGenerator
+final class UniqueTokenGenerator implements OrderTokenGeneratorInterface
 {
     private string $alphabet;
 
@@ -77,5 +77,10 @@ final class UniqueTokenGenerator
         } while ($rnd >= $range);
 
         return 0 + $rnd;
+    }
+
+    public function validateToken()
+    {
+        // TODO: Implement validateToken() method.
     }
 }
