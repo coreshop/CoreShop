@@ -26,20 +26,7 @@ final class CartSubtotalProcessor implements CartProcessorInterface
 {
     public function process(OrderInterface $cart): void
     {
-        $subtotalGross = 0;
-        $subtotalNet = 0;
-
-        /**
-         * @var OrderItemInterface $item
-         */
-        foreach ($cart->getItems() as $item) {
-            $subtotalGross += $item->getTotal(true);
-            $subtotalNet += $item->getTotal(false);
-        }
-
-        $cart->setSubtotal($subtotalGross, true);
-        $cart->setSubtotal($subtotalNet, false);
-
+        $cart->recalculateSubtotal();
         $cart->recalculateAdjustmentsTotal();
     }
 }

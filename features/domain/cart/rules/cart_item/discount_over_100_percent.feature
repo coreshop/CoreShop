@@ -12,13 +12,14 @@ Feature: Adding a new cart rule
     And the tax rule group has a tax rule for country "Austria" with tax rate "AT"
     And the site has a product "Shoe" priced at 10000
     And the product has the tax rule group "AT"
-    And I add the product "Shoe" to my cart
+    And the product is active and published and available for store "Austria"
 
   Scenario: Add a new discount rule with 100 percent discount
     Given adding a cart price rule named "discount-10"
     And the cart rule is not a voucher rule
     And the cart rule is active
     And the cart rule has a action discount-percent with 100% discount
+    And I add the product "Shoe" to my cart
     Given adding a cart price rule named "discount-100"
     And the cart rule is a voucher rule with code "discount-100"
     And the cart rule is active
