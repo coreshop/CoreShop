@@ -225,4 +225,6 @@ interface OrderInterface extends
     public function getPaymentProvider(): ?PaymentProviderInterface;
 
     public function setPaymentProvider(?PaymentProviderInterface $paymentProvider);
+
+    public function recalculateSubtotal(): void;
 }

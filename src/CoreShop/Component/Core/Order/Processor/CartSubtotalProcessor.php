@@ -26,33 +26,7 @@ final class CartSubtotalProcessor implements CartProcessorInterface
 {
     public function process(OrderInterface $cart): void
     {
-        $subtotalGross = 0;
-        $subtotalNet = 0;
-
-        /**
-         * @var OrderItemInterface $item
-         */
-        foreach ($cart->getItems() as $item) {
-            /*
-             * https://github.com/coreshop/CoreShop/issues/2572
-             *
-             * We have to use the subtotal here.
-             *
-             * The difference between $item->getTotal and $item->getSubtotal is,
-             * that the total includes all applied adjustments from cart rules.
-             *
-             * We do that since we need to calculate tax for cart rules and split
-             * the rule amount onto the items.
-             *
-             * We also need to handle cart rule values for returns and credit-memos.
-             */
-            $subtotalGross += $item->getSubtotal(true);
-            $subtotalNet += $item->getSubtotal(false);
-        }
-
-        $cart->setSubtotal($subtotalGross, true);
-        $cart->setSubtotal($subtotalNet, false);
-
+        $cart->recalculateSubtotal();
         $cart->recalculateAdjustmentsTotal();
     }
 }
