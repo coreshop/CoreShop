@@ -23,5 +23,5 @@ Feature: Adding a new cart rule
     And the cart rule has a cart-item-action action
     And the cart item action has a action discount-percent with 10% discount
     And I apply the voucher code "asdf" to my cart
-    Then the cart discount should be "-1000" including tax
+    Then the cart item discount should be "-1000" including tax
     Then the cart total should be "9000" including tax

@@ -58,6 +58,20 @@ class CartRuleApplier implements CartRuleApplierInterface
         $totalAmount = [];
         $totalDiscountPossible = 0;
 
+        $discountableItems = [];
+        
+        foreach ($cart->getItems() as $item) {
+            if ($item->getTotal() <= 0) {
+                continue;
+            }
+            
+            $discountableItems[] = $item;
+        }
+        
+        if (count($discountableItems) === 0) {
+            return;
+        } 
+        
         foreach ($cart->getItems() as $item) {
             $totalAmount[] = $item->getTotal(false);
             $totalDiscountPossible += $item->getTotal($withTax);
@@ -186,11 +200,20 @@ class CartRuleApplier implements CartRuleApplierInterface
                 }
             }
 
+            /*
+             * https://github.com/coreshop/CoreShop/issues/2572
+             *
+             * Since we are applying the discount to the cart,
+             * we add the adjustment to the cart-item as neutral.
+             *
+             * we need this adjustment so we know how much to refund or credit.
+             */
             $item->addAdjustment($this->adjustmentFactory->createWithData(
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $positive ? $amountGross : (-1 * $amountGross),
                 $positive ? $amountNet : (-1 * $amountNet),
+                true
             ));
         }
 

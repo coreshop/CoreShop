@@ -136,6 +136,7 @@ coreshop.messenger.list = Class.create({
         var failureReceivers = Ext.create('Ext.form.ComboBox', {
             xtype: 'combo',
             fieldLabel: t('coreshop_messenger_failure_receivers'),
+            width: 400,
             mode: 'local',
             store: {
                 proxy: {
@@ -315,6 +316,7 @@ coreshop.messenger.list = Class.create({
         var receivers = Ext.create('Ext.form.ComboBox', {
             xtype: 'combo',
             fieldLabel: t('coreshop_messenger_receivers'),
+            width: 400,
             mode: 'local',
             store: {
                 proxy: {
