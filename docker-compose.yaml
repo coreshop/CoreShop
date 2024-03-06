@@ -1,18 +1,6 @@
-version: '3.4'
-
-networks:
-  cors_dev:
-    external: true
-  coreshop_3:
-    external: false
-
 services:
   db:
     image: mariadb:10.5
-    container_name: coreshop-3-mariadb
-    networks:
-      - cors_dev
-      - coreshop_3
     working_dir: /application
     command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci]
     volumes:
@@ -22,99 +10,38 @@ services:
       - MYSQL_DATABASE=pimcore
       - MYSQL_USER=pimcore
       - MYSQL_PASSWORD=pimcore
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
 
   nginx:
     image: nginx:stable-alpine
     volumes:
-      - .:/var/www/html:cached
+      - .:/var/www/html
       -  ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php
-      - php-debug
-    networks:
-      - cors_dev
-      - coreshop_3
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.coreshop_3.rule=Host(`coreshop-3.localhost`)
-      - traefik.http.routers.coreshop_3.entrypoints=cors_dev
-      - traefik.http.routers.coreshop_3.tls=true
-      - traefik.http.services.coreshop_3.loadbalancer.server.port=80
-      - traefik.docker.network=cors_dev
-
-  nginx8:
-    image: nginx:stable-alpine
-    volumes:
-      - .:/var/www/html:cached
-      -  ./.docker/nginx8.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - php
-      - php-debug
-    networks:
-      - cors_dev
-      - coreshop_3
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.coreshop_3_php8.rule=Host(`coreshop-3-php8.localhost`)
-      - traefik.http.routers.coreshop_3_php8.entrypoints=cors_dev
-      - traefik.http.routers.coreshop_3_php8.tls=true
-      - traefik.http.services.coreshop_3_php8.loadbalancer.server.port=80
-      - traefik.docker.network=cors_dev
+    ports:
+      - "80:80"
 
   php:
-    image: pimcore/pimcore:php8.1-latest
-    container_name: coreshop-php
-    networks:
-      - coreshop_3
-    environment:
-      COMPOSER_HOME: /var/www/html
-    depends_on:
-      - db
-    volumes:
-      - .:/var/www/html:cached
-
-  php-debug:
-    image: pimcore/pimcore:php8.1-debug-latest
-    container_name: coreshop-php-debug
-    networks:
-      - coreshop_3
-    depends_on:
-      - db
-    volumes:
-      - .:/var/www/html:cached
-      - ./.docker/xdebug-config.ini:/usr/local/etc/php/conf.d/21-xdebug.ini
-    environment:
-      PHP_IDE_CONFIG: serverName=localhost
-      XDEBUG_TRIGGER: PHPSTORM
-      COMPOSER_HOME: /var/www/html
-
-  php8:
-    image: pimcore/pimcore:PHP8.0-fpm
-    container_name: coreshop-php8
-    networks:
-      - coreshop_3
-    environment:
-      COMPOSER_HOME: /var/www/html
-    depends_on:
-      - db
-    volumes:
-      - .:/var/www/html:cached
-
-  php8-debug:
     image: pimcore/pimcore:PHP8.0-fpm-debug
-    container_name: coreshop-php8-debug
-    networks:
-      - coreshop_3
     depends_on:
       - db
     volumes:
-      - .:/var/www/html:cached
+      - .:/var/www/html
       - ./.docker/xdebug-config.ini:/usr/local/etc/php/conf.d/21-xdebug.ini
     environment:
       PHP_IDE_CONFIG: serverName=localhost
       COMPOSER_HOME: /var/www/html
+      PIMCORE_DB_DSN: "mysql://pimcore:pimcore@db:3306/pimcore"
+      PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
+      PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
+      PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "db"
+      PIMCORE_INSTALL_MYSQL_USERNAME: "pimcore"
+      PIMCORE_INSTALL_MYSQL_PASSWORD: "pimcore"
+      PIMCORE_INSTALL_MYSQL_DATABASE: "pimcore"
+      PIMCORE_INSTALL_MYSQL_PORT: "3306"
+      PIMCORE_INSTALL_INSTALL_BUNDLES: "PimcoreApplicationLoggerBundle,PimcoreCustomReportsBundle,PimcoreGlossaryBundle,PimcoreSeoBundle,PimcoreSimpleBackendSearchBundle,PimcoreStaticRoutesBundle,PimcoreTinymceBundle,PimcoreUuidBundle,PimcoreWordExportBundle,PimcoreXliffBundle"
 
 volumes:
   coreshop-3-database:
