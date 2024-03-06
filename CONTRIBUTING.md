@@ -21,6 +21,13 @@ your PR (if one is not already open), and your approach to solving it (not neces
 * [Fork us!](https://help.github.com/articles/fork-a-repo/) Code! Follow the coding standards PSR-1 and PSR-2
 * [Send a pull request](https://help.github.com/articles/using-pull-requests/) from your fork’s branch to our `master` branch.
 
+### Set up local development environment
+```shell
+docker compose run --rm php composer install
+docker compose run --rm php vendor/bin/pimcore-install
+docker compose run --rm php bin/console coreshop:install
+```
+
 ### Contributor License Agreement
 The following terms are used throughout this agreement:
 
