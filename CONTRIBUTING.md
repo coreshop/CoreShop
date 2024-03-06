@@ -55,6 +55,18 @@ Run the following command to set the correct file permissions for the var and pu
 ```shell
 docker compose run --rm php chown -R www-data var/ public/var
 ```
+Run the following command to enter the PHP container:
+```shell
+docker compose exec php bash
+```
+In the PHP container run the following command:
+```shell
+chown -R www-data .
+```
+Leave the PHP container and run the following command to give yourself edit rights to the src directory:
+```shell
+sudo chown -R <your-user-here> <Absolute Path to src directory>
+```
 ## Running Code Analysis
 CoreShop provides options for running code analysis tools like Psalm and PHPStan. These tools help identify potential errors and improve code quality.
 Run the following command to execute Psalm within a Docker container:
