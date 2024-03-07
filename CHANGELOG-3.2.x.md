@@ -1,3 +1,10 @@
+# 3.2.6
+* [Tests] add test for stock tracked products in checkout by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2560
+* [Tests] test only latest pimcore with highest deps for 3.2 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2559
+* Increase MessengerBundle Receivers combobox width by @NiklasBr in https://github.com/coreshop/CoreShop/pull/2567
+* Updated CachedStoreContext.php by @kamil-karkus in https://github.com/coreshop/CoreShop/pull/2565
+* [Core] fix price calculation with immutables and adjustments by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2573
+
 # 3.2.5
 * [Migration] [Migration] fix Staticroute Migration for Pimcore 10 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2550
 
