@@ -115,6 +115,7 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $cartPriceRuleItem->getDiscount(true),
                 $cartPriceRuleItem->getDiscount(false),
+                true
             ),
         );
 

@@ -27,6 +27,9 @@ final class ProductPriceExtension extends AbstractExtension
     public function __construct(
         private TaxedProductPriceCalculatorInterface $productPriceCalculator,
     ) {
+
+        Pimcore::getContainer()->get('coreshop.context.shopper')->getStore();
+        $this->productPriceCalculator->getPrice($product, ['store' => $store], true);
     }
 
     public function getFilters(): array

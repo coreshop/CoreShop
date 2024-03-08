@@ -158,6 +158,7 @@ final class StoreContext implements Context
 
         $this->entityManager->flush();
 
+        $store->setIsDefault(true);
         $store->setName($name);
         $store->setCurrency($currency);
         $store->setBaseCountry($country);

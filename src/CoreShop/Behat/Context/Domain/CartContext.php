@@ -24,6 +24,7 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -400,6 +401,29 @@ final class CartContext implements Context
     }
 
     /**
+     * @Then /^the cart item discount should be "([^"]+)" including tax$/
+     */
+    public function cartItemDiscountShouldBeIncludingTax($total): void
+    {
+        $cartItems = $this->cartContext->getCart()->getItems();
+        $discounts = 0;
+
+        foreach ($cartItems as $cartItem) {
+            $discounts += $cartItem->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, true);
+        }
+
+        Assert::eq(
+            $total,
+            $discounts,
+            sprintf(
+                'Cart discount is expected to be %s, but it is %s',
+                $total,
+                $discounts,
+            ),
+        );
+    }
+
+    /**
      * @Then /^the cart discount should be "([^"]+)" excluding tax$/
      */
     public function cartDiscountShouldBeExcludingTax($total): void
@@ -411,6 +435,29 @@ final class CartContext implements Context
                 'Cart discount is expected to be %s, but it is %s',
                 $total,
                 $this->cartContext->getCart()->getDiscount(false),
+            ),
+        );
+    }
+
+    /**
+     * @Then /^the cart item discount should be "([^"]+)" excluding tax$/
+     */
+    public function cartItemDiscountShouldBeExcludingTax($total): void
+    {
+        $cartItems = $this->cartContext->getCart()->getItems();
+        $discounts = 0;
+
+        foreach ($cartItems as $cartItem) {
+            $discounts += $cartItem->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, false);
+        }
+
+        Assert::eq(
+            $total,
+            $discounts,
+            sprintf(
+                'Cart discount is expected to be %s, but it is %s',
+                $total,
+                $discounts,
             ),
         );
     }
