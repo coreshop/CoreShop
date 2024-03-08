@@ -71,7 +71,3 @@ services:
     CoreShop\Bundle\CoreBundle\Security\AccessVoter:
         tags:
             - { name: security.voter }
-
-    werder.product.price_calculator:
-        alias: CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface
-        public: true
