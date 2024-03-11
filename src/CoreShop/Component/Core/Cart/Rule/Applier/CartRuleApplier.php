@@ -59,19 +59,19 @@ class CartRuleApplier implements CartRuleApplierInterface
         $totalDiscountPossible = 0;
 
         $discountableItems = [];
-        
+
         foreach ($cart->getItems() as $item) {
             if ($item->getTotal() <= 0) {
                 continue;
             }
-            
+
             $discountableItems[] = $item;
         }
-        
+
         if (count($discountableItems) === 0) {
             return;
-        } 
-        
+        }
+
         foreach ($cart->getItems() as $item) {
             $totalAmount[] = $item->getTotal(false);
             $totalDiscountPossible += $item->getTotal($withTax);
@@ -213,7 +213,7 @@ class CartRuleApplier implements CartRuleApplierInterface
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $positive ? $amountGross : (-1 * $amountGross),
                 $positive ? $amountNet : (-1 * $amountNet),
-                true
+                true,
             ));
         }
 
