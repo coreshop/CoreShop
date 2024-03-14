@@ -132,6 +132,7 @@
     "phpstan/phpstan-webmozart-assert": "^1.2.4",
     "robertfausk/behat-panther-extension": "^1.0",
     "symfony/panther": "^2.0",
+    "symfony/runtime": "^6.3",
     "symplify/easy-coding-standard": "^11.1",
     "vimeo/psalm": "^5.23"
   },
@@ -178,7 +179,8 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
-      "phpstan/extension-installer": false
+      "phpstan/extension-installer": false,
+      "symfony/runtime": true
     }
   }
 }
