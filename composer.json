@@ -130,6 +130,7 @@
     "phpstan/phpstan-doctrine": "^1.3.40",
     "phpstan/phpstan-symfony": "^1.3.2",
     "phpstan/phpstan-webmozart-assert": "^1.2.4",
+    "phpunit/phpunit": "^10.0",
     "robertfausk/behat-panther-extension": "^1.0",
     "symfony/panther": "^2.0",
     "symfony/runtime": "^6.3",
