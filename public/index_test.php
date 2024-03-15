@@ -15,7 +15,6 @@ use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
 
 $_SERVER['PIMCORE_ENVIRONMENT'] = $_SERVER['APP_ENV'] = $_SERVER['SYMFONY_ENV'] = 'test';
-$_SERVER['PIMCORE_CLASS_DIRECTORY'] = 'var/tmp/behat/var/classes';
 
 //use runtime
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
