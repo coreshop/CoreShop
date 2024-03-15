@@ -34,7 +34,6 @@ jobs:
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/index_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PIMCORE_KERNEL_CLASS: 'Kernel'
-      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
 
     strategy:
       matrix:
