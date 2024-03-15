@@ -10,27 +10,27 @@
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
  */
 
+use Pimcore\Bootstrap;
 use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
 
-include __DIR__ . "/../vendor/autoload.php";
+//use runtime
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-\Pimcore\Bootstrap::setProjectRoot();
-\Pimcore\Bootstrap::bootstrap();
+Bootstrap::setProjectRoot();
 
-$request = Request::createFromGlobals();
+return function (Request $request, array $context) {
 
-// set current request as property on tool as there's no
-// request stack available yet
-Tool::setCurrentRequest($request);
+    // set current request as property on tool as there's no
+    // request stack available yet
+    Tool::setCurrentRequest($request);
 
-/** @var \Pimcore\Kernel $kernel */
-$kernel = \Pimcore\Bootstrap::kernel();
+    Bootstrap::bootstrap();
+    $kernel = Bootstrap::kernel();
 
-// reset current request - will be read from request stack from now on
-Tool::setCurrentRequest(null);
+    // reset current request - will be read from request stack from now on
+    Tool::setCurrentRequest(null);
 
-$response = $kernel->handle($request);
-$response->send();
+    return $kernel;
+};
 
-$kernel->terminate($request, $response);
