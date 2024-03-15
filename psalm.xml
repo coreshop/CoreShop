@@ -25,6 +25,21 @@
     </projectFiles>
 
     <issueHandlers>
+        <RiskyCast>
+            <errorLevel type="info">
+                <directory name="src/CoreShop/*" />
+            </errorLevel>
+        </RiskyCast>
+        <RiskyTruthyFalsyComparison>
+            <errorLevel type="info">
+                <directory name="src/CoreShop/*" />
+            </errorLevel>
+        </RiskyTruthyFalsyComparison>
+        <MissingTemplateParam>
+            <errorLevel type="info">
+                <directory name="src/CoreShop/*" />
+            </errorLevel>
+        </MissingTemplateParam>
         <!-- level 3 issues - slightly lazy code writing, but probably low false-negatives -->
         <UndefinedDocblockClass>
             <errorLevel type="suppress">
@@ -65,6 +80,8 @@
                 <referencedClass name="Symfony\Component\Security\Core\User\AdvancedUserInterface" />
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Controller\AdminControllerInterface" />
                 <referencedClass name="Symfony\Component\DependencyInjection\ContainerAwareInterface" />
+                <referencedClass name="Payum\Core\Security\GenericTokenFactoryInterface" />
+                <referencedClass name="Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\MultiSelectOptionsProviderInterface" />
             </errorLevel>
         </DeprecatedInterface>
         <DeprecatedMethod>
@@ -83,6 +100,18 @@
                 <referencedMethod name="Doctrine\DBAL\Query\QueryBuilder::getQueryPart" />
             </errorLevel>
         </DeprecatedMethod>
+        <UndefinedInterfaceMethod>
+            <errorLevel type="info">
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::end" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::scalarNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarPrototype" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::arrayNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::integerNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarPrototype" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::booleanNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::variableNode" />
+            </errorLevel>
+        </UndefinedInterfaceMethod>
 
         <InternalMethod>
             <errorLevel type="info">
@@ -151,8 +180,39 @@
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::scalarNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::variableNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::scalarPrototype" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarPrototype" />
             </errorLevel>
         </PossiblyUndefinedMethod>
+
+        <UndefinedMethod>
+            <errorLevel type="info">
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::children" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarPrototype" />
+            </errorLevel>
+        </UndefinedMethod>
+        
+        <AmbiguousConstantInheritance>
+            <errorLevel type="info">
+                <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_NEW" />
+                <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_AUTHORIZED" />
+                <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_PROCESSING" />
+                <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_COMPLETED" />
+                <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_FAILED" />
+                <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_CANCELLED" />
+                <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_REFUNDED" />
+                <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_UNKNOWN" />
+                <referencedConstant name="CoreShop\Bundle\CoreBundle\Pimcore\Repository\WishlistRepository::ORDER_ASCENDING" />
+                <referencedConstant name="CoreShop\Bundle\StorageListBundle\Pimcore\Repository\PimcoreStorageListRepository::ORDER_ASCENDING" />
+                <referencedConstant name="CoreShop\Bundle\WishlistBundle\Pimcore\Repository\WishlistRepository::ORDER_ASCENDING" />
+                <referencedConstant name="CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository::ORDER_ASCENDING" />
+                <referencedConstant name="CoreShop\Bundle\ProductQuantityPriceRulesBundle\Doctrine\ORM\ProductQuantityPriceRuleRepository::ORDER_ASCENDING" />
+                <referencedConstant name="CoreShop\Bundle\CoreBundle\Pimcore\Repository\WishlistRepository::ORDER_DESCENDING" />
+                <referencedConstant name="CoreShop\Bundle\StorageListBundle\Pimcore\Repository\PimcoreStorageListRepository::ORDER_DESCENDING" />
+                <referencedConstant name="CoreShop\Bundle\WishlistBundle\Pimcore\Repository\WishlistRepository::ORDER_DESCENDING" />
+                <referencedConstant name="CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository::ORDER_DESCENDING" />
+                <referencedConstant name="CoreShop\Bundle\ProductQuantityPriceRulesBundle\Doctrine\ORM\ProductQuantityPriceRuleRepository::ORDER_DESCENDING" />
+            </errorLevel>
+        </AmbiguousConstantInheritance>
 
         <!-- level 5 issues - should be avoided at mosts costs... -->
 

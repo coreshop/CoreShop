@@ -74,9 +74,13 @@ class CartRuleApplier implements CartRuleApplierInterface
         $totalAmount = [];
         $totalDiscountPossible = 0;
 
-        $cartItems = $includeNonDiscountableItems ? $cart->getItems() : $this->getDiscountableItems($cart);
+        $discountableItems = $includeNonDiscountableItems ? $cart->getItems() : $this->getDiscountableItems($cart);
 
-        foreach ($cartItems as $item) {
+        if (count($discountableItems) === 0) {
+            return;
+        }
+
+        foreach ($discountableItems as $item) {
             $totalAmount[] = $item->getTotal(false);
             $totalDiscountPossible += $item->getTotal($withTax);
         }
@@ -97,7 +101,7 @@ class CartRuleApplier implements CartRuleApplierInterface
         $totalDiscountGross = 0;
         $i = 0;
 
-        foreach ($cartItems as $item) {
+        foreach ($discountableItems as $item) {
             $applicableAmount = $distributedAmount[$i++];
 
             $itemDiscountGross = 0;
@@ -158,7 +162,7 @@ class CartRuleApplier implements CartRuleApplierInterface
         $totalAmountNet = [];
         $totalAmountGross = [];
 
-        foreach ($cartItems as $item) {
+        foreach ($discountableItems as $item) {
             $totalAmountNet[] = $item->getTotal(false);
             $totalAmountGross[] = $item->getTotal(true);
         }
@@ -166,7 +170,7 @@ class CartRuleApplier implements CartRuleApplierInterface
         $distributedAmountNet = $this->distributor->distribute($totalAmountNet, $totalDiscountNet);
         $distributedAmountGross = $this->distributor->distribute($totalAmountGross, $totalDiscountGross);
 
-        foreach ($cartItems as $index => $item) {
+        foreach ($discountableItems as $index => $item) {
             $amountNet = $distributedAmountNet[$index];
             $amountGross = $distributedAmountGross[$index];
 
@@ -217,7 +221,7 @@ class CartRuleApplier implements CartRuleApplierInterface
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $positive ? $amountGross : (-1 * $amountGross),
                 $positive ? $amountNet : (-1 * $amountNet),
-                true
+                true,
             ));
         }
 
