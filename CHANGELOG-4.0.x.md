@@ -1,3 +1,10 @@
+# 4.0.4
+
+* [Docs] Improve resource bundle docs a bit by @jdreesen in https://github.com/coreshop/CoreShop/pull/2554
+* [OrderBundle] register OrderDocumentPrintController in controller.yml by @breakone in https://github.com/coreshop/CoreShop/pull/2557
+* [OrderBundle] cast return values for getWkHtmlToPdfBinary and getXvfb… by @breakone in https://github.com/coreshop/CoreShop/pull/2558
+* [Docs] improved installation instructions by @nehlsen in https://github.com/coreshop/CoreShop/pull/2569
+
 # 4.0.3
 
 * [Core] Fixes in DataObject Extensions and Subscribed Services by @solverat in https://github.com/coreshop/CoreShop/pull/2528

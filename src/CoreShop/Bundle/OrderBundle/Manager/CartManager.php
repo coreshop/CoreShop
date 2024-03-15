@@ -88,7 +88,7 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
                 );
                 //$item->setPath($cart->getFullPath());
                 $item->setPublished(true);
-                $item->setKey(uniqid((string) ((int) $index + 1), true));
+                $item->setKey(uniqid((string) ($index + 1), true));
                 $item->save();
             }
 

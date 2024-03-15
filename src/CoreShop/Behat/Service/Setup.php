@@ -39,6 +39,10 @@ class Setup
 
         $connection = \Pimcore::getContainer()->get('database_connection');
 
+        if (null === $connection) {
+            throw new \Exception('Database connection not found');
+        }
+
         $dbName = $connection->getParams()['dbname'];
         $params = $connection->getParams();
         $config = $connection->getConfiguration();
@@ -66,11 +70,24 @@ class Setup
             \Pimcore::getContainer()->get('event_dispatcher'),
         );
 
-        $installer->setupDatabase([
-            'username' => 'admin',
-            'password' => 'coreshop',
-        ]);
+        $method = new \ReflectionMethod($installer, 'setupDatabase');
+        $num = $method->getNumberOfParameters();
 
+        if ($num >= 3) {
+            $installer->setupDatabase($connection, [
+                'username' => 'admin',
+                'password' => 'coreshop',
+            ]);
+        }
+        else {
+            /**
+             * @phpstan-ignore-next-line
+             */
+            $installer->setupDatabase([
+                'username' => 'admin',
+                'password' => 'coreshop',
+            ]);
+        }
         static::$pimcoreSetupDone = true;
     }
 

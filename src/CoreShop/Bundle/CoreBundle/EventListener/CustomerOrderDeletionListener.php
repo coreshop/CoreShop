@@ -57,7 +57,7 @@ final class CustomerOrderDeletionListener
         $hasOrders = $this->orderRepository->hasCustomerOrders($object);
 
         if ($hasOrders) {
-            throw new \InvalidArgumentException(sprintf('Cannot delete a customer with orders'));
+            throw new \InvalidArgumentException('Cannot delete a customer with orders');
         }
     }
 }
