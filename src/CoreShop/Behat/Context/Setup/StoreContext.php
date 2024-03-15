@@ -114,6 +114,7 @@ final class StoreContext implements Context
         CurrencyInterface $currency = null,
         CountryInterface $country = null,
         $grossValues = false,
+        $defaultStore = false,
     ): StoreInterface {
         /**
          * @var StoreInterface $store
@@ -158,7 +159,6 @@ final class StoreContext implements Context
 
         $this->entityManager->flush();
 
-        $store->setIsDefault(true);
         $store->setName($name);
         $store->setCurrency($currency);
         $store->setBaseCountry($country);

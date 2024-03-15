@@ -54,7 +54,7 @@ class CurrencyController extends FrontendController
         $this->container->get(CurrencyStorageInterface::class)->set($store, $currency);
 
         $cart->setCurrency($currency);
-
+        
         if ($cart->hasItems()) {
             $cartManager->persistCart($cart);
         }

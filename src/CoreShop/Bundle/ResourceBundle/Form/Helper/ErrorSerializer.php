@@ -48,7 +48,7 @@ final class ErrorSerializer
                 if ($e->getOrigin()->getConfig()->getName()) {
                     $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
                 } else {
-                    $errors[] = sprintf($errorMessageTemplate);
+                    $errors[] = $errorMessageTemplate;
                 }
             }
         }
