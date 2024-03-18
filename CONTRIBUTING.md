@@ -65,7 +65,7 @@ chown -R www-data .
 ```
 Leave the PHP container and run the following command to give yourself edit rights to the src directory:
 ```shell
-sudo chown -R <your-user-here> <Absolute Path to src directory>
+sudo chown -R <your-user-here> .
 ```
 ## Running Code Analysis
 CoreShop provides options for running code analysis tools like Psalm and PHPStan. These tools help identify potential errors and improve code quality.
