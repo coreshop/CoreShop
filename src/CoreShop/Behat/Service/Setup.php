@@ -78,8 +78,7 @@ class Setup
                 'username' => 'admin',
                 'password' => 'coreshop',
             ]);
-        }
-        else {
+        } else {
             /**
              * @phpstan-ignore-next-line
              */
