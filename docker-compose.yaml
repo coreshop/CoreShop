@@ -2,7 +2,7 @@ services:
   db:
     image: mariadb:10.5
     working_dir: /application
-    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci]
+    command: [ mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci ]
     volumes:
       - coreshop-3-database:/var/lib/mysql
     environment:
@@ -17,7 +17,7 @@ services:
     image: nginx:stable-alpine
     volumes:
       - .:/var/www/html
-      -  ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php
     ports:
@@ -42,6 +42,40 @@ services:
       PIMCORE_INSTALL_MYSQL_DATABASE: "pimcore"
       PIMCORE_INSTALL_MYSQL_PORT: "3306"
       PIMCORE_INSTALL_INSTALL_BUNDLES: "PimcoreApplicationLoggerBundle,PimcoreCustomReportsBundle,PimcoreGlossaryBundle,PimcoreSeoBundle,PimcoreSimpleBackendSearchBundle,PimcoreStaticRoutesBundle,PimcoreTinymceBundle,PimcoreUuidBundle,PimcoreWordExportBundle,PimcoreXliffBundle"
+
+  tests:
+    extends:
+      service: php
+    build: .
+    profiles:
+      - tests
+    environment:
+      APP_ENV: "test"
+      CORESHOP_SKIP_DB_SETUP: "1"
+      PIMCORE_TEST_DB_DSN: "mysql://pimcore:pimcore@db:3306/pimcore"
+      PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
+      PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
+      PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "db"
+      PIMCORE_INSTALL_MYSQL_USERNAME: "pimcore"
+      PIMCORE_INSTALL_MYSQL_PASSWORD: "pimcore"
+      PIMCORE_INSTALL_MYSQL_DATABASE: "pimcore"
+      PIMCORE_INSTALL_MYSQL_PORT: "3306"
+      PIMCORE_INSTALL_INSTALL_BUNDLES: "PimcoreApplicationLoggerBundle,PimcoreCustomReportsBundle,PimcoreGlossaryBundle,PimcoreSeoBundle,PimcoreSimpleBackendSearchBundle,PimcoreStaticRoutesBundle,PimcoreTinymceBundle,PimcoreUuidBundle,PimcoreWordExportBundle,PimcoreXliffBundle"
+      PIMCORE_KERNEL_CLASS: 'Kernel'
+      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
+    command:
+      - php
+      - vendor/bin/behat
+      - --strict
+      - --no-interaction
+      - -vvv
+      - -f
+      - progress
+      - --config
+      - behat.yml.dist
+      - -p
+      - ui
+      - --suite=ui_checkout
 
 volumes:
   coreshop-3-database:
