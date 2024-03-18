@@ -16,13 +16,16 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Order\Calculator;
+namespace CoreShop\Component\Product\Rule\Action;
 
-interface PurchasableCalculatorInterface extends 
-    PurchasablePriceCalculatorInterface,
-    PurchasableDiscountCalculatorInterface,
-    PurchasableDiscountPriceCalculatorInterface,
-    PurchasableRetailPriceCalculatorInterface,
-    PurchasableCustomAttributesCalculatorInterface
+use CoreShop\Component\Product\Model\ProductAttribute;
+
+class NotDiscountableCustomAttributeActionProcessor implements ProductCustomAttributesActionProcessorInterface
 {
+    public function getCustomAttributes($subject, array $context, array $configuration): array
+    {
+        return [
+            new ProductAttribute('not_discountable', true),
+        ];
+    }
 }

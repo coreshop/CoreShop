@@ -418,6 +418,15 @@ final class ProductPriceRuleContext implements Context
     }
 
     /**
+     * @Given /^the (price rule "[^"]+") has a action not-discountable$/
+     * @Given /^the (price rule) has a action not-discountable$/
+     */
+    public function theProductPriceRuleHasAActionNotDiscountable(ProductPriceRuleInterface $rule): void
+    {
+        $this->addAction($rule, $this->createActionWithForm('notDiscountableCustomAttributes'));
+    }
+
+    /**
      * @Given /^the (price rule "[^"]+") has a condition quantity with min (\d+) and max (\d+)$/
      * @Given /^the (price rule) has a condition quantity with min (\d+) and max (\d+)$/
      */

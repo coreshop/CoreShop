@@ -16,13 +16,23 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Order\Calculator;
+namespace CoreShop\Component\Product\Model;
 
-interface PurchasableCalculatorInterface extends 
-    PurchasablePriceCalculatorInterface,
-    PurchasableDiscountCalculatorInterface,
-    PurchasableDiscountPriceCalculatorInterface,
-    PurchasableRetailPriceCalculatorInterface,
-    PurchasableCustomAttributesCalculatorInterface
+class ProductAttribute
 {
+    public function __construct(
+        private string $attributeKey,
+        private mixed $attributeValue,
+    ) {
+    }
+
+    public function getAttributeKey(): string
+    {
+        return $this->attributeKey;
+    }
+
+    public function getAttributeValue(): mixed
+    {
+        return $this->attributeValue;
+    }
 }

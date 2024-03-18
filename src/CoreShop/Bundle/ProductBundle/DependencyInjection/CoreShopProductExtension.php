@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
+use CoreShop\Bundle\ProductBundle\Attribute\AsProductCustomAttributeCalculator;
 use CoreShop\Bundle\ProductBundle\Attribute\AsProductDiscountCalculator;
 use CoreShop\Bundle\ProductBundle\Attribute\AsProductDiscountPriceCalculator;
 use CoreShop\Bundle\ProductBundle\Attribute\AsProductPriceCalculator;
@@ -26,6 +27,7 @@ use CoreShop\Bundle\ProductBundle\Attribute\AsProductPriceRuleConditionChecker;
 use CoreShop\Bundle\ProductBundle\Attribute\AsProductRetailPriceCalculator;
 use CoreShop\Bundle\ProductBundle\Attribute\AsProductSpecificPriceRuleActionProcessor;
 use CoreShop\Bundle\ProductBundle\Attribute\AsProductSpecificPriceRuleConditionChecker;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductCustomAttributesCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductDiscountCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductDiscountPriceCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleActionPass;
@@ -35,6 +37,7 @@ use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPr
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Product\Calculator\ProductCustomAttributesCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
@@ -104,6 +107,14 @@ final class CoreShopProductExtension extends AbstractModelExtension
             ProductRetailPriceCalculatorInterface::class,
             ProductRetailPriceCalculatorsPass::PRODUCT_RETAIL_PRICE_CALCULATOR_TAG,
             AsProductRetailPriceCalculator::class,
+            $configs['autoconfigure_with_attributes'],
+        );
+
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            ProductCustomAttributesCalculatorInterface::class,
+            ProductCustomAttributesCalculatorsPass::PRODUCT_CUSTOM_ATTRIBUTES_CALCULATOR_TAG,
+            AsProductCustomAttributeCalculator::class,
             $configs['autoconfigure_with_attributes'],
         );
 

@@ -16,13 +16,20 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Order\Calculator;
+namespace CoreShop\Component\Order\Model;
 
-interface PurchasableCalculatorInterface extends 
-    PurchasablePriceCalculatorInterface,
-    PurchasableDiscountCalculatorInterface,
-    PurchasableDiscountPriceCalculatorInterface,
-    PurchasableRetailPriceCalculatorInterface,
-    PurchasableCustomAttributesCalculatorInterface
+use CoreShop\Component\Resource\Model\ResourceInterface;
+
+interface OrderItemAttributeInterface extends ResourceInterface
 {
+
+    public function getId(): ?int;
+
+    public function getAttributeKey(): ?string;
+
+    public function setAttributeKey(?string $attributeKey);
+
+    public function getAttributeValue();
+
+    public function setAttributeValue($attributeValue);
 }

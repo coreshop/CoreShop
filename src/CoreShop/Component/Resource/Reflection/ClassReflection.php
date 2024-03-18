@@ -66,6 +66,7 @@ final class ClassReflection
 
     /**
      * @psalm-param class-string $className
+     * @psalm-param class-string|null $attributeName
      *
      * @return \ReflectionAttribute[]
      */

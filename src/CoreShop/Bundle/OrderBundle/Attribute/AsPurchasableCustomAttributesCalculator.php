@@ -16,13 +16,18 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Order\Calculator;
+namespace CoreShop\Bundle\OrderBundle\Attribute;
 
-interface PurchasableCalculatorInterface extends 
-    PurchasablePriceCalculatorInterface,
-    PurchasableDiscountCalculatorInterface,
-    PurchasableDiscountPriceCalculatorInterface,
-    PurchasableRetailPriceCalculatorInterface,
-    PurchasableCustomAttributesCalculatorInterface
+#[\Attribute(\Attribute::TARGET_CLASS)]
+final class AsPurchasableCustomAttributesCalculator
 {
+    public function __construct(
+        private ?string $type = null,
+    ) {
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
 }
