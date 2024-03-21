@@ -9,10 +9,12 @@ RUN set -eux; \
 ARG uid=1000
 RUN usermod -u $uid www-data && chown -R www-data:www-data /var/www
 
-FROM dev as cromium
+FROM dev as behat
 RUN apt update && \
     apt install -y chromium chromium-driver
 ENV PANTHER_NO_SANDBOX=1
 ENV PANTHER_CHROME_ARGUMENTS='--disable-dev-shm-usage'
 ENV CORESHOP_SKIP_DB_SETUP=1
 ENV PANTHER_NO_HEADLESS=0
+ENV APP_ENV="test"
+
