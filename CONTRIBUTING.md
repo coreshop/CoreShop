@@ -21,6 +21,82 @@ your PR (if one is not already open), and your approach to solving it (not neces
 * [Fork us!](https://help.github.com/articles/fork-a-repo/) Code! Follow the coding standards PSR-1 and PSR-2
 * [Send a pull request](https://help.github.com/articles/using-pull-requests/) from your fork’s branch to our `master` branch.
 
+## Set up local development environment
+This guide outlines the steps to set up CoreShop for development on your local machine.
+### Prerequisites:
+* Docker: Ensure you have Docker installed and running on your system. You can find download and installation instructions on the official Docker website: https://www.docker.com/products/docker-desktop/.
+
+### Step 1: Build docker images
+Navigate to the cloned CoreShop directory in your terminal, and run the following command to build the Docker images:
+
+```shell
+docker compose build --build-arg uid=$(id -u) --pull
+```
+
+### Step 2: Install Dependencies 
+Navigate to the cloned CoreShop directory in your terminal.
+
+Run the following command to install all the required dependencies using Composer:
+```shell
+docker compose run --rm --user $(id -u) php composer install
+```
+
+### Step 3: Install Pimcore
+Run the following command to install Pimcore using the provided Docker image:
+```shell
+docker compose run --rm --user $(id -u) php vendor/bin/pimcore-install --no-interaction --ignore-existing-config
+```
+
+### Step 4: Install CoreShop
+Run the following command to install CoreShop:
+```shell
+docker compose run --rm --user $(id -u) php bin/console coreshop:install
+```
+
+### Step 5: Install Demo Data (Optional)
+CoreShop offers a demo dataset for testing purposes. To install the demo data, run the following command:
+```shell
+docker compose run --rm --user $(id -u) php bin/console coreshop:install:demo
+```
+
+## Running Code Analysis
+CoreShop provides options for running code analysis tools like Psalm and PHPStan. These tools help identify potential errors and improve code quality.
+Run the following command to execute Psalm within a Docker container:
+
+```shell
+docker compose run --rm --user $(id -u) php vendor/bin/psalm
+```
+
+Run the following command to run PHPStan with specific configuration options:
+```shell
+docker compose run --env SYMFONY_ENV=test --rm --user $(id -u) php vendor/bin/phpstan analyse -c phpstan.neon src -l 3 --memory-limit=-1
+```
+
+## Running Tests
+
+Setup the behat container first by building the image and installing the dependencies:
+
+```shell
+docker compose build --build-arg uid=$(id -u) behat
+```
+
+### BEHAT Domain
+
+Run the following command to execute the domain tests:
+
+```shell
+docker compose run --rm --user $(id -u) behat vendor/bin/behat -c behat.yml.dist -p default
+```
+
+### BEHAT UI
+
+UI tests require a running coreshop instance and a browser. Use the following command to run the UI tests
+in a container:
+
+```shell
+docker compose run --rm --user $(id -u) behat
+```
+
 ### Contributor License Agreement
 The following terms are used throughout this agreement:
 
