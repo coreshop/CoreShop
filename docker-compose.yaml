@@ -81,8 +81,13 @@ services:
       PIMCORE_KERNEL_CLASS: 'Kernel'
       PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
     command:
-      - php
-      - vendor/bin/behat
+      - bash
+      - -c
+      - |
+        set -e;
+        vendor/bin/bdi detect drivers;
+        symfony server:start --port=9080 --dir=public --no-tls -d;
+        CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui
 
 volumes:
   db:

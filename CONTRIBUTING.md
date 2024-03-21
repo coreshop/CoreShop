@@ -82,28 +82,20 @@ docker compose build --build-arg uid=$(id -u) behat
 
 ### BEHAT Domain
 
+Run the following command to execute the domain tests:
+
 ```shell
 docker compose run --rm --user $(id -u) behat vendor/bin/behat -c behat.yml.dist -p default
 ```
 
 ### BEHAT UI
+
+UI tests require a running coreshop instance and a browser. Use the following command to run the UI tests
+in a container:
+
+```shell
+docker compose run --rm --user $(id -u) behat
 ```
-vendor/bin/bdi detect drivers
-
-docker compose run --rm tests bash
-
-# Install Symfony, Pimcore and CoreShop inside Tests container
-wget https://get.symfony.com/cli/installer -O - | bash
-vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
-bin/console coreshop:install
-
-# Run Symfony Server
-/root/.symfony5/bin/symfony server:start --port=9080 --dir=public --no-tls
-
-# Run Behat
-CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui -vvv 
-```
-
 
 ### Contributor License Agreement
 The following terms are used throughout this agreement:
