@@ -25,9 +25,15 @@ your PR (if one is not already open), and your approach to solving it (not neces
 This guide outlines the steps to set up CoreShop for development on your local machine.
 ### Prerequisites:
 * Docker: Ensure you have Docker installed and running on your system. You can find download and installation instructions on the official Docker website: https://www.docker.com/products/docker-desktop/.
-* Composer: Composer is a dependency management tool for PHP. Install Composer following the instructions on the official website: https://getcomposer.org/doc/faqs/how-to-install-composer-programmatically.md.
 
-### Step 1: Install Dependencies 
+### Step 1: Build docker images
+Navigate to the cloned CoreShop directory in your terminal, and run the following command to build the Docker images:
+
+```shell
+docker compose build --build-arg uid=$(id -u) --pull
+```
+
+### Step 2: Install Dependencies 
 Navigate to the cloned CoreShop directory in your terminal.
 
 Run the following command to install all the required dependencies using Composer:
@@ -35,44 +41,32 @@ Run the following command to install all the required dependencies using Compose
 docker compose run --rm --user $(id -u) php composer install
 ```
 
-### Step 2: Install Pimcore
+### Step 3: Install Pimcore
 Run the following command to install Pimcore using the provided Docker image:
 ```shell
-docker compose run --rm --user $(id -u) php vendor/bin/pimcore-install
+docker compose run --rm --user $(id -u) php vendor/bin/pimcore-install --no-interaction --ignore-existing-config
 ```
-### Step 3: Install CoreShop
+
+### Step 4: Install CoreShop
 Run the following command to install CoreShop:
 ```shell
 docker compose run --rm --user $(id -u) php bin/console coreshop:install
 ```
-### Step 4: Install Demo Data (Optional)
+
+### Step 5: Install Demo Data (Optional)
 CoreShop offers a demo dataset for testing purposes. To install the demo data, run the following command:
 ```shell
 docker compose run --rm --user $(id -u) php bin/console coreshop:install:demo
 ```
-### Step 5: Set File Permissions
-Run the following command to set the correct file permissions for the var and public/var directories:
-```shell
-docker compose run --rm php chown -R www-data var/ public/var
-```
-Run the following command to enter the PHP container:
-```shell
-docker compose exec php bash
-```
-In the PHP container run the following command:
-```shell
-chown -R www-data .
-```
-Leave the PHP container and run the following command to give yourself edit rights to the src directory:
-```shell
-sudo chown -R <your-user-here> .
-```
+
 ## Running Code Analysis
 CoreShop provides options for running code analysis tools like Psalm and PHPStan. These tools help identify potential errors and improve code quality.
 Run the following command to execute Psalm within a Docker container:
+
 ```shell
 docker compose run --rm --user $(id -u) php vendor/bin/psalm
 ```
+
 Run the following command to run PHPStan with specific configuration options:
 ```shell
 docker compose run -e SYMFONY_ENV=test --rm --user $(id -u) php vendor/bin/phpstan analyse -c phpstan.neon src -l 3 --memory-limit=-1
