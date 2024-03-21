@@ -4,7 +4,7 @@ services:
     working_dir: /application
     command: [ mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci ]
     volumes:
-      - coreshop-3-database:/var/lib/mysql
+      - db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=ROOT
       - MYSQL_DATABASE=pimcore
@@ -24,14 +24,30 @@ services:
       - "80:80"
 
   php:
-    image: pimcore/pimcore:PHP8.0-fpm-debug
+    image: coreshop/coreshop:PHP8.1-fpm-debug
+    build:
+      args:
+        uid: ${USER_ID:-1000}
     depends_on:
       - db
     volumes:
       - .:/var/www/html
-      - ./.docker/xdebug-config.ini:/usr/local/etc/php/conf.d/21-xdebug.ini
+      # Reset xdebug configuration to default
+      - /dev/null:/usr/local/etc/php/conf.d/20-xdebug.ini:ro
     environment:
       PHP_IDE_CONFIG: serverName=localhost
+      # Enable step debugging and development helpers by default.
+      # `debug`-mode in conjuction with `trigger` (default) in `xdebug.start_with_request` enables step-debugging
+      # only if a "trigger" (i.e. `XDEBUG_TRIGGER`) is present. Refer to
+      # [start_with_request](https://xdebug.org/docs/all_settings#start_with_request) documentation of how to trigger
+      # step debugging with `trigger`.
+      # To configure PhpStorm for step-debugging with xdebug see: https://www.jetbrains.com/help/phpstorm/2021.3/zero-configuration-debugging.html#start-debugging-session
+      # See: https://xdebug.org/docs/all_settings#mode
+      XDEBUG_MODE: debug,develop
+      # This forces xdebug to always connect to the debug client running on docker host (host.docker.internal).
+      # It will work without further configuration with [Docker Desktop](https://www.docker.com/products/docker-desktop).
+      # See: https://xdebug.org/docs/all_settings#client_host
+      XDEBUG_CONFIG: client_host=host.docker.internal
       COMPOSER_HOME: /var/www/html
       PIMCORE_DB_DSN: "mysql://pimcore:pimcore@db:3306/pimcore"
       PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
@@ -42,10 +58,10 @@ services:
       PIMCORE_INSTALL_MYSQL_DATABASE: "pimcore"
       PIMCORE_INSTALL_MYSQL_PORT: "3306"
       PIMCORE_INSTALL_INSTALL_BUNDLES: "PimcoreApplicationLoggerBundle,PimcoreCustomReportsBundle,PimcoreGlossaryBundle,PimcoreSeoBundle,PimcoreSimpleBackendSearchBundle,PimcoreStaticRoutesBundle,PimcoreTinymceBundle,PimcoreUuidBundle,PimcoreWordExportBundle,PimcoreXliffBundle"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   tests:
-    extends:
-      service: php
     build: .
     profiles:
       - tests
@@ -78,4 +94,4 @@ services:
       - --suite=ui_checkout
 
 volumes:
-  coreshop-3-database:
+  db:
