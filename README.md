@@ -63,38 +63,10 @@ Password: coreshop
 ```
 
 ## Running Tests Locally
-### Psalm
-```
-vendor/bin/psalm
-```
 
-### PHPStan
-```
-SYMFONY_ENV=test vendor/bin/phpstan analyse -c phpstan.neon src -l 3 --memory-limit=-1
-```
+Follow the instructions in the [CONTRIBUTING.md](./CONTRIBUTING.md) to set up your local development environment
+and run the tests.
 
-### BEHAT Domain
-```
-CORESHOP_SKIP_DB_SETUP=1 vendor/bin/behat -c behat.yml.dist -p default
-```
-
-### BEHAT UI
-```
-vendor/bin/bdi detect drivers
-
-docker compose run --rm tests bash
-
-# Install Symfony, Pimcore and CoreShop inside Tests container
-wget https://get.symfony.com/cli/installer -O - | bash
-vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
-bin/console coreshop:install
-
-# Run Symfony Server
-/root/.symfony5/bin/symfony server:start --port=9080 --dir=public --no-tls
-
-# Run Behat
-CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui -vvv 
-```
 
 ## Copyright and license 
 Copyright: [CoreShop GmbH](https://www.coreshop.org)
