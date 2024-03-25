@@ -18,10 +18,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
+use Doctrine\DBAL\Exception\RetryableException;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Tool\Email\Log;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -29,6 +31,7 @@ class NoteService implements NoteServiceInterface
 {
     public function __construct(
         protected EventDispatcherInterface $eventDispatcher,
+        protected LoggerInterface $pimcoreLogger,
     ) {
     }
 
@@ -88,7 +91,49 @@ class NoteService implements NoteServiceInterface
 
     public function storeNote(Note $note, array $eventParams = []): Note
     {
-        $note->save();
+        $maxRetries = 5;
+        for ($retries = 0; $retries < $maxRetries; $retries++) {
+            try {
+                $note->beginTransaction();
+                $note->save();
+                $note->commit();
+
+                //the transaction was successfully completed, so we cancel the loop here -> no restart required
+                break;
+            } catch (\Exception $e) {
+                try {
+                    $note->rollBack();
+                } catch (\Exception $er) {
+                    // PDO adapter throws exceptions if rollback fails
+                    $this->pimcoreLogger->info((string)$er);
+                }
+
+                if ($e instanceof RetryableException) {
+                    // we try to start the transaction $maxRetries times again (deadlocks, ...)
+                    if ($retries < ($maxRetries - 1)) {
+                        $run = $retries + 1;
+                        $waitTime = random_int(1, 5) * 100000; // microseconds
+                        $this->pimcoreLogger->warning(
+                            'Unable to finish transaction ('.$run.". run) because of the following reason '".
+                            $e->getMessage().
+                            "'. --> Retrying in ".$waitTime.' microseconds ... ('.($run + 1).' of '.$maxRetries.')'
+                        );
+
+                        usleep($waitTime); // wait specified time until we restart the transaction
+                    } else {
+                        $this->pimcoreLogger->error(
+                            'Finally giving up restarting the same transaction again and again, last message: '.$e->getMessage(
+                            )
+                        );
+
+                        throw $e;
+                    }
+                    continue;
+                }
+
+                throw $e;
+            }
+        }
 
         $this->eventDispatcher->dispatch(
             new GenericEvent($note, $eventParams),
