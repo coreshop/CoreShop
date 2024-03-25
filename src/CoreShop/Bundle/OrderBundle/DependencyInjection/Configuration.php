@@ -97,6 +97,7 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('order_invoice_item')->defaultValue(OrderInvoiceItemInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('order_shipment')->defaultValue(OrderShipmentInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('order_shipment_item')->defaultValue(OrderShipmentItemInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('token_ttl')->defaultValue(OrderShipmentItemInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end()

@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\TokenGenerator;
 
-final class UniqueTokenGenerator
+final class UniqueTokenGenerator implements OrderTokenGeneratorInterface
 {
     private string $alphabet;
 
