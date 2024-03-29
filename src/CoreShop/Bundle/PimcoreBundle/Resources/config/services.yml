@@ -25,6 +25,7 @@ services:
     CoreShop\Component\Pimcore\DataObject\NoteService:
         arguments:
             - '@event_dispatcher'
+            - '@monolog.logger.pimcore'
 
     CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface: '@CoreShop\Component\Pimcore\DataObject\ObjectCloner'
     CoreShop\Component\Pimcore\DataObject\ObjectCloner: ~
