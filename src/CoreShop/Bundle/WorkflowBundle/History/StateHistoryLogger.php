@@ -64,8 +64,7 @@ final class StateHistoryLogger implements StateHistoryLoggerInterface
 
         try {
             $this->noteService->storeNote($note);
-        }
-        catch (\Exception) {
+        } catch (\Exception) {
             //We simply ignore this, if the note cannot be saved, we don't want to break the workflow
         }
     }
