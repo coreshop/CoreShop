@@ -92,7 +92,7 @@ class NoteService implements NoteServiceInterface
     public function storeNote(Note $note, array $eventParams = []): Note
     {
         $maxRetries = 5;
-        for ($retries = 0; $retries < $maxRetries; $retries++) {
+        for ($retries = 0; $retries < $maxRetries; ++$retries) {
             try {
                 $note->beginTransaction();
                 $note->save();
@@ -105,7 +105,7 @@ class NoteService implements NoteServiceInterface
                     $note->rollBack();
                 } catch (\Exception $er) {
                     // PDO adapter throws exceptions if rollback fails
-                    $this->pimcoreLogger->info((string)$er);
+                    $this->pimcoreLogger->info((string) $er);
                 }
 
                 if ($e instanceof RetryableException) {
@@ -114,20 +114,21 @@ class NoteService implements NoteServiceInterface
                         $run = $retries + 1;
                         $waitTime = random_int(1, 5) * 100000; // microseconds
                         $this->pimcoreLogger->warning(
-                            'Unable to finish transaction ('.$run.". run) because of the following reason '".
-                            $e->getMessage().
-                            "'. --> Retrying in ".$waitTime.' microseconds ... ('.($run + 1).' of '.$maxRetries.')'
+                            'Unable to finish transaction (' . $run . ". run) because of the following reason '" .
+                            $e->getMessage() .
+                            "'. --> Retrying in " . $waitTime . ' microseconds ... (' . ($run + 1) . ' of ' . $maxRetries . ')',
                         );
 
                         usleep($waitTime); // wait specified time until we restart the transaction
                     } else {
                         $this->pimcoreLogger->error(
-                            'Finally giving up restarting the same transaction again and again, last message: '.$e->getMessage(
-                            )
+                            'Finally giving up restarting the same transaction again and again, last message: ' . $e->getMessage(
+                            ),
                         );
 
                         throw $e;
                     }
+
                     continue;
                 }
 
