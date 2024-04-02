@@ -63,6 +63,10 @@ docker compose run --rm php bin/console coreshop:install:demo
 ```shell
 docker compose run --rm php chown www-data:www-data public/var/* var/*
 ```
+For Linux Native systems we also need to execute: 
+```shell
+sudo chown -R $(id -u):$(id -g)
+```
 ## Running Code Analysis
 CoreShop provides options for running code analysis tools like Psalm and PHPStan. These tools help identify potential errors and improve code quality.
 Run the following command to execute Psalm within a Docker container:
