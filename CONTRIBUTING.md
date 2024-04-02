@@ -30,7 +30,7 @@ This guide outlines the steps to set up CoreShop for development on your local m
 Navigate to the cloned CoreShop directory in your terminal, and run the following command to build the Docker images:
 
 ```shell
-docker compose build --build-arg --pull
+docker compose build --build-arg uid=$(id -u) --pull
 ```
 
 ### Step 2: Install Dependencies 
@@ -59,6 +59,10 @@ CoreShop offers a demo dataset for testing purposes. To install the demo data, r
 docker compose run --rm php bin/console coreshop:install:demo
 ```
 
+### Step 6: Handle permissions
+```shell
+docker compose run --rm php chown www-data:www-data public/var/* var/*
+```
 ## Running Code Analysis
 CoreShop provides options for running code analysis tools like Psalm and PHPStan. These tools help identify potential errors and improve code quality.
 Run the following command to execute Psalm within a Docker container:
