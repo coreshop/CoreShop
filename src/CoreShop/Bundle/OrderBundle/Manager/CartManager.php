@@ -98,7 +98,7 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
             $this->cartProcessor->process($cart);
 
             /**
-             * @var OrderItemInterface $cartItem
+             * @var OrderItemInterface $item
              */
             foreach ($cart->getItems() as $index => $item) {
                 $item->setParent(
