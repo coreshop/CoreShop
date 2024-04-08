@@ -86,19 +86,29 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
                         ['prefix' => $cart->getFullPath()],
                     ),
                 );
-                //$item->setPath($cart->getFullPath());
+                $item->setKey(uniqid(sprintf('%s.', ((int) $index + 1)), true));
                 $item->setPublished(true);
-                $item->setKey(uniqid((string) ((int) $index + 1), true));
                 $item->save();
             }
 
+            /**
+             * The CartProcessor might add new Items to the Cart (eg. Gift Products)
+             * so we need to set the Parent and Key after the CartProcessor has been processed
+             */
             $this->cartProcessor->process($cart);
 
             /**
              * @var OrderItemInterface $cartItem
              */
-            foreach ($cart->getItems() as $cartItem) {
-                $cartItem->save();
+            foreach ($cart->getItems() as $index => $item) {
+                $item->setParent(
+                    $this->folderCreationService->createFolderForResource(
+                        $item,
+                        ['prefix' => $cart->getFullPath()],
+                    ),
+                );
+                $item->setKey(uniqid(sprintf('%s.', ((int) $index + 1)), true));
+                $item->save();
             }
 
             $cart->save();
