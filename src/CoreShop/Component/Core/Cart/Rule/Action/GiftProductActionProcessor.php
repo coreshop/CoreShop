@@ -84,7 +84,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         }
 
         $item->setDefaultUnitQuantity(1);
-        
+
         $adjustment = $this->adjustmentFactory->createWithData(
             $key,
             $cartPriceRuleItem->getCartPriceRule()->getName(),
