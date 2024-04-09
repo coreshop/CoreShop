@@ -2,6 +2,8 @@
 * Fix store mail and store order mail collection entry type by @kkarkus in https://github.com/coreshop/CoreShop/pull/2586
 * [NoteService] implement deadlock retry strategy by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2588
 * always set default unit quantity in gift product action by @solverat in https://github.com/coreshop/CoreShop/pull/2590
+* [CoreBundle] fix PaymentWorkflow Listener to trigger state transition conditions by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2601
+* [CoreBundle] fix CartTextProcessor priority and CartManagers setParent for cart-item by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2602
 
 # 3.2.6
 * [Tests] add test for stock tracked products in checkout by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2560
