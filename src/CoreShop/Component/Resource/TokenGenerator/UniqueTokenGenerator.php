@@ -29,6 +29,7 @@ final class UniqueTokenGenerator implements OrderTokenGeneratorInterface
     private int $keyLength;
 
     public function __construct(
+        int $defaultTokenLength,
         bool $onlyNumbers = false,
     ) {
         $this->alphabet =
@@ -46,7 +47,7 @@ final class UniqueTokenGenerator implements OrderTokenGeneratorInterface
         $this->keyLength = strlen($this->keys);
     }
 
-    public function generate(int $length): string
+    public function generate(?int $length = null): string
     {
         $token = '';
 

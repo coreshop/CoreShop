@@ -59,6 +59,7 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -97,7 +98,6 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('order_invoice_item')->defaultValue(OrderInvoiceItemInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('order_shipment')->defaultValue(OrderShipmentInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('order_shipment_item')->defaultValue(OrderShipmentItemInterface::class)->cannotBeEmpty()->end()
-                    ->scalarNode('token_ttl')->defaultValue(OrderShipmentItemInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end()
@@ -185,6 +185,7 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('order')
                             ->addDefaultsIfNotSet()
                             ->children()
+                                ->scalarNode('token_length')->defaultValue(10)->end()
                                 ->variableNode('options')->end()
                                 ->arrayNode('path')
                                     ->children()

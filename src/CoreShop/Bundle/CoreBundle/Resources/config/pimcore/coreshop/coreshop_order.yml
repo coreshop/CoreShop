@@ -1,6 +1,7 @@
 core_shop_order:
     pimcore:
         order:
+            token_length: 100
             path:
                 order: coreshop/orders
                 cart: coreshop/carts

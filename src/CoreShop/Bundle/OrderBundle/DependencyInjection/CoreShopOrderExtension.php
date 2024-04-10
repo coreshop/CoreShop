@@ -34,6 +34,7 @@ use CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterfac
 use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\Condition\CartRuleConditionCheckerInterface;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -59,6 +60,9 @@ final class CoreShopOrderExtension extends AbstractModelExtension
         if (array_key_exists('stack', $configs)) {
             $this->registerStack('coreshop', $configs['stack'], $container);
         }
+
+        $definition = $container->getDefinition(UniqueTokenGenerator::class);
+        $definition->replaceArgument(0, $configs['pimcore']['order']['token_length']);
 
         $bundles = $container->getParameter('kernel.bundles');
 

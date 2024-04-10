@@ -283,15 +283,15 @@ class CheckoutController extends FrontendController
     {
         $orderToken = $this->getParameterFromRequest($request, 'token');
 
-        /**
-         * Work in progress: get the order creation date and the configured token_ttl and compare to throw error if token is expired
-         */
-        $orderDate = $this->getParameterFromRequest($request, 'orderDate');
-        $token_ttl = $this->getParameterFromRequest($request, 'token_ttl');
-
-        if ($orderDate < $token_ttl) {
-            return $this->redirectToRoute('coreshop_index');
-        }
+//        /**
+//         * Work in progress: get the order creation date and the configured token_ttl and compare to throw error if token is expired
+//         */
+//        $orderDate = $this->getParameterFromRequest($request, 'orderDate');
+//        $token_ttl = $this->getParameterFromRequest($request, 'token_ttl');
+//
+//        if ($orderDate < $token_ttl) {
+//            return $this->redirectToRoute('coreshop_index');
+//        }
 
         if (null === $orderToken) {
             return $this->redirectToRoute('coreshop_index');
