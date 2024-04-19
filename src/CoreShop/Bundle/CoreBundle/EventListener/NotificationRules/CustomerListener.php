@@ -143,6 +143,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
     {
         return [
             '_locale' => $this->shopperContext->getLocaleCode(),
+            'store_id' => $this->shopperContext->getStore()->getId(),
             'recipient' => $user->getCustomer()->getEmail(),
             'gender' => $user->getCustomer()->getGender(),
             'firstname' => $user->getCustomer()->getFirstname(),
