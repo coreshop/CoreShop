@@ -186,7 +186,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         this.paymentProviderRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
             columns: [
                 {
-                    header: t('coreshop_carriers_payment_provider_rule'),
+                    header: t('coreshop_payment_provider_rule'),
                     flex: 2,
                     dataIndex: 'paymentProviderRule',
                     editor: new Ext.form.ComboBox({
