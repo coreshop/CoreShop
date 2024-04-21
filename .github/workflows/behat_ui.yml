@@ -120,7 +120,7 @@ jobs:
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
 
     - name: Upload Behat logs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: "Behat logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
@@ -128,7 +128,7 @@ jobs:
         if-no-files-found: ignore
 
     - name: Upload Pimcore logs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: "Pimcore logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
