@@ -10,9 +10,9 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentproviderrule.conditions.paymentProviderRule');
+pimcore.registerNS('coreshop.paymentproviderrule.actions.paymentProviderRule');
 
-coreshop.paymentproviderrule.conditions.paymentProviderRule = Class.create(coreshop.rules.conditions.abstract, {
+coreshop.paymentproviderrule.actions.paymentProviderRule = Class.create(coreshop.rules.conditions.abstract, {
     type: 'paymentProviderRule',
 
     getForm: function () {
@@ -20,7 +20,7 @@ coreshop.paymentproviderrule.conditions.paymentProviderRule = Class.create(cores
 
         var rule = {
             xtype: 'combo',
-            fieldLabel: t('coreshop_condition_paymentProviderRule'),
+            fieldLabel: t('coreshop_action_paymentProviderRule'),
             typeAhead: true,
             listWidth: 100,
             width: 500,
