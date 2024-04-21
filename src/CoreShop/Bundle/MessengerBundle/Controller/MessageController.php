@@ -26,6 +26,8 @@ class MessageController extends \Pimcore\Bundle\AdminBundle\Controller\AdminCont
 {
     public function deleteStoredMessageAction(Request $request, FailedMessageRejecter $failedMessageRejecter)
     {
+        $this->checkPermission('coreshop_permission_messenger');
+
         $id = (int) $request->request->get('id');
         $receiver = (string) $request->attributes->get('receiverName');
 
@@ -40,6 +42,8 @@ class MessageController extends \Pimcore\Bundle\AdminBundle\Controller\AdminCont
 
     public function retryFailedMessageAction(Request $request, FailedMessageRetryer $failedMessageRetryer)
     {
+        $this->checkPermission('coreshop_permission_messenger');
+
         $id = (int) $request->request->get('id');
         $receiver = (string) $request->attributes->get('receiverName');
 
