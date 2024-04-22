@@ -35,7 +35,7 @@ class PaymentProviderRuleConditionChecker extends AbstractConditionChecker
     public function isPaymentProviderRuleValid(
         PaymentProviderInterface $paymentProvider,
         PayableInterface $payable,
-        array $configuration
+        array $configuration,
     ): bool {
         $paymentProviderRuleId = $configuration['paymentProviderRule'];
         $paymentProviderRule = $this->paymentProviderRuleRepository->find($paymentProviderRuleId);
