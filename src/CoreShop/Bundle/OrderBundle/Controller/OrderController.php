@@ -65,7 +65,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
@@ -85,7 +85,7 @@ class OrderController extends PimcoreController
             $stateMachine = null;
 
             foreach ($worklows as $workflow) {
-                if (!$workflow instanceof StateMachine) {
+                if (!$workflow instanceof WorkflowInterface) {
                     continue;
                 }
 
