@@ -47,7 +47,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         }
 
         $quantityPriceRules = $referenceProduct->getQuantityPriceRules();
-        $hasQuantityPriceRules = is_array($product->getQuantityPriceRules()) && count($product->getQuantityPriceRules()) > 0;
+        $hasQuantityPriceRules = count($product->getQuantityPriceRules()) > 0;
 
         if ($hasQuantityPriceRules === true && $resetExistingData === false) {
             return;
