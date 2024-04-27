@@ -63,16 +63,7 @@ class EntityMerger
         $class = $this->em->getClassMetadata($entity::class);
 
         if ($entity instanceof Proxy && !$entity->__isInitialized()) {
-            $id = $class->getIdentifierValues($entity);
-
-            $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $class->getName());
-
-            if ($uwEntity) {
-                $entity = $uwEntity;
-            }
-            else {
-                $entity->__load();
-            }
+            $entity->__load();
         }
 
 
