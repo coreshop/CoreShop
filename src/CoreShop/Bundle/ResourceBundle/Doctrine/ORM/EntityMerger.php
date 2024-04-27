@@ -60,12 +60,21 @@ class EntityMerger
         }
 
         $visited[$oid] = $entity; // mark visited
+        $class = $this->em->getClassMetadata($entity::class);
 
         if ($entity instanceof Proxy && !$entity->__isInitialized()) {
-            $entity->__load();
+            $id = $class->getIdentifierValues($entity);
+
+            $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $class->getName());
+
+            if ($uwEntity) {
+                $entity = $uwEntity;
+            }
+            else {
+                $entity->__load();
+            }
         }
 
-        $class = $this->em->getClassMetadata($entity::class);
 
         if ($this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
             $id = $class->getIdentifierValues($entity);
