@@ -24,7 +24,8 @@ your PR (if one is not already open), and your approach to solving it (not neces
 ## Set up local development environment
 This guide outlines the steps to set up CoreShop for development on your local machine.
 ### Prerequisites:
-* Docker Desktop: Ensure you have Docker Desktop installed and running on your system. You can find download and installation instructions for Windows, Mac and Linux here: https://docs.docker.com/desktop/
+* Docker Desktop: Ensure you have Docker Desktop installed and running on your system. You can find download and installation instructions for Windows, Mac and Linux here: https://docs.docker.com/desktop/ or
+* OrbStack (macOS only): Ensure you have OrbStack installed on your system. You can find download and installation instructions here: https://orbstack.dev/
 
 ### Step 1: Build docker images
 Navigate to the cloned CoreShop directory in your terminal, and run the following command to build the Docker images:
@@ -33,7 +34,25 @@ Navigate to the cloned CoreShop directory in your terminal, and run the followin
 docker compose build --build-arg uid=$(id -u) --pull
 ```
 
-### Step 2: Install Dependencies 
+### Step 2: Full Install
+Run the following command to install Pimcore and CoreShop:
+```shell
+docker compose run --rm php bin/install
+````
+
+#### Step 3: Handle permissions
+```shell
+docker compose run --rm php chown www-data:www-data public/var/* var/*
+```
+For Linux Native systems we also need to execute:
+```shell
+sudo chown -R $(id -u):$(id -g)
+```
+
+### Manual Installation
+Optionally you can run the single steps:
+
+#### Step 1: Install Dependencies 
 Navigate to the cloned CoreShop directory in your terminal.
 
 Run the following command to install all the required dependencies using Composer:
@@ -41,32 +60,24 @@ Run the following command to install all the required dependencies using Compose
 docker compose run --rm php composer install
 ```
 
-### Step 3: Install Pimcore
+#### Step 2: Install Pimcore
 Run the following command to install Pimcore using the provided Docker image:
 ```shell
 docker compose run --rm php vendor/bin/pimcore-install --no-interaction --ignore-existing-config
 ```
 
-### Step 4: Install CoreShop
+#### Step 3: Install CoreShop
 Run the following command to install CoreShop:
 ```shell
 docker compose run --rm php bin/console coreshop:install
 ```
 
-### Step 5: Install Demo Data (Optional)
+#### Step 4: Install Demo Data (Optional)
 CoreShop offers a demo dataset for testing purposes. To install the demo data, run the following command:
 ```shell
 docker compose run --rm php bin/console coreshop:install:demo
 ```
 
-### Step 6: Handle permissions
-```shell
-docker compose run --rm php chown www-data:www-data public/var/* var/*
-```
-For Linux Native systems we also need to execute: 
-```shell
-sudo chown -R $(id -u):$(id -g)
-```
 ## Running Code Analysis
 CoreShop provides options for running code analysis tools like Psalm and PHPStan. These tools help identify potential errors and improve code quality.
 Run the following command to execute Psalm within a Docker container:

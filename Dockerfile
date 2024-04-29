@@ -1,4 +1,4 @@
-FROM pimcore/pimcore:php8.1-latest as dev
+FROM pimcore/pimcore:php8.1-debug-latest as dev
 RUN set -eux; \
     apt-get update; \
     apt-get install -y $PHPIZE_DEPS libxslt1-dev; \
