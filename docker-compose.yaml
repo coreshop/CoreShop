@@ -1,4 +1,3 @@
-version: '3.4'
 name: 'coreshop-3'
 
 x-php: &php
