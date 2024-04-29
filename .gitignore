@@ -58,3 +58,4 @@ drivers
 vendor/
 docs/generated-docs
 node_modules
+docker-compose.override.yaml
