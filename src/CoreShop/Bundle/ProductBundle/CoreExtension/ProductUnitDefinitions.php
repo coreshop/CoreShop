@@ -358,6 +358,9 @@ class ProductUnitDefinitions extends Data implements
         $productUnitDefinitions = $object->getObjectVar($this->getName());
 
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
+            $entityMerger = new EntityMerger($this->getEntityManager());
+            $entityMerger->merge($productUnitDefinitions);
+
             $productUnitDefinitions->setProduct($object);
 
             $this->getEntityManager()->persist($productUnitDefinitions);
@@ -404,7 +407,19 @@ class ProductUnitDefinitions extends Data implements
         }
 
         $errors = [];
-        $unitDefinitionsEntity = $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
+        $productUnitDefinitionsValues = null;
+
+        $unitDefinitionsEntity = null;
+        $unitDefinitionsId = isset($data['id']) && is_numeric($data['id']) ? $data['id'] : null;
+
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+        $tempStoreValuesRepository = $this->getProductUnitDefinitionsRepositoryFactory()->createNewRepository($tempEntityManager);
+
+        Assert::isInstanceOf($tempStoreValuesRepository, ProductUnitDefinitionsRepositoryInterface::class);
+
+        if ($unitDefinitionsId !== null) {
+            $unitDefinitionsEntity = $tempStoreValuesRepository->findOneForProduct($object);
+        }
 
         $form = $this->getFormFactory()->createNamed('', ProductUnitDefinitionsType::class, $unitDefinitionsEntity);
 

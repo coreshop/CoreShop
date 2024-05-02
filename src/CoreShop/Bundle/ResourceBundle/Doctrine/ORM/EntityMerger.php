@@ -61,11 +61,7 @@ class EntityMerger
 
         $visited[$oid] = $entity; // mark visited
         $class = $this->em->getClassMetadata($entity::class);
-
-        if ($entity instanceof Proxy && !$entity->__isInitialized()) {
-            $entity->__load();
-        }
-
+        $entity = $this->loadEntity($entity);
 
         if ($this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
             $id = $class->getIdentifierValues($entity);
@@ -92,6 +88,8 @@ class EntityMerger
                     $this->cascadeMerge($entity, $visited);
                     $this->em->getUnitOfWork()->persist($entity);
                 } else {
+                    $managedCopy = $this->loadEntity($managedCopy);
+
                     $this->checkAssociations($entity, $managedCopy, $visited);
                     $this->em->getUnitOfWork()->removeFromIdentityMap($managedCopy);
                     $this->em->getUnitOfWork()->registerManaged($entity, $id, $this->getData($managedCopy));
@@ -100,6 +98,24 @@ class EntityMerger
         }
 
         $this->cascadeMerge($entity, $visited);
+    }
+
+    protected function loadEntity($entity)
+    {
+        $class = $this->em->getClassMetadata($entity::class);
+
+        if ($entity instanceof Proxy && !$entity->__isInitialized()) {
+            $id = $class->getIdentifierValues($entity);
+            $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $class->getName());
+
+            if ($uwEntity) {
+                $this->em->getUnitOfWork()->removeFromIdentityMap($uwEntity);
+            }
+
+            $entity->__load();
+        }
+
+        return $entity;
     }
 
     /**
@@ -278,7 +294,14 @@ class EntityMerger
     {
         $class = $this->em->getClassMetadata($entity::class);
 
-        foreach ($class->associationMappings as $assoc) {
+        $associationMappings = array_filter(
+            $class->associationMappings,
+            static function ($assoc) {
+                return $assoc['isCascadeMerge'];
+            }
+        );
+
+        foreach ($associationMappings as $assoc) {
             $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
             if ($relatedEntities instanceof Collection) {
