@@ -300,7 +300,39 @@ class EntityMerger
                 return $assoc['isCascadeMerge'];
             }
         );
+        $noMergeAssociationMappings = array_filter(
+            $class->associationMappings,
+            static function ($assoc) {
+                return !$assoc['isCascadeMerge'];
+            }
+        );
 
+        /**
+         * Restore managed entities to their original state
+         */
+        foreach ($noMergeAssociationMappings as $assoc) {
+            $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
+
+            if ($relatedEntities instanceof Collection) {
+                //Reset Collection
+                $pColl = new PersistentCollection($this->em, $assoc['targetEntity'], new ArrayCollection());
+                $pColl->setOwner($entity, $assoc);
+                $pColl->setInitialized(false);
+
+                $class->reflFields[$assoc['fieldName']]->setValue($entity, $pColl);
+            } elseif ($relatedEntities !== null) {
+                //Reset "tmp" entity with managed entity
+                $relatedEntityClass = $this->em->getClassMetadata($assoc['targetEntity']);
+                $id = $relatedEntityClass->getIdentifierValues($relatedEntities);
+                $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $relatedEntityClass->getName());
+
+                $class->reflFields[$assoc['fieldName']]->setValue($entity, $uwEntity);
+            }
+        }
+
+        /**
+         * Merge related entities to the new state
+         */
         foreach ($associationMappings as $assoc) {
             $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 

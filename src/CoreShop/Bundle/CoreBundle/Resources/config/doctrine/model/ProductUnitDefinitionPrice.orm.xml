@@ -5,6 +5,9 @@
 
         <many-to-one field="productStoreValues" target-entity="CoreShop\Component\Core\Model\ProductStoreValuesInterface" inversed-by="productUnitDefinitionPrices">
             <join-column name="product_store_values" referenced-column-name="id" on-delete="CASCADE"/>
+            <cascade>
+
+            </cascade>
         </many-to-one>
 
     </mapped-superclass>
