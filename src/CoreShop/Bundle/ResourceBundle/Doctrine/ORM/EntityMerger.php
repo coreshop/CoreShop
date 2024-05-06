@@ -330,7 +330,9 @@ class EntityMerger
                 $id = $relatedEntityClass->getIdentifierValues($relatedEntities);
                 $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $relatedEntityClass->getName());
 
-                $class->reflFields[$assoc['fieldName']]->setValue($entity, $uwEntity);
+                if ($uwEntity) {
+                    $class->reflFields[$assoc['fieldName']]->setValue($entity, $uwEntity);
+                }
             }
         }
 
