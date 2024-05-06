@@ -313,6 +313,10 @@ class EntityMerger
         foreach ($noMergeAssociationMappings as $assoc) {
             $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
+            if (!$relatedEntities) {
+                continue;
+            }
+
             if ($relatedEntities instanceof Collection) {
                 //Reset Collection
                 $pColl = new PersistentCollection($this->em, $assoc['targetEntity'], new ArrayCollection());
@@ -320,7 +324,7 @@ class EntityMerger
                 $pColl->setInitialized(false);
 
                 $class->reflFields[$assoc['fieldName']]->setValue($entity, $pColl);
-            } elseif ($relatedEntities !== null) {
+            } else {
                 //Reset "tmp" entity with managed entity
                 $relatedEntityClass = $this->em->getClassMetadata($assoc['targetEntity']);
                 $id = $relatedEntityClass->getIdentifierValues($relatedEntities);
