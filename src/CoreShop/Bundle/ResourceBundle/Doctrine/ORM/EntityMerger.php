@@ -328,6 +328,11 @@ class EntityMerger
                 //Reset "tmp" entity with managed entity
                 $relatedEntityClass = $this->em->getClassMetadata($assoc['targetEntity']);
                 $id = $relatedEntityClass->getIdentifierValues($relatedEntities);
+
+                if (!$id) {
+                    continue;
+                }
+
                 $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $relatedEntityClass->getName());
 
                 //Entity might not be loaded and managed yet, try to load it
