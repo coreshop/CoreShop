@@ -56,6 +56,11 @@ class Installer extends SettingsStoreAwareInstaller
         parent::install();
     }
 
+    public function markAllMigrationsInstalled(): void
+    {
+        $this->markInstalled();
+    }
+
     public function needsReloadAfterInstall(): bool
     {
         return true;
