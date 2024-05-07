@@ -24,7 +24,7 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface;
 
-class PaymentProviderRulePriceCalculator
+class PaymentProviderRulePriceCalculator implements PaymentProviderRulePriceCalculatorInterface
 {
     public function __construct(
         protected PaymentProviderRuleCheckerInterface $paymentProviderRuleChecker,
@@ -35,7 +35,7 @@ class PaymentProviderRulePriceCalculator
     public function getPrice(PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $context): int
     {
         /**
-         * First valid price rule wins. so, we loop through all ShippingRuleGroups
+         * First valid price rule wins. so, we loop through all PaymentProviderRuleGroups
          * get the first valid one, and process it for the price.
          */
         $paymentProviderRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $payable);

@@ -3,6 +3,7 @@ parameters:
     coreshop.form.type.payment_provider_translation.validation_groups: [coreshop]
     coreshop.form.type.payment_provider_rule.validation_groups: [coreshop]
     coreshop.form.type.payment_provider_rule_group.validation_groups: [coreshop]
+    coreshop.form.type.payment_provider_rule_translation.validation_groups: [ coreshop ]
     coreshop.form.type.payment_provider_rule.action.addition_percent.validation_groups: [ coreshop ]
     coreshop.form.type.payment_provider_rule.action.discount_percent.validation_groups: [ coreshop ]
     coreshop.form.type.payment_provider_rule.rule.validation_groups: [coreshop]
@@ -68,6 +69,13 @@ services:
         arguments:
             - '%coreshop.model.payment_provider_rule.class%'
             - '%coreshop.form.type.payment_provider_rule.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleTranslationType:
+        arguments:
+            - '%coreshop.model.payment_provider_rule_translation.class%'
+            - '%coreshop.form.type.payment_provider_rule_translation.validation_groups%'
         tags:
             - { name: form.type }
 

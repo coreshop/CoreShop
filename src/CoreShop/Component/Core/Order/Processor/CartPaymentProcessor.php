@@ -23,16 +23,20 @@ use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator;
+use CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculatorInterface;
+use CoreShop\Component\Payment\Checker\PaymentProviderRuleCheckerInterface;
+use Pimcore\Translation\Translator;
 
 final class CartPaymentProcessor implements CartProcessorInterface
 {
     public function __construct(
         private int $decimalFactor,
         private int $decimalPrecision,
-        protected PaymentProviderRulePriceCalculator $priceCalculator,
+        protected PaymentProviderRulePriceCalculatorInterface $priceCalculator,
         private CartContextResolverInterface $cartContextResolver,
         private AdjustmentFactoryInterface $adjustmentFactory,
+        protected PaymentProviderRuleCheckerInterface $paymentProviderRuleChecker,
+        protected Translator $translator,
     ) {
     }
 
@@ -41,24 +45,31 @@ final class CartPaymentProcessor implements CartProcessorInterface
         $cart->setPaymentTotal(
             (int) round((round($cart->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
         );
+        $paymentProvider = $cart->getPaymentProvider();
 
         if ($cart->isImmutable()) {
             return;
         }
 
-        if ($cart->getPaymentProvider()) {
+        if (
+            $paymentProvider
+            && $validRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $cart)
+        ) {
             $context = $this->cartContextResolver->resolveCartContext($cart);
 
             $price = $this->priceCalculator->getPrice(
-                $cart->getPaymentProvider(),
+                $paymentProvider,
                 $cart,
                 $context,
             );
 
+            $ruleLabel = $validRule->getLabel($cart->getLocaleCode());
+            $defaultRuleLabel = $this->translator->trans('coreshop.paymentprovider.rule.label');
+
             $cart->addAdjustment(
                 $this->adjustmentFactory->createWithData(
                     AdjustmentInterface::PAYMENT,
-                    'PaymentProvider fee',
+                    !empty($ruleLabel) ? $ruleLabel : $defaultRuleLabel,
                     $price,
                     $price,
                 ),

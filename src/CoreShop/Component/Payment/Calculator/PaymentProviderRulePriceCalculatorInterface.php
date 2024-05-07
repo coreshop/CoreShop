@@ -16,14 +16,12 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Payment\Model;
+namespace CoreShop\Component\Payment\Calculator;
 
-use CoreShop\Component\Resource\Model\TranslatableInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
+use CoreShop\Component\Payment\Model\PayableInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 
-interface PaymentProviderRuleInterface extends RuleInterface, TranslatableInterface
+interface PaymentProviderRulePriceCalculatorInterface
 {
-    public function getLabel(string $language = null);
-
-    public function setLabel(string $label, string $language = null);
+    public function getPrice(PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $context): int;
 }
