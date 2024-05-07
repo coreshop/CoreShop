@@ -33,23 +33,22 @@ class PaymentProviderRuleTranslation extends AbstractTranslation implements Paym
      */
     protected $id;
 
-    /**
-     * @var string
-     */
-    protected $label;
+    protected string $label = '';
 
     public function getId(): int|string|null
     {
         return $this->id;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    public function setLabel($label)
+    public function setLabel(string $label): static
     {
         $this->label = $label;
+
+        return $this;
     }
 }

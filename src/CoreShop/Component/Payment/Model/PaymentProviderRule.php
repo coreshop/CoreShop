@@ -68,7 +68,9 @@ class PaymentProviderRule implements PaymentProviderRuleInterface
     public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): PaymentProviderRuleTranslationInterface
     {
         /** @var PaymentProviderRuleTranslationInterface $translation */
-        return $this->doGetTranslation($locale, $useFallbackTranslation);
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+
+        return $translation;
     }
 
     protected function createTranslation(): PaymentProviderRuleTranslationInterface
