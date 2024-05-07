@@ -364,7 +364,7 @@ class ProductUnitDefinitions extends Data implements
             $productUnitDefinitions->setProduct($object);
 
             $this->getEntityManager()->persist($productUnitDefinitions);
-            $this->getEntityManager()->flush($productUnitDefinitions);
+            $this->getEntityManager()->flush();
         }
     }
 
@@ -455,9 +455,12 @@ class ProductUnitDefinitions extends Data implements
         $defaultUnit = $data->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface && $data->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $data->getDefaultUnitDefinition()->getUnit()->getName() : '--';
 
         return sprintf(
-            'Default Unit: %s, additional units: %d',
+            'Default Unit: %s, additional units: %d (%s)',
             $defaultUnit,
             $data->getAdditionalUnitDefinitions()->count(),
+            implode(', ', array_map(static function(ProductUnitDefinitionInterface $unitDefinition) {
+                return sprintf('%s: %s %s', $unitDefinition->getId(), $unitDefinition->getConversionRate(), $unitDefinition->getUnitName());
+            }, $data->getUnitDefinitions()->toArray()))
         );
     }
 
