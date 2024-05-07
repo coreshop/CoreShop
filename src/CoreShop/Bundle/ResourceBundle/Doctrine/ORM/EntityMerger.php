@@ -330,6 +330,11 @@ class EntityMerger
                 $id = $relatedEntityClass->getIdentifierValues($relatedEntities);
                 $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $relatedEntityClass->getName());
 
+                //Entity might not be loaded and managed yet, try to load it
+                if (!$uwEntity) {
+                    $uwEntity = $this->em->find($relatedEntityClass->getName(), $id);
+                }
+
                 if ($uwEntity) {
                     $class->reflFields[$assoc['fieldName']]->setValue($entity, $uwEntity);
                 }
