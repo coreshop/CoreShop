@@ -14,7 +14,7 @@ x-php: &php
     # step debugging with `trigger`.
     # To configure PhpStorm for step-debugging with xdebug see: https://www.jetbrains.com/help/phpstorm/2021.3/zero-configuration-debugging.html#start-debugging-session
     # See: https://xdebug.org/docs/all_settings#mode
-    XDEBUG_MODE: debug,develop
+    XDEBUG_MODE: debug
     # This forces xdebug to always connect to the debug client running on docker host (host.docker.internal).
     # It will work without further configuration with [Docker Desktop](https://www.docker.com/products/docker-desktop).
     # See: https://xdebug.org/docs/all_settings#client_host
