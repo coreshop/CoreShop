@@ -50,7 +50,6 @@ final class InstallCommand extends AbstractInstallCommand
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
         protected Installer $installer,
-        protected \CoreShop\Bundle\IndexBundle\Installer $indexBundleInstaller,
     ) {
         parent::__construct($kernel, $directoryChecker);
     }
@@ -97,7 +96,6 @@ EOT
         }
 
         $this->installer->markAllMigrationsInstalled();
-        $this->indexBundleInstaller->markAllMigrationsInstalled();
 
         $outputStyle->newLine(2);
         $outputStyle->success($this->getProperFinalMessage($errored));
