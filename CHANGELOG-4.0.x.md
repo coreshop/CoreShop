@@ -1,3 +1,13 @@
+# 4.0.6
+
+* [IndexBundle] Index error if product does not have a store by @hethehe in https://github.com/coreshop/CoreShop/pull/2603
+* [Index] make ObjectInterpreter compatible with "Advanced Many-To-Many Object Relation" Type by @hethehe in https://github.com/coreshop/CoreShop/pull/2604
+* [Notification] make password reset notification store aware by @hethehe in https://github.com/coreshop/CoreShop/pull/2609
+* [FrontendBundle] add missing subscribed services by @hethehe in https://github.com/coreshop/CoreShop/pull/2617
+* [OrderBundle] Notification Rules doesn't have state/transitions in DEV mode by @hethehe in https://github.com/coreshop/CoreShop/pull/2619
+* [Core] fix priorities between bundles by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2606
+* [OrderBundle] fix range condition with notInRangeMessage by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2624
+
 # 4.0.5
 
 * [Core] Pimcore 11.1 and 11.2 compatibility and psalm update by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2584
