@@ -88,9 +88,11 @@ services:
         arguments:
             - '%coreshop.currency.decimal_factor%'
             - '%coreshop.currency.decimal_precision%'
-            - '@CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator'
+            - '@CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculatorInterface'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
             - '@coreshop.factory.adjustment'
+            - '@CoreShop\Component\Payment\Checker\PaymentProviderRuleCheckerInterface'
+            - '@Pimcore\Translation\Translator'
         tags:
             - { name: coreshop.cart_processor, priority: 300 }
 

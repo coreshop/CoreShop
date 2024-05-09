@@ -18,29 +18,21 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
-use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class PaymentProviderRuleType extends RuleType
+final class PaymentProviderRuleTranslationType extends RuleType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('translations', ResourceTranslationsType::class, [
-                'entry_type' => PaymentProviderRuleTranslationType::class,
-            ])
-            ->add('name', TextareaType::class)
-            ->add('active', CheckboxType::class)
-            ->add('conditions', PaymentProviderRuleConditionCollectionType::class)
-            ->add('actions', PaymentProviderRuleActionCollectionType::class)
+            ->add('label', TextType::class)
         ;
     }
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_provider_rule';
+        return 'coreshop_payment_provider_rule_translation';
     }
 }

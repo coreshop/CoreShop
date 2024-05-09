@@ -18,12 +18,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Model;
 
-use CoreShop\Component\Resource\Model\TranslatableInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\TranslationInterface;
 
-interface PaymentProviderRuleInterface extends RuleInterface, TranslatableInterface
+interface PaymentProviderRuleTranslationInterface extends ResourceInterface, TimestampableInterface, TranslationInterface
 {
-    public function getLabel(string $language = null);
+    public function getLabel(): string;
 
-    public function setLabel(string $label, string $language = null);
+    public function setLabel(string $label): static;
 }
