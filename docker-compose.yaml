@@ -1,76 +1,99 @@
-version: '3.4'
+name: 'coreshop-4'
 
-networks:
-  cors_dev:
-    external: true
-  coreshop_4:
-    external: false
+x-php: &php
+  volumes:
+    - .:/var/www/html
+    # Reset xdebug configuration to default
+    - /dev/null:/usr/local/etc/php/conf.d/20-xdebug.ini:ro
+  environment:
+    PHP_IDE_CONFIG: serverName=localhost
+    # Enable step debugging and development helpers by default.
+    # `debug`-mode in conjuction with `trigger` (default) in `xdebug.start_with_request` enables step-debugging
+    # only if a "trigger" (i.e. `XDEBUG_TRIGGER`) is present. Refer to
+    # [start_with_request](https://xdebug.org/docs/all_settings#start_with_request) documentation of how to trigger
+    # step debugging with `trigger`.
+    # To configure PhpStorm for step-debugging with xdebug see: https://www.jetbrains.com/help/phpstorm/2021.3/zero-configuration-debugging.html#start-debugging-session
+    # See: https://xdebug.org/docs/all_settings#mode
+    XDEBUG_MODE: debug
+    # This forces xdebug to always connect to the debug client running on docker host (host.docker.internal).
+    # It will work without further configuration with [Docker Desktop](https://www.docker.com/products/docker-desktop).
+    # See: https://xdebug.org/docs/all_settings#client_host
+    XDEBUG_CONFIG: client_host=host.docker.internal
+    COMPOSER_HOME: /var/www/html
+    PIMCORE_DB_DSN: "mysql://pimcore:pimcore@db:3306/pimcore"
+    PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
+    PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
+    PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "db"
+    PIMCORE_INSTALL_MYSQL_USERNAME: "pimcore"
+    PIMCORE_INSTALL_MYSQL_PASSWORD: "pimcore"
+    PIMCORE_INSTALL_MYSQL_DATABASE: "pimcore"
+    PIMCORE_INSTALL_MYSQL_PORT: "3306"
+    PIMCORE_INSTALL_INSTALL_BUNDLES: "PimcoreApplicationLoggerBundle,PimcoreCustomReportsBundle,PimcoreGlossaryBundle,PimcoreSeoBundle,PimcoreSimpleBackendSearchBundle,PimcoreStaticRoutesBundle,PimcoreTinymceBundle,PimcoreUuidBundle,PimcoreWordExportBundle,PimcoreXliffBundle"
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
 
 services:
   db:
-    image: mysql:8
-    container_name: coreshop-4
-    networks:
-      - cors_dev
-      - coreshop_4
+    container_name: coreshop4-db
+    image: mariadb:10.5
     working_dir: /application
-    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci]
-    ports:
-      - "3306:3306"
+    command: [ mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci ]
     volumes:
-      - coreshop-4:/var/lib/mysql
+      - db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=ROOT
       - MYSQL_DATABASE=pimcore
       - MYSQL_USER=pimcore
       - MYSQL_PASSWORD=pimcore
+    expose:
+      - "3306"
 
   nginx:
+    container_name: coreshop4-nginx
     image: nginx:stable-alpine
-    container_name: coreshop-4-nginx
     volumes:
-      - .:/var/www/html:cached
-      -  ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - .:/var/www/html
+      - ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php
-      - php-debug
-    networks:
-      - cors_dev
-      - coreshop_4
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.coreshop_4.rule=Host(`coreshop-4.localhost`)
-      - traefik.http.routers.coreshop_4.entrypoints=cors_dev
-      - traefik.http.routers.coreshop_4.tls=true
-      - traefik.http.services.coreshop_4.loadbalancer.server.port=80
-      - traefik.docker.network=cors_dev
+    ports:
+      - "80:80"
 
   php:
-    image: pimcore/pimcore:php8.2-latest
-    container_name: coreshop-4-php
-    networks:
-      - coreshop_4
-    environment:
-      COMPOSER_HOME: /var/www/html
+    <<: *php
+    container_name: coreshop4-php
+    image: coreshop/coreshop:PHP8.1-fpm-debug
+    build:
+      target: dev
+      args:
+        uid: ${USER_ID:-1000}
     depends_on:
       - db
-    volumes:
-      - .:/var/www/html:cached
 
-  php-debug:
-    image: pimcore/pimcore:php8.2-debug-latest
-    container_name: coreshop-4-php-debug
-    networks:
-      - coreshop_4
+  behat:
+    <<: *php
+    container_name: coreshop4-behat
+    image: coreshop/coreshop:PHP8.1-fpm-debug-behat
+    build:
+      target: behat
+      args:
+        uid: ${USER_ID:-1000}
+    profiles:
+      - behat
     depends_on:
       - db
-    volumes:
-      - .:/var/www/html:cached
     environment:
-      PHP_IDE_CONFIG: serverName=localhost
-      XDEBUG_TRIGGER: PHPSTORM
-      COMPOSER_HOME: /var/www/html
-      XDEBUG_HOST: 198.19.248.254
+      PIMCORE_TEST_DB_DSN: "mysql://pimcore:pimcore@db:3306/pimcore"
+      PIMCORE_KERNEL_CLASS: 'Kernel'
+      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
+    command:
+      - bash
+      - -c
+      - |
+        set -e;
+        vendor/bin/bdi detect drivers;
+        symfony server:start --port=9080 --dir=public --no-tls -d;
+        CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui
 
 volumes:
-  coreshop-4:
+  db:

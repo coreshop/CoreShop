@@ -15,17 +15,10 @@
 
         <many-to-one field="unit" target-entity="CoreShop\Component\Product\Model\ProductUnitInterface" fetch="EAGER">
             <join-column name="unit" referenced-column-name="id"/>
-            <cascade>
-                <cascade-merge/>
-            </cascade>
         </many-to-one>
 
         <many-to-one field="productUnitDefinitions" target-entity="CoreShop\Component\Product\Model\ProductUnitDefinitions" inversed-by="unitDefinitions">
             <join-column name="product_unit_definitions" referenced-column-name="id" on-delete="CASCADE"/>
-            <cascade>
-                <cascade-merge/>
-                <cascade-persist/>
-            </cascade>
         </many-to-one>
     </mapped-superclass>
 </doctrine-mapping>

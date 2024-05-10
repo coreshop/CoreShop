@@ -23,7 +23,9 @@ use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\OrderSaleStates;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class QuoteController extends FrontendController
 {
@@ -53,6 +55,14 @@ class QuoteController extends FrontendController
 
         return $this->render($this->getTemplateConfigurator()->findTemplate('Quote/show.html'), [
             'quote' => $quote,
+        ]);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            CustomerContextInterface::class => CustomerContextInterface::class,
+            new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
         ]);
     }
 }

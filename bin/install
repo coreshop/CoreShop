@@ -1,0 +1,6 @@
+#!/bin/bash
+
+composer install
+vendor/bin/pimcore-install --no-interaction
+bin/console coreshop:install
+bin/console coreshop:install:demo

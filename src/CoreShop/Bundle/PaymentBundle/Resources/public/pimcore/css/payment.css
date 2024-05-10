@@ -29,7 +29,10 @@ body.pimcore_version_11 .coreshop_nav_icon_payment_provider {
     background: url(../img/payment-provider-rule.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_11 .coreshop_nav_icon_payment_provider_rule {
+body.pimcore_version_11 .coreshop_nav_icon_payment_provider_rule,
+.coreshop_rule_icon_action_paymentProviderRule,
+.coreshop_rule_icon_condition_paymentProviderRule {
+>>>>>>> 3.2
     background: url(../img/payment-provider-rule_white.svg) center center no-repeat !important;
 }
 

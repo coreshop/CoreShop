@@ -12,7 +12,6 @@
         <many-to-one field="unitDefinition" target-entity="CoreShop\Component\Product\Model\ProductUnitDefinitionInterface">
             <join-column name="unit_definition" referenced-column-name="id" on-delete="CASCADE"/>
             <cascade>
-                <cascade-merge/>
                 <cascade-persist/>
             </cascade>
         </many-to-one>
