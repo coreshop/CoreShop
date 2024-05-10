@@ -35,12 +35,20 @@ final class CartItemsWholesaleProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        if ($cart->isImmutable()) {
+            return;
+        }
+
         $context = $this->cartContextResolver->resolveCartContext($cart);
 
         /**
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
+            if ($item->isImmutable()) {
+                continue;
+            }
+
             $product = $item->getProduct();
 
             try {

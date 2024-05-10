@@ -42,7 +42,7 @@ class Sequence implements SequenceInterface
      */
     protected $index = 0;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -26,15 +26,19 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\User;
+use Pimcore\Security\User\User;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ResourceController extends AdminController
 {
     public function __construct(
+        ContainerInterface $container,
         protected MetadataInterface $metadata,
         protected RepositoryInterface $repository,
         protected FactoryInterface $factory,
@@ -43,8 +47,10 @@ class ResourceController extends AdminController
         protected EventDispatcherInterface $eventDispatcher,
         protected ResourceFormFactoryInterface $resourceFormFactory,
         protected ErrorSerializer $formErrorSerializer,
+        protected TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag,
     ) {
-        parent::__construct($viewHandler);
+        parent::__construct($container, $viewHandler, $parameterBag);
     }
 
     /**
@@ -55,12 +61,13 @@ class ResourceController extends AdminController
         if ($this->metadata->hasParameter('permission')) {
             $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
 
-            /**
-             * @var User $user
-             *
-             * @psalm-var User $user
-             */
-            $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
+            $user = $this->tokenStorage->getToken()?->getUser();
+
+            if (!$user instanceof User) {
+                throw new \RuntimeException(sprintf('Unknown Pimcore Admin User Class given "%s"', get_class($user)));
+            }
+
+            $user = $user->getUser();
 
             if ($user->isAllowed($permission)) {
                 return;
@@ -72,6 +79,10 @@ class ResourceController extends AdminController
 
     public function listAction(Request $request): JsonResponse
     {
+        $start = $request->query->get('start', 0);
+        $limit = $request->query->get('limit', 25);
+
+        // TODO: use start and limit as soon as Admin UI has pagination
         $data = $this->repository->findAll();
 
         return $this->viewHandler->handle($data, ['group' => 'List']);
@@ -249,7 +260,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
     }
 
-    protected function findOr404(int $id): ResourceInterface
+    protected function findOr404(int|string $id): ResourceInterface
     {
         $model = $this->repository->find($id);
 

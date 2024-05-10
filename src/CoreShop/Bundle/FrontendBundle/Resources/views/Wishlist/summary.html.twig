@@ -59,7 +59,7 @@
                     {% if not is_shared_list %}
                     <td class="text-center">
                         <a
-                                href="{{ path('coreshop_wishlist_remove', {item: item.id}) }}"
+                                href="{{ path('coreshop_wishlist_remove', {item: item.id|coreshop_string}) }}"
                                 title="{{ 'coreshop.ui.remove'|trans }}"
                                 class="btn btn-danger tool-tip"
                                 data-id="{{ item.id }}"

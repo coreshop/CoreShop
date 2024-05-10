@@ -6,12 +6,26 @@ services:
         tags:
             - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopDynamicDropdown }
 
+    coreshop.datahub.graphql.querytypegenerator.resource.relation:
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Href
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopRelation }
+
     coreshop.datahub.graphql.dataobjectmutationtypegenerator.resource.dynamic_dropdown:
         class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectMutationFieldConfigGenerator\ManyToOneRelation
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:
             - { name: pimcore.datahub.graphql.dataobjectmutationtypegenerator, id: typegenerator_dataobjectmutationdatatype_coreShopDynamicDropdown }
+
+    coreshop.datahub.graphql.dataobjectmutationtypegenerator.resource.relations:
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectMutationFieldConfigGenerator\ManyToOneRelation
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectmutationtypegenerator, id: typegenerator_dataobjectmutationdatatype_coreShopRelations }
 
     coreshop.datahub.graphql.querytypegenerator.resource.dynamic_dropdown_multiple:
         class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Multihref

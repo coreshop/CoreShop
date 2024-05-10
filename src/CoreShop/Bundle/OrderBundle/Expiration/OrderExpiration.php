@@ -22,9 +22,10 @@ use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
 use Pimcore\Model\DataObject\Concrete;
 
-final class OrderExpiration implements OrderExpirationInterface
+final class OrderExpiration implements StorageListExpirationInterface
 {
     public function __construct(
         private OrderRepositoryInterface $orderRepository,

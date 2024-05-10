@@ -5,14 +5,13 @@ services:
     CoreShop\Bundle\OrderBundle\Command\CartExpireCommand:
         arguments:
             - '@CoreShop\Bundle\OrderBundle\Expiration\CartExpiration'
-            - '%coreshop.cart.expiration.days%'
-            - { anonymous: '%coreshop.cart.expiration.anonymous%', customer: '%coreshop.cart.expiration.customer%'}
+            - '%coreshop.storage_list.expiration.order.params%'
         tags:
-          - { name: console.command, command: 'coreshop:cart:expire' }
+          - { name: console.command, command: coreshop:cart:expire }
 
     CoreShop\Bundle\OrderBundle\Command\OrderExpireCommand:
         arguments:
             - '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
-            - '%coreshop.order.expiration.days%'
+            - '%coreshop.storage_list.expiration.order.params%'
         tags:
-          - { name: console.command, command: 'coreshop:order:expire' }
+          - { name: console.command, command: coreshop:order:expire }

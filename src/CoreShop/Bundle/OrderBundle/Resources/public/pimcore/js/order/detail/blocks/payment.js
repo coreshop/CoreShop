@@ -36,7 +36,7 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.order.d
                     type: 'coreshop-add',
                     tooltip: t('add'),
                     handler: function () {
-                        coreshop.order.order.createPayment.showWindow(me.sale.o_id, me.sale, function (result) {
+                        coreshop.order.order.createPayment.showWindow(me.sale.id, me.sale, function (result) {
                             if (result.success) {
                                 me.panel.reload();
                             }

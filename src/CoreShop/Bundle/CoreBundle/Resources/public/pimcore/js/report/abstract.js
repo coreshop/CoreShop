@@ -11,14 +11,14 @@
  */
 
 pimcore.registerNS('coreshop.report.abstract');
-coreshop.report.abstract = Class.create(pimcore.report.abstract, {
+coreshop.report.abstract = Class.create(pimcore.bundle.customreports.abstract, {
 
     reportType: 'abstract',
     remoteSort: false,
 
     matchType: function (type) {
         var types = ['global'];
-        return !!pimcore.report.abstract.prototype.matchTypeValidate(type, types);
+        return !!pimcore.bundle.customreports.abstract.prototype.matchTypeValidate(type, types);
     },
 
     getName: function () {

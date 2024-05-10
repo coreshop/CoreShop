@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Command;
 
-use CoreShop\Bundle\OrderBundle\Expiration\OrderExpirationInterface;
+use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,8 +27,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class OrderExpireCommand extends Command
 {
     public function __construct(
-        protected OrderExpirationInterface $orderExpiration,
-        protected int $days = 0,
+        protected StorageListExpirationInterface $orderExpiration,
+        protected array $params = [],
     ) {
         parent::__construct();
     }
@@ -49,7 +49,7 @@ final class OrderExpireCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $days = $this->days;
+        $days = $this->params['order']['days'] ?? 0;
 
         if ($input->getOption('days')) {
             $days = (int) $input->getOption('days');

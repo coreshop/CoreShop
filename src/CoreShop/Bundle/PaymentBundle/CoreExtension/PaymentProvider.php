@@ -28,10 +28,13 @@ class PaymentProvider extends Select
 {
     /**
      * Static type of this element.
-     *
-     * @var string
      */
-    public $fieldtype = 'coreShopPaymentProvider';
+    public string $fieldtype = 'coreShopPaymentProvider';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository()
     {

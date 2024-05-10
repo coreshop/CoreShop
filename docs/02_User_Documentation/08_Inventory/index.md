@@ -1,31 +1,43 @@
-# CoreShop Inventory
-The Inventory is a complex topic since there is a lot of business logic you need to know about.
+# Inventory
 
-## Product Inventory
-Every Product object comes with a "Stock" Tab. Let's have a look about the configuration:
+Managing inventory in CoreShop is a critical aspect that involves understanding several key business logics to ensure
+accurate stock tracking and order fulfillment.
 
-| Name | Description |
-|:-----|:------------|
-| Is Tracked | Define if a product should get tracked |
-| On Hand | Amount of available products. |
-| On Hold | Defines how many elements are currently locked. Do not change that value unless you know what you're doing. |
+## Product Inventory Configuration
 
-### Is Tracked
-If you want to enable the inventory feature for a product, you need to check this setting.
-After that this product is not orderable in frontend if stock is insufficient.
+Each product in CoreShop includes a "Stock" tab for inventory management. Here's a breakdown of the available
+configurations:
 
-> **Note**: Only if you enable "Is Tracked" the inventory stock is active!
-> Otherwise the product is always available regardless of it's stock amount.
+### Configuration Options
 
-### On Hand
-Define a available amount for each product.
-With every successfully order, an arbitrary amount will be subtracted.
+| Name       | Description                                                                          |
+|:-----------|:-------------------------------------------------------------------------------------|
+| Is Tracked | Indicates whether the product's stock is tracked.                                    |
+| On Hand    | The current available quantity of the product.                                       |
+| On Hold    | The quantity currently reserved (locked) for orders. Do not modify unless necessary. |
 
-### On Hold
-This one needs some further explanation:
-After the checkout is complete, all ordered items will be removed from "On Hand" and get moved to "On Hold" until the payment is complete:
-- If the unpaid order gets cancelled, the reserved "On Hold" amount gets back to "On Hand".
-- If the order payment status switches to `paid`, the reserved "On Hold" amount gets subtracted.
+#### Is Tracked
 
-## Cart / Checkout
-If a product stock gets insufficient during a customers checkout, the product gets removed from customers cart following by a form error.
+To activate inventory tracking for a product, enable the "Is Tracked" setting. With this enabled, the product becomes
+unorderable in the frontend if the stock is insufficient.
+
+> **Note**: Inventory tracking is active only when "Is Tracked" is enabled. Without it, the product is considered always
+> available, regardless of stock levels.
+
+#### On Hand
+
+This setting determines the available stock for each product. The stock decreases automatically with each successful
+order.
+
+#### On Hold
+
+This setting requires further explanation:
+
+- After checkout completion, ordered items shift from "On Hand" to "On Hold" until payment is complete.
+- If an unpaid order is cancelled, the "On Hold" quantity returns to "On Hand".
+- If the order payment status changes to `paid`, the "On Hold" quantity is permanently deducted.
+
+## Cart and Checkout Process
+
+During the checkout process, if a product becomes out of stock, it will be removed from the customer's cart, and a form
+error will be displayed. This ensures that customers are only able to purchase items that are available in stock.

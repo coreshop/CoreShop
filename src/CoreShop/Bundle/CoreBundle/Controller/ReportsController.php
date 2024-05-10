@@ -21,16 +21,19 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class ReportsController extends AdminController
 {
     public function getReportDataAction(Request $request): Response
     {
         $reportId = $this->getParameterFromRequest($request, 'report');
-        $reportRegistry = $this->get('coreshop.registry.reports');
+        $reportRegistry = $this->container->get('coreshop.registry.reports');
 
         if (!$reportRegistry->has($reportId)) {
             throw new \InvalidArgumentException(sprintf('Report %s not found', $reportId));
@@ -49,7 +52,7 @@ class ReportsController extends AdminController
     public function exportReportCsvAction(Request $request): Response
     {
         $reportType = $this->getParameterFromRequest($request, 'report');
-        $reportRegistry = $this->get('coreshop.registry.reports');
+        $reportRegistry = $this->container->get('coreshop.registry.reports');
 
         if (!$reportRegistry->has($reportType)) {
             throw new \InvalidArgumentException(sprintf('Report %s not found', $reportType));
@@ -64,7 +67,7 @@ class ReportsController extends AdminController
             $data = $report->getReportData($request->query);
         }
 
-        $csvData = $this->get('serializer')->encode($data, 'csv');
+        $csvData = $this->container->get('serializer')->encode($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(
@@ -75,5 +78,12 @@ class ReportsController extends AdminController
         $response->headers->set('Content-Disposition', $disposition);
 
         return $response;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            new SubscribedService('coreshop.registry.reports', ServiceRegistryInterface::class, attributes: new Autowire('coreshop.registry.reports')),
+        ]);
     }
 }

@@ -22,13 +22,16 @@ services:
             - { name: form.type }
 
     coreshop.form.data_mapper.cart_item_quantity.property_mapper:
-        class: Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper
-        arguments:
-            - '@property_accessor'
+        class: Symfony\Component\Form\Extension\Core\DataMapper\DataMapper
 
     CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper:
         arguments:
             - '@coreshop.cart_item.quantity_modifier'
+            - '@coreshop.form.data_mapper.cart_item_quantity.property_mapper'
+
+    CoreShop\Bundle\OrderBundle\Form\DataMapper\BackendCartItemQuantityDataMapper:
+        arguments:
+            - '@coreshop.cart_item.quantity_modifier.backend'
             - '@coreshop.form.data_mapper.cart_item_quantity.property_mapper'
 
     CoreShop\Bundle\OrderBundle\Form\Type\CartItemType:

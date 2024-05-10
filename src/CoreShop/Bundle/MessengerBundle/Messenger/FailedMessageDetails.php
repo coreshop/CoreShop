@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
-final class FailedMessageDetails
+final class FailedMessageDetails implements \JsonSerializable
 {
     public function __construct(
         private mixed $id,
@@ -52,5 +52,16 @@ final class FailedMessageDetails
     public function getSerialized(): string
     {
         return $this->serialized;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'class' => $this->class,
+            'failedAt' => $this->failedAt,
+            'error' => $this->error,
+            'serialized' => $this->serialized,
+        ];
     }
 }

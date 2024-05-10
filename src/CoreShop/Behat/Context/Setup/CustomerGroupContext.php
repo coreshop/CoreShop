@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
@@ -47,7 +47,6 @@ final class CustomerGroupContext implements Context
     {
         /** @var CustomerGroupInterface $group */
         $group = $this->customerGroupFactory->createNew();
-
         $group->setKey(File::getValidFilename($name));
         $group->setParent(Folder::getByPath('/'));
         $group->setName($name);

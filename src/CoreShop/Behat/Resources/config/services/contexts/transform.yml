@@ -9,13 +9,7 @@ services:
         tags:
             - { name: fob.context_service }
 
-    coreshop.behat.context.transform.pimcore_class:
-        class: CoreShop\Behat\Context\Transform\PimcoreClassContext
-        arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.behat.class_storage'
-        tags:
-            - { name: fob.context_service }
+    coreshop.behat.context.transform.pimcore_class: '@CoreShop\Bundle\TestBundle\Context\Transform\ClassContext'
 
     coreshop.behat.context.transform.product:
         class: CoreShop\Behat\Context\Transform\ProductContext
@@ -30,6 +24,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.category'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: fob.context_service }
 
@@ -154,6 +149,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.payment_provider'
+            - '@coreshop.repository.payment_provider_rule'
         tags:
             - { name: fob.context_service }
 
@@ -217,5 +213,12 @@ services:
             - '@coreshop.repository.attribute_group'
             - '@coreshop.repository.attribute_color'
             - '@coreshop.repository.attribute_value'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.cache:
+        class: CoreShop\Behat\Context\Transform\CacheContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }

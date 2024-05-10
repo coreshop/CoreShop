@@ -1,9 +1,6 @@
 parameters:
     coreshop.menu.json.template: '@@CoreShopMenu/knp_menu.js.twig'
 
-imports:
-    - { resource: services_alias.yml }
-
 services:
     _defaults:
         public: true
@@ -27,7 +24,7 @@ services:
 
     CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard:
         arguments:
-            - '@Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver'
+            - '@security.token_storage'
 
     coreshop.menu_provider.lazy_provider:
         class: Knp\Menu\Provider\LazyProvider

@@ -216,6 +216,22 @@ final class CheckoutContext implements Context
     }
 
     /**
+     * @When The order total should be :total
+     */
+    public function theOrderTotalShouldBe(string $orderTotal): void
+    {
+        Assert::same($this->thankYouPage->getOrderTotal(), $orderTotal);
+    }
+
+    /**
+     * @When I re-capture payment for same order
+     */
+    public function IRecapturePaymentForSameOrder(): void
+    {
+        $this->thankYouPage->recapturePaymentForThisOrder();
+    }
+
+    /**
      * @Given I specify the guest checkout firstname :firstname
      */
     public function iSpecifyTheGuestCheckoutFirstname(?string $firstname = null): void

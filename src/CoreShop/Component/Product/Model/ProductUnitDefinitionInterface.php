@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface ProductUnitDefinitionInterface extends ResourceInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return ProductUnitInterface|null
      */

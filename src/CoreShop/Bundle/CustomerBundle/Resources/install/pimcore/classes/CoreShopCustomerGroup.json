@@ -22,7 +22,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "panel",
                 "labelWidth": 100,
@@ -38,7 +38,7 @@
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "input",
                         "width": null,
@@ -64,7 +64,7 @@
                         "options": [],
                         "width": "",
                         "height": "",
-                        "maxItems": "",
+                        "maxItems": null,
                         "optionsProviderClass": "CoreShop\\Bundle\\CustomerBundle\\CoreExtension\\Provider\\RoleOptionsProvider",
                         "optionsProviderData": "",
                         "name": "roles",

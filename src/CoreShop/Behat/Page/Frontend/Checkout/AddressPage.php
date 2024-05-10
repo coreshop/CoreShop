@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
-use CoreShop\Behat\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
 use CoreShop\Component\Address\Model\AddressInterface;
 
 class AddressPage extends AbstractFrontendPage implements AddressPageInterface
@@ -35,12 +35,12 @@ class AddressPage extends AbstractFrontendPage implements AddressPageInterface
 
     public function useShippingAddress(AddressInterface $shippingAddress): void
     {
-        $this->getElement('shipping_address')->selectOption($shippingAddress->getId());
+        $this->getElement('shipping_address')->selectOption((string) $shippingAddress->getId());
     }
 
     public function useInvoiceAddress(AddressInterface $invoiceAddress): void
     {
-        $this->getElement('invoice_address')->selectOption($invoiceAddress->getId());
+        $this->getElement('invoice_address')->selectOption((string) $invoiceAddress->getId());
     }
 
     public function shippingAddressVisible(): bool

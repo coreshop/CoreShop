@@ -1,5 +1,4 @@
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/form.yml }
     - { resource: services/listeners.yml }
     - { resource: services/commands.yml }
@@ -108,6 +107,7 @@ services:
 
     coreshop.form_registry.index.interpreter:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
 
     # Filter Group Helper
     CoreShop\Component\Index\Worker\FilterGroupHelperInterface: '@CoreShop\Component\Index\Worker\FilterGroupHelper'

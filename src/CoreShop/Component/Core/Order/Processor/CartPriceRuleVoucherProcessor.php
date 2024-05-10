@@ -40,6 +40,10 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        if ($cart->isImmutable()) {
+            return;
+        }
+
         $priceRuleItems = $cart->getPriceRuleItems();
 
         if (!$priceRuleItems instanceof Fieldcollection) {

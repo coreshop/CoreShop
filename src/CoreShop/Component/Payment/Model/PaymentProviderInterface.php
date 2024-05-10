@@ -22,6 +22,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
+use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\Asset;
 
 interface PaymentProviderInterface extends
@@ -30,6 +31,8 @@ interface PaymentProviderInterface extends
     TranslatableInterface,
     TimestampableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return mixed
      */
@@ -41,43 +44,34 @@ interface PaymentProviderInterface extends
     public function setIdentifier($identifier);
 
     /**
-     * @param string|null $language
-     *
      * @return string
      */
-    public function getTitle($language = null);
+    public function getTitle(?string $language = null);
 
     /**
      * @param string $title
-     * @param string|null $language
      */
-    public function setTitle($title, $language = null);
+    public function setTitle($title, ?string $language = null);
 
     /**
-     * @param string|null $language
-     *
      * @return string
      */
-    public function getDescription($language = null);
+    public function getDescription(?string $language = null);
 
     /**
      * @param string $description
-     * @param string|null $language
      */
-    public function setDescription($description, $language = null);
+    public function setDescription($description, ?string $language = null);
 
     /**
-     * @param string|null $language
-     *
      * @return string
      */
-    public function getInstructions($language = null);
+    public function getInstructions(?string $language = null);
 
     /**
      * @param string $instructions
-     * @param string|null $language
      */
-    public function setInstructions($instructions, $language = null);
+    public function setInstructions($instructions, ?string $language = null);
 
     /**
      * @return int
@@ -98,4 +92,23 @@ interface PaymentProviderInterface extends
      * @param Asset $logo
      */
     public function setLogo($logo);
+
+    /**
+     * @return Collection|PaymentProviderRuleGroupInterface[]
+     */
+    public function getPaymentProviderRules();
+
+    /**
+     * @return bool
+     */
+    public function hasPaymentProviderRules();
+
+    /**
+     * @return bool
+     */
+    public function hasPaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup);
+
+    public function addPaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup);
+
+    public function removePaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup);
 }

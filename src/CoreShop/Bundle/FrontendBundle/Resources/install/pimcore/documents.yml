@@ -2,7 +2,7 @@ documents:
   -
     key: 'shop'
     type: 'page'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\IndexController:indexAction'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\IndexController::indexAction'
     path: ''
 
   -
@@ -62,7 +62,7 @@ documents:
   -
     key: 'user-reset-password'
     type: 'email'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController::mailAction'
     path: 'shop/email'
     content:
       de:
@@ -114,7 +114,7 @@ documents:
   -
     key: 'user-newsletter-confirm'
     type: 'email'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController::mailAction'
     path: 'shop/email'
     content:
       de:
@@ -166,7 +166,7 @@ documents:
   -
     key: 'user-newsletter-confirmed'
     type: 'email'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController::mailAction'
     path: 'shop/email'
     content:
       de:
@@ -218,7 +218,7 @@ documents:
   -
     key: 'order-confirmation'
     type: 'email'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:orderConfirmationAction'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController::orderConfirmationAction'
     path: 'shop/email'
     content:
       de:
@@ -267,7 +267,7 @@ documents:
   -
     key: 'order-shipped'
     type: 'email'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController::mailAction'
     path: 'shop/email'
     content:
       de:
@@ -315,7 +315,7 @@ documents:
   -
     key: 'user-order-comment'
     type: 'email'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController::mailAction'
     path: 'shop/email'
     content:
       de:

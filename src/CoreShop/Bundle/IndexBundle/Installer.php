@@ -21,8 +21,8 @@ namespace CoreShop\Bundle\IndexBundle;
 use Pimcore\Console\Application;
 use Pimcore\Extension\Bundle\Installer\SettingsStoreAwareInstaller;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class Installer extends SettingsStoreAwareInstaller
@@ -61,7 +61,7 @@ class Installer extends SettingsStoreAwareInstaller
         return true;
     }
 
-    public function getOutput(): OutputInterface
+    public function getOutput(): BufferedOutput | NullOutput
     {
         return new NullOutput();
     }

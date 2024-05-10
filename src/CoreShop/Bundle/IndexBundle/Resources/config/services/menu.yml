@@ -4,10 +4,4 @@ services:
 
     CoreShop\Bundle\IndexBundle\Menu\IndexMenuBuilder:
         tags:
-            - { name: 'coreshop.menu', type: index, menu: index }
-
-    CoreShop\Bundle\IndexBundle\EventListener\AdminJavascriptListener:
-        arguments:
-            - '@router'
-        tags:
-            - { name: kernel.event_subscriber }
+            - { name: coreshop.menu, type: index, menu: coreshop }

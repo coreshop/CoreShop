@@ -18,7 +18,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
@@ -32,10 +34,10 @@ class ProductController extends FrontendController
 {
     public function latestAction(Request $request): Response
     {
-        $productRepository = $this->get('coreshop.repository.product');
+        $productRepository = $this->container->get('coreshop.repository.product');
 
-        return $this->render($this->templateConfigurator->findTemplate('Product/_latest.html'), [
-            'products' => $productRepository->findLatestByStore($this->get(StoreContextInterface::class)->getStore()),
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Product/_latest.html'), [
+            'products' => $productRepository->findLatestByStore($this->container->get(StoreContextInterface::class)->getStore()),
         ]);
     }
 
@@ -43,10 +45,10 @@ class ProductController extends FrontendController
     {
         $this->validateProduct($request, $object);
 
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($object);
-        $this->get(TrackerInterface::class)->trackProduct($object);
+        $this->container->get(SEOPresentationInterface::class)->updateSeoMetadata($object);
+        $this->container->get(TrackerInterface::class)->trackProduct($object);
 
-        return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Product/detail.html'), [
             'product' => $object,
         ]);
     }
@@ -61,10 +63,10 @@ class ProductController extends FrontendController
 
         $this->validateProduct($request, $product);
 
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
-        $this->get(TrackerInterface::class)->trackProduct($product);
+        $this->container->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
+        $this->container->get(TrackerInterface::class)->trackProduct($product);
 
-        return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Product/detail.html'), [
             'product' => $product,
         ]);
     }
@@ -73,7 +75,7 @@ class ProductController extends FrontendController
     {
         $isFrontendRequestByAdmin = false;
 
-        if ($this->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
+        if ($this->container->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
             $isFrontendRequestByAdmin = true;
         }
 
@@ -81,13 +83,23 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        if (!in_array($this->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {
+        if (!in_array($this->container->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {
             throw new NotFoundHttpException('product not found');
         }
     }
 
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+           'coreshop.repository.product' => ProductRepositoryInterface::class,
+            StoreContextInterface::class => StoreContextInterface::class,
+            TrackerInterface::class => TrackerInterface::class,
+            'coreshop.repository.stack.purchasable' => StackRepositoryInterface::class,
+        ]);
+    }
+
     protected function getProductByRequest(Request $request): ?PurchasableInterface
     {
-        return $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
+        return $this->container->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
     }
 }

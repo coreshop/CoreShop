@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
@@ -38,8 +38,10 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurati
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargeAmountConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
@@ -116,6 +118,18 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('cart-price-rule', $rule);
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has priority "([^"]+)"$/
+     * @Given /^the (cart rule) has priority "([^"]+)"$/
+     */
+    public function theCartPriceRuleHasPriority(CartPriceRuleInterface $rule, int $priority): void
+    {
+        $rule->setPriority($priority);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
     }
 
     /**
@@ -220,6 +234,17 @@ final class CartPriceRuleContext implements Context
                 $customer->getId(),
             ],
         ]));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a condition guest$/
+     * @Given /^the (cart rule) has a condition guest$/
+     */
+    public function theCartPriceRuleHasAGuestCondition(CartPriceRuleInterface $rule): void
+    {
+        $this->assertConditionForm(EmptyConfigurationFormType::class, 'guest');
+
+        $this->addCondition($rule, $this->createConditionWithForm('guest', []));
     }
 
     /**
@@ -370,6 +395,29 @@ final class CartPriceRuleContext implements Context
         }
 
         $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+")$/
+     * @Given /^the (cart rule) has a condition not combinable with (cart rule "[^"]+")$/
+     * @Given /^the (cart rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
+     * @Given /^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
+     */
+    public function theCartPriceRuleHasANotCombinableCondition(CartPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, CartPriceRuleInterface $notCombinable2 = null): void
+    {
+        $this->assertConditionForm(NotCombinableConfigurationType::class, 'not_combinable');
+
+        $configuration = [
+            'price_rules' => [
+                $notCombinable->getId(),
+            ],
+        ];
+
+        if (null !== $notCombinable2) {
+            $configuration['price_rules'][] = $notCombinable2->getId();
+        }
+
+        $this->addCondition($rule, $this->createConditionWithForm('not_combinable', $configuration));
     }
 
     /**

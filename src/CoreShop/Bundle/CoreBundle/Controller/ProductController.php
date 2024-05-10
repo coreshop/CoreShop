@@ -20,24 +20,26 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends ResourceController
 {
-    public function removeStoreValuesAction(Request $request): Response
+    public function removeStoreValuesAction(Request $request, RepositoryInterface $productStoreValuesRepository, EntityManagerInterface $entityManager): Response
     {
         $product = $this->findOr404($this->getParameterFromRequest($request, 'id'));
-        $storeValue = $this->get('coreshop.repository.product_store_values')->find($this->getParameterFromRequest($request, 'storeValuesId'));
+        $storeValue = $productStoreValuesRepository->find($this->getParameterFromRequest($request, 'storeValuesId'));
 
         if (!$storeValue instanceof ProductStoreValuesInterface) {
             throw new NotFoundHttpException();
         }
 
         if ($storeValue->getProduct() && $storeValue->getProduct()->getId() === $product->getId()) {
-            $this->get('coreshop.manager.product_store_values')->remove($storeValue);
-            $this->get('coreshop.manager.product_store_values')->flush();
+            $entityManager->remove($storeValue);
+            $entityManager->flush();
 
             return $this->json(['success' => true]);
         }

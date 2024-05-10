@@ -1,39 +1,36 @@
-# CoreShop Product Price Rules
+# Product Price Rules
 
-CoreShop gives you the ability of very complex price calculation methods.
-Price Rules always consist of Conditions and Actions.
+CoreShop provides advanced capabilities for complex price calculation methods. Price Rules are structured around
+Conditions and Actions.
 
 ## Price Rule Types
 
 ### Product Price Rules
 
-> Checkout all available product price rules [here](../../../02_User_Documentation/03_Price_Rules/02_Product_Price_Rules.md)
-
-Product price rules are applied to multiple products based on conditions like category or manufacturer.
+> Find detailed information on product price
+> rules [here](../../../02_User_Documentation/03_Price_Rules/02_Product_Price_Rules.md).  
+> Product price rules are applicable to multiple products and are based on conditions like category or manufacturer.
 
 ### Specific Price Rules
 
-> Checkout all available specific price rules [here](../../../02_User_Documentation/03_Price_Rules/03_Specific_Price_Rules.md)
-
-Specific price rules are applied to a single product based on conditions like customer or customer group.
+> Explore specific price rules [here](../../../02_User_Documentation/03_Price_Rules/03_Specific_Price_Rules.md).  
+> Specific price rules target a single product, with conditions based on factors like customer or customer group.
 
 ### Quantity Price Rules
 
-> Checkout all available quantity price rules [here](../../../02_User_Documentation/03_Price_Rules/04_Quantity_Price_Rules.md)
-
-Quantity price rules are applied to a single product based on conditions like the quantity of a cart item.
-
-These rules apply only in the calculation of cart item prices. If you have only quantity rules configured,
-the default price calculation of CoreShop will return zero outside of cart context.
+> For quantity price rules, click [here](../../../02_User_Documentation/03_Price_Rules/04_Quantity_Price_Rules.md).  
+> These rules apply to a single product and are based on the quantity of a cart item. They only affect cart item prices,
+> and the default price calculation in CoreShop will return zero outside the cart context if only quantity rules are
+> configured.
 
 ## Extending Conditions and Actions
 
-- [Click here to see how you can add custom Actions](../../01_Extending_Guide/04_Extending_Rule_Actions.md)
-- [Click here to see how you can add custom Conditions](../../01_Extending_Guide/05_Extending_Rule_Conditions.md)
+- To add custom Actions, [click here](../../01_Extending_Guide/04_Extending_Rule_Actions.md).
+- To add custom Conditions, [click here](../../01_Extending_Guide/05_Extending_Rule_Conditions.md).
 
 ## Template Helper
 
-#### Get Formatted Price with all applied Rules
+### Get Formatted Price with all applied Rules
 
 ```twig
 {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
@@ -48,7 +45,7 @@ the default price calculation of CoreShop will return zero outside of cart conte
 </div>
 ```
 
-#### Get Active Price Rules
+### Get Active Price Rules
 
 ```twig
 {{ dump(product|coreshop_product_price_rules) }}

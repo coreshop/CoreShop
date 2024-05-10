@@ -26,7 +26,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "panel",
                 "labelWidth": 100,
@@ -43,7 +43,7 @@
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "tabpanel",
                         "border": false,
@@ -59,7 +59,7 @@
                         "bodyStyle": null,
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "fieldset",
                                 "labelWidth": 100,
@@ -74,11 +74,11 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "localizedfields",
                                         "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "input",
                                                 "width": null,
@@ -467,6 +467,73 @@
                                         "invisible": false,
                                         "visibleGridView": false,
                                         "visibleSearch": false
+                                    },
+                                    {
+                                        "name": "order",
+                                        "title": "coreshop.order_item.order",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": true,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "fieldtype": "coreShopRelation",
+                                        "relationType": true,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false,
+                                        "classes": [
+                                            {
+                                                "classes": "CoreShopOrder"
+                                            }
+                                        ],
+                                        "pathFormatterClass": "",
+                                        "width": null,
+                                        "assetUploadPath": null,
+                                        "objectsAllowed": true,
+                                        "assetsAllowed": false,
+                                        "assetTypes": [],
+                                        "documentsAllowed": false,
+                                        "documentTypes": [],
+                                        "stack": "coreshop.order",
+                                        "returnConcrete": false
+                                    },
+                                    {
+                                        "name": "immutable",
+                                        "title": "coreshop.order_item.immutable",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": true,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "fieldtype": "booleanSelect",
+                                        "relationType": false,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false,
+                                        "yesLabel": "yes",
+                                        "noLabel": "no",
+                                        "emptyLabel": "null",
+                                        "options": [
+                                            {
+                                                "key": "no",
+                                                "value": 0
+                                            },
+                                            {
+                                                "key": "yes",
+                                                "value": 1
+                                            },
+                                            {
+                                                "key": "null",
+                                                "value": -1
+                                            }
+                                        ],
+                                        "width": ""
                                     }
                                 ],
                                 "locked": false
@@ -486,7 +553,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
@@ -503,7 +570,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
@@ -841,7 +908,7 @@
                                                     "CoreShopTaxItem"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -913,7 +980,7 @@
                                                     "CoreShopAdjustment"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -954,7 +1021,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
@@ -1292,7 +1359,7 @@
                                                     "CoreShopTaxItem"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -1364,7 +1431,7 @@
                                                     "CoreShopAdjustment"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -1406,7 +1473,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "fieldcollections",
                                         "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
@@ -1414,7 +1481,7 @@
                                             "CoreShopPriceRuleItem"
                                         ],
                                         "lazyLoading": true,
-                                        "maxItems": "",
+                                        "maxItems": null,
                                         "disallowAddRemove": false,
                                         "disallowReorder": false,
                                         "collapsed": false,
@@ -1437,6 +1504,54 @@
                                     }
                                 ],
                                 "locked": false
+                            },
+                            {
+                                "name": "attributes",
+                                "type": null,
+                                "region": null,
+                                "title": "coreshop.order.attributes",
+                                "width": "",
+                                "height": "",
+                                "collapsible": false,
+                                "collapsed": false,
+                                "bodyStyle": "",
+                                "datatype": "layout",
+                                "children": [
+                                    {
+                                        "name": "attributes",
+                                        "title": "coreshop.order.attributes",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": false,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "fieldtype": "fieldcollections",
+                                        "relationType": false,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false,
+                                        "allowedTypes": [
+                                            "CoreShopOrderItemAttribute"
+                                        ],
+                                        "lazyLoading": true,
+                                        "maxItems": null,
+                                        "disallowAddRemove": false,
+                                        "disallowReorder": false,
+                                        "collapsed": false,
+                                        "collapsible": false,
+                                        "border": false,
+                                        "datatype": "data"
+                                    }
+                                ],
+                                "locked": false,
+                                "fieldtype": "panel",
+                                "layout": null,
+                                "border": false,
+                                "icon": "",
+                                "labelWidth": 100,
+                                "labelAlign": "left"
                             }
                         ],
                         "locked": false

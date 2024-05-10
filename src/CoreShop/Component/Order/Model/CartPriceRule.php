@@ -57,6 +57,8 @@ class CartPriceRule implements CartPriceRuleInterface
      */
     protected $usagePerVoucherCode = 1;
 
+    protected int $priority = 0;
+
     /**
      * @var Collection|CartPriceRuleVoucherCodeInterface[]
      */
@@ -70,7 +72,7 @@ class CartPriceRule implements CartPriceRuleInterface
         $this->voucherCodes = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -151,5 +153,15 @@ class CartPriceRule implements CartPriceRuleInterface
     protected function createTranslation(): CartPriceRuleTranslationInterface
     {
         return new CartPriceRuleTranslation();
+    }
+
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(int $priority): void
+    {
+        $this->priority = $priority;
     }
 }

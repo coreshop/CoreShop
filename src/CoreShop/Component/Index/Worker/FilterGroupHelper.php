@@ -73,13 +73,13 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                 $values = [];
 
                 foreach ($rawValues as $v) {
-                    $explode = explode(',', $v['value']);
+                    if ($v['value'] === null) {
+                        continue;
+                    }
+
+                    $explode = is_string($v['value']) ? explode(',', $v['value']) : [$v['value']];
 
                     foreach ($explode as $e) {
-                        if (!$e) {
-                            continue;
-                        }
-
                         if (array_key_exists($e, $values)) {
                             $values[$e]['count'] += $v['count'];
 

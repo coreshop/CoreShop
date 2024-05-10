@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+  ~ @license    https://www.coreshop.org/license     GPLv3 and CCL
+  ~
+  -->
+
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Ð¡Ð»Ð¾Ð¹_1" x="0px" y="0px"   viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<path fill="#ADADAD" d="M29,31L29,31c0,0-1,4-5,4s-5-4-5-4S8,32.986,8,44h32C40,33.025,29,31,29,31"/>
+    <path fill="#999999" d="M24,37c-5,0-5-6-5-6v-6h10v6C29,31,29,37,24,37z"/>
+    <g>
+	<path fill="#9E9E9E" d="M35,19c0,1.105-0.895,2-2,2s-2-0.895-2-2s0.895-2,2-2S35,17.895,35,19"/>
+        <path fill="#9E9E9E" d="M17,19c0,1.105-0.895,2-2,2s-2-0.895-2-2s0.895-2,2-2S17,17.895,17,19"/>
+</g>
+    <path fill="#ADADAD" d="M33,13c0-7.635-18-4.971-18,0v7c0,4.971,4.029,9,9,9s9-4.029,9-9V13z"/>
+    <ellipse display="none" fill="#ADADAD" cx="24" cy="12.779" rx="9" ry="7.079"/>
+    <path fill="#424242" d="M24,4c-6.075,0-10,4.925-10,11v2.284L16,19v-5l12-4l4,4v5l2-1.741V15c0-4.025-1.038-8.015-6-9l-1-2H24z"/>
+</svg>

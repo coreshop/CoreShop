@@ -21,30 +21,38 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Model\ConfigurationInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ConfigurationController extends ResourceController
 {
-    public function saveAllAction(Request $request): Response
-    {
-        $values = $this->decodeJson($this->getParameterFromRequest($request, 'values'));
+    public function saveAllAction(
+        Request $request,
+        ConfigurationServiceInterface $configurationService,
+        StoreRepositoryInterface $storeRepository,
+    ): Response {
+        $values = $this->decodeJson($this->getParameterFromRequest($request, 'values'), true, [], false);
         $values = array_htmlspecialchars($values);
 
         foreach ($values as $store => $storeValues) {
-            $store = $this->get('coreshop.repository.store')->find($store);
+            /**
+             * @var StoreInterface $store
+             */
+            $store = $storeRepository->find($store);
 
             foreach ($storeValues as $key => $value) {
-                $this->getConfigurationService()->setForStore($key, $value, $store);
+                $configurationService->setForStore($key, $value, $store);
             }
         }
 
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    public function getAllAction(): Response
+    public function getAllAction(StoreRepositoryInterface $storeRepository): Response
     {
-        $stores = $this->get('coreshop.repository.store')->findAll();
+        $stores = $storeRepository->findAll();
         $valueArray = [];
 
         foreach ($stores as $store) {
@@ -65,10 +73,5 @@ class ConfigurationController extends ResourceController
         }
 
         return $this->viewHandler->handle(['success' => true, 'data' => $valueArray]);
-    }
-
-    private function getConfigurationService(): ConfigurationServiceInterface
-    {
-        return $this->get(ConfigurationServiceInterface::class);
     }
 }

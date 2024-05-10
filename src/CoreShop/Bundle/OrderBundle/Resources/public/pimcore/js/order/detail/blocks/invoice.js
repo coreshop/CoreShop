@@ -87,7 +87,7 @@ coreshop.order.order.detail.blocks.invoice = Class.create(coreshop.order.order.d
                                     var record = widgetColumn.getWidgetRecord();
                                     var url = Routing.generate('coreshop_admin_order_invoice_update_state'),
                                         transitions = record.get('transitions'),
-                                        id = record.get('o_id');
+                                        id = record.get('id');
                                     if (transitions.length !== 0) {
                                         coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
                                             if (result.success) {

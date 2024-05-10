@@ -58,5 +58,9 @@ coreshop.order.order.detail.abstractBlock = Class.create({
         var me = this;
 
         return me.getPanel();
+    },
+
+    getUpdateValues: function() {
+        return {};
     }
 });

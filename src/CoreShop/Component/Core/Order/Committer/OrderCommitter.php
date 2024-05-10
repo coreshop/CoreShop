@@ -34,7 +34,6 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
-use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
@@ -71,13 +70,6 @@ class OrderCommitter implements OrderCommitterInterface
         $order->setShippingState(OrderShipmentStates::STATE_NEW);
         $order->setPaymentState(OrderPaymentStates::STATE_NEW);
         $order->setInvoiceState(OrderInvoiceStates::STATE_NEW);
-
-        $tokenGenerator = new UniqueTokenGenerator();
-        $order->setToken($tokenGenerator->generate(10));
-
-        //We need to save the order first to move all it's children to the new folder
-        //otherwise some dependants will not find the Order from the OrderItem
-        $order->save();
 
         $this->cartManager->persistCart($order);
 

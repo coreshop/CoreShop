@@ -43,7 +43,7 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
         if ($subject instanceof StoreAwareInterface) {
             $store = $subject->getStore();
         } elseif (isset($params['store_id'])) {
-            $store = $this->storeRepository->find($params['store']);
+            $store = $this->storeRepository->find($params['store_id']);
         }
 
         if (!$store instanceof StoreInterface) {

@@ -1,24 +1,38 @@
-# CoreShop Carrier Distribution Report
+# Carrier Distribution Report
+
+The CoreShop Carrier Distribution Report provides a visual representation of how different carriers are utilized for
+shipping in your e-commerce store. This report, presented as a pie chart, is crucial for analyzing shipping preferences
+and efficiency.
 
 ![Carrier Distribution](img/carriers.png)
 
-| Type | Has Pagination |
-|:-----|:-----------|
-| Pie Chart | No |
+## Report Format
 
-## Available Filters
+The report is displayed as a pie chart, offering a clear visual breakdown of carrier usage.
 
-| Name | Description |
-|:-----|:------------|
-| Store | Filter by Store |
-| Day | Shortcut Filter by current Day |
-| Month | Shortcut Filter by current Month |
-| Year | Shortcut Filter by current Year |
-| Day -1 | Shortcut Filter by last Day |
-| Month -1 | Shortcut Filter by last Month |
-| Year -1 | Shortcut Filter by last Year |
-| From | Date to Start Filter |
-| To | Date to End Filter |
+| Type      | Has Pagination |
+|:----------|:---------------|
+| Pie Chart | No             |
 
-## Available Chart Fields
-Carrier Distribution
+## Customizing the Report with Filters
+
+Apply various filters to refine your data analysis:
+
+| Name     | Description                                    |
+|:---------|:-----------------------------------------------|
+| Store    | Filter by specific Store.                      |
+| Day      | Filter for transactions on the current Day.    |
+| Month    | Filter for transactions in the current Month.  |
+| Year     | Filter for transactions in the current Year.   |
+| Day -1   | Filter for transactions on the previous Day.   |
+| Month -1 | Filter for transactions in the previous Month. |
+| Year -1  | Filter for transactions in the previous Year.  |
+| From     | Start date for the filter period.              |
+| To       | End date for the filter period.                |
+
+## Chart Fields
+
+The Carrier Distribution Report includes the following field:
+
+- **Carrier Distribution**: This field visualizes the proportion of each carrier used for shipping orders, helping you
+  to understand which carriers are most popular or efficient for your store.

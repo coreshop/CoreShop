@@ -26,6 +26,8 @@ abstract class StorageListItem implements StorageListItemInterface
 
     protected mixed $product;
 
+    protected StorageListInterface $storageList;
+
     public function equals(StorageListItemInterface $storageListItem): bool
     {
         $product = $storageListItem->getProduct();
@@ -33,9 +35,9 @@ abstract class StorageListItem implements StorageListItemInterface
         return $this->getProduct() instanceof $product && $this->getProduct()->getId() === $product->getId();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->product ? $this->product->getId() : 0;
+        return $this->product ? $this->product->getId() : null;
     }
 
     public function getProduct(): ResourceInterface
@@ -46,6 +48,16 @@ abstract class StorageListItem implements StorageListItemInterface
     public function setProduct(ResourceInterface $product)
     {
         $this->product = $product;
+    }
+
+    public function getStorageList(): StorageListInterface
+    {
+        return $this->storageList;
+    }
+
+    public function setStorageList(StorageListInterface $storageList)
+    {
+        $this->storageList = $storageList;
     }
 
     public function getQuantity(): ?float

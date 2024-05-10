@@ -18,39 +18,38 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleType;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\Document;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-final class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+final class NotificationRulesFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private string $installerResources,
+        private KernelInterface $kernel,
+        private NotificationRuleRepositoryInterface $notificationRuleRepository,
+        private FormFactoryInterface $formFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['application'];
     }
 
     public function load(ObjectManager $manager): void
     {
-        $installResourcesDirectory = $this->container->getParameter('coreshop.installer.resources');
-        /**
-         * @var KernelInterface $kernel
-         */
-        $kernel = $this->container->get('kernel');
-        $jsonFile = $kernel->locateResource(sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules'));
+        $installResourcesDirectory = $this->installerResources;
+        $jsonFile = $this->kernel->locateResource(
+            sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules'),
+        );
 
-        $totalExistingRules = count($this->container->get('coreshop.repository.notification_rule')->findAll());
+        $totalExistingRules = count($this->notificationRuleRepository->findAll());
 
         if (file_exists($jsonFile)) {
             $json = file_get_contents($jsonFile);
@@ -61,7 +60,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                 foreach ($json as $rule) {
                     try {
-                        $existingRules = $this->container->get('coreshop.repository.notification_rule')->findBy(['name' => $rule['name']]);
+                        $existingRules = $this->notificationRuleRepository->findBy(['name' => $rule['name']]);
 
                         if (count($existingRules) > 0) {
                             continue;
@@ -79,16 +78,17 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
                             }
                         }
 
-                        $form = $this->container->get('form.factory')->createNamed('', NotificationRuleType::class);
+                        $form = $this->formFactory->createNamed('', NotificationRuleType::class);
                         $form->submit($rule);
 
                         $notificationRule = $form->getData();
                         $notificationRule->setSort($totalExistingRules + $totalImported + 1);
 
-                        $this->container->get('doctrine.orm.entity_manager')->persist($notificationRule);
+                        $manager->persist($notificationRule);
 
                         ++$totalImported;
-                    } catch (\Exception) {
+                    } catch (\Exception $ex) {
+                        throw $ex;
                         //If some goes wrong, we just ignore it
                     }
                 }
@@ -98,6 +98,6 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
             }
         }
 
-        $this->container->get('doctrine.orm.entity_manager')->flush();
+        $manager->flush();
     }
 }

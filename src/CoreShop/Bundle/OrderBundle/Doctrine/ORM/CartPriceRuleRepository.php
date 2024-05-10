@@ -28,6 +28,27 @@ class CartPriceRuleRepository extends RuleRepository implements CartPriceRuleRep
         return $this->createQueryBuilder('o')
             ->andWhere('o.isVoucherRule = :isVoucherRule')
             ->setParameter('isVoucherRule', false)
+            ->orderBy('o.priority', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findVoucherRules(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.isVoucherRule = :isVoucherRule')
+            ->setParameter('isVoucherRule', true)
+            ->orderBy('o.priority', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->orderBy('o.priority', 'DESC')
             ->getQuery()
             ->getResult()
         ;

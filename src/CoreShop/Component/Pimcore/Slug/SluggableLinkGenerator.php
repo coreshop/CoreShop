@@ -32,8 +32,12 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
     ) {
     }
 
-    public function generate(Concrete $object, array $params = []): string
+    public function generate(object $object, array $params = []): string
     {
+        if (!$object instanceof Concrete) {
+            throw new \InvalidArgumentException(sprintf('Object must be an instance of %s', Concrete::class));
+        }
+
         if (!$object instanceof SluggableInterface) {
             throw new LinkGenerationNotPossibleException(sprintf(
                 'Object with Path "%s" must implement %s',
@@ -66,6 +70,8 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
             throw new LinkGenerationNotPossibleException(sprintf('No Valid Slug found for object "%s"', $object->getFullPath()));
         }
 
-        return $slug ? $slug->getSlug() : $fallbackSlug->getSlug();
+        $basePath = $this->requestStack->getMainRequest()?->getBaseUrl() ?? '';
+
+        return sprintf('%s%s', $basePath, $slug ? $slug->getSlug() : $fallbackSlug->getSlug());
     }
 }

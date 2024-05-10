@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -66,16 +67,16 @@ class PaymentProvidersReport implements ReportInterface
                     COUNT(1) / t.cnt * 100 as `percentage` 
             FROM $tableName as `order` 
             INNER JOIN objects as o 
-              ON o.o_id = `order`.oo_id 
+              ON o.id = `order`.oo_id 
             CROSS JOIN 
             (
               SELECT COUNT(1) as cnt 
               FROM $tableName as `order` 
               INNER JOIN objects as o 
-                ON o.o_id = `order`.oo_id  
-              WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
+                ON o.id = `order`.oo_id  
+              WHERE store = $storeId AND creationDate > $fromTimestamp AND creationDate < $toTimestamp
             ) t 
-          WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp 
+          WHERE store = $storeId AND creationDate > $fromTimestamp AND creationDate < $toTimestamp AND saleState='" . OrderSaleStates::STATE_ORDER . "' 
           GROUP BY paymentProvider";
 
         $results = $this->db->fetchAllAssociative($sql);

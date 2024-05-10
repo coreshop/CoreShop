@@ -47,19 +47,4 @@ final class IndexObjectListener
 
         $this->messageBus->dispatch(new IndexMessage($object->getId(), $isVersionEvent));
     }
-
-    public function onPreDelete(ElementEventInterface $event): void
-    {
-        if (!$event instanceof DataObjectEvent) {
-            return;
-        }
-
-        $object = $event->getObject();
-
-        if (!$object instanceof IndexableInterface) {
-            return;
-        }
-
-        $this->messageBus->dispatch(new IndexMessage($object->getId(), false, true));
-    }
 }

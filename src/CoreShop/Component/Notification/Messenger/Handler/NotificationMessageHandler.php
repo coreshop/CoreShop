@@ -26,9 +26,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class NotificationMessageHandler implements MessageHandlerInterface
+class NotificationMessageHandler
 {
     public function __construct(
         protected NotificationRuleRepositoryInterface $ruleRepository,

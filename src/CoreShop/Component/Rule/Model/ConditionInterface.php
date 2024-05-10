@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface ConditionInterface extends ResourceInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */
@@ -43,7 +45,7 @@ interface ConditionInterface extends ResourceInterface
     public function setSort($sort);
 
     /**
-     * @return array
+     * @return array|null
      */
     public function getConfiguration();
 

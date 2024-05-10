@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Concrete;
@@ -71,7 +71,7 @@ final class RecycleBinContext implements Context
 
         $item->restore();
 
-        $product = DataObject::getById($concrete->getId(), true);
+        $product = DataObject::getById($concrete->getId(), ['force' => true]);
 
         Assert::isInstanceOf($product, ProductInterface::class);
 

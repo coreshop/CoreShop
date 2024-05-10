@@ -5,16 +5,17 @@ default:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
-                - coreshop.behat.context.hook.doctrine_orm
+                - CoreShop\Bundle\TestBundle\Context\Hook\DoctrineORMContext
                 - coreshop.behat.context.hook.pimcore_dao
 
-                - coreshop.behat.context.transform.shared_storage
+                - CoreShop\Bundle\TestBundle\Context\Transform\SharedStorageContext
                 - coreshop.behat.context.transform.tax_rate
                 - coreshop.behat.context.transform.tax_rule_group
                 - coreshop.behat.context.transform.store
                 - coreshop.behat.context.transform.product
                 - coreshop.behat.context.transform.country
                 - coreshop.behat.context.transform.product_specific_price_rule
+                - coreshop.behat.context.transform.product_price_rule
                 - coreshop.behat.context.transform.currency
                 - coreshop.behat.context.transform.product_unit
                 - coreshop.behat.context.transform.product_quantity_price_rule
@@ -24,6 +25,7 @@ default:
                 - coreshop.behat.context.setup.product
                 - coreshop.behat.context.setup.tax_rate
                 - coreshop.behat.context.setup.tax_rule_group
+                - coreshop.behat.context.setup.product_price_rule
                 - coreshop.behat.context.setup.product_specific_price_rule
                 - coreshop.behat.context.setup.product_unit
                 - coreshop.behat.context.setup.product_quantity_price_rule

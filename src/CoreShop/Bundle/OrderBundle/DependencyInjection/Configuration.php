@@ -29,6 +29,7 @@ use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderPaymentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleRepository;
+use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherCodeCustomerRepository;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleTranslationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
@@ -37,16 +38,20 @@ use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderItemRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderShipmentRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeCustomerFactory;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartPriceRule;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleTranslation;
 use CoreShop\Component\Order\Model\CartPriceRuleTranslationInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomer;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeCustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
+use CoreShop\Component\Order\Model\OrderItemAttributeInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
@@ -70,40 +75,15 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('legacy_serialization')->defaultTrue()->end()
+                ->booleanNode('allow_order_edit')->defaultFalse()->end()
+                ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
             ->end()
         ;
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
-        $this->addCartCleanupSection($rootNode);
         $this->addStack($rootNode);
 
         return $treeBuilder;
-    }
-
-    private function addCartCleanupSection(ArrayNodeDefinition $node): void
-    {
-        $node
-            ->children()
-                ->arrayNode('expiration')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('cart')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->integerNode('days')->defaultValue(0)->end()
-                                ->booleanNode('anonymous')->defaultValue(true)->end()
-                                ->booleanNode('customer')->defaultValue(true)->end()
-                            ->end()
-                        ->end()
-                            ->arrayNode('order')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->integerNode('days')->defaultValue(20)->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-        ;
     }
 
     private function addStack(ArrayNodeDefinition $node): void
@@ -137,6 +117,12 @@ final class Configuration implements ConfigurationInterface
                             ->children()
                                 ->variableNode('options')->end()
                                 ->scalarNode('permission')->defaultValue('cart_price_rule')->cannotBeOverwritten()->end()
+                                ->arrayNode('graphql')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->booleanNode('enabled')->defaultTrue()->end()
+                                    ->end()
+                                ->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
@@ -179,6 +165,21 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CartPriceRuleVoucherRepository::class)->end()
                                         //TODO: ->scalarNode('form')->defaultValue(CartPriceRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('cart_price_rule_voucher_code_customer')
+                            ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->variableNode('options')->end()
+                                    ->arrayNode('classes')
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('model')->defaultValue(CartPriceRuleVoucherCodeCustomer::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('interface')->defaultValue(CartPriceRuleVoucherCodeCustomerInterface::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('factory')->defaultValue(CartPriceRuleVoucherCodeCustomerFactory::class)->cannotBeEmpty()->end()
+                                            ->scalarNode('repository')->defaultValue(CartPriceRuleVoucherCodeCustomerRepository::class)->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -368,6 +369,23 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/fieldcollections/CoreShopAdjustment.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('order_item_attribute')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\Fieldcollection\Data\CoreShopOrderItemAttribute')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(OrderItemAttributeInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/fieldcollections/CoreShopOrderItemAttribute.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION)->cannotBeOverwritten(true)->end()
                                     ->end()
                                 ->end()

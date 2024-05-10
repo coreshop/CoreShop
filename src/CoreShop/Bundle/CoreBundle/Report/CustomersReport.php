@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -63,7 +64,7 @@ class CustomersReport implements ReportInterface
               COUNT(customer.oo_id) as `orderCount`
             FROM object_query_$orderClassId AS orders
             INNER JOIN object_query_$customerClassId AS customer ON orders.customer__id = customer.oo_id
-            WHERE  orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL
+            WHERE  orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL AND saleState='" . OrderSaleStates::STATE_ORDER . "'
             GROUP BY customer.oo_id
             ORDER BY COUNT(customer.oo_id) DESC
             LIMIT $offset,$limit";
@@ -79,7 +80,7 @@ class CustomersReport implements ReportInterface
             );
         }
 
-        return array_values($results);
+        return $results;
     }
 
     public function getTotal(): int

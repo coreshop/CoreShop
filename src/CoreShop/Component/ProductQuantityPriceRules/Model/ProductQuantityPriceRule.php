@@ -81,7 +81,7 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         $this->ranges = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -111,6 +111,9 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
 
     public function hasCondition(ConditionInterface $condition): bool
     {
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         return $this->conditions->contains($condition);
     }
 
@@ -163,6 +166,9 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
 
     public function hasRange(QuantityRangeInterface $priceRange)
     {
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         return $this->ranges->contains($priceRange);
     }
 

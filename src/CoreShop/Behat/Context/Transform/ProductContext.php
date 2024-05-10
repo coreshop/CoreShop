@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
@@ -73,7 +73,7 @@ final class ProductContext implements Context
         $list = $this->productRepository->getList();
         $list->setLocale('en');
         $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
-        $list->setCondition('o_key = ?', [$productName]);
+        $list->setCondition('`key` = ?', [$productName]);
         $list->load();
 
         Assert::eq(

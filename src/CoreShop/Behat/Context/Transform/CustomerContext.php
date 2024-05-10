@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Webmozart\Assert\Assert;
@@ -39,6 +39,18 @@ final class CustomerContext implements Context
     public function getCustomerByEmail($email): CustomerInterface
     {
         $customer = $this->customerRepository->findCustomerByEmail($email);
+
+        Assert::isInstanceOf($customer, CustomerInterface::class);
+
+        return $customer;
+    }
+
+    /**
+     * @Transform /^guest "([^"]+)"$/
+     */
+    public function getGuestByEmail($email): CustomerInterface
+    {
+        $customer = $this->customerRepository->findGuestByEmail($email);
 
         Assert::isInstanceOf($customer, CustomerInterface::class);
 

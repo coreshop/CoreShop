@@ -1,20 +1,20 @@
-# CoreShop Custom
+# Custom Customer Management
 
-CoreShop uses Pimcore Data Objects to persist Customer Information. But, it adds a little wrapper around it to be mire
-dynamic and configurable. It uses a Factory and Repository Pattern to do that.
+CoreShop utilizes Pimcore Data Objects to manage customer information, enhancing it with a wrapper for increased
+dynamism and configurability. This approach leverages the Factory and Repository patterns for efficient data handling.
 
 ## Create
 
-If you want to create a new Custom, we need to get our Factory Service for that:
+To create a new customer, you need to use the Factory Service:
 
 ```php
 $customerFactory = $container->get('coreshop.factory.customer');
 $customer = $customerFactory->createNew();
 ```
 
-No we have our customer and we can set all needed values.
+After creating the customer object, you can set the necessary values.
 
-If you now want to save it, just call the save function
+To save the new customer:
 
 ```php
 $customer->save();
@@ -22,47 +22,43 @@ $customer->save();
 
 ## Read
 
-To get customers, you need to use the Repository Service CoreShop provides you.
+For retrieving customers, CoreShop provides a Repository Service:
 
 ```php
 $repository = $container->get('coreshop.repository.customer');
 
-
 // Query by ID
 $customerWithIdOne = $repository->findById(1);
 
-// Get a Listing how you know it from Pimcore
+// Get a Listing as you would in Pimcore
 $list = $repository->getList();
 $list->setCondition("active = 1");
 $customers = $list->getObjects();
-
 ```
 
 ## Update
 
-Update works the same as you are used to in Pimcore
+Updating customer information follows the same process as in Pimcore:
 
 ```php
 $repository = $container->get('coreshop.repository.customer');
 
-
 // Query by ID
 $customerWithIdOne = $repository->findById(1);
 
-// Change values
+// Modify values
 $customerWithIdOne->setName('test');
 $customerWithIdOne->save();
 ```
 
 ## Delete
 
-Delete works the same as you are used to in Pimcore
+The deletion process is also similar to standard Pimcore operations:
 
 ```php
 $repository = $container->get('coreshop.repository.customer');
 
-
 // Query by ID
-$customerWithIdOne = $repository->findById(1);
+$customerWithIdOne = the repository->findById(1);
 $customerWithIdOne->delete();
 ```

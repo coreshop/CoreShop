@@ -1,1 +1,0 @@
-## CORESHOP Overview

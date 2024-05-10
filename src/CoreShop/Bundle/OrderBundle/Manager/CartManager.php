@@ -24,68 +24,84 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
-use Doctrine\DBAL\Connection;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\StorageListManagerInterface;
+use Webmozart\Assert\Assert;
 
-final class CartManager implements CartManagerInterface
+final class CartManager implements CartManagerInterface, StorageListManagerInterface
 {
     public function __construct(
         private CartProcessorInterface $cartProcessor,
         private FolderCreationServiceInterface $folderCreationService,
-        private Connection $connection,
     ) {
     }
 
-    public function persistCart(OrderInterface $cart): void
+    public function persist(StorageListInterface $storageList): void
+    {
+        /**
+         * @var OrderInterface $storageList
+         */
+        Assert::isInstanceOf($storageList, OrderInterface::class);
+
+        $this->persistCart($storageList);
+    }
+
+    public function persistCart(OrderInterface $cart/*, array $params = []*/): void
     {
         $cartsFolder = $this->folderCreationService->createFolderForResource($cart, [
             'suffix' => date('Y/m/d'),
             'path' => 'cart',
         ]);
 
-        $this->connection->transactional(function () use ($cart, $cartsFolder) {
-            VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
+        $params = [];
+        if (func_num_args() === 2) {
+            $params = func_get_arg(1) ?? [];
+        }
+
+        VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
+            if (!$cart->getId()) {
                 $tempItems = $cart->getItems();
-
-                if (!$cart->getId()) {
-                    $cart->setItems([]);
-
-                    /**
-                     * @psalm-suppress DocblockTypeContradiction
-                     */
-                    if (!$cart->getParent()) {
-                        $cart->setParent($cartsFolder);
-                    }
-
-                    $cart->save();
-                }
+                $cart->setItems([]);
 
                 /**
-                 * @var OrderItemInterface $item
+                 * @psalm-suppress DocblockTypeContradiction
                  */
-                foreach ($tempItems as $index => $item) {
-                    $item->setParent(
-                        $this->folderCreationService->createFolderForResource(
-                            $item,
-                            ['prefix' => $cart->getFullPath()],
-                        ),
-                    );
-                    $item->setPublished(true);
-                    $item->setKey($index + 1);
-                    $item->save();
-                }
-
-                $cart->setItems($tempItems);
-                $this->cartProcessor->process($cart);
-
-                /**
-                 * @var OrderItemInterface $cartItem
-                 */
-                foreach ($cart->getItems() as $cartItem) {
-                    $cartItem->save();
+                if (!$cart->getParent()) {
+                    $cart->setParent($cartsFolder);
                 }
 
                 $cart->save();
-            }, false);
-        });
+                $cart->setItems($tempItems);
+            }
+
+            $items = array_values($cart->getObjectVar('items') ?? []);
+
+            /**
+             * @var OrderItemInterface $item
+             */
+            foreach ($items as $index => $item) {
+                $item->setParent(
+                    $this->folderCreationService->createFolderForResource(
+                        $item,
+                        ['prefix' => $cart->getFullPath()],
+                    ),
+                );
+                //$item->setPath($cart->getFullPath());
+                $item->setPublished(true);
+                $item->setKey(uniqid((string) ($index + 1), true));
+                $item->save();
+            }
+
+            $this->cartProcessor->process($cart);
+
+            /**
+             * @var OrderItemInterface $cartItem
+             */
+            foreach ($cart->getItems() as $cartItem) {
+                $cartItem->save();
+            }
+
+            $cart->save();
+        }, $params['enable_versioning'] ?? false);
     }
 }

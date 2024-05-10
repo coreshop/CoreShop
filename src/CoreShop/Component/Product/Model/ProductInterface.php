@@ -26,13 +26,15 @@ use Pimcore\Model\Asset\Image;
 
 interface ProductInterface extends PimcoreModelInterface, ToggleableInterface, SluggableInterface, KeyableSluggableInterface
 {
+    public function getId(): ?int;
+
     public function getSku(): ?string;
 
     public function setSku(?string $sku);
 
-    public function getName($language = null): ?string;
+    public function getName(?string $language = null): ?string;
 
-    public function setName(?string $name, $language = null);
+    public function setName(?string $name, ?string $language = null);
 
     public function getItemQuantityFactor(): ?int;
 
@@ -62,13 +64,13 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface, S
 
     public function setEan(?string $ean);
 
-    public function getShortDescription($language = null): ?string;
+    public function getShortDescription(?string $language = null): ?string;
 
-    public function setShortDescription(?string $shortDescription, $language = null);
+    public function setShortDescription(?string $shortDescription, ?string $language = null);
 
-    public function getDescription($language = null): ?string;
+    public function getDescription(?string $language = null): ?string;
 
-    public function setDescription(?string $description, $language = null);
+    public function setDescription(?string $description, ?string $language = null);
 
     public function getWeight(): ?float;
 

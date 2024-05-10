@@ -36,8 +36,7 @@ final class PimcoreDependantBundleInstaller implements ResourceInstallerInterfac
     {
         $parameter = $applicationName ?
             sprintf('%s.dependant.bundles', $applicationName) :
-            'coreshop.all.dependant.bundles'
-        ;
+            'coreshop.all.dependant.bundles';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             /**

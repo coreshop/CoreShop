@@ -1,5 +1,5 @@
 parameters:
-    coreshop.form.type.order.payment.validation_groups: [coreshop]
+    coreshop.form.type.order.payment.validation_groups: [coreshop_revise]
 
 services:
     _defaults:
@@ -23,28 +23,6 @@ services:
         decoration_priority: 10
         arguments:
             - '@CoreShop\Component\Core\Order\Transformer\OrderItemToShipmentItemTransformer.inner'
-
-    coreshop.maintenance.cart.expire_task:
-        class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
-        arguments:
-            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
-            - '@CoreShop\Bundle\OrderBundle\Expiration\CartExpiration'
-            - 'cart'
-            - '%coreshop.cart.expiration.days%'
-            - { anonymous: '%coreshop.cart.expiration.anonymous%', customer: '%coreshop.cart.expiration.customer%'}
-        tags:
-            - { name: pimcore.maintenance.task, type: coreshop_expire_carts }
-
-    coreshop.maintenance.order.expire_task:
-        class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
-        arguments:
-            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
-            - '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
-            - 'order'
-            - '%coreshop.order.expiration.days%'
-            - []
-        tags:
-            - { name: pimcore.maintenance.task, type: coreshop_expire_orders }
 
     coreshop.order.number_generator.prefix_suffix:
         class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
@@ -95,6 +73,11 @@ services:
 
     CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier
+
+    coreshop.cart_item.quantity_modifier.backend:
+        class: CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier
+        arguments:
+            - true
 
     CoreShop\Component\Core\Cart\CartContextResolver:
         decorates: 'CoreShop\Component\Order\Cart\CartContextResolver'

@@ -23,6 +23,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -90,7 +91,7 @@ class ManufacturerReport implements ReportInterface
             SELECT SQL_CALC_FOUND_ROWS
               `manufacturers`.oo_id as manufacturerId,
               `manufacturers`.name as manufacturerName,
-              `manufacturers`.o_key as manufacturerKey,
+              `manufacturers`.key as manufacturerKey,
               `orders`.store,
               SUM(orderItems.totalGross) AS sales,
               SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
@@ -101,7 +102,7 @@ class ManufacturerReport implements ReportInterface
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = manProductDependencies.sourceid
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
-            WHERE orders.store = $storeId" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = $storeId" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL AND saleState='" . OrderSaleStates::STATE_ORDER . "'
             GROUP BY manufacturers.oo_id
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";

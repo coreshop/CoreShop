@@ -1,6 +1,7 @@
-# CoreShop Currencies
+# Currencies
 
 ## Create
+
 If you want to create a Currency via API, you can do following:
 
 ```php
@@ -35,7 +36,7 @@ $currencies = $queryBuilder->getQuery()->getResult();
 
 ## Update
 
-If you want to update and existing Currency, you need to do following:
+If you want to update an existing Currency, you need to do following:
 
 ```php
 // Fetch Currency
@@ -49,14 +50,15 @@ $container->get('coreshop.manager.currency')->flush();
 ```
 
 ## Delete
-If you want to update and existing Currency, you need to do following:
+
+If you want to delete an existing Currency, you need to do following:
 
 ```php
 // Fetch Currency
 
 $currency = $currencyRepository->findById(1);
 
-// And Persist it
+// And remove it
 $container->get('coreshop.manager.currency')->remove($currency);
 $container->get('coreshop.manager.currency')->flush();
 ```

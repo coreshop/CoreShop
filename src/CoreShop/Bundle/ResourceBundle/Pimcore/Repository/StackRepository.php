@@ -23,7 +23,7 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
 
-class StackRepository extends PimcoreRepository
+class StackRepository extends PimcoreRepository implements StackRepositoryInterface
 {
     private array $classNames = [];
 
@@ -63,14 +63,14 @@ class StackRepository extends PimcoreRepository
     public function getList()
     {
         $list = new DataObject\Listing();
-        $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));
+        $list->addConditionParam(sprintf('className IN (%s)', implode(',', $this->classNames)));
 
         return $list;
     }
 
     public function forceFind($id, bool $force = true)
     {
-        $instance = DataObject::getById($id, $force);
+        $instance = DataObject::getById((int) $id, ['force' => $force]);
 
         if (null === $instance) {
             return null;

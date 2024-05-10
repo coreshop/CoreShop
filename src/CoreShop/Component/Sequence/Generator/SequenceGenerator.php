@@ -34,11 +34,13 @@ class SequenceGenerator implements SequenceGeneratorInterface
 
     public function getNextSequenceForType(string $type): int
     {
+        $this->entityManager->beginTransaction();
+
         $sequence = $this->getSequence($type);
         $sequence->incrementIndex();
 
-        $this->entityManager->persist($sequence);
         $this->entityManager->flush();
+        $this->entityManager->commit();
 
         return $sequence->getIndex();
     }

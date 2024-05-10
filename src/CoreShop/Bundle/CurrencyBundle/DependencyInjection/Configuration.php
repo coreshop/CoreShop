@@ -45,6 +45,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->integerNode('money_decimal_factor')->defaultValue(100)->end()
                 ->integerNode('money_decimal_precision')->defaultValue(2)->end()
+                ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
             ->end()
         ;
         $this->addModelsSection($rootNode);
@@ -64,6 +65,12 @@ final class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
+                                ->arrayNode('graphql')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->booleanNode('enabled')->defaultTrue()->end()
+                                    ->end()
+                                ->end()
                                 ->scalarNode('permission')->defaultValue('currency')->cannotBeOverwritten()->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()

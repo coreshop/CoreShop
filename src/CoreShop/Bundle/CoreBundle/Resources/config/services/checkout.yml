@@ -22,7 +22,7 @@ services:
         arguments:
             - '@form.factory'
             - '@coreshop.customer.manager'
-            - '@coreshop.context.locale'
+            - '@CoreShop\Component\Locale\Context\LocaleContextInterface'
 
     CoreShop\Bundle\CoreBundle\Checkout\Step\GuestAddressCheckoutStep:
         arguments:
@@ -80,6 +80,7 @@ services:
             - '@coreshop.form_registry.payment.settings'
             - '@coreshop.repository.payment_provider'
             - '%coreshop.gateway_factories%'
+            - '@CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface'
         tags:
             - { name: form.type }
 

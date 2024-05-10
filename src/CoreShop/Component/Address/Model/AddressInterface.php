@@ -23,6 +23,8 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface AddressInterface extends ResourceInterface, PimcoreModelInterface
 {
+    public function getId(): ?int;
+
     public function getSalutation(): ?string;
 
     public function setSalutation(?string $salutation);

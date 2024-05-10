@@ -20,7 +20,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use Pimcore\Event\Model\DataObjectDeleteInfoEvent;
+use Pimcore\Bundle\AdminBundle\Event\Model\DataObjectDeleteInfoEvent;
 use Pimcore\Event\Model\DataObjectEvent;
 
 final class CustomerOrderDeletionListener
@@ -57,7 +57,7 @@ final class CustomerOrderDeletionListener
         $hasOrders = $this->orderRepository->hasCustomerOrders($object);
 
         if ($hasOrders) {
-            throw new \InvalidArgumentException(sprintf('Cannot delete a customer with orders'));
+            throw new \InvalidArgumentException('Cannot delete a customer with orders');
         }
     }
 }

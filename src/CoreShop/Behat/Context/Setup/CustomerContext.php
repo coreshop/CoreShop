@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -44,11 +44,21 @@ final class CustomerContext implements Context
     /**
      * @Given /^the site has a customer "([^"]+)"$/
      */
-    public function theSiteHasACustomer(string $email): void
+    public function theSiteHasACustomer(string $email, bool $isGuest = false): void
     {
-        $category = $this->createCustomer($email);
+        $customer = $this->createCustomer($email, $isGuest);
 
-        $this->saveCustomer($category);
+        $this->saveCustomer($customer);
+    }
+
+    /**
+     * @Given /^the site has a guest "([^"]+)"$/
+     */
+    public function theSiteHasAGuest(string $email): void
+    {
+        $customer = $this->createCustomer($email, true);
+
+        $this->saveCustomer($customer);
     }
 
     /**
@@ -100,6 +110,14 @@ final class CustomerContext implements Context
     }
 
     /**
+     * @Given /^I am (guest "[^"]+")$/
+     */
+    public function iAmGuest(CustomerInterface $customer): void
+    {
+        $this->fixedCustomerContext->setCustomer($customer);
+    }
+
+    /**
      * @Given /^the (customer "[^"]+") has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
      * @Given /^the (customer) has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
      */
@@ -131,7 +149,43 @@ final class CustomerContext implements Context
         $this->sharedStorage->set('address', $address);
     }
 
-    private function createCustomer(string $email): CustomerInterface
+    /**
+     * @Then /^the (customer "[^"]+") address is (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
+     * @Then /^the (customer) address is (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
+     */
+    public function theCustomersAddress(
+        CustomerInterface $customer,
+        CountryInterface $country,
+        $postcode,
+        $city,
+        $street,
+        $nr,
+    ): bool {
+        $found = false;
+        $addresses = $customer->getAddresses();
+
+        foreach ($addresses as $address) {
+            if ($address->getStreet() != $street) {
+                continue;
+            }
+            if ($address->getPostcode() != $postcode) {
+                continue;
+            }
+            if ($address->getCity() != $city) {
+                continue;
+            }
+            if ($address->getNumber() === $nr) {
+                $found = true;
+            }
+            if ($address->getCountry() == $country) {
+                $found = true;
+            }
+        }
+
+        return $found;
+    }
+
+    private function createCustomer(string $email, bool $isGuest = false): CustomerInterface
     {
         /** @var CustomerInterface $customer */
         $customer = $this->customerFactory->createNew();
@@ -145,22 +199,24 @@ final class CustomerContext implements Context
         $customer->setFirstname($firstname);
         $customer->setLastname($lastname);
 
-        /**
-         * @var UserInterface $user
-         */
-        $user = $this->userFactory->createNew();
-        $user->setKey(File::getValidFilename($email));
-        $user->setParent($customer);
-        $user->setPublished(true);
-        $user->setLoginIdentifier($email);
-        $user->setCustomer($customer);
+        if (!$isGuest) {
+            /**
+             * @var UserInterface $user
+             */
+            $user = $this->userFactory->createNew();
+            $user->setKey(File::getValidFilename($email));
+            $user->setParent($customer);
+            $user->setPublished(true);
+            $user->setLoginIdentifier($email);
+            $user->setCustomer($customer);
 
-        $customer->setUser($user);
+            $customer->setUser($user);
+        }
 
         return $customer;
     }
 
-    private function saveCustomer(CustomerInterface $customer): void
+    private function saveCustomer(CustomerInterface $customer, $isGuest = false): void
     {
         $user = $customer->getUser();
         $customer->setUser(null);

@@ -1,21 +1,22 @@
-# CoreShop Quantity Price Rules
+# Quantity Price Rules Documentation
 
-Quantity Price Rules are configured directly on the product and therefore are only applied
-on that product. The settings are different to specific price rules. Calculation Behaviour
-means the property on which the amount is determined. This is volume per default.
+CoreShop Quantity Price Rules offer a dynamic way to incentivize bulk purchases in your e-commerce store with CoreShop.
+These rules enable you to apply volume-based discounts to specific products, with tiered pricing that varies based on
+the quantity purchased. This guide will help you in effectively creating and managing quantity price rules within
+CoreShop.
 
-Quantity price rules are only applied to the price in context of a cart. In other cases the
-price calculator ignores them.
+![Quantity Price Rules](img/quantity-price-rules.png)
 
-![Specific Price Rules](img/quantity-price-rules.png)
+## Implementing Quantity Price Rules
 
-## Available Conditions
+These rules can be applied under various conditions to best suit your sales strategy:
 
-- [Customers](./07_Conditions.md#customers)
-- [Customer Groups](./07_Conditions.md#customer-groups)
-- [Time Span](./07_Conditions.md#time-span)
-- [Countries](./07_Conditions.md#countries)
-- [Zones](./07_Conditions.md#zones)
-- [Stores](./07_Conditions.md#stores)
-- [Currencies](./07_Conditions.md#currencies)
-- [Nested Rules](./07_Conditions.md#nested-rules)
+- [Customers](./07_Conditions.md#customers): Target specific individual customers.
+- [Customer Groups](./07_Conditions.md#customer-groups): Apply rules to designated customer groups.
+- [Time Span](./07_Conditions.md#time-span): Restrict or activate rules within certain time frames.
+- [Countries](./07_Conditions.md#countries): Make rules applicable in selected countries.
+- [Zones](./07_Conditions.md#zones): Define rules for specific geographical zones.
+- [Stores](./07_Conditions.md#stores): Implement rules in certain stores.
+- [Currencies](./07_Conditions.md#currencies): Apply rules based on the currency used.
+- [Nested Rules](./07_Conditions.md#nested-rules): Create complex rules by combining multiple conditions.
+

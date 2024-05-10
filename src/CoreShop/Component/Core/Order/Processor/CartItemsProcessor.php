@@ -22,6 +22,7 @@ use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemAttributeInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -29,6 +30,7 @@ use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetec
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartItemsProcessor implements CartProcessorInterface
 {
@@ -44,13 +46,14 @@ final class CartItemsProcessor implements CartProcessorInterface
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);
 
-        $subtotalGross = 0;
-        $subtotalNet = 0;
-
         /**
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
+            if ($item->isImmutable()) {
+                continue;
+            }
+
             if ($item->getIsGiftItem()) {
                 $this->cartItemProcessor->processCartItem(
                     $item,
@@ -89,8 +92,7 @@ final class CartItemsProcessor implements CartProcessorInterface
                         $itemPrice,
                         $context,
                     );
-                } catch (NoRuleFoundException) {
-                } catch (NoPriceFoundException) {
+                } catch (NoRuleFoundException|NoPriceFoundException) {
                 }
             }
 
@@ -98,6 +100,9 @@ final class CartItemsProcessor implements CartProcessorInterface
             $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product, $context);
             $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
             $itemDiscount = $this->productPriceCalculator->getDiscount($product, $context, $itemPriceWithoutDiscount);
+            $customAttributes = $this->productPriceCalculator->getCustomAttributes($product, $context);
+
+            $this->processCustomAttributes($item, $customAttributes);
 
             if (null === $item->getCustomItemDiscount()) {
                 $item->setCustomItemDiscount(0);
@@ -121,14 +126,38 @@ final class CartItemsProcessor implements CartProcessorInterface
                 $itemDiscount,
                 $context,
             );
+        }
+    }
 
-            $subtotalGross += $item->getTotal(true);
-            $subtotalNet += $item->getTotal(false);
+    protected function processCustomAttributes(OrderItemInterface $item, array $customAttributes): void
+    {
+        // Update Order Item Attributes
+        $orderItemAttributes = $item->getAttributes();
+
+        foreach ($customAttributes as $customAttribute) {
+            $item->addAttribute($customAttribute);
         }
 
-        $cart->setSubtotal($subtotalGross, true);
-        $cart->setSubtotal($subtotalNet, false);
+        $removedAttributes = [];
 
-        $cart->recalculateAdjustmentsTotal();
+        if ($orderItemAttributes instanceof Fieldcollection) {
+            foreach ($orderItemAttributes as $existingAttribute) {
+                if (!$existingAttribute instanceof OrderItemAttributeInterface) {
+                    continue;
+                }
+
+                foreach ($customAttributes as $newAttribute) {
+                    if ($existingAttribute->getAttributeKey() === $newAttribute->getAttributeKey()) {
+                        continue 2;
+                    }
+                }
+
+                $removedAttributes[] = $existingAttribute;
+            }
+
+            foreach ($removedAttributes as $attribute) {
+                $item->removeAttribute($attribute);
+            }
+        }
     }
 }

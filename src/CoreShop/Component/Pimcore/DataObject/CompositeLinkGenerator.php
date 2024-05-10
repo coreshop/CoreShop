@@ -21,7 +21,6 @@ namespace CoreShop\Component\Pimcore\DataObject;
 use CoreShop\Component\Pimcore\Exception\LinkGenerationNotPossibleException;
 use Laminas\Stdlib\PriorityQueue;
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
-use Pimcore\Model\DataObject\Concrete;
 
 class CompositeLinkGenerator implements LinkGeneratorInterface
 {
@@ -42,7 +41,7 @@ class CompositeLinkGenerator implements LinkGeneratorInterface
         $this->linkGenerator->insert($linkGenerator, $priority);
     }
 
-    public function generate(Concrete $object, array $params = []): string
+    public function generate(object $object, array $params = []): string
     {
         foreach ($this->linkGenerator as $linkGenerator) {
             try {

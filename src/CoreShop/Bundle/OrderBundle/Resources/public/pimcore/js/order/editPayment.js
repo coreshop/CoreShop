@@ -74,9 +74,18 @@ coreshop.order.order.editPayment = {
                         viewConfig: {
                         enableTextSelection: true
                         },
-                        store: new Ext.data.ArrayStore({
+                        features: [{
+                            ftype: 'rowbody',
+                            getAdditionalData: function(data, idx, record, orig) {
+                                return {
+                                    rowBody: '<div>' + record.get('detail') + '</div>',
+                                    rowBodyCls: record.get('detail') === null ? 'x-hidden' : ''
+                                };
+                            }
+                        }],
+                        store: new Ext.data.Store({
                             data: payment.get('details'),
-                            fields: ['name', 'value']
+                            fields: ['name', 'value', 'detail']
                         }),
                         columns: [
                             {
@@ -88,7 +97,7 @@ coreshop.order.order.editPayment = {
                                 text: 'Value',
                                 dataIndex: 'value',
                                 flex: 2,
-                                renderer: function arg(val, test, test2){
+                                renderer: function arg(val){
                                     return '<div style="white-space: normal;">' + val + '</div>';
                                 }
                             }

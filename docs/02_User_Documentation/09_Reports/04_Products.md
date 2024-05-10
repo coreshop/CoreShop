@@ -1,41 +1,54 @@
-# CoreShop Products Report
+# Products Report
+
+The CoreShop Products Report provides a comprehensive view of product performance, including sales, quantities, and
+profits. This report is instrumental for analyzing product trends and making informed inventory decisions.
 
 ![Products Report](img/products.png)
 
+## Report Format
+
+The Products Report is presented in a list format with pagination.
+
 | Type | Has Pagination |
-|:-----|:-----------|
-| List | Yes |
+|:-----|:---------------|
+| List | Yes            |
 
-## Available Filters
+## Customizing the Report with Filters
 
-| Name | Description |
-|:-----|:------------|
-| Store | Filter by Store |
-| Day | Shortcut Filter by current Day |
-| Month | Shortcut Filter by current Month |
-| Year | Shortcut Filter by current Year |
-| Day -1 | Shortcut Filter by last Day |
-| Month -1 | Shortcut Filter by last Month |
-| Year -1 | Shortcut Filter by last Year |
-| From | Date to Start Filter |
-| To | Date to End Filter |
-| Product Types | Group Filter by `Main Products`, `Variants`, `Container Products` |
+Enhance your analysis by applying various filters:
 
-## Product Types
+| Name          | Description                                                      |
+|:--------------|:-----------------------------------------------------------------|
+| Store         | Filter data by specific Store.                                   |
+| Day           | Filter for the current Day.                                      |
+| Month         | Filter for the current Month.                                    |
+| Year          | Filter for the current Year.                                     |
+| Day -1        | Filter for the previous Day.                                     |
+| Month -1      | Filter for the previous Month.                                   |
+| Year -1       | Filter for the previous Year.                                    |
+| From          | Start date for the filter period.                                |
+| To            | End date for the filter period.                                  |
+| Product Types | Group data by `Main Products`, `Variants`, `Container Products`. |
 
-| Name | Description |
-|:-----|:------------|
-| Main Products | Only show Products without Variant inclusion |
-| Variants | Only show Variant Product Types |
-| Container Products | Show Sum of Products and Child-Products. Note: Container Products are bounded to the original pimcore objects. The products will be ignored in this report, if those main-objects have been deleted! |
+## Understanding Product Types
 
-## Available Grid Fields
+Differentiate products based on their type for targeted analysis:
 
-| Name | Description |
-|:-----|:------------|
-| Name | Product Name |
-| Order Count | Amount of Order |
-| Quantity | Quantity |
-| Sale Price | Sale Price |
-| Sales | Amount of Sales |
-| Profit | Amount of Profit |
+| Name               | Description                                                                                                    |
+|:-------------------|:---------------------------------------------------------------------------------------------------------------|
+| Main Products      | Displays only products without variant inclusion.                                                              |
+| Variants           | Shows only variant product types.                                                                              |
+| Container Products | Summarizes products and their child-products. Note: Ignored in report if the main pimcore objects are deleted. |
+
+## Key Grid Fields
+
+Analyze key metrics with the following data fields:
+
+| Name        | Description                             |
+|:------------|:----------------------------------------|
+| Name        | Product name.                           |
+| Order Count | Total number of orders for the product. |
+| Quantity    | Total quantity sold.                    |
+| Sale Price  | Average sale price.                     |
+| Sales       | Total sales amount.                     |
+| Profit      | Total profit amount.                    |

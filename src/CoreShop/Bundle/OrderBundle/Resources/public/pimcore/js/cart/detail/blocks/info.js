@@ -15,6 +15,6 @@ coreshop.order.cart.detail.blocks.info = Class.create(coreshop.order.order.detai
     updateSale: function () {
         var me = this;
 
-        me.saleInfo.setTitle(t('coreshop_' + me.panel.type) + ': ' + this.sale.o_id);
+        me.saleInfo.setTitle(t('coreshop_' + me.panel.type) + ': ' + this.sale.id);
     }
 });

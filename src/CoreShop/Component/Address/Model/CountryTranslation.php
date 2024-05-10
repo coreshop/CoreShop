@@ -38,7 +38,7 @@ class CountryTranslation extends AbstractTranslation implements CountryTranslati
      */
     protected $name;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -59,7 +59,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     {
         $paymentProvider = $cart->getPaymentProvider();
 
-        return $cart->hasItems() && $paymentProvider instanceof PaymentProviderInterface && $this->paymentProviderValidator->isPaymentProviderValid($paymentProvider);
+        return $cart->hasItems() && $paymentProvider instanceof PaymentProviderInterface && $this->paymentProviderValidator->isPaymentProviderValid($paymentProvider, $cart);
     }
 
     public function commitStep(OrderInterface $cart, Request $request): bool

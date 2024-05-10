@@ -15,7 +15,7 @@ services:
             - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
             - '@CoreShop\Behat\Page\Frontend\Account\LoginPageInterface'
             - '@CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPageInterface'
-            - '@CoreShop\Behat\Service\Resolver\CurrentPageResolverInterface'
+            - '@CoreShop\Bundle\TestBundle\Service\Resolver\CurrentPageResolverInterface'
         tags:
             - { name: fob.context_service }
 
@@ -37,7 +37,8 @@ services:
             - '@CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface'
             - '@CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface'
             - '@CoreShop\Behat\Page\Frontend\Account\ChangeProfilePageInterface'
-            - '@CoreShop\Behat\Service\NotificationCheckerInterface'
+            - '@CoreShop\Bundle\TestBundle\Service\NotificationCheckerInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\ChangeAddressPageInterface'
         tags:
             - { name: fob.context_service }
 
@@ -53,7 +54,7 @@ services:
         class: CoreShop\Behat\Context\Ui\Frontend\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@CoreShop\Behat\Service\NotificationCheckerInterface'
+            - '@CoreShop\Bundle\TestBundle\Service\NotificationCheckerInterface'
             - '@CoreShop\Behat\Page\Frontend\CartPageInterface'
             - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'
         tags:
@@ -107,5 +108,20 @@ services:
             - '@payum'
             - '@router'
             - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.category:
+        class: CoreShop\Behat\Context\Ui\Frontend\CategoryContext
+        arguments:
+           - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+           - '@CoreShop\Behat\Page\Frontend\CategoryPageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.filter:
+        class: CoreShop\Behat\Context\Ui\Frontend\FilterContext
+        arguments:
+            - '@CoreShop\Behat\Page\Frontend\CategoryPageInterface'
         tags:
             - { name: fob.context_service }

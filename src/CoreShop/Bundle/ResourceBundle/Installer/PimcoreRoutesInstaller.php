@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\RouteConfiguration;
-use Pimcore\Model\Staticroute;
+use Pimcore\Bundle\StaticRoutesBundle\Model\Staticroute;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;

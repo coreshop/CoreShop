@@ -12,6 +12,7 @@ parameters:
     coreshop.form.type.cart_price_rule.condition.order_item_action_actions.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.timespan.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.voucher.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.condition.not_combinable.validation_groups: [coreshop]
 
 services:
     CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType:
@@ -95,5 +96,11 @@ services:
     CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType:
         arguments:
             - '%coreshop.form.type.cart_price_rule.condition.voucher.validation_groups%'
+        tags:
+           - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.condition.not_combinable.validation_groups%'
         tags:
            - { name: form.type }

@@ -19,9 +19,11 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class PaymentContext implements Context
@@ -29,6 +31,7 @@ final class PaymentContext implements Context
     public function __construct(
         private SharedStorageInterface $sharedStorage,
         private PaymentProviderRepositoryInterface $paymentProviderRepository,
+        private RepositoryInterface $paymentRuleRepository,
     ) {
     }
 
@@ -57,5 +60,29 @@ final class PaymentContext implements Context
     public function paymentProvider(): PaymentProviderInterface
     {
         return $this->sharedStorage->get('payment-provider');
+    }
+
+    /**
+     * @Transform /^payment-provider-rule "([^"]+)"$/
+     */
+    public function getPaymentProviderRuleByName(string $ruleName): PaymentProviderRuleInterface
+    {
+        $rule = $this->paymentRuleRepository->findOneBy(['name' => $ruleName]);
+
+        Assert::isInstanceOf($rule, PaymentProviderRuleInterface::class);
+
+        return $rule;
+    }
+
+    /**
+     * @Transform /^payment-provider-rule$/
+     */
+    public function getLatestPaymentProviderRule(): PaymentProviderRuleInterface
+    {
+        $resource = $this->sharedStorage->get('payment-provider-rule');
+
+        Assert::isInstanceOf($resource, PaymentProviderRuleInterface::class);
+
+        return $resource;
     }
 }

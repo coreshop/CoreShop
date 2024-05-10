@@ -1,62 +1,58 @@
-# CoreShop Carrier
+# Carrier
+
+Managing carriers is an essential aspect of eCommerce logistics in CoreShop. This guide details how to create, read,
+update, and delete carriers via the API.
 
 ## Create
-If you want to create a Carrier via API, you can do following:
+
+To create a new carrier via the API:
 
 ```php
 $newCarrier = $container->get('coreshop.factory.carrier')->createNew();
 ```
 
-Now you have a new Carrier, if you want to persist it, you need to do following:
+After creating a new Carrier instance, persist it using:
 
 ```php
 $container->get('coreshop.manager.carrier')->persist($newCarrier);
 $container->get('coreshop.manager.carrier')->flush();
 ```
 
-You now have a new persisted Carrier.
+You now have a newly persisted Carrier.
 
 ## Read
 
-If you want to query for Carriers, you can do following:
+To query for carriers:
 
 ```php
 $carrierRepository = $container->get('coreshop.repository.carrier');
-
 $queryBuilder = $carrierRepository->createQueryBuilder('c');
-
-// You can now create your query
-
-// And get the result
-
+// Create your query
+// Get the result
 $carriers = $queryBuilder->getQuery()->getResult();
-
 ```
 
 ## Update
 
-If you want to update and existing Carrier, you need to do following:
+To update an existing carrier:
 
 ```php
 // Fetch Carrier
-
 $carrier = $carrierRepository->findById(1);
-$carrier->setName('Euro');
-
-// And Persist it
+$carrier->setName('DHL');
+// Persist changes
 $container->get('coreshop.manager.carrier')->persist($carrier);
 $container->get('coreshop.manager.carrier')->flush();
 ```
 
 ## Delete
-If you want to update and existing Carrier, you need to do following:
+
+To delete an existing carrier:
 
 ```php
 // Fetch Carrier
-
 $carrier = $carrierRepository->findById(1);
-
-// And Persist it
+// Remove Carrier
 $container->get('coreshop.manager.carrier')->remove($carrier);
 $container->get('coreshop.manager.carrier')->flush();
 ```

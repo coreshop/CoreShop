@@ -45,7 +45,7 @@ class AddressIdentifier extends AbstractResource implements AddressIdentifierInt
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

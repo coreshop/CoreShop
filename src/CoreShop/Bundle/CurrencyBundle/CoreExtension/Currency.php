@@ -26,12 +26,12 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
  */
 class Currency extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCurrency';
+    public string $fieldtype = 'coreShopCurrency';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository()
     {

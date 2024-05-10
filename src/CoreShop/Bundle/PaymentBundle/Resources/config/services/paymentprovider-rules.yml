@@ -1,0 +1,128 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.registry.payment_provider_rule.conditions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
+            - payment-rule-condition
+        tags:
+            - { name: coreshop.registry, type_hint: paymentProviderRuleConditions }
+
+    coreshop.form_registry.payment_provider_rule.conditions:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+
+    coreshop.registry.payment_provider_rule.actions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Payment\Rule\Action\ProviderActionProcessorInterface
+            - payment-rule-action
+        tags:
+            - { name: coreshop.registry, type_hint: paymentProviderRuleActions }
+
+    coreshop.form_registry.payment_provider_rule.actions:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+    # payment Rule Processor
+    coreshop.payment_provider_rule.conditions.processor:
+        class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
+        shared: false
+        arguments:
+            - '@coreshop.registry.payment_provider_rule.conditions'
+            - 'payment Rules'
+        tags:
+            - { name: coreshop.rule.conditions.validation_processor }
+
+    coreshop.payment_provider_rule.processor:
+        class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
+        shared: false
+        arguments:
+            - '@coreshop.payment_provider_rule.conditions.processor'
+
+    # payment CONDITIONS
+    CoreShop\Component\Payment\Rule\Condition\AmountConditionChecker:
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: amount, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Condition\AmountConfigurationType }
+
+
+    coreshop.payment_provider_rule.condition.nested:
+        class: CoreShop\Component\Rule\Condition\NestedConditionChecker
+        arguments:
+            - '@coreshop.payment_provider_rule.conditions.processor'
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: nested, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Condition\NestedConfigurationType }
+
+    # payment Rule ACTIONS
+    CoreShop\Component\Payment\Rule\Action\AdditionPercentActionProcessor:
+        tags:
+            - { name: coreshop.payment_provider_rule.action, type: additionPercent, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType }
+
+    CoreShop\Component\Payment\Rule\Action\DiscountPercentActionProcessor:
+        tags:
+            - { name: coreshop.payment_provider_rule.action, type: discountPercent, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType }
+
+    CoreShop\Component\Payment\Rule\Action\PaymentProviderRuleActionProcessor:
+        arguments:
+            - '@CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface'
+            - '@coreshop.repository.payment_provider_rule'
+        tags:
+            - { name: coreshop.payment_provider_rule.action, type: paymentProviderRule, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common\PaymentProviderRuleConfigurationType }
+
+    CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface: '@CoreShop\Component\Payment\Processor\PaymentProviderRuleActionProcessor'
+    CoreShop\Component\Payment\Processor\PaymentProviderRuleActionProcessor:
+        shared: false
+        arguments:
+            - '@coreshop.registry.payment_provider_rule.actions'
+
+    # Validators
+    CoreShop\Component\Payment\Validator\PaymentProviderRuleValidator:
+        arguments:
+            - '@CoreShop\Component\Payment\Checker\PaymentProviderRuleChecker'
+        tags:
+            - { name: coreshop.payment.validator, priority: 10 }
+
+    CoreShop\Component\Payment\Checker\PaymentProviderRuleCheckerInterface: '@CoreShop\Component\Payment\Checker\PaymentProviderRuleChecker'
+    CoreShop\Component\Payment\Checker\PaymentProviderRuleChecker:
+        arguments:
+            - '@coreshop.payment_provider_rule.processor'
+
+
+    CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface: '@CoreShop\Component\Payment\Resolver\PaymentProviderResolver'
+    CoreShop\Component\Payment\Resolver\PaymentProviderResolver:
+        decoration_priority: 800
+        decorates: CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface
+        arguments:
+            - '@coreshop.repository.payment_provider'
+
+
+    CoreShop\Component\Payment\Resolver\RuleBasedPaymentProviderResolver:
+        decoration_priority: 1
+        decorates: CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface
+        arguments:
+            - '@CoreShop\Component\Payment\Resolver\RuleBasedPaymentProviderResolver.inner'
+            - '@CoreShop\Component\Payment\Validator\PaymentProviderRuleValidatorInterface'
+
+    CoreShop\Component\Payment\Validator\PaymentProviderValidatorInterface: '@CoreShop\Component\Payment\Validator\PaymentProviderValidator'
+    CoreShop\Component\Payment\Validator\PaymentProviderValidator:
+        arguments:
+            - '@CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface'
+
+
+    CoreShop\Component\Payment\Validator\PaymentProviderRuleValidatorInterface: '@CoreShop\Component\Payment\Validator\PaymentProviderRuleValidator'
+
+#    CoreShop\Component\Payment\Rule\Condition\PaymentProviderRuleConditionChecker:
+#        arguments:
+#            - '@coreshop.payment_provider_rule.processor'
+#            - '@coreshop.repository.payment_provider_rule'
+#        tags:
+#            - { name: coreshop.payment_provider_rule.condition, type: paymentProviderRule, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common\PaymentProviderRuleConfigurationType }
+
+    # Rule Assessor
+    coreshop.rule.availability_assessor.payment_provider_rule:
+        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
+        arguments:
+            - '@coreshop.repository.payment_provider_rule'
+        tags:
+            - { name: coreshop.registry.rule_availability_assessor, type: payment_provider_rule }

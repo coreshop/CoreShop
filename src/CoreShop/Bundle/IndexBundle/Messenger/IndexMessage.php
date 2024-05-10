@@ -23,7 +23,6 @@ class IndexMessage
     public function __construct(
         protected int $indexableId,
         protected bool $saveVersionOnly = false,
-        protected bool $isDelete = false,
     ) {
     }
 
@@ -35,10 +34,5 @@ class IndexMessage
     public function isSaveVersionOnly(): bool
     {
         return $this->saveVersionOnly;
-    }
-
-    public function isDelete(): bool
-    {
-        return $this->isDelete;
     }
 }

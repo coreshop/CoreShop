@@ -1,27 +1,19 @@
-# CoreShop Currencies
+# Currencies
 
+In CoreShop, the configuration of a currency involves several key attributes essential for international transactions
+and currency management.
 
-A Currency consists of following values:
-
- - Name
- - ISO Code
- - Numeric ISO Code
- - Symbol
- - Exchange Rate: Is used to convert between different currencies
-
-If you are going to use Currency conversion, you need to update exchange ranges regularly.
+- **Name**: The official name of the currency.
+- **ISO Code**: The standardized international three-letter code representing the currency.
+- **Numeric ISO Code**: The numerical code assigned to the currency, as per international standards.
+- **Symbol**: The graphical symbol or abbreviation used to denote the currency (e.g., $ for USD, € for EUR).
 
 ![Currencies](img/currencies.png)
 
-## Automated Exchange Rates
+## Exchange Rates
 
-CoreShop supports mulitple providers to get exchange ranges from. Currently supported:
+CoreShop supports automated calculation of exchange rates, simplifying the process of maintaining current and accurate
+currency information. This feature is particularly useful for stores that handle transactions in multiple currencies and
+need to ensure consistent and fair pricing across different regions.
 
- - CentralBankOfRepulicTurkey
- - EuropeanCentralBank
- - GoogleFinance
- - NationalBankOfRomania
- - YahooFinance
- - WebserviceX
-
-To activate this feature, enable it within CoreShop Settings and choose your provider.
+> **Important**: Regular updates of exchange rates are necessary for accurate currency conversion.

@@ -27,7 +27,7 @@ coreshop.order.quote.detail.blocks.info = Class.create(coreshop.order.order.deta
                     type: 'coreshop-open',
                     tooltip: t('open'),
                     handler: function () {
-                        pimcore.helpers.openObject(me.sale.o_id);
+                        pimcore.helpers.openObject(me.sale.id);
                     }
                 }
             ]
@@ -53,7 +53,7 @@ coreshop.order.quote.detail.blocks.info = Class.create(coreshop.order.order.deta
     updateSale: function () {
         var me = this;
 
-        me.saleInfo.setTitle(t('coreshop_' + me.panel.type) + ': ' + this.sale.quoteNumber + ' (' + this.sale.o_id + ')');
+        me.saleInfo.setTitle(t('coreshop_' + me.panel.type) + ': ' + this.sale.quoteNumber + ' (' + this.sale.id + ')');
 
         me.saleInfo.removeAll();
         me.saleStatesStore.loadRawData(me.sale.statesHistory);
@@ -66,7 +66,7 @@ coreshop.order.quote.detail.blocks.info = Class.create(coreshop.order.order.deta
                         url: Routing.generate('coreshop_admin_order_update_order_state'),
                         params: {
                             transition: transitionInfo.transition,
-                            o_id: context.sale.o_id
+                            id: context.sale.id
                         },
                         success: function (response) {
                             var res = Ext.decode(response.responseText);

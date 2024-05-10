@@ -1,3 +1,3 @@
 coreshop_admin_payment_provider_config:
     path: /%coreshop.admin.route.base%/payment_providers/get-config
-    defaults: { _controller: 'coreshop.admin_controller.payment_provider:getConfigAction'}
+    defaults: { _controller: 'coreshop.admin_controller.payment_provider::getConfigAction'}

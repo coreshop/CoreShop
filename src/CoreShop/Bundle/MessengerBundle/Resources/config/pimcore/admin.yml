@@ -1,7 +1,8 @@
 core_shop_messenger:
     pimcore_admin:
         js:
-            resource: '/bundles/coreshopmessenger/pimcore/js/resource.js'
             list: '/bundles/coreshopmessenger/pimcore/js/list.js'
+            resource: '/bundles/coreshopmessenger/pimcore/js/resource.js'
+            resource_standalone: '/bundles/coreshopmessenger/pimcore/js/resource_standalone.js'
         css:
             index: '/bundles/coreshopmessenger/pimcore/css/messenger.css'

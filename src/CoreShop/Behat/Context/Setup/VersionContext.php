@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Db;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Version;
@@ -54,7 +54,7 @@ final class VersionContext implements Context
         $GLOBALS['data'] = $data;
 
         $db = Db::get();
-        $versionData = $db->fetchRow("SELECT id,date,versionCount FROM versions WHERE cid = ? AND ctype='object' ORDER BY `versionCount` DESC, `id` DESC LIMIT 1", $concrete->getId());
+        $versionData = $db->fetchAssociative("SELECT id,date,versionCount FROM versions WHERE cid = ? AND ctype='object' ORDER BY `versionCount` DESC, `id` DESC LIMIT 1", [$concrete->getId()]);
         $version = Version::getById($versionData['id']);
 
 //        $version = $concrete->getLatestVersion();
@@ -80,7 +80,7 @@ final class VersionContext implements Context
         $product = $this->sharedStorage->get('product');
         $id = $product->getId();
 
-        $this->sharedStorage->set('product', $product::getById($id, true));
+        $this->sharedStorage->set('product', $product::getById($id, ['force' => true]));
     }
 
     private function restoreVersion(Concrete $concrete, string $key): Concrete

@@ -14,7 +14,7 @@ coreshop.pimcore.plugin.grid = Class.create({
         this.gridPaginator = gridPaginator;
         this.actionStore = this.getActionStore();
 
-        pimcore.plugin.broker.registerPlugin(this);
+        document.addEventListener(pimcore.events.prepareOnRowContextmenu, this.prepareOnRowContextmenu.bind(this));
     },
 
     getActionStore: function () {
@@ -34,7 +34,10 @@ coreshop.pimcore.plugin.grid = Class.create({
         return actionStore;
     },
 
-    prepareOnRowContextmenu: function (menu, grid, selectedRows) {
+    prepareOnRowContextmenu: function (event) {
+        var menu = event.detail.menu;
+        var grid = event.detail.grid;
+        var selectedRows = event.detail.selectedRows;
 
         var extraParams = grid.getStore().getProxy().getExtraParams(),
             _ = this;

@@ -53,6 +53,8 @@ interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
      */
     public const FIELD_TYPE_DATE = 'DATE';
 
+    public function getId(): ?int;
+
     /**
      * @return IndexInterface
      */

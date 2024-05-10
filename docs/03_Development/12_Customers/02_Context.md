@@ -1,17 +1,41 @@
-# CoreShop Customer Context
+# Customer Context
 
-CoreShop Customer Security uses [Symfony Firewall](https://symfony.com/doc/current/components/security/firewall.html) to handle authentication.
+CoreShop's approach to customer security leverages
+the [Symfony Firewall](https://symfony.com/doc/current/components/security/firewall.html) for authentication purposes.
+To enhance flexibility, CoreShop has wrapped this functionality in a context-based system. This setup allows for various
+methods of determining customer context.
 
-CoreShop implemented a Context based Wrapper around that to be more flexible. Currently CoreShop implements these Contexts for Customer determination:
+## Implemented Contexts for Customer Determination
 
- - [Security Token Based](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Customer/Context/RequestBased/TokenBasedRequestResolver.php)
+CoreShop includes specific contexts for customer identification, such as:
 
+- **Security Token Based**: A method that uses security tokens for customer identification. More details can be
+  found [here](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Customer/Context/RequestBased/TokenBasedRequestResolver.php).
 
-## Create a Custom Resolver
+## Creating a Custom Resolver
 
-A Store Context needs to implement the interface ```CoreShop\Component\Customer\Context\CustomerContextInterface```. This interface
-consists of one function called "getCustomer" which returns a ```CoreShop\Component\Customer\Model\CustomerInterface``` or throws an ```CoreShop\Component\Customer\Context\CustomerNotFoundException```
+In scenarios where the default customer context determination method does not fit your requirements, CoreShop allows the
+creation of custom resolvers.
 
-To register your context, you need to use the tag: ```coreshop.context.customer``` with an optional ```priority``` attribute.
+### Implementing the Custom Resolver
 
-The use case of changing this is quite rare. But if you need to, you can create a Custom Resolver if you wish.
+1. **Interface Implementation**: Your custom resolver should implement
+   the `CoreShop\Component\Customer\Context\CustomerContextInterface`.
+   The interface includes the `getCustomer` function, which should return
+   a `CoreShop\Component\Customer\Model\CustomerInterface` or throw
+   a `CoreShop\Component\Customer\Context\CustomerNotFoundException`.
+
+2. **Service Registration**: Register your custom context by using the tag `coreshop.context.customer`. You can also
+   specify an optional `priority` attribute for the tag.
+
+```php
+// Example PHP code for custom resolver implementation
+```
+
+### Use Case for Custom Resolvers
+
+While the need for custom customer context resolvers might be rare, having the ability to create one provides additional
+flexibility for specific use cases or unique business requirements.
+
+Implementing a custom resolver allows you to tailor the customer identification process in a way that aligns more
+closely with your operational needs or security protocols.

@@ -33,3 +33,9 @@ core_shop_storage_list:
                 summary: '@CoreShopFrontend/Wishlist/summary.html.twig'
             controller:
                 enabled: true
+            expiration:
+                enabled: true
+                params:
+                    days: 20
+                    anonymous: true
+                    customer: true

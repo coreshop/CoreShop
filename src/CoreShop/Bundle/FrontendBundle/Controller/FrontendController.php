@@ -19,20 +19,37 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\SEO\SEOPresentationInterface;
+use Pimcore\Http\RequestHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @property ContainerInterface $container
- */
-class FrontendController extends AbstractController
+abstract class FrontendController extends AbstractController
 {
-    protected TemplateConfiguratorInterface $templateConfigurator;
+    public function __construct(
+        \Psr\Container\ContainerInterface $container,
+    ) {
+        $this->container = $container;
+    }
 
-    public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator): void
+    protected function getTemplateConfigurator(): TemplateConfiguratorInterface
     {
-        $this->templateConfigurator = $templateConfigurator;
+        return $this->container->get(TemplateConfiguratorInterface::class);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            TemplateConfiguratorInterface::class => TemplateConfiguratorInterface::class,
+            ShopperContextInterface::class => ShopperContextInterface::class,
+            CartContextInterface::class => CartContextInterface::class,
+            'translator' => TranslatorInterface::class,
+            RequestHelper::class => RequestHelper::class,
+            SEOPresentationInterface::class => SEOPresentationInterface::class,
+        ]);
     }
 
     /**

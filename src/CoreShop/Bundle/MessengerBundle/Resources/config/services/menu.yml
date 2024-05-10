@@ -2,12 +2,7 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Bundle\MessengerBundle\Menu\IndexMenuBuilder:
+    CoreShop\Bundle\MessengerBundle\Menu\MessengerMenuBuilder:
         tags:
-            - { name: 'coreshop.menu', type: messenger, menu: messenger }
+            - { name: coreshop.menu, type: messenger, menu: coreshop }
 
-    CoreShop\Bundle\MessengerBundle\EventListener\AdminJavascriptListener:
-        arguments:
-            - '@router'
-        tags:
-            - { name: kernel.event_subscriber }

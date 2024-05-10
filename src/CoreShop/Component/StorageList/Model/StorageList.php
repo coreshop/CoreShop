@@ -41,9 +41,14 @@ abstract class StorageList implements StorageListInterface
 
     public function addItem($item): void
     {
+        /**
+         * @var StorageListItemInterface $item
+         */
         Assert::isInstanceOf($item, StorageListItemInterface::class);
 
         $items = $this->getItems();
+        $item->setStorageList($this);
+
         $items[] = $item;
 
         $this->setItems($items);
@@ -88,5 +93,10 @@ abstract class StorageList implements StorageListInterface
     public function hasItems(): bool
     {
         return count($this->items) > 0;
+    }
+
+    public function count(): int
+    {
+        return count($this->items);
     }
 }

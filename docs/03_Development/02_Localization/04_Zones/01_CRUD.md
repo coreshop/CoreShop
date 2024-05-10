@@ -1,62 +1,58 @@
 # Zones
 
+Managing zones in CoreShop involves various operations, including create, read, update, and delete. Below are the
+guidelines for each of these operations.
+
 ## Create
-If you want to create a Zone via API, you can do following:
+
+To create a new zone via the API:
 
 ```php
 $newZone = $container->get('coreshop.factory.zone')->createNew();
 ```
 
-Now you have a new Zone, if you want to persist it, you need to do following:
+After creating a new Zone instance, persist it using:
 
 ```php
 $container->get('coreshop.manager.zone')->persist($newZone);
 $container->get('coreshop.manager.zone')->flush();
 ```
 
-You now have a new persisted Zone.
+You now have a new persisted zone.
 
 ## Read
 
-If you want to query for Zones, you can do following:
+To query for zones:
 
 ```php
 $zoneRepository = $container->get('coreshop.repository.zone');
-
 $queryBuilder = $zoneRepository->createQueryBuilder('c');
-
 // You can now create your query
-
 // And get the result
-
 $zones = $queryBuilder->getQuery()->getResult();
-
 ```
 
 ## Update
 
-If you want to update and existing Zone, you need to do following:
+To update an existing zone:
 
 ```php
 // Fetch Zone
-
 $zone = $zoneRepository->findById(1);
 $zone->setName('Euro');
-
 // And Persist it
 $container->get('coreshop.manager.zone')->persist($zone);
 $container->get('coreshop.manager.zone')->flush();
 ```
 
 ## Delete
-If you want to update and existing Zone, you need to do following:
+
+To delete an existing zone:
 
 ```php
 // Fetch Zone
-
 $zone = $zoneRepository->findById(1);
-
-// And Persist it
+// And Remove it
 $container->get('coreshop.manager.zone')->remove($zone);
 $container->get('coreshop.manager.zone')->flush();
 ```

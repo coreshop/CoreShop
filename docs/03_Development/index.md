@@ -1,42 +1,46 @@
-# CoreShop
+# Development
 
-The Developer’s guide to leveraging the flexibility of CoreShop. Here you will find all the concepts used in CoreShop.
+This guide is intended for developers who aim to harness the flexibility and robust features of CoreShop. It outlines
+the key concepts and components used in CoreShop, providing insights into its architecture and how to effectively work
+with it.
 
 ## Introduction
 
-## CoreShop Resources
+CoreShop offers a rich set of tools and features for building sophisticated eCommerce solutions. Understanding the
+underlying concepts and models is crucial for leveraging its full potential.
 
-CoreShop uses Doctrine ORM for Custom Resources. ORM enables us great flexibility and extendability for simple models like Currencies and Countries.
-CoreShop currently implements these Resources as ORM Model:
+## Resources
 
- - Currency
- - Country and State
- - Tax Rate and Tax Rules
- - Price Rules
- - Carrier
- - Shipping Rules
- - Index and Filter Configuration
- - Notification Rule Configuration
- - Stores
- - Payments
+CoreShop utilizes Doctrine ORM for its custom resources, offering great flexibility and extendability for managing
+simple models such as currencies, countries, etc. Here are the primary resources implemented as ORM models in CoreShop:
 
-Everytime something is called a Resource, we talk about ORM Models.
+- **Currency**: Handling various currencies.
+- **Country and State**: Geographical models for location-based functionality.
+- **Tax Rate and Tax Rules**: For applying taxes in different scenarios.
+- **Price Rules**: Rules that define pricing under various conditions.
+- **Carrier**: Shipping carriers and their configurations.
+- **Shipping Rules**: Rules for handling shipping logic and pricing.
+- **Index and Filter Configuration**: For product indexing and filtering.
+- **Notification Rule Configuration**: Setting up rules for notifications.
+- **Stores**: Representing different stores or sales channels.
+- **Payments**: Handling payment methods and transactions.
 
-## CoreShop Pimcore Models
+In CoreShop, the term 'Resource' refers to these ORM Models.
 
-CoreShop also takes advantage of Pimcores flexible data-model.
-Objects that are heavily used and changed are implemented using Data Objects:
+## Pimcore Models
 
- - Product
- - Product Category
- - Manufacturer
- - Cart
- - Order
- - Order Invoice
- - Order Shipment
- - Quote
- - Customer
- - Customer Group
- - Addresses
+Leveraging Pimcore's flexible data model, CoreShop uses Data Objects for frequently used and modified entities. The
+following are the key objects implemented using Pimcore Data Objects:
 
-Everytime we talk about Objects, we talk about Pimcore Data Objects.
+- **Product**: The core entity in any eCommerce platform.
+- **Product Category**: Organizing products into categories.
+- **Manufacturer**: Information about product manufacturers.
+- **Order**: Managing customer cart/orders.
+- **Order Invoice**: Generating and handling invoices.
+- **Order Shipment**: Managing the shipment of orders.
+- **Quote**: Handling quotes for customers.
+- **Customer**: Customer data and profiles.
+- **Customer Group**: Grouping customers for specific functionalities or offers.
+- **Addresses**: Managing customer addresses.
+
+When discussing 'Objects' in the context of CoreShop, it refers to these Pimcore Data Objects.

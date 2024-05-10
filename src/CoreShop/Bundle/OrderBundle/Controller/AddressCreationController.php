@@ -29,6 +29,8 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class AddressCreationController extends PimcoreController
 {
@@ -37,7 +39,7 @@ class AddressCreationController extends PimcoreController
         ObjectServiceInterface $objectService,
         ErrorSerializer $errorSerializer,
     ): Response {
-        $form = $this->get('form.factory')->createNamed('', AdminAddressCreationType::class);
+        $form = $this->container->get('form.factory')->createNamed('', AdminAddressCreationType::class);
 
         if ($request->getMethod() === 'POST') {
             $form = $form->handleRequest($request);
@@ -60,7 +62,7 @@ class AddressCreationController extends PimcoreController
                 $address->setParent($objectService->createFolderByPath(sprintf(
                     '/%s/%s',
                     $customer->getFullPath(),
-                    (string) $this->container->getParameter('coreshop.folder.address'),
+                    (string) $this->getParameter('coreshop.folder.address'),
                 )));
                 $address->save();
 
@@ -68,7 +70,7 @@ class AddressCreationController extends PimcoreController
                     $customer->addAddress($address);
                 }
 
-                $this->get('event_dispatcher')->dispatch(
+                $this->container->get('event_dispatcher')->dispatch(
                     new AdminAddressCreationEvent($address, $customer, $data),
                     Events::ADMIN_ADDRESS_CREATION,
                 );
@@ -87,5 +89,12 @@ class AddressCreationController extends PimcoreController
         }
 
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+        ]);
     }
 }

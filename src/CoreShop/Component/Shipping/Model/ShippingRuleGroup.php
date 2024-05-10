@@ -54,7 +54,7 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
      */
     private $shippingRule;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

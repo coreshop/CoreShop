@@ -26,6 +26,7 @@ use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Resource\Model\ImmutableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
@@ -41,8 +42,11 @@ interface OrderInterface extends
     ConvertedAdjustableInterface,
     CustomerAwareInterface,
     PayableInterface,
-    StorageListInterface
+    StorageListInterface,
+    ImmutableInterface
 {
+    public function getId(): ?int;
+
     public function getToken(): ?string;
 
     public function setToken(?string $token);
@@ -173,6 +177,8 @@ interface OrderInterface extends
 
     public function setInvoiceAddress(?AddressInterface $invoiceAddress);
 
+    public function getConvertedPaymentProviderFee(): int;
+
     /**
      * @return Fieldcollection
      */
@@ -221,4 +227,6 @@ interface OrderInterface extends
     public function getPaymentProvider(): ?PaymentProviderInterface;
 
     public function setPaymentProvider(?PaymentProviderInterface $paymentProvider);
+
+    public function recalculateSubtotal(): void;
 }

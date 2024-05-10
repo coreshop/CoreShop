@@ -1,10 +1,9 @@
 imports:
-    - { resource: services_alias.yml }
+    - { resource: ../../../TestBundle/Resources/config/twig.yml }
 
 services:
     coreshop.frontend.controller.abstract:
         class: CoreShop\Bundle\FrontendBundle\Controller\FrontendController
-        abstract: true
         calls:
             - [setContainer, ['@service_container']]
             - [setTemplateConfigurator, ['@CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface']]
@@ -21,18 +20,7 @@ services:
             - '@Pimcore\Model\Document\Service'
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '@Symfony\Component\HttpFoundation\RequestStack'
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Bundle\FrontendBundle\Twig\TestHtmlAttributeExtension:
-        arguments:
-            - '%kernel.environment%'
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Bundle\FrontendBundle\Twig\TestFormAttributeExtension:
-        arguments:
-            - '%kernel.environment%'
+            - '@router'
         tags:
             - { name: twig.extension }
 
@@ -40,8 +28,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    CoreShop\Bundle\FrontendBundle\Controller\CategoryController:
-        arguments:
-            - '%coreshop.frontend.category.valid_sort_options%'
-            - '%coreshop.frontend.category.default_sort_name%'
-            - '%coreshop.frontend.category.default_sort_direction%'
+    CoreShop\Bundle\FrontendBundle\Twig\TypeCastExtension:
+        tags:
+            - { name: twig.extension }

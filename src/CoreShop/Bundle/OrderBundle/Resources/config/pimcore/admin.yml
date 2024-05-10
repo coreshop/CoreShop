@@ -17,6 +17,7 @@ core_shop_order:
             cart_pricerule_condition_nested: '/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/nested.js'
             cart_pricerule_condition_timespan: '/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/timespan.js'
             cart_pricerule_condition_voucher: '/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/voucher.js'
+            cart_pricerule_condition_not_combinable: '/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/not_combinable.js'
 #            sale_detail_panel: '/bundles/coreshoporder/pimcore/js/sale/detail/panel.js'
 
             cart_item_pricerule_action_discount_amount: '/bundles/coreshoporder/pimcore/js/cart_item/pricerules/actions/discountAmount.js'

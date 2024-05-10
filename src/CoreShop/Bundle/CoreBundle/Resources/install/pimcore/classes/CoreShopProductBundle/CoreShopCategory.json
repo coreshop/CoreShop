@@ -23,7 +23,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "tabpanel",
                 "name": "Layout",
@@ -37,7 +37,7 @@
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -53,10 +53,10 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "localizedfields",
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "input",
                                         "width": null,
@@ -101,7 +101,7 @@
                                         "fieldtype": "urlSlug",
                                         "width": "",
                                         "domainLabelWidth": null,
-                                        "action": "CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController:detailSlugAction",
+                                        "action": "CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController::detailSlugAction",
                                         "availableSites": [],
                                         "name": "slug",
                                         "title": "coreshop.category.slug",
@@ -171,7 +171,7 @@
                                 "options": [],
                                 "width": "",
                                 "height": "",
-                                "maxItems": "",
+                                "maxItems": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
                                 "name": "stores",
@@ -226,10 +226,10 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "localizedfields",
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "input",
                                         "width": null,

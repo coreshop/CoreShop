@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StorageListBundle\Controller;
 
-use CoreShop\Bundle\StorageListBundle\Form\Type\AddToNewStorageListType;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
@@ -39,6 +38,7 @@ use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInte
 use CoreShop\Component\StorageList\Resolver\StorageListResolverInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -48,10 +48,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StorageListController extends AbstractController
 {
     public function __construct(
+        ContainerInterface $container,
         protected string $identifier,
         protected FormFactoryInterface $formFactory,
         protected RepositoryInterface $repository,
@@ -77,7 +79,9 @@ class StorageListController extends AbstractController
         protected AddToNewStorageListFactoryInterface $addToNewStorageListFactory,
         protected string $templateAddToNewList,
         protected ContextProviderInterface $contextProvider,
+        protected TranslatorInterface $translator,
     ) {
+        $this->setContainer($container);
     }
 
     public function addToNewNamedListAction(Request $request): Response
@@ -266,8 +270,19 @@ class StorageListController extends AbstractController
 
     public function addItemAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier)));
+        $privilege = sprintf('CORESHOP_%s', strtoupper($this->identifier));
+        $privilegeAdd = sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier));
+        if ($request->isMethod('GET') && !($this->isGranted($privilege) && $this->isGranted($privilegeAdd))) {
+            return $this->render(
+                $this->getParameterFromRequest($request, 'template', $this->templateAddToList),
+                [
+                    'form' => null,
+                    'product' => null,
+                ],
+            );
+        }
+        $this->denyAccessUnlessGranted($privilege);
+        $this->denyAccessUnlessGranted($privilegeAdd);
 
         $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->summaryRoute));
         $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
@@ -305,7 +320,7 @@ class StorageListController extends AbstractController
                 $this->modifier->addToList($addToStorageList->getStorageList(), $addToStorageList->getStorageListItem());
                 $this->manager->persist($storageList);
 
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
+                $this->addFlash('success', $this->translator->trans('coreshop.ui.item_added'));
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
@@ -368,7 +383,7 @@ class StorageListController extends AbstractController
             return $this->redirectToRoute($this->indexRoute);
         }
 
-        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
+        $this->addFlash('success', $this->translator->trans('coreshop.ui.item_removed'));
 
         $this->modifier->removeFromList($storageList, $storageListItem);
         $this->manager->persist($storageList);
@@ -400,8 +415,7 @@ class StorageListController extends AbstractController
             if (null === $list) {
                 throw new NotFoundHttpException();
             }
-        }
-        else {
+        } else {
             $list = $this->context->getStorageList();
         }
 
@@ -410,7 +424,7 @@ class StorageListController extends AbstractController
 
         $params = [
             'storage_list' => $list,
-            'is_shared_list' => $isSharedList
+            'is_shared_list' => $isSharedList,
         ];
 
         if (!$isSharedList) {
@@ -421,7 +435,7 @@ class StorageListController extends AbstractController
                 if ($form->isValid()) {
                     $list = $form->getData();
 
-                    $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
+                    $this->addFlash('success', $this->translator->trans('coreshop.ui.cart_updated'));
 
                     $this->manager->persist($list);
 

@@ -1,0 +1,23 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\ClassDefinitionPatchBundle\PatchesInterface: '@CoreShop\Bundle\ClassDefinitionPatchBundle\Patches'
+    CoreShop\Bundle\ClassDefinitionPatchBundle\Patches: ~
+
+    CoreShop\Bundle\ClassDefinitionPatchBundle\PatcherInterface: '@CoreShop\Bundle\ClassDefinitionPatchBundle\Patcher'
+    CoreShop\Bundle\ClassDefinitionPatchBundle\Patcher:
+        arguments:
+            - '@CoreShop\Bundle\ClassDefinitionPatchBundle\Patches'
+
+    CoreShop\Bundle\ClassDefinitionPatchBundle\Console\ColorConsoleDiffFormatter:
+    CoreShop\Bundle\ClassDefinitionPatchBundle\Console\ConsoleDiffer:
+        arguments:
+            - '@CoreShop\Bundle\ClassDefinitionPatchBundle\Console\ColorConsoleDiffFormatter'
+
+    CoreShop\Bundle\ClassDefinitionPatchBundle\Command\PatchCommand:
+        arguments:
+            - '@CoreShop\Bundle\ClassDefinitionPatchBundle\PatcherInterface'
+            - '@CoreShop\Bundle\ClassDefinitionPatchBundle\Console\ConsoleDiffer'
+        tags:
+            - { name: console.command, command: coreshop:patch:classes }

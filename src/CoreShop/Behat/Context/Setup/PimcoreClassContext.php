@@ -20,8 +20,8 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use CoreShop\Behat\Service\ClassStorageInterface;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface;
@@ -113,7 +113,7 @@ final class PimcoreClassContext implements Context
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -129,7 +129,7 @@ final class PimcoreClassContext implements Context
                         "bodyStyle": null,
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [],
+                        "children": [],
                         "locked": false
                     }
                 ],
@@ -172,7 +172,7 @@ final class PimcoreClassContext implements Context
 
         $brickDefinition = new Objectbrick\Definition();
         $brickDefinition->setKey($name);
-        $brickDefinition->setLayoutDefinitions([]);
+        $brickDefinition->setLayoutDefinitions(null);
         $brickDefinition->save();
 
         $json = '{
@@ -193,7 +193,7 @@ final class PimcoreClassContext implements Context
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -209,7 +209,7 @@ final class PimcoreClassContext implements Context
                         "bodyStyle": null,
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [],
+                        "children": [],
                         "locked": false
                     }
                 ],
@@ -251,7 +251,7 @@ final class PimcoreClassContext implements Context
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -267,7 +267,7 @@ final class PimcoreClassContext implements Context
                         "bodyStyle": null,
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [],
+                        "children": [],
                         "locked": false
                     }
                 ],
@@ -471,6 +471,7 @@ final class PimcoreClassContext implements Context
         $jsonDefinition = sprintf('
             {
                 "fieldtype": "checkbox",
+                "datatype": "data",
                 "defaultValue": 0,
                 "name": "%s",
                 "title": "%s",
@@ -501,7 +502,7 @@ final class PimcoreClassContext implements Context
             {
                 "fieldtype": "localizedfields",
                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "input",
                         "width": null,
@@ -561,7 +562,7 @@ final class PimcoreClassContext implements Context
             {
                 "fieldtype": "localizedfields",
                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "textarea",
                         "width": "",
@@ -624,7 +625,7 @@ final class PimcoreClassContext implements Context
                 "fieldtype": "objectbricks",
                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Objectbrick",
                 "allowedTypes": [],
-                "maxItems": "",
+                "maxItems": null,
                 "name": "%s",
                 "title": "%s",
                 "tooltip": "",
@@ -662,7 +663,7 @@ final class PimcoreClassContext implements Context
                     "%s"
                 ],
                 "lazyLoading": true,
-                "maxItems": "",
+                "maxItems": null,
                 "disallowAddRemove": false,
                 "disallowReorder": false,
                 "collapsed": false,
@@ -709,7 +710,7 @@ final class PimcoreClassContext implements Context
      */
     public function iReloadTheObjectInstanceIntoObjectInstance2(Concrete $dataObject): void
     {
-        $newInstance = $dataObject::getById($dataObject->getId(), true);
+        $newInstance = $dataObject::getById($dataObject->getId(), ['force' => true]);
 
         $this->sharedStorage->set('object-instance-2', $newInstance);
     }

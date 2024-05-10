@@ -5,7 +5,7 @@ services:
     CoreShop\Component\Core\Locale\Context\PimcoreAdminLocaleContext:
         arguments:
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
-            - '@pimcore_admin.security.token_storage_user_resolver'
+            - '@Pimcore\Security\User\TokenStorageUserResolver'
             - '@coreshop.translation_locale_provider'
             - '@request_stack'
         tags:

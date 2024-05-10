@@ -2,8 +2,8 @@ CoreShop\Component\Order\Model\OrderShipment:
     exclusion_policy: ALL
     xml_root_name: order_shipment
     virtual_properties:
-        o_id:
-            serialized_name: o_id
+        id:
+            serialized_name: id
             exp: object.getId()
             type: integer
             groups: [Detailed]
@@ -25,7 +25,7 @@ CoreShop\Component\Order\Model\OrderShipment:
         trackingCode:
             serialized_name: trackingCode
             exp: object.getTrackingCode()
-            type: integer
+            type: string
             groups: [Detailed]
         items:
             serialized_name: items

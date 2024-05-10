@@ -18,35 +18,36 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
+use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\PayumPayment\Model\GatewayConfig;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Lorem;
 use Pimcore\Tool;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class PaymentProviderFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class PaymentProviderFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private PaymentProviderRepositoryInterface $paymentProviderRepository,
+        private StoreRepositoryInterface $storeRepository,
+        private FactoryInterface $paymentProviderFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
 
     public function load(ObjectManager $manager): void
     {
-        if (!count($this->container->get('coreshop.repository.payment_provider')->findAll())) {
-            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
+        if (!count($this->paymentProviderRepository->findAll())) {
+            $defaultStore = $this->storeRepository->findStandard();
 
             $faker = Factory::create();
             $faker->addProvider(new Lorem($faker));
@@ -54,7 +55,7 @@ class PaymentProviderFixture extends AbstractFixture implements ContainerAwareIn
             /**
              * @var PaymentProviderInterface $provider
              */
-            $provider = $this->container->get('coreshop.factory.payment_provider')->createNew();
+            $provider = $this->paymentProviderFactory->createNew();
 
             $gatewayConfig = new GatewayConfig();
             $gatewayConfig->setFactoryName('offline');

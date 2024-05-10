@@ -24,6 +24,8 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 
 interface CartPriceRuleVoucherCodeInterface extends ResourceInterface, TimestampableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

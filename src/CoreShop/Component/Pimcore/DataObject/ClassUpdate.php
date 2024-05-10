@@ -23,31 +23,35 @@ use Pimcore\Model\DataObject;
 
 class ClassUpdate extends AbstractDefinitionUpdate
 {
-    private DataObject\ClassDefinition $classDefinition;
+    private ?DataObject\ClassDefinition $classDefinition;
 
     public function __construct(
         string $className,
     ) {
         parent::__construct();
 
-        $this->classDefinition = DataObject\ClassDefinition::getByName($className);
+        $classDefinition = DataObject\ClassDefinition::getByName($className);
 
-        if (null === $this->classDefinition) {
+        if (null === $classDefinition) {
             throw new ClassDefinitionNotFoundException(sprintf('ClassDefinition %s not found', $className));
         }
 
+        $this->classDefinition = $classDefinition;
         $this->fieldDefinitions = $this->classDefinition->getFieldDefinitions();
         $this->jsonDefinition = json_decode(
             DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->classDefinition),
             true,
+            512,
+            \JSON_THROW_ON_ERROR,
         );
+        $this->originalJsonDefinition = $this->jsonDefinition;
     }
 
     public function save(): bool
     {
-        return null !== DataObject\ClassDefinition\Service::importClassDefinitionFromJson(
+        return DataObject\ClassDefinition\Service::importClassDefinitionFromJson(
             $this->classDefinition,
-            json_encode($this->jsonDefinition),
+            json_encode($this->jsonDefinition, \JSON_THROW_ON_ERROR),
             true,
         );
     }

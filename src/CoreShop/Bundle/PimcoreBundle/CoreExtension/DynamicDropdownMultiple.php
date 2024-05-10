@@ -28,14 +28,14 @@ class DynamicDropdownMultiple extends ManyToManyObjectRelation
 {
     use DynamicDropdownTrait;
 
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopDynamicDropdownMultiple';
+    public string $fieldtype = 'coreShopDynamicDropdownMultiple';
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
+
+    public function getDataFromEditmode(mixed $data, DataObject\Concrete $object = null, array $params = []): ?array
     {
         //if not set, return null
         if ($data === null || $data === false) {

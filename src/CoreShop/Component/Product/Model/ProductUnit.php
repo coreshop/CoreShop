@@ -51,7 +51,7 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface, \Str
         $this->id = $id;
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

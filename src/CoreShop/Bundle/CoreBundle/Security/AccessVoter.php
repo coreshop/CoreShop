@@ -28,12 +28,15 @@ class AccessVoter extends Voter
     ) {
     }
 
-    protected function supports(string $attribute, $subject)
+    /**
+     * @phpstan-ignore-next-line
+     */
+    protected function supports(string $attribute, $subject): bool
     {
         return str_starts_with($attribute, $this->prefix);
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         return true;
     }

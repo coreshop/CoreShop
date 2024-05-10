@@ -27,7 +27,12 @@ use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
  */
 class Country extends Select
 {
-    public $fieldtype = 'coreShopCountry';
+    public string $fieldtype = 'coreShopCountry';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository(): CountryRepositoryInterface
     {

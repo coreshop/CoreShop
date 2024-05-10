@@ -1,3 +1,0 @@
-# CoreShop Exchange Rates
-
-TODO

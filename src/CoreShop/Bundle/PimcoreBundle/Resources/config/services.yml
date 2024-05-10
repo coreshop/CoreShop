@@ -1,5 +1,4 @@
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/grid.yml }
     - { resource: services/dynamic_dropdown.yml }
     - { resource: services/pimcore.yml }
@@ -11,14 +10,13 @@ parameters:
 services:
     _defaults:
         public: true
+        autowire: true
 
     CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\ClassInstaller'
     CoreShop\Component\Pimcore\DataObject\ClassInstaller: ~
 
     CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
     CoreShop\Component\Pimcore\DataObject\GridConfigInstaller: ~
-
-    CoreShop\Component\Pimcore\ResourceLoader: ~
 
     CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface: '@CoreShop\Component\Pimcore\DataObject\ObjectService'
     CoreShop\Component\Pimcore\DataObject\ObjectService: ~
@@ -27,6 +25,7 @@ services:
     CoreShop\Component\Pimcore\DataObject\NoteService:
         arguments:
             - '@event_dispatcher'
+            - '@monolog.logger.pimcore'
 
     CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface: '@CoreShop\Component\Pimcore\DataObject\ObjectCloner'
     CoreShop\Component\Pimcore\DataObject\ObjectCloner: ~
@@ -38,6 +37,8 @@ services:
 
     coreshop.expression_language:
         class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
+        arguments:
+            - '@cache.system'
 
     CoreShop\Component\Pimcore\ExpressionLanguage\PimcoreLanguageProvider:
         tags:
@@ -87,7 +88,6 @@ services:
         arguments:
             - '@Pimcore\Http\Request\Resolver\SiteResolver'
             - '@Symfony\Component\HttpFoundation\RequestStack'
-            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
         tags:
             - { name: coreshop.link_generator, type: sluggable, priority: 20 }
 

@@ -37,3 +37,7 @@ core_shop_workflow:
                         on: ['order', 'quote']
                         do: ['@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface', 'log']
                         args: ['object', 'event']
+                    immutability:
+                        on: ['order']
+                        do: ['@CoreShop\Component\Order\Modifier\ImmutabilityModifierInterface', 'makeImmutable']
+                        args: ['object']

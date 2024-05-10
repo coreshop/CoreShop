@@ -9,6 +9,9 @@ parameters:
     coreshop.form.type.add_to_new_wishlist.validation_groups: [coreshop]
     coreshop.form.type.edit_wishlist.validation_groups: [coreshop]
 
+imports:
+    - { resource: services/commands.yml }
+
 services:
     _defaults:
         public: true
@@ -35,7 +38,6 @@ services:
             - '@coreshop.factory.wishlist'
         tags:
             - { name: coreshop.context.wishlist, priority: -999 }
-
 
     CoreShop\Bundle\WishlistBundle\Form\Type\WishlistType:
         arguments:

@@ -25,4 +25,6 @@ interface IndexUpdaterServiceInterface
     public function updateIndices(IndexableInterface $subject, bool $isVersionChange = false): void;
 
     public function removeIndices(IndexableInterface $subject): void;
+
+    public function removeFromIndicesById(string $className, int $id): void;
 }

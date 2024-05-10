@@ -29,6 +29,7 @@ class SlugGenerationEvent extends Event
         protected string $slug,
         protected ?string $suffix = null,
         protected ?Site $site = null,
+        protected ?string $locale = null,
     ) {
     }
 
@@ -55,5 +56,10 @@ class SlugGenerationEvent extends Event
     public function getSite(): ?Site
     {
         return $this->site;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
     }
 }

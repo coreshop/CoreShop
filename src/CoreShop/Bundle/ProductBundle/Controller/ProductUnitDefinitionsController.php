@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -31,15 +31,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductUnitDefinitionsController extends ResourceController
 {
-    public function productUnitDefinitionsListAction(Request $request): Response
+    public function productUnitDefinitionsListAction(Request $request, StackRepositoryInterface $coreshopProductStackRepository): Response
     {
         $definitions = [];
 
-        /** @var StackRepository $repository */
-        $repository = $this->get('coreshop.repository.stack.product');
-
         /** @var ProductInterface $product */
-        $product = $repository->find($this->getParameterFromRequest($request, 'productId'));
+        $product = $coreshopProductStackRepository->find($this->getParameterFromRequest($request, 'productId'));
 
         if ($product instanceof ProductInterface) {
             $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
@@ -48,15 +45,12 @@ class ProductUnitDefinitionsController extends ResourceController
         return $this->viewHandler->handle($definitions);
     }
 
-    public function productAdditionalUnitDefinitionsListAction(Request $request): Response
+    public function productAdditionalUnitDefinitionsListAction(Request $request, StackRepositoryInterface $coreshopProductStackRepository): Response
     {
         $definitions = [];
 
-        /** @var StackRepository $repository */
-        $repository = $this->get('coreshop.repository.stack.product');
-
         /** @var ProductInterface $product */
-        $product = $repository->find($this->getParameterFromRequest($request, 'productId'));
+        $product = $coreshopProductStackRepository->find($this->getParameterFromRequest($request, 'productId'));
 
         if ($product instanceof Concrete) {
             $product = VersionHelper::getLatestVersion($product);

@@ -53,12 +53,14 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
                 $itemRetailPrice = $item->getItemRetailPrice($withTax);
                 $itemDiscountPrice = $item->getItemDiscountPrice($withTax);
                 $itemDiscount = $item->getItemDiscount($withTax);
-                $itemPrice = $item->getTotal($withTax);
-                $total = $item->getItemPrice($withTax);
+                $total = $item->getTotal($withTax);
+                $itemPrice = $item->getItemPrice($withTax);
+                $subtotal = $item->getSubtotal($withTax);
 
                 $item->setConvertedItemRetailPrice($this->convert($itemRetailPrice, $cart), $withTax);
-                $item->setConvertedTotal($this->convert($itemPrice, $cart), $withTax);
-                $item->setConvertedItemPrice($this->convert($total, $cart), $withTax);
+                $item->setConvertedTotal($this->convert($total, $cart), $withTax);
+                $item->setConvertedSubtotal($this->convert($subtotal, $cart), $withTax);
+                $item->setConvertedItemPrice($this->convert($itemPrice, $cart), $withTax);
                 $item->setConvertedItemDiscount($this->convert($itemDiscount, $cart), $withTax);
                 $item->setConvertedItemDiscountPrice($this->convert($itemDiscountPrice, $cart), $withTax);
             }

@@ -4,3 +4,19 @@ services:
         public: true
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+
+    coreshop.datahub.graphql.querytypegenerator.resource.coreshop_relations_types:
+        class: CoreShop\Bundle\ResourceBundle\DataHub\QueryType\CoreShopRelations
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopRelations }
+
+    coreshop.datahub.graphql.querytypegenerator.resource.coreshop_relation_types:
+        class: CoreShop\Bundle\ResourceBundle\DataHub\QueryType\CoreShopRelation
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopRelation }
+

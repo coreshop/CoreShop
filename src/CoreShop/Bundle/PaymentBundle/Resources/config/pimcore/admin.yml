@@ -4,6 +4,20 @@ core_shop_payment:
             resource: '/bundles/coreshoppayment/pimcore/js/resource.js'
             payment_item: '/bundles/coreshoppayment/pimcore/js/provider/item.js'
             payment_panel: '/bundles/coreshoppayment/pimcore/js/provider/panel.js'
+            
+            
+            payment_provider_rule_item: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/item.js'
+            payment_provider_rule_panel: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/panel.js'
+            payment_provider_rule_action: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/action.js'
+            payment_provider_rule_condition: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/condition.js'
+            
+            payment_provider_rule_conditions_amount: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/amount.js'
+            payment_provider_rule_conditions_nested: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/nested.js'
+            payment_provider_rule_conditions_paymentProviderRule: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/paymentProviderRule.js'
+            payment_provider_rule_actions_addition_percent: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/actions/additionPercent.js'
+            payment_provider_rule_actions_discount_percent: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/actions/discountPercent.js'
+
+
             payment_gateway_abstract: '/bundles/coreshoppayment/pimcore/js/provider/gateways/abstract.js'
             payment_gateway_paypal: '/bundles/coreshoppayment/pimcore/js/provider/gateways/paypal_express_checkout.js'
             payment_gateway_sofort: '/bundles/coreshoppayment/pimcore/js/provider/gateways/sofort.js'

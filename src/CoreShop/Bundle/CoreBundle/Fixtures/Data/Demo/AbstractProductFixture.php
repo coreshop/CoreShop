@@ -18,11 +18,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker\Factory;
 use Faker\Provider\Barcode;
@@ -30,14 +34,10 @@ use Faker\Provider\Lorem;
 use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject\Service;
 use Pimcore\Tool;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class AbstractProductFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
+abstract class AbstractProductFixture extends Fixture implements DependentFixtureInterface
 {
-    use ContainerAwareTrait;
-
     protected static array $names = [
         [
             'de' => [
@@ -541,9 +541,22 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         ],
     ];
 
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        protected int $decimalFactor,
+        protected StoreRepositoryInterface $storeRepository,
+        protected KernelInterface $kernel,
+        protected CategoryRepositoryInterface $categoryRepository,
+        protected FactoryInterface $productFactory,
+        protected ObjectServiceInterface $objectService,
+        protected ProductRepositoryInterface $productRepository,
+        protected RepositoryInterface $attributeGroupRepository,
+        protected RepositoryInterface $attributeColorRepository,
+        protected RepositoryInterface $attributeValueRepository,
+        protected FactoryInterface $productUnitDefinitionFactory,
+        protected FactoryInterface $productUnitDefinitionsFactory,
+        protected FactoryInterface $productUnitDefinitionPriceFactory,
+        protected FactoryInterface $storeValuesFactory,
+    ) {
     }
 
     public function getDependencies(): array
@@ -565,38 +578,35 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
 
-        $decimalFactor = $this->container->getParameter('coreshop.currency.decimal_factor');
+        $decimalFactor = $this->decimalFactor;
 
-        $defaultStore = $this->container->get('coreshop.repository.store')->findStandard()->getId();
-        $stores = $this->container->get('coreshop.repository.store')->findAll();
-
-        /**
-         * @var KernelInterface $kernel
-         */
-        $kernel = $this->container->get('kernel');
-        $categories = $this->container->get('coreshop.repository.category')->findAll();
+        $defaultStore = $this->storeRepository->findStandard()->getId();
+        $stores = $this->storeRepository->findAll();
+        $categories = $this->categoryRepository->findAll();
 
         /**
          * @var CategoryInterface $usedCategory
          */
         $usedCategory = $categories[random_int(0, count($categories) - 1)];
-        $folder = \Pimcore\Model\Asset\Service::createFolderByPath(sprintf(
-            '/demo/%s/%s',
-            $parentPath,
-            Service::getValidKey($usedCategory->getName(), 'asset'),
-        ));
+        $folder = \Pimcore\Model\Asset\Service::createFolderByPath(
+            sprintf(
+                '/demo/%s/%s',
+                $parentPath,
+                Service::getValidKey($usedCategory->getName(), 'asset'),
+            ),
+        );
 
         $images = [];
 
         for ($j = 0; $j < 3; ++$j) {
-            $imagePath = $kernel->locateResource(
+            $imagePath = $this->kernel->locateResource(
                 sprintf(
                     '@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg',
                     random_int(1, 3),
                 ),
             );
 
-            $fileName = sprintf('image_%s.jpg', uniqid());
+            $fileName = sprintf('image_%s.jpg', uniqid('', true));
             $fullPath = $folder->getFullPath() . '/' . $fileName;
 
             $existingImage = Asset::getByPath($fullPath);
@@ -618,7 +628,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         /**
          * @var ProductInterface $product
          */
-        $product = $this->container->get('coreshop.factory.product')->createNew();
+        $product = $this->productFactory->createNew();
         foreach (Tool::getValidLanguages() as $language) {
             $product->setName($name[$language]['name'] ?? $name['en']['name'], $language);
 
@@ -634,20 +644,24 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
 
         foreach ($stores as $store) {
             $product->setStoreValuesOfType('price', (int) ($faker->randomFloat(2, 200, 400) * $decimalFactor), $store);
+            $product->setStoreValuesOfType('taxRule', $this->getReference('taxRule'), $store);
         }
 
-        $product->setTaxRule($this->getReference('taxRule'));
         $product->setWidth($faker->numberBetween(5, 10));
         $product->setHeight($faker->numberBetween(5, 10));
         $product->setDepth($faker->numberBetween(5, 10));
         $product->setWeight($faker->numberBetween(5, 10));
         $product->setImages($images);
         $product->setStores([$defaultStore]);
-        $product->setParent($this->container->get(ObjectServiceInterface::class)->createFolderByPath(sprintf(
-            '/demo/%s/%s',
-            $parentPath,
-            Service::getValidKey($usedCategory->getName(), 'object'),
-        )));
+        $product->setParent(
+            $this->objectService->createFolderByPath(
+                sprintf(
+                    '/demo/%s/%s',
+                    $parentPath,
+                    Service::getValidKey($usedCategory->getName(), 'object'),
+                ),
+            ),
+        );
         $product->setPublished(true);
         $product->setKey($product->getName());
         $product->setKey(Service::getUniqueKey($product));

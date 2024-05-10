@@ -31,13 +31,14 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderRendererInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
+use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Pimcore\Tool;
 
-class MysqlWorker extends AbstractWorker
+class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterface
 {
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
@@ -60,7 +61,7 @@ class MysqlWorker extends AbstractWorker
 
     public function createOrUpdateIndexStructures(IndexInterface $index): void
     {
-        $schemaManager = $this->database->getSchemaManager();
+        $schemaManager = $this->database->createSchemaManager();
 
         $tableName = $this->getTablename($index->getName());
         $localizedTableName = $this->getLocalizedTablename($index->getName());
@@ -70,17 +71,18 @@ class MysqlWorker extends AbstractWorker
 
         foreach ([$tableName, $localizedTableName, $relationalTableName] as $searchTableName) {
             if ($schemaManager->tablesExist([$searchTableName])) {
-                $oldTables[] = $schemaManager->listTableDetails($searchTableName);
+                $oldTables[] = $schemaManager->introspectTable($searchTableName);
             }
         }
 
-        $newSchema = new Schema([], [], $this->database->getSchemaManager()->createSchemaConfig());
-        $oldSchema = new Schema($oldTables, [], $this->database->getSchemaManager()->createSchemaConfig());
+        $newSchema = new Schema([], [], $this->database->createSchemaManager()->createSchemaConfig());
+        $oldSchema = new Schema($oldTables, [], $this->database->createSchemaManager()->createSchemaConfig());
 
         $this->createTableSchema($index, $newSchema);
         $this->createLocalizedTableSchema($index, $newSchema);
         $this->createRelationalTableSchema($index, $newSchema);
 
+        /** @psalm-suppress DeprecatedMethod */
         $queries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
 
         //Show run in an Transaction, but doctrine transactional does not work with PDO for some odd reason....
@@ -299,14 +301,14 @@ QUERY;
                 $this->getLocalizedTablename($oldName) => $this->getLocalizedTablename($newName),
                 $this->getRelationTablename($oldName) => $this->getRelationTablename($newName),
             ];
-            $allViews = $this->database->getSchemaManager()->listViews();
+            $allViews = $this->database->createSchemaManager()->listViews();
 
             foreach ($languages as $language) {
                 $potentialTables[$this->getLocalizedViewName($oldName, $language)] = $this->getLocalizedViewName($newName, $language);
             }
 
             foreach ($potentialTables as $oldTable => $newTable) {
-                if (array_key_exists($oldTable, $allViews) || $this->database->getSchemaManager()->tablesExist($oldTable)) {
+                if (array_key_exists($oldTable, $allViews) || $this->database->createSchemaManager()->tablesExist($oldTable)) {
                     $this->database->executeQuery(
                         sprintf(
                             'RENAME TABLE `%s` TO `%s`',
@@ -326,6 +328,13 @@ QUERY;
         $this->database->delete($this->getTablename($index->getName()), ['o_id' => $object->getId()]);
         $this->database->delete($this->getLocalizedTablename($index->getName()), ['oo_id' => $object->getId()]);
         $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $object->getId()]);
+    }
+
+    public function deleteFromIndexById(IndexInterface $index, int $id): void
+    {
+        $this->database->delete($this->getTablename($index->getName()), ['o_id' => $id]);
+        $this->database->delete($this->getLocalizedTablename($index->getName()), ['oo_id' => $id]);
+        $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $id]);
     }
 
     public function updateIndex(IndexInterface $index, IndexableInterface $object): void
@@ -481,6 +490,7 @@ QUERY;
         }
 
         if (Type::hasType($doctrineType)) {
+            /** @psalm-suppress DeprecatedMethod */
             return Type::getType($doctrineType)->getName();
         }
 

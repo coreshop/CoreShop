@@ -87,8 +87,8 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
         }
 
         $sqlQuery = "SELECT SQL_CALC_FOUND_ROWS
-                         cart.o_creationDate AS creationDate,
-                         cart.o_modificationDate AS modificationDate,
+                         cart.creationDate AS creationDate,
+                         cart.modificationDate AS modificationDate,
                          cart.items,
                          cart.oo_id AS cartId,
                          `user`.email, CONCAT(`user`.firstname, ' ', `user`.lastname) AS userName,
@@ -98,11 +98,11 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
                         LEFT JOIN coreshop_payment_provider AS `pg` ON `pg`.id = cart.paymentProvider
                         WHERE cart.items <> ''
                           AND cart.store = $storeId
-                          AND cart.o_creationDate > ?
-                          AND cart.o_creationDate < ?
+                          AND cart.creationDate > ?
+                          AND cart.creationDate < ?
                           AND cart.saleState = '" . OrderSaleStates::STATE_CART . "'
                      GROUP BY cart.oo_id
-                     ORDER BY cart.o_creationDate DESC
+                     ORDER BY cart.creationDate DESC
                      LIMIT $offset,$limit";
 
         $data = $this->db->fetchAllAssociative($sqlQuery, [$fromTimestamp, $toTimestamp]);
@@ -117,7 +117,7 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
             unset($entry['items']);
         }
 
-        return array_values($data);
+        return $data;
     }
 
     public function getExportReportData(ParameterBag $parameterBag): array

@@ -56,7 +56,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
             $value = trim($value);
         }
 
-        if (!empty($value)) {
+        if (null !== $value) {
             $currentFilter[$field] = $value;
 
             $fieldName = $field;

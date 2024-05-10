@@ -3,7 +3,6 @@ parameters:
     coreshop.dto.add_multiple_to_cart.class: 'CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCart'
 
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/order.yml }
     - { resource: services/order_invoice.yml }
     - { resource: services/order_shipment.yml }
@@ -21,6 +20,7 @@ imports:
     - { resource: services/forms.yml }
     - { resource: services/checkout_listener.yml }
     - { resource: services/controller.yml }
+    - { resource: services/order_edit.yml }
 
 services:
     _defaults:
@@ -31,7 +31,6 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Processor\CartProcessorInterface'
             - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
-            - '@doctrine.dbal.default_connection'
 
     coreshop.cart_item.quantity_modifier: '@CoreShop\Component\StorageList\StorageListItemQuantityModifier'
     CoreShop\Component\StorageList\StorageListItemQuantityModifier: ~
@@ -66,6 +65,11 @@ services:
     CoreShop\Component\Order\Processor\CartProcessorInterface: '@CoreShop\Component\Order\Processor\CompositeCartProcessor'
     CoreShop\Component\Order\Processor\CompositeCartProcessor: ~
 
+    CoreShop\Bundle\OrderBundle\Expiration\OrderAndCartExpiration:
+        arguments:
+            - '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
+            - '@CoreShop\Bundle\OrderBundle\Expiration\CartExpiration'
+
     CoreShop\Bundle\OrderBundle\Expiration\CartExpiration:
         shared: false
         arguments:
@@ -95,6 +99,8 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Factory\AdjustmentFactory.inner'
 
+    CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeCustomerFactoryInterface: '@coreshop.factory.cart_price_rule_voucher_code_customer'
+
     CoreShop\Component\Order\Factory\OrderItemFactory:
         decorates: coreshop.factory.order_item
         decoration_priority: 256
@@ -102,12 +108,15 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Factory\OrderItemFactory.inner'
 
+    CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator: ~
+
     CoreShop\Component\Order\Factory\OrderFactory:
         decorates: coreshop.factory.order
         decoration_priority: 256
         public: false
         arguments:
             - '@CoreShop\Component\Order\Factory\OrderFactory.inner'
+            - '@CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator'
 
     CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface: '@CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory'
     CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory:

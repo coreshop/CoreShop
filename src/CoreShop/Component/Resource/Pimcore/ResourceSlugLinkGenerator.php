@@ -22,7 +22,6 @@ use CoreShop\Component\Pimcore\Exception\LinkGenerationNotPossibleException;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
-use Pimcore\Model\DataObject\Concrete;
 
 class ResourceSlugLinkGenerator implements LinkGeneratorInterface
 {
@@ -32,7 +31,7 @@ class ResourceSlugLinkGenerator implements LinkGeneratorInterface
     ) {
     }
 
-    public function generate(Concrete $object, array $params = []): string
+    public function generate(object $object, array $params = []): string
     {
         if (!$object instanceof SluggableInterface) {
             throw new LinkGenerationNotPossibleException(
@@ -40,7 +39,7 @@ class ResourceSlugLinkGenerator implements LinkGeneratorInterface
                     'Object with Path "%s" must implement %s',
                     $object->getFullPath(),
                     SluggableInterface::class,
-                )
+                ),
             );
         }
 

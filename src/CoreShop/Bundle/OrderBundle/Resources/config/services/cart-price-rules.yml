@@ -151,8 +151,13 @@ services:
     CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker:
         arguments:
             - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@coreshop.repository.cart_price_rule_voucher_code_customer'
         tags:
             - { name: coreshop.cart_price_rule.condition, type: voucher, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType }
+
+    CoreShop\Component\Order\Cart\Rule\Condition\NotCombinableConditionChecker:
+        tags:
+            - { name: coreshop.cart_price_rule.condition, type: not_combinable, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType }
 
     CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker:
         tags:
@@ -218,4 +223,6 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@coreshop.repository.cart_price_rule_voucher_code_customer'
+            - '@coreshop.factory.cart_price_rule_voucher_code_customer'
 

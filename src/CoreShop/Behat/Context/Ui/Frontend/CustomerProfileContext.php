@@ -19,12 +19,13 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Page\Frontend\Account\ChangeAddressPageInterface;
 use CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface;
 use CoreShop\Behat\Page\Frontend\Account\ChangeProfilePageInterface;
 use CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface;
-use CoreShop\Behat\Service\NotificationCheckerInterface;
-use CoreShop\Behat\Service\NotificationType;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\NotificationCheckerInterface;
+use CoreShop\Bundle\TestBundle\Service\NotificationType;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Webmozart\Assert\Assert;
 
 class CustomerProfileContext implements Context
@@ -35,6 +36,7 @@ class CustomerProfileContext implements Context
         private ProfilePageInterface $profilePage,
         private ChangeProfilePageInterface $changeProfilePage,
         private NotificationCheckerInterface $notificationChecker,
+        private ChangeAddressPageInterface $changeAddressPage,
     ) {
     }
 
@@ -237,5 +239,62 @@ class CustomerProfileContext implements Context
             'email',
             'This email is already used.',
         ));
+    }
+
+    /**
+     * @When /^I choose "([^"]+)" to edit$/
+     */
+    public function iWantToChangeMyAddressInformation($street): void
+    {
+        $this->changeAddressPage->openLink($street);
+    }
+
+    /**
+     * @When /^I open my addresses$/
+     */
+    public function iOpenMyAddresses(): void
+    {
+        $this->changeAddressPage->open();
+    }
+
+    /**
+     * @Given I change my street to :street and number :number
+     */
+    public function iChangeStreetTo($street, $number): void
+    {
+        $this->changeAddressPage->specifyStreet($street, $number);
+    }
+
+    /**
+     * @Given I save my address
+     */
+    public function iSaveAddress(): void
+    {
+        $this->changeAddressPage->save();
+    }
+
+    /**
+     * @When I want to add a address information
+     */
+    public function addAddress(): void
+    {
+        $this->changeAddressPage->open();
+        $this->changeAddressPage->addAddress();
+    }
+
+    /**
+     * @When /^my new Address is "([^"]+)", "([^"]+)", (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
+     */
+    public function addAddressInfo($firstname, $lastname, $country, $postcode, $city, $street, $number, $phone): void
+    {
+        $this->changeAddressPage->fillAddress($country, $city, $postcode, $number, $street, $firstname, $lastname, $phone);
+    }
+
+    /**
+     * @When /^I want to delete my address with street "([^"]+)"$/
+     */
+    public function iWantToDeleteAddress($street): void
+    {
+        $this->changeAddressPage->deleteAddress($street);
     }
 }

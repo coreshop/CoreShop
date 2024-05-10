@@ -18,8 +18,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
+use CoreShop\Bundle\OrderBundle\Attribute\AsCartPriceRuleActionProcessor;
+use CoreShop\Bundle\OrderBundle\Attribute\AsCartPriceRuleConditionChecker;
+use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableCustomAttributesCalculator;
+use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableDiscountCalculator;
+use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableDiscountPriceCalculator;
+use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasablePriceCalculator;
+use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableRetailPriceCalculator;
+use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableWholesalePriceCalculator;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleConditionPass;
+use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableCustomAttributesCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasablePriceCalculatorsPass;
@@ -27,6 +36,7 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPr
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Order\Calculator\PurchasableCustomAttributesCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
@@ -34,6 +44,7 @@ use CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterfac
 use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\Condition\CartRuleConditionCheckerInterface;
+use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -47,8 +58,14 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
+        $container->setParameter('coreshop.order.allow_edit', $configs['allow_order_edit']);
+
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
         $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
+
+//        if (class_exists(PimcoreDataHubBundle::class)) {
+//            $this->registerDependantBundles('coreshop', [PimcoreDataHubBundle::class], $container);
+//        }
 
         if (array_key_exists('pimcore_admin', $configs)) {
             $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
@@ -65,47 +82,71 @@ final class CoreShopOrderExtension extends AbstractModelExtension
         }
 
         $container->setParameter('coreshop.order.legacy_serialization', $configs['legacy_serialization']);
-        $container->setParameter('coreshop.cart.expiration.days', $configs['expiration']['cart']['days']);
-        $container->setParameter('coreshop.cart.expiration.anonymous', $configs['expiration']['cart']['anonymous']);
-        $container->setParameter('coreshop.cart.expiration.customer', $configs['expiration']['cart']['customer']);
-
-        $container->setParameter('coreshop.order.expiration.days', $configs['expiration']['order']['days']);
 
         $loader->load('services.yml');
 
-        $container
-            ->registerForAutoconfiguration(CartPriceRuleActionProcessorInterface::class)
-            ->addTag(CartPriceRuleActionPass::CART_PRICE_RULE_ACTION_TAG)
-        ;
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            CartPriceRuleActionProcessorInterface::class,
+            CartPriceRuleActionPass::CART_PRICE_RULE_ACTION_TAG,
+            AsCartPriceRuleActionProcessor::class,
+            $configs['autoconfigure_with_attributes'],
+        );
 
-        $container
-            ->registerForAutoconfiguration(CartRuleConditionCheckerInterface::class)
-            ->addTag(CartPriceRuleConditionPass::CART_PRICE_RULE_CONDITION_TAG)
-        ;
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            CartRuleConditionCheckerInterface::class,
+            CartPriceRuleConditionPass::CART_PRICE_RULE_CONDITION_TAG,
+            AsCartPriceRuleConditionChecker::class,
+            $configs['autoconfigure_with_attributes'],
+        );
 
-        $container
-            ->registerForAutoconfiguration(PurchasableDiscountCalculatorInterface::class)
-            ->addTag(PurchasableDiscountCalculatorsPass::PURCHASABLE_DISCOUNT_CALCULATOR_TAG)
-        ;
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            PurchasableDiscountCalculatorInterface::class,
+            PurchasableDiscountCalculatorsPass::PURCHASABLE_DISCOUNT_CALCULATOR_TAG,
+            AsPurchasableDiscountCalculator::class,
+            $configs['autoconfigure_with_attributes'],
+        );
 
-        $container
-            ->registerForAutoconfiguration(PurchasableDiscountPriceCalculatorInterface::class)
-            ->addTag(PurchasableDiscountPriceCalculatorsPass::PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG)
-        ;
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            PurchasableDiscountPriceCalculatorInterface::class,
+            PurchasableDiscountPriceCalculatorsPass::PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG,
+            AsPurchasableDiscountPriceCalculator::class,
+            $configs['autoconfigure_with_attributes'],
+        );
 
-        $container
-            ->registerForAutoconfiguration(PurchasablePriceCalculatorInterface::class)
-            ->addTag(PurchasablePriceCalculatorsPass::PURCHASABLE_PRICE_CALCULATOR_TAG)
-        ;
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            PurchasableCustomAttributesCalculatorInterface::class,
+            PurchasableCustomAttributesCalculatorsPass::PURCHASABLE_CUSTOM_ATTRIBUTES__CALCULATOR_TAG,
+            AsPurchasableCustomAttributesCalculator::class,
+            $configs['autoconfigure_with_attributes'],
+        );
 
-        $container
-            ->registerForAutoconfiguration(PurchasableRetailPriceCalculatorInterface::class)
-            ->addTag(PurchasableRetailPriceCalculatorsPass::PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG)
-        ;
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            PurchasablePriceCalculatorInterface::class,
+            PurchasablePriceCalculatorsPass::PURCHASABLE_PRICE_CALCULATOR_TAG,
+            AsPurchasablePriceCalculator::class,
+            $configs['autoconfigure_with_attributes'],
+        );
 
-        $container
-            ->registerForAutoconfiguration(PurchasableWholesalePriceCalculatorInterface::class)
-            ->addTag(PurchasableWholesalePriceCalculatorsPass::PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG)
-        ;
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            PurchasableRetailPriceCalculatorInterface::class,
+            PurchasableRetailPriceCalculatorsPass::PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG,
+            AsPurchasableRetailPriceCalculator::class,
+            $configs['autoconfigure_with_attributes'],
+        );
+
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            PurchasableWholesalePriceCalculatorInterface::class,
+            PurchasableWholesalePriceCalculatorsPass::PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG,
+            AsPurchasableWholesalePriceCalculator::class,
+            $configs['autoconfigure_with_attributes'],
+        );
     }
 }

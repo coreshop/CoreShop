@@ -18,25 +18,22 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Address\Model\AddressIdentifierInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AddressIdentifierFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class AddressIdentifierFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private FactoryInterface $addressIdentifierFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['application'];
     }
 
     public function load(ObjectManager $manager): void
@@ -54,7 +51,7 @@ class AddressIdentifierFixture extends AbstractFixture implements ContainerAware
             /**
              * @var AddressIdentifierInterface $addressIdentifier
              */
-            $addressIdentifier = $this->container->get('coreshop.factory.address_identifier')->createNew();
+            $addressIdentifier = $this->addressIdentifierFactory->createNew();
             $addressIdentifier->setName($entry['name']);
             $addressIdentifier->setActive(true);
             $manager->persist($addressIdentifier);

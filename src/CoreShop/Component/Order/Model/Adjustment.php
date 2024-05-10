@@ -23,9 +23,9 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 
 abstract class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInterface
 {
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->getObject()->getId() . '_tax_item_' . $this->getIndex();
+        return null;
     }
 
     public function getAdjustable(): ?AdjustableInterface

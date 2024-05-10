@@ -19,12 +19,13 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
-use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -41,7 +42,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         private LocaleContextInterface $localeContext,
         private PimcoreRepositoryInterface $orderRepository,
         private PimcoreRepositoryInterface $orderItemRepository,
-        private StackRepository $productStackRepository,
+        private StackRepositoryInterface $productStackRepository,
     ) {
     }
 
@@ -56,6 +57,10 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         }
 
         if (!is_array($orderStateFilter) || !$orderStateFilter) {
+            $orderStateFilter = null;
+        }
+
+        if (count($orderStateFilter) === 1 && $orderStateFilter[0] === 'all') {
             $orderStateFilter = null;
         }
 
@@ -86,14 +91,14 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
-                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
+                $unionData[] = 'SELECT `id`, `name`, `type` FROM object_localized_' . $id . '_' . $locale;
             }
 
             $union = implode(' UNION ALL ', $unionData);
 
             $query = "
               SELECT SQL_CALC_FOUND_ROWS
-                products.o_id as productId,
+                products.id as productId,
                 products.`name` as productName,
                 SUM(orderItems.totalGross) AS sales, 
                 AVG(orderItems.totalGross) AS salesPrice,
@@ -101,11 +106,12 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 SUM(orderItems.quantity) AS `quantityCount`,
                 COUNT(`order`.oo_id) AS `orderCount`
                 FROM ($union) AS products
-                INNER JOIN object_query_$orderItemClassId AS orderItems ON products.o_id = orderItems.mainObjectId
+                INNER JOIN object_query_$orderItemClassId AS orderItems ON products.id = orderItems.mainObjectId
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
-                WHERE products.o_type = 'object' AND `order`.store = $storeId" . (($orderStateFilter !== null) ? ' AND `order`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `order`.orderDate > ? AND `order`.orderDate < ?
+                WHERE products.o_type = 'object' AND `order`.store = $storeId" . (($orderStateFilter !== null) ? ' AND `order`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `order`.orderDate > ? AND `order`.orderDate < ? AND saleState='" . OrderSaleStates::STATE_ORDER . "'
                 GROUP BY products.o_id
+
             LIMIT $offset,$limit";
         } else {
             $productTypeCondition = '1=1';
@@ -152,7 +158,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 
-        return array_values($productSales);
+        return $productSales;
     }
 
     public function getExportReportData(ParameterBag $parameterBag): array

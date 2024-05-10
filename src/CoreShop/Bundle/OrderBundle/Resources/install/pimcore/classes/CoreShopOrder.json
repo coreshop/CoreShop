@@ -26,7 +26,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "tabpanel",
                 "border": false,
@@ -42,7 +42,7 @@
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -59,7 +59,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "input",
                                 "width": null,
@@ -143,7 +143,7 @@
                                 "columnLength": 190,
                                 "phpdocType": "string",
                                 "regex": "",
-                                "unique": false,
+                                "unique": true,
                                 "showCharCount": null,
                                 "name": "token",
                                 "title": "coreshop.order.token",
@@ -193,7 +193,7 @@
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
-                                "index": false,
+                                "index": true,
                                 "locked": false,
                                 "style": "",
                                 "permissions": null,
@@ -3080,7 +3080,7 @@
                                 "fieldtype": "objectbricks",
                                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Objectbrick",
                                 "allowedTypes": [],
-                                "maxItems": "",
+                                "maxItems": null,
                                 "border": false,
                                 "name": "additionalData",
                                 "title": "coreshop.order.additional_data",
@@ -3096,6 +3096,41 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "name": "immutable",
+                                "title": "coreshop.order.immutable",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "fieldtype": "booleanSelect",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false,
+                                "yesLabel": "yes",
+                                "noLabel": "no",
+                                "emptyLabel": "null",
+                                "options": [
+                                    {
+                                        "key": "no",
+                                        "value": 0
+                                    },
+                                    {
+                                        "key": "yes",
+                                        "value": 1
+                                    },
+                                    {
+                                        "key": "null",
+                                        "value": -1
+                                    }
+                                ],
+                                "width": ""
                             }
                         ],
                         "locked": false,
@@ -3117,7 +3152,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "input",
                                 "width": null,
@@ -3262,7 +3297,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "panel",
                                 "labelWidth": 100,
@@ -3279,7 +3314,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "coreShopCurrency",
                                         "allowEmpty": false,
@@ -3322,7 +3357,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "numeric",
                                                 "width": "",
@@ -3459,7 +3494,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "fieldcollections",
                                                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
@@ -3467,7 +3502,7 @@
                                                     "CoreShopTaxItem"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -3508,7 +3543,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
@@ -3560,7 +3595,7 @@
                                                     "CoreShopAdjustment"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -3605,7 +3640,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "coreShopCurrency",
                                         "allowEmpty": false,
@@ -3648,7 +3683,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "numeric",
                                                 "width": "",
@@ -3785,7 +3820,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "fieldcollections",
                                                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
@@ -3793,7 +3828,7 @@
                                                     "CoreShopTaxItem"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -3834,7 +3869,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
@@ -3886,7 +3921,7 @@
                                                     "CoreShopAdjustment"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -3931,7 +3966,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "fieldset",
                                         "labelWidth": 100,
@@ -3946,7 +3981,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "fieldcollections",
                                                 "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
@@ -3954,7 +3989,7 @@
                                                     "CoreShopProposalCartPriceRuleItem"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -4001,7 +4036,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopRelations",
                                 "height": "400",
@@ -4043,7 +4078,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopRelation",
                                 "width": "",

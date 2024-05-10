@@ -35,6 +35,8 @@ use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Localizedfield;
+use Pimcore\Model\DataObject\Objectbrick\Data\AbstractData;
 use Webmozart\Assert\Assert;
 
 /**
@@ -45,14 +47,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface,
     Model\DataObject\ClassDefinition\Data\CustomRecyclingMarshalInterface,
     Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface,
+    Model\DataObject\ClassDefinition\Data\PreGetDataInterface,
+    Model\DataObject\ClassDefinition\Data\PreSetDataInterface,
     CacheMarshallerInterface
 {
     use TempEntityManagerTrait;
 
-    /**
-     * @var string
-     */
-    public $fieldtype = 'coreShopStoreValues';
+    public string $fieldtype = 'coreShopStoreValues';
 
     /**
      * @var int
@@ -73,6 +74,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
      * @var float
      */
     public $maxValue;
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     /**
      * @return int
@@ -156,7 +162,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return null;
     }
 
-    public function getGetterCode($class)
+    public function getGetterCode($class): string
     {
         $key = $this->getName();
         $code = '/**' . "\n";
@@ -233,7 +239,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getSetterCode($class)
+    public function getSetterCode($class): string
     {
         $key = $this->getName();
         $code = '/**' . "\n";
@@ -243,12 +249,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $this->getTitle(),
         ) . "\n";
         $code .= '*' . "\n";
-        $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues' . "\n";
+        $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface $' . $key . "\n";
         $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store' . "\n";
         $code .= '*' . "\n";
         $code .= '* @return static' . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . 'ForStore(\CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self {' . "\n";
+        $code .= 'public function set' . ucfirst($key) . 'ForStore(\CoreShop\Component\Core\Model\ProductStoreValuesInterface $' . $key . ', \CoreShop\Component\Store\Model\StoreInterface $store): self {' . "\n";
         $code .= "\t" . '$this->' . $key . '[$store->getId()] = $' . $key . ';' . "\n";
         $code .= "\t" . '$this->' . $key . ' = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->preSetData($this, $this->' . $key . ');' . "\n";
         $code .= "\t" . 'return $this;' . "\n";
@@ -261,11 +267,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $this->getTitle(),
         ) . "\n";
         $code .= '*' . "\n";
-        $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface[] $storeValues' . "\n";
+        $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface[] $' . $key . "\n";
         $code .= '*' . "\n";
         $code .= '* @return static' . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' (array $storeValues): self {' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' (array $' . $key . '): self {' . "\n";
         $code .= "\t" . '$this->' . $key . ' = $' . $key . ';' . "\n";
         $code .= "\t" . '$this->' . $key . ' = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->preSetData($this, $this->' . $key . ');' . "\n";
         $code .= "\t" . 'return $this;' . "\n";
@@ -312,34 +318,27 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return [];
     }
 
-    public function preGetData($object, $params = [])
+    public function preGetData(mixed $container, array $params = []): mixed
     {
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
-        $data = $object->getObjectVar($this->getName());
+        if (!$container instanceof Model\DataObject\Concrete) {
+            return null;
+        }
+
+        $data = $container->getObjectVar($this->getName());
         $returnData = [];
 
-        if (!$object->isLazyKeyLoaded($this->getName())) {
-            $data = $this->load($object, ['force' => true]);
+        if (!$container->isLazyKeyLoaded($this->getName())) {
+            $data = $this->load($container, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
-            if (method_exists($object, $setter)) {
-                $object->$setter($data);
+            if (method_exists($container, $setter)) {
+                $container->$setter($data);
             }
         }
 
         if (!is_array($data)) {
             $data = [];
         }
-//
-//        foreach ($data as &$storeEntry) {
-//            if ($storeEntry instanceof ProductStoreValuesInterface) {
-//                $storeEntry->setProduct($object);
-//            }
-//        }
-
-//        unset($storeEntry);
 
         foreach ($data as $storeValue) {
             if (!$storeValue) {
@@ -352,16 +351,16 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $returnData;
     }
 
-    public function preSetData($object, $data, $params = [])
+    public function preSetData(mixed $container, mixed $data, array $params = []): mixed
     {
-        if ($object instanceof Model\DataObject\LazyLoadedFieldsInterface) {
-            $object->markLazyKeyAsLoaded($this->getName());
+        if ($container instanceof Model\DataObject\LazyLoadedFieldsInterface) {
+            $container->markLazyKeyAsLoaded($this->getName());
         }
 
         return $data;
     }
 
-    public function createDataCopy(Concrete $object, $data)
+    public function createDataCopy(Concrete $object, mixed $data): mixed
     {
         if (!is_array($data)) {
             return [];
@@ -399,7 +398,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $newStoreValues;
     }
 
-    public function load($object, $params = [])
+    public function load(Localizedfield|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|AbstractData|Concrete $object, array $params = []): mixed
     {
         if (isset($params['force']) && $params['force']) {
             return $this->getProductStoreValuesRepository()->findForProduct($object);
@@ -408,7 +407,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return null;
     }
 
-    public function save($object, $params = [])
+    public function save(Localizedfield|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|AbstractData|Concrete $object, array $params = []): void
     {
         if (!$object instanceof ProductInterface) {
             return;
@@ -487,7 +486,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $object->setObjectVar($this->getName(), $allStoreValues);
     }
 
-    public function marshalVersion($object, $data)
+    public function marshalVersion(Concrete $object, mixed $data): mixed
     {
         if (!is_array($data)) {
             return [];
@@ -509,7 +508,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $storeData;
     }
 
-    public function unmarshalVersion($object, $data)
+    public function unmarshalVersion(Concrete $object, mixed $data): mixed
     {
         if (!is_array($data)) {
             return null;
@@ -546,12 +545,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $entities;
     }
 
-    public function marshalRecycleData($object, $data)
+    public function marshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->marshalVersion($object, $data);
     }
 
-    public function unmarshalRecycleData($object, $data)
+    public function unmarshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->unmarshalVersion($object, $data);
     }
@@ -566,7 +565,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $this->unmarshalVersion($concrete, $data);
     }
 
-    public function delete($object, $params = [])
+    public function delete(Localizedfield|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|AbstractData|Concrete $object, array $params = []): void
     {
         if (!$object instanceof ProductInterface) {
             return;
@@ -580,7 +579,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $this->getEntityManager()->flush();
     }
 
-    public function getDataForEditmode($data, $object = null, $params = [])
+    public function getDataForEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         $storeData = [];
         $stores = $this->getStoreRepository()->findAll();
@@ -624,10 +623,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 continue;
             }
 
+            $currency = $store->getCurrency();
+
             //Fill missing stores with empty values
             $storeData[$store->getId()] = [
                 'name' => $store->getName(),
-                'currencySymbol' => $store->getCurrency()->getSymbol(),
+                'currencySymbol' => $currency?->getSymbol() ?? '',
                 'values' => ['price' => 0],
                 'inheritable' => $inheritable,
             ];
@@ -636,7 +637,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $storeData;
     }
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode($data, $object = null, $params = []): mixed
     {
         $errors = [];
         $storeValues = [];
@@ -693,7 +694,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $storeValues;
     }
 
-    public function getVersionPreview($data, $object = null, $params = [])
+    public function getVersionPreview($data, $object = null, $params = []): string
     {
         if (!is_array($data)) {
             return $data;
@@ -707,7 +708,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return implode(', ', $preview);
     }
 
-    public function getForCsvExport($object, $params = [])
+    public function getForCsvExport($object, $params = []): string
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
@@ -716,46 +717,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         }
 
         return json_encode($data);
-    }
-
-    public function getFromCsvImport($importValue, $object = null, $params = [])
-    {
-        if (!$object) {
-            throw new \Exception('This version of Pimcore is not supported for store values import.');
-        }
-
-        $data = $importValue == '' ? [] : json_decode($importValue, true);
-
-        if (json_last_error() !== \JSON_ERROR_NONE) {
-            throw new \InvalidArgumentException(sprintf(
-                'Error decoding Store Price JSON `%s`: %s',
-                $importValue,
-                json_last_error_msg(),
-            ));
-        }
-
-        if (is_array($data) && !empty($data)) {
-            foreach ($data as $storeId => $newPrice) {
-                $store = $this->getStoreRepository()->find($storeId);
-                if (!$store instanceof StoreInterface) {
-                    throw new \InvalidArgumentException(sprintf('Store with ID %s not found', $storeId));
-                }
-            }
-        }
-
-        $oldStoreValues = $this->getProductStoreValuesRepository()->findForProduct($object);
-
-        if (is_array($oldStoreValues)) {
-            foreach ($oldStoreValues as $oldStoreValuesEntity) {
-                $storeId = $oldStoreValuesEntity->getStore()->getId();
-
-                if (!array_key_exists($storeId, $data)) {
-                    $data[$storeId] = $oldStoreValuesEntity;
-                }
-            }
-        }
-
-        return $data;
     }
 
     /**
@@ -775,17 +736,17 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $newObject;
     }
 
-    public function isDiffChangeAllowed($object, $params = [])
+    public function isDiffChangeAllowed($object, $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode($data, $object = null, $params = []): ?array
     {
         return [];
     }
 
-    public function isEmpty($data)
+    public function isEmpty(mixed $data): bool
     {
         return null === $data || (is_array($data) && count($data) === 0);
     }
@@ -909,7 +870,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
      */
     protected function getFormFactory()
     {
-        return \Pimcore::getContainer()->get('form.factory');
+        return \Pimcore::getContainer()->get('coreshop.form.factory');
     }
 
     /**

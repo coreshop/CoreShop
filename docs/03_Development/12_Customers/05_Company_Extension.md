@@ -1,41 +1,55 @@
-# CoreShop Customer Company Extension
-The Company Entity allows you to append customers to a given company.
-After a customer has been connected to a company by using the 1to1 relation `company`, it's possible to share addresses between company and the self-assigned addresses.
+# Customer Company Extension
+
+CoreShop includes a Company Entity feature, which enhances customer profiles by allowing them to be associated with
+specific companies. This connection enables sharing of addresses between the company and individual customers.
 
 ## Access Types
-> Note! This is only available if a customer already is connected to a valid company!
+
+The access type determines how a customer interacts with addresses, both their own and those of the associated company.
+This feature is activated once a customer is linked to a valid company.
 
 ### Own Only
-If set, the customer can create, edit and delete own addresses and choose them in checkout as well. This is the default behaviour.
+
+- **Default Setting**: Customers can manage their own addresses.
+- **Capabilities**: Customers can create, edit, and delete their own addresses, and use them during checkout.
 
 ### Company Only
-If set, the customer can create, edit und delete company addresses and choose them in checkout as well. He's not able to add addresses to himself.
+
+- **Company-Centric**: Customers manage company addresses.
+- **Capabilities**: Customers can create, edit, and delete company addresses, choose them in checkout, but cannot add
+  personal addresses.
 
 ### Own And Company
-If set, the customer can create, edit and delete company and private addresses and choose them in checkout as well. 
 
-Plus, the `own_and_company` mode allows the customer to define and modify the allocation of the address. 
-To do so, coreshop renders an additional choice type to the address creation/modification form.
+- **Dual Access**: Customers can manage both personal and company addresses.
+- **Capabilities**: Creation, editing, and deletion of both personal and company addresses, with the ability to choose
+  either during checkout.
 
-**Note**: If a customer switches the allocation after it has been created, the address also physically gets moved to its desired location. 
-In this example, the customer changes the allocation from `own` to `company`:
+Additionally, in the `own_and_company` mode, customers have the flexibility to define and modify the allocation of
+addresses. CoreShop incorporates a choice type in the address form for this purpose.
 
-Before:
+**Physical Address Movement**: If a customer reallocates an address (e.g., from personal to company), the address is
+physically moved to the new category. For example, changing an address from `own` to `company` results in the following
+shift:
+
+Before Allocation Change:
+
 ```yaml
 - company A
     - addresses
     - customer A
         - addresses
             - address A
-```
+              ```
 
-After:
+After Allocation Change:
+
 ```yaml
 - company A
     - addresses
         - address A
     - customer A
         - addresses
-```
+          ```
 
-Read more about this feature [here](https://github.com/coreshop/CoreShop/issues/1266).
+For further details on this feature, refer to the discussion on [GitHub](https://github.com/coreshop/CoreShop/issues/1266).

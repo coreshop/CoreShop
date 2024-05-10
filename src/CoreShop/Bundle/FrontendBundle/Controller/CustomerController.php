@@ -24,20 +24,28 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Address\Repository\AddressIdentifierRepositoryInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Customer\Address\AddressAssignmentManagerInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\User\Model\UserInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CustomerController extends FrontendController
 {
     public function headerAction(Request $request): Response
     {
-        return $this->render($this->templateConfigurator->findTemplate('Customer/_header.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/_header.html'), [
             'catalogMode' => false,
             'customer' => $this->getCustomer(),
         ]);
@@ -45,7 +53,7 @@ class CustomerController extends FrontendController
 
     public function footerAction(): Response
     {
-        return $this->render($this->templateConfigurator->findTemplate('Customer/_footer.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/_footer.html'), [
             'catalogMode' => false,
             'customer' => $this->getCustomer(),
         ]);
@@ -61,7 +69,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/profile.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/profile.html'), [
             'customer' => $customer,
         ]);
     }
@@ -76,9 +84,9 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/orders.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/orders.html'), [
             'customer' => $customer,
-            'orders' => $this->get('coreshop.repository.order')->findByCustomer($this->getCustomer()),
+            'orders' => $this->container->get('coreshop.repository.order')->findOrdersByCustomer($this->getCustomer()),
         ]);
     }
 
@@ -93,7 +101,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $order = $this->get('coreshop.repository.order')->find($orderId);
+        $order = $this->container->get('coreshop.repository.order')->find($orderId);
 
         if (!$order instanceof OrderInterface) {
             return $this->redirectToRoute('coreshop_customer_orders');
@@ -103,7 +111,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_customer_orders');
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/order_detail.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/order_detail.html'), [
             'customer' => $customer,
             'order' => $order,
         ]);
@@ -119,7 +127,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/addresses.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/addresses.html'), [
             'customer' => $customer,
         ]);
     }
@@ -133,7 +141,11 @@ class CustomerController extends FrontendController
         }
 
         $addressId = $this->getParameterFromRequest($request, 'address');
-        $address = $this->get('coreshop.repository.address')->find($addressId);
+        $address = null;
+
+        if ($addressId) {
+            $address = $this->container->get('coreshop.repository.address')->find($addressId);
+        }
 
         if ($address instanceof AddressInterface) {
             $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_EDIT');
@@ -141,15 +153,15 @@ class CustomerController extends FrontendController
             $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_ADD');
         }
 
-        $addressAssignmentManager = $this->get(AddressAssignmentManagerInterface::class);
+        $addressAssignmentManager = $this->container->get(AddressAssignmentManagerInterface::class);
 
         $eventType = 'update';
         if (!$address instanceof AddressInterface) {
             $eventType = 'add';
             /** @var AddressInterface $address */
-            $address = $this->get('coreshop.factory.address')->createNew();
+            $address = $this->container->get('coreshop.factory.address')->createNew();
             if ($request->query->has('address_identifier')) {
-                $addressIdentifier = $this->get('coreshop.repository.address_identifier')->findByName($request->query->get('address_identifier'));
+                $addressIdentifier = $this->container->get('coreshop.repository.address_identifier')->findByName($request->query->get('address_identifier'));
                 if ($addressIdentifier instanceof AddressIdentifierInterface) {
                     $address->setAddressIdentifier($addressIdentifier);
                 }
@@ -165,7 +177,7 @@ class CustomerController extends FrontendController
             'selected_affiliation' => $addressAssignmentManager->detectAddressAffiliationForCustomer($customer, $address),
         ];
 
-        $form = $this->get('form.factory')->createNamed('coreshop', AddressType::class, $address, $addressFormOptions);
+        $form = $this->container->get('form.factory')->createNamed('coreshop', AddressType::class, $address, $addressFormOptions);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
@@ -180,7 +192,7 @@ class CustomerController extends FrontendController
                 $address = $addressAssignmentManager->allocateAddressByAffiliation($customer, $address, $addressAffiliation);
 
                 $this->fireEvent($request, $address, sprintf('%s.%s.%s_post', 'coreshop', 'address', $eventType));
-                $this->addFlash('success', $this->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated')));
+                $this->addFlash('success', $this->container->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated')));
 
                 return $this->redirect(
                     $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_customer_addresses')),
@@ -188,7 +200,7 @@ class CustomerController extends FrontendController
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/address.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/address.html'), [
             'address' => $address,
             'customer' => $customer,
             'form' => $form->createView(),
@@ -200,13 +212,13 @@ class CustomerController extends FrontendController
         $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_DELETE');
 
         $customer = $this->getCustomer();
-        $addressAssignmentManager = $this->get(AddressAssignmentManagerInterface::class);
+        $addressAssignmentManager = $this->container->get(AddressAssignmentManagerInterface::class);
 
         if (!$customer instanceof CustomerInterface) {
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $address = $this->get('coreshop.repository.address')->find(
+        $address = $this->container->get('coreshop.repository.address')->find(
             $this->getParameterFromRequest($request, 'address'),
         );
 
@@ -222,7 +234,7 @@ class CustomerController extends FrontendController
 
         $address->delete();
 
-        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.customer.address_successfully_deleted'));
+        $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.customer.address_successfully_deleted'));
 
         return $this->redirectToRoute('coreshop_customer_addresses');
     }
@@ -237,7 +249,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $form = $this->get('form.factory')->createNamed('coreshop', CustomerType::class, $customer, [
+        $form = $this->container->get('form.factory')->createNamed('coreshop', CustomerType::class, $customer, [
             'customer' => $customer->getId(),
             'allow_default_address' => true,
         ]);
@@ -250,13 +262,13 @@ class CustomerController extends FrontendController
                 $customer->save();
 
                 $this->fireEvent($request, $customer, sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'update'));
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.customer.profile_successfully_updated'));
+                $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.customer.profile_successfully_updated'));
 
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/settings.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/settings.html'), [
             'customer' => $customer,
             'form' => $form->createView(),
         ]);
@@ -276,7 +288,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $form = $this->get('form.factory')->createNamed('coreshop', ChangePasswordType::class);
+        $form = $this->container->get('form.factory')->createNamed('coreshop', ChangePasswordType::class);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
@@ -287,13 +299,13 @@ class CustomerController extends FrontendController
                 $customer->getUser()->save();
 
                 $this->fireEvent($request, $customer->getUser(), sprintf('%s.%s.%s_post', 'coreshop', 'user', 'change_password'));
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.customer.password_successfully_changed'));
+                $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.customer.password_successfully_changed'));
 
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/change_password.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/change_password.html'), [
             'customer' => $customer,
             'form' => $form->createView(),
         ]);
@@ -312,7 +324,7 @@ class CustomerController extends FrontendController
         /**
          * @var CustomerInterface $customer
          */
-        $customer = $this->get('coreshop.repository.customer')->findByNewsletterToken($token);
+        $customer = $this->container->get('coreshop.repository.customer')->findByNewsletterToken($token);
 
         if ($customer instanceof CustomerInterface) {
             $customer->setNewsletterConfirmed(true);
@@ -323,13 +335,13 @@ class CustomerController extends FrontendController
             }, false);
 
             $this->fireEvent($request, $customer, sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'newsletter_confirm'));
-            $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.newsletter_confirmed'));
+            $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.newsletter_confirmed'));
             $success = true;
         } else {
-            $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.newsletter_confirmation_error'));
+            $this->addFlash('error', $this->container->get('translator')->trans('coreshop.ui.newsletter_confirmation_error'));
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/confirm_newsletter.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/confirm_newsletter.html'), [
             'newsletterUser' => $newsletterUser,
             'success' => $success,
         ]);
@@ -337,18 +349,33 @@ class CustomerController extends FrontendController
 
     protected function getCustomer(): ?CustomerInterface
     {
-        try {
-            /**
-             * @var CustomerInterface $customer
-             */
-            $customer = $this->get(CustomerContextInterface::class)->getCustomer();
+        $shopperContext = $this->container->get(ShopperContextInterface::class);
 
-            return $customer;
-        } catch (\Exception) {
-            // fail silently
+        if (!$shopperContext->hasCustomer()) {
+            return null;
         }
 
-        return null;
+        $customer = $shopperContext->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return null;
+        }
+
+        return $customer;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+                ShopperContextInterface::class,
+                AddressAssignmentManagerInterface::class,
+                new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
+                new SubscribedService('coreshop.repository.customer', CustomerRepositoryInterface::class),
+                new SubscribedService('coreshop.repository.address', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.address')),
+                new SubscribedService('coreshop.factory.address', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.address')),
+                new SubscribedService('coreshop.repository.address_identifier', AddressIdentifierRepositoryInterface::class),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+            ]);
     }
 
     protected function fireEvent(Request $request, mixed $object, string $eventName): void
@@ -356,6 +383,6 @@ class CustomerController extends FrontendController
         //@todo: move this to a resource controller event
 
         $event = new ResourceControllerEvent($object, ['request' => $request]);
-        $this->get('event_dispatcher')->dispatch($event, $eventName);
+        $this->container->get('event_dispatcher')->dispatch($event, $eventName);
     }
 }

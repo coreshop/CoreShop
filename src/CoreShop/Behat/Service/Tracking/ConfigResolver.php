@@ -19,15 +19,22 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service\Tracking;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
-use Pimcore\Config\Config as ConfigObject;
 
 class ConfigResolver implements ConfigResolverInterface
 {
-    public function getGoogleConfig(): ConfigObject
+    public function __construct(
+        private bool $addGtagCode = false,
+    ) {
+    }
+
+    public function getGoogleConfig(): ?array
     {
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        return new ConfigObject([]);
+        $params = [];
+
+        if ($this->addGtagCode) {
+            $params['gtagcode'] = 'coreshop';
+        }
+
+        return $params;
     }
 }

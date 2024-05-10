@@ -27,6 +27,7 @@ use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Pimcore\Model\Element\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CustomerTransformerController extends AdminController
 {
@@ -245,16 +246,25 @@ class CustomerTransformerController extends AdminController
 
     protected function getCustomerRepository(): CustomerRepositoryInterface
     {
-        return $this->get('coreshop.repository.customer');
+        return $this->container->get('coreshop.repository.customer');
     }
 
     protected function getCompanyRepository(): CompanyRepositoryInterface
     {
-        return $this->get('coreshop.repository.company');
+        return $this->container->get('coreshop.repository.company');
     }
 
     protected function getCustomerTransformerHelper(): CustomerTransformHelperInterface
     {
-        return $this->get(CustomerTransformHelperInterface::class);
+        return $this->container->get(CustomerTransformHelperInterface::class);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            new SubscribedService('coreshop.repository.customer', CustomerRepositoryInterface::class),
+            new SubscribedService('coreshop.repository.company', CompanyRepositoryInterface::class),
+            CustomerTransformHelperInterface::class,
+        ]);
     }
 }

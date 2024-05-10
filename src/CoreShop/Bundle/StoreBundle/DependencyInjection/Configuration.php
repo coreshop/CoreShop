@@ -35,7 +35,11 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('core_shop_store');
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
-
+        $rootNode
+            ->children()
+            ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
+            ->end()
+        ;
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
@@ -54,6 +58,12 @@ final class Configuration implements ConfigurationInterface
                             ->children()
                                 ->variableNode('options')->end()
                                 ->scalarNode('permission')->defaultValue('store')->cannotBeOverwritten()->end()
+                                ->arrayNode('graphql')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->booleanNode('enabled')->defaultTrue()->end()
+                                    ->end()
+                                ->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()

@@ -1,16 +1,9 @@
-# CoreShop Order
-This guide should lead you through how CoreShop handles Orders.
+# Orders
 
- - [Order Creation](./01_Order_Creation.md)
- - [Transformer](./02_Transformer.md)
- - [Order Workflow](./03_Order_Workflow.md)
- - [Invoice](./05_Invoice)
- - [Shipment](./06_Shipment)
- - [Quote](./07_Quote)
- - [Template/Twig Helper](./08_TemplateHelper.md)
- - [Extend Order with additional data](./09_AdditionalData.md)
+Managing orders effectively is a cornerstone of successful eCommerce operations. In CoreShop, the order management
+system is designed to be robust, flexible, and user-friendly, ensuring that every aspect of order processing, from
+creation to fulfillment, is handled efficiently.
 
- ## CoreShop Order List
-
- - [Order List: Add Custom Filter](./08_OrderList/01_Filter.md)
- - [Order List: Add Custom Actions](./08_OrderList/02_Action.md)
+This guide aims to provide an in-depth understanding of how CoreShop handles orders, covering the entire lifecycle of an
+order. You'll learn about the tools and features available for managing orders, customizing workflows, and enhancing the
+overall efficiency of your eCommerce platform.

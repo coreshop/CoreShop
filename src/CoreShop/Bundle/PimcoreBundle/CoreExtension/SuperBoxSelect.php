@@ -23,10 +23,5 @@ namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
  */
 class SuperBoxSelect extends DynamicDropdownMultiple
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopSuperBoxSelect';
+    public string $fieldtype = 'coreShopSuperBoxSelect';
 }

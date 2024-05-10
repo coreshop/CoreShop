@@ -57,6 +57,13 @@ final class Configuration implements ConfigurationInterface
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
+        $rootNode
+            ->addDefaultsIfNotSet()
+                ->children()
+                ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
+            ->end()
+        ;
+
         $this->addStack($rootNode);
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
@@ -89,6 +96,12 @@ final class Configuration implements ConfigurationInterface
                             ->children()
                                 ->variableNode('options')->end()
                                 ->scalarNode('permission')->defaultValue('country')->cannotBeOverwritten()->end()
+                                ->arrayNode('graphql')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->booleanNode('enabled')->defaultTrue()->end()
+                                    ->end()
+                                ->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
@@ -104,6 +117,12 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->variableNode('options')->end()
+                                        ->arrayNode('graphql')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->booleanNode('enabled')->defaultTrue()->end()
+                                            ->end()
+                                        ->end()
                                         ->arrayNode('classes')
                                             ->addDefaultsIfNotSet()
                                             ->children()
@@ -141,6 +160,12 @@ final class Configuration implements ConfigurationInterface
                             ->children()
                                 ->variableNode('options')->end()
                                 ->scalarNode('permission')->defaultValue('state')->cannotBeOverwritten()->end()
+                                ->arrayNode('graphql')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->booleanNode('enabled')->defaultTrue()->end()
+                                    ->end()
+                                ->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
@@ -175,6 +200,12 @@ final class Configuration implements ConfigurationInterface
                             ->children()
                                 ->variableNode('options')->end()
                                 ->scalarNode('path')->defaultValue('address_identifier')->end()
+                                ->arrayNode('graphql')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->booleanNode('enabled')->defaultTrue()->end()
+                                    ->end()
+                                ->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()

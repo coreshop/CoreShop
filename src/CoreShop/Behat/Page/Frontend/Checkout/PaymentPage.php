@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
-use CoreShop\Behat\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 
 class PaymentPage extends AbstractFrontendPage implements PaymentPageInterface
@@ -30,7 +30,7 @@ class PaymentPage extends AbstractFrontendPage implements PaymentPageInterface
 
     public function selectPaymentProvider(PaymentProviderInterface $paymentProvider): void
     {
-        $this->getElement('payment_provider')->selectOption($paymentProvider->getId());
+        $this->getElement('payment_provider')->selectOption((string) $paymentProvider->getId());
     }
 
     public function submitStep(): void

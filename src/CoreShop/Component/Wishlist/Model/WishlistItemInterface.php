@@ -25,7 +25,9 @@ interface WishlistItemInterface extends
     PimcoreModelInterface,
     StorageListItemInterface
 {
-    public function getWishlist(): WishlistInterface;
+    public function getWishlist(): ?WishlistInterface;
+
+    public function setWishlist(WishlistInterface $wishlist);
 
     public function getProduct(): ?WishlistProductInterface;
 

@@ -21,7 +21,7 @@ namespace CoreShop\Behat\Context\Ui\Frontend;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\ProductPageInterface;
 use CoreShop\Behat\Page\Frontend\WishlistPageInterface;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
@@ -98,6 +98,7 @@ final class WishlistContext implements Context
     {
         Assert::true($this->wishlistPage->hasItemNamed($itemName));
     }
+
     /**
      * @Then I can see the share wishlist link
      */
@@ -105,7 +106,6 @@ final class WishlistContext implements Context
     {
         Assert::true($this->wishlistPage->hasShareWishlistLink());
     }
-
 
     /**
      * @Given I visit the share wishlist link

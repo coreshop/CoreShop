@@ -1,0 +1,19 @@
+name: "Documentation"
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs_next.yml'
+      - 'README.md'
+  push:
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs_next.yml'
+      - 'README.md'
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    uses: coreshop/workflow-collection/.github/workflows/docs.yml@v1

@@ -49,4 +49,12 @@ interface OrderItemInterface extends BaseOrderItemInterface, ShippableItemInterf
     public function getTotalWeight(): ?float;
 
     public function setTotalWeight(?float $totalWeight);
+
+    public function getObjectId(): ?float;
+
+    public function setObjectId(?float $objectId);
+
+    public function getMainObjectId(): ?float;
+
+    public function setMainObjectId(?float $objectId);
 }

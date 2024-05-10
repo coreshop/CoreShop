@@ -19,15 +19,17 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
-use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\DataObject;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class ProductValidationController extends AdminController
 {
@@ -96,8 +98,15 @@ class ProductValidationController extends AdminController
         ]);
     }
 
-    protected function getProductRepository(): StackRepository
+    protected function getProductRepository(): StackRepositoryInterface
     {
-        return $this->get('coreshop.repository.stack.product');
+        return $this->container->get('coreshop.repository.stack.product');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            new SubscribedService('coreshop.repository.stack.product', StackRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.stack.product')),
+        ]);
     }
 }

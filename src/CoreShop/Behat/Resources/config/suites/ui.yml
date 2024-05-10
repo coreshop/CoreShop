@@ -9,3 +9,4 @@ imports:
     - ui/checkout.yml
     - ui/domain_payment.yml
     - ui/wishlist.yml
+    - ui/category.yml

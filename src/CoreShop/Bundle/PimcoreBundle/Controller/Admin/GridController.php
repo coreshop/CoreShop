@@ -20,56 +20,63 @@ namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
 use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class GridController extends AdminController
+/**
+ * @psalm-suppress InternalClass
+ */
+class GridController extends AdminAbstractController
 {
-    public function getGridFiltersAction(string $listType): Response
-    {
-        $gridFilterRepository = $this->get('coreshop.registry.grid.filter');
-        $trans = $this->get('translator');
-
+    public function getGridFiltersAction(
+        string $listType,
+        ServiceRegistryInterface $gridFilterServiceRegistry,
+        TranslatorInterface $translator,
+    ): Response {
         $services = [];
         /** @var GridFilterInterface $service */
-        foreach ($gridFilterRepository->all() as $id => $service) {
+        foreach ($gridFilterServiceRegistry->all() as $id => $service) {
             if ($service->supports($listType) !== true) {
                 continue;
             }
 
             $services[] = [
                 'id' => $id,
-                'name' => $trans->trans($service->getName(), [], 'admin'),
+                'name' => $translator->trans($service->getName(), [], 'admin'),
             ];
         }
 
         return $this->json($services);
     }
 
-    public function getGridActionsAction(string $listType): Response
-    {
-        $gridActionRepository = $this->get('coreshop.registry.grid.action');
-        $trans = $this->get('translator');
-
+    public function getGridActionsAction(
+        string $listType,
+        ServiceRegistryInterface $gridActionServiceRegistry,
+        TranslatorInterface $translator,
+    ): Response {
         $services = [];
         /** @var GridActionInterface $service */
-        foreach ($gridActionRepository->all() as $id => $service) {
+        foreach ($gridActionServiceRegistry->all() as $id => $service) {
             if ($service->supports($listType) !== true) {
                 continue;
             }
 
             $services[] = [
                 'id' => $id,
-                'name' => $trans->trans($service->getName(), [], 'admin'),
+                'name' => $translator->trans($service->getName(), [], 'admin'),
             ];
         }
 
         return $this->json($services);
     }
 
-    public function applyGridAction(Request $request): Response
-    {
+    public function applyGridAction(
+        Request $request,
+        ServiceRegistryInterface $gridActionServiceRegistry,
+    ): Response {
         $requestedIds = $request->request->get('ids');
         $actionId = (string) $request->request->get('actionId');
 
@@ -77,17 +84,15 @@ class GridController extends AdminController
             $requestedIds = json_decode($requestedIds);
         }
 
-        $gridActionRepository = $this->get('coreshop.registry.grid.action');
-
         $success = true;
 
-        if (!$gridActionRepository->has($actionId)) {
+        if (!$gridActionServiceRegistry->has($actionId)) {
             $success = false;
             $message = sprintf('Action Service %s not found.', $actionId);
         } else {
             try {
                 /** @var GridActionInterface $actionService */
-                $actionService = $gridActionRepository->get($actionId);
+                $actionService = $gridActionServiceRegistry->get($actionId);
                 $message = $actionService->apply($requestedIds);
             } catch (\Exception $e) {
                 $success = false;

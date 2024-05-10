@@ -20,7 +20,7 @@ namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory;
 
 use CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\OrderState;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterface;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterface;
 
 class OrderStateFactory implements OperatorFactoryInterface
 {
