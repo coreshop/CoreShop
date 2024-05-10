@@ -152,12 +152,6 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $controllerDefinition->setArgument('$templateSummary', $list['templates']['summary']);
                 $controllerDefinition->setArgument('$templateAddToList', $list['templates']['add_to_cart']);
                 $controllerDefinition->setArgument('$listResolver', new Reference($list['services']['list_resolver']));
-                $controllerDefinition->setArgument('$addToSelectableStorageListForm', $list['form']['add_selectable_type']);
-                $controllerDefinition->setArgument('$addToSelectableStorageListFactory', new Reference($list['resource']['add_to_selectable_list_factory']));
-                $controllerDefinition->setArgument('$templateAddSelectableToList', $list['templates']['add_to_selectable_list']);
-                $controllerDefinition->setArgument('$addToNewStorageListForm', $list['form']['add_new_type']);
-                $controllerDefinition->setArgument('$addToNewStorageListFactory', new Reference($list['resource']['add_to_new_list_factory']));
-                $controllerDefinition->setArgument('$templateAddToNewList', $list['templates']['add_to_new_list']);
                 $controllerDefinition->setArgument('$contextProvider', new Reference('coreshop.storage_list.context_provider.' . $name));
                 $controllerDefinition->setArgument('$translator', new Reference('translator'));
                 $controllerDefinition->addTag('controller.service_arguments');

@@ -26,6 +26,7 @@ core_shop_storage_list:
             services:
                 manager: CoreShop\Bundle\OrderBundle\Manager\CartManager
                 modifier: CoreShop\Component\Order\Cart\CartModifier
+                list_resolver: CoreShop\Component\Order\Cart\CartResolver
             session:
                 enabled: true
                 key: 'coreshop.cart'

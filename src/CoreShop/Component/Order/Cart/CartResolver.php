@@ -16,14 +16,10 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Factory;
+namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\StorageList\DTO\AddToNewStorageListInterface;
-use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use CoreShop\Component\StorageList\Core\Context\PimcoreListResolver;
 
-interface AddToNewStorageListFactoryInterface
+class CartResolver extends PimcoreListResolver
 {
-    public function createWithStorageListItem(
-        StorageListItemInterface $storageListItem,
-    ): AddToNewStorageListInterface;
 }

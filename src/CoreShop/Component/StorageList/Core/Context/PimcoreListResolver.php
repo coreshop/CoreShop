@@ -18,42 +18,46 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\StorageList\Core\Context;
 
-use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Core\Repository\CustomerAndStoreAwareRepositoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Resolver\StorageListResolverInterface;
+use Webmozart\Assert\Assert;
 
 class PimcoreListResolver implements StorageListResolverInterface
 {
     public function __construct(
         protected CustomerAndStoreAwareRepositoryInterface $repository,
-        protected ShopperContextInterface $context,
         protected StorageListContextInterface $storageListContext,
     )
     {
     }
 
-    public function getStorageLists(): array
+    public function getStorageLists(array $context): array
     {
-        if (!$this->context->hasCustomer()) {
+        Assert::keyExists($context, 'store');
+
+        if (!isset($context['customer'])) {
             return [$this->storageListContext->getStorageList()];
         }
 
-        $namedLists = $this->repository->findNamedStorageLists($this->context->getStore(), $this->context->getCustomer());
+        $store = $context['store'];
+        $customer = $context['customer'];
 
-        $defaultList = $this->storageListContext->getStorageList();
-        array_unshift($namedLists, $defaultList);
-
-        return $namedLists;
+        return $this->repository->findNamedStorageLists($store, $customer);
     }
 
-    public function findNamed(string $name): ?StorageListInterface
+    public function findNamed(array $context, string $name): ?StorageListInterface
     {
-        if (!$this->context->hasCustomer()) {
+        Assert::keyExists($context, 'store');
+
+        if (!isset($context['customer'])) {
             return null;
         }
 
-        return $this->repository->findLatestByStoreAndCustomer($this->context->getStore(), $this->context->getCustomer(), $name);
+        $store = $context['store'];
+        $customer = $context['customer'];
+
+        return $this->repository->findLatestByStoreAndCustomer($store, $customer, $name);
     }
 }

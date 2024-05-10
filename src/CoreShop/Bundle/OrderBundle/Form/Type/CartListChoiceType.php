@@ -16,16 +16,10 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Resolver;
+namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
-use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Bundle\StorageListBundle\Form\Type\StorageListChoiceType;
 
-interface StorageListResolverInterface
+final class CartListChoiceType extends StorageListChoiceType
 {
-    /**
-     * @return StorageListInterface[]
-     */
-    public function getStorageLists(array $context): array;
-
-    public function findNamed(array $context, string $name): ?StorageListInterface;
 }

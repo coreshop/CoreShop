@@ -16,14 +16,16 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Factory;
+namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
-use CoreShop\Component\StorageList\DTO\AddToSelectableStorageList;
-use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-interface AddToSelectableStorageListFactoryInterface
+final class CreatedNamedCartType extends AbstractType
 {
-    public function createWithStorageListItem(
-        StorageListItemInterface $storageListItem,
-    ): AddToSelectableStorageList;
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('name', TextType::class);
+    }
 }

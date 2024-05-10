@@ -68,7 +68,6 @@ services:
     CoreShop\Component\Wishlist\Wishlist\WishlistResolver:
         arguments:
             - '@coreshop.repository.wishlist'
-            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '@coreshop.context.storage_list.wishlist'
     
     CoreShop\Bundle\WishlistBundle\Form\Type\AddToSelectableWishlistType:

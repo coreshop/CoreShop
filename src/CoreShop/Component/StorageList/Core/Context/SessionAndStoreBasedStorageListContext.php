@@ -38,7 +38,7 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
 
     public function getStorageList(): StorageListInterface
     {
-        if (null !== $this->storageList) {
+        if (null !== $this->storageList && !$this->storageListStorage->gotReset()) {
             return $this->storageList;
         }
 

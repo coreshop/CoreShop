@@ -8,68 +8,99 @@
             <span class="cart-total"  {{ coreshop_test_html_attribute('cart-total') }}> {{ currency.convertAndFormat(cart.total) }}</span>
         </span>
     </button>
+    {{ form_start(form, {action: path('coreshop_cart_select')}) }}
     <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenuButton">
         <li>
-            {% if cart.hasItems %}
             <table class="table hcart cart-items">
-                {% for item in cart.items %}
-                    <tr>
+                {% for key, cart_form in form.cart %}
+                <tr>
+                        {% set cart = form.cart.vars.choices[key].data %}
+
+                        <td>
+                            {{ form_widget(cart_form, coreshop_test_form_attribute('cart-select')|coreshop_merge_recursive({'label': false})) }}
+                        </td>
                         <td class="text-center">
-                            {% if item.product %}
-                            <a href="{{ pimcore_object_path(item.product) }}">
-                                {% if item.product and item.product.image is pimcore_asset_image %}
-                                    {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCartPreview', {'imgAttributes': {'class': 'img-thumbnail img-fluid'}, 'title': item.product.name, 'alt': item.product.name}) }}
-                                {% endif %}
-                            </a>
-                            {% endif %}
+                            {{ cart.name ?: 'My Cart' }}
                         </td>
-                        <td class="text-left">
-                            {% if item.product %}
-                            <a href="{{ pimcore_object_path(item.product) }}">
-                                {{ item.product.name }}
-                            </a>
-                            {% endif %}
+
+                        <td>
+                            {{ currency.convertAndFormat(cart.total) }}
                         </td>
-                        <td class="text-right">x {{ item.quantity }}</td>
-                        <td class="text-right">{{ currency.convertAndFormat(item.total) }}</td>
-                        <td class="text-center">
-                            {% if not item.isGiftItem %}
-                                <a href="{{ path('coreshop_cart_remove', {cartItem: item.id|coreshop_string}) }}" class="removeFromCart" data-id="{{ item.id }}" data-refresh="true">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            {% endif %}
-                        </td>
-                    </tr>
+                </tr>
                 {% endfor %}
             </table>
-            {% endif %}
         </li>
         <li>
-            <table class="table table-bordered total">
-                <tbody>
-                <tr>
-                    <td class="text-right"><strong>{{ 'coreshop.ui.subtotal'|trans }}</strong></td>
-                    <td class="text-left cart-subtotal">{{ currency.convertAndFormat(cart.subtotal) }}</td>
-                </tr>
-                <tr>
-                    <td class="text-right"><strong>{{ 'coreshop.ui.total'|trans }}</strong></td>
-                    <td class="text-left cart-total">{{ currency.convertAndFormat(cart.total) }}</td>
-                </tr>
-                </tbody>
-            </table>
-            <p class="text-right btn-block1">
-                {% if is_granted('CORESHOP_CART_SUMMARY') %}
-                    <a href="{{ path('coreshop_cart_summary') }}">
-                        {{ 'coreshop.ui.cart'|trans }}
-                    </a>
-                {% endif %}
-
-                {% if is_granted('CORESHOP_CHECKOUT') %}
-                    <a href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">
-                        {{ 'coreshop.ui.checkout'|trans }}
-                    </a>
-                {% endif %}
-            </p>
+            <button type="submit"  class="btn btn-success w-100 mb-2">
+                Select as current Cart
+            </button>
+            <a href="{{ path('coreshop_cart_create_named') }}" class="btn btn-secondary w-100">
+                Create New Cart
+            </a>
         </li>
+{#        <li>#}
+{#            {% if cart.hasItems %}#}
+{#            <table class="table hcart cart-items">#}
+{#                {% for item in cart.items %}#}
+{#                    <tr>#}
+{#                        <td class="text-center">#}
+{#                            {% if item.product %}#}
+{#                            <a href="{{ pimcore_object_path(item.product) }}">#}
+{#                                {% if item.product and item.product.image is pimcore_asset_image %}#}
+{#                                    {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCartPreview', {'imgAttributes': {'class': 'img-thumbnail img-fluid'}, 'title': item.product.name, 'alt': item.product.name}) }}#}
+{#                                {% endif %}#}
+{#                            </a>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="text-left">#}
+{#                            {% if item.product %}#}
+{#                            <a href="{{ pimcore_object_path(item.product) }}">#}
+{#                                {{ item.product.name }}#}
+{#                            </a>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td class="text-right">x {{ item.quantity }}</td>#}
+{#                        <td class="text-right">{{ currency.convertAndFormat(item.total) }}</td>#}
+{#                        <td class="text-center">#}
+{#                            {% if not item.isGiftItem %}#}
+{#                                <a href="{{ path('coreshop_cart_remove', {cartItem: item.id|coreshop_string}) }}" class="removeFromCart" data-id="{{ item.id }}" data-refresh="true">#}
+{#                                    <i class="fa fa-times"></i>#}
+{#                                </a>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            </table>#}
+{#            {% endif %}#}
+{#        </li>#}
+{#        <li>#}
+{#            <table class="table table-bordered total">#}
+{#                <tbody>#}
+{#                <tr>#}
+{#                    <td class="text-right"><strong>{{ 'coreshop.ui.subtotal'|trans }}</strong></td>#}
+{#                    <td class="text-left cart-subtotal">{{ currency.convertAndFormat(cart.subtotal) }}</td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <td class="text-right"><strong>{{ 'coreshop.ui.total'|trans }}</strong></td>#}
+{#                    <td class="text-left cart-total">{{ currency.convertAndFormat(cart.total) }}</td>#}
+{#                </tr>#}
+{#                </tbody>#}
+{#            </table>#}
+{#            <p class="text-right btn-block1">#}
+{#                {% if is_granted('CORESHOP_CART_SUMMARY') %}#}
+{#                    <a href="{{ path('coreshop_cart_summary') }}">#}
+{#                        {{ 'coreshop.ui.cart'|trans }}#}
+{#                    </a>#}
+{#                {% endif %}#}
+
+{#                {% if is_granted('CORESHOP_CHECKOUT') %}#}
+{#                    <a href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">#}
+{#                        {{ 'coreshop.ui.checkout'|trans }}#}
+{#                    </a>#}
+{#                {% endif %}#}
+{#            </p>#}
+{#        </li>#}
     </ul>
+    {{ form_widget(form._token) }}
+    {{ form_end(form) }}
 </div>

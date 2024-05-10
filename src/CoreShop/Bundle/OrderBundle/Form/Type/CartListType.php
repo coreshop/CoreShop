@@ -16,19 +16,23 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\WishlistBundle\Form\Type;
+namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
-use CoreShop\Bundle\StorageListBundle\Form\Type\AddToSelectableStorageListType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class AddToSelectableWishlistType extends AddToSelectableStorageListType
+final class CartListType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('storageListItem', WishlistItemType::class, [
-            'constraints' => [new Valid(['groups' => $this->validationGroups])],
+        $builder->add('cart', CartListChoiceType::class, [
+            'context' => $options['context'],
         ]);
-        $builder->add('storageList', WishlistChoiceType::class);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('context', []);
     }
 }

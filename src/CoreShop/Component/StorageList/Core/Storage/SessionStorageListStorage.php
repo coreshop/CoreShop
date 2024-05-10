@@ -28,6 +28,8 @@ use Webmozart\Assert\Assert;
 
 class SessionStorageListStorage implements StorageListStorageInterface
 {
+    private bool $gotReset = true;
+
     public function __construct(
         private RequestStack $requestStack,
         private string $sessionKeyName,
@@ -40,8 +42,14 @@ class SessionStorageListStorage implements StorageListStorageInterface
         return $this->getSession()->has($this->getKeyName($context));
     }
 
+    public function gotReset(): bool
+    {
+        return $this->gotReset;
+    }
+
     public function getForContext(array $context): ?StorageListInterface
     {
+        $this->gotReset = false;
         if ($this->hasForContext($context)) {
             $storageListId = $this->getSession()->get($this->getKeyName($context));
 
@@ -57,6 +65,7 @@ class SessionStorageListStorage implements StorageListStorageInterface
 
     public function setForContext(array $context, StorageListInterface $storageList): void
     {
+        $this->gotReset = true;
         $this->getSession()->set($this->getKeyName($context), $storageList->getId());
     }
 

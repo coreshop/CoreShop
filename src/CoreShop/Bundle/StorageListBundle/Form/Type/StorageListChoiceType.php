@@ -37,8 +37,9 @@ abstract class StorageListChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
+                'context' => [],
                 'choices' => function (Options $options) {
-                    return $this->listResolver->getStorageLists();
+                    return $this->listResolver->getStorageLists($options['context']);
                 },
                 'choice_value' => 'token',
                 'choice_label' => function (StorageListInterface $list) {
@@ -50,6 +51,7 @@ abstract class StorageListChoiceType extends AbstractType
                 },
                 'choice_translation_domain' => false,
                 'active' => true,
+                'expanded' => true
             ]);
     }
 

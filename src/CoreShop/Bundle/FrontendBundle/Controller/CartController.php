@@ -21,11 +21,17 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartListChoiceType;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartListType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
+use CoreShop\Bundle\OrderBundle\Form\Type\CreatedNamedCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
+use CoreShop\Bundle\StorageListBundle\Form\Type\StorageListChoiceType;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Core\Currency\CurrencyStorageInterface;
 use CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier;
 use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
@@ -42,26 +48,103 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
+use CoreShop\Component\StorageList\Factory\StorageListFactory;
+use CoreShop\Component\StorageList\Provider\ContextProviderInterface;
+use CoreShop\Component\StorageList\Storage\StorageListStorageInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CartController extends FrontendController
 {
-    public function widgetAction(Request $request): Response
+    public function widgetAction(Request $request, ShopperContextInterface $shopperContext): Response
     {
+        $form = $this->container->get('form.factory')->createNamed('coreshop', CartListType::class, ['cart' => $this->getCart()], [
+            'context' => $shopperContext->getContext(),
+        ]);
+
         return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/_widget.html'), [
             'cart' => $this->getCart(),
+            'form' => $form->createView(),
         ]);
+    }
+
+    public function createNamedCartAction(Request $request, ShopperContextInterface $shopperContext)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $form = $this->container->get('form.factory')->createNamed('coreshop', CreatedNamedCartType::class);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                $storageList = $this->container->get('coreshop.factory.order')->createNewNamed($data['name']);
+
+                $this->container->get('coreshop.storage_list.context_provider.order')->provideContextForStorageList($storageList);
+
+                $this->getCartManager()->persistCart($storageList);
+
+                $storageListStorage = $this->container->get('coreshop.storage_list.storage.order');
+                $storageListStorage->setForContext($shopperContext->getContext(), $storageList);
+
+                $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.cart_added'));
+
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'success' => true,
+                    ]);
+                }
+
+                return $this->redirect($request->getUri());
+            }
+        }
+
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/created_named.html'), [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function selectNamedCartAction(Request $request, ShopperContextInterface $shopperContext)
+    {
+        $this->denyAccessUnlessGranted('CORESHOP_CURRENCY_SWITCH');
+
+        $form = $this->container->get('form.factory')->createNamed('coreshop', CartListType::class, ['cart' => $this->getCart()->getId()], [
+            'context' => $shopperContext->getContext(),
+        ]);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $cart = $form->getData()['cart'];
+
+                if ($cart->getCustomer()?->getUser()?->getId() !== $this->getUser()?->getId()) {
+                    throw new AccessDeniedException();
+                }
+
+                $storageListStorage = $this->container->get('coreshop.storage_list.storage.order');
+                $storageListStorage->setForContext($shopperContext->getContext(), $cart);
+
+                return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
+            }
+        }
+
+
+        return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
     }
 
     public function createQuoteAction(Request $request, StateMachineManagerInterface $machineManager)
@@ -393,6 +476,7 @@ class CartController extends FrontendController
             [
                 new SubscribedService('coreshop.repository.stack.purchasable', StackRepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.stack.purchasable')),
                 new SubscribedService('coreshop.factory.order_item', OrderItemFactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.order_item')),
+                new SubscribedService('coreshop.factory.order', StorageListFactory::class, attributes: new Autowire(service: 'coreshop.factory.order')),
                 new SubscribedService('coreshop.repository.order_item', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.order_item')),
                 new SubscribedService(CartItemQuantityModifier::class, CartItemQuantityModifier::class),
                 new SubscribedService(AddToCartFactoryInterface::class, AddToCartFactoryInterface::class),
@@ -403,6 +487,9 @@ class CartController extends FrontendController
                 new SubscribedService('coreshop.repository.cart_price_rule_voucher_code', CartPriceRuleVoucherRepositoryInterface::class),
                 new SubscribedService(CartPriceRuleProcessorInterface::class, CartPriceRuleProcessorInterface::class),
                 new SubscribedService(CartPriceRuleUnProcessorInterface::class, CartPriceRuleUnProcessorInterface::class),
+                new SubscribedService('coreshop.storage', CartPriceRuleUnProcessorInterface::class),
+                new SubscribedService('coreshop.storage_list.context_provider.order', ContextProviderInterface::class, attributes: new Autowire(service: 'coreshop.storage_list.context_provider.order')),
+                new SubscribedService('coreshop.storage_list.storage.order', StorageListStorageInterface::class, attributes: new Autowire(service: 'coreshop.storage_list.storage.order')),
             ],
         );
     }

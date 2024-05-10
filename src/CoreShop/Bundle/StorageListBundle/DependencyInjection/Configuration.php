@@ -21,9 +21,6 @@ namespace CoreShop\Bundle\StorageListBundle\DependencyInjection;
 use CoreShop\Bundle\StorageListBundle\Controller\StorageListController;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
-use CoreShop\Component\StorageList\Core\Context\PimcoreListResolver;
-use CoreShop\Component\StorageList\Factory\AddToNewStorageListFactory;
-use CoreShop\Component\StorageList\Factory\AddToSelectableStorageListFactory;
 use CoreShop\Component\StorageList\Factory\AddToStorageListFactory;
 use CoreShop\Component\StorageList\SessionStorageManager;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
@@ -85,8 +82,6 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('factory')->cannotBeEmpty()->isRequired()->end()
                                     ->scalarNode('item_factory')->cannotBeEmpty()->isRequired()->end()
                                     ->scalarNode('add_to_list_factory')->defaultValue(AddToStorageListFactory::class)->cannotBeEmpty()->end()
-                                    ->scalarNode('add_to_selectable_list_factory')->defaultValue(AddToSelectableStorageListFactory::class)->cannotBeEmpty()->end()
-                                    ->scalarNode('add_to_new_list_factory')->defaultValue(AddToNewStorageListFactory::class)->cannotBeEmpty()->end()
                                 ->end()
                             ->end()
                             ->arrayNode('form')
@@ -94,8 +89,6 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('type')->cannotBeEmpty()->end()
                                     ->scalarNode('add_type')->cannotBeEmpty()->end()
-                                    ->scalarNode('add_selectable_type')->cannotBeEmpty()->end()
-                                    ->scalarNode('add_new_type')->cannotBeEmpty()->end()
                                 ->end()
                             ->end()
                             ->arrayNode('routes')
@@ -109,9 +102,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     ->scalarNode('add_to_cart')->cannotBeEmpty()->end()
-                                    ->scalarNode('add_to_selectable_list')->cannotBeEmpty()->end()
                                     ->scalarNode('summary')->cannotBeEmpty()->end()
-                                    ->scalarNode('add_to_new_list')->cannotBeEmpty()->end()
                                 ->end()
                             ->end()
                             ->arrayNode('session')
@@ -135,13 +126,6 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('service')->defaultNull()->end()
                                     ->integerNode('days')->defaultValue(14)->end()
                                     ->variableNode('params')->defaultValue([])->end()
-                                ->end()
-                            ->end()
-                            ->arrayNode('list_resolver')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->booleanNode('enabled')->defaultFalse()->end()
-                                    ->scalarNode('class')->defaultValue(StorageListController::class)->end()
                                 ->end()
                             ->end()
                         ->end()
