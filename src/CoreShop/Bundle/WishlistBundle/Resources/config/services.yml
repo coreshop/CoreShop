@@ -70,20 +70,6 @@ services:
             - '@coreshop.repository.wishlist'
             - '@coreshop.context.storage_list.wishlist'
     
-    CoreShop\Bundle\WishlistBundle\Form\Type\AddToSelectableWishlistType:
-        arguments:
-            - '%coreshop.dto.add_to_selectable_wishlist.class%'
-            - '%coreshop.form.type.add_to_selectable_wishlist.validation_groups%'
-        tags:
-            - { name: form.type }
-
-    CoreShop\Bundle\WishlistBundle\Form\Type\AddToNewWishlistType:
-        arguments:
-            - '%coreshop.dto.add_to_new_wishlist.class%'
-            - '%coreshop.form.type.add_to_new_wishlist.validation_groups%'
-        tags:
-            - { name: form.type }
-
     CoreShop\Bundle\WishlistBundle\Form\Type\WishlistChoiceType:
         arguments:
             - '@CoreShop\Component\Wishlist\Wishlist\WishlistResolver'

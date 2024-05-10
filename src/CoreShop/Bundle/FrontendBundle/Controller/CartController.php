@@ -132,7 +132,7 @@ class CartController extends FrontendController
             if ($form->isSubmitted() && $form->isValid()) {
                 $cart = $form->getData()['cart'];
 
-                if ($cart->getCustomer()?->getUser()?->getId() !== $this->getUser()?->getId()) {
+                if ($cart->getCustomer()?->getId() !== $shopperContext->getCustomer()->getId()) {
                     throw new AccessDeniedException();
                 }
 
