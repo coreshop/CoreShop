@@ -87,7 +87,7 @@
   "require": {
     "php": "^8.0",
     "ext-json": "*",
-    "dachcom-digital/emailizr": "^2.0 || ^3.0",
+    "dachcom-digital/emailizr": "^3.0",
     "doctrine/data-fixtures": "^1.5",
     "doctrine/doctrine-bundle": "^2.4",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
@@ -139,7 +139,8 @@
     "vimeo/psalm": "^5.23"
   },
   "conflict": {
-    "jms/serializer-bundle": "4.1.0"
+    "jms/serializer-bundle": "4.1.0",
+    "twig/twig": "^3.9.0"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."

@@ -20,9 +20,6 @@
 
         <many-to-one field="store" target-entity="CoreShop\Component\Store\Model\StoreInterface">
             <join-column name="store" referenced-column-name="id" on-delete="CASCADE"/>
-            <cascade>
-                <cascade-merge/>
-            </cascade>
         </many-to-one>
 
         <one-to-many field="productUnitDefinitionPrices" target-entity="CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface" mapped-by="productStoreValues" orphan-removal="true">

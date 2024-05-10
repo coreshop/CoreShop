@@ -2,6 +2,10 @@ imports:
     - { resource: admin.yml }
     - { resource: messenger.yml }
 
+doctrine_migrations:
+    migrations_paths:
+        'CoreShop\Bundle\IndexBundle\Migrations': '@CoreShopIndexBundle/Migrations'
+
 pimcore:
     objects:
         class_definitions:

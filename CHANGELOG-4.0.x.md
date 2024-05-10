@@ -1,3 +1,8 @@
+# 4.0.5
+
+* [Core] Pimcore 11.1 and 11.2 compatibility and psalm update by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2584
+* [NoteService] implement deadlock retry strategy by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2588
+
 # 4.0.4
 
 * [Docs] Improve resource bundle docs a bit by @jdreesen in https://github.com/coreshop/CoreShop/pull/2554
