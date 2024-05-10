@@ -39,6 +39,10 @@ class SessionStorageListStorage implements StorageListStorageInterface
 
     public function hasForContext(array $context): bool
     {
+        if (!$this->hasSession()) {
+            return false;
+        }
+
         return $this->getSession()->has($this->getKeyName($context));
     }
 
@@ -49,6 +53,10 @@ class SessionStorageListStorage implements StorageListStorageInterface
 
     public function getForContext(array $context): ?StorageListInterface
     {
+        if (!$this->hasSession()) {
+            return null;
+        }
+
         $this->gotReset = false;
         if ($this->hasForContext($context)) {
             $storageListId = $this->getSession()->get($this->getKeyName($context));
@@ -65,6 +73,10 @@ class SessionStorageListStorage implements StorageListStorageInterface
 
     public function setForContext(array $context, StorageListInterface $storageList): void
     {
+        if (!$this->hasSession()) {
+            throw new \InvalidArgumentException('Session is not available');
+        }
+
         $this->gotReset = true;
         $this->getSession()->set($this->getKeyName($context), $storageList->getId());
     }
@@ -77,6 +89,11 @@ class SessionStorageListStorage implements StorageListStorageInterface
     private function getSession(): SessionInterface
     {
         return $this->requestStack->getSession();
+    }
+
+    private function hasSession(): bool
+    {
+        return $this->requestStack->getMainRequest()?->hasSession() ?: false;
     }
 
     private function getKeyName(array $context)
