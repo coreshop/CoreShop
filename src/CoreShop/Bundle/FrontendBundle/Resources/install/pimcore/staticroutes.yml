@@ -282,4 +282,22 @@ routes:
     variables: _locale,item
     priority: 3
 
+  coreshop_cart_select:
+    pattern: '/(\w+)\/shop\/cart\/select/'
+    reverse: '/%_locale/shop/cart/select'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController::selectNamedCartAction'
+    variables: _locale
+    methods:
+      - POST
+    priority: 3
 
+  coreshop_cart_create_named:
+    name: coreshop_cart_create_named
+    pattern: '/(\w+)\/shop\/cart\/create$/'
+    reverse: '/%_locale/shop/cart/create'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController::createNamedCartAction'
+    variables: '_locale'
+    methods:
+      - POST
+      - GET
+    priority: 3
