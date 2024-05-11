@@ -26,4 +26,9 @@ class ContextProvider implements ContextProviderInterface
     {
         //Nothing to provide here
     }
+
+    public function getCurrentContext(): array
+    {
+        return [];
+    }
 }

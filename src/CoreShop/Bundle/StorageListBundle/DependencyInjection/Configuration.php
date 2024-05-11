@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\StorageListBundle\DependencyInjection;
 
 use CoreShop\Bundle\StorageListBundle\Controller\StorageListController;
+use CoreShop\Bundle\StorageListBundle\Controller\StorageMultiListController;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Factory\AddToStorageListFactory;
@@ -117,6 +118,32 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->booleanNode('enabled')->defaultFalse()->end()
                                     ->scalarNode('class')->defaultValue(StorageListController::class)->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('multi_list')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->booleanNode('enabled')->defaultFalse()->end()
+                                    ->arrayNode('controller')
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->booleanNode('enabled')->defaultFalse()->end()
+                                            ->scalarNode('class')->defaultValue(StorageMultiListController::class)->end()
+                                        ->end()
+                                    ->end()
+                                    ->arrayNode('templates')
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('create_new_storage_list')->cannotBeEmpty()->end()
+                                            ->scalarNode('list_storage_list')->cannotBeEmpty()->end()
+                                        ->end()
+                                    ->end()
+                                    ->arrayNode('form')
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('class')->end()
+                                        ->end()
+                                    ->end()
                                 ->end()
                             ->end()
                             ->arrayNode('expiration')

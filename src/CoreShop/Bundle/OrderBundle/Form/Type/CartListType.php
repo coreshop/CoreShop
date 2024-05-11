@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,8 +27,20 @@ final class CartListType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('cart', CartListChoiceType::class, [
+        $builder->add('list', CartListChoiceType::class, [
             'context' => $options['context'],
+        ]);
+        $builder->add('deleteList', SubmitType::class, [
+            'label' => 'coreshop.ui.delete',
+            'attr' => [
+                'class' => 'btn btn-danger'
+            ]
+        ]);
+        $builder->add('selectList', SubmitType::class, [
+            'label' => 'coreshop.ui.select',
+            'attr' => [
+                'class' => 'btn btn-success'
+            ]
         ]);
     }
 

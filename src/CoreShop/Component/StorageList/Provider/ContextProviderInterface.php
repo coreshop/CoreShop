@@ -23,4 +23,6 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 interface ContextProviderInterface
 {
     public function provideContextForStorageList(StorageListInterface $storageList): void;
+
+    public function getCurrentContext(): array;
 }

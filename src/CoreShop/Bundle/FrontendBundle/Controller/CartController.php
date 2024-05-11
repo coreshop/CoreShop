@@ -71,80 +71,22 @@ class CartController extends FrontendController
 {
     public function widgetAction(Request $request, ShopperContextInterface $shopperContext): Response
     {
-        $form = $this->container->get('form.factory')->createNamed('coreshop', CartListType::class, ['cart' => $this->getCart()], [
-            'context' => $shopperContext->getContext(),
-        ]);
+        $multiCartEnabled = $this->getParameter('coreshop.storage_list.multi_list.order');
 
-        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/_widget.html'), [
+        $params = [
             'cart' => $this->getCart(),
-            'form' => $form->createView(),
-        ]);
-    }
+            'multi_cart_enabled' => $this->getParameter('coreshop.storage_list.multi_list.order')
+        ];
 
-    public function createNamedCartAction(Request $request, ShopperContextInterface $shopperContext)
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if ($multiCartEnabled) {
+            $form = $this->container->get('form.factory')->createNamed('coreshop', CartListType::class, ['list' => $this->getCart()], [
+                'context' => $shopperContext->getContext(),
+            ]);
 
-        $form = $this->container->get('form.factory')->createNamed('coreshop', CreatedNamedCartType::class);
-
-        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-                $storageList = $this->container->get('coreshop.factory.order')->createNewNamed($data['name']);
-
-                $this->container->get('coreshop.storage_list.context_provider.order')->provideContextForStorageList($storageList);
-
-                $this->getCartManager()->persistCart($storageList);
-
-                $storageListStorage = $this->container->get('coreshop.storage_list.storage.order');
-                $storageListStorage->setForContext($shopperContext->getContext(), $storageList);
-
-                $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.cart_added'));
-
-                if ($request->isXmlHttpRequest()) {
-                    return new JsonResponse([
-                        'success' => true,
-                    ]);
-                }
-
-                return $this->redirect($request->getUri());
-            }
+            $params['form'] = $form->createView();
         }
 
-        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/created_named.html'), [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    public function selectNamedCartAction(Request $request, ShopperContextInterface $shopperContext)
-    {
-        $this->denyAccessUnlessGranted('CORESHOP_CURRENCY_SWITCH');
-
-        $form = $this->container->get('form.factory')->createNamed('coreshop', CartListType::class, ['cart' => $this->getCart()->getId()], [
-            'context' => $shopperContext->getContext(),
-        ]);
-
-        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $cart = $form->getData()['cart'];
-
-                if ($cart->getCustomer()?->getId() !== $shopperContext->getCustomer()->getId()) {
-                    throw new AccessDeniedException();
-                }
-
-                $storageListStorage = $this->container->get('coreshop.storage_list.storage.order');
-                $storageListStorage->setForContext($shopperContext->getContext(), $cart);
-
-                return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
-            }
-        }
-
-
-        return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/_widget.html'), $params);
     }
 
     public function createQuoteAction(Request $request, StateMachineManagerInterface $machineManager)

@@ -54,4 +54,9 @@ class CoreContextProvider implements ContextProviderInterface
             $storageList->setCustomer($customer);
         }
     }
+
+    public function getCurrentContext(): array
+    {
+        return $this->shopperContext->getContext();
+    }
 }
