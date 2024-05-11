@@ -78,6 +78,7 @@ services:
       target: behat
       args:
         uid: ${USER_ID:-1000}
+    entrypoint: docker-php-entrypoint
     profiles:
       - behat
     depends_on:

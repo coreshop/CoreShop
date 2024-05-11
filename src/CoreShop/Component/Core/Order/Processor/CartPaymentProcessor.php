@@ -42,13 +42,17 @@ final class CartPaymentProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        if ($cart->isImmutable()) {
+            return;
+        }
+
+        $cart->setPaymentTotal(
+            (int) round((round($cart->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
+        );
+
         $paymentProvider = $cart->getPaymentProvider();
 
-        if ($paymentProvider && !$cart->isImmutable()) {
-            $cart->setPaymentTotal(
-                (int)round((round($cart->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
-            );
-
+        if ($paymentProvider) {
             $validRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $cart);
 
             if ($validRule) {
@@ -72,10 +76,6 @@ final class CartPaymentProcessor implements CartProcessorInterface
                     ),
                 );
             }
-        }
-
-        if ($cart->isImmutable()) {
-            return;
         }
     }
 }

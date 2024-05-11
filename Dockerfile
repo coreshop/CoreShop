@@ -6,6 +6,11 @@ RUN set -eux; \
     sync; \
     apt-get purge -y $PHPIZE_DEPS; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+RUN echo 'xdebug.idekey = PHPSTORM' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo 'xdebug.mode = debug' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+
 ARG uid=1000
 RUN usermod -u $uid www-data && chown -R www-data:www-data /var/www
 
