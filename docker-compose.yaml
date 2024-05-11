@@ -62,7 +62,7 @@ services:
   php:
     <<: *php
     container_name: coreshop4-php
-    image: coreshop/coreshop:PHP8.1-fpm-debug
+    image: coreshop/coreshop:PHP8.2-fpm-debug
     build:
       target: dev
       args:
@@ -73,7 +73,7 @@ services:
   behat:
     <<: *php
     container_name: coreshop4-behat
-    image: coreshop/coreshop:PHP8.1-fpm-debug-behat
+    image: coreshop/coreshop:PHP8.2-fpm-debug-behat
     build:
       target: behat
       args:
@@ -84,7 +84,7 @@ services:
     depends_on:
       - db
     environment:
-      PIMCORE_TEST_DB_DSN: "mysql://pimcore:pimcore@db:3306/pimcore"
+      PIMCORE_TEST_DB_DSN: "mysql://root:ROOT@coreshop4-db/coreshop4___behat"
       PIMCORE_KERNEL_CLASS: 'Kernel'
       PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
     command:
