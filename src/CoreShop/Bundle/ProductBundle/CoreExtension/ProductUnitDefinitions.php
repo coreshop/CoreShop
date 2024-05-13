@@ -460,9 +460,9 @@ class ProductUnitDefinitions extends Data implements
             'Default Unit: %s, additional units: %d (%s)',
             $defaultUnit,
             $data->getAdditionalUnitDefinitions()->count(),
-            implode(', ', array_map(static function(ProductUnitDefinitionInterface $unitDefinition) {
+            implode(', ', array_map(static function (ProductUnitDefinitionInterface $unitDefinition) {
                 return sprintf('%s: %s %s', $unitDefinition->getId(), $unitDefinition->getConversionRate(), $unitDefinition->getUnitName());
-            }, $data->getUnitDefinitions()->toArray()))
+            }, $data->getUnitDefinitions()->toArray())),
         );
     }
 

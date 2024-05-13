@@ -52,8 +52,8 @@ final class CartPaymentProcessor implements CartProcessorInterface
         }
 
         if (
-            $paymentProvider
-            && $validRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $cart)
+            $paymentProvider &&
+            $validRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $cart)
         ) {
             $context = $this->cartContextResolver->resolveCartContext($cart);
 

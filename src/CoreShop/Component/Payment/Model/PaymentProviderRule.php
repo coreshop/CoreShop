@@ -20,8 +20,6 @@ namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * @psalm-suppress MissingConstructor
@@ -31,7 +29,6 @@ class PaymentProviderRule implements PaymentProviderRuleInterface
     use RuleTrait {
         initializeRuleCollections as private initializeRules;
     }
-
     use TranslatableTrait {
         initializeTranslationCollection as private initializeTranslationsCollection;
 
@@ -44,7 +41,7 @@ class PaymentProviderRule implements PaymentProviderRuleInterface
     protected $id;
 
     public function __construct(
-    ) {
+        ) {
         $this->initializeRules();
         $this->initializeTranslationsCollection();
     }
@@ -53,7 +50,6 @@ class PaymentProviderRule implements PaymentProviderRuleInterface
     {
         return $this->id;
     }
-
 
     public function getLabel(?string $language = null)
     {

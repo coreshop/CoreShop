@@ -28,7 +28,7 @@ class Version20200224161101 extends AbstractMigration
         if ($schema->getTable('coreshop_index')->hasColumn('indexLastVersion')) {
             return;
         }
-        
+
         $this->addSql(' ALTER TABLE coreshop_index ADD indexLastVersion TINYINT(1) DEFAULT \'0\' NOT NULL;');
     }
 
