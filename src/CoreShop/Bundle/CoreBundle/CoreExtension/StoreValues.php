@@ -606,9 +606,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $context->setGroups($params['groups'] ?? ['Default', 'Detailed']);
             $values = $this->getSerializer()->toArray($storeValuesEntity, $context);
 
+            $store = $storeValuesEntity->getStore();
+            $currency = $store->getCurrency();
+
             $storeData[$storeValuesEntity->getStore()->getId()] = [
-                'name' => $storeValuesEntity->getStore()->getName(),
-                'currencySymbol' => $storeValuesEntity->getStore()->getCurrency()->getSymbol(),
+                'name' => $store->getName(),
+                'currencySymbol' => $currency ? $currency->getSymbol() : null,
                 'values' => $values,
                 'inherited' => false,
                 'inheritable' => $inheritable,
