@@ -38,17 +38,25 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
 
     public function persist(StorageListInterface $storageList): void
     {
+        /**
+         * @var OrderInterface $storageList
+         */
         Assert::isInstanceOf($storageList, OrderInterface::class);
 
         $this->persistCart($storageList);
     }
 
-    public function persistCart(OrderInterface $cart): void
+    public function persistCart(OrderInterface $cart/*, array $params = []*/): void
     {
         $cartsFolder = $this->folderCreationService->createFolderForResource($cart, [
             'suffix' => date('Y/m/d'),
             'path' => 'cart',
         ]);
+
+        $params = [];
+        if (func_num_args() === 2) {
+            $params = func_get_arg(1) ?? [];
+        }
 
         VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
             if (!$cart->getId()) {
@@ -78,22 +86,32 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
                         ['prefix' => $cart->getFullPath()],
                     ),
                 );
-                //$item->setPath($cart->getFullPath());
+                $item->setKey(uniqid(sprintf('%s.', $index + 1), true));
                 $item->setPublished(true);
-                $item->setKey((string) ((int) $index + 1));
                 $item->save();
             }
 
+            /**
+             * The CartProcessor might add new Items to the Cart (eg. Gift Products)
+             * so we need to set the Parent and Key after the CartProcessor has been processed
+             */
             $this->cartProcessor->process($cart);
 
             /**
-             * @var OrderItemInterface $cartItem
+             * @var OrderItemInterface $item
              */
-            foreach ($cart->getItems() as $cartItem) {
-                $cartItem->save();
+            foreach ($cart->getItems() as $index => $item) {
+                $item->setParent(
+                    $this->folderCreationService->createFolderForResource(
+                        $item,
+                        ['prefix' => $cart->getFullPath()],
+                    ),
+                );
+                $item->setKey(uniqid(sprintf('%s.', ((int) $index + 1)), true));
+                $item->save();
             }
 
             $cart->save();
-        }, false);
+        }, $params['enable_versioning'] ?? false);
     }
 }

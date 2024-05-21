@@ -22,6 +22,7 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use Pimcore\Http\Request\Resolver\EditmodeResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class MailController extends FrontendController
 {
@@ -40,5 +41,15 @@ class MailController extends FrontendController
         }
 
         return $this->render($this->getTemplateConfigurator()->findTemplate('Mail/order-confirmation.html'), $viewParameters);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                new SubscribedService(EditmodeResolver::class, EditmodeResolver::class),
+            ],
+        );
     }
 }

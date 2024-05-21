@@ -1,103 +1,36 @@
-![CoreShop](etc/logo.png)
-
----
-
-**CoreShop - Pimcore eCommerce**
+**CoreShop - Pimcore enhanced eCommerce**
 
 ![Static Tests (Lint, Stan)](https://github.com/coreshop/CoreShop/actions/workflows/static.yml/badge.svg)
-![Behat UI Tests](https://github.com/coreshop/CoreShop/workflows/Behat%20UI/badge.svg)
-![Behat Tests](https://github.com/coreshop/CoreShop/workflows/Behat/badge.svg)
+[![Behat UI](https://github.com/coreshop/CoreShop/actions/workflows/behat_ui.yml/badge.svg)](https://github.com/coreshop/CoreShop/actions/workflows/behat_ui.yml)
+[![Behat](https://github.com/coreshop/CoreShop/actions/workflows/behat.yml/badge.svg)](https://github.com/coreshop/CoreShop/actions/workflows/behat.yml)
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 [![Latest Pre-Release](https://img.shields.io/packagist/vpre/coreshop/core-shop.svg)](https://www.packagist.org/packages/coreshop/core-shop)
 
-[CoreShop](https://www.coreshop.org) is a eCommerce Platform for [Pimcore](http://www.pimcore.org).
+[![CoreShop](etc/illustration.png 'CoreShop')](https://www.coreshop.org)
 
-![CoreShop Interface](docs/img/screenshot5.png)
-
-# Requirements 
- - Pimcore `^11.0`
-
-# Installation
- - Allow dev version to be installed:
-   ```
-   composer config "minimum-stability" "dev"
-   composer config "prefer-stable" "true"
-   ```
- - Install with composer 
-   ```
-   composer require coreshop/core-shop:^4.0
-   ```
- - Run enable Bundle command
-   ```
-   php bin/console pimcore:bundle:enable CoreShopCoreBundle
-   ```
- - Run Install Command
-   ```
-   php bin/console coreshop:install
-   ```
- - Optional: Install Demo Data 
-   ```
-   php bin/console coreshop:install:demo
-   ```
-## Messenger
-CoreShop also uses Symfony Messenger for async tasks like sending E-Mails or Processing DataObjects for the Index. Please run these 2 transports to process the data
-```
-bin/console messenger:consume coreshop_notification coreshop_index --time-limit=300
-```
+CoreShop harnesses Pimcore's advanced features for unmatched efficiency and customization in your online store. Dive
+into a seamless blend of cutting-edge technology and user-friendly interfaces, crafting an eCommerce experience that
+transcends ordinary transactions.
 
 # Further Information
- - [Website](https://www.coreshop.org)
- - [Documentation](https://docs.coreshop.org/latest)
- - [Pimcore Forum](https://talk.pimcore.org)
+
+- [Website](https://www.coreshop.org)
+- [Documentation](https://docs.coreshop.org/latest)
+- [Pimcore Github](https://github.com/pimcore/pimcore)
+
+# Requirements
+
+- Pimcore `^11.1`
+
+# Installation
+
+Read our Documentation for the Installation Guide [here](https://docs.coreshop.org/CoreShop/Getting_Started/Installation)
 
 # Demo
-You can see a running demo here [CoreShop 3.x Demo](https://demo3.coreshop.org)
 
-**Backend Credentials**
+Discover the full potential of CoreShop through our interactive demos. Read more about this [here](https://docs.coreshop.org/CoreShop/Getting_Started/Demo)
 
-```
-Admin: https://demo3.coreshop.org/admin
+## Copyright and license
 
-Username: admin
-Password: coreshop
-```
-
-## Running Tests Locally
-### Psalm
-```
-vendor/bin/psalm
-```
-
-### PHPStan
-```
-SYMFONY_ENV=test vendor/bin/phpstan analyse -c phpstan.neon src -l 3 --memory-limit=-1
-```
-
-### BEHAT Domain
-```
-CORESHOP_SKIP_DB_SETUP=1 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-next/coreshop4___behat vendor/bin/behat -c behat.yml.dist -p default
-```
-
-### BEHAT UI
-```
-vendor/bin/bdi detect drivers
-
-# Install Pimcore and CoreShop in Test Env
-APP_ENV=test PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-next/coreshop4___behat PIMCORE_INSTALL_ADMIN_USERNAME=admin PIMCORE_INSTALL_ADMIN_PASSWORD=admin PIMCORE_INSTALL_MYSQL_HOST_SOCKET=coreshop-next PIMCORE_INSTALL_MYSQL_USERNAME=root PIMCORE_INSTALL_MYSQL_PASSWORD=ROOT PIMCORE_INSTALL_MYSQL_DATABASE=coreshop4___behat PIMCORE_INSTALL_MYSQL_PORT=3306 PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
-APP_ENV=test PIMCORE_CLASS_DIRECTORY=var/tmp/behat/var/classes PIMCORE_TEST_DB_DSN=mysql://root:ROOT@coreshop-next/coreshop4___behat bin/console coreshop:install
-
-# OUTSIDE CONTAINER
-# Run Symfony Server
-APP_ENV=test PIMCORE_TEST_DB_DSN=mysql://root:ROOT@127.0.0.1:3306/coreshop4___behat symfony server:start --port=9080 --dir=public --no-tls
-
-# Run Behat
-CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@127.0.0.1:3306/coreshop4___behat php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui -vvv 
-```
-
-## Copyright and license 
 Copyright: [CoreShop GmbH](https://www.coreshop.org)
-For licensing details please visit [LICENSE.md](LICENSE.md) 
-
-## Screenshots
-![CoreShop Interface](docs/img/screenshot5-2.png)
-![CoreShop Interface](docs/img/screenshot5-3.png)
+For licensing details please visit [LICENSE.md](LICENSE.md)

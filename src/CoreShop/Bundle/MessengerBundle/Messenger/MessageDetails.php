@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
-final class MessageDetails
+final class MessageDetails implements \JsonSerializable
 {
     public function __construct(
         private mixed $id,
@@ -40,5 +40,14 @@ final class MessageDetails
     public function getSerialized(): string
     {
         return $this->serialized;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'class' => $this->class,
+            'serialized' => $this->serialized,
+        ];
     }
 }

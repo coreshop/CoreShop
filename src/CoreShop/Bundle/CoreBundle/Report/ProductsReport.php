@@ -60,6 +60,10 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             $orderStateFilter = null;
         }
 
+        if (count($orderStateFilter) === 1 && $orderStateFilter[0] === 'all') {
+            $orderStateFilter = null;
+        }
+
         $storeId = $parameterBag->get('store');
 
         if (null === $storeId) {

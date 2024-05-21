@@ -473,14 +473,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
             if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues, true)) {
                 $this->getEntityManager()->remove($availableStoreValuesEntity);
-                $this->getEntityManager()->flush($availableStoreValuesEntity);
             }
         }
 
         foreach ($allStoreValues as $storeEntity) {
             $this->getEntityManager()->persist($storeEntity);
-            $this->getEntityManager()->flush($storeEntity);
         }
+
+        $this->getEntityManager()->flush();
 
         //We have to set that here, values could change during persist due to copy or variant inheritance break
         $object->setObjectVar($this->getName(), $allStoreValues);

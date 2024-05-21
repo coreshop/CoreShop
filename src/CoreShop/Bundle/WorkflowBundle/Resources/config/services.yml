@@ -8,7 +8,7 @@ services:
     CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface: '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
     CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager:
         arguments:
-            - '@.workflow.registry'
+            - '@workflow.registry'
 
     CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface: '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
     CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier:

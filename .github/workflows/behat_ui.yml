@@ -2,8 +2,16 @@ name: Behat UI
 on:
   push:
     branches: [ '4.0' ]
+    paths-ignore:
+      - 'docs/**'
+      - '.github/workflows/docs_next.yml'
+      - 'README.md'
   pull_request:
     branches: [ '4.0' ]
+    paths-ignore:
+      - 'docs/**'
+      - '.github/workflows/docs_next.yml'
+      - 'README.md'
   release:
     types: [ created ]
   schedule:
@@ -26,12 +34,11 @@ jobs:
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/index_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PIMCORE_KERNEL_CLASS: 'Kernel'
-      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
 
     strategy:
       matrix:
         php: [ 8.1, 8.2 ]
-        pimcore: [ ^11.0 ]
+        pimcore: [ ~11.1.0, ~11.2.0 ]
         dependencies: [ highest ]
         exclude:
           - php: 8.1
@@ -49,7 +56,7 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2
@@ -71,7 +78,7 @@ jobs:
       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Cache composer dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
@@ -113,7 +120,7 @@ jobs:
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
 
     - name: Upload Behat logs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: "Behat logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
@@ -121,7 +128,7 @@ jobs:
         if-no-files-found: ignore
 
     - name: Upload Pimcore logs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: "Pimcore logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"

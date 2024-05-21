@@ -402,6 +402,7 @@ class CartController extends FrontendController
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService('coreshop.repository.cart_price_rule_voucher_code', CartPriceRuleVoucherRepositoryInterface::class),
                 new SubscribedService(CartPriceRuleProcessorInterface::class, CartPriceRuleProcessorInterface::class),
+                new SubscribedService(CartPriceRuleUnProcessorInterface::class, CartPriceRuleUnProcessorInterface::class),
             ],
         );
     }

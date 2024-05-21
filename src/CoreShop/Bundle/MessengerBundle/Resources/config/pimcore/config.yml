@@ -1,6 +1,10 @@
 imports:
   - { resource: admin.yml }
 
+doctrine_migrations:
+  migrations_paths:
+    'CoreShop\Bundle\MessengerBundle\Migrations': '@CoreShopMessengerBundle/Migrations'
+
 framework:
   messenger:
     buses:

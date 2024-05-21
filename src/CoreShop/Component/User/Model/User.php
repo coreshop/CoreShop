@@ -73,6 +73,11 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
         return $this->roles;
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->getLoginIdentifier();
+    }
+
     public function getUsername(): ?string
     {
         return $this->getLoginIdentifier();

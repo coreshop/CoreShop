@@ -39,6 +39,7 @@ use CoreShop\Component\StorageList\StorageListsManager;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
+use Pimcore\Http\RequestHelper;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -112,13 +113,15 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $container->setDefinition('coreshop.storage_list.session_subscriber.' . $name, $sessionSubscriber);
             }
 
-            $cacheSubscriber = new Definition(CacheListener::class, [
-                new Reference(PimcoreContextResolver::class),
-                new Reference($contextCompositeServiceName),
-            ]);
-            $cacheSubscriber->addTag('kernel.event_subscriber');
+            if ($list['disable_caching']) {
+                $cacheSubscriber = new Definition(CacheListener::class, [
+                    new Reference($list['resource']['repository']),
+                    new Reference($list['resource']['item_repository']),
+                ]);
 
-            $container->setDefinition('coreshop.storage_list.cache_subscriber.' . $name, $cacheSubscriber);
+                $cacheSubscriber->addTag('kernel.event_subscriber');
+                $container->setDefinition('coreshop.storage_list.cache_subscriber.' . $name, $cacheSubscriber);
+            }
 
             if ($list['controller']['enabled']) {
                 $class = $list['controller']['class'];
@@ -171,13 +174,15 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                     $customerAndStoreBasedContextDefinition->setArgument('$customerContext', new Reference(CustomerContextInterface::class));
                     $customerAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference(StoreContextInterface::class));
                     $customerAndStoreBasedContextDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
+                    $customerAndStoreBasedContextDefinition->setArgument('$requestHelper', new Reference(RequestHelper::class));
+                    $customerAndStoreBasedContextDefinition->setArgument('$restoreCustomerStorageListOnlyOnLogin', $list['context']['restore_customer_list_only_on_login']);
                     $customerAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => -777]);
 
                     $container->setDefinition('coreshop.storage_list.context.customer_and_store_based.' . $name, $customerAndStoreBasedContextDefinition);
 
                     if ($list['services']['enable_default_store_based_decorator']) {
                         $storeBasedContextDefinition = new Definition(StoreBasedStorageListContext::class);
-                        $storeBasedContextDefinition->setDecoratedService($contextCompositeServiceName);
+                        $storeBasedContextDefinition->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
                         $storeBasedContextDefinition->setArgument(
                             '$context',
                             new Reference('coreshop.storage_list.context.store_based.' . $name . '.inner'),

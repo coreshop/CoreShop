@@ -20,6 +20,7 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Model\ImmutableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -32,6 +33,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     use AdjustableTrait;
     use ProposalPriceRuleTrait;
     use ConvertedAdjustableTrait;
+    use ImmutableTrait;
 
     public function hasItems(): bool
     {
@@ -170,6 +172,11 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
         return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::PAYMENT, false);
     }
 
+    public function count(): int
+    {
+        return count($this->getItems() ?: []);
+    }
+
     public function getTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -280,6 +287,23 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    public function recalculateSubtotal(): void
+    {
+        $subtotalGross = 0;
+        $subtotalNet = 0;
+
+        /**
+         * @var OrderItemInterface $item
+         */
+        foreach ($this->getItems() as $item) {
+            $subtotalGross += $item->getTotal(true);
+            $subtotalNet += $item->getTotal(false);
+        }
+
+        $this->setSubtotal($subtotalGross, true);
+        $this->setSubtotal($subtotalNet, false);
+    }
+
     protected function recalculateConvertedAfterAdjustmentChange(): void
     {
         $this->setConvertedTotal($this->getConvertedSubtotal(true) + $this->getConvertedAdjustmentsTotal(null, true), true);
@@ -288,6 +312,8 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
 
     protected function recalculateAfterAdjustmentChange(): void
     {
+        $this->recalculateSubtotal();
+
         $this->setTotal($this->getSubtotal(true) + $this->getAdjustmentsTotal(null, true), true);
         $this->setTotal($this->getSubtotal(false) + $this->getAdjustmentsTotal(null, false), false);
     }

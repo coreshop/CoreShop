@@ -25,6 +25,7 @@ class PatchField implements PatchFieldInterface
         protected ?string $after,
         protected ?string $before,
         protected ?array $definition,
+        protected bool $replace = true,
     ) {
         if (null === $this->definition) {
             $this->definition = [];
@@ -51,5 +52,10 @@ class PatchField implements PatchFieldInterface
     public function getDefinition(): ?array
     {
         return $this->definition;
+    }
+
+    public function isReplace(): bool
+    {
+        return $this->replace;
     }
 }

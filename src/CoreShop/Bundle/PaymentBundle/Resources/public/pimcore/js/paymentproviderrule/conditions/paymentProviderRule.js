@@ -10,37 +10,36 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentproviderrule.conditions.paymentproviderRule');
+pimcore.registerNS('coreshop.paymentproviderrule.conditions.paymentProviderRule');
 
-coreshop.paymentproviderrule.conditions.paymentproviderRule = Class.create(coreshop.rules.conditions.abstract, {
-    type: 'paymentproviderRule',
+coreshop.paymentproviderrule.conditions.paymentProviderRule = Class.create(coreshop.rules.conditions.abstract, {
+    type: 'paymentProviderRule',
 
     getForm: function () {
         var me = this;
-        var store = pimcore.globalmanager.get('');
 
         var rule = {
             xtype: 'combo',
-            fieldLabel: t('coreshop_condition_paymentproviderRule'),
+            fieldLabel: t('coreshop_condition_paymentProviderRule'),
             typeAhead: true,
             listWidth: 100,
             width: 500,
             store: {
-                type: 'coreshop_paymentprovider_rules'
+                type: 'coreshop_payment_provider_rules'
             },
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
             multiselect: true,
             triggerAction: 'all',
-            name: 'paymentproviderRule',
+            name: 'paymentProviderRule',
             maxHeight: 400,
             delimiter: false,
-            value: me.data.paymentproviderRule
+            value: me.data.paymentProviderRule
         };
 
-        if (this.data && this.data.paymentproviderRule) {
-            rule.value = this.data.paymentproviderRule;
+        if (this.data && this.data.paymentProviderRule) {
+            rule.value = this.data.paymentProviderRule;
         }
 
         this.form = new Ext.form.Panel({

@@ -31,6 +31,10 @@ class CoreShopRelation extends Data\ManyToOneRelation
 
     public bool $returnConcrete = false;
 
+    public bool $objectsAllowed = true;
+
+    public array $classes = [];
+
     public function getFieldType(): string
     {
         return 'coreShopRelation';
@@ -106,28 +110,12 @@ class CoreShopRelation extends Data\ManyToOneRelation
         return $this;
     }
 
-    public function getObjectsAllowed(): bool
+    public static function __set_state(array $data): static
     {
-        return true;
-    }
+        $obj = parent::__set_state($data);
+        $obj->classes = $obj->getClasses();
+        $obj->objectsAllowed = true;
 
-    public function getDocumentsAllowed(): bool
-    {
-        return false;
-    }
-
-    public function getDocumentTypes(): array
-    {
-        return [];
-    }
-
-    public function getAssetsAllowed(): bool
-    {
-        return false;
-    }
-
-    public function getAssetTypes(): array
-    {
-        return [];
+        return $obj;
     }
 }

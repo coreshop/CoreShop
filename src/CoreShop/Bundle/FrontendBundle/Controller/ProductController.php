@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -93,6 +94,7 @@ class ProductController extends FrontendController
            'coreshop.repository.product' => ProductRepositoryInterface::class,
             StoreContextInterface::class => StoreContextInterface::class,
             TrackerInterface::class => TrackerInterface::class,
+            'coreshop.repository.stack.purchasable' => StackRepositoryInterface::class,
         ]);
     }
 

@@ -8,6 +8,11 @@ coreshop_admin_cart_price_rule:
           action: getConfig
           methods:
             - GET
+        listVoucherRules:
+          path: list-voucher-rules
+          action: listVoucherRules
+          methods:
+            - GET
         cartItemConfig:
           path: get-cart-item-config
           action: getCartItemConfig
@@ -71,6 +76,13 @@ coreshop_admin_order_get_order:
     options:
         expose: true
 
+coreshop_admin_order_update:
+    path: /%coreshop.admin.route.base%/order/update/{id}
+    defaults: { _controller: 'coreshop.pimcore_controller.order::updateAction'}
+    methods: POST
+    options:
+        expose: true
+
 coreshop_admin_order_find:
     path: /%coreshop.admin.route.base%/order/find
     defaults: { _controller: 'coreshop.pimcore_controller.order::findOrderAction'}
@@ -131,6 +143,8 @@ coreshop_admin_order_comments_add:
 coreshop_admin_order_comments_delete:
     path: /%coreshop.admin.route.base%/order-comment/delete
     defaults: { _controller: 'coreshop.pimcore_controller.order_comment::deleteAction'}
+    options:
+        expose: true
 
 ##### ORDER SHIPMENT
 coreshop_admin_order_shipment_get_processable_items:

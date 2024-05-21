@@ -87,8 +87,9 @@ class OrderCommentController extends PimcoreController
     public function deleteAction(Request $request): JsonResponse
     {
         $commentId = $this->getParameterFromRequest($request, 'id');
+
         $objectNoteService = $this->container->get(NoteServiceInterface::class);
-        $commentEntity = $objectNoteService->getNoteById($commentId);
+        $commentEntity = $objectNoteService->getNoteById((int) $commentId);
 
         if ($commentEntity instanceof Note) {
             /** @psalm-suppress InternalMethod */

@@ -110,7 +110,7 @@ final class FilterContext implements Context
         $condition->setLabel($label);
 
         $filter->setOrderDirection('asc');
-        $filter->setOrderKey('id');
+        $filter->setOrderKey('o_id');
 
         $condition->setConfiguration([
             'field' => 'internalName',

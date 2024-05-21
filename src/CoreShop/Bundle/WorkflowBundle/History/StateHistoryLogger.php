@@ -62,7 +62,11 @@ final class StateHistoryLogger implements StateHistoryLoggerInterface
         $note->addData('workflow', 'text', $event->getWorkflowName());
         $note->addData('transition', 'text', $transition->getName());
 
-        $this->noteService->storeNote($note);
+        try {
+            $this->noteService->storeNote($note);
+        } catch (\Exception) {
+            //We simply ignore this, if the note cannot be saved, we don't want to break the workflow
+        }
     }
 
     private function getFrom(array $froms)

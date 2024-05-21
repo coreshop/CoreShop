@@ -116,6 +116,10 @@ services:
         tags:
             - { name: coreshop.notification_rule.condition, type: backendCreated, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\BackendCreatedConfigurationType }
 
+    CoreShop\Component\Core\Notification\Rule\Condition\Order\BackendUpdateChecker:
+        tags:
+            - { name: coreshop.notification_rule.condition, type: backendUpdated, notification-type: order }
+
     #### PAYMENT
     coreshop.notification_rule.condition.payment.payment_state:
           class: CoreShop\Component\Core\Notification\Rule\Condition\SimpleStateChecker
@@ -281,3 +285,8 @@ services:
             - { name: kernel.event_listener, event: coreshop.customer.register, method: applyRegisterCustomerRule }
             - { name: kernel.event_listener, event: coreshop.customer.request_newsletter_confirm, method: applyNewsletterConfirmRequestRule }
             - { name: kernel.event_listener, event: coreshop.customer.newsletter_confirm_post, method: applyNewsletterConfirmed }
+
+    CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderUpdateListener:
+        parent: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener
+        tags:
+            - { name: kernel.event_listener, event: coreshop.order.backend_update_save, method: applyOrderUpdateNotification }

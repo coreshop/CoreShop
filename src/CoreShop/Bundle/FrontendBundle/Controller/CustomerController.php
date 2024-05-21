@@ -24,9 +24,11 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Address\Repository\AddressIdentifierRepositoryInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Customer\Address\AddressAssignmentManagerInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
@@ -368,8 +370,10 @@ class CustomerController extends FrontendController
                 ShopperContextInterface::class,
                 AddressAssignmentManagerInterface::class,
                 new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
+                new SubscribedService('coreshop.repository.customer', CustomerRepositoryInterface::class),
                 new SubscribedService('coreshop.repository.address', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.address')),
                 new SubscribedService('coreshop.factory.address', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.address')),
+                new SubscribedService('coreshop.repository.address_identifier', AddressIdentifierRepositoryInterface::class),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
             ]);
     }

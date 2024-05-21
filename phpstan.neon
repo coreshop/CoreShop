@@ -33,6 +33,7 @@ parameters:
         - '/Method CoreShop\\Bundle\\ResourceBundle\\Routing\\ResourceLoader::getResolver\(\) should return Symfony\\Component\\Config\\Loader\\LoaderResolverInterface but return statement is missing./'
         - '/PHPDoc type string of property CoreShop\\Bundle\\PayumBundle\\Request\\GetStatus::\$status is not covariant with PHPDoc type int of overridden property Payum\\Core\\Request\\BaseGetStatus::\$status./'
         - '/Method CoreShop\\Bundle\\ResourceBundle\\Controller\\AdminController::getSubscribedServices\(\) should return non-empty-array<string|Symfony\\Contracts\\Service\\Attribute\\SubscribedService> but returns array<string>./'
+        - '/Pimcore\\Model\\DataObject\\ClassDefinition\\DynamicOptionsProvider\\MultiSelectOptionsProviderInterface is marked deprecated/'
 
         # Pimcore BC Breaks
         - '/Class Pimcore\\Bundle\\AdminBundle\\Helper\\GridHelperService not found/'

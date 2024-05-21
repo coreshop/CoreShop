@@ -90,7 +90,7 @@ class CategoryMultiSelectConditionProcessor implements FilterConditionProcessorI
             $field = 'parentCategoryIds';
         }
 
-        $values = $parameterBag->get($field);
+        $values = $parameterBag->all($field);
 
         if (empty($values)) {
             $values = $condition->getConfiguration()['preSelects'];

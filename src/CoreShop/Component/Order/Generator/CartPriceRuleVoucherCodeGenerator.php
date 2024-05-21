@@ -51,6 +51,7 @@ class CartPriceRuleVoucherCodeGenerator
             $code = $this->generateCode($lettersToUse, $generator->getLength(), $generator->getPrefix(), $generator->getSuffix(), $generatedVouchers);
 
             if ($generator->getHyphensOn() > 0) {
+                /** @psalm-suppress ArgumentTypeCoercion */
                 $hyphens = str_split($code, $generator->getHyphensOn());
 
                 if (false !== $hyphens) {

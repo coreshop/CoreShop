@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
@@ -26,20 +25,7 @@ final class CartSubtotalProcessor implements CartProcessorInterface
 {
     public function process(OrderInterface $cart): void
     {
-        $subtotalGross = 0;
-        $subtotalNet = 0;
-
-        /**
-         * @var OrderItemInterface $item
-         */
-        foreach ($cart->getItems() as $item) {
-            $subtotalGross += $item->getTotal(true);
-            $subtotalNet += $item->getTotal(false);
-        }
-
-        $cart->setSubtotal($subtotalGross, true);
-        $cart->setSubtotal($subtotalNet, false);
-
+        $cart->recalculateSubtotal();
         $cart->recalculateAdjustmentsTotal();
     }
 }

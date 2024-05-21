@@ -19,6 +19,8 @@ imports:
     - { resource: services/payment.yml }
     - { resource: services/forms.yml }
     - { resource: services/checkout_listener.yml }
+    - { resource: services/controller.yml }
+    - { resource: services/order_edit.yml }
 
 services:
     _defaults:
@@ -96,6 +98,8 @@ services:
         public: false
         arguments:
             - '@CoreShop\Component\Order\Factory\AdjustmentFactory.inner'
+
+    CoreShop\Component\Order\Factory\CartPriceRuleVoucherCodeCustomerFactoryInterface: '@coreshop.factory.cart_price_rule_voucher_code_customer'
 
     CoreShop\Component\Order\Factory\OrderItemFactory:
         decorates: coreshop.factory.order_item

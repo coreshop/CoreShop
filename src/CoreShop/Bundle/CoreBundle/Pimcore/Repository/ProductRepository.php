@@ -24,12 +24,16 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Doctrine\DBAL\ArrayParameterType;
+use Pimcore\Cache;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
+    public const VARIANT_RECURSIVE_QUERY_CACHE_TAG = 'coreshop_variant_recursive';
+
     public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
         $conditions = [
@@ -37,7 +41,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ['condition' => 'stores LIKE ?', 'variable' => '%,' . $store->getId() . ',%'],
         ];
 
-        /** @psalm-suppress InvalidScalarArgument */
+        /** @psalm-suppress InvalidArgument */
         return $this->findBy($conditions, ['creationDate' => 'DESC'], $count);
     }
 
@@ -53,6 +57,51 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         }
 
         return $list->getObjects();
+    }
+
+    public function findRecursiveVariantIdsForProductAndStoreByProducts(array $products, StoreInterface $store, array $cacheTags = []): array
+    {
+        $cacheKey = sprintf('cs_rvids_%s_%d', md5(implode('-', $products)), $store->getId());
+
+        if (false === $variantIds = Cache::load($cacheKey)) {
+            $list = $this->getList();
+            $dao = $list->getDao();
+
+            /** @psalm-suppress InternalMethod */
+            $query = '
+            SELECT oo_id as id FROM (
+                SELECT CONCAT(path, `key`) as realFullPath FROM objects WHERE id IN (:products)
+            ) as products
+            INNER JOIN ' . $dao->getTableName() . " variants ON variants.path LIKE CONCAT(products.realFullPath, '/%')
+            WHERE variants.stores LIKE :store
+        ";
+
+            $params = [
+                'products' => $products,
+                'store' => '%,' . $store->getId() . ',%',
+            ];
+            $paramTypes = [
+                'products' => ArrayParameterType::STRING,
+            ];
+
+            $resultProducts = $this->connection->fetchAllAssociative($query, $params, $paramTypes);
+
+            $variantIds = [];
+
+            foreach ($products as $productId) {
+                $variantIds[$productId] = true;
+            }
+
+            foreach ($resultProducts as $result) {
+                $variantIds[$result['id']] = true;
+            }
+
+            $cacheTags[] = self::VARIANT_RECURSIVE_QUERY_CACHE_TAG;
+
+            Cache::save($variantIds, $cacheKey, $cacheTags, 500, 0, true);
+        }
+
+        return array_keys($variantIds);
     }
 
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
