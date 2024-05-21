@@ -611,7 +611,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
             $storeData[$storeValuesEntity->getStore()->getId()] = [
                 'name' => $store->getName(),
-                'currencySymbol' => $currency ? $currency->getSymbol() : null,
+                'currencySymbol' => $currency?->getSymbol(),
                 'values' => $values,
                 'inherited' => false,
                 'inheritable' => $inheritable,
