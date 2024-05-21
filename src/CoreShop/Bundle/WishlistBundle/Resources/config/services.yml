@@ -1,7 +1,5 @@
 parameters:
     coreshop.dto.add_to_wishlist.class: '%coreshop.storage_list.add_to_list_class%'
-    coreshop.dto.add_to_selectable_wishlist.class: '%coreshop.storage_list.add_to_selectable_list_class%'
-    coreshop.dto.add_to_new_wishlist.class: '%coreshop.storage_list.add_to_new_list_class%'
     coreshop.form.type.wishlist.validation_groups: [coreshop]
     coreshop.form.type.wishlist_item.validation_groups: [coreshop]
     coreshop.form.type.add_to_wishlist.validation_groups: [coreshop]
@@ -31,13 +29,6 @@ services:
         public: false
         arguments:
             - '@coreshop.factory.wishlist.storage_list.inner'
-
-    coreshop.wishlist.context.factory:
-        class: CoreShop\Component\StorageList\Context\StorageListFactoryContext
-        arguments:
-            - '@coreshop.factory.wishlist'
-        tags:
-            - { name: coreshop.context.wishlist, priority: -999 }
 
     CoreShop\Bundle\WishlistBundle\Form\Type\WishlistType:
         arguments:

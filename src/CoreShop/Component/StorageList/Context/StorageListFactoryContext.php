@@ -20,7 +20,6 @@ namespace CoreShop\Component\StorageList\Context;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-use CoreShop\Component\StorageList\Model\NameableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 
 final class StorageListFactoryContext implements StorageListContextInterface

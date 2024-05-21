@@ -44,5 +44,5 @@ vendor/bin/bdi detect drivers
 APP_ENV=test PIMCORE_TEST_DB_DSN=mysql://root:ROOT@127.0.0.1:3306/coreshop4___behat symfony server:start --port=9080 --dir=public --no-tls
 
 # Run Behat
-CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@127.0.0.1:3306/coreshop4___behat php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui -vvv 
+CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@127.0.0.1:3306/coreshop4___behat php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui -vvv features/ui/frontend/wishlist/adding_product_to_wishlist.feature 
 ```

@@ -28,9 +28,7 @@ use CoreShop\Component\StorageList\Factory\StorageListItemFactoryInterface;
 use CoreShop\Component\StorageList\Model\ShareableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\Provider\ContextProviderInterface;
 use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInterface;
-use CoreShop\Component\StorageList\Resolver\StorageListResolverInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Psr\Container\ContainerInterface;
@@ -66,8 +64,6 @@ class StorageListController extends AbstractController
         protected string $indexRoute,
         protected string $templateAddToList,
         protected string $templateSummary,
-        protected StorageListResolverInterface $listResolver,
-        protected ContextProviderInterface $contextProvider,
         protected TranslatorInterface $translator,
     ) {
         $this->setContainer($container);

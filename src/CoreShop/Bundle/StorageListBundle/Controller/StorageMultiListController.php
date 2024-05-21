@@ -18,8 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StorageListBundle\Controller;
 
-use CoreShop\Bundle\OrderBundle\Form\Type\CartListType;
-use CoreShop\Bundle\OrderBundle\Form\Type\CreatedNamedCartType;
+use CoreShop\Bundle\StorageListBundle\Form\Type\CreatedNamedStorageListType;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Factory\StorageListFactoryInterface;
@@ -27,6 +27,7 @@ use CoreShop\Component\StorageList\Provider\ContextProviderInterface;
 use CoreShop\Component\StorageList\Resolver\StorageListResolverInterface;
 use CoreShop\Component\StorageList\Storage\StorageListStorageInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\ClickableInterface;
@@ -64,7 +65,7 @@ class StorageMultiListController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->denyAccessUnlessGranted(sprintf('CORESHOP_STORAGE_LIST_CREATED_%s', strtoupper($this->identifier)));
 
-        $form = $this->formFactory->createNamed('coreshop', CreatedNamedCartType::class);
+        $form = $this->formFactory->createNamed('coreshop', CreatedNamedStorageListType::class);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
             $form->handleRequest($request);
@@ -75,11 +76,14 @@ class StorageMultiListController extends AbstractController
 
                 $this->contextProvider->provideContextForStorageList($storageList);
 
-                $this->manager->persistCart($storageList);
+                $this->manager->persist($storageList);
 
                 $this->storage->setForContext($this->contextProvider->getCurrentContext(), $storageList);
 
-                $this->addFlash('success', $this->translator->trans(sprintf('coreshop.ui.%s.created', $this->identifier)));
+                $this->addFlash(
+                    'success',
+                    $this->translator->trans(sprintf('coreshop.ui.%s.created', $this->identifier))
+                );
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
@@ -104,14 +108,14 @@ class StorageMultiListController extends AbstractController
     public function listStorageListAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->denyAccessUnlessGranted('CORESHOP_STORAGE_LIST_MULTI_LIST_' . $this->identifier);
+        $this->denyAccessUnlessGranted('CORESHOP_STORAGE_LIST_MULTI_LIST_'.$this->identifier);
 
         $storageLists = $this->listResolver->getStorageLists($this->contextProvider->getCurrentContext());
         $storageList = $this->context->getStorageList();
 
         $params = [
             'lists' => $storageLists,
-            'list' => $storageList
+            'list' => $storageList,
         ];
 
         if (null !== $this->listFormType) {
@@ -130,25 +134,34 @@ class StorageMultiListController extends AbstractController
                 if ($form->isSubmitted() && $form->isValid()) {
                     $list = $form->getData()['list'];
 
-                    if ($list->getCustomer()?->getId() !== $this->contextProvider->getCurrentContext()['customer']->getId()) {
+                    if ($list instanceof CustomerAwareInterface &&
+                        $list->getCustomer()?->getId() !== $this->contextProvider->getCurrentContext()['customer']->getId()
+                    ) {
                         throw new AccessDeniedException();
                     }
 
                     if ($form->has('deleteList')) {
                         $deleteListButton = $form->get('deleteList');
 
-                        $deleteCLicked = $deleteListButton instanceof ClickableInterface && $deleteListButton->isClicked();
+                        $deleteClicked = $deleteListButton instanceof ClickableInterface &&
+                            $deleteListButton->isClicked();
 
-                        if ($deleteCLicked) {
-                            $list->delete();
+                        if ($deleteClicked) {
+                            if ($list instanceof Concrete) {
+                                $list->delete();
+                            }
 
-                            return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
+                            return new RedirectResponse(
+                                $request->headers->get('referer', $request->getSchemeAndHttpHost())
+                            );
                         }
                     }
 
                     $this->storage->setForContext($this->contextProvider->getCurrentContext(), $list);
 
-                    return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
+                    return new RedirectResponse(
+                        $request->headers->get('referer', $request->getSchemeAndHttpHost())
+                    );
                 }
             }
 
