@@ -1,3 +1,15 @@
+# 3.2.8
+* [CoreBundle] fix PaymentWorkflow Listener to trigger state transition conditions by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2601
+* [CoreBundle] fix CartTextProcessor priority and CartManagers setParent for cart-item by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2602
+* [MessengerBundle] add permission and check for permissions by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2611
+* [Composer] conflict twig/twig: ^3.9.0 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2612
+* [Workflows] update to latest versions by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2613
+* [PaymentProvider] fix payment provider rule action and add payment provider rule condition by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2614
+* [Core] reimplement existing data check in ProductQuantityPriceRulesCloner by @solverat in https://github.com/coreshop/CoreShop/pull/2620
+* [Documentation] Contribution/setting up dev enviornment by @TanaseTeofil in https://github.com/coreshop/CoreShop/pull/2576
+* [ResourceBundle] Fix EntityMerger and cascade-merging by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2622
+* [IndexBundle] check migration if column already exists by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2627
+
 # 3.2.7
 * Fix store mail and store order mail collection entry type by @kkarkus in https://github.com/coreshop/CoreShop/pull/2586
 * [NoteService] implement deadlock retry strategy by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2588
