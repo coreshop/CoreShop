@@ -1,3 +1,9 @@
+# 4.0.7
+
+* [ProductBundle] fix missing cascade merge by @nehlsen in https://github.com/coreshop/CoreShop/pull/2636
+* [IndexBundle] Fix JS Error due to missing global function ts() by @gadget60 in https://github.com/coreshop/CoreShop/pull/2638
+* [CoreBundle] Prevent PHP error for store without currency by @BlackbitDevs in https://github.com/coreshop/CoreShop/pull/2634
+
 # 4.0.6
 
 * [IndexBundle] Index error if product does not have a store by @hethehe in https://github.com/coreshop/CoreShop/pull/2603
