@@ -96,7 +96,7 @@ class SessionStorageListStorage implements StorageListStorageInterface
         return $this->requestStack->getMainRequest()?->hasSession() ?: false;
     }
 
-    private function getKeyName(array $context)
+    private function getKeyName(array $context): string
     {
         Assert::keyExists($context, 'store');
 

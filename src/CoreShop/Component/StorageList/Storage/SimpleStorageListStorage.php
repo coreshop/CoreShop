@@ -18,9 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\StorageList\Storage;
 
-use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use Webmozart\Assert\Assert;
 
 class SimpleStorageListStorage implements StorageListStorageInterface
 {
@@ -29,11 +27,11 @@ class SimpleStorageListStorage implements StorageListStorageInterface
 
     public function hasForContext(array $context): bool
     {
-        if (!isset($this->simple[$this->getKeyName($context)])) {
+        if (!isset($this->simple['coreshop.cart'])) {
             return false;
         }
 
-        return array_key_exists($this->getKeyName($context), $this->simple);
+        return array_key_exists('coreshop.cart', $this->simple);
     }
 
     public function gotReset(): bool
@@ -43,13 +41,13 @@ class SimpleStorageListStorage implements StorageListStorageInterface
 
     public function getForContext(array $context): ?StorageListInterface
     {
-        if (!isset($this->simple[$this->getKeyName($context)])) {
+        if (!isset($this->simple['coreshop.cart'])) {
             return null;
         }
 
         $this->gotReset = false;
         if ($this->hasForContext($context)) {
-            return $this->simple[$this->getKeyName($context)];
+            return $this->simple['coreshop.cart'];
         }
 
         return null;
@@ -58,23 +56,11 @@ class SimpleStorageListStorage implements StorageListStorageInterface
     public function setForContext(array $context, StorageListInterface $storageList): void
     {
         $this->gotReset = true;
-        $this->simple[$this->getKeyName($context)] = $storageList;
+        $this->simple['coreshop.cart'] = $storageList;
     }
 
     public function removeForContext(array $context): void
     {
-        unset($this->simple[$this->getKeyName($context)]);
-    }
-
-    private function getKeyName(array $context)
-    {
-        Assert::keyExists($context, 'store');
-
-        /**
-         * @var StoreInterface $store
-         */
-        $store = $context['store'];
-
-        return sprintf('%s', $store->getId());
+        unset($this->simple['coreshop.cart']);
     }
 }
