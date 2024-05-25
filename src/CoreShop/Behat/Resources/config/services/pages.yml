@@ -45,6 +45,14 @@ services:
     CoreShop\Behat\Page\Frontend\CartPage:
         parent: CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage
 
+    CoreShop\Behat\Page\Frontend\CartCreatePageInterface: '@CoreShop\Behat\Page\Frontend\CartCreatePage'
+    CoreShop\Behat\Page\Frontend\CartCreatePage:
+        parent: CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\CartsListPageInterface: '@CoreShop\Behat\Page\Frontend\CartsListPage'
+    CoreShop\Behat\Page\Frontend\CartsListPage:
+        parent: CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage
+
     CoreShop\Behat\Page\Frontend\Checkout\AddressPageInterface: '@CoreShop\Behat\Page\Frontend\Checkout\AddressPage'
     CoreShop\Behat\Page\Frontend\Checkout\AddressPage:
         parent: CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage

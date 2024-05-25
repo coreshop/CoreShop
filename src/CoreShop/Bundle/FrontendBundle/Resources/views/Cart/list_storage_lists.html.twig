@@ -22,25 +22,26 @@
                     </thead>
                     <tbody>
                     {% for key, list_form in form.list %}
-                        <tr>
-                            {% set list = form.list.vars.choices[key].data %}
+                        {% set list = form.list.vars.choices[key].data %}
+                        {% set cart_name = list.name ?: 'My Cart' %}
+
+                        <tr {{ coreshop_test_html_attribute('named-cart', cart_name) }}>
                             <td>
-                                {{ form_widget(list_form, coreshop_test_form_attribute('list-select')|coreshop_merge_recursive({'label': false})) }}
+                                {{ form_widget(list_form, coreshop_test_form_attribute('cart', cart_name)|coreshop_merge_recursive({'label': false})) }}
                             </td>
-                            <td>
-                                {{ list.name ?: 'My Cart' }}
+                            <td {{ coreshop_test_html_attribute('name') }}>
+                                {{ cart_name }}
                             </td>
 
-                            <td class="text-right">
+                            <td class="text-right" {{ coreshop_test_html_attribute('total') }}>
                                 {{ currency.convertAndFormat(list.total) }}
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-                {{ form_widget(form.selectList) }}
-                {{ form_widget(form.deleteList) }}
-
+                {{ form_widget(form.selectList, coreshop_test_form_attribute('cart-select-button')) }}
+                {{ form_widget(form.deleteList, coreshop_test_form_attribute('cart-delete-button')) }}
             {{ form_widget(form._token) }}
             {{ form_end(form) }}
         {% else %}

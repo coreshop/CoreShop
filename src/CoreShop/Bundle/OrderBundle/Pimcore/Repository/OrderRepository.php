@@ -43,7 +43,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND store = ?', [$customer->getId(), $store->getId()]);
-        $list->setOrderKey('creationDate');
+        $list->setOrderKey('id');
         $list->setOrder('ASC');
         $list->load();
 
