@@ -43,9 +43,6 @@ jobs:
         pimcore: [ ~11.1.0, ~11.2.0 ]
         dependencies: [ highest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
-        exclude:
-          - php: 8.1
-            dependencies: lowest
 
     steps:
     - uses: actions/checkout@v4
@@ -73,20 +70,22 @@ jobs:
       run: composer validate --ansi --strict
       working-directory: "src/CoreShop/${{ matrix.package }}"
 
+    - name: pimcore/pimcore
+      run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+      env:
+        COMPOSER_ROOT_VERSION: dev-master
+      working-directory: "src/CoreShop/${{ matrix.package }}"
+
     - if: matrix.dependencies == 'highest'
       name: Install dependencies highest
-      run: |
-        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        composer update --no-progress --prefer-dist --optimize-autoloader
+      run: composer update --no-progress --prefer-dist --optimize-autoloader
       env:
         COMPOSER_ROOT_VERSION: dev-master
       working-directory: "src/CoreShop/${{ matrix.package }}"
 
     - if: matrix.dependencies == 'lowest'
       name: Install dependencies lowest
-      run: |
-        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
+      run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
       env:
         COMPOSER_ROOT_VERSION: dev-master
       working-directory: "src/CoreShop/${{ matrix.package }}"
