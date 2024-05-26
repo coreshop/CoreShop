@@ -41,7 +41,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ['condition' => 'stores LIKE ?', 'variable' => '%,' . $store->getId() . ',%'],
         ];
 
-        /** @psalm-suppress InvalidScalarArgument */
+        /** @psalm-suppress InvalidArgument */
         return $this->findBy($conditions, ['creationDate' => 'DESC'], $count);
     }
 

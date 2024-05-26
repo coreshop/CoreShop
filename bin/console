@@ -11,34 +11,27 @@
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
  */
 
-ob_get_clean();
+use Pimcore\Bootstrap;
+use Pimcore\Console\Application;
 
-if (file_exists($a = getcwd() . '/vendor/autoload.php')) {
-    include $a;
-} elseif (file_exists($a = __DIR__ . '/../../../../vendor/autoload.php')) {
-    include $a;
-} elseif (file_exists($a = __DIR__ . '/../vendor/autoload.php')) {
-    include $a;
+if (file_exists($a = getcwd() . '/vendor/autoload_runtime.php')) {
+    require_once $a;
+} elseif (file_exists($a = __DIR__ . '/../vendor/autoload_runtime.php')) {
+    require_once $a;
+} elseif (file_exists($a = __DIR__ . '/../../../../vendor/autoload_runtime.php')) {
+    require_once $a;
+} elseif (file_exists($a = __DIR__ . '/../autoload_runtime.php')) {
+    require_once $a;
 } else {
-    fwrite(STDERR, 'Cannot locate autoloader; please run "composer install"' . PHP_EOL);
-    exit(1);
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
 }
-
-\Pimcore\Bootstrap::setProjectRoot();
 
 define('PIMCORE_CONSOLE', true);
 
+Bootstrap::setProjectRoot();
 
-$input = new \Symfony\Component\Console\Input\ArgvInput();
-if (null !== $env = $input->getParameterOption(['--env', '-e'], null, true)) {
-    putenv('APP_ENV='.$_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
-}
+return static function (array $context) {
+    $kernel = Bootstrap::startupCli();
 
-if ($input->hasParameterOption('--no-debug', true)) {
-    putenv('APP_DEBUG='.$_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
-}
-
-/** @var \Pimcore\Kernel $kernel */
-$kernel = \Pimcore\Bootstrap::startupCli();
-$application = new \Pimcore\Console\Application($kernel);
-$application->run();
+    return new Application($kernel);
+};

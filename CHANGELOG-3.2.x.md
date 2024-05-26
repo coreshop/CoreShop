@@ -1,3 +1,28 @@
+# 3.2.7
+* Fix store mail and store order mail collection entry type by @kkarkus in https://github.com/coreshop/CoreShop/pull/2586
+* [NoteService] implement deadlock retry strategy by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2588
+* always set default unit quantity in gift product action by @solverat in https://github.com/coreshop/CoreShop/pull/2590
+* [CoreBundle] fix PaymentWorkflow Listener to trigger state transition conditions by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2601
+* [CoreBundle] fix CartTextProcessor priority and CartManagers setParent for cart-item by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2602
+
+# 3.2.6
+* [Tests] add test for stock tracked products in checkout by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2560
+* [Tests] test only latest pimcore with highest deps for 3.2 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2559
+* Increase MessengerBundle Receivers combobox width by @NiklasBr in https://github.com/coreshop/CoreShop/pull/2567
+* Updated CachedStoreContext.php by @kamil-karkus in https://github.com/coreshop/CoreShop/pull/2565
+* [Core] fix price calculation with immutables and adjustments by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2573
+
+# 3.2.5
+* [Migration] [Migration] fix Staticroute Migration for Pimcore 10 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2550
+
+# 3.2.4
+* [CoreBundle] fix priority of coreshop_payment_token route by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2542
+* [Frontend] create order-token if not yet exists by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2543
+* [ProductBundle] default return empty array instead of null in preGetData by @breakone in https://github.com/coreshop/CoreShop/pull/2544
+
+# 3.2.3
+* [ProductBundle] fix ClearCachedPriceRulesListener - remove service definition
+
 # 3.2.2 
 * [CartManager] create unique key for cart items by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2510
 * [Core] Use order tokens in payment capture by @yariksheptykin in https://github.com/coreshop/CoreShop/pull/2515

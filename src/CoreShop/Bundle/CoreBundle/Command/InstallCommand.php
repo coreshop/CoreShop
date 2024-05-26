@@ -100,9 +100,7 @@ EOT
         $outputStyle->newLine(2);
         $outputStyle->success($this->getProperFinalMessage($errored));
         $outputStyle->writeln(
-            sprintf(
-                'You can now open your store at the following path under the website root: <info>/</info>',
-            ),
+            'You can now open your store at the following path under the website root: <info>/</info>',
         );
 
         return 0;

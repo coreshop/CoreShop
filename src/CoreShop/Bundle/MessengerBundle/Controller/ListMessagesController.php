@@ -34,6 +34,8 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
 {
     public function listReceiverMessageCountAction(ReceiversRepositoryInterface $receiverLocator): Response
     {
+        $this->checkPermission('coreshop_permission_messenger');
+
         $receivers = [];
         foreach ($receiverLocator->getReceiversMapping() as $name => $receiver) {
             $receivers[] = [
@@ -47,6 +49,8 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
 
     public function listListableReceiversAction(ReceiversRepositoryInterface $receiverLocator): Response
     {
+        $this->checkPermission('coreshop_permission_messenger');
+
         $receivers = [];
         foreach ($receiverLocator->getListableReceiversMapping() as $name => $receiver) {
             $receivers[] = [
@@ -60,6 +64,8 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
 
     public function listFailureReceiversAction(FailureReceiversRepositoryInterface $failureReceivers): Response
     {
+        $this->checkPermission('coreshop_permission_messenger');
+
         $receivers = [];
         foreach ($failureReceivers->getReceiversWithFailureReceivers() as $name) {
             $receivers[] = [
@@ -74,6 +80,8 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         Request $request,
         FailedMessageRepositoryInterface $failedMessageRepository,
     ): Response {
+        $this->checkPermission('coreshop_permission_messenger');
+
         $receiverName = $request->attributes->get('receiverName');
 
         if (!is_string($receiverName)) {
@@ -89,6 +97,8 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         Request $request,
         MessageRepositoryInterface $messageRepository,
     ): Response {
+        $this->checkPermission('coreshop_permission_messenger');
+
         $receiverName = $request->attributes->get('receiverName');
 
         if (!is_string($receiverName)) {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
+use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -28,6 +29,9 @@ final class PaymentProviderRuleType extends RuleType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('translations', ResourceTranslationsType::class, [
+                'entry_type' => PaymentProviderRuleTranslationType::class,
+            ])
             ->add('name', TextareaType::class)
             ->add('active', CheckboxType::class)
             ->add('conditions', PaymentProviderRuleConditionCollectionType::class)

@@ -1,9 +1,17 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ '4.0' ]
+    branches: [ '4.0', 'next' ]
+    paths-ignore:
+      - 'docs/**'
+      - '.github/workflows/docs_next.yml'
+      - 'README.md'
   pull_request:
-    branches: [ '4.0' ]
+    branches: [ '4.0', 'next' ]
+    paths-ignore:
+      - 'docs/**'
+      - '.github/workflows/docs_next.yml'
+      - 'README.md'
   release:
     types: [ created ]
   schedule:
@@ -19,7 +27,7 @@ jobs:
     strategy:
       matrix:
         php: [ 8.1, 8.2 ]
-        pimcore: [ ^11.1 ]
+        pimcore: [ ~11.1.0, ~11.2.0 ]
         dependencies: [ highest ]
         exclude:
           - php: 8.1

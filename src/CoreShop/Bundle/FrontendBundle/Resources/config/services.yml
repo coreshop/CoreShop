@@ -1,3 +1,6 @@
+imports:
+    - { resource: ../../../TestBundle/Resources/config/twig.yml }
+
 services:
     coreshop.frontend.controller.abstract:
         class: CoreShop\Bundle\FrontendBundle\Controller\FrontendController
@@ -18,18 +21,6 @@ services:
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '@Symfony\Component\HttpFoundation\RequestStack'
             - '@router'
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Bundle\FrontendBundle\Twig\TestHtmlAttributeExtension:
-        arguments:
-            - '%kernel.environment%'
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Bundle\FrontendBundle\Twig\TestFormAttributeExtension:
-        arguments:
-            - '%kernel.environment%'
         tags:
             - { name: twig.extension }
 

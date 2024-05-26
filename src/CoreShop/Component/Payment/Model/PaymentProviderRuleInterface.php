@@ -18,8 +18,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Model;
 
+use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-interface PaymentProviderRuleInterface extends RuleInterface
+interface PaymentProviderRuleInterface extends RuleInterface, TranslatableInterface
 {
+    public function getLabel(string $language = null);
+
+    public function setLabel(string $label, string $language = null);
 }

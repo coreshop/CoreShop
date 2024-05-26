@@ -1,11 +1,23 @@
 name: Behat
 on:
   push:
-    branches: [ '4.0' ]
+    branches: [ '4.0', 'next' ]
+    paths-ignore:
+      - 'docs/**'
+      - '.github/workflows/docs_next.yml'
+      - 'README.md'
   pull_request:
-    branches: [ '4.0' ]
+    branches: [ '4.0', 'next' ]
+    paths-ignore:
+      - 'docs/**'
+      - '.github/workflows/docs_next.yml'
+      - 'README.md'
   release:
     types: [ created ]
+    paths-ignore:
+      - 'docs/**'
+      - '.github/workflows/docs.yaml'
+      - 'README.md'
   schedule:
     - cron: "0 1 * * 1"
 
@@ -25,12 +37,11 @@ jobs:
       PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
       PIMCORE_INSTALL_MYSQL_PORT: "3306"
       PIMCORE_KERNEL_CLASS: 'Kernel'
-      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
 
     strategy:
       matrix:
         php: [ 8.1, 8.2 ]
-        pimcore: [ ^11.1 ]
+        pimcore: [ ~11.1.0, ~11.2.0 ]
         dependencies: [ highest ]
         exclude:
           - php: 8.1

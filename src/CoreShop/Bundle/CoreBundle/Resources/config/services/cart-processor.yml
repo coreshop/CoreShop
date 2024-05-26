@@ -2,12 +2,6 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Component\Core\Order\Processor\CartTextProcessor:
-        arguments:
-            - '@coreshop.translation_locale_provider'
-        tags:
-            - { name: coreshop.cart_processor, priority: 700 }
-
     CoreShop\Component\Core\Order\Processor\CartItemProcessor:
         arguments:
             - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
@@ -75,6 +69,12 @@ services:
         tags:
             - { name: coreshop.cart_processor, priority: 400 }
 
+    CoreShop\Component\Core\Order\Processor\CartTextProcessor:
+        arguments:
+            - '@coreshop.translation_locale_provider'
+        tags:
+            - { name: coreshop.cart_processor, priority: 380 }
+
     CoreShop\Component\Core\Order\Processor\CartTaxProcessor:
         arguments:
             - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
@@ -88,9 +88,11 @@ services:
         arguments:
             - '%coreshop.currency.decimal_factor%'
             - '%coreshop.currency.decimal_precision%'
-            - '@CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator'
+            - '@CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculatorInterface'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
             - '@coreshop.factory.adjustment'
+            - '@CoreShop\Component\Payment\Checker\PaymentProviderRuleCheckerInterface'
+            - '@Pimcore\Translation\Translator'
         tags:
             - { name: coreshop.cart_processor, priority: 300 }
 

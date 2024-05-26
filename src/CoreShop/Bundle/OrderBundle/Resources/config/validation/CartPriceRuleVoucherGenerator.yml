@@ -8,4 +8,4 @@ CoreShop\Component\Order\Model\CartPriceRuleVoucherGenerator:
             - Range: { min: 1,  minMessage: coreshop.cart_price_rule_voucher_generator.amount.min, groups: coreshop }
         length:
             - NotBlank: { message: coreshop.cart_price_rule_voucher_generator.length.not_blank, groups: coreshop }
-            - Range: { min: 1, minMessage: coreshop.cart_price_rule_voucher_generator.length.min, max: 40, maxMessage: coreshop.cart_price_rule_voucher_generator.length.max, groups: coreshop }
+            - Range: { min: 1, max: 40, notInRangeMessage: coreshop.cart_price_rule_voucher_generator.length.range, groups: coreshop }

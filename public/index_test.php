@@ -10,28 +10,29 @@
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
  */
 
+use Pimcore\Bootstrap;
 use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
 
-define('PIMCORE_PROJECT_ROOT', __DIR__ . '/..');
 $_SERVER['PIMCORE_ENVIRONMENT'] = $_SERVER['APP_ENV'] = $_SERVER['SYMFONY_ENV'] = 'test';
 
-include __DIR__ . "/../vendor/autoload.php";
-include __DIR__ . "/../behat-bootstrap.php";
+//use runtime
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-$request = Request::createFromGlobals();
+Bootstrap::setProjectRoot();
 
-// set current request as property on tool as there's no
-// request stack available yet
-Tool::setCurrentRequest($request);
+return function (Request $request, array $context) {
 
-/** @var \Pimcore\Kernel $kernel */
-$kernel = \Pimcore\Bootstrap::kernel();
+    // set current request as property on tool as there's no
+    // request stack available yet
+    Tool::setCurrentRequest($request);
 
-// reset current request - will be read from request stack from now on
-Tool::setCurrentRequest(null);
+    Bootstrap::bootstrap();
+    $kernel = Bootstrap::kernel();
 
-$response = $kernel->handle($request);
-$response->send();
+    // reset current request - will be read from request stack from now on
+    Tool::setCurrentRequest(null);
 
-$kernel->terminate($request, $response);
+    return $kernel;
+};
+

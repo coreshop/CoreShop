@@ -21,7 +21,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class StoreOrderMailConfigurationType extends AbstractType
@@ -36,7 +36,7 @@ class StoreOrderMailConfigurationType extends AbstractType
                 'entry_options' => [
                     'allow_add' => true,
                     'allow_delete' => true,
-                    'entry_type' => NumberType::class,
+                    'entry_type' => IntegerType::class,
                 ],
             ])
             ->add('sendInvoices', CheckboxType::class)

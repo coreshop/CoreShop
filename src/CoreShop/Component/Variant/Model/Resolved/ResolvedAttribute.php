@@ -73,6 +73,9 @@ class ResolvedAttribute
 
     public function hasProduct(ProductVariantAwareInterface $product): bool
     {
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         return $this->products->contains($product);
     }
 }

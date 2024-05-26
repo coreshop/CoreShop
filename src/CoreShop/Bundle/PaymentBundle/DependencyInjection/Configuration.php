@@ -22,6 +22,7 @@ use CoreShop\Bundle\PaymentBundle\Controller\PaymentProviderRuleController;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentProviderRepository;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentRepository;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleGroupType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleTranslationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
@@ -36,6 +37,8 @@ use CoreShop\Component\Payment\Model\PaymentProviderRule;
 use CoreShop\Component\Payment\Model\PaymentProviderRuleGroup;
 use CoreShop\Component\Payment\Model\PaymentProviderRuleGroupInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleTranslation;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleTranslationInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderTranslation;
 use CoreShop\Component\Payment\Model\PaymentProviderTranslationInterface;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -55,6 +58,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
             ->end()
         ;
         $this->addModelsSection($rootNode);
@@ -146,6 +150,22 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(RuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(PaymentProviderRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(PaymentProviderRuleTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(PaymentProviderRuleTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(PaymentProviderRuleTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()

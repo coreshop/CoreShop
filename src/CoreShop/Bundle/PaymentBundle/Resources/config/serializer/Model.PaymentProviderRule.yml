@@ -23,3 +23,7 @@ CoreShop\Component\Payment\Model\PaymentProviderRule:
             expose: true
             type: ArrayCollection
             groups: [Detailed]
+        translations:
+            expose: true
+            type: ArrayCollection
+            groups: [Detailed]

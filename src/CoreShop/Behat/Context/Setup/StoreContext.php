@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -114,6 +114,7 @@ final class StoreContext implements Context
         CurrencyInterface $currency = null,
         CountryInterface $country = null,
         $grossValues = false,
+        $defaultStore = false,
     ): StoreInterface {
         /**
          * @var StoreInterface $store

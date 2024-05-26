@@ -6,7 +6,7 @@ CoreShop:
 ## Initial Setup
 
 1. Install with composer: `composer require coreshop/core-shop ^4.0`
-2. Enable the bundle in `config/bundles.php`
+2. Enable the bundle in `config/bundles.php` and the `CoreShopCoreBundle` to the list of Bundles to load:
     ```php
     <?php
     
@@ -15,26 +15,30 @@ CoreShop:
         CoreShop\Bundle\CoreBundle\CoreShopCoreBundle::class => ['all' => true],
     ];
     ```
-3. Update `config/packages/security.yaml` to allow access to the CoreShop Backend.
-    - Add the CoreShop Frontend parameter:
-      ```yaml
-      parameters:
-          coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
-      ```
-    - Add the Password Hasher:
+3. To configure the CoreShop Password Hasher, create or update the `config/packages/pimcore.yaml` and add:
       ```yaml
       pimcore:
           security:
               password_hasher_factories:
                   Pimcore\Model\DataObject\CoreShopUser: coreshop.security.user.password_hasher_factories
       ```
-    - Add the Authentication Provider:
+4. Update `config/packages/security.yaml` to allow access to the CoreShop Backend.
+    - Add the CoreShop Frontend parameter at the very top of your `security.yaml` (before `security`):
+      ```yaml
+      parameters:
+          coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
+
+      security:
+          ...
+      ```
+    - Add the Authentication Provider. Find your existing `providers` entry and add the `coreshop_user` entry after the other(s):
       ```yaml
        providers:
+         ...
          coreshop_user:
              id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
       ```
-    - Add the Firewall Config:
+    - Add the Firewall Config. Find your existing `firewalls` entry and add the `coreshop_frontend` entry after the other entries:
       ```yaml
        firewalls:
          coreshop_frontend:
@@ -59,14 +63,14 @@ CoreShop:
                  target: coreshop_login
                  invalidate_session: false
       ```
-    - Add the Access Control:
+    - Add Access Control. Find your existing `access_control` entry and add the following lines after the existing ones:
       ```yaml
        access_control:
          - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
          - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
       ```
-4. Run Install Command `php bin/console coreshop:install`
-5. Optional: Install Demo Data `php bin/console coreshop:install:demo`
+5. Run Install Command `php bin/console coreshop:install`
+6. Optional: Install Demo Data `php bin/console coreshop:install:demo`
 
 ## Messenger
 

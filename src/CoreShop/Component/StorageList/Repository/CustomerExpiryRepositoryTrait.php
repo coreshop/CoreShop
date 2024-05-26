@@ -33,11 +33,11 @@ trait CustomerExpiryRepositoryTrait
         $queryParams = [$daysTimestamp->getTimestamp()];
         $groupCondition = [];
 
-        if (true === $params['anonymous'] ?? false) {
+        if (isset($params['anonymous']) && true === $params['anonymous']) {
             $groupCondition[] = 'customer__id IS NULL';
         }
 
-        if (true === $params['customer'] ?? false) {
+        if (isset($params['customer']) && true === $params['customer']) {
             $groupCondition[] = 'customer__id IS NOT NULL';
         }
 

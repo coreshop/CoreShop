@@ -18,11 +18,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
-use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
+use CoreShop\Bundle\TestBundle\Page\Frontend\FrontendPageInterface;
 
 interface ThankYouPageInterface extends FrontendPageInterface
 {
     public function getToken(): string;
 
     public function recapturePaymentForThisOrder(): void;
+
+    public function getOrderTotal(): string;
 }

@@ -38,24 +38,24 @@ final class PaymentProviderRuleConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('paymentproviderRule', PaymentProviderRuleChoiceType::class, [
+            ->add('paymentProviderRule', PaymentProviderRuleChoiceType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ])
         ;
 
-        $builder->get('paymentproviderRule')->addModelTransformer(new CallbackTransformer(
-            function (mixed $paymentproviderRule) {
-                if ($paymentproviderRule instanceof PaymentProviderRuleInterface) {
-                    return $paymentproviderRule->getId();
+        $builder->get('paymentProviderRule')->addModelTransformer(new CallbackTransformer(
+            function (mixed $paymentProviderRule) {
+                if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
+                    return $paymentProviderRule->getId();
                 }
 
                 return null;
             },
-            function (mixed $paymentproviderRule) {
-                if ($paymentproviderRule instanceof PaymentProviderRuleInterface) {
-                    return $paymentproviderRule->getId();
+            function (mixed $paymentProviderRule) {
+                if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
+                    return $paymentProviderRule->getId();
                 }
 
                 return null;

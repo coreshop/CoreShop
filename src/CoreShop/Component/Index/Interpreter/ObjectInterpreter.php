@@ -21,6 +21,7 @@ namespace CoreShop\Component\Index\Interpreter;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Data\ObjectMetadata;
 
 class ObjectInterpreter implements RelationInterpreterInterface
 {
@@ -30,6 +31,9 @@ class ObjectInterpreter implements RelationInterpreterInterface
 
         if (is_array($value)) {
             foreach ($value as $v) {
+                if ($v instanceof ObjectMetadata) {
+                    $v = $v->getObject();
+                }
                 if ($v instanceof AbstractObject) {
                     $result[] = new RelationalValue($v->getId(), 'object');
                 }
@@ -47,6 +51,9 @@ class ObjectInterpreter implements RelationInterpreterInterface
 
         if (is_array($value)) {
             foreach ($value as $v) {
+                if ($v instanceof ObjectMetadata) {
+                    $v = $v->getObject();
+                }
                 if ($v instanceof AbstractObject) {
                     $result[] = $v->getId();
                 }
