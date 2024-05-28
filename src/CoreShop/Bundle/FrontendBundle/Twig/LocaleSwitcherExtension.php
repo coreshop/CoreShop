@@ -54,7 +54,11 @@ final class LocaleSwitcherExtension extends AbstractExtension
         $links = [];
         $basePath = '/';
 
-        $store = $this->shopperContext->getStore();
+        try {
+            $store = $this->shopperContext->getStore();
+        } catch(StoreNotFoundException $e) {
+            return $links;
+        }
 
         if ($store->getSiteId()) {
             try {
