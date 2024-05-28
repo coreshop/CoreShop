@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\FrontendBundle\Twig;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
+use CoreShop\Component\Store\Context\StoreNotFoundException;
 use Pimcore\Bundle\StaticRoutesBundle\Model\Staticroute;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Document;
