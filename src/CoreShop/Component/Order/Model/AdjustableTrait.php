@@ -189,6 +189,26 @@ trait AdjustableTrait
         return $total;
     }
 
+    public function getNeutralAdjustmentsTotal(?string $type = null, bool $withTax = true): int
+    {
+        if (null === $type) {
+            if ($withTax) {
+                return $this->getPimcoreAdjustmentTotalGross() ?: 0;
+            }
+
+            return $this->getPimcoreAdjustmentTotalNet() ?: 0;
+        }
+
+        $total = 0;
+        foreach ($this->getAdjustments($type) as $adjustment) {
+            if ($adjustment->getNeutral()) {
+                $total += $adjustment->getAmount($withTax);
+            }
+        }
+
+        return $total;
+    }
+
     public function recalculateAdjustmentsTotal()
     {
         $adjustmentsTotalGross = 0;

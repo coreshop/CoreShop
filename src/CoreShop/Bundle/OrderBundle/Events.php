@@ -34,4 +34,14 @@ final class Events
      * Fired when an Admin creates a new Address via a CoreShop UI
      */
     public const ADMIN_ADDRESS_CREATION = 'coreshop.address.admin_creation';
+
+    /**
+     * Fired when an Admin updates an Order in the Backend for preview
+     */
+    public const ORDER_BACKEND_UPDATE_PREVIEW = 'coreshop.order.backend_update_preview';
+
+    /**
+     * Fired when an Admin updates an Order in the Backend for saving
+     */
+    public const ORDER_BACKEND_UPDATE_SAVE = 'coreshop.order.backend_update_save';
 }

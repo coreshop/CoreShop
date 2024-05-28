@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Rule\Condition;
 
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
@@ -32,25 +31,16 @@ trait ProductVariantsCheckerTrait
         $this->productRepository = $productRepository;
     }
 
-    protected function getProductsToCheck(array $products, StoreInterface $store, bool $includeVariants): array
+    protected function getProductsToCheck(array $products, StoreInterface $store, bool $includeVariants, array $cacheTags = []): array
     {
         $productIdsToCheck = $products;
 
         if ($includeVariants) {
-            foreach ($products as $productId) {
-                $product = $this->productRepository->find($productId);
-
-                if (!$product instanceof ProductInterface) {
-                    continue;
-                }
-                $variants = $this->productRepository->findRecursiveVariantIdsForProductAndStore($product, $store);
-
-                foreach ($variants as $variant) {
-                    if (!in_array($variant, $productIdsToCheck)) {
-                        $productIdsToCheck[] = $variant;
-                    }
-                }
-            }
+            $productIdsToCheck = $this->productRepository->findRecursiveVariantIdsForProductAndStoreByProducts(
+                $products,
+                $store,
+                $cacheTags,
+            );
         }
 
         return $productIdsToCheck;

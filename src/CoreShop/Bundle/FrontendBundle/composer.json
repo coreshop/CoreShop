@@ -25,7 +25,7 @@
   ],
   "require": {
     "coreshop/core-bundle": "^4.0",
-    "dachcom-digital/emailizr": "^2.0.0",
+    "dachcom-digital/emailizr": "^3.0.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {

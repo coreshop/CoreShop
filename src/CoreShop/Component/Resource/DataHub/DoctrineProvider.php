@@ -30,6 +30,7 @@ use CoreShop\Component\Resource\DataHub\Type\ArrayType;
 use CoreShop\Component\Resource\DataHub\Type\BigIntType;
 use CoreShop\Component\Resource\DataHub\Type\DateTimeType;
 use CoreShop\Component\Resource\DataHub\Type\JsonType;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -49,64 +50,32 @@ class DoctrineProvider
     public const ARRAY = 'Array';
 
     /** @var Type[] */
-    private static $standardTypes;
+    private static array|null $standardTypes = null;
 
-    /**
-     * @var array
-     */
-    private $doctrineMetadata = [];
+    private array $doctrineMetadata = [];
 
-    /**
-     * @var array
-     */
-    private $types = [];
+    private array $types = [];
 
-    /**
-     * @var array
-     */
-    private $typeClass = [];
+    private array $typeClass = [];
 
-    /**
-     * @var array
-     */
-    private $doctrineToName = [];
+    private array $doctrineToName = [];
 
-    /**
-     * @var array
-     */
-    private $inputTypes = [];
+    private array $inputTypes = [];
 
-    /**
-     * @var array
-     */
-    private $inputTypesToName = [];
+    private array $inputTypesToName = [];
 
-    /**
-     * @var array
-     */
-    private $inputQueryFilterTypes = [];
+    private array $inputQueryFilterTypes = [];
 
-    /**
-     * @var array
-     */
-    private $identifierFields = [];
+    private array $identifierFields = [];
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    private $metadataRegistry;
+    private array $classMap = [];
 
     private $niceNameMap = [];
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        RegistryInterface $metadataRegistry,
+        private EntityManagerInterface $em,
+        private RegistryInterface $metadataRegistry,
     ) {
-        $this->em = $entityManager;
-        $this->metadataRegistry = $metadataRegistry;
-
         $this->types[GraphPageInfo::NAME] = GraphPageInfo::getType();
         $this->types[GraphSortField::NAME] = GraphSortField::getType();
         $this->types[FilterString::NAME] = FilterString::getType();
@@ -114,11 +83,32 @@ class DoctrineProvider
         $this->types[FilterDateTimeBetween::NAME] = FilterDateTimeBetween::getType($this->getType('datetime'));
         $this->types[FilterDateTime::NAME] = FilterDateTime::getType($this->getType('datetime'), $this->getType(FilterDateTimeBetween::NAME));
 
-        foreach ($metadataRegistry->getAll() as $metadata) {
+        $this->initialize();
+    }
+
+    public function initialize()
+    {
+        /**
+         * @var MetadataInterface $metadata
+         */
+        foreach ($this->metadataRegistry->getAll() as $metadata) {
             if ($metadata->getDriver() !== CoreShopResourceBundle::DRIVER_DOCTRINE_ORM) {
                 continue;
             }
 
+            if (!$metadata->hasParameter('graphql')) {
+                continue;
+            }
+
+            if (!$metadata->getParameter('graphql')['enabled'] ?? false) {
+                continue;
+            }
+
+            $className = $metadata->getClass('model');
+            $this->classMap[$className] = $metadata;
+        }
+
+        foreach ($this->classMap as $className => $metadata) {
             $className = $metadata->getClass('model');
             $niceName = ucfirst($metadata->getApplicationName()) . ucfirst(str_replace('_', '', ucwords($metadata->getName(), '_')));
 
@@ -214,6 +204,11 @@ class DoctrineProvider
             foreach ($entityMetaType->getAssociationMappings() as $association) {
                 $fieldName = $association['fieldName'];
                 $doctrineClass = $association['targetEntity'];
+
+                if (!array_key_exists($doctrineClass, $this->classMap)) {
+                    continue;
+                }
+
                 $graphName = $this->getTypeName($doctrineClass);
 
                 if (isset($this->doctrineMetadata[$graphName])) {
@@ -377,6 +372,7 @@ class DoctrineProvider
             case 'json_array':
                 return self::getStandardType(self::JSON);
             case 'array':
+            case 'json':
                 return self::getStandardType(self::ARRAY);
         }
 

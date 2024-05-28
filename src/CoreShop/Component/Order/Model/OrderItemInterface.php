@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Resource\Model\ImmutableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -26,7 +27,8 @@ interface OrderItemInterface extends
     PimcoreModelInterface,
     AdjustableInterface,
     ConvertedAdjustableInterface,
-    StorageListItemInterface
+    StorageListItemInterface,
+    ImmutableInterface
 {
     public function getId(): ?int;
 
@@ -139,6 +141,8 @@ interface OrderItemInterface extends
     public function getConvertedTotalTax(): int;
 
     public function setConvertedTotal(int $total, bool $withTax = true);
+
+    public function setConvertedSubtotal(int $subtotal, bool $withTax = true);
 
     public function getConvertedItemDiscountPrice(bool $withTax = true): int;
 

@@ -52,6 +52,7 @@ final class CoreShopClassDefinitionPatchExtension extends Extension
                         $field['after'] ?? null,
                         $field['before'] ?? null,
                         $field['definition'] ?? null,
+                        $field['replace'] ?? true,
                     ]),
                 );
 

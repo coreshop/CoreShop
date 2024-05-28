@@ -32,6 +32,7 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\OrderSaleTransitions;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
@@ -133,14 +134,22 @@ class OrderCreationController extends PimcoreController
             $cart = $handledForm->getData();
             $cart->setCreationDate(time());
 
+            $cartManager->persistCart($cart);
+
             $workflow = $manager->get($cart, OrderSaleTransitions::IDENTIFIER);
+            $orderWorkflow = $manager->get($cart, OrderTransitions::IDENTIFIER);
 
             if (!$workflow->can($cart, $type)) {
                 throw new HttpException(500);
             }
 
-            InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager) {
+            InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager, $orderWorkflow) {
                 $workflow->apply($cart, $type);
+
+                if ($type === OrderSaleTransitions::TRANSITION_ORDER) {
+                    //confirm order
+                    $orderWorkflow->apply($cart, OrderTransitions::TRANSITION_CONFIRM);
+                }
 
                 $cartManager->persistCart($cart);
             });

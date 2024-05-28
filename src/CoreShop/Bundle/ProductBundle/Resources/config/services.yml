@@ -114,13 +114,6 @@ services:
             - '@CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface'
             - '@CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface'
 
-    CoreShop\Bundle\ProductBundle\EventListener\ClearCachedPriceRulesListener:
-        tags:
-            - { name: kernel.event_listener, event: coreshop.product_price_rule.post_save, method: clearCachedRules }
-            - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_save, method: clearCachedRules }
-            - { name: kernel.event_listener, event: coreshop.product_price_rule.post_delete, method: clearCachedRules }
-            - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_delete, method: clearCachedRules }
-
     CoreShop\Bundle\ProductBundle\EventListener\CategoryPersistEventListener:
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: onPreUpdate }

@@ -473,14 +473,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
             if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues, true)) {
                 $this->getEntityManager()->remove($availableStoreValuesEntity);
-                $this->getEntityManager()->flush($availableStoreValuesEntity);
             }
         }
 
         foreach ($allStoreValues as $storeEntity) {
             $this->getEntityManager()->persist($storeEntity);
-            $this->getEntityManager()->flush($storeEntity);
         }
+
+        $this->getEntityManager()->flush();
 
         //We have to set that here, values could change during persist due to copy or variant inheritance break
         $object->setObjectVar($this->getName(), $allStoreValues);
@@ -606,9 +606,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $context->setGroups($params['groups'] ?? ['Default', 'Detailed']);
             $values = $this->getSerializer()->toArray($storeValuesEntity, $context);
 
+            $store = $storeValuesEntity->getStore();
+            $currency = $store->getCurrency();
+
             $storeData[$storeValuesEntity->getStore()->getId()] = [
-                'name' => $storeValuesEntity->getStore()->getName(),
-                'currencySymbol' => $storeValuesEntity->getStore()->getCurrency()->getSymbol(),
+                'name' => $store->getName(),
+                'currencySymbol' => $currency?->getSymbol(),
                 'values' => $values,
                 'inherited' => false,
                 'inheritable' => $inheritable,

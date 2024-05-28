@@ -227,7 +227,6 @@ coreshop.checkout.address.invoice_as_shipping_invalid: 'Die Verwendung der Rechn
 coreshop.cart_price_rule_voucher_generator.amount.not_blank: 'Die Anzahl der zu erstellenden Gutscheincodes muss mindestens {{ limit }} sein.'
 coreshop.cart_price_rule_voucher_generator.amount.min: 'Bitte geben Sie die Anzahl der zu generierenden Gutscheincodes ein.'
 coreshop.cart_price_rule_voucher_generator.length.not_blank: 'Bitte geben Sie eine Gutscheincodelänge ein.'
-coreshop.cart_price_rule_voucher_generator.length.min: 'Der Gutscheincode muss mindestens {{ limit }} Zeichen lang sein.'
-coreshop.cart_price_rule_voucher_generator.length.max: 'Der Gutscheincode darf nicht länger als {{ limit }} Zeichen lang sein.'
+coreshop.cart_price_rule_voucher_generator.length.range: 'Der Gutscheincode muss mindestens {{ min }} und maximal {{ max }} Zeichen lang sein.'
 coreshop.cart_price_rule_voucher_generator.possible_generation_amount: 'Ungültige Gutscheincodelänge oder ungültiger Gutscheinbetrag. Es ist nicht möglich %expectedAmount% einzigartige Gutscheincodes mit einer Länge von %codeLength% Zeichen zu generieren. Es können maximal %possibleAmount% Gutscheincodes generiert werden.'
 coreshop.cart_item.quantity.min: 'Die Menge eines Produktes im Warenkorb kann nicht kleiner als 1 sein.'

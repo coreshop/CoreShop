@@ -19,13 +19,6 @@ if (!defined('PIMCORE_PROJECT_ROOT')) {
     );
 }
 
-if (!defined('TESTS_PATH')) {
-    define('TESTS_PATH', __DIR__);
-}
-
-define('PIMCORE_CLASS_DIRECTORY', __DIR__ . '/var/tmp/behat/var/classes');
-define('PIMCORE_TEST', true);
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);

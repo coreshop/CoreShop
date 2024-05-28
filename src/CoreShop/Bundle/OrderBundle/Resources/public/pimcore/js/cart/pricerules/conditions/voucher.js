@@ -22,6 +22,11 @@ coreshop.cart.pricerules.conditions.voucher = Class.create(coreshop.rules.condit
                 xtype: 'numberfield',
                 name: 'maxUsagePerCode',
                 value: this.data.maxUsagePerCode
+            },{
+                fieldLabel: t('coreshop_action_voucher_max_usage_per_user'),
+                xtype: 'numberfield',
+                name: 'maxUsagePerUser',
+                value: this.data.maxUsagePerUser
             },
             {
                 fieldLabel: t('coreshop_action_voucher_only_one_per_cart'),

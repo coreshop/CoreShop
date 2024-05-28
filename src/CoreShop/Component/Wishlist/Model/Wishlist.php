@@ -82,4 +82,9 @@ abstract class Wishlist extends AbstractPimcoreModel implements WishlistInterfac
 
         return false;
     }
+
+    public function count(): int
+    {
+        return count($this->getItems() ?: []);
+    }
 }

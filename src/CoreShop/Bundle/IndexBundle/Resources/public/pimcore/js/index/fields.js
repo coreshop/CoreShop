@@ -307,15 +307,15 @@ coreshop.index.fields = Class.create({
                     var text = t(data[keys[i]].nodeLabel);
 
                     if (data[keys[i]].nodeType == 'objectbricks') {
-                        text = ts(data[keys[i]].nodeLabel) + ' ' + t('columns');
+                        text = t(data[keys[i]].nodeLabel) + ' ' + t('columns');
                     }
 
                     if (data[keys[i]].nodeType == 'classificationstore') {
-                        text = ts(data[keys[i]].nodeLabel) + ' ' + t('columns');
+                        text = t(data[keys[i]].nodeLabel) + ' ' + t('columns');
                     }
 
                     if (data[keys[i]].nodeType == 'fieldcollections') {
-                        text = ts(data[keys[i]].nodeLabel) + ' ' + t('columns');
+                        text = t(data[keys[i]].nodeLabel) + ' ' + t('columns');
                     }
 
                     var baseNode = {

@@ -42,9 +42,11 @@
                      target-entity="CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface"
                      mapped-by="rule" orphan-removal="true" fetch="LAZY">
             <cascade>
-                <cascade-persist/>
-                <cascade-remove/>
+                <cascade-all/>
             </cascade>
+            <order-by>
+                <order-by-field name="rangeStartingFrom" direction="ASC" />
+            </order-by>
         </one-to-many>
     </mapped-superclass>
 </doctrine-mapping>

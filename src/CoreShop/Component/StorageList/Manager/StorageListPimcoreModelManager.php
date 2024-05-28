@@ -23,13 +23,11 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
-use Doctrine\DBAL\Connection;
 
 final class StorageListPimcoreModelManager implements StorageListManagerInterface
 {
     public function __construct(
         private FolderCreationServiceInterface $folderCreationService,
-        private Connection $connection,
     ) {
     }
 
@@ -71,7 +69,7 @@ final class StorageListPimcoreModelManager implements StorageListManagerInterfac
                     ),
                 );
                 $item->setPublished(true);
-                $item->setKey((string) ($index + 1));
+                $item->setKey(uniqid((string) ((int) $index + 1), true));
                 $item->save();
             }
 

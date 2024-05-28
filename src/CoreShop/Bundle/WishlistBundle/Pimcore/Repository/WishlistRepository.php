@@ -33,7 +33,7 @@ class WishlistRepository extends PimcoreRepository implements WishlistRepository
         $queryParams = [$daysTimestamp->getTimestamp()];
 
         $list = $this->getList();
-        $list->setCondition('o_modificationDate < ?', $queryParams);
+        $list->setCondition('modificationDate < ?', $queryParams);
 
         /**
          * @var StorageListInterface[] $result

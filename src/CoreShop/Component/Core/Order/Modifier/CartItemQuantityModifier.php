@@ -27,6 +27,11 @@ use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
+    public function __construct(
+        protected bool $allowZeroQuantity = false,
+    ) {
+    }
+
     public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         /**
@@ -35,7 +40,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         Assert::isInstanceOf($item, OrderItemInterface::class);
 
         $currentQuantity = $item->getQuantity();
-        if (0 >= $targetQuantity || $currentQuantity === $targetQuantity) {
+        if ((!$this->allowZeroQuantity && 0 >= $targetQuantity) || $currentQuantity === $targetQuantity) {
             return;
         }
 
@@ -44,9 +49,9 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         $item->setQuantity($cleanTargetQuantity);
 
         if ($item->hasUnitDefinition()) {
-            $item->setDefaultUnitQuantity($item->getUnitDefinition()->getConversionRate() * $item->getQuantity());
+            $item->setDefaultUnitQuantity(($item->getUnitDefinition()?->getConversionRate() ?? 1.0) * $item->getQuantity());
         } else {
-            $item->setDefaultUnitQuantity($item->getQuantity());
+            $item->setDefaultUnitQuantity($item->getQuantity() ?? 1.0);
         }
     }
 

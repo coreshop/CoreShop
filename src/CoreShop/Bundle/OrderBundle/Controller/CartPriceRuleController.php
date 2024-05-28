@@ -25,6 +25,7 @@ use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -34,6 +35,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartPriceRuleController extends ResourceController
 {
+    public function listVoucherRulesAction(): JsonResponse
+    {
+        /**
+         * @var CartPriceRuleRepositoryInterface $repository
+         */
+        $repository = $this->repository;
+
+        $data = $repository->findVoucherRules();
+
+        return $this->viewHandler->handle($data, ['group' => 'List']);
+    }
+
     public function getConfigAction(Request $request): JsonResponse
     {
         $actions = $this->getConfigActions();

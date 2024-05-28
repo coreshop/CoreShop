@@ -59,6 +59,9 @@ trait StoresAwareTrait
 
     public function hasStore(StoreInterface $store)
     {
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         return $this->stores->contains($store);
     }
 }

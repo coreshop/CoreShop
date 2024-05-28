@@ -60,6 +60,6 @@ class RuleConditionsValidationProcessor implements RuleConditionsValidationProce
         /** @var ConditionCheckerInterface $checker */
         $checker = $this->ruleRegistry->get($condition->getType());
 
-        return $checker->isValid($subject, $rule, $condition->getConfiguration(), $params);
+        return $checker->isValid($subject, $rule, $condition->getConfiguration() ?? [], $params);
     }
 }

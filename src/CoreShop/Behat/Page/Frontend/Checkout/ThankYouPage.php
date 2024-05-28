@@ -32,10 +32,27 @@ class ThankYouPage extends AbstractFrontendPage implements ThankYouPageInterface
         return $this->getElement('order_token')->getAttribute('data-test-order-token');
     }
 
+    public function recapturePaymentForThisOrder(): void
+    {
+        $this->getSession()->visit($this->makePathAbsolute("en/shop/pay/{$this->getToken()}"));
+    }
+
+    public function getOrderTotal(): string
+    {
+        $orderTotalText = $this->getElement('order_total')->getText();
+
+        if (str_contains($orderTotalText, ',')) {
+            return strstr($orderTotalText, ',', true);
+        }
+
+        return trim($orderTotalText);
+    }
+
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
             'order_token' => '[data-test-order-token]',
+            'order_total' => '[data-test-order-total]',
         ]);
     }
 }

@@ -9,6 +9,11 @@ services:
         tags:
             - { name: coreshop.product_quantity_price_rules.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
 
+    coreshop.product_quantity_price_rules.rule.condition.guest:
+        class: CoreShop\Component\Core\Product\Rule\Condition\GuestConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: guest, form-type: CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType }
+
     coreshop.product_quantity_price_rules.rule.condition.countries:
         class: CoreShop\Component\Core\Product\Rule\Condition\CountriesConditionChecker
         tags:

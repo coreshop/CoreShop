@@ -60,12 +60,8 @@ class EntityMerger
         }
 
         $visited[$oid] = $entity; // mark visited
-
-        if ($entity instanceof Proxy && !$entity->__isInitialized()) {
-            $entity->__load();
-        }
-
         $class = $this->em->getClassMetadata($entity::class);
+        $entity = $this->loadEntity($entity);
 
         if ($this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
             $id = $class->getIdentifierValues($entity);
@@ -92,6 +88,8 @@ class EntityMerger
                     $this->cascadeMerge($entity, $visited);
                     $this->em->getUnitOfWork()->persist($entity);
                 } else {
+                    $managedCopy = $this->loadEntity($managedCopy);
+
                     $this->checkAssociations($entity, $managedCopy, $visited);
                     $this->em->getUnitOfWork()->removeFromIdentityMap($managedCopy);
                     $this->em->getUnitOfWork()->registerManaged($entity, $id, $this->getData($managedCopy));
@@ -100,6 +98,24 @@ class EntityMerger
         }
 
         $this->cascadeMerge($entity, $visited);
+    }
+
+    protected function loadEntity($entity)
+    {
+        $class = $this->em->getClassMetadata($entity::class);
+
+        if ($entity instanceof Proxy && !$entity->__isInitialized()) {
+            $id = $class->getIdentifierValues($entity);
+            $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $class->getName());
+
+            if ($uwEntity) {
+                $this->em->getUnitOfWork()->removeFromIdentityMap($uwEntity);
+            }
+
+            $entity->__load();
+        }
+
+        return $entity;
     }
 
     /**
@@ -278,7 +294,62 @@ class EntityMerger
     {
         $class = $this->em->getClassMetadata($entity::class);
 
-        foreach ($class->associationMappings as $assoc) {
+        $associationMappings = array_filter(
+            $class->associationMappings,
+            static function ($assoc) {
+                return $assoc['isCascadeMerge'];
+            },
+        );
+        $noMergeAssociationMappings = array_filter(
+            $class->associationMappings,
+            static function ($assoc) {
+                return !$assoc['isCascadeMerge'];
+            },
+        );
+
+        /**
+         * Restore managed entities to their original state
+         */
+        foreach ($noMergeAssociationMappings as $assoc) {
+            $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
+
+            if (!$relatedEntities) {
+                continue;
+            }
+
+            if ($relatedEntities instanceof Collection) {
+                //Reset Collection
+                $pColl = new PersistentCollection($this->em, $assoc['targetEntity'], new ArrayCollection());
+                $pColl->setOwner($entity, $assoc);
+                $pColl->setInitialized(false);
+
+                $class->reflFields[$assoc['fieldName']]->setValue($entity, $pColl);
+            } else {
+                //Reset "tmp" entity with managed entity
+                $relatedEntityClass = $this->em->getClassMetadata($assoc['targetEntity']);
+                $id = $relatedEntityClass->getIdentifierValues($relatedEntities);
+
+                if (!$id) {
+                    continue;
+                }
+
+                $uwEntity = $this->em->getUnitOfWork()->tryGetById($id, $relatedEntityClass->getName());
+
+                //Entity might not be loaded and managed yet, try to load it
+                if (!$uwEntity) {
+                    $uwEntity = $this->em->find($relatedEntityClass->getName(), $id);
+                }
+
+                if ($uwEntity) {
+                    $class->reflFields[$assoc['fieldName']]->setValue($entity, $uwEntity);
+                }
+            }
+        }
+
+        /**
+         * Merge related entities to the new state
+         */
+        foreach ($associationMappings as $assoc) {
             $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
             if ($relatedEntities instanceof Collection) {

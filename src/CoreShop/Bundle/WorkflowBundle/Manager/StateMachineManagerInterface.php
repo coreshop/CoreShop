@@ -18,13 +18,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WorkflowBundle\Manager;
 
-use Symfony\Component\Workflow\Workflow;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 interface StateMachineManagerInterface
 {
-    public function get(object $subject, string $workflowName = null): Workflow;
+    public function get(object $subject, string $workflowName = null): WorkflowInterface;
 
-    public function getTransitionFromState(Workflow $workflow, object $subject, string $fromState): ?string;
+    public function getTransitionFromState(WorkflowInterface $workflow, object $subject, string $fromState): ?string;
 
-    public function getTransitionToState(Workflow $workflow, object $subject, string $toState): ?string;
+    public function getTransitionToState(WorkflowInterface $workflow, object $subject, string $toState): ?string;
 }

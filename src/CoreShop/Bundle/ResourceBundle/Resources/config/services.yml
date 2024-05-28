@@ -56,13 +56,10 @@ services:
         tags:
             - { name: jms_serializer.handler, type: carbon, direction: serialization, format: json, method: serializeRelation }
 
-    CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation\HttpFoundationRequestHandler:
-        decorates: form.type_extension.form.request_handler
-        decoration_priority: 256
-        public: false
-
     CoreShop\Bundle\ResourceBundle\Controller\AdminController:
         abstract: true
+        calls:
+            - [ 'setTokenResolver', [ '@Pimcore\Security\User\TokenStorageUserResolver' ] ]
         arguments:
             - '@service_container'
             - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
@@ -100,12 +97,6 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
 
-    CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller:
-        decorates: 'cache.default_marshaller'
-        decoration_priority: 100
-        arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller.inner'
-
     CoreShop\Bundle\ResourceBundle\Slug\ResourceConfigurationSlugGenerator:
         decorates: 'CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface'
         arguments:
@@ -117,3 +108,12 @@ services:
         arguments:
             - '@CoreShop\Component\Resource\Pimcore\ResourceSlugLinkGenerator.inner'
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+
+    CoreShop\Bundle\ResourceBundle\Cache\CoreCacheHandlerDecorator:
+        decorates: 'Pimcore\Cache\Core\CoreCacheHandler'
+        arguments:
+            - '@pimcore.cache.pool'
+            - '@Pimcore\Cache\Core\WriteLock'
+            - '@event_dispatcher'
+        calls:
+            - [ setLogger, [ '@logger' ] ]

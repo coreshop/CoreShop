@@ -44,11 +44,21 @@ final class CustomerContext implements Context
     /**
      * @Given /^the site has a customer "([^"]+)"$/
      */
-    public function theSiteHasACustomer(string $email): void
+    public function theSiteHasACustomer(string $email, bool $isGuest = false): void
     {
-        $category = $this->createCustomer($email);
+        $customer = $this->createCustomer($email, $isGuest);
 
-        $this->saveCustomer($category);
+        $this->saveCustomer($customer);
+    }
+
+    /**
+     * @Given /^the site has a guest "([^"]+)"$/
+     */
+    public function theSiteHasAGuest(string $email): void
+    {
+        $customer = $this->createCustomer($email, true);
+
+        $this->saveCustomer($customer);
     }
 
     /**
@@ -95,6 +105,14 @@ final class CustomerContext implements Context
      * @Given /^I am (customer "[^"]+")$/
      */
     public function iAmCustomer(CustomerInterface $customer): void
+    {
+        $this->fixedCustomerContext->setCustomer($customer);
+    }
+
+    /**
+     * @Given /^I am (guest "[^"]+")$/
+     */
+    public function iAmGuest(CustomerInterface $customer): void
     {
         $this->fixedCustomerContext->setCustomer($customer);
     }
@@ -167,7 +185,7 @@ final class CustomerContext implements Context
         return $found;
     }
 
-    private function createCustomer(string $email): CustomerInterface
+    private function createCustomer(string $email, bool $isGuest = false): CustomerInterface
     {
         /** @var CustomerInterface $customer */
         $customer = $this->customerFactory->createNew();
@@ -181,22 +199,24 @@ final class CustomerContext implements Context
         $customer->setFirstname($firstname);
         $customer->setLastname($lastname);
 
-        /**
-         * @var UserInterface $user
-         */
-        $user = $this->userFactory->createNew();
-        $user->setKey(File::getValidFilename($email));
-        $user->setParent($customer);
-        $user->setPublished(true);
-        $user->setLoginIdentifier($email);
-        $user->setCustomer($customer);
+        if (!$isGuest) {
+            /**
+             * @var UserInterface $user
+             */
+            $user = $this->userFactory->createNew();
+            $user->setKey(File::getValidFilename($email));
+            $user->setParent($customer);
+            $user->setPublished(true);
+            $user->setLoginIdentifier($email);
+            $user->setCustomer($customer);
 
-        $customer->setUser($user);
+            $customer->setUser($user);
+        }
 
         return $customer;
     }
 
-    private function saveCustomer(CustomerInterface $customer): void
+    private function saveCustomer(CustomerInterface $customer, $isGuest = false): void
     {
         $user = $customer->getUser();
         $customer->setUser(null);
