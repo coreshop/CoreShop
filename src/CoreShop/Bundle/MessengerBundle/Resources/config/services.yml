@@ -57,11 +57,11 @@ services:
       - { name: controller.service_arguments }
     calls:
       - [setContainer, ['@service_container']]
-      - [setTokenResolver, ['@Pimcore\Security\User\TokenStorageUserResolver']]
+      - [setTokenResolver, ['@Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver']]
 
   CoreShop\Bundle\MessengerBundle\Controller\MessageController:
     tags:
       - { name: controller.service_arguments }
     calls:
       - [setContainer, ['@service_container']]
-      - [setTokenResolver, ['@Pimcore\Security\User\TokenStorageUserResolver']]
+      - [setTokenResolver, ['@Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver']]
