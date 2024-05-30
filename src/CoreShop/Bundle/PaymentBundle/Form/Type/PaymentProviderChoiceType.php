@@ -43,7 +43,7 @@ final class PaymentProviderChoiceType extends AbstractType
                 },
                 'choice_value' => 'id',
                 'choice_label' => function (PaymentProviderInterface $paymentProvider): string {
-                    return $paymentProvider->getTitle();
+                    return $paymentProvider->getTitle() ?: $paymentProvider->getIdentifier();
                 },
                 'choice_translation_domain' => false,
                 'active' => true,
