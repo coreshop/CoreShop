@@ -298,13 +298,13 @@ class EntityMerger
             $class->associationMappings,
             static function ($assoc) {
                 return $assoc['isCascadeMerge'];
-            }
+            },
         );
         $noMergeAssociationMappings = array_filter(
             $class->associationMappings,
             static function ($assoc) {
                 return !$assoc['isCascadeMerge'];
-            }
+            },
         );
 
         /**

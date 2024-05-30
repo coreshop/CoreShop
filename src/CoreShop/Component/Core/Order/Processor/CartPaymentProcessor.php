@@ -42,40 +42,38 @@ final class CartPaymentProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        $cart->setPaymentTotal(
+            (int) round((round($cart->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
+        );
+        $paymentProvider = $cart->getPaymentProvider();
+
         if ($cart->isImmutable()) {
             return;
         }
 
-        $cart->setPaymentTotal(
-            (int) round((round($cart->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
-        );
+        if (
+            $paymentProvider &&
+            $validRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $cart)
+        ) {
+            $context = $this->cartContextResolver->resolveCartContext($cart);
 
-        $paymentProvider = $cart->getPaymentProvider();
+            $price = $this->priceCalculator->getPrice(
+                $paymentProvider,
+                $cart,
+                $context,
+            );
 
-        if ($paymentProvider) {
-            $validRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $cart);
+            $ruleLabel = $validRule->getLabel($cart->getLocaleCode());
+            $defaultRuleLabel = $this->translator->trans('coreshop.paymentprovider.rule.label');
 
-            if ($validRule) {
-                $context = $this->cartContextResolver->resolveCartContext($cart);
-
-                $price = $this->priceCalculator->getPrice(
-                    $paymentProvider,
-                    $cart,
-                    $context,
-                );
-
-                $ruleLabel = $validRule->getLabel($cart->getLocaleCode());
-                $defaultRuleLabel = $this->translator->trans('coreshop.paymentprovider.rule.label');
-
-                $cart->addAdjustment(
-                    $this->adjustmentFactory->createWithData(
-                        AdjustmentInterface::PAYMENT,
-                        !empty($ruleLabel) ? $ruleLabel : $defaultRuleLabel,
-                        $price,
-                        $price,
-                    ),
-                );
-            }
+            $cart->addAdjustment(
+                $this->adjustmentFactory->createWithData(
+                    AdjustmentInterface::PAYMENT,
+                    !empty($ruleLabel) ? $ruleLabel : $defaultRuleLabel,
+                    $price,
+                    $price,
+                ),
+            );
         }
     }
 }

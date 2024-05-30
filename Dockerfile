@@ -10,7 +10,6 @@ RUN set -eux; \
 RUN echo 'xdebug.idekey = PHPSTORM' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo 'xdebug.mode = debug' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-
 ARG uid=1000
 RUN usermod -u $uid www-data && chown -R www-data:www-data /var/www
 
@@ -20,7 +19,7 @@ RUN apt update && \
 
 # Install Symfony, Pimcore and CoreShop inside Tests container
 # RUN wget https://get.symfony.com/cli/installer -O - | bash
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
+RUN curl --proto "=https" --tlsv1.2 -sSf -L https://might-redirect.example.com/install.sh | sh
 RUN apt install symfony-cli
 
 ENV PANTHER_NO_SANDBOX=1
