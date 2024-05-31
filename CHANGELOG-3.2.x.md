@@ -1,3 +1,7 @@
+# 3.2.9
+* [PaymentBundle] fix null title for payment provider by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2640
+* [Pimcore] CoreShop 3 compatibility only with Pimcore 10.6 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2644
+
 # 3.2.8
 * [CoreBundle] fix PaymentWorkflow Listener to trigger state transition conditions by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2601
 * [CoreBundle] fix CartTextProcessor priority and CartManagers setParent for cart-item by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2602
