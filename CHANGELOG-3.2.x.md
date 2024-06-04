@@ -1,3 +1,6 @@
+# 3.2.10
+* [ProductBundle] fix missing cascade merge by @benwalch in https://github.com/coreshop/CoreShop/pull/2647
+
 # 3.2.9
 * [PaymentBundle] fix null title for payment provider by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2640
 * [Pimcore] CoreShop 3 compatibility only with Pimcore 10.6 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2644
