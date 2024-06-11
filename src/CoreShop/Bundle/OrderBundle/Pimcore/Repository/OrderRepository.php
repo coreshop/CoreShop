@@ -42,7 +42,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     public function findNamedStorageLists(StoreInterface $store, CustomerInterface $customer): array
     {
         $list = $this->getList();
-        $list->setCondition('customer__id = ? AND store = ?', [$customer->getId(), $store->getId()]);
+        $list->setCondition('customer__id = ? AND store = ? AND saleState = ?', [$customer->getId(), $store->getId(), OrderSaleStates::STATE_CART]);
         $list->setOrderKey('id');
         $list->setOrder('ASC');
         $list->load();
