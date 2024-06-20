@@ -129,6 +129,8 @@ class OrderCreationController extends PimcoreController
             $cart = $handledForm->getData();
             $cart->setCreationDate(time());
 
+            $cartManager->persistCart($cart);
+
             $workflow = $manager->get($cart, OrderSaleTransitions::IDENTIFIER);
 
             if (!$workflow->can($cart, $type)) {

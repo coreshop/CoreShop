@@ -95,6 +95,7 @@ final class PimcoreDriver extends AbstractDriver
                 new Reference($metadata->getServiceId('factory')),
                 new Reference(ViewHandlerInterface::class),
             ])
+            ->setAutowired(true)
             ->addMethodCall('setContainer', [new Reference('service_container')])
             ->addTag('controller.service_arguments')
         ;
