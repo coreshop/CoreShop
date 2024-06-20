@@ -14,6 +14,7 @@ pimcore.registerNS('coreshop.provider.item');
 coreshop.provider.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_payment_provider',
+    logoSelect: null,
 
     routing: {
         save: 'coreshop_payment_provider_save'
@@ -81,6 +82,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             langTabs.push(tab);
         });
 
+        this.logoSelect = this.getLogoSelect();
         var items = [
             {
                 fieldLabel: t('coreshop_identifier'),
@@ -98,7 +100,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                 name: 'active',
                 checked: this.data.active
             },
-            this.getLogoSelect().getLayoutEdit(),
+            this.logoSelect.getLayoutEdit(),
             {
                 xtype: 'combobox',
                 itemId: 'paymentFactory',
@@ -306,6 +308,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         };
 
         Ext.apply(data, this.formPanel.getForm().getFieldValues());
+        data.logo = this.logoSelect.getValue();
 
         var ruleGroups = this.paymentProviderRuleGroupsStore.getRange();
 
