@@ -81,6 +81,12 @@ class OrderController extends PimcoreController
         $transitions = [];
         $worklows = $this->container->get('workflows');
 
+        /**
+         * @var \Pimcore\Security\User\User $user
+         */
+        $user = $this->getUser();
+        $locale = $user->getUser()->getLanguage();
+
         foreach ($identifiers as $identifier) {
             $stateMachine = null;
 
