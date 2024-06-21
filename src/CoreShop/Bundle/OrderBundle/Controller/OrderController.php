@@ -81,6 +81,12 @@ class OrderController extends PimcoreController
         $transitions = [];
         $worklows = $this->container->get('workflows');
 
+        /**
+         * @var \Pimcore\Security\User\User $user
+         */
+        $user = $this->getUser();
+        $locale = $user->getUser()->getLanguage();
+
         foreach ($identifiers as $identifier) {
             $stateMachine = null;
 
@@ -110,6 +116,7 @@ class OrderController extends PimcoreController
                     $identifier,
                     $place,
                     false,
+                    $locale,
                 );
             }
 
@@ -245,8 +252,13 @@ class OrderController extends PimcoreController
         $orders = $list->getData();
         $jsonSales = [];
 
+        /**
+         * @var \Pimcore\Security\User\User $user
+         */
+        $user = $this->getUser();
+
         foreach ($orders as $order) {
-            $jsonSales[] = $this->prepareSale($order);
+            $jsonSales[] = $this->prepareSale($order, $user->getUser()->getLanguage());
         }
 
         return $this->viewHandler->handle([
@@ -268,7 +280,12 @@ class OrderController extends PimcoreController
             return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
-        $jsonSale = $this->getDetails($order);
+        /**
+         * @var \Pimcore\Security\User\User $user
+         */
+        $user = $this->getUser();
+
+        $jsonSale = $this->getDetails($order, $user->getUser()->getLanguage());
 
         return $this->viewHandler->handle(['success' => true, 'sale' => $jsonSale]);
     }
@@ -395,7 +412,7 @@ class OrderController extends PimcoreController
         return $this->viewHandler->handle(['success' => false]);
     }
 
-    protected function prepareSale(OrderInterface $order): array
+    protected function prepareSale(OrderInterface $order, ?string $locale = null): array
     {
         $date = $order->getOrderDate()->getTimestamp();
 
@@ -424,21 +441,25 @@ class OrderController extends PimcoreController
                 'coreshop_order',
                 $order->getOrderState() ?? OrderStates::STATE_NEW,
                 false,
+                $locale,
             ),
             'orderPaymentState' => $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_order_payment',
                 $order->getPaymentState(),
                 false,
+                $locale,
             ),
             'orderShippingState' => $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_order_shipment',
                 $order->getShippingState(),
                 false,
+                $locale,
             ),
             'orderInvoiceState' => $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_order_invoice',
                 $order->getInvoiceState(),
                 false,
+                $locale,
             ),
         ];
 
@@ -488,7 +509,7 @@ class OrderController extends PimcoreController
         return $values;
     }
 
-    protected function getDetails(OrderInterface $order): array
+    protected function getDetails(OrderInterface $order, ?string $locale = null): array
     {
         $jsonSale = $this->container->get('jms_serializer')->toArray($order);
 
@@ -564,21 +585,25 @@ class OrderController extends PimcoreController
             'coreshop_order',
             $order->getOrderState() ?? OrderStates::STATE_NEW,
             false,
+            $locale,
         );
         $jsonSale['orderPaymentState'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
             'coreshop_order_payment',
             $order->getPaymentState() ?? OrderPaymentStates::STATE_NEW,
             false,
+            $locale,
         );
         $jsonSale['orderShippingState'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
             'coreshop_order_shipment',
             $order->getShippingState() ?? OrderShipmentStates::STATE_NEW,
             false,
+            $locale,
         );
         $jsonSale['orderInvoiceState'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
             'coreshop_order_invoice',
             $order->getInvoiceState() ?? OrderInvoiceStates::STATE_NEW,
             false,
+            $locale,
         );
 
         $availableTransitions = $this->container->get(WorkflowStateInfoManagerInterface::class)->parseTransitions(
@@ -588,17 +613,18 @@ class OrderController extends PimcoreController
             'cancel',
         ],
             false,
+            $locale,
         );
 
         $jsonSale['availableOrderTransitions'] = $availableTransitions;
         $jsonSale['statesHistory'] = $this->getStatesHistory($order);
 
-        $invoices = $this->getInvoices($order);
+        $invoices = $this->getInvoices($order, $locale);
 
         $jsonSale['editable'] = $this->container->get(OrderEditPossibleInterface::class)->isOrderEditable($order);
         $jsonSale['invoices'] = $invoices;
-        $jsonSale['payments'] = $this->getPayments($order);
-        $jsonSale['shipments'] = $this->getShipments($order);
+        $jsonSale['payments'] = $this->getPayments($order, $locale);
+        $jsonSale['shipments'] = $this->getShipments($order, $locale);
         $jsonSale['paymentCreationAllowed'] = !in_array(
             $order->getOrderState(),
             [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE],
@@ -638,7 +664,7 @@ class OrderController extends PimcoreController
         return $list;
     }
 
-    protected function getInvoices(OrderInterface $order): array
+    protected function getInvoices(OrderInterface $order, ?string $locale = null): array
     {
         $invoices = $this->container->get('coreshop.repository.order_invoice')->getDocuments($order);
         $invoiceArray = [];
@@ -660,6 +686,7 @@ class OrderController extends PimcoreController
                 'coreshop_invoice',
                 $invoice->getState(),
                 false,
+                $locale,
             );
             $data['transitions'] = $availableTransitions;
 
@@ -669,7 +696,7 @@ class OrderController extends PimcoreController
         return $invoiceArray;
     }
 
-    protected function getShipments(OrderInterface $order): array
+    protected function getShipments(OrderInterface $order, ?string $locale = null): array
     {
         $shipments = $this->container->get('coreshop.repository.order_shipment')->getDocuments($order);
         $shipmentArray = [];
@@ -692,6 +719,7 @@ class OrderController extends PimcoreController
                 'coreshop_shipment',
                 $shipment->getState(),
                 false,
+                $locale,
             );
             $data['transitions'] = $availableTransitions;
 
@@ -800,7 +828,7 @@ class OrderController extends PimcoreController
         return $statesHistory;
     }
 
-    protected function getPayments(OrderInterface $order): array
+    protected function getPayments(OrderInterface $order, ?string $locale = null): array
     {
         $payments = $this->container->get('coreshop.repository.payment')->findForPayable($order);
         $return = [];
@@ -830,6 +858,7 @@ class OrderController extends PimcoreController
                 'refund',
             ],
                 false,
+                $locale,
             );
 
             $return[] = [
@@ -843,6 +872,7 @@ class OrderController extends PimcoreController
                     'coreshop_payment',
                     $payment->getState(),
                     false,
+                    $locale,
                 ),
                 'transitions' => $availableTransitions,
             ];

@@ -36,7 +36,7 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
     ) {
     }
 
-    public function getStateInfo(string $workflowName, string $value, bool $forFrontend = true): array
+    public function getStateInfo(string $workflowName, string $value, bool $forFrontend = true, ?string $locale = null): array
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
@@ -44,13 +44,13 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         $color = $this->stateColors[$workflowName]['place_colors'][$value] ?? '#f6f1de';
 
         return [
-            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
+            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin', $locale),
             'state' => $value,
             'color' => $color,
         ];
     }
 
-    public function parseTransitions(object $subject, string $workflowName, array $transitions = [], bool $forFrontend = true): array
+    public function parseTransitions(object $subject, string $workflowName, array $transitions = [], bool $forFrontend = true, ?string $locale = null): array
     {
         $event = new WorkflowTransitionEvent($transitions, $workflowName);
         $this->eventDispatcher->dispatch($event, 'coreshop.workflow.valid_transitions');
@@ -59,21 +59,21 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         $workflow = $this->stateMachineManager->get($subject, $workflowName);
         foreach ($event->getAllowedTransitions() as $transition) {
             if ($workflow->can($subject, $transition)) {
-                $valid[] = $this->getTransitionInfo($workflowName, $transition, $forFrontend);
+                $valid[] = $this->getTransitionInfo($workflowName, $transition, $forFrontend, $locale);
             }
         }
 
         return $valid;
     }
 
-    public function getTransitionInfo(string $workflowName, string $transition, bool $forFrontend = true): array
+    public function getTransitionInfo(string $workflowName, string $transition, bool $forFrontend = true, ?string $locale = null): array
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $transition;
         $color = $this->stateColors[$workflowName]['transition_colors'][$transition] ?? '#999999';
 
         return [
-            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
+            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin', $locale),
             'transition' => $transition,
             'color' => $color,
         ];
