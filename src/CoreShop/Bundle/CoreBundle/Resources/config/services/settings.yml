@@ -6,28 +6,34 @@ services:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
 
     CoreShop\Bundle\CoreBundle\Controller\ReportsController:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
 
     CoreShop\Bundle\CoreBundle\Controller\PortletsController:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
 
     CoreShop\Bundle\CoreBundle\Controller\ProductValidationController:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
 
     CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
 
     CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         tags:
             - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
