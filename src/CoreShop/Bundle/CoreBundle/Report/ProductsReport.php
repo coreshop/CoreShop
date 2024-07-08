@@ -52,6 +52,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $objectTypeFilter = $parameterBag->get('objectType', 'all');
         $orderStateFilter = $parameterBag->get('orderState');
+
         if ($orderStateFilter) {
             $orderStateFilter = \json_decode($orderStateFilter, true);
         }
@@ -60,7 +61,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             $orderStateFilter = null;
         }
 
-        if (count($orderStateFilter) === 1 && $orderStateFilter[0] === 'all') {
+        if (is_array($orderStateFilter) && count($orderStateFilter) === 1 && $orderStateFilter[0] === 'all') {
             $orderStateFilter = null;
         }
 

@@ -26,6 +26,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class PortletsController extends AdminController
@@ -48,7 +49,10 @@ class PortletsController extends AdminController
         ]);
     }
 
-    public function exportPortletCsvAction(Request $request): Response
+    public function exportPortletCsvAction(
+        Request $request,
+        SerializerInterface $serializer,
+    ): Response
     {
         $portletName = $this->getParameterFromRequest($request, 'portlet');
         $portletRegistry = $this->container->get('coreshop.registry.portlets');
@@ -66,7 +70,7 @@ class PortletsController extends AdminController
             $data = $portlet->getPortletData($request->query);
         }
 
-        $csvData = $this->container->get('serializer')->serialize($data, 'csv');
+        $csvData = $serializer->serialize($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(
