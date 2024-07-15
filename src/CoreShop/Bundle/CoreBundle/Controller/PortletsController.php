@@ -52,8 +52,7 @@ class PortletsController extends AdminController
     public function exportPortletCsvAction(
         Request $request,
         SerializerInterface $serializer,
-    ): Response
-    {
+    ): Response {
         $portletName = $this->getParameterFromRequest($request, 'portlet');
         $portletRegistry = $this->container->get('coreshop.registry.portlets');
 

@@ -53,8 +53,7 @@ class ReportsController extends AdminController
     public function exportReportCsvAction(
         Request $request,
         SerializerInterface $serializer,
-    ): Response
-    {
+    ): Response {
         $reportType = $this->getParameterFromRequest($request, 'report');
         $reportRegistry = $this->container->get('coreshop.registry.reports');
 
