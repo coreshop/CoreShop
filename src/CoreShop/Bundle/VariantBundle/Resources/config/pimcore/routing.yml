@@ -1,5 +1,12 @@
-coreshop_variant_attribute:
-    path: /product/attribute/{product}
-    defaults: { _controller: CoreShop\Bundle\VariantBundle\Controller\ProductController::attributeAction }
+coreshop_admin_variant_attributes:
+    path: /admin/variant/attributes
+    defaults: { _controller: CoreShop\Bundle\VariantBundle\Controller\VariantController::getAttributesAction }
+    options:
+        expose: true
+
+coreshop_admin_variant_generator:
+    path: /admin/variant/generate
+    defaults: { _controller: CoreShop\Bundle\VariantBundle\Controller\VariantController::generateVariantsAction }
+    methods: [POST]
     options:
         expose: true

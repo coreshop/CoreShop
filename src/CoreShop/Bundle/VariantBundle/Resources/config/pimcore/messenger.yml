@@ -1,0 +1,18 @@
+framework:
+    messenger:
+        transports:
+            coreshop_variant:
+                dsn: "doctrine://default?queue_name=coreshop_variant"
+                failure_transport: coreshop_variant_failed
+                retry_strategy:
+                    max_retries: 3
+                    delay: 300000
+                    multiplier: 2
+            # we store failed messages here for admins to manually review them later
+            coreshop_variant_failed:
+                dsn: "doctrine://default?queue_name=coreshop_variant_failed"
+                retry_strategy:
+                    max_retries: 0
+
+        routing:
+            'CoreShop\Bundle\VariantBundle\Messenger\CreateVariantMessage': coreshop_variant
