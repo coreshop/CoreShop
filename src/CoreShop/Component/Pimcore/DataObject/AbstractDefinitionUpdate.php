@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
-use Pimcore\Bundle\CoreBundle\Migrations\Version20211117173000;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
