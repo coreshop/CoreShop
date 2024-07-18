@@ -1,3 +1,7 @@
+# 3.2.11
+* [Order] fixes for backend order creation by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2652
+* [Messenger] fix serialization of failed_at by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2658
+
 # 3.2.10
 * [ProductBundle] fix missing cascade merge by @benwalch in https://github.com/coreshop/CoreShop/pull/2647
 
