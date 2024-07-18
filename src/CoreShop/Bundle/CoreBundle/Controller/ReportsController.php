@@ -26,6 +26,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class ReportsController extends AdminController
@@ -49,8 +50,10 @@ class ReportsController extends AdminController
         ]);
     }
 
-    public function exportReportCsvAction(Request $request): Response
-    {
+    public function exportReportCsvAction(
+        Request $request,
+        SerializerInterface $serializer,
+    ): Response {
         $reportType = $this->getParameterFromRequest($request, 'report');
         $reportRegistry = $this->container->get('coreshop.registry.reports');
 
@@ -67,7 +70,7 @@ class ReportsController extends AdminController
             $data = $report->getReportData($request->query);
         }
 
-        $csvData = $this->container->get('serializer')->encode($data, 'csv');
+        $csvData = $serializer->serialize($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(
