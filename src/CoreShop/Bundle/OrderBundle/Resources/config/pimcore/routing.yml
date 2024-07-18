@@ -64,12 +64,6 @@ coreshop_admin_order_update_order_state:
     options:
         expose: true
 
-coreshop_admin_order_get_orders:
-    path: /%coreshop.admin.route.base%/order/list
-    defaults: { _controller: 'coreshop.pimcore_controller.order::listAction'}
-    options:
-        expose: true
-
 coreshop_admin_order_get_order:
     path: /%coreshop.admin.route.base%/order/detail
     defaults: { _controller: 'coreshop.pimcore_controller.order::detailAction'}
