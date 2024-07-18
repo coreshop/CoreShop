@@ -30,14 +30,9 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 
     protected array $fieldDefinitions;
 
-    protected string $childrenPath = 'childs';
+    protected string $childrenPath = 'children';
 
-    public function __construct(
-        ) {
-        if (class_exists(Version20211117173000::class)) {
-            $this->childrenPath = 'children';
-        }
-    }
+    public function __construct() {}
 
     abstract public function save(): bool;
 
