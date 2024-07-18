@@ -1,3 +1,13 @@
+# 4.0.8
+* [PaymentBundle] fix null title for payment provider by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2640
+* [ProductBundle] fix missing cascade merge by @benwalch in https://github.com/coreshop/CoreShop/pull/2647
+* [PaymentBundle/ShippingBundle] fix logo select form type by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2654
+* [OrderBundle] use user locale for transition and state translations by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2653
+* [Order] fixes for backend order creation by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2652
+* [Messenger] fix serialization of failed_at by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2658
+* [CoreBundle] fixes for Reports by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2659
+* [Pimcore] add conflict for Pimcore 11.3.1 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2664
+
 # 4.0.7
 
 * [ProductBundle] fix missing cascade merge by @nehlsen in https://github.com/coreshop/CoreShop/pull/2636
