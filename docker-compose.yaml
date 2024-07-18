@@ -96,5 +96,25 @@ services:
         symfony server:start --port=9080 --dir=public --no-tls -d;
         CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui
 
+  gotenberg:
+    image: gotenberg/gotenberg:8
+
+  chrome:
+    image: browserless/chrome
+    environment:
+      - DEBUG=browserless:*
+      - MAX_CONCURRENT_SESSIONS=10
+      - CONNECTION_TIMEOUT=60000
+      - MAX_QUEUE_LENGTH=20
+      - PREBOOT_CHROME=true
+      - DEMO_MODE=false
+      - HOST=0.0.0.0
+      - ENABLE_DEBUGGER=false
+      - TOKEN=${BROWSERLESS_TOKEN}
+      - PORT=3000
+      - WORKSPACE_DELETE_EXPIRED=true
+    container_name: chrome
+    restart: always
+
 volumes:
   db:

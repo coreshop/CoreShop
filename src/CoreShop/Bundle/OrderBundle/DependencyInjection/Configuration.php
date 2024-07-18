@@ -77,6 +77,7 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('legacy_serialization')->defaultTrue()->end()
                 ->booleanNode('allow_order_edit')->defaultFalse()->end()
                 ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
+                ->booleanNode('use_pimcore_pdf_rendering')->defaultFalse()->end()
             ->end()
         ;
         $this->addModelsSection($rootNode);
