@@ -101,8 +101,6 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
-        $container->setParameter('coreshop.order.legacy_serialization', $configs['legacy_serialization']);
-
         $loader->load('services.yml');
 
         Autoconfiguration::registerForAutoConfiguration(
