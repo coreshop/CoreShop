@@ -31,8 +31,8 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 class PimcoreOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
     public function __construct(
-        private readonly FragmentRendererInterface $fragmentRenderer,
-        private readonly ThemeHelperInterface $themeHelper,
+        private FragmentRendererInterface $fragmentRenderer,
+        private ThemeHelperInterface $themeHelper,
     ) {
     }
 
@@ -69,11 +69,18 @@ class PimcoreOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
             $contentFooter = $this->fragmentRenderer->render($referenceFooter, $request)->getContent();
             $content = $this->fragmentRenderer->render($referenceContent, $request)->getContent();
 
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $contentHeaderFile = File::getLocalTempFilePath('html');
+
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $contentFooterFile = File::getLocalTempFilePath('html');
 
-            file_put_contents($contentHeaderFile, $contentHeader);
-            file_put_contents($contentFooterFile, $contentFooter);
+            file_put_contents($contentHeaderFile, $contentHeader ?: '');
+            file_put_contents($contentFooterFile, $contentFooter ?: '');
 
             $params = [
                 'headerTemplate' => $contentHeaderFile,
@@ -82,7 +89,7 @@ class PimcoreOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
             ];
 
             return Processor::getInstance()->getPdfFromString(
-                $content,
+                $content ?: '',
                 $params
             );
         });

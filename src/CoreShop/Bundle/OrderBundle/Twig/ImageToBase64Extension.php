@@ -26,8 +26,8 @@ use Twig\TwigFunction;
 final class ImageToBase64Extension extends AbstractExtension
 {
     public function __construct(
-        private readonly NormalizerInterface $normalizer,
-        private readonly string $kernelProjectDir
+        private NormalizerInterface $normalizer,
+        private string $kernelProjectDir
     )
     {
     }

@@ -23,6 +23,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * @deprecated Deprecated since CoreShop 4.1, to be removed in CoreShop 5.0. No replacement available, use Pimcore's Web2Print Renderer instead.
+ * @psalm-suppress DeprecatedInterface
  */
 final class WkHtmlToPdf implements PdfRendererInterface
 {

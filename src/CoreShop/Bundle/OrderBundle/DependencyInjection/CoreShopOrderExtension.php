@@ -72,6 +72,9 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $container->setAlias(OrderDocumentRendererInterface::class, PimcoreOrderDocumentPdfRenderer::class);
         }
         else {
+            /**
+             * @psalm-suppress DeprecatedClass
+             */
             $container->setAlias(OrderDocumentRendererInterface::class, OrderDocumentPdfRenderer::class);
 
             trigger_deprecation(

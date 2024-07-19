@@ -34,7 +34,7 @@ final class CryptedGatewayConfigTypeExtension extends AbstractTypeExtension
 
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (null === $this->cypher) {
             return;
