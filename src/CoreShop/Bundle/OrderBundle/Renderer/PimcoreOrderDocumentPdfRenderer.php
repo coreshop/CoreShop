@@ -19,40 +19,30 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Renderer;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderDocumentPrintController;
-use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
-use CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use Pimcore\Bundle\WebToPrintBundle\Processor;
+use Pimcore\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @deprecated Deprecated since CoreShop 4.1, to be removed in CoreShop 5.0. Use PimcoreOrderDocumentPdfRenderer instead.
- */
-class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
+class PimcoreOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
     public function __construct(
         private FragmentRendererInterface $fragmentRenderer,
-        private EventDispatcherInterface $eventDispatcher,
-        private PdfRendererInterface $renderer,
         private ThemeHelperInterface $themeHelper,
     ) {
     }
 
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
-        trigger_deprecation(
-            'coreshop/order-bundle',
-            '4.1',
-            'The "%s" class is deprecated and will be removed in CoreShop 5.0. Use "%s" instead.',
-            PimcoreOrderDocumentPdfRenderer::class,
-            self::class
-        );
-
         return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function () use ($orderDocument) {
+            /**
+             * Gotenberg Supported for now, Chromium Headless not properly tested
+             * */
+
             $params = [
                 'id' => $orderDocument->getId(),
                 'order' => $orderDocument->getOrder(),
@@ -79,18 +69,28 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
             $contentFooter = $this->fragmentRenderer->render($referenceFooter, $request)->getContent();
             $content = $this->fragmentRenderer->render($referenceContent, $request)->getContent();
 
-            $event = new WkhtmlOptionsEvent($orderDocument);
+            /**
+             * @psalm-suppress InternalMethod
+             */
+            $contentHeaderFile = File::getLocalTempFilePath('html');
 
-            $this->eventDispatcher->dispatch(
-                $event,
-                sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType()),
-            );
+            /**
+             * @psalm-suppress InternalMethod
+             */
+            $contentFooterFile = File::getLocalTempFilePath('html');
 
-            return $this->renderer->fromString(
+            file_put_contents($contentHeaderFile, $contentHeader ?: '');
+            file_put_contents($contentFooterFile, $contentFooter ?: '');
+
+            $params = [
+                'headerTemplate' => $contentHeaderFile,
+                'footerTemplate' => $contentFooterFile,
+                'marginTop' => 1,
+            ];
+
+            return Processor::getInstance()->getPdfFromString(
                 $content ?: '',
-                $contentHeader ?: '',
-                $contentFooter ?: '',
-                ['options' => [$event->getOptions()]],
+                $params
             );
         });
     }

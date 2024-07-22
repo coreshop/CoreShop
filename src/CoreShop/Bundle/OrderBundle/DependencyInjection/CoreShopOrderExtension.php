@@ -34,6 +34,8 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscount
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasablePriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
+use CoreShop\Bundle\OrderBundle\Renderer\OrderDocumentPdfRenderer;
+use CoreShop\Bundle\OrderBundle\Renderer\PimcoreOrderDocumentPdfRenderer;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Order\Calculator\PurchasableCustomAttributesCalculatorInterface;
@@ -45,6 +47,8 @@ use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInter
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\Condition\CartRuleConditionCheckerInterface;
 use CoreShop\Component\Registry\Autoconfiguration;
+use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use Pimcore\Bundle\WebToPrintBundle\PimcoreWebToPrintBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -62,10 +66,26 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
         $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
+        $this->registerDependantBundles('coreshop', [PimcoreWebToPrintBundle::class], $container);
 
-//        if (class_exists(PimcoreDataHubBundle::class)) {
-//            $this->registerDependantBundles('coreshop', [PimcoreDataHubBundle::class], $container);
-//        }
+        if ($configs['use_pimcore_pdf_rendering']) {
+            $container->setAlias(OrderDocumentRendererInterface::class, PimcoreOrderDocumentPdfRenderer::class);
+        }
+        else {
+            /**
+             * @psalm-suppress DeprecatedClass
+             */
+            $container->setAlias(OrderDocumentRendererInterface::class, OrderDocumentPdfRenderer::class);
+
+            trigger_deprecation(
+                'coreshop/order-bundle',
+                '4.1',
+                '
+                    Not setting core_shop_order.use_pimcore_pdf_rendering to true is deprecated and will be removed and the default in CoreShop 5.0.
+                    Reason is that Pimcore\'s Web2Print Renderer is the recommended way to render PDFs.
+                ',
+            );
+        }
 
         if (array_key_exists('pimcore_admin', $configs)) {
             $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
@@ -80,8 +100,6 @@ final class CoreShopOrderExtension extends AbstractModelExtension
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
         }
-
-        $container->setParameter('coreshop.order.legacy_serialization', $configs['legacy_serialization']);
 
         $loader->load('services.yml');
 

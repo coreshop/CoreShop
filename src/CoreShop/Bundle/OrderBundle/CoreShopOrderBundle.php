@@ -40,6 +40,7 @@ use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
 use CoreShop\Bundle\StorageListBundle\CoreShopStorageListBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
+use Pimcore\Bundle\WebToPrintBundle\PimcoreWebToPrintBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -82,6 +83,8 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopPaymentBundle(), 2200);
         $collection->addBundle(new CoreShopMoneyBundle(), 1550);
         $collection->addBundle(new CoreShopStorageListBundle(), 100);
+
+        $collection->addBundle(new PimcoreWebToPrintBundle(), 70);
     }
 
     protected function getModelNamespace(): string
