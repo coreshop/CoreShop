@@ -31,7 +31,9 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 
     protected string $childrenPath = 'children';
 
-    public function __construct() {}
+    public function __construct(
+        ) {
+    }
 
     abstract public function save(): bool;
 
