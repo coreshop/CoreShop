@@ -35,7 +35,8 @@ pimcore.object.tags.coreShopMoneyCurrency = Class.create(pimcore.object.tags.abs
         var valueField = {
             xtype: 'numberfield',
             name: 'value',
-            flex: 1
+            flex: 1,
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         };
         var currencyField = {
             xtype: 'coreshop.currency',
