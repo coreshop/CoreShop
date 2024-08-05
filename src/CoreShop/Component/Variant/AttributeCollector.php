@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Variant;
 
-use CoreShop\Component\Variant\Event\variantAvailabilityEvent;
+use CoreShop\Component\Variant\Event\VariantAvailabilityEvent;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
