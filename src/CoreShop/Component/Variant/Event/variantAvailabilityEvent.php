@@ -21,7 +21,7 @@ namespace CoreShop\Component\Variant\Event;
 use CoreShop\Component\Core\Model\ProductInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class variantAvailabilityEvent extends Event
+class VariantAvailabilityEvent extends Event
 {
     private bool $conditionMet = true;
 
