@@ -17,3 +17,10 @@ services:
             - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\MoneyBundle\EventListener\IndexActionSettingsSubscriber:
+        arguments:
+            - '%coreshop.currency.decimal_precision%'
+            - '%coreshop.currency.decimal_factor%'
+        tags:
+            - { name: kernel.event_subscriber }
