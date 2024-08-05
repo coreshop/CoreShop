@@ -79,7 +79,7 @@ class AttributeCollector implements AttributeCollectorInterface
                     $group->setGroup($attributeGroup);
                     $group->setType(get_class($attribute));
 
-                    $this->eventDispatcher->dispatch($event = new variantAvailabilityEvent($product), 'coreshop.attribute.collector.preCondition');
+                    $event = $this->eventDispatcher->dispatch(new VariantAvailabilityEvent($product), 'coreshop.attribute.collector.preCondition');
 
                     if ($event->isConditionMet()){
                         $resolvedGroups[$attributeGroup->getId()] = $group;
