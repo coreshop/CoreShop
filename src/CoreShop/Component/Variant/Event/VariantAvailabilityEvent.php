@@ -18,18 +18,18 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Variant\Event;
 
-use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class VariantAvailabilityEvent extends Event
 {
     private bool $conditionMet = true;
 
-    public function __construct(private ProductInterface $product)
+    public function __construct(private ProductVariantAwareInterface $product)
     {
     }
 
-    public function getProduct(): ProductInterface
+    public function getProduct(): ProductVariantAwareInterface
     {
         return $this->product;
     }
