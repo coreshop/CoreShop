@@ -8,6 +8,8 @@ services:
 
     CoreShop\Component\Variant\AttributeCollectorInterface: '@CoreShop\Component\Variant\AttributeCollector'
     CoreShop\Component\Variant\AttributeCollector:
+        arguments:
+            - '@event_dispatcher'
 
     CoreShop\Bundle\VariantBundle\Twig\Extension\VariantExtension:
         public: false
