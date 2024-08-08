@@ -54,10 +54,7 @@ use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use JMS\Serializer\SerializerInterface;
-use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
-use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
@@ -203,70 +200,6 @@ class OrderController extends PimcoreController
         }
 
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
-    }
-
-    public function listAction(Request $request, OrderRepositoryInterface $orderRepository): Response
-    {
-        $this->isGrantedOr403();
-
-        $list = $orderRepository->getList();
-        $list->setLimit($this->getParameterFromRequest($request, 'limit', 30));
-        $list->setOffset($this->getParameterFromRequest($request, 'page', 1) - 1);
-
-        if ($this->getParameterFromRequest($request, 'filter')) {
-            /** @psalm-suppress InternalClass */
-            $gridHelper = new GridHelperService();
-
-            $conditionFilters = [];
-            /** @psalm-suppress InternalMethod */
-            $conditionFilters[] = $gridHelper->getFilterCondition(
-                $this->getParameterFromRequest($request, 'filter'),
-                DataObject\ClassDefinition::getByName(
-                    (string) $this->getParameter('coreshop.model.order.pimcore_class_name'),
-                ),
-            );
-            if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
-                $list->setCondition(implode(' AND ', $conditionFilters));
-            }
-        }
-
-        /** @psalm-suppress InternalClass, InternalMethod */
-        $sortingSettings = QueryParams::extractSortingSettings($request->request->all());
-
-        $order = 'DESC';
-        $orderKey = 'orderDate';
-
-        if ($sortingSettings['order']) {
-            $order = $sortingSettings['order'];
-        }
-        if ($sortingSettings['orderKey'] !== '') {
-            $orderKey = $sortingSettings['orderKey'];
-        }
-
-        $list->setOrder($order);
-        $list->setOrderKey($orderKey);
-
-        /**
-         * @var Listing $list
-         */
-        $orders = $list->getData();
-        $jsonSales = [];
-
-        /**
-         * @var \Pimcore\Security\User\User $user
-         */
-        $user = $this->getUser();
-
-        foreach ($orders as $order) {
-            $jsonSales[] = $this->prepareSale($order, $user->getUser()->getLanguage());
-        }
-
-        return $this->viewHandler->handle([
-            'success' => true,
-            'data' => $jsonSales,
-            'count' => count($jsonSales),
-            'total' => $list->getTotalCount(),
-        ]);
     }
 
     public function detailAction(Request $request, OrderRepositoryInterface $orderRepository): Response

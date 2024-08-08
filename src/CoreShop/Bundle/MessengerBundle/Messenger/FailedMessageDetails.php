@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
+use Symfony\Component\Serializer\Attribute\SerializedName;
+
 final class FailedMessageDetails implements \JsonSerializable
 {
     public function __construct(
@@ -29,26 +31,31 @@ final class FailedMessageDetails implements \JsonSerializable
     ) {
     }
 
+    #[SerializedName('id')]
     public function getId(): mixed
     {
         return $this->id;
     }
 
+    #[SerializedName('class')]
     public function getClass(): string
     {
         return $this->class;
     }
 
+    #[SerializedName('failed_at')]
     public function getFailedAt(): string
     {
         return $this->failedAt;
     }
 
+    #[SerializedName('error')]
     public function getError(): ?string
     {
         return $this->error;
     }
 
+    #[SerializedName('serialized')]
     public function getSerialized(): string
     {
         return $this->serialized;
