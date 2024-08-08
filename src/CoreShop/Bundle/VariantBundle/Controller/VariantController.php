@@ -19,25 +19,38 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\VariantBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
+use CoreShop\Bundle\VariantBundle\Messenger\CreateVariantMessage;
+use CoreShop\Bundle\VariantBundle\Service\VariantGeneratorService;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\AbstractObject;
-use Pimcore\Tool;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @psalm-suppress InternalClass
  */
 class VariantController extends AdminController
 {
-    private function mapData($object) {
+    public function __construct(
+        \Psr\Container\ContainerInterface $container,
+        protected ViewHandlerInterface $viewHandler,
+        protected ParameterBagInterface $parameterBag,
+        protected VariantGeneratorService $variantGeneratorService,
+        protected MessageBusInterface $messageBus,
+        protected TranslatorInterface $translator,
+    ) {
 
+        parent::__construct($container, $viewHandler, $parameterBag);
     }
 
-    public function getAttributes(Request $request)
+    public function getAttributesAction(Request $request)
     {
         $id = $this->getParameterFromRequest($request, 'id');
 
@@ -107,96 +120,18 @@ class VariantController extends AdminController
             $product = $product->getVariantParent();
         }
 
-        $groupedAttributes = [];
-        foreach ($attributes as $attribute) {
-            $groupedAttributes[$attribute['group_id']][] = $attribute;
-        }
-
         $combinations = [];
-        $this->generateCombinations($groupedAttributes, [], 0, $combinations);
-        $this->generateVariants($combinations, $product);
+        $this->variantGeneratorService->generateCombinations($attributes, [], 0, $combinations);
 
-        $data = [];
+        foreach($combinations as $attributeIds) {
+            $this->messageBus->dispatch(new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()->getId()));
+        }
 
         return $this->json(
             [
                 'success' => true,
-                'data' => $data
+                'message' => $this->translator->trans('coreshop.variant_generator.generate_in_background', [], 'admin')
             ]
         );
     }
-
-    protected function generateVariants(array $combinations, ProductVariantAwareInterface $product): array
-    {
-        $variants = [];
-        foreach($combinations as $combinationAttribute) {
-            $attributes = array_map(static function($combination) {
-                return DataObject::getById($combination['id']);
-            }, $combinationAttribute);
-
-            // TODO: search variant by attributes
-            $variants = DataObject\CoreShopProduct::getByAttributes(array_map(static function($attribute) {
-
-            }, $attributes), 1);
-
-
-            // TODO
-            //$variants = $product->getChildren([DataObject::OBJECT_TYPE_VARIANT]);
-            //$variants->addConditionParam('attributes')
-            $variant = null;
-
-            if(!$variant instanceof ProductVariantAwareInterface) {
-                $class = get_class($product);
-                /**
-                 * @var ProductVariantAwareInterface $variant
-                 */
-                $variant = new $class();
-            }
-
-            $key = implode(' ', array_map(static function(AttributeInterface $attribute) {
-                return $attribute->getKey();
-            }, $attributes));
-
-            foreach(Tool::getValidLanguages() as $language) {
-                $name = implode(' ', array_map(static function(AttributeInterface $attribute) {
-                    return $attribute->getName();
-                }, $attributes));
-
-                $variant->setName(sprintf('%s %s', $product->getName(), $name), $language);
-            }
-
-            $variant->setKey($key);
-            $variant->setParent($product);
-            $variant->setPublished(false);
-            $variant->setType(DataObject::OBJECT_TYPE_VARIANT);
-            $variant->setAttributes($attributes);
-            $variant->save();
-            $variants[] = $variant;
-        }
-
-        return $variants;
-    }
-
-    private function generateCombinations($groupedAttributes, $currentCombination, $groupIndex, &$combinations): void
-    {
-        if ($groupIndex >= count($groupedAttributes)) {
-            // Base case: reached the end of groups, add the combination to the result
-            $combinations[] = $currentCombination;
-            return;
-        }
-
-        $currentGroup = array_values($groupedAttributes)[$groupIndex];
-
-        foreach ($currentGroup as $attribute) {
-            // Include the current attribute in the combination
-            $currentCombination[] = $attribute;
-
-            // Recur to the next group
-            $this->generateCombinations($groupedAttributes, $currentCombination, $groupIndex + 1, $combinations);
-
-            // Backtrack: remove the current attribute from the combination
-            array_pop($currentCombination);
-        }
-    }
-
 }

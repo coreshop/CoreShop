@@ -15,5 +15,5 @@ coreshop:
 
     variant_generator:
         generate: "Generate variants"
-        generate_in_background: "Variants are generated in background"
+        generate_in_background: "Variants will be generated in background"
 

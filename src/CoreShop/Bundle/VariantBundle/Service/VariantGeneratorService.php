@@ -64,7 +64,7 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
                 return $attribute instanceof AttributeInterface ? $attribute : null;
             }, $attributeIds));
 
-            $key = implode(' ', array_map(static function(AttributeInterface $attribute) {
+            $key = implode('-', array_map(static function(AttributeInterface $attribute) {
                 return $attribute->getKey();
             }, $attributes));
 

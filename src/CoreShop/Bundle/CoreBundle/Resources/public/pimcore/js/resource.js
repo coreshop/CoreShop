@@ -190,203 +190,142 @@ coreshop.core.resource = Class.create(coreshop.resource, {
                 }.bind(this, tab)
             });
 
-            const variantHandler = () => {
-                const store = Ext.create('Ext.data.TreeStore', {
-                    proxy: {
-                        type: 'ajax',
-                        url: Routing.generate('coreshop_admin_variant_attributes', {id: tab.id}),
-                        reader: {
-                            type: 'json',
-                            rootProperty: 'data'
+            if(tab?.data?.data?.allowedAttributeGroups?.length) {
+                const variantHandler = () => {
+                    const store = Ext.create('Ext.data.TreeStore', {
+                        proxy: {
+                            type: 'ajax',
+                            url: Routing.generate('coreshop_admin_variant_attributes', {id: tab.id}),
+                            reader: {
+                                type: 'json',
+                                rootProperty: 'data'
+                            },
                         },
-                    },
-                    sorters: [{
-                        property: 'sorting',
-                        direction: 'ASC'
-                    }]
-                });
+                        sorters: [{
+                            property: 'sorting',
+                            direction: 'ASC'
+                        }]
+                    });
 
-                store.on('load', (store, records, successful, operation, eOpts) => {
-                    if(!store) {
-                        console.error('no data found');
-                    }
-                });
+                    store.on('load', (store, records, successful, operation, eOpts) => {
+                        if(!store) {
+                            console.error('no data found');
+                        }
+                    });
 
-                const tree = Ext.create('Ext.tree.Panel', {
-                    hideHeaders: true,
-                    rootVisible: false,
-                    store: store,
-                    layout: 'fit',
-                });
+                    const applyButton = Ext.create('Ext.Button', {
+                        text: t("apply"),
+                        iconCls: "pimcore_icon_accept",
+                        disabled: true,
+                        handler: function() {
+                            const groupedAttributes = (tree.getView().getChecked()).reduce((acc, obj) => {
+                                const groupId = obj.data.group_id;
+                                if (!acc[groupId]) {
+                                    acc[groupId] = [];
+                                }
+                                acc[groupId].push(obj.data.id);
+                                return acc;
+                            }, {});
 
-                const panel = new Ext.Panel({
-                    layout: 'fit',
-                    header: false,
-                    bodyStyle: "padding:10px",
-                    border: false,
-                    buttons: [
-                        {
-                            text: t("apply"),
-                            iconCls: "pimcore_icon_accept",
-                            handler: function() {
-                                const groupedAttributes = (tree.getView().getChecked()).reduce((acc, obj) => {
-                                    const groupId = obj.data.group_id;
-                                    if (!acc[groupId]) {
-                                        acc[groupId] = [];
+                            Ext.Ajax.request({
+                                url: Routing.generate('coreshop_admin_variant_generator'),
+                                jsonData: { id: tab.id, attributes: groupedAttributes },
+                                method: 'POST',
+                                success: function (response) {
+                                    var res = Ext.decode(response.responseText);
+                                    if (res.success === true) {
+                                        Ext.Msg.alert(t('success'), res.message);
+                                        window.destroy();
+                                    } else {
+                                        Ext.Msg.alert(t('error'), res.message);
                                     }
-                                    acc[groupId].push(obj.data.id);
-                                    return acc;
-                                }, {});
+                                }.bind(this)
+                            });
+                        }
+                    })
 
-                                Ext.Ajax.request({
-                                    url: Routing.generate('coreshop_admin_variant_generator'),
-                                    jsonData: { id: tab.id, attributes: groupedAttributes },
-                                    method: 'POST',
-                                    success: function (response) {
-                                        var res = Ext.decode(response.responseText);
-                                        if (res.success === true) {
-                                            Ext.Msg.alert(t('success'), res.message);
-                                            window.destroy();
-                                        } else {
-                                            Ext.Msg.alert(t('error'), res.message);
+                    const tree = Ext.create('Ext.tree.Panel', {
+                        hideHeaders: true,
+                        rootVisible: false,
+                        store: store,
+                        layout: 'fit',
+                        listeners: {
+                            checkchange: function () {
+                                const rootNode = tree.getRootNode();
+                                let allParentsHaveSelection = true;
+
+                                rootNode.eachChild(function (parentNode) {
+                                    var hasCheckedLeaf = false;
+
+                                    parentNode.eachChild(function (childNode) {
+                                        if (childNode.get('checked')) {
+                                            hasCheckedLeaf = true;
+                                            return false;
                                         }
-                                    }.bind(this)
+                                    });
+
+                                    if (!hasCheckedLeaf) {
+                                        allParentsHaveSelection = false;
+                                        return false;
+                                    }
                                 });
-                            }
-                        },
-                        {
-                            text: t("close"),
-                            iconCls: "pimcore_icon_cancel",
-                            handler: function() {
-                                window.destroy();
+
+                                if (allParentsHaveSelection) {
+                                    applyButton.enable();
+                                    //Ext.Msg.alert('Success', 'At least one leaf from each parent node is selected.');
+                                } else {
+                                    applyButton.disable();
+                                    //Ext.Msg.alert('Error', 'Please select at least one leaf from each parent node.');
+                                }
                             }
                         }
-                    ],
-                    frame: false,
-                    items: [
-                        tree
-                    ],
-                });
+                    });
 
-                const window = new Ext.window.Window({
-                    closeAction: 'close',
-                    height: 600,
-                    width: 400,
-                    layout: 'fit',
-                    items: [
-                        panel
-                    ],
-                    modal: false,
-                    plain: true,
-                    title: t('coreshop.variant_generator.generate'),
-                });
-
-                window.show();
-            };
-
-            productMoreButtons.push({
-                text: t('coreshop.variant_generator.generate'),
-                scale: 'medium',
-                handler: variantHandler.bind(this, tab)
-            });
-
-            const variantHandler = () => {
-                const store = Ext.create('Ext.data.TreeStore', {
-                    proxy: {
-                        type: 'ajax',
-                        url: Routing.generate('coreshop_admin_variant_attributes', {id: tab.id}),
-                        reader: {
-                            type: 'json',
-                            rootProperty: 'data'
-                        },
-                    },
-                    sorters: [{
-                        property: 'sorting',
-                        direction: 'ASC'
-                    }]
-                });
-
-                store.on('load', (store, records, successful, operation, eOpts) => {
-                    // TODO
-                    if(!store) {
-                        console.error('no data found');
-                    }
-                });
-
-                const tree = Ext.create('Ext.tree.Panel', {
-                    hideHeaders: true,
-                    rootVisible: false,
-                    store: store,
-                });
-
-                const panel = new Ext.Panel({
-                    autoscroll: true,
-                    header: false,
-                    bodyStyle: "padding:10px",
-                    border: false,
-                    buttons: [
-                        {
-                            text: t("apply"),
-                            iconCls: "pimcore_icon_accept",
-                            handler: function() {
-                                const checked = (tree.getView().getChecked()).map((checked) => {
-                                    return {
-                                        id: checked.data.id,
-                                        group_id: checked.data.group_id,
-                                    };
-                                })
-
-                                Ext.Ajax.request({
-                                    url: Routing.generate('coreshop_admin_variant_generator', { id: tab.id, attributes: checked }),
-                                    method: 'GET',
-                                    success: function (response) {
-                                        var res = Ext.decode(response.responseText);
-                                        if (res.success === true) {
-                                            //this.checkStatus(res);
-                                        } else {
-                                            Ext.Msg.alert(t('error'), res.message);
-                                        }
-                                    }.bind(this)
-                                });
+                    const panel = new Ext.Panel({
+                        layout: 'fit',
+                        header: false,
+                        bodyStyle: "padding:10px",
+                        border: false,
+                        buttons: [
+                            applyButton,
+                            {
+                                text: t("close"),
+                                iconCls: "pimcore_icon_cancel",
+                                handler: function() {
+                                    window.destroy();
+                                }
                             }
-                        },
-                        {
-                            text: t("close"),
-                            iconCls: "pimcore_icon_cancel",
-                            handler: function() {
-                                window.destroy();
-                            }
-                        }
-                    ],
-                    frame: false,
-                    items: [
-                        tree
-                    ],
+                        ],
+                        frame: false,
+                        items: [
+                            tree
+                        ],
+                    });
+
+                    const window = new Ext.window.Window({
+                        closeAction: 'close',
+                        height: 400,
+                        width: 600,
+                        layout: 'fit',
+                        items: [
+                            panel
+                        ],
+                        modal: false,
+                        plain: true,
+                        title: t('coreshop.variant_generator.generate'),
+                    });
+
+                    window.show();
+                };
+
+                productMoreButtons.push({
+                    text: t('coreshop.variant_generator.generate'),
+                    scale: 'medium',
+                    iconCls: 'pimcore_icon_variant',
+                    handler: variantHandler.bind(this, tab)
                 });
 
-                const window = new Ext.window.Window({
-                    autoscroll: true,
-                    closeAction: 'close',
-                    height: 400,
-                    items: [
-                        panel
-                    ],
-                    layout: 'fit',
-                    modal: false,
-                    plain: true,
-                    title: t('coreshop.variant_generator.generate'),
-                    width: 560,
-                });
-
-                window.show();
-            };
-
-            productMoreButtons.push({
-                text: t('coreshop.variant_generator.generate'),
-                scale: 'medium',
-                //iconCls: 'coreshop_icon_product_unit',
-                handler: variantHandler.bind(this, tab)
-            });
+            }
         }
 
         if (productMoreButtons.length === 0) {

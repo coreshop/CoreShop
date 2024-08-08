@@ -52,7 +52,9 @@ services:
     CoreShop\Bundle\VariantBundle\Controller\VariantController:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         arguments:
-            - '@Symfony\Contracts\Translation\TranslatorInterface'
+            - '@CoreShop\Bundle\VariantBundle\Service\VariantGeneratorService'
+            - '@messenger.default_bus'
+            - '@translator'
         tags:
             - { name: container.service_subscriber }
             - { name: controller.service_arguments }
