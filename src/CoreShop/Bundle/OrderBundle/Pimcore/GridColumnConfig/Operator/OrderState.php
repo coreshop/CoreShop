@@ -38,6 +38,8 @@ class OrderState extends AbstractOperator
 
     public function getLabeledValue(array|ElementInterface $element): ResultContainer|\stdClass|null
     {
+        $locale = $this->context['language'];
+
         $result = new \stdClass();
         $result->label = $this->label;
         $children = $this->getChildren();
@@ -74,7 +76,7 @@ class OrderState extends AbstractOperator
                 return $result;
         }
 
-        $state = $this->workflowManager->getStateInfo($workflow, $result->value, false);
+        $state = $this->workflowManager->getStateInfo($workflow, $result->value, false, $locale);
 
         $rgb = $this->hex2rgb($state['color']);
         $opacity = $workflow === 'coreshop_order' ? '1' : '0.3';
