@@ -21,6 +21,8 @@ namespace CoreShop\Component\Product\Rule\Action;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Webmozart\Assert\Assert;
 
 class PriceActionProcessor implements ProductPriceActionProcessorInterface
@@ -33,6 +35,10 @@ class PriceActionProcessor implements ProductPriceActionProcessorInterface
 
     public function getPrice($subject, array $context, array $configuration): int
     {
+        if (isset($context['unitDefinition']) && $context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
+            throw new NoRetailPriceFoundException(__CLASS__);
+        }
+        
         Assert::keyExists($context, 'base_currency');
         Assert::isInstanceOf($context['base_currency'], CurrencyInterface::class);
 
