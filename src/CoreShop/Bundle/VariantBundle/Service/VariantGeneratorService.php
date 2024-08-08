@@ -52,6 +52,7 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
         }, $attributeIds));
         $existingVariants->addConditionParam($attributeCondition);
         $existingVariants->setLimit(1);
+        $existingVariants->setUnpublished(true);
 
         if(!$existingVariants->count()) {
             /**

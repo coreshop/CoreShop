@@ -56,7 +56,7 @@ class CreateVariantMessageHandler
                 0,
                 sprintf('Variant %s generated', $variant->getName()),
                 sprintf('Variant %s with ID %s for Product %s with ID %s has been generated', $variant->getName(),
-                    $variant->getId(), $object->getSku(), $object->getId())
+                    $variant->getId(), $object->getKey(), $object->getId())
             );
         }
     }
