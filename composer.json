@@ -115,6 +115,7 @@
     "symfony/notifier": "^6.3",
     "symfony/serializer": "^6.3",
     "symfony/twig-bundle": "^6.3",
+    "symfony/form": "^6.3",
     "webmozart/assert": "^1.10"
   },
   "require-dev": {
@@ -183,7 +184,8 @@
     "sort-packages": true,
     "allow-plugins": {
       "phpstan/extension-installer": false,
-      "symfony/runtime": true
+      "symfony/runtime": true,
+      "php-http/discovery": true
     }
   }
 }
