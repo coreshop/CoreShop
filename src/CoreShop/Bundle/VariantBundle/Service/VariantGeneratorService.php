@@ -43,6 +43,10 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
 
     public function generateVariant(array $attributeIds, ProductVariantAwareInterface $product): ?ProductVariantAwareInterface
     {
+        if (count($product->getAllowedAttributeGroups()) !== count($attributeIds)) {
+            return null;
+        }
+
         $class = get_class($product);
 
         $existingVariants = new ($class . '\Listing')();
@@ -54,7 +58,7 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
         $existingVariants->setLimit(1);
         $existingVariants->setUnpublished(true);
 
-        if(!$existingVariants->count()) {
+        if (!$existingVariants->count()) {
             /**
              * @var ProductVariantAwareInterface $variant
              */
