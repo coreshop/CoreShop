@@ -124,7 +124,10 @@ class VariantController extends AdminController
         $this->variantGeneratorService->generateCombinations($attributes, [], 0, $combinations);
 
         foreach($combinations as $attributeIds) {
-            $this->messageBus->dispatch(new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()->getId()));
+            /**
+             * @psalm-suppress InternalMethod
+             */
+            $this->messageBus->dispatch(new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()?->getId()));
         }
 
         return $this->json(

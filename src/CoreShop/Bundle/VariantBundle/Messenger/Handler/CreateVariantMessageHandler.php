@@ -50,6 +50,9 @@ class CreateVariantMessageHandler
         $variant = $this->variantGeneratorService->generateVariant($attributeIds, $object);
 
         if (null !== $variant && null !== $message->getUserId()) {
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $this->notificationService->sendToUser(
                 $message->getUserId(),
                 0,
