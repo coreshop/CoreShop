@@ -168,8 +168,6 @@
       "src/AppKernel.php"
     ]
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "extra": {
     "symfony-bin-dir": "bin",
     "symfony-var-dir": "var",
