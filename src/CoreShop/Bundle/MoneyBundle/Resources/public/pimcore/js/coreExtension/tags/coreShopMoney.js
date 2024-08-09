@@ -90,6 +90,8 @@ pimcore.object.tags.coreShopMoney = Class.create(pimcore.object.tags.abstract, {
             input.maxValue = this.fieldConfig.maxValue;
         }
 
+        input.decimalPrecision = pimcore.settings.coreshop_money.decimal_precision;
+
         this.component = new Ext.form.field.Number(input);
         return this.component;
     },
