@@ -272,10 +272,8 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
                                 if (allParentsHaveSelection) {
                                     applyButton.enable();
-                                    //Ext.Msg.alert('Success', 'At least one leaf from each parent node is selected.');
                                 } else {
                                     applyButton.disable();
-                                    //Ext.Msg.alert('Error', 'Please select at least one leaf from each parent node.');
                                 }
                             }
                         }

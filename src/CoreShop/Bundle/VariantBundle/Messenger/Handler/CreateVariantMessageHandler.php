@@ -49,7 +49,6 @@ class CreateVariantMessageHandler
 
         $variant = $this->variantGeneratorService->generateVariant($attributeIds, $object);
 
-        // TODO: check if needed, because of too many notifications for massive variant generation
         if (null !== $variant && null !== $message->getUserId()) {
             $this->notificationService->sendToUser(
                 $message->getUserId(),
