@@ -43,13 +43,15 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
 
     public function generateVariant(array $attributeIds, ProductVariantAwareInterface $product): ?ProductVariantAwareInterface
     {
+        if(!$product instanceof DataObject\Concrete) {
+            return null;
+        }
+
         if (count($product->getAllowedAttributeGroups()) !== count($attributeIds)) {
             return null;
         }
 
-        $class = get_class($product);
-
-        $existingVariants = new ($class . '\Listing')();
+        $existingVariants = $product::getList();
         $existingVariants->setCondition('path LIKE \''.$product->getFullPath().'/%\'');
         $attributeCondition = implode(' AND ', array_map(static function($id) {
             return 'attributes LIKE "%object|' . $id . '%"';
@@ -58,40 +60,41 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
         $existingVariants->setLimit(1);
         $existingVariants->setUnpublished(true);
 
-        if (!$existingVariants->count()) {
-            /**
-             * @var ProductVariantAwareInterface $variant
-             */
-            $variant = new $class();
-
-            $attributes = array_filter(array_map(static function($attributeId) {
-                $attribute = DataObject::getById($attributeId);
-                return $attribute instanceof AttributeInterface ? $attribute : null;
-            }, $attributeIds));
-
-            $key = implode(' - ', array_map(static function(AttributeInterface $attribute) {
-                return $attribute->getKey();
-            }, $attributes));
-
-            foreach(Tool::getValidLanguages() as $language) {
-                $name = implode(' ', array_map(static function(AttributeInterface $attribute) use ($language) {
-                    return $attribute->getName($language);
-                }, $attributes));
-
-                $variant->setName(sprintf('%s %s', $product->getName($language), $name), $language);
-            }
-
-            $variant->setKey($key);
-            $variant->setParent($product);
-            $variant->setPublished(false);
-            $variant->setType(AbstractObject::OBJECT_TYPE_VARIANT);
-            $variant->setAttributes($attributes);
-            $variant->save();
-            
-            return $variant;
+        // there is already a variant with the given attributes
+        if ($existingVariants->count()) {
+            return null;
         }
 
-        return null;
+        /**
+         * @var ProductVariantAwareInterface $variant
+         */
+        $variant = new ($product::class)();
+
+        $attributes = array_filter(array_map(static function($attributeId) {
+            $attribute = DataObject::getById($attributeId);
+            return $attribute instanceof AttributeInterface ? $attribute : null;
+        }, $attributeIds));
+
+        $key = implode(' - ', array_map(static function(AttributeInterface $attribute) {
+            return $attribute->getKey();
+        }, $attributes));
+
+        foreach(Tool::getValidLanguages() as $language) {
+            $name = implode(' ', array_map(static function(AttributeInterface $attribute) use ($language) {
+                return $attribute->getName($language);
+            }, $attributes));
+
+            $variant->setName(sprintf('%s %s', $product->getName($language), $name), $language);
+        }
+
+        $variant->setKey($key);
+        $variant->setParent($product);
+        $variant->setPublished(false);
+        $variant->setType(AbstractObject::OBJECT_TYPE_VARIANT);
+        $variant->setAttributes($attributes);
+        $variant->save();
+
+        return $variant;
     }
 
     public function generateCombinations(array $groupedAttributes, array $currentCombination, int $groupIndex, array &$combinations): void
