@@ -23,9 +23,7 @@ use CoreShop\Bundle\VariantBundle\Service\VariantGeneratorServiceInterface;
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Notification\Service\NotificationService;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class CreateVariantMessageHandler
 {
     public function __construct(

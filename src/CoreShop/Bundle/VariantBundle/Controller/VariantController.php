@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\VariantBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
-use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\VariantBundle\Messenger\CreateVariantMessage;
 use CoreShop\Bundle\VariantBundle\Service\VariantGeneratorService;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
@@ -27,7 +26,6 @@ use CoreShop\Component\Variant\Model\AttributeInterface;
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\AbstractObject;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -38,29 +36,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class VariantController extends AdminController
 {
-    public function __construct(
-        \Psr\Container\ContainerInterface $container,
-        protected ViewHandlerInterface $viewHandler,
-        protected ParameterBagInterface $parameterBag,
-        protected VariantGeneratorService $variantGeneratorService,
-        protected MessageBusInterface $messageBus,
-        protected TranslatorInterface $translator,
-    ) {
-
-        parent::__construct($container, $viewHandler, $parameterBag);
-    }
-
     public function getAttributesAction(Request $request)
     {
         $id = $this->getParameterFromRequest($request, 'id');
 
-        if(!$id) {
+        if (!$id) {
             throw new \InvalidArgumentException('no product id given');
         }
 
         $product = DataObject::getById($id);
 
-        if(!$product instanceof ProductVariantAwareInterface) {
+        if (!$product instanceof ProductVariantAwareInterface) {
             throw new NotFoundHttpException('no product found');
         }
 
@@ -70,13 +56,13 @@ class VariantController extends AdminController
 
         $attributeGroups = $product->getAllowedAttributeGroups();
 
-        $data = array_map(static function(AttributeGroupInterface $group) {
+        $data = array_map(static function (AttributeGroupInterface $group) {
             return [
                 'text' => sprintf('%s (ID: %s)', $group->getKey(), $group->getId()),
                 'sorting' => $group->getSorting(),
                 'leaf' => false,
                 'iconCls' => 'pimcore_icon_object',
-                'data' => array_map(static function(AttributeInterface $attribute) use ($group) {
+                'data' => array_map(static function (AttributeInterface $attribute) use ($group) {
                     return [
                         'text' => sprintf('%s (ID: %s)', $attribute->getKey(), $attribute->getId()),
                         'id' => $attribute->getId(),
@@ -86,33 +72,38 @@ class VariantController extends AdminController
                         'checked' => false,
                         'iconCls' => 'pimcore_icon_object',
                     ];
-                }, $group->getAttributes())
+                }, $group->getAttributes()),
             ];
         }, $attributeGroups);
 
         return $this->json(
             [
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ]
         );
     }
-    public function generateVariantsAction(Request $request)
-    {
+
+    public function generateVariantsAction(
+        Request $request,
+        VariantGeneratorService $variantGeneratorService,
+        MessageBusInterface $messageBus,
+        TranslatorInterface $translator,
+    ) {
         $id = $this->getParameterFromRequest($request, 'id');
         $attributes = $this->getParameterFromRequest($request, 'attributes');
 
-        if(!$id) {
+        if (!$id) {
             throw new \InvalidArgumentException('no product id given');
         }
 
-        if(!$attributes) {
+        if (!$attributes) {
             throw new \InvalidArgumentException('no attributes given');
         }
 
         $product = DataObject::getById($id);
 
-        if(!$product instanceof ProductVariantAwareInterface) {
+        if (!$product instanceof ProductVariantAwareInterface) {
             throw new NotFoundHttpException('no product found');
         }
 
@@ -121,19 +112,21 @@ class VariantController extends AdminController
         }
 
         $combinations = [];
-        $this->variantGeneratorService->generateCombinations($attributes, [], 0, $combinations);
+        $variantGeneratorService->generateCombinations($attributes, [], 0, $combinations);
 
-        foreach($combinations as $attributeIds) {
+        foreach ($combinations as $attributeIds) {
             /**
              * @psalm-suppress InternalMethod
              */
-            $this->messageBus->dispatch(new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()?->getId()));
+            $messageBus->dispatch(
+                new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()?->getId())
+            );
         }
 
         return $this->json(
             [
                 'success' => true,
-                'message' => $this->translator->trans('coreshop.variant_generator.generate_in_background', [], 'admin')
+                'message' => $translator->trans('coreshop.variant_generator.generate_in_background', [], 'admin'),
             ]
         );
     }
