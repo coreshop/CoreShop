@@ -24,6 +24,7 @@ use CoreShop\Component\Variant\Model\AttributeColorInterface;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
 use CoreShop\Component\Variant\Model\AttributeValueInterface;
+use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -58,6 +59,7 @@ final class Configuration implements ConfigurationInterface
                 ->children()
                     ->scalarNode('attribute_group')->defaultValue(AttributeGroupInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('attribute')->defaultValue(AttributeInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('variant_aware')->defaultValue(ProductVariantAwareInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end()
