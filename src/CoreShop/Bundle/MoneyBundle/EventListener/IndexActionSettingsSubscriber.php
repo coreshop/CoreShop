@@ -26,9 +26,8 @@ class IndexActionSettingsSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private int $decimalPrecision,
-        private int $decimalFactor
-    )
-    {
+        private int $decimalFactor,
+    ) {
     }
 
     public static function getSubscribedEvents()

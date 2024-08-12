@@ -25,8 +25,9 @@ class VariantAvailabilityEvent extends Event
 {
     private bool $conditionMet = true;
 
-    public function __construct(private ProductVariantAwareInterface $product)
-    {
+    public function __construct(
+        private ProductVariantAwareInterface $product,
+    ) {
     }
 
     public function getProduct(): ProductVariantAwareInterface
