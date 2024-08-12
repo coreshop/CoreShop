@@ -38,7 +38,7 @@ class PriceActionProcessor implements ProductPriceActionProcessorInterface
         if (isset($context['unitDefinition']) && $context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
-        
+
         Assert::keyExists($context, 'base_currency');
         Assert::isInstanceOf($context['base_currency'], CurrencyInterface::class);
 

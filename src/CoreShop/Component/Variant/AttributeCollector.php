@@ -31,9 +31,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AttributeCollector implements AttributeCollectorInterface
 {
-
-    public function __construct(private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     /**
@@ -57,10 +57,9 @@ class AttributeCollector implements AttributeCollectorInterface
     {
         $resolvedGroups = [];
         foreach ($products as $product) {
-
             $event = $this->eventDispatcher->dispatch(new VariantAvailabilityEvent($product), 'coreshop.attribute.collector.preCondition');
 
-            if (!$event->isConditionMet()){
+            if (!$event->isConditionMet()) {
                 continue;
             }
 
@@ -85,7 +84,6 @@ class AttributeCollector implements AttributeCollectorInterface
                     $group = new ResolvedAttributeGroup();
                     $group->setGroup($attributeGroup);
                     $group->setType(get_class($attribute));
-
 
                     $resolvedGroups[$attributeGroup->getId()] = $group;
                 } else {
