@@ -1,3 +1,8 @@
+# 3.2.12
+* [MoneyBundle] money and moneyCurrency type should respect money_decimal_precision by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2671
+* [VariantBundle] Add possibility to exclude Variants from AttributeCollector via AttributePreconditionEvent by @almshadi in https://github.com/coreshop/CoreShop/pull/2674
+* [Product] don't allow Price and DiscountPrice Rule for unit prices by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2678
+
 # 3.2.11
 * [Order] fixes for backend order creation by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2652
 * [Messenger] fix serialization of failed_at by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2658
