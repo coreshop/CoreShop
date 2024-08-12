@@ -72,3 +72,15 @@ include these fields:
 
 The Variant Bundle significantly enhances the flexibility of product management in CoreShop, allowing for detailed and
 diverse product variant configurations.
+
+## Variant Generator
+The Variant Generator is a tool that automatically generates variants for a VariantAware Class based on the attribute groups 
+defined in the Data Object. The Generator is available in the Pimcore backend at the Toolbar on your VariantAware Class. 
+
+### Installation
+
+Variant Generator uses Symfony Messenger for async processing, you can run it with the following command:
+
+```yaml
+bin/console messenger:consume coreshop_variant --time-limit=300
+```

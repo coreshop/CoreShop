@@ -78,7 +78,7 @@ CoreShop also uses Symfony Messenger for async tasks like sending E-Mails or Pro
 Please run these 2 transports to process the data
 
 ```yaml
-bin/console messenger:consume coreshop_notification coreshop_index --time-limit=300
+bin/console messenger:consume coreshop_notification coreshop_index coreshop_variant --time-limit=300
 ```
 
 ## Payment
