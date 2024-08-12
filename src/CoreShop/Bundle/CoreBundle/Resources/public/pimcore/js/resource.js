@@ -14,7 +14,7 @@ pimcore.registerNS('coreshop.core.resource');
 coreshop.core.resource = Class.create(coreshop.resource, {
     initialize: function () {
         coreshop.broker.addListener('pimcore.ready', this.pimcoreReady, this);
-        coreshop.broker.addListener('pimcore.postOpenObject', this.postOpenObject, this);
+        coreshop.broker.addListener('pimcore.postOpenObject', this.postOpenObject, this, false, -10);
         coreshop.broker.fireEvent('resource.register', 'coreshop.core', this);
     },
 

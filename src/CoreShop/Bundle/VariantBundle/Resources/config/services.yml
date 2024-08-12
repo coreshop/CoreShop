@@ -50,3 +50,23 @@ services:
         arguments:
             - '@CoreShop\Bundle\VariantBundle\Pimcore\VariantLinkGenerator.inner'
             - '%coreshop.variant.redirect_to_main_variant%'
+
+    CoreShop\Bundle\VariantBundle\Controller\VariantController:
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
+        arguments:
+            - '@CoreShop\Bundle\VariantBundle\Service\VariantGeneratorService'
+            - '@messenger.default_bus'
+            - '@translator'
+        tags:
+            - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
+
+    CoreShop\Bundle\VariantBundle\Service\VariantGeneratorServiceInterface: '@CoreShop\Bundle\VariantBundle\Service\VariantGeneratorService'
+    CoreShop\Bundle\VariantBundle\Service\VariantGeneratorService: ~
+
+    CoreShop\Bundle\VariantBundle\Messenger\Handler\CreateVariantMessageHandler:
+        arguments:
+            - '@CoreShop\Bundle\VariantBundle\Service\VariantGeneratorServiceInterface'
+            - '@Pimcore\Model\Notification\Service\NotificationService'
+        tags:
+            - { name: messenger.message_handler }

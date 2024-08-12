@@ -33,4 +33,6 @@ interface AttributeGroupInterface extends PimcoreModelInterface
     public function getShowInList(): ?bool;
 
     public function setShowInList(?bool $showInList): static;
+
+    public function getAttributes(): array;
 }
