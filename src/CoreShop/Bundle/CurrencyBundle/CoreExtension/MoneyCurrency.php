@@ -227,6 +227,22 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
         return null;
     }
 
+    public function getDataForGrid($data, $object = null, $params = [])
+    {
+        if (!$data instanceof Money) {
+            return null;
+        }
+
+        return [
+            'value' => $data->getValue(),
+            'currency' => [
+                'id' => $data->getCurrency()?->getId(),
+                'name' => $data->getCurrency()?->getName(),
+                'isoCode' => $data->getCurrency()?->getIsoCode(),
+            ]
+        ];
+    }
+
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
