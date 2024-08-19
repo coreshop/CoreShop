@@ -22,4 +22,15 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class AttributeGroup extends AbstractPimcoreModel implements AttributeGroupInterface
 {
+    public function getAttributes(): array
+    {
+        $attributes = [];
+        foreach ($this->getChildren([self::OBJECT_TYPE_OBJECT]) as $object) {
+            if ($object instanceof AttributeInterface) {
+                $attributes[] = $object;
+            }
+        }
+
+        return $attributes;
+    }
 }

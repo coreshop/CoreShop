@@ -65,7 +65,7 @@
     - [IndexBundle] allow to query relations also by relation type (https://github.com/coreshop/CoreShop/pull/1156)
     - [SEOBundle] add priority to extractors (https://github.com/coreshop/CoreShop/pull/1155)
     - [QuantityPriceRules] Allow Object Deletion without removing QPR first (https://github.com/coreshop/CoreShop/issues/1160)
-    - [CoreBundle] Improve Unit Definition <=> QPR Dependency (https://github.com/coreshop/CoreShop/pull/1161)
+    - [CoreBundle] Improve Unit Definition `<=>` QPR Dependency (https://github.com/coreshop/CoreShop/pull/1161)
     - [StorageList] introduce service to resolve if cart-items are equal (https://github.com/coreshop/CoreShop/pull/1188)
     - [OrderBundle] Allow Item Data per Row in Order Overview (https://github.com/coreshop/CoreShop/pull/1193)
     - [OrderBundle] add sale-detail event (https://github.com/coreshop/CoreShop/pull/1192)

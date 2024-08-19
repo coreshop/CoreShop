@@ -117,6 +117,7 @@
     "symfony/notifier": "^6.3",
     "symfony/serializer": "^6.3",
     "symfony/twig-bundle": "^6.3",
+    "symfony/form": "^6.3",
     "webmozart/assert": "^1.10"
   },
   "require-dev": {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Variant;
 
+use CoreShop\Component\Variant\Event\VariantAvailabilityEvent;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
@@ -26,9 +27,15 @@ use CoreShop\Component\Variant\Model\Resolved\ResolvedAttributeGroup;
 use CoreShop\Component\Variant\Model\Resolved\ResolvedIndex;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AttributeCollector implements AttributeCollectorInterface
 {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+    ) {
+    }
+
     /**
      * @return ResolvedAttributeGroup[]
      */
@@ -50,6 +57,12 @@ class AttributeCollector implements AttributeCollectorInterface
     {
         $resolvedGroups = [];
         foreach ($products as $product) {
+            $event = $this->eventDispatcher->dispatch(new VariantAvailabilityEvent($product), 'coreshop.attribute.collector.preCondition');
+
+            if (!$event->isConditionMet()) {
+                continue;
+            }
+
             /**
              * @var AttributeInterface $attribute
              */

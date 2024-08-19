@@ -13,5 +13,7 @@ coreshop:
         value_color: "Color"
         attribute_group: "Attribute Groupe"
 
-
+    variant_generator:
+        generate: "Generate variants"
+        generate_in_background: "Variants will be generated in background"
 

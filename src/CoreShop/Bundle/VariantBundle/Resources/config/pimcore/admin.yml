@@ -1,0 +1,4 @@
+core_shop_variant:
+    pimcore_admin:
+        js:
+            resource: '/bundles/coreshopvariant/pimcore/js/resource.js'
