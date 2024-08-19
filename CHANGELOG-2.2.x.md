@@ -1,5 +1,3 @@
-# Within 2.2
-
 ## 2.2.14
  - Bugs: 
    - [ProductQuantityPriceRules] remove variable variables sign (https://github.com/coreshop/CoreShop/pull/1991)

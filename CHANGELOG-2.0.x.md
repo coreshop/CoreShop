@@ -1,5 +1,3 @@
-# Within V2
-
 ## 2.0.12
  - Translations:
    - New Crowdin translations (https://github.com/coreshop/CoreShop/pull/1165)

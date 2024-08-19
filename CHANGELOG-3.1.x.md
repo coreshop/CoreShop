@@ -1,5 +1,5 @@
-# 3.1.5
-* 
+## 3.1.5
+
 * [ResourceBundle] remove request handler by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2443
 * fix unit solidifier paths by @solverat in https://github.com/coreshop/CoreShop/pull/2446
 * fix nested rule condition by @solverat in https://github.com/coreshop/CoreShop/pull/2447
@@ -18,7 +18,7 @@
 * [FrontendBundle] check for isSubmitted before calling isValid by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2480
 * allow pending payments in checkout workflow by @solverat in https://github.com/coreshop/CoreShop/pull/2481
 
-# 3.1.4
+## 3.1.4
 
 * cast trackingCode as string by @solverat in https://github.com/coreshop/CoreShop/pull/2412
 * fix comment delete request by @solverat in https://github.com/coreshop/CoreShop/pull/2407
@@ -27,7 +27,7 @@
 * Bugfix listing order by by @BlackbitDevs in https://github.com/coreshop/CoreShop/pull/2370
 * [Order expiration] Use orderDate for confirmed orders, not o_creationDate by @BlackbitDevs in
 
-# 3.1.3
+## 3.1.3
 
 * [Cart] fix using right context for performance increase by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2387
 * [Core] Optimize Category recursive and Product Variants Condition Checker by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2388
@@ -35,14 +35,14 @@
 * [Cache] cache improvements - decorate Pimcore CoreCacheHandler by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2398
 * [Messenger] fix menu in standalone mode by @jdreesen in https://github.com/coreshop/CoreShop/pull/2393
 
-# 3.1.2
+## 3.1.2
 
 ## Bugs
  - [Cache] "apply CacheResourceMarshaller to doctrine_dbal adapter, add cache marshaller to MoneyCurrency (https://github.com/coreshop/CoreShop/pull/2373)
  - [Core] re-add mainObjectId and objectId (https://github.com/coreshop/CoreShop/pull/2380)
  - [Reports] fix reports to only select actual orders (https://github.com/coreshop/CoreShop/pull/2381)
 
-# 3.1.1
+## 3.1.1
 
 ## Bugs
  - [PaymentRules] fix decoration of PaymentProviderResolver (https://github.com/coreshop/CoreShop/pull/2317)
@@ -52,9 +52,9 @@
  - [VariantBundle] fix null values in ValidAttributesValidator (https://github.com/coreshop/CoreShop/pull/2348)
  - [OrderBundle] don't modify CartItem twice (https://github.com/coreshop/CoreShop/pull/2355)
 
-# 3.1.0
+## 3.1.0
 
-## BC Breaks:
+### BC Breaks:
 - core_shop_order.expiration
   ```
   core_shop_order:
@@ -83,10 +83,10 @@
                            days: 20
   ```
 
-## Bugs
+### Bugs
  - [Performance] optimization (https://github.com/coreshop/CoreShop/pull/2265)
 
-## Features
+### Features
  - [WishlistBundle] new feature: wishlist cleaner (https://github.com/coreshop/CoreShop/pull/2234, https://github.com/coreshop/CoreShop/pull/2267)
  - [OrderBundle] introduce not-combinable price rule condition (https://github.com/coreshop/CoreShop/pull/2253)
  - [ClassDefinitionPatchBundle] Introduce new Bundle to allow patching Pimcore Class Definitions (https://github.com/coreshop/CoreShop/pull/2279)
