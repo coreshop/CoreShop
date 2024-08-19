@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
+use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
@@ -217,6 +218,22 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
         }
 
         return null;
+    }
+
+    public function getDataForGrid(?Money $data, Concrete $object = null, array $params = []): ?array
+    {
+        if (null === $data) {
+            return null;
+        }
+
+        return [
+            'value' => $data->getValue(),
+            'currency' => [
+                'id' => $data->getCurrency()?->getId(),
+                'name' => $data->getCurrency()?->getName(),
+                'isoCode' => $data->getCurrency()?->getIsoCode(),
+            ]
+        ];
     }
 
     public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
