@@ -9,6 +9,7 @@ core_shop_storage_list:
                 enable_default_store_based_decorator: true
             session:
                 enabled: true
+                enable_logout_subscriber: true
                 key: 'coreshop.wishlist'
             form:
                 type: CoreShop\Bundle\WishlistBundle\Form\Type\WishlistType

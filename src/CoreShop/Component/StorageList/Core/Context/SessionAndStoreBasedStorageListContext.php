@@ -30,8 +30,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class SessionAndStoreBasedStorageListContext implements StorageListContextInterface
 {
-    private ?StorageListInterface $storageList = null;
-
     public function __construct(
         private RequestStack $requestStack,
         private string $sessionKeyName,
@@ -42,10 +40,6 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
 
     public function getStorageList(): StorageListInterface
     {
-        if (null !== $this->storageList) {
-            return $this->storageList;
-        }
-
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
@@ -88,8 +82,6 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
 
             throw new StorageListNotFoundException('CoreShop was not able to find the List in session');
         }
-
-        $this->storageList = $storageList;
 
         return $storageList;
     }

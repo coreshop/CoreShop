@@ -108,6 +108,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     ->booleanNode('enabled')->defaultFalse()->end()
+                                    ->booleanNode('enable_logout_subscriber')->defaultFalse()->end()
                                     ->scalarNode('key')->defaultValue('storage_list')->end()
                                 ->end()
                             ->end()
