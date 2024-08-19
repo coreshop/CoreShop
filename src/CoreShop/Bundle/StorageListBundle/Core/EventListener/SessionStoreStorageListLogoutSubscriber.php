@@ -16,14 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\StorageListBundle\EventListener;
+namespace CoreShop\Bundle\StorageListBundle\Core\EventListener;
 
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
-final class LogoutSubscriber
+final class SessionStoreStorageListLogoutSubscriber
 {
     public function __construct(
         private StorageListContextInterface $context,

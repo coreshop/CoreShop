@@ -19,10 +19,10 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\StorageListBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\StorageListBundle\Core\EventListener\SessionStoreStorageListLogoutSubscriber;
 use CoreShop\Bundle\StorageListBundle\Core\EventListener\SessionStoreStorageListSubscriber;
 use CoreShop\Bundle\StorageListBundle\Core\EventListener\StorageListBlamerListener;
 use CoreShop\Bundle\StorageListBundle\EventListener\CacheListener;
-use CoreShop\Bundle\StorageListBundle\EventListener\LogoutSubscriber;
 use CoreShop\Bundle\StorageListBundle\EventListener\SessionSubscriber;
 use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
@@ -217,7 +217,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                         $container->setDefinition('coreshop.storage_list.session_and_store_subscriber.' . $name, $sessionAndStoreSubscriber);
 
                         if ($list['session']['enable_logout_subscriber']) {
-                            $logoutSubscriber = new Definition(LogoutSubscriber::class);
+                            $logoutSubscriber = new Definition(SessionStoreStorageListLogoutSubscriber::class);
                             $logoutSubscriber->setArgument('$context', new Reference($contextCompositeServiceName));
                             $logoutSubscriber->setArgument('$sessionKeyName', $list['session']['key']);
                             $logoutSubscriber->addTag(
