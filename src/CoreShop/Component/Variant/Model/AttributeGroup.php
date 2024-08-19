@@ -25,8 +25,8 @@ abstract class AttributeGroup extends AbstractPimcoreModel implements AttributeG
     public function getAttributes(): array
     {
         $attributes = [];
-        foreach($this->getChildren([self::OBJECT_TYPE_OBJECT]) as $object) {
-            if($object instanceof AttributeInterface) {
+        foreach ($this->getChildren([self::OBJECT_TYPE_OBJECT]) as $object) {
+            if ($object instanceof AttributeInterface) {
                 $attributes[] = $object;
             }
         }

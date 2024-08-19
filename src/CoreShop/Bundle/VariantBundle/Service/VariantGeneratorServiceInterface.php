@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\VariantBundle\Service;
 
-
-
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 
 interface VariantGeneratorServiceInterface
