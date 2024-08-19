@@ -18,14 +18,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\VariantBundle\Messenger;
 
-
 class CreateVariantMessage
 {
     public function __construct(
         private int $objectId,
         private array $attributeIds,
-        private ?int $userId = null
-    ) {}
+        private ?int $userId = null,
+    ) {
+    }
 
     public function getObjectId(): int
     {
@@ -56,5 +56,4 @@ class CreateVariantMessage
     {
         $this->userId = $userId;
     }
-
 }

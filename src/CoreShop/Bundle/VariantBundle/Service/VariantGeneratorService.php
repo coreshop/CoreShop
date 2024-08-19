@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\VariantBundle\Service;
 
-
 use CoreShop\Component\Variant\Model\AttributeInterface;
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 use Pimcore\Model\DataObject;
@@ -30,10 +29,10 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
     public function generateVariants(array $combinations, ProductVariantAwareInterface $product): array
     {
         $variants = [];
-        foreach($combinations as $attributeIds) {
+        foreach ($combinations as $attributeIds) {
             $variant = $this->generateVariant($attributeIds, $product);
 
-            if($variant) {
+            if ($variant) {
                 $variants[] = $variant;
             }
         }
@@ -43,7 +42,7 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
 
     public function generateVariant(array $attributeIds, ProductVariantAwareInterface $product): ?ProductVariantAwareInterface
     {
-        if(!$product instanceof DataObject\Concrete) {
+        if (!$product instanceof DataObject\Concrete) {
             return null;
         }
 
@@ -52,8 +51,8 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
         }
 
         $existingVariants = $product::getList();
-        $existingVariants->setCondition('path LIKE \''.$product->getFullPath().'/%\'');
-        $attributeCondition = implode(' AND ', array_map(static function($id) {
+        $existingVariants->setCondition('path LIKE \'' . $product->getFullPath() . '/%\'');
+        $attributeCondition = implode(' AND ', array_map(static function ($id) {
             return 'attributes LIKE "%object|' . $id . '%"';
         }, $attributeIds));
         $existingVariants->addConditionParam($attributeCondition);
@@ -70,17 +69,18 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
          */
         $variant = new ($product::class)();
 
-        $attributes = array_filter(array_map(static function($attributeId) {
+        $attributes = array_filter(array_map(static function ($attributeId) {
             $attribute = DataObject::getById($attributeId);
+
             return $attribute instanceof AttributeInterface ? $attribute : null;
         }, $attributeIds));
 
-        $key = implode(' - ', array_map(static function(AttributeInterface $attribute) {
+        $key = implode(' - ', array_map(static function (AttributeInterface $attribute) {
             return $attribute->getKey();
         }, $attributes));
 
-        foreach(Tool::getValidLanguages() as $language) {
-            $name = implode(' ', array_map(static function(AttributeInterface $attribute) use ($language) {
+        foreach (Tool::getValidLanguages() as $language) {
+            $name = implode(' ', array_map(static function (AttributeInterface $attribute) use ($language) {
                 return $attribute->getName($language);
             }, $attributes));
 
@@ -101,6 +101,7 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
     {
         if ($groupIndex >= count($groupedAttributes)) {
             $combinations[] = $currentCombination;
+
             return;
         }
 

@@ -28,7 +28,7 @@ class CreateVariantMessageHandler
 {
     public function __construct(
         protected VariantGeneratorServiceInterface $variantGeneratorService,
-        protected NotificationService $notificationService
+        protected NotificationService $notificationService,
     ) {
     }
 
@@ -55,8 +55,13 @@ class CreateVariantMessageHandler
                 $message->getUserId(),
                 0,
                 sprintf('Variant %s generated', $variant->getName()),
-                sprintf('Variant %s with ID %s for Product %s with ID %s has been generated', $variant->getName(),
-                    $variant->getId(), $object->getKey(), $object->getId())
+                sprintf(
+                    'Variant %s with ID %s for Product %s with ID %s has been generated',
+                    $variant->getName(),
+                    $variant->getId(),
+                    $object->getKey(),
+                    $object->getId(),
+                ),
             );
         }
     }

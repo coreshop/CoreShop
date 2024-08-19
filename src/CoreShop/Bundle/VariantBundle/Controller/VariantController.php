@@ -80,7 +80,7 @@ class VariantController extends AdminController
             [
                 'success' => true,
                 'data' => $data,
-            ]
+            ],
         );
     }
 
@@ -119,7 +119,7 @@ class VariantController extends AdminController
              * @psalm-suppress InternalMethod
              */
             $messageBus->dispatch(
-                new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()?->getId())
+                new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()?->getId()),
             );
         }
 
@@ -127,7 +127,7 @@ class VariantController extends AdminController
             [
                 'success' => true,
                 'message' => $translator->trans('coreshop.variant_generator.generate_in_background', [], 'admin'),
-            ]
+            ],
         );
     }
 }
