@@ -17,7 +17,7 @@
  - [ResourceBundle] fix Pimcore 10.6 compatibility to find Admin User (https://github.com/coreshop/CoreShop/pull/2293)
  - [OrderBundle] improve unlinking files in pdf generation (https://github.com/coreshop/CoreShop/pull/2294)
  - [SerializedData] show data as string in version preview (https://github.com/coreshop/CoreShop/pull/2295)
- - [Docs] Maintenance mode <-> Maintenance job (https://github.com/coreshop/CoreShop/pull/2299)
+ - [Docs] Maintenance mode `<->` Maintenance job (https://github.com/coreshop/CoreShop/pull/2299)
  - [MessengerBundle] fix for standalone installation (https://github.com/coreshop/CoreShop/pull/2298)
 
 # 3.0.5
