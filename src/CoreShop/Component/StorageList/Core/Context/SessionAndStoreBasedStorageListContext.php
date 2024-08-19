@@ -28,8 +28,6 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class SessionAndStoreBasedStorageListContext implements StorageListContextInterface
 {
-    private ?StorageListInterface $storageList = null;
-
     public function __construct(
         private StorageListStorageInterface $storageListStorage,
         private StoreContextInterface $storeContext,
@@ -38,10 +36,6 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
 
     public function getStorageList(): StorageListInterface
     {
-        if (null !== $this->storageList && !$this->storageListStorage->gotReset()) {
-            return $this->storageList;
-        }
-
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
@@ -74,8 +68,6 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
 
             throw new StorageListNotFoundException('CoreShop was not able to find the List in session');
         }
-
-        $this->storageList = $storageList;
 
         return $storageList;
     }

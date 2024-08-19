@@ -12,6 +12,7 @@ parameters:
         - '**/DataHub/*.php'
         - 'vendor/***'
         - 'Core/EventListener/SessionStoreStorageListSubscriber.php'
+        - 'Core/EventListener/SessionStoreStorageListLogoutSubscriber.php'
         - 'Core/EventListener/StorageListBlamerListener.php'
         - 'Core/Context/CustomerAndStoreBasedStorageListContext.php'
         - 'Core/Context/SessionAndStoreBasedStorageListContext.php'

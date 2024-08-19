@@ -82,6 +82,29 @@ pimcore.object.tags.coreShopMoneyCurrency = Class.create(pimcore.object.tags.abs
         return this.component;
     },
 
+    getGridColumnConfig:function (field) {
+        var renderer = function (key, value, metaData, record) {
+            this.applyPermissionStyle(key, value, metaData, record);
+
+            try {
+                if (record.data.inheritedFields && record.data.inheritedFields[key] && record.data.inheritedFields[key].inherited == true) {
+                    metaData.tdCls += " grid_value_inherited";
+                }
+            } catch (e) {
+                console.log(e);
+            }
+
+            if (!value) {
+                return '';
+            }
+
+            return Ext.util.Format.htmlEncode(coreshop.util.format.currency(value.currency.isoCode, value.value));
+
+        }.bind(this, field.key);
+
+        return {text: t(field.label), sortable:true, dataIndex:field.key, renderer:renderer,
+            editor:this.getGridColumnEditor(field)};
+    },
 
     getLayoutShow: function ()
     {

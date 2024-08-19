@@ -22,7 +22,6 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 
 class SimpleStorageListStorage implements StorageListStorageInterface
 {
-    private bool $gotReset = true;
     private array $simple = [];
 
     public function hasForContext(array $context): bool
@@ -34,18 +33,12 @@ class SimpleStorageListStorage implements StorageListStorageInterface
         return array_key_exists('coreshop.cart', $this->simple);
     }
 
-    public function gotReset(): bool
-    {
-        return $this->gotReset;
-    }
-
     public function getForContext(array $context): ?StorageListInterface
     {
         if (!isset($this->simple['coreshop.cart'])) {
             return null;
         }
 
-        $this->gotReset = false;
         if ($this->hasForContext($context)) {
             return $this->simple['coreshop.cart'];
         }
@@ -55,7 +48,6 @@ class SimpleStorageListStorage implements StorageListStorageInterface
 
     public function setForContext(array $context, StorageListInterface $storageList): void
     {
-        $this->gotReset = true;
         $this->simple['coreshop.cart'] = $storageList;
     }
 

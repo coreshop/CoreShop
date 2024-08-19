@@ -29,6 +29,4 @@ interface StorageListStorageInterface
     public function setForContext(array $context, StorageListInterface $storageList): void;
 
     public function removeForContext(array $context): void;
-
-    public function gotReset(): bool;
 }
