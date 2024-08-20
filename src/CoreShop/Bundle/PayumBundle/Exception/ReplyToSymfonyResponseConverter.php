@@ -18,12 +18,30 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PayumBundle\Exception;
 
-use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter as BaseReplyToSymfonyResponseConverter;
 use Payum\Core\Reply\ReplyInterface;
+use Symfony\Component\HttpFoundation\Response;
 
-class ReplyToSymfonyResponseConverter extends BaseReplyToSymfonyResponseConverter
+if (false) {
+    //This is just for the IDE
+    class BaseCoreShopReplayToSymfonyResponseConverter {
+        public function convert(ReplyInterface $reply): Response {}
+    }
+}
+
+
+if (class_exists('Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter')) {
+    \class_alias(\Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter::class, 'CoreShop\Bundle\PayumBundle\Exception\BaseCoreShopReplayToSymfonyResponseConverter');
+}
+else if (class_exists('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter')) {
+    \class_alias(\Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter::class, 'CoreShop\Bundle\PayumBundle\Exception\BaseCoreShopReplayToSymfonyResponseConverter');
+}
+else {
+    throw new \Exception('Cannot find Payum ReplyToSymfonyResponseConverter class');
+}
+
+class ReplyToSymfonyResponseConverter extends BaseCoreShopReplayToSymfonyResponseConverter
 {
-    public function convert(ReplyInterface $reply)
+    public function convert(ReplyInterface $reply): Response
     {
         if ($reply instanceof ReplyException && null !== $reply->getPrevious()) {
             throw $reply->getPrevious();
