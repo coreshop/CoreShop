@@ -21,6 +21,9 @@ namespace CoreShop\Bundle\PayumBundle\Exception;
 use Payum\Core\Reply\ReplyInterface;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @psalm-suppress TypeDoesNotContainType
+ */
 if (false) {
     //This is just for the IDE
     class BaseCoreShopReplayToSymfonyResponseConverter {
