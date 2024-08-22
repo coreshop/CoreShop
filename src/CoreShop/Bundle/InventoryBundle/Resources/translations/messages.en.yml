@@ -1,0 +1,6 @@
+coreshop:
+    inventory:
+        stock:
+            on_hand: 'Available Stock on Hand: %on_hand%'
+            on_hold: 'Reserved Stock: %on_hold%'
+            not_tracked: 'Stock not tracked'
