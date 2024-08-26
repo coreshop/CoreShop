@@ -26,8 +26,9 @@ use Webmozart\Assert\Assert;
 
 class StockOnHandRenderer implements DynamicTextLabelInterface
 {
-    public function __construct(private Environment $twig)
-    {
+    public function __construct(
+        private Environment $twig,
+    ) {
     }
 
     public function renderLayoutText(string $data, ?Concrete $object, array $params): string

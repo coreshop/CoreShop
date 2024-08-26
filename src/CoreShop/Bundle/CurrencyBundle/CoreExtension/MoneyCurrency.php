@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
-use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
@@ -232,7 +231,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
                 'id' => $data->getCurrency()?->getId(),
                 'name' => $data->getCurrency()?->getName(),
                 'isoCode' => $data->getCurrency()?->getIsoCode(),
-            ]
+            ],
         ];
     }
 
