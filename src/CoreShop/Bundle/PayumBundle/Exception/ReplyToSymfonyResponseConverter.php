@@ -26,21 +26,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 if (false) {
     //This is just for the IDE
-    class BaseCoreShopReplayToSymfonyResponseConverter {
-        public function convert(ReplyInterface $reply): Response {
+    class BaseCoreShopReplayToSymfonyResponseConverter
+    {
+        public function convert(ReplyInterface $reply): Response
+        {
             throw new \RuntimeException('Not implemented');
         }
     }
 }
 
-
 if (class_exists('Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter')) {
     \class_alias(\Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter::class, 'CoreShop\Bundle\PayumBundle\Exception\BaseCoreShopReplayToSymfonyResponseConverter');
-}
-elseif (class_exists('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter')) {
+} elseif (class_exists('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter')) {
     \class_alias(\Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter::class, 'CoreShop\Bundle\PayumBundle\Exception\BaseCoreShopReplayToSymfonyResponseConverter');
-}
-else {
+} else {
     throw new \RuntimeException('Cannot find Payum ReplyToSymfonyResponseConverter class');
 }
 
