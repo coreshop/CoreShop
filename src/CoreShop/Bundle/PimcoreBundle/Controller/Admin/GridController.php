@@ -45,7 +45,7 @@ class GridController extends AdminAbstractController
 
             $services[] = [
                 'id' => $id,
-                'name' => $translator->trans($service->getName(), [], 'admin'),
+                'name' => $translator->trans($service->getName(), [], 'admin', $this->getAdminUser()->getLanguage()),
             ];
         }
 
@@ -66,7 +66,7 @@ class GridController extends AdminAbstractController
 
             $services[] = [
                 'id' => $id,
-                'name' => $translator->trans($service->getName(), [], 'admin'),
+                'name' => $translator->trans($service->getName(), [], 'admin', $this->getAdminUser()->getLanguage()),
             ];
         }
 
