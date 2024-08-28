@@ -37,6 +37,11 @@ class GridController extends AdminAbstractController
         TranslatorInterface $translator,
     ): Response {
         $services = [];
+        /**
+         * @var \Pimcore\Model\User $user
+         * @psalm-suppress InternalMethod
+         */
+        $user = $this->getAdminUser();
         /** @var GridFilterInterface $service */
         foreach ($gridFilterServiceRegistry->all() as $id => $service) {
             if ($service->supports($listType) !== true) {
@@ -45,7 +50,7 @@ class GridController extends AdminAbstractController
 
             $services[] = [
                 'id' => $id,
-                'name' => $translator->trans($service->getName(), [], 'admin', $this->getAdminUser()->getLanguage()),
+                'name' => $translator->trans($service->getName(), [], 'admin', $user->getLanguage()),
             ];
         }
 
@@ -58,6 +63,11 @@ class GridController extends AdminAbstractController
         TranslatorInterface $translator,
     ): Response {
         $services = [];
+        /**
+         * @var \Pimcore\Model\User $user
+         * @psalm-suppress InternalMethod
+         */
+        $user = $this->getAdminUser();
         /** @var GridActionInterface $service */
         foreach ($gridActionServiceRegistry->all() as $id => $service) {
             if ($service->supports($listType) !== true) {
@@ -66,7 +76,7 @@ class GridController extends AdminAbstractController
 
             $services[] = [
                 'id' => $id,
-                'name' => $translator->trans($service->getName(), [], 'admin', $this->getAdminUser()->getLanguage()),
+                'name' => $translator->trans($service->getName(), [], 'admin', $user->getLanguage()),
             ];
         }
 
