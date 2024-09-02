@@ -39,6 +39,7 @@ class GridController extends AdminAbstractController
         $services = [];
         /**
          * @var \Pimcore\Model\User $user
+         *
          * @psalm-suppress InternalMethod
          */
         $user = $this->getAdminUser();
@@ -65,6 +66,7 @@ class GridController extends AdminAbstractController
         $services = [];
         /**
          * @var \Pimcore\Model\User $user
+         *
          * @psalm-suppress InternalMethod
          */
         $user = $this->getAdminUser();
