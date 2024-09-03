@@ -118,6 +118,6 @@ jobs:
       uses: actions/upload-artifact@v3
       if: failure()
       with:
-        name: "Akk (PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
-        path: ,
+        name: "All (PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
+        path: .
         if-no-files-found: ignore
