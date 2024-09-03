@@ -31,8 +31,6 @@ If you want to calculate the Price for a Product, you need to use a special serv
 ### Templating
 If you want to calculate the price within a Template, you can do so by using the filter ```coreshop_product_price```
 
-<div class="code-section">
-
 ```twig
 {{ (product|coreshop_product_price(true)) }}
 ```

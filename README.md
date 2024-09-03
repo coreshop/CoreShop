@@ -1,7 +1,3 @@
-![CoreShop](etc/logo.png)
-
----
-
 **CoreShop - Pimcore eCommerce**
 
 ![Static Tests (Lint, Stan)](https://github.com/coreshop/CoreShop/actions/workflows/static.yml/badge.svg)
