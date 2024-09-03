@@ -97,7 +97,7 @@ jms_serializer:
 
 ```yaml
 # config/jms_serializer/CustomEntity.yml
-AppBundle\Model\CustomEntity:
+App\Model\CustomEntity:
   exclusion_policy: ALL
   xml_root_name: custom_entity
   properties:

@@ -1,0 +1,6 @@
+coreshop:
+    inventory:
+        stock:
+            on_hand: 'Verfügbare Lagerbestände: %on_hand%'
+            on_hold: 'Reservierte Lagerbestände: %on_hold%'
+            not_tracked: 'Lagerbestände nicht verfolgt'

@@ -31,7 +31,7 @@ Here's a brief example to illustrate how you might implement and register an ind
 
 declare(strict_types=1);
 
-namespace AppBundle\Index\Extension;
+namespace App\CoreShop\Index\Extension;
 
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -103,8 +103,7 @@ And then register the extension in your service configuration:
 
 ```yaml
 services:
-  app.index.extension.my_custom_extension:
-    class: AppBundle\Index\Extension\MyCustomExtension
+  App\CoreShop\Index\Extension\MyCustomExtension:
     tags:
       - { name: coreshop.index.extension }
 ```

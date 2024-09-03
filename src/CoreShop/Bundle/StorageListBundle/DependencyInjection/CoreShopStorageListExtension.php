@@ -295,13 +295,13 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                                 [
                                     'event' => LogoutEvent::class,
                                     'method' => 'onLogoutSuccess',
-                                    'dispatcher' => 'security.event_dispatcher.coreshop_frontend'
-                                ]
+                                    'dispatcher' => 'security.event_dispatcher.coreshop_frontend',
+                                ],
                             );
 
                             $container->setDefinition(
-                                'coreshop.storage_list.logout_subscriber.'.$name,
-                                $logoutSubscriber
+                                'coreshop.storage_list.logout_subscriber.' . $name,
+                                $logoutSubscriber,
                             );
                         }
                     }

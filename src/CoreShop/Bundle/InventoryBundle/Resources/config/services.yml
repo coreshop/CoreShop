@@ -17,3 +17,7 @@ services:
           - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\InventoryBundle\Pimcore\Renderer\StockOnHandRenderer:
+        arguments:
+            - '@twig'

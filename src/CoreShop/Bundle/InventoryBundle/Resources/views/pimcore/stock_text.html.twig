@@ -1,0 +1,9 @@
+{% if stockable.isTracked %}
+<div class="alert alert-success">
+    <strong>{{ 'coreshop.inventory.stock.on_hand'|trans({'%on_hand%': stockable.onHand ?: 0}) }}</strong> / {{ 'coreshop.inventory.stock.on_hold'|trans({'%on_hold%': stockable.onHold ?: 0}) }}
+</div>
+{% else %}
+<div class="alert alert-warning">
+    {{ 'coreshop.inventory.stock.not_tracked'|trans }}
+</div>
+{% endif %}

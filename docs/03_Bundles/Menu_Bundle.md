@@ -37,7 +37,7 @@ public function registerBundlesToCollection(BundleCollection $collection)
 
    ```php
    <?php
-   namespace AppBundle\Menu;
+   namespace App\CoreShop\Menu;
 
    use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
    use Knp\Menu\FactoryInterface;
@@ -60,8 +60,7 @@ public function registerBundlesToCollection(BundleCollection $collection)
    Register your menu builder class in the Symfony container.
 
    ```yml 
-   app.my_menu:
-       class: AppBundle\Menu\MyMenuBuilder
+   App\CoreShop\Menu\MyMenuBuilder:
        tags:
            - { name: coreshop.menu, type: my_menu, menu: my_menu }
    ```

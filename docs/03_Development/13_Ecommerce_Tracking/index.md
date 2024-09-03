@@ -92,8 +92,7 @@ To add a custom tracker:
 2. Register the tracker as a service:
 
 ```yaml
-app.tracking.tracker.my_tracker:
-  class: AppBundle\Tracker\CustomTracker
+App\CoreShop\Tracker\CustomTracker:
   parent: coreshop.tracking.tracker.ecommerce_tracker
   tags:
     - { name: coreshop.tracking.tracker, type: app-custom-tracker }

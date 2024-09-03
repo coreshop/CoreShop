@@ -45,7 +45,7 @@ the Discount. Note that this example is a demonstration and not a practical impl
 
 <?php
 
-namespace AppBundle\CoreShop\Product;
+namespace App\CoreShop\Product;
 
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -59,8 +59,7 @@ final class CustomPriceCalculator implements ProductPriceCalculatorInterface
 Registration of the custom service in the container:
 
 ```yml
-app.coreshop.product.price_calculator.custom:
-  class: AppBundle\CoreShop\Product\CustomPriceCalculator
+App\CoreShop\Product\CustomPriceCalculator:
   tags:
     - { name: coreshop.product.price_calculator, type: custom, priority: 1 }
 ```

@@ -9,11 +9,11 @@
 
 ### PimcoreEntity
 
-Create PimcoreEntity.php in the AppBundle/Model directory.
+Create PimcoreEntity.php in the App/Model directory.
 
 ```php
 <?php
-// AppBundle/Model/PimcoreEntity.php
+// App/Model/PimcoreEntity.php
 
 abstract class PimcoreEntity extends AbstractPimcoreModel implements PimcoreModelInterface 
 {

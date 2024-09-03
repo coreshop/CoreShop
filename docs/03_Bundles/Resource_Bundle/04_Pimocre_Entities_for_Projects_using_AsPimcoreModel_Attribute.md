@@ -9,13 +9,13 @@
 
 ### PimcoreEntity
 
-Create PimcoreEntity.php in the AppBundle/Model directory.
+Create PimcoreEntity.php in the App/Model directory.
 
 ```php
 <?php
-// AppBundle/Model/PimcoreEntity.php
+// App/Model/PimcoreEntity.php
 
-namespace AppBundle\Model;
+namespace App\Model;
 
 use CoreShop\Bundle\ResourceBundle\Attribute\AsPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;

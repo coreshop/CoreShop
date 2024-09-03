@@ -34,7 +34,7 @@ Create a new controller by inheriting from the CoreShop FrontendController:
 ```php
 <?php
 
-namespace AppBundle\Controller;
+namespace App\CoreShop\Controller;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,7 +57,7 @@ After creating your custom controller, update the configuration to use it:
 ```yaml
 core_shop_frontend:
   controllers:
-    product: AppBundle\Controller\ProductController
+    product: App\CoreShop\Controller\ProductController
 ```
 
 By following these steps, you can effectively customize and extend the functionality of CoreShop's FrontendBundle

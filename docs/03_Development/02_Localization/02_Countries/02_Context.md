@@ -58,13 +58,12 @@ And configure the service:
 
 ```yaml
 services:
-app.coreshop.country.context.request.document_based:
-class: AppBundle\CoreShop\Address\Context\DocumentBasedRequestRequestResolver
-arguments:
-  - '@Pimcore\Http\Request\Resolver\DocumentResolver'
-  - '@coreshop.repository.country'
-tags:
-  - { name: coreshop.context.country.request_based.resolver }
+   App\CoreShop\Address\Context\DocumentBasedRequestRequestResolver:
+      arguments:
+        - '@Pimcore\Http\Request\Resolver\DocumentResolver'
+        - '@coreshop.repository.country'
+      tags:
+        - { name: coreshop.context.country.request_based.resolver }
 ```
 
 CoreShop will now resolve the current country based on the Pimcore site being accessed.

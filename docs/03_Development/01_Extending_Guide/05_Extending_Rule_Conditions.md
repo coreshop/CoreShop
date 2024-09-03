@@ -21,8 +21,8 @@ Rules, we need to use
 [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php)
 
 ```php
-//AppBundle/CoreShop/CustomCondition.php
-namespace AppBundle\CoreShop;
+//src/App/CoreShop/CustomCondition.php
+namespace App\CoreShop;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -39,26 +39,22 @@ return true;
 We also need a FormType for the conditions configurations:
 
 ```php
-//AppBundle/Form/Type/CustomConditionType.php
-namespace AppBundle\Form\Type;
+//src/App/CoreShop/Form/Type/CustomConditionType.php
+namespace App\CoreShop\Form\Type;
 
 final class CustomConditionType extends AbstractType
 {
-/**
-* {@inheritdoc}
-*/
-public function buildForm(FormBuilderInterface $builder, array $options): void
-{
-$builder
-->add('some_value', TextType::class)
-;
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+       $builder->add('some_value', TextType::class);
+    }
 }
 ```
 
 With configuration, comes a Javascript file as well:
 
 ```javascript
-//AppBundle/Resources/public/pimcore/js/custom_condition.js
+//public/coreshop/js/custom_condition.js
 
 pimcore.registerNS('coreshop.product.pricerule.conditions.custom');
 coreshop.product.pricerule.conditions.custom = Class.create(coreshop.rules.conditions.abstract, {
@@ -91,22 +87,14 @@ coreshop.product.pricerule.conditions.custom = Class.create(coreshop.rules.condi
 });
 ```
 
-Don't forget to run the following command afterwards to deploy it if needed. If you're using the latest symfony
-structure, omit the `web`.
-
-```php
-bin/console assets:install
-```
-
 ## Registering the Custom Condition to the Container and load the Javascript File
 
 We now need to create our Service Definition for our Custom Condition:
 
 ```yaml
-app.product_price_rule.custom_condition:
-  class: AppBundle\CoreShop\CustomCondition
+App\CoreShop\CustomCondition:
   tags:
-    - { name: coreshop.product_price_rule.condition, type: custom, form-type: AppBundle\Form\Type\CustomConditionType }
+    - { name: coreshop.product_price_rule.condition, type: custom, form-type: App\CoreShop\Form\Type\CustomConditionType }
 ```
 
 and add this to your config.yml:
@@ -115,4 +103,4 @@ and add this to your config.yml:
 core_shop_product:
     pimcore_admin:
         js:
-            custom_condition: '/bundles/app/pimcore/js/custom_condition.js'
+            custom_condition: '/coreshop/js/custom_condition.js'

@@ -45,7 +45,7 @@ To allow the transition to show up, you need to implement a simple event listene
 
 ```yml
 # app/config/services
-AppBundle\EventListener\WorkflowListener:
+App\CoreShop\EventListener\WorkflowListener:
     autowire: true
     tags:
         - { name: kernel.event_listener, event: coreshop.workflow.valid_transitions, method: parseTransitions}
@@ -54,7 +54,7 @@ AppBundle\EventListener\WorkflowListener:
 ```php
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\CoreShop\EventListener;
 
 use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
 

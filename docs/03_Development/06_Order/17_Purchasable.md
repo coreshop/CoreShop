@@ -21,7 +21,7 @@ This example creates a `ProductSetCalculator`, which calculates prices for each 
 ```php
 <?php
 
-namespace AppBundle\CoreShop\Order\Calculator;
+namespace App\CoreShop\Order\Calculator;
 
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;use Pimcore\Model\Product\ProductSet;
 
@@ -34,8 +34,7 @@ final class ProductSetCalculator implements PurchasablePriceCalculatorInterface
 Service registration in the container:
 
 ```yml
-app.coreshop.order.purchasable.price_calculator.product_set:
-    class: AppBundle\CoreShop\Order\Calculator\ProductSetCalculator
+App\CoreShop\Order\Calculator\ProductSetCalculator:
     arguments:
         - '@coreshop.order.purchasable.price_calculator'
     tags:

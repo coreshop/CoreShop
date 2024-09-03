@@ -6,7 +6,7 @@
 - And a FilterConditionProcessorInterface, which checks if a cart fulfills the condition.
 
 ```php
-namespace AppBundle\Filter\Form\Type\Condition;
+namespace App\CoreShop\Form\Type\Condition;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -35,7 +35,7 @@ final class MyFilterCondition extends AbstractType
 ```
 
 ```php
-namespace AppBundle\Filter;
+namespace App\CoreShop\Filter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
@@ -57,16 +57,11 @@ class MyFilterCondition extends FilterConditionProcessorInterface
 }
 ```
 
-**2**. Register MyFilterCondition as service with tag ```coreshop.filter.condition_type```, type and form
+**2**. Register MyFilterCondition as service with tag ```coreshop.filter.condition_type```, type and form. We are also adding the ```autoconfigure: false``` to prevent autoconfiguration of the service. (This is only needed if you use autoconfiguration in your project)
 
 ```yaml
-app.coreshop.shipping_rule.condition.my_rule:
-    class: AppBundle\Shipping\Rule\Condition\MyRuleConditionChecker
+App\CoreShop\Filter\MyFilterCondition:
+    autoconfigure: false
     tags:
-      - { name: coreshop.shipping_rule.condition, type: my_rule, form-type: AppBundle\Shipping\Form\Type\Condition\MyRuleConfigurationType }
-
-app.filter.condition_type.my_filter_condition:
-    class: AppBundle\Filter\MyFilterCondition
-    tags:
-      - { name: coreshop.filter.condition_type, type: app-my-filter, form-type: AppBundle\Filter\Form\Type\Condition\MyFilterCondition}
+      - { name: coreshop.filter.condition_type, type: app-my-filter, form-type: App\Filter\Form\Type\Condition\MyFilterCondition}
 ```
