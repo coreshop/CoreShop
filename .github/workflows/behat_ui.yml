@@ -11,7 +11,7 @@ on:
 
 jobs:
   behat_ui:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       APP_ENV: "test"
       CORESHOP_SKIP_DB_SETUP: "1"
