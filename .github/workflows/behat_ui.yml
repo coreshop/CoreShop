@@ -112,12 +112,14 @@ jobs:
       run: symfony server:start --port=9080 --dir=public --daemon --no-tls
 
     - name: Run Behat
-      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
+      run: vendor/bin/behat --strict --no-interaction -vvv --config behat.yml.dist -p ui
 
-    - name: Upload all
+    - name: Upload Logs
       uses: actions/upload-artifact@v3
       if: failure()
       with:
-        name: "All (PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
-        path: .
+        name: "Logs (PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
+        path: |
+          var/log/
+          etc/build/
         if-no-files-found: ignore
