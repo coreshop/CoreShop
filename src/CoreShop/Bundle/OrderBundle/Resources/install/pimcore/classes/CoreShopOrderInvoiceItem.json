@@ -22,7 +22,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "tabpanel",
                 "name": "Layout",
@@ -36,7 +36,7 @@
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -52,7 +52,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopRelation",
                                 "width": "",
@@ -117,7 +117,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "tabpanel",
                                 "name": "Layout",
@@ -131,7 +131,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
@@ -147,7 +147,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
@@ -208,7 +208,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",

@@ -23,7 +23,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "tabpanel",
                 "name": "Layout",
@@ -37,7 +37,7 @@
                 "bodyStyle": "",
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -53,7 +53,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "fieldset",
                                 "labelWidth": 100,
@@ -68,10 +68,10 @@
                                 "bodyStyle": null,
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "localizedfields",
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "input",
                                                 "width": null,
@@ -309,10 +309,10 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "localizedfields",
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "input",
                                         "width": null,
@@ -395,10 +395,10 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "localizedfields",
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "wysiwyg",
                                         "width": "",
@@ -461,7 +461,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopRelation",
                                 "stack": "coreshop.purchasable",
@@ -575,7 +575,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopRelations",
                                 "height": "400",
@@ -614,7 +614,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "manyToManyRelation",
                                 "width": "",
@@ -889,7 +889,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "fieldset",
                                 "labelWidth": 100,
@@ -904,7 +904,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "coreShopProductUnitDefinitions",
                                         "width": "",
@@ -1060,7 +1060,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopProductSpecificPriceRules",
                                 "height": null,
@@ -1115,7 +1115,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "numeric",
                                 "width": "",
