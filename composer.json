@@ -125,7 +125,7 @@
     "phpstan/phpstan-webmozart-assert": "^1.2.4",
     "phpunit/phpunit": "^9.5",
     "robertfausk/behat-panther-extension": "^1.0",
-    "symfony/panther": "^1.0",
+    "symfony/panther": "^2.1",
     "symplify/easy-coding-standard": "^11.1",
     "vimeo/psalm": "^4.10"
   },
