@@ -5,9 +5,8 @@ type, you can do so by adding a new condition or action and specify your own typ
 
 ```yaml
 services:
-  app.coreshop.notification_rule.condition.order.custom_notification_condition:
-    class: AppBundle\CoreShop\Notification\CustomNotificationCondition
+  App\CoreShop\Notification\CustomNotificationCondition:
     tags:
-      - { name: coreshop.notification_rule.condition, type: custom_condition, notification-type: custom, form-type: AppBundle\Form\Type\CoreShop\CustomConditionType }
+      - { name: coreshop.notification_rule.condition, type: custom_condition, notification-type: custom, form-type: App\CoreShop\Form\Type\CoreShop\CustomConditionType }
 
 ```

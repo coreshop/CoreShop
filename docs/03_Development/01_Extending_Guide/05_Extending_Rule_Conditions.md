@@ -21,7 +21,7 @@ To do so, we first need to create a new class and implement the interface listed
 
 ```php
 //AppBundle/CoreShop/CustomCondition.php
-namespace AppBundle\CoreShop;
+namespace App\CoreShop;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -40,7 +40,7 @@ We also need a FormType for the conditions configurations:
 
 ```php
 //AppBundle/Form/Type/CustomConditionType.php
-namespace AppBundle\Form\Type;
+namespace App\CoreShop\Form\Type;
 
 final class CustomConditionType extends AbstractType
 {
@@ -102,10 +102,9 @@ bin/console assets:install web
 We now need to create our Service Definition for our Custom Condition:
 
 ```yaml
-app.product_price_rule.custom_condition:
-    class: AppBundle\CoreShop\CustomCondition
+App\CoreShop\CustomCondition:
     tags:
-      - { name: coreshop.product_price_rule.condition, type: custom, form-type: AppBundle\Form\Type\CustomConditionType }
+      - { name: coreshop.product_price_rule.condition, type: custom, form-type: App\CoreShop\Form\Type\CustomConditionType }
 ```
 
 and add this to your config.yml:

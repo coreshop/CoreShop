@@ -52,7 +52,7 @@ This example is only a show-case of how to add a new calculator.
 ```php
 <?php
 
-namespace AppBundle\CoreShop\Product;
+namespace App\CoreShop\Product;
 
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -98,8 +98,7 @@ final class CustomPriceCalculator implements ProductPriceCalculatorInterface
 Now we need to register our service to the container and add the calculator tag:
 
 ```yaml
-app.coreshop.product.price_calculator.custom:
-    class: AppBundle\CoreShop\Product\CustomPriceCalculator
+App\CoreShop\Product\CustomPriceCalculator:
     tags:
       - { name: coreshop.product.price_calculator, type: custom, priority: 1 }
 ```

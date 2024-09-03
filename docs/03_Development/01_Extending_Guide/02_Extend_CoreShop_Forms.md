@@ -1,7 +1,7 @@
 # Customizing Forms
 
 The forms in CoreShop are placed in the ``CoreShop\Bundle\*BundleName*\Form\Type`` namespaces and the extensions
-will be placed in `AppBundle\Form\Extension`.
+will be placed in `App\CoreShop\Form\Extension`.
 
 ## Why would you customize a Form?
 
@@ -43,7 +43,7 @@ As a result you will get the [```CoreShop\Bundle\StoreBundle\Form\Type\StoreType
 ```php
 <?php
 
-namespace AppBundle\Form\Extension;
+namespace App\CoreShop\Form\Extension;
 
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -67,17 +67,16 @@ final class StoreTypeExtension extends AbstractTypeExtension
 }
 ```
 
-**3.** After creating your class, register this extension as a service in the ``AppBundle/Resources/config/services.yml``:
+**3.** After creating your class, register this extension as a service in the ``config/services.yaml``:
 
 ```yaml
 services:
-    app.form.extension.type.customer_profile:
-        class: AppBundle\Form\Extension\StoreTypeExtension
+  App\CoreShop\Form\Extension\StoreTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\StoreBundle\Form\Type\StoreType }
 ```
 
-In our case you will need to extend the ExtJs Form as well: `src/AppBundle/Resources/public/pimcore/js/store.js`.
+In our case you will need to extend the ExtJs Form as well: `public/coreshop/js/store.js`.
 
 In **ExtJs** your new store file need to like like this:
 
@@ -108,6 +107,6 @@ And you need to configure it to be loaded as well:
 core_shop_store:
     pimcore_admin:
         js:
-            custom_store: '/bundles/app/pimcore/js/store.js'
+            custom_store: '/coreshop/js/store.js'
 ```
 

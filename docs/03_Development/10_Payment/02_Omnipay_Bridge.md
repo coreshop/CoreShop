@@ -26,7 +26,7 @@ As example we add omnipay-worldpay:
 ```php
 <?php
 
-namespace AppBundle\Form\Type;
+namespace App\CoreShop\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -88,8 +88,7 @@ Register into the container:
 
 ```yaml
 services:
-  app.form.type.gateway_configuration.worldpay:
-    class: AppBundle\Form\Type\WorldpayType
+  App\CoreShopForm\Type\WorldpayType:
     tags:
       - { name: coreshop.gateway_configuration_type, type: omnipay_worldpay }
       - { name: form.type }
@@ -100,6 +99,7 @@ services:
 **2**: Add ExtJs Form:
 
 ```javascript
+// public/coreshop/payment/provider/worldpay.js
 pimcore.registerNS('coreshop.provider.gateways.omnipay_worldpay');
 coreshop.provider.gateways.omnipay_worldpay = Class.create(coreshop.provider.gateways.abstract, {
 
@@ -138,7 +138,7 @@ Register JS File for CoreShop to be loaded:
 core_shop_payment:
     pimcore_admin:
       js:
-        worldpay: /bundles/app/pimcore/static/js/payment/provider/worldpay.js
+        worldpay: /coreshop/payment/provider/worldpay.js
 ```
 
 Thats it, now you can create a new Payment Provider in the Backend and use Omnipay WorldPay as Payment Provider.

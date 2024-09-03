@@ -76,8 +76,7 @@ $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order)
 To add a custom tracker you need to implement the interface `CoreShop\Component\Tracking\Tracker\TrackerInterface`
 
 ```yaml
-app.tracking.tracker.my_tracker:
-    class: AppBundle\Tracker\CustomTracker
+App\CoreShop\Tracker\CustomTracker:
     parent: coreshop.tracking.tracker.ecommerce_tracker
     tags:
         - { name: coreshop.tracking.tracker, type: app-custom-tracker }

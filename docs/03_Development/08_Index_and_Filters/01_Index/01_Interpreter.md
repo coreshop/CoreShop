@@ -18,7 +18,7 @@ CoreShop currently has following Interpreters:
 
 ```php
 
-namespace AppBundle\Index\Form\Type;
+namespace App\CoreShop\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -47,7 +47,7 @@ final class MyInterpreterType extends AbstractType
 ```
 
 ```php
-namespace AppBundle\CoreShop\Index\Interpreter;
+namespace App\CoreShop\Index\Interpreter;
 
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 
@@ -64,8 +64,7 @@ class MyInterpreter implements InterpreterInterface
 **2**:Register MyInterpreter as service with tag ```coreshop.index.interpreter```, type and form
 
 ```yaml
-app.index.interpreter.my_interpreter:
-    class: AppBundle\CoreShop\Index\Interpreter\MyInterpreter
+App\CoreShop\Index\Interpreter\MyInterpreter:
     tags:
-     - { name: coreshop.index.interpreter, type: my_interpreter, form-type: AppBundle\Index\Form\Type\MyInterpreterType}
+     - { name: coreshop.index.interpreter, type: my_interpreter, form-type: App\CoreShop\Form\Type\MyInterpreterType}
 ```

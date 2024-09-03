@@ -29,7 +29,7 @@ Create a new Menu by creating a new Class, let's call it `MyMenuBuilder`
 
 ```php
 
-namespace AppBundle\Menu;
+namespace App\CoreShop\Menu;
 
 use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
 use Knp\Menu\FactoryInterface;
@@ -54,7 +54,7 @@ You then need to register your class to the symfony container:
 
 ```yml 
     app.my_menu:
-        class: AppBundle\Menu\MyMenuBuilder
+        class: App\CoreShop\Menu\MyMenuBuilder
         tags:
             - { name: coreshop.menu, type: my_menu, menu: my_menu }
 

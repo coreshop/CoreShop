@@ -44,7 +44,7 @@ are on page `/en` we want to resolve to Store `Store EN`:
 ```php
 <?php
 
-namespace AppBundle\CoreShop\Store\Context;
+namespace App\CoreShop\Store\Context;
 
 use CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
@@ -75,12 +75,11 @@ final class DocumentBasedRequestRequestResolver implements RequestResolverInterf
 }
 ```
 
-Now we need to configure the service in `src/AppBundle/Resources/config/services.yml`
+Now we need to configure the service in `config/services.yaml`
 
 ```yaml
 services:
-  app.coreshop.store.context.request.document_based:
-    class: AppBundle\CoreShop\Store\Context\DocumentBasedRequestRequestResolver
+  App\CoreShop\Store\Context\DocumentBasedRequestRequestResolver:
     arguments:
       - '@coreshop.repository.store'
     tags:

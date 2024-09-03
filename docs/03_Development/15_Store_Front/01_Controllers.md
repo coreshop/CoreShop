@@ -27,7 +27,7 @@ core_shop_frontend:
 ```php
 <?php
 
-namespace AppBundle\Controller;
+namespace App\CoreShop\Controller;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,5 +48,5 @@ class ProductController extends \CoreShop\Bundle\FrontendBundle\Controller\Produ
 ```yaml
 core_shop_frontend:
     controllers:
-        product: AppBundle\Controller\ProductController
+        product: App\CoreShop\Controller\ProductController
 ```

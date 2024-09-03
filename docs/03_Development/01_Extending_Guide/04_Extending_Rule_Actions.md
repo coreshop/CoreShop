@@ -20,7 +20,7 @@ To do so, we first need to create a new class and implement the interface listed
 
 ```php
 //AppBundle/CoreShop/CustomAction.php
-namespace AppBundle\CoreShop;
+namespace App\CoreShop;
 
 final class CustomAction implements \CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
 {
@@ -37,7 +37,7 @@ We also need a FormType for the actions configurations:
 
 ```php
 //AppBundle/Form/Type/CustomActionType.php
-namespace AppBundle\Form\Type;
+namespace App\CoreShop\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -105,10 +105,9 @@ bin/console assets:install web
 We now need to create our Service Definition for our Custom Action:
 
 ```yaml
-app.product_price_rule.custom:
-    class: AppBundle\CoreShop\CustomAction
+App\CoreShop\CustomAction:
     tags:
-      - { name: coreshop.product_price_rule.action, type: custom, form-type: AppBundle\Form\Type\CustomActionType }
+      - { name: coreshop.product_price_rule.action, type: custom, form-type: App\CoreShop\Form\Type\CustomActionType }
 ```
 
 and add this to your config.yml:

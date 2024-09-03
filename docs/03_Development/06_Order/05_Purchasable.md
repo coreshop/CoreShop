@@ -17,7 +17,7 @@ As an example, we create a ProductSetCalculator, which takes prices of each cons
 ```php
 <?php
 
-namespace AppBundle\CoreShop\Order\Calculator;
+namespace App\CoreShop\Order\Calculator;
 
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
 use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -53,8 +53,7 @@ final class ProductSetCalculator implements PurchasablePriceCalculatorInterface
 Now we need to register our Service to the Container:
 
 ```yml
-app.coreshop.order.purchasable.price_calculator.product_set:
-    class: AppBundle\CoreShop\Order\Calculator\ProductSetCalculator
+App\CoreShop\Order\Calculator\ProductSetCalculator:
     arguments:
         - '@coreshop.order.purchasable.price_calculator'
     tags:

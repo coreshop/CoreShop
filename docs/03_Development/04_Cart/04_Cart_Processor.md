@@ -27,7 +27,7 @@ For example, we create a Cart Processor, which calculates a custom field in our 
 ```php
 <?php
 
-namespace AppBundle\CoreShop\Order\Cart\Processor;
+namespace App\CoreShop\Order\Cart\Processor;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -44,8 +44,7 @@ final class CustomCartProcessor implements CartProcessorInterface
 We now only need to register the class:
 
 ```yaml
-app.coreshop.cart.processor.custom:
-    class: AppBundle\CoreShop\Order\Cart\Processor\CustomCartProcessor
+App\CoreShop\Order\Cart\Processor\CustomCartProcessor:
     tags:
       - { name: coreshop.cart_processor, priority: 200 }
 ```

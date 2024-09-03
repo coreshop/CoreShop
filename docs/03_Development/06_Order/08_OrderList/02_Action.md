@@ -7,7 +7,7 @@ Actions allows you to process orders rapidly, right in the order grid view.
 ## Register Filter Service
 
 ```yml
-AppBundle\CoreShop\OrderList\Action\Demo:
+App\CoreShop\OrderList\Action\Demo:
     arguments:
         $stateMachineManager: '@coreshop.state_machine_manager'
         $shipmentRepository: '@coreshop.repository.order_shipment'
@@ -21,7 +21,7 @@ In this example we want to apply the shipment transition "ship" to selected orde
 ```php
 <?php
 
-namespace AppBundle\CoreShop\OrderList\Action;
+namespace App\CoreShop\OrderList\Action;
 
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;

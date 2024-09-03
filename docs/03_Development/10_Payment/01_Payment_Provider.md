@@ -38,7 +38,7 @@ To add a new gateway configuration you need to add 2 files:
 
 ```php
 
-namespace AppBundle\CoreShop\Form\Type;
+namespace App\CoreShop\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -77,8 +77,7 @@ Now we register the FormType into the container
 
 ```yaml
 services:
-  app.coreshop.form.type.gateway_configuration.sofort:
-    class: AppBundle\Form\Type\SofortGatewayConfigurationType
+  App\CoreShop\Form\Type\SofortGatewayConfigurationType:
     tags:
       - { name: coreshop.gateway_configuration_type, type: sofort }
       - { name: form.type }

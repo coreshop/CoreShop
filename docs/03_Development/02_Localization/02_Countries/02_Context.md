@@ -44,7 +44,7 @@ are on page `/en` we want to resolve to Country `Great Britain`:
 ```php
 <?php
 
-namespace AppBundle\CoreShop\Address\Context;
+namespace App\CoreShop\Address\Context;
 
 use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
@@ -90,12 +90,11 @@ final class DocumentBasedRequestRequestResolver implements RequestResolverInterf
 }
 ```
 
-Now we need to configure the service in `src/AppBundle/Resources/config/services.yml`
+Now we need to configure the service in `config/services.yaml`
 
 ```yaml
 services:
-  app.coreshop.country.context.request.document_based:
-    class: AppBundle\CoreShop\Address\Context\DocumentBasedRequestRequestResolver
+  App\CoreShop\Address\Context\DocumentBasedRequestRequestResolver:
     arguments:
       - '@Pimcore\Http\Request\Resolver\DocumentResolver'
       - '@coreshop.repository.country'
