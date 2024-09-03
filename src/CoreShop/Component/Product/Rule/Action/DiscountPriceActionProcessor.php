@@ -22,6 +22,7 @@ use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Webmozart\Assert\Assert;
 
@@ -35,8 +36,16 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
 
     public function getDiscountPrice($subject, array $context, array $configuration): int
     {
-        if (isset($context['unitDefinition']) && $context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
+        if (!$subject instanceof ProductInterface)  {
             throw new NoDiscountPriceFoundException(__CLASS__);
+        }
+
+        if (isset($context['unitDefinition']) && $context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
+            $defaultUnitId = $subject->getUnitDefinitions()?->getDefaultUnitDefinition()?->getId();
+
+            if ($context['unitDefinition']->getId() !== $defaultUnitId) {
+                throw new NoDiscountPriceFoundException(__CLASS__);
+            }
         }
 
         Assert::keyExists($context, 'base_currency');
