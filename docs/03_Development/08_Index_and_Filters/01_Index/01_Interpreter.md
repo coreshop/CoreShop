@@ -22,7 +22,7 @@ To create a custom interpreter, you'll need to develop two key components:
 Create a FormType class to handle the input data for your interpreter:
 
 ```php
-namespace AppBundle\Index\Form\Type;
+namespace App\CoreShop\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -50,7 +50,7 @@ final class MyInterpreterType extends AbstractType
 Implement the `InterpreterInterface` to define how your interpreter processes data:
 
 ```php
-namespace AppBundle\CoreShop\Index\Interpreter;
+namespace App\CoreShop\Index\Interpreter;
 
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 
@@ -70,10 +70,9 @@ class MyInterpreter implements InterpreterInterface
 Register your new interpreter as a service with the tag `coreshop.index.interpreter`, specifying its type and form:
 
 ```yaml
-app.index.interpreter.my_interpreter:
-  class: AppBundle\CoreShop\Index\Interpreter\MyInterpreter
+App\CoreShop\Index\Interpreter\MyInterpreter:
   tags:
-    - { name: coreshop.index.interpreter, type: my_interpreter, form-type: AppBundle\Index\Form\Type\MyInterpreterType }
+    - { name: coreshop.index.interpreter, type: my_interpreter, form-type: App\CoreShop\Form\Type\MyInterpreterType }
 ```
 
 With these steps, you can enhance the indexing process in CoreShop with custom logic, tailored to your specific

@@ -8,7 +8,7 @@ Your Customer is able to filter orders on specific conditions.
 ## Register Filter Service
 
 ```yml
-AppBundle\CoreShop\OrderList\Filter\DemoFilter:
+App\CoreShop\OrderList\Filter\DemoFilter:
     tags:
         - { name: coreshop.grid.filter, type: demo }
 ```
@@ -20,7 +20,7 @@ In this example we want to filter orders with available shipments in state "read
 ```php
 <?php
 
-namespace AppBundle\CoreShop\OrderList\Filter;
+namespace App\CoreShop\OrderList\Filter;
 
 use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
 use Pimcore\Db\ZendCompatibility\QueryBuilder;

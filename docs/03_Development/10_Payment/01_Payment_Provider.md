@@ -38,7 +38,7 @@ To add Sofort as a new gateway configuration, create the following files:
 1. **Form Type for Configuration Values**:
 
  ```php
- namespace AppBundle\CoreShop\Form\Type;
+ namespace App\CoreShop\Form\Type;
 
  use Symfony\Component\Form\AbstractType;
  // ... other use statements ...
@@ -56,11 +56,10 @@ Then, register the FormType in the service container:
 
 ```yaml
 services:
-  app.coreshop.form.type.gateway_configuration.sofort:
-    class: AppBundle\Form\Type\SofortGatewayConfigurationType
-    tags:
-      - { name: coreshop.gateway_configuration_type, type: sofort }
-      - { name: form.type }
+   App\CoreShop\Form\Type\SofortGatewayConfigurationType:
+      tags:
+         - { name: coreshop.gateway_configuration_type, type: sofort }
+         - { name: form.type }
 ```
 
 2. **ExtJs Form for Sofort**:
@@ -68,6 +67,7 @@ services:
    Create a JavaScript file for the ExtJs Form:
 
  ```js
+// public/coreshop/js/sofort.js
 pimcore.registerNS('coreshop.provider.gateways.sofort');
 coreshop.provider.gateways.sofort = Class.create(coreshop.provider.gateways.abstract, {
   getLayout: function (config) {
@@ -82,7 +82,7 @@ Register the new JavaScript file:
 core_shop_payment:
   pimcore_admin:
     js:
-      sofort_gateway: '/bundles/app/pimcore/js/sofort.js'
+      sofort_gateway: '/coreshop/js/sofort.js'
 ```
 
 After reloading Pimcore, you should see the new Factory available.

@@ -141,7 +141,7 @@ the `CoreShop\Component\Pimcore\Event\SlugGenerationEvent` Event.
 
 declare(strict_types=1);
 
-namespace App\EventListener;
+namespace App\CoreShop\EventListener;
 
 use CoreShop\Component\Pimcore\Event\SlugGenerationEvent;
 use Pimcore\Model\DataObject\PressRelease;

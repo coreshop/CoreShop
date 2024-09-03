@@ -13,7 +13,7 @@ core_shop_order:
     order:
       classes:
         model: 'Pimcore\Model\DataObject\MyOrderClass'
-        install_file: '@AppBundle/Resources/install/pimcore/classes/MyOrderClass.json'
-        repository: AppBundle\Repository\OrderRepository
-        factory: AppBundle\Factory\OrderFactory
+        install_file: 'config/Resources/install/pimcore/classes/MyOrderClass.json'
+        repository: App\Repository\OrderRepository
+        factory: App\Factory\OrderFactory
 ```

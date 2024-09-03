@@ -20,8 +20,7 @@ Rules, we need to use
 [```CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Rule/Action/ProductPriceActionProcessorInterface.php)
 
 ```php
-//AppBundle/CoreShop/CustomAction.php
-namespace AppBundle\CoreShop;
+namespace App\CoreShop;
 
 final class CustomAction implements \CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
 {
@@ -38,8 +37,7 @@ We also need a FormType for the actions configurations:
 
 ```php
 <?php
-//AppBundle/Form/Type/CustomActionType.php
-namespace AppBundle\Form\Type;
+namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,9 +45,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class CustomActionType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -62,7 +57,7 @@ final class CustomActionType extends AbstractType
 With configuration, comes a Javascript file as well:
 
 ```javascript
-//AppBundle/Resources/public/pimcore/js/custom_action.js
+// public/coreshop/js/custom_action.js
 
 pimcore.registerNS('coreshop.product.pricerule.actions.custom');
 coreshop.product.pricerule.actions.custom = Class.create(coreshop.rules.actions.abstract, {
@@ -107,10 +102,9 @@ bin/console assets:install web
 We now need to create our Service Definition for our Custom Action:
 
 ```yaml
-app.product_price_rule.custom:
-  class: AppBundle\CoreShop\CustomAction
+App\CoreShop\CustomAction:
   tags:
-    - { name: coreshop.product_price_rule.action, type: custom, form-type: AppBundle\Form\Type\CustomActionType }
+    - { name: coreshop.product_price_rule.action, type: custom, form-type: App\CoreShop\Form\Type\CustomActionType }
 ```
 
 and add this to your config.yml:
@@ -119,5 +113,5 @@ and add this to your config.yml:
 core_shop_product:
   pimcore_admin:
     js:
-      custom_action: '/bundles/app/pimcore/js/custom_action.js'
+      custom_action: '/coreshop/js/custom_action.js'
 ```

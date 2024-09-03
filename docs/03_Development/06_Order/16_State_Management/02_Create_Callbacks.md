@@ -15,7 +15,7 @@ core_shop_workflow:
                 after:
                     do_something_special:
                         on: ['confirm']
-                        do: ['@AppBundle\EventListener\SpecialListener', 'doSomething']
+                        do: ['@App\CoreShop\EventListener\SpecialListener', 'doSomething']
                         args: ['object']
                         priority: -10 # fire action early!
 ```
@@ -32,7 +32,7 @@ And your Service:
 ```php
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\CoreShop\EventListener;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
@@ -68,7 +68,7 @@ core_shop_workflow:
                 before:
                     check_something:
                         on: ['create']
-                        do: ['@AppBundle\EventListener\SpecialListener', 'checkSomething']
+                        do: ['@App\CoreShop\EventListener\SpecialListener', 'checkSomething']
                         args: ['object']
                         priority: 0
 ```
@@ -87,7 +87,7 @@ Just remove the exception and the transition gets applied as expected.
 ```php
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\CoreShop\EventListener;
 
 use CoreShop\Component\Core\Model\OrderShipmentInterface;
 
@@ -99,7 +99,7 @@ final class SpecialListener
     public function checkSomething(OrderShipmentInterface $shipment)
     {
         // check something and throw an exeption
-        throw new \Exception('something is wrong...');
+        throw new \Exception('do something here...');
     }
 }
 ```

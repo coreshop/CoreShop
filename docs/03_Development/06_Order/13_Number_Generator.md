@@ -22,10 +22,11 @@ This example shows a custom implementation that adds padding to the number:
 ```php
 final class CustomNumberGenerator implements NumberGeneratorInterface
 {
-public function __construct(
-private NumberGeneratorInterface $numberGenerator, // decorated service
-) {
-}
+    public function __construct(
+        private NumberGeneratorInterface $numberGenerator, // decorated service
+    ) {
+    
+    }
 
     public function generate(ResourceInterface $model): string
     {
@@ -39,7 +40,7 @@ private NumberGeneratorInterface $numberGenerator, // decorated service
 Symfony service definition:
 
 ```yaml
-  App\Order\CustomNumberGenerator:
+  App\CoreShop\Order\CustomNumberGenerator:
     decorates: coreshop.order.number_generator.default
     decoration_priority: 1
     arguments:

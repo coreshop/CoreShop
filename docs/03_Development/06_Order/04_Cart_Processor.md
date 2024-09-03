@@ -30,7 +30,7 @@ Here's an example of a custom Cart Processor that calculates a unique field for 
 ```php
 <?php
 
-namespace AppBundle\CoreShop\Order\Cart\Processor;
+namespace App\CoreShop\Order\Cart\Processor;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -47,8 +47,7 @@ final class CustomCartProcessor implements CartProcessorInterface
 Registration of the processor:
 
 ```yaml
-app.coreshop.cart.processor.custom:
-  class: AppBundle\CoreShop\Order\Cart\Processor\CustomCartProcessor
+App\CoreShop\Order\Cart\Processor\CustomCartProcessor:
   tags:
     - { name: coreshop.cart_processor, priority: 200 }
 ```

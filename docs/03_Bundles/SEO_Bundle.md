@@ -57,9 +57,9 @@ Implement a custom extractor for the Product class:
 
 ```php
 <?php
-// src/AppBundle/SEO/Extractor/ProductVideoExtractor.php
+// src/App/CoreShop/SEO/Extractor/ProductVideoExtractor.php
 
-namespace AppBundle\SEO\Extractor;
+namespace App\CoreShop\SEO\Extractor;
 
 //...
 
@@ -69,12 +69,11 @@ final class ProductVideoExtractor implements ExtractorInterface
 }
 ```
 
-Register the service in your `services.yml`:
+Register the service in your `config/services.yaml`:
 
 ```yml
-# src/AppBundle/Resources/config/services.yml
 services:
-    AppBundle\SEO\Extractor\ProductVideoExtractor:
+    App\CoreShop\SEO\Extractor\ProductVideoExtractor:
         tags:
             - { name: coreshop.seo.extractor, type: product_video }
 ```
