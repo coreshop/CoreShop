@@ -274,8 +274,8 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                             return '<span style="font-weight:bold">' + coreshop.util.format.currency_precision(
                                 this.sale.baseCurrency.isoCode,
                                 value,
-                                pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
-                                pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
+                                data.precision,
+                                data.factor,
                             ) + '</span>';
                         }
 
@@ -295,8 +295,8 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                             return '<span style="font-weight:bold">' +  coreshop.util.format.currency_precision(
                                 this.sale.currency.isoCode,
                                 value,
-                                pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
-                                pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
+                                data.precision,
+                                data.factor,
                             )  + '</span>';
                         }
 
