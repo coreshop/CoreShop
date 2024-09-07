@@ -46,16 +46,6 @@ class Mail extends \Pimcore\Mail
             }
         }
 
-        $document = $this->getDocument();
-
-        if ($document instanceof Email) {
-            //now add recipients from emailDocument, if given.
-            $storedRecipients = array_filter(explode(';', $document->getTo()));
-            foreach ($storedRecipients as $multiRecipient) {
-                $toRecipients[] = [$multiRecipient, ''];
-            }
-        }
-
         foreach ($toRecipients as $recipient) {
             $this->addTo($recipient[0], $recipient[1]);
         }
