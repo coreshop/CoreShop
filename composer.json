@@ -156,8 +156,6 @@
       "Pimcore\\Model\\DataObject\\": "var/classes/DataObject"
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "extra": {
     "symfony-bin-dir": "bin",
     "symfony-var-dir": "var",
