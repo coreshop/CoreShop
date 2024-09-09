@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\Document\Email;
-
 class Mail extends \Pimcore\Mail
 {
     public function addRecipients(array|string $recipients = null)

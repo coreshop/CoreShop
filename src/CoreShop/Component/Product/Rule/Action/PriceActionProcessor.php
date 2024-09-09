@@ -36,7 +36,7 @@ class PriceActionProcessor implements ProductPriceActionProcessorInterface
 
     public function getPrice($subject, array $context, array $configuration): int
     {
-        if (!$subject instanceof ProductInterface)  {
+        if (!$subject instanceof ProductInterface) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
 
