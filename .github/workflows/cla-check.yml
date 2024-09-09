@@ -23,7 +23,7 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.CLA_ACTION_ACCESS_TOKEN }}
         with:
           path-to-signatures: 'signatures/version1/cla.json'
-          path-to-document: 'https://github.com/coreshop/coreshop/blob/3.2/CLA.md'
+          path-to-document: 'https://github.com/coreshop/coreshop/blob/4.0/CLA.md'
           branch: "main"
           allowlist: user1,bot*
           remote-organization-name: "coreshop"
