@@ -1,5 +1,5 @@
 **CoreShop - Pimcore eCommerce**
-
+ 
 ![Static Tests (Lint, Stan)](https://github.com/coreshop/CoreShop/actions/workflows/static.yml/badge.svg)
 ![Behat UI Tests](https://github.com/coreshop/CoreShop/workflows/Behat%20UI/badge.svg)
 ![Behat Tests](https://github.com/coreshop/CoreShop/workflows/Behat/badge.svg)
