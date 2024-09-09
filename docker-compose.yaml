@@ -86,7 +86,6 @@ services:
     environment:
       PIMCORE_TEST_DB_DSN: "mysql://root:ROOT@coreshop4-db/coreshop4___behat"
       PIMCORE_KERNEL_CLASS: 'Kernel'
-      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
     command:
       - bash
       - -c
