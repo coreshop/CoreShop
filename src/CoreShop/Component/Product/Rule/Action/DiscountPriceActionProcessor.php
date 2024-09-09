@@ -36,7 +36,7 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
 
     public function getDiscountPrice($subject, array $context, array $configuration): int
     {
-        if (!$subject instanceof ProductInterface)  {
+        if (!$subject instanceof ProductInterface) {
             throw new NoDiscountPriceFoundException(__CLASS__);
         }
 
