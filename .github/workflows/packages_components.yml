@@ -2,16 +2,14 @@ name: Packages Components
 on:
   push:
     branches: [ '4.0' ]
-    paths-ignore:
-      - 'docs/**'
-      - '.github/workflows/docs_next.yml'
-      - 'README.md'
+    paths:
+      - 'src/CoreShop/Component/**'
+
   pull_request:
     branches: [ '4.0' ]
-    paths-ignore:
-      - 'docs/**'
-      - '.github/workflows/docs_next.yml'
-      - 'README.md'
+    paths:
+      - 'src/CoreShop/Component/**'
+
   release:
     types: [ created ]
   schedule:
