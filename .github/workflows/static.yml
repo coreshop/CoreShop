@@ -1,17 +1,25 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ '4.0', 'next' ]
-    paths-ignore:
-      - 'docs/**'
-      - '.github/workflows/docs_next.yml'
-      - 'README.md'
+    branches: [ '4.0' , 'next']
+    paths:
+      - 'features/**'
+      - 'behat.yml.dist'
+      - 'src/**'
+      - '*.php'
+      - '*.neon'
+      - '*.xml'
+      - 'composer.json'
   pull_request:
     branches: [ '4.0', 'next' ]
-    paths-ignore:
-      - 'docs/**'
-      - '.github/workflows/docs_next.yml'
-      - 'README.md'
+    paths:
+      - 'features/**'
+      - 'behat.yml.dist'
+      - 'src/**'
+      - '*.php'
+      - '*.neon'
+      - '*.xml'
+      - 'composer.json'
   release:
     types: [ created ]
   schedule:

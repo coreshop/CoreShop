@@ -2,16 +2,21 @@ name: Behat UI
 on:
   push:
     branches: [ '4.0', 'next' ]
-    paths-ignore:
-      - 'docs/**'
-      - '.github/workflows/docs_next.yml'
-      - 'README.md'
+    paths:
+      - 'composer.json'
+      - 'features/**'
+      - 'behat.yml.dist'
+      - '*.php'
+      - 'src/**'
+
   pull_request:
     branches: [ '4.0', 'next' ]
-    paths-ignore:
-      - 'docs/**'
-      - '.github/workflows/docs_next.yml'
-      - 'README.md'
+    paths:
+      - 'composer.json'
+      - 'features/**'
+      - 'behat.yml.dist'
+      - '*.php'
+      - 'src/**'
   release:
     types: [ created ]
   schedule:
