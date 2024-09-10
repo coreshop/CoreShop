@@ -5,6 +5,7 @@
 * [InventoryBundle] add translations for stock label #2 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2691
 * [Product] fix regression of price rules for products with default unit by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2698
 * [OrderBundle] fix precison/factor for Payment Total by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2700
+* [Payum] req payum/payum-bundle:^2.6 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2710
 
 # 3.2.12
 * [MoneyBundle] money and moneyCurrency type should respect money_decimal_precision by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2671
