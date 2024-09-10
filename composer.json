@@ -98,7 +98,7 @@
     "laminas/laminas-stdlib": "^3.6",
     "laminas/laminas-zendframework-bridge": "^1.5",
     "payum/payum": "^1.7",
-    "payum/payum-bundle": "^2.5",
+    "payum/payum-bundle": "^2.6",
     "php-http/guzzle7-adapter": "^1.0",
     "php-http/message-factory": "^1.1",
     "pimcore/admin-ui-classic-bundle": "^1.2",
