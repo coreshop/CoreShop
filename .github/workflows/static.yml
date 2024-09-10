@@ -1,7 +1,7 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ '4.0' , 'next']
+    branches: [ '4.0' , '4.1','next']
     paths:
       - 'features/**'
       - 'behat.yml.dist'
@@ -11,7 +11,7 @@ on:
       - '*.xml'
       - 'composer.json'
   pull_request:
-    branches: [ '4.0', 'next' ]
+    branches: [ '4.0', '4.1','next' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'

@@ -1,7 +1,7 @@
 name: Behat
 on:
   push:
-    branches: [ '4.0', 'next' ]
+    branches: [ '4.0', '4.1', 'next' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -9,7 +9,7 @@ on:
       - '*.php'
       - 'src/**'
   pull_request:
-    branches: [ '4.0', 'next' ]
+    branches: [ '4.0', '4.1','next' ]
     paths:
       - 'composer.json'
       - 'features/**'
