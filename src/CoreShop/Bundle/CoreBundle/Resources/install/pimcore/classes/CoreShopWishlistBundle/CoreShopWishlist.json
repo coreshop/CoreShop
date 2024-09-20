@@ -38,7 +38,7 @@
                 "children": [
                     {
                         "name": "name",
-                        "title": "coreshop.order.name",
+                        "title": "coreshop.wishlist.name",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": true,
