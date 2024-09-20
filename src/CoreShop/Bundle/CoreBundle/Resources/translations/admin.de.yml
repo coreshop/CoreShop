@@ -247,3 +247,4 @@ coreshop_customer_transformer_assignment_form_new_company_title: 'Neue Unternehm
 coreshop_customer_transformer_assignment_new_form_button: 'Firma erstellen und Kunden zuweisen'
 coreshop_customer_transformer_assignment_new_form_description: 'Nach Absenden dieses Formulars wird ein neues Unternehmen erstellt. Bitte überprüfen Sie die Daten sorgfältig. Darüber hinaus müssen Sie festlegen, ob die Kundenadressen vom Kunden gespeichert oder an das neue Unternehmen übertragen werden sollen.'
 coreshop_customer_transformer_assignment_new_form_maybe_duplicates_title: 'Ähnliche Unternehmen'
+coreshop.wishlist.name: 'Name'
