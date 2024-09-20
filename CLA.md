@@ -5,18 +5,18 @@ The following terms are used throughout this agreement:
 **You** - the person or legal entity including its affiliates asked to accept this agreement. An affiliate is any entity
 that controls or is controlled by the legal entity, or is under common control with it.
 
-**Project** - is an umbrella term that refers to any and all coreshop open source projects.
+**Project** - is an umbrella term that refers to any and all CoreShop Projects.
 
 **Contribution** - any type of work that is submitted to a Project, including any modifications or additions to existing
 work.
 
 Submitted - conveyed to a Project via a pull request, commit, issue, or any form of electronic, written, or verbal
-communication with coreshop, contributors or maintainers.
+communication with CoreShop, contributors or maintainers.
 
 # 1. Grant of Copyright License.
 
 Subject to the terms and conditions of this agreement, You grant to the Projects’ maintainers, contributors, users and
-to coreshop a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce,
+to CoreShop a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce,
 prepare derivative works of, publicly display, publicly perform, sublicense, and distribute Your contributions and such
 derivative works. Except for this license, You reserve all rights, title, and interest in your contributions.
 
