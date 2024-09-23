@@ -22,7 +22,6 @@ use Behat\Behat\Context\Context;
 use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Listing;
-
 use Webmozart\Assert\Assert;
 
 final class PimcoreContext implements Context

@@ -715,7 +715,7 @@ final class PimcoreClassContext implements Context
          */
         $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             /**
              * @var Concrete $instance
              */
