@@ -32,7 +32,6 @@ use CoreShop\Component\Resource\DataHub\Type\DateTimeType;
 use CoreShop\Component\Resource\DataHub\Type\JsonType;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
-use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use GraphQL\Type\Definition\InputObjectType;
@@ -42,6 +41,7 @@ use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
+use PHPStan\Type\BooleanType;
 
 class DoctrineProvider
 {
@@ -181,7 +181,7 @@ class DoctrineProvider
                     'name' => $fieldName,
                     'type' => $this->getType(FilterNumber::NAME . '_bigint'),
                 ];
-            } elseif ($fieldType instanceof IntType\) {
+            } elseif ($fieldType instanceof IntType) {
                 $queryFilterFields[$fieldName] = [
                     'name' => $fieldName,
                     'type' => $this->getType(FilterNumber::NAME . '_int'),
