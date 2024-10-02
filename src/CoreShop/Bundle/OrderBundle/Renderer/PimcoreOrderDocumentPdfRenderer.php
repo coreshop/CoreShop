@@ -18,20 +18,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Renderer;
 
-use CoreShop\Bundle\OrderBundle\Controller\OrderDocumentPrintController;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
-use Pimcore\Bundle\WebToPrintBundle\Processor;
-use Pimcore\File;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ControllerReference;
-use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
+use CoreShop\Component\Pimcore\Print\PrintablePdfRendererInterface;
 
 class PimcoreOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
     public function __construct(
-        private FragmentRendererInterface $fragmentRenderer,
+        private PrintablePdfRendererInterface $pdfRenderer,
         private ThemeHelperInterface $themeHelper,
     ) {
     }
@@ -50,46 +45,11 @@ class PimcoreOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
                 'language' => (string) $orderDocument->getOrder()->getLocaleCode(),
                 'type' => $orderDocument::getDocumentType(),
                 $orderDocument::getDocumentType() => $orderDocument,
+                'locale' => $orderDocument->getOrder()?->getLocaleCode()
             ];
 
-            $request = new Request($params);
-            $request->setLocale($orderDocument->getOrder()->getLocaleCode());
-
-            $printController = OrderDocumentPrintController::class;
-
-            $printContentAction = $orderDocument::getDocumentType() . 'Action';
-            $printFooterAction = 'footerAction';
-            $printHeaderAction = 'headerAction';
-
-            $referenceFooter = new ControllerReference(sprintf('%s::%s', $printController, $printFooterAction), $params);
-            $referenceHeader = new ControllerReference(sprintf('%s::%s', $printController, $printHeaderAction), $params);
-            $referenceContent = new ControllerReference(sprintf('%s::%s', $printController, $printContentAction), $params);
-
-            $contentHeader = $this->fragmentRenderer->render($referenceHeader, $request)->getContent();
-            $contentFooter = $this->fragmentRenderer->render($referenceFooter, $request)->getContent();
-            $content = $this->fragmentRenderer->render($referenceContent, $request)->getContent();
-
-            /**
-             * @psalm-suppress InternalMethod
-             */
-            $contentHeaderFile = File::getLocalTempFilePath('html');
-
-            /**
-             * @psalm-suppress InternalMethod
-             */
-            $contentFooterFile = File::getLocalTempFilePath('html');
-
-            file_put_contents($contentHeaderFile, $contentHeader ?: '');
-            file_put_contents($contentFooterFile, $contentFooter ?: '');
-
-            $params = [
-                'headerTemplate' => $contentHeaderFile,
-                'footerTemplate' => $contentFooterFile,
-                'marginTop' => 1,
-            ];
-
-            return Processor::getInstance()->getPdfFromString(
-                $content ?: '',
+            return $this->pdfRenderer->renderPrintable(
+                $orderDocument,
                 $params
             );
         });

@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    public: true
+
+  CoreShop\Component\Pimcore\Print\PrintablePdfRendererInterface: '@CoreShop\Component\Pimcore\Print\PimcorePrintablePdfRenderer'
+  CoreShop\Component\Pimcore\Print\PimcorePrintablePdfRenderer:
+    arguments:
+      - '@fragment.renderer.inline'
