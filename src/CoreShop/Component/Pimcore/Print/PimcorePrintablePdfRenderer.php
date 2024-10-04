@@ -41,9 +41,9 @@ class PimcorePrintablePdfRenderer implements PrintablePdfRendererInterface
 
         $params['printable'] = $printable;
 
-        $referenceFooter = new ControllerReference($printable->getPrintBodyController($params), $params);
+        $referenceContent = new ControllerReference($printable->getPrintBodyController($params), $params);
         $referenceHeader = new ControllerReference($printable->getPrintHeaderController($params), $params);
-        $referenceContent = new ControllerReference($printable->getPrintFooterController($params), $params);
+        $referenceFooter = new ControllerReference($printable->getPrintFooterController($params), $params);
 
         $contentHeader = $this->fragmentRenderer->render($referenceHeader, $request)->getContent();
         $contentFooter = $this->fragmentRenderer->render($referenceFooter, $request)->getContent();
