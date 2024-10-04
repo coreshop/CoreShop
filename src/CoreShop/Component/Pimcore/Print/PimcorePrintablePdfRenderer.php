@@ -39,6 +39,8 @@ class PimcorePrintablePdfRenderer implements PrintablePdfRendererInterface
             $request->setLocale($params['locale']);
         }
 
+        $params['printable'] = $printable;
+
         $referenceFooter = new ControllerReference($printable->getPrintBodyController($params), $params);
         $referenceHeader = new ControllerReference($printable->getPrintHeaderController($params), $params);
         $referenceContent = new ControllerReference($printable->getPrintFooterController($params), $params);
