@@ -8,7 +8,7 @@ services:
       - '@fragment.renderer.inline'
 
   CoreShop\Component\Pimcore\Print\PersistedPrintablePdfRenderer:
-    decorates: '@CoreShop\Component\Pimcore\Print\PrintablePdfRendererInterface'
+    decorates: 'CoreShop\Component\Pimcore\Print\PrintablePdfRendererInterface'
     arguments:
       - '@CoreShop\Component\Pimcore\Print\PersistedPrintablePdfRenderer.inner'
       - '%kernel.debug%'
