@@ -43,7 +43,7 @@ services:
             - '@CoreShop\Bundle\TestBundle\Service\CookieSetterInterface'
 
     payum.concurrency_gateway_factory:
-        class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
+        class: Payum\Bundle\PayumBundle\Builder\GatewayFactoryBuilder
         arguments: [ CoreShop\Behat\Service\Payum\Concurrency\ConcurrencyGatewayFactory ]
         tags:
             - { name: payum.gateway_factory_builder, factory: concurrency }
