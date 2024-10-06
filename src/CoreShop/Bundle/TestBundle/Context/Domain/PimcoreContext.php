@@ -121,6 +121,9 @@ final class PimcoreContext implements Context
 
     private function getListingFromClassDefinition(ClassDefinition $definition): Listing
     {
+        /**
+         * @psalm-var class-string $className
+         */
         $className = sprintf('Pimcore\\Model\\DataObject\\%s\\Listing', $definition->getName());
 
         $list = new $className();
