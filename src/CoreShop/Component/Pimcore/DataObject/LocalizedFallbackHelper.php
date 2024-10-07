@@ -22,9 +22,6 @@ use Pimcore\Model\DataObject\Localizedfield;
 
 class LocalizedFallbackHelper
 {
-    /**
-     * @return mixed
-     */
     public static function useFallback(\Closure $function, bool $use = false): mixed
     {
         $backup = Localizedfield::getGetFallbackValues();
