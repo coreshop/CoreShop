@@ -16,20 +16,22 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\PayumBundle;
+namespace CoreShop\Component\Pimcore\DataObject;
 
-use Http\Adapter\Guzzle7\Client;
-use Payum\Bundle\PayumBundle\ContainerAwareCoreGatewayFactory;
-use Payum\Core\Bridge\Spl\ArrayObject;
+use Pimcore\Model\DataObject\Localizedfield;
 
-class CoreGatewayFactory extends ContainerAwareCoreGatewayFactory
+class LocalizedFallbackHelper
 {
-    public function createConfig(array $config = []): array
+    public static function useFallback(\Closure $function, bool $use = false): mixed
     {
-        return parent::createConfig([
-            'httplug.client' => function (ArrayObject $config) {
-                return new Client();
-            },
-        ]);
+        $backup = Localizedfield::getGetFallbackValues();
+
+        Localizedfield::setGetFallbackValues($use);
+
+        $result = $function();
+
+        Localizedfield::setGetFallbackValues($backup);
+
+        return $result;
     }
 }

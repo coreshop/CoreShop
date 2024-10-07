@@ -1,4 +1,4 @@
-name: 'coreshop-4'
+name: 'coreshop4.1'
 
 x-php: &php
   volumes:
@@ -34,7 +34,7 @@ x-php: &php
 
 services:
   db:
-    container_name: coreshop4-db
+    container_name: coreshop4.1-db
     image: mariadb:10.5
     working_dir: /application
     command: [ mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci ]
@@ -49,7 +49,7 @@ services:
       - "3306"
 
   nginx:
-    container_name: coreshop4-nginx
+    container_name: coreshop4.1-nginx
     image: nginx:stable-alpine
     volumes:
       - .:/var/www/html
@@ -61,7 +61,7 @@ services:
 
   php:
     <<: *php
-    container_name: coreshop4-php
+    container_name: coreshop4.1-php
     image: coreshop/coreshop:PHP8.2-fpm-debug
     build:
       target: dev
@@ -72,7 +72,7 @@ services:
 
   behat:
     <<: *php
-    container_name: coreshop4-behat
+    container_name: coreshop4.1-behat
     image: coreshop/coreshop:PHP8.2-fpm-debug-behat
     build:
       target: behat
@@ -84,7 +84,7 @@ services:
     depends_on:
       - db
     environment:
-      PIMCORE_TEST_DB_DSN: "mysql://root:ROOT@coreshop4-db/coreshop4___behat"
+      PIMCORE_TEST_DB_DSN: "mysql://root:ROOT@coreshop4.1-db/coreshop4_1___behat"
       PIMCORE_KERNEL_CLASS: 'Kernel'
     command:
       - bash
@@ -97,6 +97,7 @@ services:
 
   gotenberg:
     image: gotenberg/gotenberg:8
+    container_name: coreshop4.1-gotenberg
 
   chrome:
     image: browserless/chrome
@@ -112,7 +113,7 @@ services:
       - TOKEN=${BROWSERLESS_TOKEN}
       - PORT=3000
       - WORKSPACE_DELETE_EXPIRED=true
-    container_name: chrome
+    container_name: coreshop4.1-chrome
     restart: always
 
 volumes:

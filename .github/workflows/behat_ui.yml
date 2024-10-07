@@ -1,7 +1,7 @@
 name: Behat UI
 on:
   push:
-    branches: [ '4.0', 'next' ]
+    branches: [ '4.0', '4.1','next' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -10,7 +10,7 @@ on:
       - 'src/**'
 
   pull_request:
-    branches: [ '4.0', 'next' ]
+    branches: [ '4.0', '4.1','next' ]
     paths:
       - 'composer.json'
       - 'features/**'

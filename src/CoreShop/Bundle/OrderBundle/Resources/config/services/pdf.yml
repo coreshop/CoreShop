@@ -39,7 +39,7 @@ services:
 
     CoreShop\Bundle\OrderBundle\Renderer\PimcoreOrderDocumentPdfRenderer:
         arguments:
-            - '@fragment.renderer.inline'
+            - '@CoreShop\Component\Pimcore\Print\PrintablePdfRendererInterface'
             - '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
 
     CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer:

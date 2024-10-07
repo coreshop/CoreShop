@@ -709,6 +709,27 @@ class ClassContext implements Context
     }
 
     /**
+     * @Given /^there are (\d+) instances of (class|behat-class "[^"]+") with key-prefix "([^"]+)"$/
+     */
+    public function thereAreCountInstancesOfClassWithKey(int $count, ClassDefinition $definition, $key): void
+    {
+        /**
+         * @var class-string $className
+         */
+        $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
+
+        for ($i = 0; $i < $count; ++$i) {
+            /**
+             * @var Concrete $instance
+             */
+            $instance = new $className();
+            $instance->setKey(sprintf('%s-%s', $key, $i));
+            $instance->setParentId(1);
+            $instance->save();
+        }
+    }
+
+    /**
      * @Given /^I reload the (object-instance) into object-instance-2$/
      */
     public function iReloadTheObjectInstanceIntoObjectInstance2(Concrete $dataObject): void
