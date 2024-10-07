@@ -25,8 +25,9 @@ class CoreGatewayFactoryBuilder extends \Payum\Bundle\PayumBundle\Builder\CoreGa
 {
     private ContainerInterface $container;
 
-    public function __construct(ContainerInterface $container)
-    {
+    public function __construct(
+        ContainerInterface $container,
+    ) {
         parent::__construct($container);
 
         $this->container = $container;

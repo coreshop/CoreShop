@@ -39,22 +39,19 @@ class Patch implements PatchInterface
     ) {
         if (is_string($interface)) {
             $this->interface = [$interface];
-        }
-        else {
+        } else {
             $this->interface = $interface;
         }
 
         if (is_string($useTraits)) {
             $this->useTraits = [$useTraits];
-        }
-        else {
+        } else {
             $this->useTraits = $useTraits;
         }
 
         if (is_string($listingUseTraits)) {
             $this->listingUseTraits = [$listingUseTraits];
-        }
-        else {
+        } else {
             $this->listingUseTraits = $listingUseTraits;
         }
     }
