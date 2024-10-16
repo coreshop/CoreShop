@@ -25,12 +25,12 @@
         {% do pimcore_head_title().setSeparator(' | ') %}
     {%- endapply -%}
 
-    {% block layout_head_meta deferred %}
+    {% block layout_head_meta %}
         {{ pimcore_head_title('CoreShop') }}
         {{ pimcore_head_meta() }}
     {% endblock %}
 
-    {% block head_stylesheets deferred %}
+    {% block head_stylesheets %}
         {{ pimcore_head_link() }}
     {% endblock %}
 </head>
@@ -53,7 +53,7 @@
     {% include '@CoreShopFrontend/_footer.html.twig' %}
 {% endblock %}
 
-{% block scripts deferred %}
+{% block scripts %}
     {{ pimcore_head_script() }}
 {% endblock %}
 </body>
