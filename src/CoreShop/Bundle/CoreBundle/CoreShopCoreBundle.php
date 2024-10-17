@@ -95,7 +95,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopSequenceBundle(), 2100);
         $collection->addBundle(new CoreShopNotificationBundle(), 2000);
         $collection->addBundle(new CoreShopTrackingBundle(), 2000);
-        $collection->addBundle(new CoreShopFrontendBundle(), 1800);
         $collection->addBundle(new CoreShopPayumBundle(), 1700);
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
