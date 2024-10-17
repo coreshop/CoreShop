@@ -1,3 +1,9 @@
+## 4.0.11
+
+* [Pimcore] use getCount() instead of getTotalCount() for BatchListing by @hethehe in https://github.com/coreshop/CoreShop/pull/2715
+* [Store] fix cached store context by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2727
+* [Twig] twig >= 3.14 is compatible again by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2719
+
 ## 4.0.10
 
 * [PimcoreBundle] respect user language for grid filter labels (#2694) by @benwalch in https://github.com/coreshop/CoreShop/pull/2695
