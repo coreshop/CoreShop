@@ -1,3 +1,10 @@
+## 4.1.0-RC2
+
+* [ResourceBundle] check also for empty "pimcore_class_name" by @breakone in https://github.com/coreshop/CoreShop/pull/2716
+* [CoreBundle] implement name functions and add migration for order-name and wishlist-name by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2717
+* [Pimcore] introduce the Printable by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2720
+* [Printable] further improvements to new printable feature by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2724
+
 ## 4.1.0-RC1 
 
 > **Important**: Dependency to dachcom-digital/emailizr has been removed due to licensing issues with GPL and CCL. If
