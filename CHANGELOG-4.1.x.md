@@ -1,5 +1,9 @@
 ## 4.1.0-RC2
 
+> **Important** The FrontendBundle is now disabled by default. We added a migration to enable it
+> Please check if it actually is enabled in the bundles.php file
+> If you don't need it, feel free to disable it.
+
 * [ResourceBundle] check also for empty "pimcore_class_name" by @breakone in https://github.com/coreshop/CoreShop/pull/2716
 * [CoreBundle] implement name functions and add migration for order-name and wishlist-name by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2717
 * [Pimcore] introduce the Printable by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2720
