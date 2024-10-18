@@ -37,7 +37,7 @@ final class Version20241018060845 extends AbstractMigration implements Container
         $class = CoreShopFrontendBundle::class;
         $bundle = ltrim($class, '\\');
 
-        if (!isset($bundles[$bundle])) {
+        if (!isset($registered[$bundle])) {
             $registered[$bundle] = ['all' => true];
         }
 
@@ -52,7 +52,7 @@ final class Version20241018060845 extends AbstractMigration implements Container
         $class = CoreShopFrontendBundle::class;
         $bundle = ltrim($class, '\\');
 
-        if (isset($bundles[$bundle])) {
+        if (isset($registered[$bundle])) {
             unset($registered[$bundle]);
         }
 
@@ -94,7 +94,7 @@ final class Version20241018060845 extends AbstractMigration implements Container
 
     private function load(string $file): array
     {
-        $bundles = file_exists($file) ? (require $file) : [];
+        $bundles = file_exists($file) ? (require_once $file) : [];
         if (!\is_array($bundles)) {
             $bundles = [];
         }
