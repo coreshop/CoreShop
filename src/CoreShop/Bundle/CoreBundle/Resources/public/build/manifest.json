@@ -1,0 +1,12 @@
+{
+  "bundles/coreshopcore/build/main.js": "/bundles/coreshopcore/build/main.js",
+  "bundles/coreshopcore/build/vendors-node_modules_antd_es_button_index_js-node_modules_pimcore-studio-ui_dist_sdk_main_js.js": "/bundles/coreshopcore/build/vendors-node_modules_antd_es_button_index_js-node_modules_pimcore-studio-ui_dist_sdk_main_js.js",
+  "bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/my-first-tab-component.d.ts.map": "/bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/my-first-tab-component.d.ts.map",
+  "bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/folder-tab-extension.d.ts.map": "/bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/folder-tab-extension.d.ts.map",
+  "bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/my-first-widget.d.ts.map": "/bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/my-first-widget.d.ts.map",
+  "bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/folder-tab-extension.d.ts": "/bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/folder-tab-extension.d.ts",
+  "bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/my-first-tab-component.d.ts": "/bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/my-first-tab-component.d.ts",
+  "bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/my-first-widget.d.ts": "/bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/components/my-first-widget.d.ts",
+  "bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/main.d.ts.map": "/bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/main.d.ts.map",
+  "bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/main.d.ts": "/bundles/coreshopcore/build/../../../../../../../dist/build/types/assets/js/src/main.d.ts"
+}

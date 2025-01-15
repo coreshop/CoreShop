@@ -1,0 +1,4 @@
+pimcore_studio_backend:
+  open_api_scan_paths:
+    - "%kernel.project_dir%/src/CoreShop/Component/Address/OpenApi/Schema"
+    - "%kernel.project_dir%/src/CoreShop/Component/Resource/OpenApi/Schema"

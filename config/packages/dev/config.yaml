@@ -12,3 +12,7 @@ services:
         arguments: [ CoreShop\Behat\Service\Payum\Concurrency\ConcurrencyGatewayFactory ]
         tags:
             - { name: payum.gateway_factory_builder, factory: concurrency }
+
+framework:
+    trusted_proxies: '192.0.0.1/8,10.0.0.0/8,172.0.0.0/8'
+    trusted_headers: [ 'x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port' ]

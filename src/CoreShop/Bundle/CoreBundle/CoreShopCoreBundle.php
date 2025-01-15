@@ -50,10 +50,11 @@ use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
 use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
+use Pimcore\Bundle\StudioUiBundle\Extension\Bundle\PimcoreBundleStudioUiInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopCoreBundle extends AbstractResourceBundle
+final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleStudioUiInterface
 {
     public function getSupportedDrivers(): array
     {
@@ -151,5 +152,15 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
     public function getEditmodeCssPaths(): array
     {
         return [];
+    }
+
+    public function getWebpackEntryPointsJsonLocations(): array
+    {
+        return [$this->getPath() . '/Resources/public/build/entrypoints.json'];
+    }
+
+    public function getWebpackEntryPoints(): array
+    {
+        return ['main'];
     }
 }

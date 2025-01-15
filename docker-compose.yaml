@@ -34,7 +34,6 @@ x-php: &php
 
 services:
   db:
-    container_name: coreshop4.1-db
     image: mariadb:10.5
     working_dir: /application
     command: [ mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci ]
@@ -49,7 +48,6 @@ services:
       - "3306"
 
   nginx:
-    container_name: coreshop4.1-nginx
     image: nginx:stable-alpine
     volumes:
       - .:/var/www/html
@@ -61,7 +59,6 @@ services:
 
   php:
     <<: *php
-    container_name: coreshop4.1-php
     image: coreshop/coreshop:PHP8.2-fpm-debug
     build:
       target: dev
@@ -72,7 +69,6 @@ services:
 
   behat:
     <<: *php
-    container_name: coreshop4.1-behat
     image: coreshop/coreshop:PHP8.2-fpm-debug-behat
     build:
       target: behat
@@ -97,7 +93,6 @@ services:
 
   gotenberg:
     image: gotenberg/gotenberg:8
-    container_name: coreshop4.1-gotenberg
 
   chrome:
     image: browserless/chrome
@@ -113,8 +108,7 @@ services:
       - TOKEN=${BROWSERLESS_TOKEN}
       - PORT=3000
       - WORKSPACE_DELETE_EXPIRED=true
-    container_name: coreshop4.1-chrome
-    restart: always
+    restart: unless-stopped
 
 volumes:
   db:
