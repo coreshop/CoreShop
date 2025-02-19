@@ -17,7 +17,7 @@ export const FolderTabExtension: AbstractModule = {
 
         tabManager.register({
             children: <MyFirstTabComponent />,
-            icon: <Icon name={ 'camera' } />,
+            icon: <Icon value={ 'camera' } />,
             key: 'my-first-tab-component',
             label: '1. tab component'
         })

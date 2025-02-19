@@ -31,7 +31,7 @@
     "whatwg-fetch": "^3.6.20"
   },
   "dependencies": {
-    "pimcore-studio-ui": "file:../../../../pimcore-studio-ui-0.0.1.tgz"
+    "pimcore-studio-ui": "file:vendor/pimcore/studio-ui-bundle/assets/pimcore-studio-ui-0.0.1.tgz"
   },
   "peerDependencies": {
     "antd": "^5.22.1",

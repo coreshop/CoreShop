@@ -9,6 +9,7 @@ export const MyFirstTabComponent = (): React.JSX.Element => {
         widgetManager.openBottomWidget({
             name: 'My first widget',
             component: 'my-first-widget',
+            config: {}
         });
     }
 

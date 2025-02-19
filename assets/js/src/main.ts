@@ -12,6 +12,6 @@ Pimcore.pluginSystem.registerPlugin({
     // register modules here
     onStartup: ({ moduleSystem }): void => {
         console.log('Start up my plugin');
-        moduleSystem.registerModule(MyFirstTabComponent)
+        // moduleSystem.registerModule(MyFirstTabComponent)
     }
 })
