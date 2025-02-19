@@ -1,4 +1,4 @@
-name: 'coreshop4.1'
+name: 'coreshop5.0'
 
 x-php: &php
   volumes:
@@ -34,7 +34,7 @@ x-php: &php
 
 services:
   db:
-    image: mariadb:10.5
+    image: mysql:8.4
     working_dir: /application
     command: [ mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci ]
     volumes:
@@ -59,7 +59,6 @@ services:
 
   php:
     <<: *php
-    image: coreshop/coreshop:PHP8.2-fpm-debug
     build:
       target: dev
       args:
@@ -69,7 +68,6 @@ services:
 
   behat:
     <<: *php
-    image: coreshop/coreshop:PHP8.2-fpm-debug-behat
     build:
       target: behat
       args:
@@ -80,7 +78,7 @@ services:
     depends_on:
       - db
     environment:
-      PIMCORE_TEST_DB_DSN: "mysql://root:ROOT@coreshop4.1-db/coreshop4_1___behat"
+      PIMCORE_TEST_DB_DSN: "mysql://root:ROOT@coreshop5.0-db/coreshop5_0___behat"
       PIMCORE_KERNEL_CLASS: 'Kernel'
     command:
       - bash
@@ -108,7 +106,7 @@ services:
       - TOKEN=${BROWSERLESS_TOKEN}
       - PORT=3000
       - WORKSPACE_DELETE_EXPIRED=true
-    restart: unless-stopped
+    restart: always
 
 volumes:
   db:
