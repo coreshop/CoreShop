@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend\Account;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 
 class ChangeAddressPage extends AbstractFrontendPage implements ChangeAddressPageInterface
 {
@@ -63,16 +64,22 @@ class ChangeAddressPage extends AbstractFrontendPage implements ChangeAddressPag
     public function openLink(?string $street): void
     {
         $this->getElement('addresses-link', ['%street%' => $street])->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function addAddress(): void
     {
         $this->getElement('address-add')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function deleteAddress($street): void
     {
         $this->getElement('address-delete', ['%street%' => $street])->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function fillAddress($country = null, $city = null, $postcode = null, $number = null, $street = null, $firstname = null, $lastname = null, $salutation = null, $phone = null): void
@@ -90,6 +97,8 @@ class ChangeAddressPage extends AbstractFrontendPage implements ChangeAddressPag
     public function save(): void
     {
         $this->getElement('save_changes')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     protected function getDefinedElements(): array

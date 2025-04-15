@@ -25,6 +25,7 @@ use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\RegisterFron
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements DependentBundleInterface
@@ -38,7 +39,7 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterFrontendControllerPass());
+        $container->addCompilerPass(new RegisterFrontendControllerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
         $container->addCompilerPass(new FrontendInstallerPass());
     }
 

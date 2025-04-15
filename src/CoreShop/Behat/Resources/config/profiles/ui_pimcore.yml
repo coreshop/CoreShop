@@ -23,8 +23,34 @@ ui_pimcore:
             sessions:
                 default:
                     panther:
+                        manager_options:
+                            connection_timeout_in_ms: 5000
+                            request_timeout_in_ms: 120000
+                            chromedriver_arguments:
+                                - --log-path=etc/build/chromedriver.log
+                                - --verbose
+                            capabilities:
+                                acceptSslCerts: true
+                                acceptInsecureCerts: true
+                                unexpectedAlertBehaviour: accept
                         options:
                             browser: chrome
+                            browser_arguments:
+                                - --window-size=1200,1000
+                                - --headless
+                                - --no-sandbox
+                                - --disable-dev-shm-usage
+                                - --disable-gpu
+                                - --disable-infobars
+                                - --disable-features=TranslateUI
+                                - --disable-translate
+                                - --disable-popup-blocking
+                                - --disable-blink-features=AutomationControlled
+                                - --disable-component-extensions-with-background-pages
+                                - --disable-background-networking
+                                - --disable-dev-tools
+                                - --disable-extensions
+                                - --guest
             show_auto: false
 
         Robertfausk\Behat\PantherExtension: ~

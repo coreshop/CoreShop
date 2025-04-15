@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 
 class CartCreatePage extends AbstractFrontendPage implements CartCreatePageInterface
 {
@@ -32,6 +33,8 @@ class CartCreatePage extends AbstractFrontendPage implements CartCreatePageInter
     {
         $this->getElement('cart_name')->setValue($name);
         $this->getElement('cart_create_button')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function checkValidationMessageFor(string $message): bool

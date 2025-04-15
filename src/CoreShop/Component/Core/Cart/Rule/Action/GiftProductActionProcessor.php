@@ -75,6 +75,10 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         $item->setQuantity(1);
         $item->setIsGiftItem(true);
 
+        if ($product instanceof ProductInterface) {
+            $item->setDigitalProduct($product->getDigitalProduct());
+        }
+
         if (
             $product instanceof ProductInterface &&
             $product->hasUnitDefinitions() &&

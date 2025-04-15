@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 
 class WishlistPage extends AbstractFrontendPage implements WishlistPageInterface
 {
@@ -41,6 +42,7 @@ class WishlistPage extends AbstractFrontendPage implements WishlistPageInterface
     public function removeProduct(string $productName): void
     {
         $this->getElement('delete_button', ['%name%' => $productName])->press();
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     /**

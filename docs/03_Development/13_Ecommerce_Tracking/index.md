@@ -23,7 +23,7 @@ core_shop_tracking:
    trackers:
       google-analytics-enhanced-ecommerce:
         enabled: false
-      google-analytics-universal-ecommerce:
+      google-analytics-4:
         enabled: false
       google-gtag-enhanced-ecommerce:
         enabled: false

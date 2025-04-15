@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend;
 
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 
 class CartsListPage extends AbstractFrontendPage implements CartsListPageInterface
 {
@@ -43,6 +44,8 @@ class CartsListPage extends AbstractFrontendPage implements CartsListPageInterfa
 
         $this->getElement('cart_select')->selectOption($value);
         $this->getElement('cart_select_button')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     protected function getDefinedElements(): array

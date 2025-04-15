@@ -21,7 +21,7 @@ namespace CoreShop\Behat\Page\Pimcore;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Exception\ElementNotFoundException;
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
+use CoreShop\Bundle\TestBundle\Page\SymfonyPage;
 
 abstract class AbstractPimcorePage extends SymfonyPage implements PimcorePageInterface
 {

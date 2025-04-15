@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TestBundle\Page\Frontend;
 
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
+use CoreShop\Bundle\TestBundle\Page\SymfonyPage;
 
 abstract class AbstractFrontendPage extends SymfonyPage implements FrontendPageInterface
 {

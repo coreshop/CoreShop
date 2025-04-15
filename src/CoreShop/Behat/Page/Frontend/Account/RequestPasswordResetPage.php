@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend\Account;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 
 class RequestPasswordResetPage extends AbstractFrontendPage implements RequestPasswordResetPageInterface
 {
@@ -45,6 +46,8 @@ class RequestPasswordResetPage extends AbstractFrontendPage implements RequestPa
     public function reset(): void
     {
         $this->getElement('reset_button')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function specifyEmail(?string $email): void

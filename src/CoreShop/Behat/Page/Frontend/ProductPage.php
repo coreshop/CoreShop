@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
@@ -91,23 +92,31 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
     public function addToCart(): void
     {
         $this->getElement('add_to_cart')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function addToWishlist(): void
     {
         $this->getElement('add_to_wishlist')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function addToCartWithQuantity(string $quantity): void
     {
         $this->getElement('quantity')->setValue($quantity);
         $this->getElement('add_to_cart')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function addToCartInUnit(ProductUnitDefinitionInterface $unit): void
     {
         $this->getElement('unit')->setValue($unit->getId());
         $this->getElement('add_to_cart')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function addToCartInUnitWithQuantity(ProductUnitDefinitionInterface $unit, string $quantity): void
@@ -115,11 +124,15 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         $this->getElement('unit')->setValue($unit->getId());
         $this->getElement('quantity')->setValue($quantity);
         $this->getElement('add_to_cart')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function clickAttribute(AttributeInterface $attribute): void
     {
         $this->getElement('attribute-label', ['%id%' => $attribute->getId()])->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function isAttributeSelected(AttributeInterface $attribute): bool
