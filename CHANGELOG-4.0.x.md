@@ -1,3 +1,9 @@
+# 4.0.14
+* [CoreBundle] add payment-provider carrier condition by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2788
+* [Store] fix admin site request resolver by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2793
+* fix reserved key query by @solverat in https://github.com/coreshop/CoreShop/pull/2803
+* [FrontendBundle] fix priority for frontend controller registration by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2807 
+
 # 4.0.13
 * [Resource] fallback locale could be null for newly created entities by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2756
 * fix: CheckoutManager::getNextStep return type by @gander in https://github.com/coreshop/CoreShop/pull/2758

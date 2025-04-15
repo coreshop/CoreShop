@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-echo "BEHAT TESTS"
-vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default

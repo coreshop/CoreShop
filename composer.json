@@ -118,8 +118,8 @@
     "webmozart/assert": "^1.10"
   },
   "require-dev": {
-    "behat/behat": "^3.8",
-    "behat/mink": "^1.8",
+    "behat/behat": "^3.19",
+    "behat/mink": "^1.12",
     "chrome-php/chrome": "^1.11",
     "dbrekelmans/bdi": "^1.0",
     "friends-of-behat/mink-debug-extension": "^2.0",
@@ -133,7 +133,7 @@
     "phpstan/phpstan-webmozart-assert": "^1.2.4",
     "phpunit/phpunit": "^10.0",
     "robertfausk/behat-panther-extension": "^1.0",
-    "symfony/panther": "^2.1",
+    "symfony/panther": "^2.2",
     "symfony/runtime": "^6.3",
     "symplify/easy-coding-standard": "^11.1",
     "vimeo/psalm": "^5.23 || ^6.0"

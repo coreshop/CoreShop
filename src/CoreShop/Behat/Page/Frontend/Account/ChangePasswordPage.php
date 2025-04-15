@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend\Account;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 
 class ChangePasswordPage extends AbstractFrontendPage implements ChangePasswordPageInterface
 {
@@ -57,6 +58,8 @@ class ChangePasswordPage extends AbstractFrontendPage implements ChangePasswordP
     public function save(): void
     {
         $this->getElement('save_changes')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     protected function getDefinedElements(): array

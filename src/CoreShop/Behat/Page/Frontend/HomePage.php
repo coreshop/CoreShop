@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 
 class HomePage extends AbstractFrontendPage implements HomePageInterface
 {
@@ -36,6 +37,8 @@ class HomePage extends AbstractFrontendPage implements HomePageInterface
     public function logOut(): void
     {
         $this->getElement('logout_button')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function hasLogoutButton(): bool
@@ -58,6 +61,8 @@ class HomePage extends AbstractFrontendPage implements HomePageInterface
         $this->getElement('currency_selector')->click();
 
         $this->getElement('currency_selector_code', ['%code%' => $currencyCode])->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function getActiveLocale(): string
@@ -88,11 +93,15 @@ class HomePage extends AbstractFrontendPage implements HomePageInterface
     public function switchToCategoryOnMenuLeft(string $name): void
     {
         $this->getElement('category_menu_left_selector', ['%name%' => $name])->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function switchToCategoryOnMenuMain(string $name): void
     {
         $this->getElement('category_menu_top_selector', ['%name%' => $name])->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     protected function getDefinedElements(): array
