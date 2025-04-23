@@ -25,6 +25,6 @@ class PublicInstaller implements FrontendInstallerInterface
     public function installFrontend(string $frontendBundlePath, string $rootPath, string $templatePath): void
     {
         $fs = new Filesystem();
-        $fs->mirror($frontendBundlePath.'/Resources/public/static', $rootPath.'/public/coreshop/static');
+        $fs->mirror($frontendBundlePath . '/Resources/public/static', $rootPath . '/public/coreshop/static');
     }
 }
