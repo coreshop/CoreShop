@@ -29,7 +29,7 @@ class CoreShopMenuBuilder implements MenuBuilderInterface
         $menuItem->setLabel('coreshop');
         $menuItem->setAttributes([
             'class' => 'coreshop_logo_menu',
-            'content' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 87">
+            'content' => '<svg class="x-menu-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 87">
                     <defs>
                         <style>.cls-1{fill:#cd1017;fill-rule:evenodd;}</style>
                     </defs>

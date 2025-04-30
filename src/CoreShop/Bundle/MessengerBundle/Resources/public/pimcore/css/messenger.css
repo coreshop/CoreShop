@@ -16,6 +16,10 @@
     fill: #cd1017;
 }
 
+#pimcore_navigation li.coreshop_logo_menu:hover svg {
+    filter: none;
+}
+
 .coreshop_icon_messenger {
     background: url(../img/messenger.svg) center center no-repeat !important;
 }
