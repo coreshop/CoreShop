@@ -25,6 +25,6 @@ trait TempEntityManagerTrait
 {
     protected function createTempEntityManager(EntityManagerInterface $entityManager): EntityManager
     {
-        return EntityManager::create($entityManager->getConnection(), $entityManager->getConfiguration(), $entityManager->getEventManager());
+        return new EntityManager($entityManager->getConnection(), $entityManager->getConfiguration(), $entityManager->getEventManager());
     }
 }

@@ -83,7 +83,7 @@ EOT
         }
 
         $schemaTool = new SchemaTool($em);
-        $sqls = $schemaTool->getUpdateSchemaSql($metadatas, true);
+        $sqls = $schemaTool->getCreateSchemaSql($metadatas);
 
         $dumpSql = true === $input->getOption('dump-sql');
         $force = true === $input->getOption('force');
@@ -104,7 +104,9 @@ EOT
             $ui->text('Updating database schema...');
             $ui->newLine();
 
-            $schemaTool->updateSchema($metadatas, true);
+            foreach ($sqls as $sql) {
+                $em->getConnection()->executeStatement($sql);
+            }
 
             $pluralization = (1 === count($sqls)) ? 'query was' : 'queries were';
 

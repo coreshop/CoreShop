@@ -6,7 +6,6 @@
             <join-column name="currencyId" referenced-column-name="id" nullable="true"/>
             <cascade>
                 <cascade-persist/>
-                <cascade-merge/>
             </cascade>
         </many-to-one>
 

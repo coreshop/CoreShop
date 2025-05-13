@@ -13,7 +13,6 @@
             <join-column name="default_unit_definition" referenced-column-name="id" on-delete="SET NULL"/>
             <cascade>
                 <cascade-persist/>
-                <cascade-merge/>
             </cascade>
         </one-to-one>
 

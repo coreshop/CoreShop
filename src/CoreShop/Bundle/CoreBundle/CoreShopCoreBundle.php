@@ -49,11 +49,10 @@ use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
 use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
-use Pimcore\Bundle\StudioUiBundle\Extension\Bundle\PimcoreBundleStudioUiInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleStudioUiInterface
+final class CoreShopCoreBundle extends AbstractResourceBundle
 {
     public function getSupportedDrivers(): array
     {

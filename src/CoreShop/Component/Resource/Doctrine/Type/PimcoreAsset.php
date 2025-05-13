@@ -50,7 +50,7 @@ class PimcoreAsset extends Type
         return null;
     }
 
-    public function getBindingType(): int
+    public function getBindingType(): ParameterType
     {
         return ParameterType::INTEGER;
     }

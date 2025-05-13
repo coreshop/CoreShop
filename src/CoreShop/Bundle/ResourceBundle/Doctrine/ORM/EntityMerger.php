@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,6 +32,7 @@ use Doctrine\Persistence\Proxy;
 class EntityMerger
 {
     private IdentifierFlattener $identifierFlattener;
+    private array $cascadeMergeAssociations;
 
     public function __construct(
         private EntityManagerInterface $em,
@@ -39,6 +41,10 @@ class EntityMerger
          * @psalm-suppress InvalidArgument
          */
         $this->identifierFlattener = new IdentifierFlattener($em->getUnitOfWork(), $em->getMetadataFactory());
+        /**
+         * @psalm-suppress InternalMethod, DeprecatedMethod
+         */
+        $this->cascadeMergeAssociations = \Pimcore::getContainer()->getParameter('coreshop.orm_cascade_merge');
     }
 
     public function merge(ResourceInterface $entity): void
@@ -296,14 +302,26 @@ class EntityMerger
 
         $associationMappings = array_filter(
             $class->associationMappings,
-            static function ($assoc) {
-                return $assoc['isCascadeMerge'];
-            },
+            function ($assoc) use ($entity) {
+                if (array_key_exists($entity::class, $this->cascadeMergeAssociations)) {
+                    return in_array($assoc['fieldName'], $this->cascadeMergeAssociations[$entity::class], true);
+                }
+
+                if ($entity instanceof TranslationInterface) {
+                    return true;
+                }
+
+                return false;
+            }
         );
         $noMergeAssociationMappings = array_filter(
             $class->associationMappings,
-            static function ($assoc) {
-                return !$assoc['isCascadeMerge'];
+            function ($assoc) use ($entity) {
+                if (array_key_exists($entity::class, $this->cascadeMergeAssociations)) {
+                    return !in_array($assoc['fieldName'], $this->cascadeMergeAssociations[$entity::class], true);
+                }
+
+                return false;
             },
         );
 
@@ -317,16 +335,18 @@ class EntityMerger
                 continue;
             }
 
+            $relatedEntityClass = $this->em->getClassMetadata($assoc['targetEntity']);
+
             if ($relatedEntities instanceof Collection) {
                 //Reset Collection
-                $pColl = new PersistentCollection($this->em, $assoc['targetEntity'], new ArrayCollection());
+                $pColl = new PersistentCollection($this->em, $relatedEntityClass, new ArrayCollection());
                 $pColl->setOwner($entity, $assoc);
                 $pColl->setInitialized(false);
 
                 $class->reflFields[$assoc['fieldName']]->setValue($entity, $pColl);
             } else {
                 //Reset "tmp" entity with managed entity
-                $relatedEntityClass = $this->em->getClassMetadata($assoc['targetEntity']);
+
                 $id = $relatedEntityClass->getIdentifierValues($relatedEntities);
 
                 if (!$id) {
