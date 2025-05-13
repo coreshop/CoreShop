@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -31,19 +31,19 @@ interface ListingInterface extends \Countable, PaginateListingInterface
      * Variant mode defines how to consider variants in product list results
      * - does not consider variants in search results.
      */
-    public const VARIANT_MODE_HIDE = 'hide';
+    public const string VARIANT_MODE_HIDE = 'hide';
 
     /**
      * Variant mode defines how to consider variants in product list results
      * - considers variants in search results and returns objects and variants.
      */
-    public const VARIANT_MODE_INCLUDE = 'include';
+    public const string VARIANT_MODE_INCLUDE = 'include';
 
     /**
      * Variant mode defines how to consider variants in product list results
      * - considers variants in search results but only returns corresponding objects in search results.
      */
-    public const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
+    public const string VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
 
     /**
      * Returns all products valid for this search.

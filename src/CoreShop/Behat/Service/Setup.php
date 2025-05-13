@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -52,7 +52,7 @@ class Setup
         // use a dedicated setup connection as the framework connection is bound to the DB and will
         // fail if the DB doesn't exist
         $setupConnection = DriverManager::getConnection($params, $config);
-        $schemaManager = $setupConnection->getSchemaManager();
+        $schemaManager = $setupConnection->createSchemaManager();
 
         $databases = $schemaManager->listDatabases();
         if (in_array($dbName, $databases)) {
@@ -60,10 +60,6 @@ class Setup
         }
 
         $schemaManager->createDatabase($connection->quoteIdentifier($dbName));
-
-        if (!$connection->isConnected()) {
-            $connection->connect();
-        }
 
         $installer = new \Pimcore\Bundle\InstallBundle\Installer(
             \Pimcore::getContainer()->get('monolog.logger.pimcore'),

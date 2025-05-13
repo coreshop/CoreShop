@@ -11,14 +11,15 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 
 class PaymentPage extends AbstractFrontendPage implements PaymentPageInterface
@@ -36,6 +37,8 @@ class PaymentPage extends AbstractFrontendPage implements PaymentPageInterface
     public function submitStep(): void
     {
         $this->getElement('submit_payment_step')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     protected function getAdditionalParameters(): array

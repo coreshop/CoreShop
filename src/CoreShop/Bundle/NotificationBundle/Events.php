@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -23,10 +23,10 @@ final class Events
     /**
      * Fired before a rule will be applied.
      */
-    public const PRE_APPLY = 'coreshop.notification.pre_process_rules';
+    public const string PRE_APPLY = 'coreshop.notification.pre_process_rules';
 
     /**
      * Fired after a rule has been applied.
      */
-    public const POST_APPLY = 'coreshop.notification.post_process_rules';
+    public const string POST_APPLY = 'coreshop.notification.post_process_rules';
 }

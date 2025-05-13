@@ -5,8 +5,8 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -33,9 +33,9 @@ coreshop.helpers.showAbout = function () {
     var html = '<div class="pimcore_about_window">';
     html += '<br><img src="/bundles/coreshopcore/pimcore/img/logo-full.svg" style="width: 400px;"><br>';
     html += '<br><b>Version: ' + coreshop.settings.bundle.version + '</b>';
-    html += '<br><br>&copy; by CoreShop GmbH, Wels, Austria (<a href="https://www.coreshop.org/" target="_blank">coreshop.org</a>)';
+    html += '<br><br>&copy; by CoreShop GmbH, Wels, Austria (<a href="https://www.coreshop.com/" target="_blank">coreshop.org</a>)';
     html += '<br><br><a href="https://github.com/coreshop/coreshop/blob/master/LICENSE.md" target="_blank">License</a> | ';
-    html += '<a href="https://www.coreshop.org/contact.html" target="_blank">Contact</a>';
+    html += '<a href="https://www.coreshop.com/contact.html" target="_blank">Contact</a>';
     html += '</div>';
 
     var win = new Ext.Window({

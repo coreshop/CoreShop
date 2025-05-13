@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class TraceableValidationProcessorPass implements CompilerPassInterface
 {
-    public const RULE_CONDITIONS_VALIDATIONS_PROCESSOR = 'coreshop.rule.conditions.validation_processor';
+    public const string RULE_CONDITIONS_VALIDATIONS_PROCESSOR = 'coreshop.rule.conditions.validation_processor';
 
     public function process(ContainerBuilder $container): void
     {

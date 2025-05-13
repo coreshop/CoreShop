@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -39,15 +39,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    public const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
+    public const string DRIVER_DOCTRINE_ORM = 'doctrine/orm';
 
-    public const DRIVER_PIMCORE = 'pimcore';
+    public const string DRIVER_PIMCORE = 'pimcore';
 
-    public const PIMCORE_MODEL_TYPE_OBJECT = 'object';
+    public const string PIMCORE_MODEL_TYPE_OBJECT = 'object';
 
-    public const PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
+    public const string PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
 
-    public const PIMCORE_MODEL_TYPE_BRICK = 'brick';
+    public const string PIMCORE_MODEL_TYPE_BRICK = 'brick';
 
     public function build(ContainerBuilder $container): void
     {

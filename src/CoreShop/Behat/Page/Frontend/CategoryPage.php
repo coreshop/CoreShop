@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 
 class CategoryPage extends AbstractFrontendPage implements CategoryPageInterface
 {
@@ -48,6 +49,8 @@ class CategoryPage extends AbstractFrontendPage implements CategoryPageInterface
     public function switchView(string $name): void
     {
         $this->getElement('view-' . $name)->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function getProductsInCategoryGrid(): array
@@ -73,11 +76,15 @@ class CategoryPage extends AbstractFrontendPage implements CategoryPageInterface
     public function iSelectFilterOption(string $name): void
     {
         $this->getElement('category-filter-select', ['%name%' => $name])->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function clickFilterSubmit(): void
     {
         $this->getElement('category-filter-submit')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function setSearchField(string $query): void

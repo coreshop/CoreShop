@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -237,7 +237,7 @@ final class IndexContext implements Context
 
     private function indexShouldHaveColumnsInTable(string $tableName, array $columns): void
     {
-        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
 
         Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
 
@@ -260,23 +260,23 @@ final class IndexContext implements Context
 
     private function indexShouldHaveColumnOfType(string $tableName, string $column, string $type): void
     {
-        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
 
         Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
 
-        $doctrineCol = $schemaManager->listTableDetails($tableName)->getColumn($column);
-        $actualType = $schemaManager->getDatabasePlatform()->getColumnDeclarationSQL($column, $doctrineCol->toArray());
+        $doctrineCol = $schemaManager->introspectTable($tableName)->getColumn($column);
+        $actualType = $this->entityManager->getConnection()->getDatabasePlatform()->getColumnDeclarationSQL($column, $doctrineCol->toArray());
 
         Assert::eq($type, $actualType);
     }
 
     private function indexShouldHaveIndexInTable(string $tableName, array $columns): void
     {
-        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
 
         Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
 
-        $table = $schemaManager->listTableDetails($tableName);
+        $table = $schemaManager->introspectTable($tableName);
         $found = false;
 
         foreach ($table->getIndexes() as $index) {

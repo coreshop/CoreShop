@@ -11,14 +11,15 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Bundle\TestBundle\Service\DriverHelper;
 use CoreShop\Component\Address\Model\AddressInterface;
 
 class AddressPage extends AbstractFrontendPage implements AddressPageInterface
@@ -31,6 +32,8 @@ class AddressPage extends AbstractFrontendPage implements AddressPageInterface
     public function chooseDifferentShippingAddress(): void
     {
         $this->getElement('use_invoice_as_shipping')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     public function useShippingAddress(AddressInterface $shippingAddress): void
@@ -51,6 +54,8 @@ class AddressPage extends AbstractFrontendPage implements AddressPageInterface
     public function submitStep(): void
     {
         $this->getElement('submit_address_step')->click();
+
+        DriverHelper::waitForPageToLoad($this->getSession());
     }
 
     protected function getAdditionalParameters(): array

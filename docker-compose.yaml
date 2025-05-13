@@ -34,6 +34,7 @@ x-php: &php
 
 services:
   db:
+    container_name: coreshop50-db
     image: mysql:8.4
     working_dir: /application
     command: [ mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci ]

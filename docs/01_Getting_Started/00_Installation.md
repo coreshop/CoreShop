@@ -89,4 +89,4 @@ CoreShop uses Payum for Payment. Checkout Payum's Documentation on how to add pa
 Payment providers are implemented as Pimcore Plugin. They can be installed using composer. Here you can find all
 available payment modules via composer
 
-[Payum Documentation](https://github.com/Payum/Payum/blob/master/docs/index.md#symfony-payum-bundle)
+[Payum Documentation](https://payum.gitbook.io/payum)

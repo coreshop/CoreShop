@@ -15,6 +15,10 @@ services:
     tags:
       - { name: coreshop.frontend.installer }
 
+  CoreShop\Bundle\FrontendBundle\Installer\PublicInstaller:
+    tags:
+      - { name: coreshop.frontend.installer }
+
   CoreShop\Bundle\FrontendBundle\Installer\FrontendInstallerInterface: '@CoreShop\Bundle\FrontendBundle\Installer\FrontendInstaller'
   CoreShop\Bundle\FrontendBundle\Installer\FrontendInstaller:
     arguments:

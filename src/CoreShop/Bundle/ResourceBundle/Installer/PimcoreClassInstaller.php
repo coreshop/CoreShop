@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
-    public const OPTION_UPDATE_CLASSES = 'update-classes';
+    public const string OPTION_UPDATE_CLASSES = 'update-classes';
 
     private array $installedClasses = [];
 

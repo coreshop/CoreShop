@@ -46,12 +46,6 @@
             </errorLevel>
         </MissingTemplateParam>
         <!-- level 3 issues - slightly lazy code writing, but probably low false-negatives -->
-        <UndefinedDocblockClass>
-            <errorLevel type="suppress">
-                <referencedClass name="UnitEnum" />
-            </errorLevel>
-        </UndefinedDocblockClass>
-
         <DeprecatedClass>
             <errorLevel type="info">
                 <referencedClass name="Doctrine\Common\Persistence\ManagerRegistry" />
@@ -222,19 +216,6 @@
 
         <!-- level 5 issues - should be avoided at mosts costs... -->
 
-        <TooManyArguments>
-            <errorLevel type="info">
-                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
-                <referencedFunction name="Symfony\Component\HttpKernel\Config\FileLocator::__construct" />
-                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
-                <referencedFunction name="Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken::__construct" /> <!-- removed parameter in Symfony 5.4 -->
-            </errorLevel>
-            <errorLevel type="suppress">
-                <referencedFunction name="Doctrine\ORM\Query\Expr::andX" />
-                <referencedFunction name="Doctrine\ORM\Query\Expr::orX" />
-                <referencedFunction name="Symfony\Component\Serializer\Attribute\SerializedName::__construct" />
-            </errorLevel>
-        </TooManyArguments>
 
         <!-- level 6 issues - really bad things -->
 
@@ -260,10 +241,28 @@
         <MethodSignatureMismatch errorLevel="info" />
 
         <!-- Custom -->
-
-        <!-- remove after guzzlehttp-release -->
-        <!-- see https://github.com/guzzle/guzzle/pull/2273 -->
-        <InvalidCatch errorLevel="info" />
+        <MissingOverrideAttribute errorLevel="info" />
+        <ClassMustBeFinal errorLevel="info" />
+        <PossiblyUnusedMethod errorLevel="info" />
+        <UnusedClass errorLevel="info" />
+        <InvalidOperand errorLevel="info" />
+        <PossiblyFalseArgument errorLevel="info" />
+        <PossiblyUnusedReturnValue errorLevel="info" />
+        <UnusedVariable errorLevel="info" />
+        <PossiblyUnusedProperty errorLevel="info" />
+        <PossiblyUnusedParam errorLevel="info" />
+        <UnusedParam errorLevel="info" />
+        <PossiblyUnusedProperty errorLevel="info" />
+        <UnnecessaryVarAnnotation errorLevel="info" />
+        <UnusedProperty errorLevel="info" />
+        <InvalidPropertyFetch errorLevel="info" />
+        <UnusedClosureParam errorLevel="info" />
+        <UnusedMethod errorLevel="info" />
+        <UnusedMethodCall errorLevel="info" />
+        <UnevaluatedCode errorLevel="info" />
+        <PossiblyFalseIterator errorLevel="info" />
+        <UndefinedMethod errorLevel="info" />
+        <ReservedWord errorLevel="info" />
     </issueHandlers>
 
     <stubs>

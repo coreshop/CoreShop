@@ -1,3 +1,13 @@
+## 4.1.2
+* [Docs] update payum link by @cngJo in https://github.com/coreshop/CoreShop/pull/2819
+* [FrontendBundle] install css/js (public) files too by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2818
+* [IndexBundle] add feature to automatically create migrations for MySQL Indices by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2827
+
+## 4.1.1
+* [Index] add feature to raw query the index by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2795
+* [StorageList] fix writing null into session by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2794
+* Do not load complete product again from database on pre_update by @BlackbitDevs in https://github.com/coreshop/CoreShop/pull/2781
+
 ## 4.1.0
 * [Registry] require registry 4.1 in all bundles by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2748
 * Update CartController - remove Argument Injection by @steinerCors in https://github.com/coreshop/CoreShop/pull/2741

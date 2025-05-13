@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -445,11 +445,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected function addOrderBy(QueryBuilder $queryBuilder)
     {
         if ($this->order instanceof SimpleOrder) {
-            $queryBuilder->add('orderBy', $this->getWorker()->renderOrder($this->order, 'q'));
+            $queryBuilder->addOrderBy($this->getWorker()->renderOrder($this->order, 'q'));
         }
 
         foreach ($this->orders as $order) {
-            $queryBuilder->add('orderBy', $this->getWorker()->renderOrder($order, 'q'), true);
+            $queryBuilder->addOrderBy($this->getWorker()->renderOrder($order, 'q'));
         }
     }
 

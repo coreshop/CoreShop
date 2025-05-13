@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -33,13 +33,13 @@ use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class ProductVariantUnitSolidifierController extends AdminController
 {
-    public const STATUS_ERROR_NO_VARIANTS = 'error_no_variants';
+    public const string STATUS_ERROR_NO_VARIANTS = 'error_no_variants';
 
-    public const STATUS_ERROR_NO_UNIT_DEFINITIONS = 'error_nno_unit_definitions';
+    public const string STATUS_ERROR_NO_UNIT_DEFINITIONS = 'error_nno_unit_definitions';
 
-    public const DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS = 'strategy_only_unit_definitions';
+    public const string DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS = 'strategy_only_unit_definitions';
 
-    public const DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR = 'strategy_only_unit_definitions_and_qpr';
+    public const string DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR = 'strategy_only_unit_definitions_and_qpr';
 
     public function checkStatusAction(Request $request, int $objectId): Response
     {

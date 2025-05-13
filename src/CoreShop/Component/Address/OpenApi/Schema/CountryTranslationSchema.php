@@ -32,7 +32,7 @@ use OpenApi\Attributes\Schema;
 class CountryTranslationSchema extends ResourceTranslationSchema
 {
     public function __construct(
-        readonly int $id,
+        int $id,
         readonly string $locale,
         #[Property(description: 'Name of the Country Translation', type: 'string', example: 'role')]
         private readonly string $name,

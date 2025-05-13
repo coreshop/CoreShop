@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -20,13 +20,13 @@ namespace CoreShop\Component\Order;
 
 final class OrderShipmentTransitions
 {
-    public const IDENTIFIER = 'coreshop_order_shipment';
+    public const string IDENTIFIER = 'coreshop_order_shipment';
 
-    public const TRANSITION_REQUEST_SHIPMENT = 'request_shipment';
+    public const string TRANSITION_REQUEST_SHIPMENT = 'request_shipment';
 
-    public const TRANSITION_PARTIALLY_SHIP = 'partially_ship';
+    public const string TRANSITION_PARTIALLY_SHIP = 'partially_ship';
 
-    public const TRANSITION_CANCEL = 'cancel';
+    public const string TRANSITION_CANCEL = 'cancel';
 
-    public const TRANSITION_SHIP = 'ship';
+    public const string TRANSITION_SHIP = 'ship';
 }

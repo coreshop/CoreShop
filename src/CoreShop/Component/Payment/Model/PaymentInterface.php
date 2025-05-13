@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -23,21 +23,21 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 
 interface PaymentInterface extends ResourceInterface, TimestampableInterface
 {
-    public const STATE_NEW = 'new';
+    public const string STATE_NEW = 'new';
 
-    public const STATE_AUTHORIZED = 'authorized';
+    public const string STATE_AUTHORIZED = 'authorized';
 
-    public const STATE_PROCESSING = 'processing';
+    public const string STATE_PROCESSING = 'processing';
 
-    public const STATE_COMPLETED = 'completed';
+    public const string STATE_COMPLETED = 'completed';
 
-    public const STATE_FAILED = 'failed';
+    public const string STATE_FAILED = 'failed';
 
-    public const STATE_CANCELLED = 'cancelled';
+    public const string STATE_CANCELLED = 'cancelled';
 
-    public const STATE_REFUNDED = 'refunded';
+    public const string STATE_REFUNDED = 'refunded';
 
-    public const STATE_UNKNOWN = 'unknown';
+    public const string STATE_UNKNOWN = 'unknown';
 
     public function getId(): ?int;
 

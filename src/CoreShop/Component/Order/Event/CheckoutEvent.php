@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -23,13 +23,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckoutEvent extends GenericEvent
 {
-    public const TYPE_ERROR = 'error';
+    public const string TYPE_ERROR = 'error';
 
-    public const TYPE_WARNING = 'warning';
+    public const string TYPE_WARNING = 'warning';
 
-    public const TYPE_INFO = 'info';
+    public const string TYPE_INFO = 'info';
 
-    public const TYPE_SUCCESS = 'success';
+    public const string TYPE_SUCCESS = 'success';
 
     private string $messageType = '';
 

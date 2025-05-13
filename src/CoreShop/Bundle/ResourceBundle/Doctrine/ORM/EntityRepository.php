@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -20,10 +20,20 @@ namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository as BaseEntityRepository;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class EntityRepository extends BaseEntityRepository implements RepositoryInterface
 {
+    public function __construct(
+        private readonly EntityManagerInterface $_em,
+        readonly ClassMetadata $class,
+    ) {
+        parent::__construct($_em, $class);
+
+    }
+
     public function add(ResourceInterface $resource): void
     {
         $this->_em->persist($resource);

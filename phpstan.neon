@@ -2,7 +2,7 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     symfony:
-        container_xml_path: var/cache/dev/KernelDevDebugContainer.xml
+        containerXmlPath: var/cache/dev/KernelDevDebugContainer.xml
 
     excludePaths:
         # Makes PHPStan crash
@@ -16,6 +16,8 @@ parameters:
         - src/CoreShop/Component/Pimcore/PriorityQueue.php
 
     ignoreErrors:
+        - identifier: varTag.nativeType
+
         # Magic calls
         - '/Call to an undefined static method Webmozart\\Assert\\Assert::all/'
         - '/Call to an undefined static method Webmozart\\Assert\\Assert::nullOr/'
@@ -38,7 +40,6 @@ parameters:
         - '/Pimcore\\Model\\DataObject\\ClassDefinition\\DynamicOptionsProvider\\MultiSelectOptionsProviderInterface is marked deprecated/'
 
         # Pimcore BC Breaks
-        - '/Class Pimcore\\Bundle\\AdminBundle\\Helper\\GridHelperService not found/'
         - '/Class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface not found/'
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\\CustomVersionMarshalInterface not found/'
         - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'

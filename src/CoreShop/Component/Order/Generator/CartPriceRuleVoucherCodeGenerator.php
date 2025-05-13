@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -26,11 +26,11 @@ use Webmozart\Assert\Assert;
 
 class CartPriceRuleVoucherCodeGenerator
 {
-    public const FORMAT_ALPHANUMERIC = 'alphanumeric';
+    public const string FORMAT_ALPHANUMERIC = 'alphanumeric';
 
-    public const FORMAT_ALPHABETIC = 'alphabetic';
+    public const string FORMAT_ALPHABETIC = 'alphabetic';
 
-    public const FORMAT_NUMERIC = 'numeric';
+    public const string FORMAT_NUMERIC = 'numeric';
 
     public function __construct(
         private FactoryInterface $voucherCodeFactory,

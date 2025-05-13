@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -20,9 +20,9 @@ namespace CoreShop\Component\Order;
 
 final class OrderSaleStates
 {
-    public const STATE_CART = 'cart';
+    public const string STATE_CART = 'cart';
 
-    public const STATE_ORDER = 'order';
+    public const string STATE_ORDER = 'order';
 
-    public const STATE_QUOTE = 'quote';
+    public const string STATE_QUOTE = 'quote';
 }

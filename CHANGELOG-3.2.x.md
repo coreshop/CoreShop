@@ -1,3 +1,13 @@
+# 3.2.18
+* [giftDigitaProduct] - fix for gift digital product by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2820
+* [Core] fix for gift digital product (revert bc break) by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2821
+* [Behat] fix tests by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2822
+* [MoneyBundle] fix getter code for money type in bricks by @breakone in https://github.com/coreshop/CoreShop/pull/2825
+
+# 3.2.17
+* [FrontendBundle] add check if category type is grid or list (https://github.com/coreshop/CoreShop/commit/9d41877773419d05bb6149f5c02a1de6c4ff21d8)
+* [FrontendBundle] add check for currency in switch action (https://github.com/coreshop/CoreShop/commit/f4cbe978a906fa95c426cd7cb953e0434a178d63)
+
 # 3.2.16
 * [PimcoreBundle] fix MultiSelect (check for existing store) by @breakone in https://github.com/coreshop/CoreShop/pull/2754
 * [priceNull - 3.2] - add listener for null/empty price on field by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2757

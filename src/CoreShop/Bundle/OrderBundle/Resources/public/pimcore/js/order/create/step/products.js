@@ -5,8 +5,8 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -181,7 +181,7 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                     menuDisabled: true,
                     sortable: false,
                     xtype: 'actioncolumn',
-                    width: 50,
+                    width: 56,
                     items: [
                         {
                             iconCls: 'pimcore_icon_open',
