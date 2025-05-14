@@ -88,6 +88,9 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
                 foreach ($parentMetadata->getAssociationMappings() as $key => $value) {
                     $type = \is_array($value) ? $value['type'] : $value->type();
                     if ($this->isRelation($type) && !isset($metadata->associationMappings[$key])) {
+                        /**
+                         * @psalm-suppress InvalidPropertyAssignmentValue
+                         */
                         $metadata->associationMappings[$key] = $value; /** @phpstan-ignore-line */
                     }
                 }

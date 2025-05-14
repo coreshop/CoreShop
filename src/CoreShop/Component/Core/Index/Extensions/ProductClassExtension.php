@@ -24,6 +24,8 @@ use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Types\Type;
 
 final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
@@ -40,9 +42,9 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
     public function getSystemColumns(): array
     {
         return [
-            'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'parentCategoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'stores' => IndexColumnInterface::FIELD_TYPE_STRING,
+            (new Column('categoryIds', Type::getType('string')))->setLength(255),
+            (new Column('parentCategoryIds', Type::getType('string')))->setLength(255),
+            (new Column('stores', Type::getType('string')))->setLength(255),
         ];
     }
 

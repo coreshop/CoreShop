@@ -792,7 +792,7 @@ class ClassContext implements Context
 
                     break;
                 case 'relation':
-                    $object->setValue($row['key'], DataObject::getById($row['value']));
+                    $object->setValue($row['key'], DataObject::getById((int)$row['value']));
 
                     break;
                 case 'localized':

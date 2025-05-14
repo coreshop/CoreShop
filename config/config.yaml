@@ -8,7 +8,3 @@ pimcore:
     product_registration:
         instance_identifier: "%env(PIMCORE_INSTANCE_IDENTIFIER)%"
         product_key: "%env(PIMCORE_PRODUCT_KEY)%"
-#payum:
-#    dynamic_gateways:
-#        encryption:
-#            defuse_secret_key: "%env(DEFUSE_SECRET)%"

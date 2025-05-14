@@ -1,5 +1,8 @@
 parameters:
     reportUnmatchedIgnoredErrors: false
+    level: 3
+    paths:
+        - src
 
     symfony:
         containerXmlPath: var/cache/dev/KernelDevDebugContainer.xml

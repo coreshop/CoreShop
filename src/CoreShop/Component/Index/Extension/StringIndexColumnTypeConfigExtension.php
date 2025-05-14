@@ -21,12 +21,12 @@ namespace CoreShop\Component\Index\Extension;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 
-class DecimalIndexColumnTypeConfigExtension implements IndexColumnTypeConfigExtension
+class StringIndexColumnTypeConfigExtension implements IndexColumnTypeConfigExtension
 {
     public function getColumnConfig(IndexColumnInterface $column): array
     {
-        if ($column->getColumnType() === IndexColumnInterface::FIELD_TYPE_DOUBLE) {
-            return ['scale' => 2, 'precision' => 10];
+        if ($column->getColumnType() === IndexColumnInterface::FIELD_TYPE_STRING) {
+            return ['length' => 255];
         }
 
         return [];

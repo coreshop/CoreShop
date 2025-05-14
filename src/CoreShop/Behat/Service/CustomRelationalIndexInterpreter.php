@@ -22,6 +22,8 @@ use CoreShop\Component\Index\Interpreter\RelationalValue;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Types\Type;
 
 class CustomRelationalIndexInterpreter implements RelationInterpreterInterface
 {
@@ -42,13 +44,6 @@ class CustomRelationalIndexInterpreter implements RelationInterpreterInterface
     ): array {
         return [
             new RelationalValue($indexable->getId(), 'test', ['custom_col' => 'blub']),
-        ];
-    }
-
-    public function getRelationalColumns(): array
-    {
-        return [
-            'custom_col' => IndexColumnInterface::FIELD_TYPE_STRING,
         ];
     }
 }

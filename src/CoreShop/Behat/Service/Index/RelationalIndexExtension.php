@@ -21,6 +21,8 @@ namespace CoreShop\Behat\Service\Index;
 use CoreShop\Component\Index\Extension\IndexRelationalColumnsExtensionInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Types\Type;
 
 class RelationalIndexExtension implements IndexRelationalColumnsExtensionInterface
 {
@@ -32,7 +34,7 @@ class RelationalIndexExtension implements IndexRelationalColumnsExtensionInterfa
     public function getRelationalColumns(): array
     {
         return [
-            'custom_col' => IndexColumnInterface::FIELD_TYPE_STRING,
+            (new Column('custom_col', Type::getType('string')))->setLength(255),
         ];
     }
 }
