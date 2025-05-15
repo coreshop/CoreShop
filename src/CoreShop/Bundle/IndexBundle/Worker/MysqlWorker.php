@@ -11,8 +11,8 @@ declare(strict_types=1);
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
  *
  */
 
@@ -36,6 +36,10 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Version\Direction;
+use Doctrine\Migrations\Version\ExecutionResult;
+use Doctrine\Migrations\Version\Version;
 use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterface
@@ -48,6 +52,8 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
         ConditionRendererInterface $conditionRenderer,
         OrderRendererInterface $orderRenderer,
         protected Connection $database,
+        private bool $generateMigrations = false,
+        private DependencyFactory|null $dependencyFactory = null,
     ) {
         parent::__construct(
             $extensionsRegistry,
@@ -83,15 +89,69 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
         $this->createRelationalTableSchema($index, $newSchema);
 
         /** @psalm-suppress DeprecatedMethod */
-        $queries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
+        $upQueries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
+
+        /** @psalm-suppress DeprecatedMethod */
+        $downQueries = $oldSchema->getMigrateFromSql($newSchema, $this->database->getDatabasePlatform());
 
         //Show run in an Transaction, but doctrine transactional does not work with PDO for some odd reason....
-        foreach ($queries as $qry) {
+        foreach ($upQueries as $qry) {
             $this->database->executeQuery($qry);
         }
 
-        foreach ($this->createLocalizedViews($index) as $qry) {
+        $localizedViews = $this->createLocalizedViews($index);
+
+        foreach ($localizedViews as $qry) {
             $this->database->executeQuery($qry);
+        }
+
+        if ($this->generateMigrations &&
+            null !== $this->dependencyFactory &&
+            (count($upQueries) > 0 || count($downQueries) > 0)
+        ) {
+            $upQueries = array_merge($upQueries, $localizedViews);
+            $downQueries = array_merge($downQueries, $localizedViews);
+
+            $configuration = $this->dependencyFactory->getConfiguration();
+            $migrationDirectories = $configuration->getMigrationDirectories();
+            $appNamespace = null;
+
+            foreach ($migrationDirectories as $namespace => $directory) {
+                if (str_starts_with($namespace, 'App\\')) {
+                    $appNamespace = $namespace;
+
+                    break;
+                }
+            }
+
+            if (null === $appNamespace) {
+                return;
+            }
+
+            $fqcn = $this->dependencyFactory->getClassNameGenerator()->generateClassName($appNamespace);
+
+            /** @psalm-suppress InternalMethod */
+            $up = $this->dependencyFactory->getMigrationSqlGenerator()->generate(
+                $upQueries,
+                true,
+            );
+
+            /** @psalm-suppress InternalMethod */
+            $down = $this->dependencyFactory->getMigrationSqlGenerator()->generate(
+                $downQueries,
+                true,
+            );
+
+            /** @psalm-suppress InternalMethod */
+            $this->dependencyFactory->getMigrationGenerator()->generateMigration(
+                $fqcn,
+                $up,
+                $down,
+            );
+
+            /** @psalm-suppress InternalMethod, InternalClass, TooManyArguments */
+            $migrationResult = new ExecutionResult(new Version($fqcn), Direction::UP);
+            $this->dependencyFactory->getMetadataStorage()->complete($migrationResult);
         }
     }
 

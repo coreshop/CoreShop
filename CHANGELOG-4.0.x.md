@@ -1,3 +1,6 @@
+# 4.0.15
+* See changes from 3.2.18
+
 # 4.0.14
 * [CoreBundle] add payment-provider carrier condition by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2788
 * [Store] fix admin site request resolver by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2793
