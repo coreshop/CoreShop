@@ -39,18 +39,17 @@ jobs:
       PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
       PIMCORE_INSTALL_MYSQL_PORT: "3306"
       PIMCORE_KERNEL_CLASS: 'Kernel'
-      PIMCORE_SECRET: ${{ secrets.PIMCORE_SECRET }}
-      PIMCORE_INSTALL_ENCRYPTION_SECRET: ${{ secrets.PIMCORE_SECRET }}
-      PIMCORE_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
-      PIMCORE_INSTALL_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
-      PIMCORE_INSTALL_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
-      PIMCORE_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
+      PIMCORE_SECRET: "${{ secrets.PIMCORE_SECRET }}"
+      PIMCORE_INSTALL_ENCRYPTION_SECRET: "${{ secrets.PIMCORE_SECRET }}"
+      PIMCORE_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
+      PIMCORE_INSTALL_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
+      PIMCORE_INSTALL_PRODUCT_KEY: "${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}"
+      PIMCORE_PRODUCT_KEY: "${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}"
 
     strategy:
       matrix:
         php: [ 8.3, 8.4 ]
         pimcore: [ ^12.0 ]
-        jms: [ ^5.0 ]
         dependencies: [ highest ]
 
     services:
@@ -61,7 +60,7 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}, JMS ${{ matrix.jms }}"
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
     - uses: actions/checkout@v4
@@ -91,19 +90,8 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - name: jms/serializer-bundle
-      run: composer require "jms/serializer-bundle:${{ matrix.jms }}" --no-update --no-scripts
-
     - name: pimcore/pimcore
-      run: |
-        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        if [ "${{ matrix.pimcore }}" == "^11.5" ]; then
-          composer req pimcore/admin-ui-classic-bundle:^1.6 --no-interaction --no-scripts --no-update
-        else
-          composer req pimcore/admin-ui-classic-bundle:^2.0 --no-interaction --no-scripts --no-update
-          composer req payum/payum:1.7.x-dev --no-interaction --no-scripts --no-update
-        fi
-        
+      run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
 
     - if: matrix.dependencies == 'highest'
       name: Install dependencies highest

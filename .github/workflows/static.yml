@@ -33,18 +33,17 @@ jobs:
     env:
       APP_ENV: "test"
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
-      PIMCORE_SECRET: ${{ secrets.PIMCORE_SECRET }}
-      PIMCORE_INSTALL_ENCRYPTION_SECRET: ${{ secrets.PIMCORE_SECRET }}
-      PIMCORE_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
-      PIMCORE_INSTALL_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
-      PIMCORE_INSTALL_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
-      PIMCORE_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
+      PIMCORE_SECRET: "${{ secrets.PIMCORE_SECRET }}"
+      PIMCORE_INSTALL_ENCRYPTION_SECRET: "${{ secrets.PIMCORE_SECRET }}"
+      PIMCORE_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
+      PIMCORE_INSTALL_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
+      PIMCORE_INSTALL_PRODUCT_KEY: "${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}"
+      PIMCORE_PRODUCT_KEY: "${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}"
 
     strategy:
       matrix:
         php: [ 8.3, 8.4 ]
         pimcore: [ ^12.0 ]
-        jms: [ ^5.0 ]
         dependencies: [ highest ]
     services:
       database:
@@ -55,7 +54,7 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}, JMS ${{ matrix.jms }}"
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
     - uses: actions/checkout@v4
@@ -80,9 +79,6 @@ jobs:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
-
-    - name: jms/serializer-bundle
-      run: composer require "jms/serializer-bundle:${{ matrix.jms }}" --no-update --no-scripts
 
     - name: pimcore/pimcore
       run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
