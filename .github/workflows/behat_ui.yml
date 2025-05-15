@@ -71,7 +71,8 @@ jobs:
         if: github.event_name == 'pull_request_target'
         uses: actions/checkout@v4
         with:
-          ref: "refs/pull/${{ github.event.pull_request.number }}/merge"
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Checkout PR head (for push or other events)
         if: github.event_name != 'pull_request_target'
