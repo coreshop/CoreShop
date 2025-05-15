@@ -13,9 +13,9 @@ Encore
     .setPublicPath('/bundles/coreshopcore/build')
 
     .addEntry('main', path.resolve(__dirname, 'assets', 'js', 'src', 'main.ts'))
-    .splitEntryChunks()
+    //.splitEntryChunks()
     .disableSingleRuntimeChunk()
-    .cleanupOutputBeforeBuild()
+    //.cleanupOutputBeforeBuild()
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())

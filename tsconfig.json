@@ -3,7 +3,7 @@
     "rootDir": ".",
     "module": "ESNext",
     "target": "ES2023",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "baseUrl": "./js/",
     "strictNullChecks": true,
     "jsx": "react",
@@ -15,7 +15,13 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist/build/types",
-    "composite": true
+    "composite": true,
+    "types": ["reflect-metadata", "@types/webpack-env" ],
+    "paths": {
+      "@Pimcore/*": [
+        "./node_modules/pimcore-studio-ui/dist/build/types/src/*"
+      ]
+    }
   },
 
   "include": [
