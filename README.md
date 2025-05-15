@@ -20,7 +20,7 @@ transcends ordinary transactions.
 
 # Requirements
 
-- Pimcore `^11.1`
+- Pimcore `^12.0`
 
 # Installation
 
