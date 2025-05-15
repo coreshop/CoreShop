@@ -65,56 +65,64 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout PR head (only for pull_request_target)
+        if: github.event_name == 'pull_request_target'
+        uses: actions/checkout@v4
+        with:
+          ref: "refs/pull/${{ github.event.pull_request.number }}/merge"
 
-    - name: Install PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
-        extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
+      - name: Checkout PR head (for push or other events)
+        if: github.event_name != 'pull_request_target'
+        uses: actions/checkout@v4
 
-    - name: Check PHP Version
-      run: php -v
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
+          extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
-    - name: Setup DB
-      run: |
-        mysql --host 127.0.0.1 --port ${{ job.services.database.ports['3306'] }} -uroot -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
+      - name: Check PHP Version
+        run: php -v
 
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Setup DB
+        run: |
+          mysql --host 127.0.0.1 --port ${{ job.services.database.ports['3306'] }} -uroot -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
-    - name: Cache composer dependencies
-      uses: actions/cache@v4
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-        restore-keys: ${{ runner.os }}-composer-
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-    - name: pimcore/pimcore
-      run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+      - name: Cache composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-    - if: matrix.dependencies == 'highest'
-      name: Install dependencies highest
-      run: composer update --no-progress --prefer-dist --optimize-autoloader
+      - name: pimcore/pimcore
+        run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
 
-    - if: matrix.dependencies == 'lowest'
-      name: Install dependencies lowest
-      run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
+      - if: matrix.dependencies == 'highest'
+        name: Install dependencies highest
+        run: composer update --no-progress --prefer-dist --optimize-autoloader
 
-    - name: Cache clear
-      run: bin/console cache:clear
+      - if: matrix.dependencies == 'lowest'
+        name: Install dependencies lowest
+        run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
-    - name: Assets Install
-      run: bin/console assets:install --symlink
+      - name: Cache clear
+        run: bin/console cache:clear
 
-    - name: Install Pimcore
-      run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
+      - name: Assets Install
+        run: bin/console assets:install --symlink
 
-    - name: Install CoreShop
-      run: |
-        bin/console coreshop:install
+      - name: Install Pimcore
+        run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
 
-    - name: Run Behat
-      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default
+      - name: Install CoreShop
+        run: |
+          bin/console coreshop:install
+
+      - name: Run Behat
+        run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default
