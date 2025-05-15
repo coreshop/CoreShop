@@ -49,6 +49,7 @@ use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
 use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
+use Pimcore\Bundle\StudioUiBundle\Webpack\WebpackEntryPointProviderInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -152,13 +153,4 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         return [];
     }
 
-    public function getWebpackEntryPointsJsonLocations(): array
-    {
-        return [$this->getPath() . '/Resources/public/build/entrypoints.json'];
-    }
-
-    public function getWebpackEntryPoints(): array
-    {
-        return ['main'];
-    }
 }

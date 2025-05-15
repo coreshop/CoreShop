@@ -32,6 +32,7 @@ imports:
     - { resource: services/shipping-taxation.yml }
     - { resource: services/taxation.yml }
     - { resource: services/fixtures.yaml }
+    - { resource: services/studio-ui.yaml }
 
 services:
     _defaults:

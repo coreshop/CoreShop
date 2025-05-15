@@ -2,7 +2,7 @@
   "entrypoints": {
     "main": {
       "js": [
-        "/bundles/coreshopcore/build/main.ddf030d5.js"
+        "/bundles/coreshopcore/build/main.js"
       ]
     }
   }

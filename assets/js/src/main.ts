@@ -1,17 +1,11 @@
-import { Pimcore } from 'pimcore-studio-ui'
-import { MyFirstTabComponent } from './components/my-first-tab-component'
+import { Pimcore } from 'pimcore-studio-ui';
+import { CoreShopPlugin} from "./CoreShop";
 
-Pimcore.pluginSystem.registerPlugin({
-    name: 'pimcore-demo-plugin',
+if (module.hot !== undefined) {
+    module.hot.accept()
+}
 
-    // Register and overwrite services here
-    onInit: ({ container }): void => {
-        console.log('Init my plugin')
-    },
 
-    // register modules here
-    onStartup: ({ moduleSystem }): void => {
-        console.log('Start up my plugin');
-        // moduleSystem.registerModule(MyFirstTabComponent)
-    }
-})
+const pluginSystem = Pimcore.pluginSystem
+
+pluginSystem.registerPlugin(CoreShopPlugin)

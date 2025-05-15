@@ -100,6 +100,7 @@
     "php-http/guzzle7-adapter": "^1.0",
     "php-http/message-factory": "^1.1",
     "pimcore/admin-ui-classic-bundle": "^2.0",
+    "pimcore/generic-data-index-bundle": "^2.0",
     "pimcore/google-marketing-bundle": "^2.0",
     "pimcore/newsletter-bundle": "^2.0",
     "pimcore/pimcore": "^12.0",
