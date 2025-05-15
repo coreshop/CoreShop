@@ -1,7 +1,7 @@
 name: Behat
 on:
   push:
-    branches: [ '4.0', '4.1', 'next' ]
+    branches: [ '4.0', '4.1', '5.0', 'next' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -10,7 +10,7 @@ on:
       - 'src/**'
       - '.github/workflows/behat.yml'
   pull_request_target:
-    branches: [ '4.0', '4.1','next' ]
+    branches: [ '4.0', '4.1', '5.0', 'next' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -23,32 +23,36 @@ on:
   schedule:
     - cron: "0 1 * * 1"
 
+env:
+  APP_ENV: "test"
+  CORESHOP_SKIP_DB_SETUP: "1"
+  PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+  PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
+  PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
+  PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "127.0.0.1"
+  PIMCORE_INSTALL_MYSQL_USERNAME: "root"
+  PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
+  PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
+  PIMCORE_INSTALL_MYSQL_PORT: "3306"
+  PIMCORE_KERNEL_CLASS: 'Kernel'
+  PIMCORE_SECRET: "${{ secrets.PIMCORE_SECRET }}"
+  PIMCORE_INSTALL_ENCRYPTION_SECRET: "${{ secrets.PIMCORE_SECRET }}"
+  PIMCORE_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
+  PIMCORE_INSTALL_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
+  PIMCORE_INSTALL_PRODUCT_KEY: "${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}"
+  PIMCORE_PRODUCT_KEY: "${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}"
+
+permissions:
+  contents: read
 
 jobs:
   behat:
     runs-on: ubuntu-latest
-    env:
-      APP_ENV: "test"
-      CORESHOP_SKIP_DB_SETUP: "1"
-      PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
-      PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
-      PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
-      PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "127.0.0.1"
-      PIMCORE_INSTALL_MYSQL_USERNAME: "root"
-      PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
-      PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
-      PIMCORE_INSTALL_MYSQL_PORT: "3306"
-      PIMCORE_KERNEL_CLASS: 'Kernel'
-
     strategy:
       matrix:
         php: [ 8.3, 8.4 ]
-        pimcore: [ ^11.5, ^12.0 ]
-        jms: [ ^4.0, ^5.0 ]
+        pimcore: [ ^12.0 ]
         dependencies: [ highest ]
-        exclude:
-          - pimcore: ^11.5
-            php: 8.4
 
     services:
       database:
@@ -58,7 +62,7 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}, JMS ${{ matrix.jms }}"
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
     - uses: actions/checkout@v4
@@ -88,19 +92,8 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - name: jms/serializer-bundle
-      run: composer require "jms/serializer-bundle:${{ matrix.jms }}" --no-update --no-scripts
-
     - name: pimcore/pimcore
-      run: |
-        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        if [ "${{ matrix.pimcore }}" == "^11.5" ]; then
-          composer req pimcore/admin-ui-classic-bundle:^1.6 --no-interaction --no-scripts --no-update
-        else
-          composer req pimcore/admin-ui-classic-bundle:^2.0 --no-interaction --no-scripts --no-update
-          composer req payum/payum:1.7.x-dev --no-interaction --no-scripts --no-update
-        fi
-        
+      run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
 
     - if: matrix.dependencies == 'highest'
       name: Install dependencies highest

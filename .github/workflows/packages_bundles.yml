@@ -1,12 +1,12 @@
 name: Packages Bundles
 on:
   push:
-    branches: [ '4.0', '4.1','next' ]
+    branches: [ '4.0', '4.1', '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Bundle/**'
       - '.github/workflows/packages_bundles.yml'
   pull_request_target:
-    branches: [ '4.0', '4.1','next' ]
+    branches: [ '4.0', '4.1', '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Bundle/**'
       - '.github/workflows/packages_bundles.yml'
@@ -14,6 +14,17 @@ on:
     types: [ created ]
   schedule:
     - cron: "0 1 * * 1"
+
+env:
+  PIMCORE_SECRET: ${{ secrets.PIMCORE_SECRET }}
+  PIMCORE_INSTALL_ENCRYPTION_SECRET: ${{ secrets.PIMCORE_SECRET }}
+  PIMCORE_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
+  PIMCORE_INSTALL_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
+  PIMCORE_INSTALL_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
+  PIMCORE_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
+
+permissions:
+  contents: read
 
 jobs:
   list:
@@ -38,12 +49,9 @@ jobs:
       fail-fast: false
       matrix:
         php: [ 8.3, 8.4 ]
-        pimcore: [ ^11.5, ^12.0 ]
+        pimcore: [ ^12.0 ]
         dependencies: [ highest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
-        exclude:
-          - pimcore: ^11.5
-            php: 8.4
 
     steps:
     - uses: actions/checkout@v4
