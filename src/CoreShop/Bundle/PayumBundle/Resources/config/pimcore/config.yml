@@ -1,12 +1,2 @@
 parameters:
     payum.storage.doctrine.orm.class: CoreShop\Bundle\PayumBundle\Storage\LockingStorage
-
-doctrine:
-    orm:
-        mappings:
-            payum2:
-                is_bundle: false
-                type: xml
-                dir: /var/www/html/vendor/payum/payum/src/Payum/Core/Bridge/Doctrine/Resources/mapping
-                prefix: Payum\Core\Model
-                mapping: true
