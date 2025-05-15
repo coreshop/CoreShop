@@ -25,7 +25,7 @@
   ],
   "require": {
     "pimcore/pimcore": "^12.0",
-    "pimcore/web-to-print-bundle": "^1.4",
+    "pimcore/web-to-print-bundle": "^2.0",
     "pimcore/admin-ui-classic-bundle": "^2.0"
   },
   "require-dev": {
