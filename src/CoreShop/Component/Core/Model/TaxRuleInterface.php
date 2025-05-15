@@ -24,16 +24,16 @@ use CoreShop\Component\Taxation\Model\TaxRuleInterface as BaseTaxRuleInterface;
 interface TaxRuleInterface extends BaseTaxRuleInterface
 {
     /**
-     * @return CountryInterface
+     * @return CountryInterface|null
      */
     public function getCountry();
 
-    public function setCountry(CountryInterface $country = null);
+    public function setCountry(?CountryInterface $country);
 
     /**
-     * @return StateInterface
+     * @return StateInterface|null
      */
     public function getState();
 
-    public function setState(StateInterface $state = null);
+    public function setState(?StateInterface $state);
 }

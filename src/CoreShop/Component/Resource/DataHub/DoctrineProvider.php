@@ -345,7 +345,7 @@ class DoctrineProvider
         $this->doctrineToName[$key] = $name;
     }
 
-    private static function getStandardType($name = null)
+    private static function getStandardType(?string $name = null)
     {
         if (self::$standardTypes === null) {
             self::$standardTypes = [

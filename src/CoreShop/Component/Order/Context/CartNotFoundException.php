@@ -23,8 +23,8 @@ use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 class CartNotFoundException extends StorageListNotFoundException
 {
     public function __construct(
-        $message = null,
-        \Exception $previousException = null,
+        ?string $message = null,
+        ?\Exception $previousException = null,
     ) {
         parent::__construct($message ?: 'CoreShop was not able to figure out the current cart.', $previousException);
     }
