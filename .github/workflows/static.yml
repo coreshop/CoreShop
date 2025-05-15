@@ -27,6 +27,10 @@ on:
   schedule:
     - cron: "0 1 * * 1"
 
+
+permissions:
+  contents: read
+
 env:
   APP_ENV: "test"
   PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"

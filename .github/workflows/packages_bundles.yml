@@ -23,6 +23,9 @@ env:
   PIMCORE_INSTALL_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
   PIMCORE_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
 
+permissions:
+  contents: read
+  
 jobs:
   list:
     runs-on: ubuntu-latest
