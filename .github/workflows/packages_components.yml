@@ -34,6 +34,13 @@ jobs:
     needs: list
     runs-on: ubuntu-latest
     name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}"
+    env:
+      PIMCORE_SECRET: ${{ secrets.PIMCORE_SECRET }}
+      PIMCORE_INSTALL_ENCRYPTION_SECRET: ${{ secrets.PIMCORE_SECRET }}
+      PIMCORE_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
+      PIMCORE_INSTALL_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
+      PIMCORE_INSTALL_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
+      PIMCORE_PRODUCT_KEY: ${{ secrets.PIMCORE_INSTALL_PRODUCT_KEY }}
     strategy:
       fail-fast: false
       matrix:
