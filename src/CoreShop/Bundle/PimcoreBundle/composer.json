@@ -33,7 +33,7 @@
     "phpstan/phpstan-doctrine": "^1.3.40",
     "phpstan/phpstan-webmozart-assert": "^1.2.4"
   },
-  "suggested": {
+  "suggest": {
     "pimcore/admin-ui-classic-bundle": "If you wanna use the Classic Admin UI",
     "pimcore/studio-backend-bundle": "If you wanna use the Studio Backend",
     "pimcore/studio-ui-bundle": "If you wanna use the Studio UI"

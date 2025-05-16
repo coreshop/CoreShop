@@ -32,7 +32,7 @@
     "phpstan/phpstan-doctrine": "^1.3.40",
     "phpstan/phpstan-webmozart-assert": "^1.2.4"
   },
-  "suggested": {
+  "suggest": {
     "pimcore/admin-ui-classic-bundle": "If you wanna use the Classic Admin UI"
   },
   "autoload": {
@@ -41,14 +41,14 @@
     }
   },
   "repositories": [
-      {
-          "type": "path",
-          "url": "../../*/*"
-      }
+    {
+      "type": "path",
+      "url": "../../*/*"
+    }
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,
-   "extra": {
+  "extra": {
     "branch-alias": {
       "dev-main": "5.0-dev",
       "dev-master": "5.0-dev"
