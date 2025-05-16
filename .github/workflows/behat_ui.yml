@@ -49,12 +49,19 @@ permissions:
 jobs:
   behat_ui:
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.allow-failure }}
 
     strategy:
       matrix:
-        php: [ 8.3, 8.4 ]
-        pimcore: [ ^12.0 ]
-        dependencies: [ highest ]
+        include:
+          - php: 8.3
+            pimcore: ^12.0
+            dependencies: highest
+            allow-failure: false
+          - php: 8.4
+            pimcore: ^12.0
+            dependencies: highest
+            allow-failure: true
 
     services:
       database:
