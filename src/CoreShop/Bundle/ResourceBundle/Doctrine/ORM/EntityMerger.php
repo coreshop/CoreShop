@@ -308,6 +308,11 @@ class EntityMerger
                     return in_array($assoc->fieldName, $this->cascadeMergeAssociations[$entity::class]['associations'], true);
                 }
 
+                //cascade-merge got removed, so if cascade-all (meaning all are used), we merge as well.
+                if ($assoc->isCascadePersist() && $assoc->isCascadeDetach() && $assoc->isCascadeRefresh() && $assoc->isCascadeRemove()) {
+                    return true;
+                }
+
                 if ($entity instanceof TranslationInterface) {
                     return true;
                 }
@@ -320,6 +325,10 @@ class EntityMerger
             function ($assoc) use ($entity) {
                 if (array_key_exists($entity::class, $this->cascadeMergeAssociations)) {
                     return !in_array($assoc->fieldName, $this->cascadeMergeAssociations[$entity::class]['associations'], true);
+                }
+
+                if (!$assoc->isCascadePersist() || !$assoc->isCascadeDetach() || !$assoc->isCascadeRefresh() || !$assoc->isCascadeRemove()) {
+                    return true;
                 }
 
                 return false;
