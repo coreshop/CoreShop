@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\PayumBundle\Action\Offline;
 
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
@@ -28,7 +29,7 @@ use Payum\Core\Action\ActionInterface;
 final class ConfirmOrderAction implements ActionInterface
 {
     public function __construct(
-        private StateMachineApplier $stateMachineApplier,
+        private StateMachineApplierInterface $stateMachineApplier,
     ) {
     }
 

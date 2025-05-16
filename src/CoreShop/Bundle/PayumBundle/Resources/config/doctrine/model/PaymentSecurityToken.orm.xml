@@ -5,8 +5,8 @@
                        table="coreshop_payment_security_token">
         <id name="hash" column="hash" type="string" length="100"/>
 
-        <field name="details" column="details" type="json" nullable="true"/>
-        <field name="afterUrl" column="afterUrl" type="json" nullable="true"/>
+        <field name="details" column="details" type="object" nullable="true"/>
+        <field name="afterUrl" column="afterUrl" type="text" nullable="true"/>
         <field name="targetUrl" column="targetUrl" type="text"/>
         <field name="gatewayName" column="gatewayName" length="255"/>
     </mapped-superclass>
