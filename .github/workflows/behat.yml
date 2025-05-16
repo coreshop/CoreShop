@@ -103,6 +103,9 @@ jobs:
       name: Install dependencies lowest
       run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
+    - name: Install Patches
+      run: cp .github/ci/patches/Payment.php vendor/payum/payum/src/Payum/Core/Model/Payment.php
+
     - name: Cache clear
       run: bin/console cache:clear
 

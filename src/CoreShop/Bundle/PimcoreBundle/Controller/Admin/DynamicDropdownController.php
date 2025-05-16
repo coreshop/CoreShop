@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
-use Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController;
+use Pimcore\Controller\UserAwareController;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Service;
 use Pimcore\Model\Factory;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @psalm-suppress InternalClass
  */
-final class DynamicDropdownController extends AdminAbstractController
+final class DynamicDropdownController extends UserAwareController
 {
     private string $separator = ' - ';
 

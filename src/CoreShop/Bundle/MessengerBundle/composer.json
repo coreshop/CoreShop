@@ -26,6 +26,8 @@
   "require": {
     "pimcore/pimcore": "^12.0",
     "pimcore/admin-ui-classic-bundle": "^2.0",
+    "pimcore/studio-backend-bundle": "1.x-dev",
+    "pimcore/studio-ui-bundle": "1.x-dev",
     "coreshop/pimcore-bundle": "^5.0",
     "coreshop/menu-bundle": "^5.0"
   },
@@ -49,7 +51,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "5.0-dev"
+      "dev-main": "5.0-dev"
     },
     "pimcore": {
       "bundles": [
