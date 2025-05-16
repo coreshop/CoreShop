@@ -1,8 +1,8 @@
 import { type IAbstractPlugin } from 'pimcore-studio-ui';
-import { CoreShopRegister } from './modules/coreshop-register';
-import { DynamicTypeExtension } from './modules/dynamic-type-extension';
-import { CoreShopRelationClass } from "./ObjectCustomTypes/coreShopRelation";
-import {CoreShopStoreMultiselectClass} from "./ObjectCustomTypes/coreShopStoreMultiselect";
+import { CoreShopRegister } from './modules/coreShopRegister';
+import { DynamicTypeExtension } from './modules/dynamicTypeExtension';
+import { CoreShopRelationClass } from "./custom-types/coreShopRelation";
+import {CoreShopStoreMultiselectClass} from "./custom-types/coreShopStoreMultiselect";
 export const CoreShopPlugin: IAbstractPlugin = {
     name: 'CoreShopPlugin',
     onInit ({ container }) {
