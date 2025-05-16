@@ -43,7 +43,7 @@ class DeprecatedObjectType extends Type
         $value = is_resource($value) ? stream_get_contents($value) : $value;
 
         set_error_handler(function (int $code, string $message): bool {
-            throw ConversionException::conversionFailedUnserialization($this->getName(), $message);
+            throw new ConversionException($message);
         });
 
         try {
