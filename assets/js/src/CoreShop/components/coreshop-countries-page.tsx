@@ -1,10 +1,11 @@
 import { Content, Header } from 'pimcore-studio-ui/components';
 import React from 'react';
 import { useFetch } from '../hooks/useFetch';
-import {Collapse, List, Typography, Tag, Spin} from 'antd';
+import {Collapse, List, Typography, Tag, Spin, Button} from 'antd';
 const { Panel } = Collapse;
 import { useWidgetManager } from 'pimcore-studio-ui/modules/widget-manager';
-
+import { useFormModal } from 'pimcore-studio-ui/components';
+import { useCountryActions } from '../hooks/useCountryActions';
 
 type Country = {
     id: number;
@@ -16,7 +17,9 @@ type Country = {
 
 export const CoreShopCountriesPage = (): React.JSX.Element => {
     const widgetManager = useWidgetManager();
-    const { data: countries, loading, error } = useFetch<Country[]>('/admin/coreshop/countries/list?_dc=1747397572196&page=1&start=0&limit=25');
+    const { data: countries, loading, error } = useFetch<Country[]>('/admin/coreshop/countries/list');
+    const { input } = useFormModal();
+    const { createCountry } = useCountryActions();
 
     const handleCountryClick = (country: any) => {
         widgetManager.openMainWidget({
@@ -47,9 +50,31 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
     if (loading) return <Spin />;
     if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
+    const handleCountryCreation = (value: string) => {
+        console.log(value);
+        createCountry(value, '/admin/coreshop/countries/add').then(r => {});
+    }
+
+    const openNewCountry = () => {
+        console.log("Creating new country...");
+        input({
+            title: 'new country',
+            label: 'label country',
+            rule: {
+                required: true,
+                message: 'Please enter a country name'
+            },
+            okText: 'created',
+            onOk: async (value: string) => {
+                handleCountryCreation(value);
+            }
+        })
+    };
+
     return (
         <Content padded>
             <Header title='Regions' />
+            <Button type={'primary'}  onClick={openNewCountry} >Create Country</Button>
             <Collapse accordion>
                 {Object.entries(groupedByZone).map(([zoneName, countries]) => (
                     <Panel header={`${zoneName} (${countries.length})`} key={zoneName}>

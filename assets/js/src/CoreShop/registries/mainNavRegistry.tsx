@@ -25,7 +25,7 @@ export function registerMainNav() {
     });
 
     mainNavRegistryService.registerMainNavItem({
-        path: 'Coreshop/Countries',
+        path: 'Coreshop/Localization/Countries',
         widgetConfig: {
             name: 'CoreShopCountriesPage',
             component: 'CoreShopCountriesPage',

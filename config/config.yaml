@@ -8,3 +8,11 @@ pimcore:
     product_registration:
         instance_identifier: "%env(PIMCORE_INSTANCE_IDENTIFIER)%"
         product_key: "%env(PIMCORE_PRODUCT_KEY)%"
+
+# FOR TESTING ONLY WE EXCLUDE THESE ROUTES FOR THE STUDIO SAVE ACTIONS
+pimcore_admin:
+  admin_csp_header: false
+  csrf_protection:
+    excluded_routes:
+      - coreshop_country_save
+      - coreshop_country_add
