@@ -1,9 +1,10 @@
+
 {
   "compilerOptions": {
-    "rootDir": ".",
     "module": "ESNext",
-    "target": "ES2023",
+    "target": "es2017",
     "moduleResolution": "bundler",
+    "types": ["@types/webpack-env" ],
     "baseUrl": "./js/",
     "strictNullChecks": true,
     "jsx": "react",
@@ -12,19 +13,14 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "declaration": true,
-    "declarationMap": true,
-    "outDir": "./dist/build/types",
-    "composite": true,
-    "types": ["reflect-metadata", "@types/webpack-env" ],
+    "skipLibCheck": true,
     "paths": {
-      "@Pimcore/*": [
-        "./node_modules/pimcore-studio-ui/dist/build/types/src/*"
-      ]
+      "*": ["./@mf-types/*"]
     }
   },
 
   "include": [
-    "./assets/js/**/*"
+    "./js/**/*",
+    "./@mf-types/*"
   ],
 }

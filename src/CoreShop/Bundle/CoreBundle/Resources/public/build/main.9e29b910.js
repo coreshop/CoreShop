@@ -1,1 +1,0 @@
-console.log("Pimcore plugin system not available");

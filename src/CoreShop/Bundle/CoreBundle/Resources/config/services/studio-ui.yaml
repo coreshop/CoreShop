@@ -1,4 +1,6 @@
 services:
   CoreShop\Bundle\CoreBundle\StudioUI\EntryPointProvider:
+    arguments:
+      - '%kernel.project_dir%'
     tags:
       - { name: pimcore_studio_ui.webpack_entry_point_provider }

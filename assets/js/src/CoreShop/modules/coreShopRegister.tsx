@@ -1,4 +1,4 @@
-import { AbstractModule } from 'pimcore-studio-ui';
+import { AbstractModule } from '@pimcore/studio-ui-bundle';
 import { registerIcons } from '../registries/iconRegistry';
 import { registerComponents } from '../registries/componentRegistry';
 import { registerMainNav } from '../registries/mainNavRegistry';

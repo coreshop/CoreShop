@@ -1,0 +1,46 @@
+{
+  "name": "coreshop",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "NODE_ENV=development rsbuild build",
+    "dev-server": "NODE_ENV=dev-server rsbuild dev",
+    "build": "rsbuild build",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./js",
+    "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./js --fix",
+    "lint-fix-watch": "nodemon --watch './js/**/*' --exec \"eslint --ext .js,.jsx,.ts,.tsx ./js --fix --cache\" -e js,jsx,ts,tsx",
+    "check-types": "tsc --noEmit",
+    "check-types-watch": "tsc --noEmit --watch"
+  },
+  "license": "CEL",
+  "private": true,
+  "devDependencies": {
+    "@babel/preset-react": "^7.23.3",
+    "@module-federation/rsbuild-plugin": "^0.13.1",
+    "@rsbuild/core": "^1.3.16",
+    "@rsbuild/plugin-react": "^1.3.1",
+    "@types/jest": "^29.5.12",
+    "@types/react-dom": "18.3.x",
+    "@types/webpack-env": "^1.18.4",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "eslint": "^8.56.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-storybook": "^0.8.0",
+    "stream": "^0.0.2",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "whatwg-fetch": "^3.6.20"
+  },
+  "dependencies": {
+    "@pimcore/studio-ui-bundle": "file:../../../../pimcore-studio-ui-bundle-0.0.1.tgz",
+    "inversify": "^6.1.4",
+    "nodemon": "^3.1.10",
+    "react": "18.3.x",
+    "react-dom": "18.3.x"
+  }
+}

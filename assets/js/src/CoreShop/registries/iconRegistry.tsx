@@ -1,6 +1,6 @@
-import { container } from 'pimcore-studio-ui';
-import { serviceIds } from 'pimcore-studio-ui/app';
-import { type IconLibrary } from 'pimcore-studio-ui/modules/icon-library';
+import { container } from '@pimcore/studio-ui-bundle';
+import { serviceIds } from '@pimcore/studio-ui-bundle/app';
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library';
 import { CoreShopIcon } from "../icons/coreshop";
 import { CoreShopLogo } from "../icons/coreshopLogo";
 

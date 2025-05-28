@@ -1,6 +1,6 @@
-import { container } from 'pimcore-studio-ui';
-import { serviceIds } from 'pimcore-studio-ui/app';
-import { type ComponentRegistry, componentConfig } from 'pimcore-studio-ui/modules/app';
+import { container } from '@pimcore/studio-ui-bundle';
+import { serviceIds } from '@pimcore/studio-ui-bundle/app';
+import { type ComponentRegistry, componentConfig } from '@pimcore/studio-ui-bundle/modules/app';
 import { CoreShopButton } from '../components/coreshop-button';
 
 export function registerComponents() {

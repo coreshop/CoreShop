@@ -1,10 +1,10 @@
-import { Content, Header } from 'pimcore-studio-ui/components';
+import { Content, Header } from '@pimcore/studio-ui-bundle/components';
 import React from 'react';
 import { useFetch } from '../hooks/useFetch';
 import {Collapse, List, Typography, Tag, Spin, Button} from 'antd';
 const { Panel } = Collapse;
-import { useWidgetManager } from 'pimcore-studio-ui/modules/widget-manager';
-import { useFormModal } from 'pimcore-studio-ui/components';
+import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager';
+import { useFormModal } from '@pimcore/studio-ui-bundle/components';
 import { useCountryActions } from '../hooks/useCountryActions';
 
 type Country = {

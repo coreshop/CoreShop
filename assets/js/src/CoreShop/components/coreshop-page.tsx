@@ -1,4 +1,4 @@
-import { Content, Header, Icon } from 'pimcore-studio-ui/components';
+import { Content, Header, Icon } from '@pimcore/studio-ui-bundle/components';
 import React from 'react';
 
 export const CoreShopMainPage = (): React.JSX.Element => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { IconButton } from 'pimcore-studio-ui/components'
-import { useWidgetManager } from 'pimcore-studio-ui/modules/widget-manager';
+import { IconButton } from '@pimcore/studio-ui-bundle/components'
+import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager';
 
 
 export const CoreShopButton = (): React.JSX.Element => {

@@ -1,6 +1,6 @@
-import { container } from 'pimcore-studio-ui';
-import { serviceIds } from 'pimcore-studio-ui/app';
-import type { MainNavRegistry } from 'pimcore-studio-ui/modules/app';
+import { container } from '@pimcore/studio-ui-bundle';
+import { serviceIds } from '@pimcore/studio-ui-bundle/app';
+import type { MainNavRegistry } from '@pimcore/studio-ui-bundle/modules/app';
 
 export function registerMainNav() {
     const mainNavRegistryService = container.get<MainNavRegistry>(serviceIds.mainNavRegistry);

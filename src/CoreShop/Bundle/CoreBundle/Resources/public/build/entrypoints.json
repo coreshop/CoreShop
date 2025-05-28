@@ -1,9 +1,0 @@
-{
-  "entrypoints": {
-    "main": {
-      "js": [
-        "/bundles/coreshopcore/build/main.js"
-      ]
-    }
-  }
-}

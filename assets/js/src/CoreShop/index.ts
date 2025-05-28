@@ -1,4 +1,4 @@
-import { type IAbstractPlugin } from 'pimcore-studio-ui';
+import { type IAbstractPlugin } from '@pimcore/studio-ui-bundle';
 import { CoreShopRegister } from './modules/coreShopRegister';
 import { DynamicTypeExtension } from './modules/dynamicTypeExtension';
 import { CoreShopRelationClass } from "./custom-types/coreShopRelation";

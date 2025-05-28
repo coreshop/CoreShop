@@ -1,6 +1,6 @@
-import { container } from 'pimcore-studio-ui';
-import { serviceIds } from 'pimcore-studio-ui/app';
-import type { WidgetRegistry } from 'pimcore-studio-ui/modules/widget-manager';
+import { container } from '@pimcore/studio-ui-bundle';
+import { serviceIds } from '@pimcore/studio-ui-bundle/app';
+import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager';
 import { CoreShopMainPage } from '../components/coreshop-page';
 import { CoreShopCountriesPage } from '../components/coreshop-countries-page';
 import { CoreShopCountryDetailPage} from "../components/coreshop-country-detail-page";

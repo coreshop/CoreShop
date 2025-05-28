@@ -1,6 +1,6 @@
-import { type AbstractModule, container } from 'pimcore-studio-ui'
-import { serviceIds } from 'pimcore-studio-ui/app';
-import { type DynamicTypeObjectDataRegistry } from 'pimcore-studio-ui/modules/element';
+import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app';
+import { type DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element';
 
 export const DynamicTypeExtension: AbstractModule = {
     onInit: (): void => {
