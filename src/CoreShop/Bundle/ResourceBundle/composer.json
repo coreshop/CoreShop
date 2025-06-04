@@ -44,7 +44,9 @@
     "symfony/yaml": "^6.3",
     "gedmo/doctrine-extensions": "^3.11.0",
     "pimcore/pimcore": "^12.0",
-    "pimcore/admin-ui-classic-bundle": "^2.0"
+    "pimcore/admin-ui-classic-bundle": "^2.0",
+    "pimcore/studio-backend-bundle": "^1.0",
+    "pimcore/studio-ui-bundle": "^1.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",
@@ -66,6 +68,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
+      "dev-main": "5.0-dev",
       "dev-master": "5.0-dev"
     }
   },

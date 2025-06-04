@@ -23,10 +23,15 @@ use CoreShop\Bundle\ResourceBundle\Attribute\AsPimcoreModel;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Reflection\ClassReflection;
+use Pimcore\Bundle\GenericDataIndexBundle\PimcoreGenericDataIndexBundle;
+use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
+use Pimcore\Bundle\StudioBackendBundle\PimcoreStudioBackendBundle;
+use Pimcore\Bundle\StudioUiBundle\PimcoreStudioUiBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -36,7 +41,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use function Symfony\Component\String\u;
 
-final class CoreShopResourceExtension extends AbstractPimcoreExtension
+final class CoreShopResourceExtension extends AbstractModelExtension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -77,6 +82,18 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
         $this->loadPersistence($configs['drivers'], $configs['resources'], $loader);
         $this->loadResources($configs['resources'], $container);
         $this->loadPimcoreModels($configs['pimcore'], $container);
+
+        $this->registerDependantBundles(
+            'coreshop',
+            [
+                PimcoreGenericDataIndexBundle::class,
+                PimcoreStudioBackendBundle::class,
+                PimcoreStudioUiBundle::class,
+                PimcoreGenericDataIndexBundle::class,
+                PimcoreGenericExecutionEngineBundle::class,
+            ],
+            $container
+        );
 
         $bodyListener = new Definition(BodyListener::class);
         $bodyListener->addTag('kernel.event_listener', [
