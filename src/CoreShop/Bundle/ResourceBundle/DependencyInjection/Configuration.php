@@ -53,6 +53,7 @@ final class Configuration implements ConfigurationInterface
         $this->addTranslationsSection($rootNode);
         $this->addDriversSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
+        $this->addCascadeMergeAssociations($rootNode);
 
         return $treeBuilder;
     }
@@ -176,6 +177,23 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('editmode_css')
                         ->useAttributeAsKey('name')
                         ->prototype('scalar')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end()
+        ;
+    }
+
+    private function addCascadeMergeAssociations(ArrayNodeDefinition $node): void
+    {
+        $node->children()
+            ->arrayNode('orm_cascade_merge_associations')
+                ->useAttributeAsKey('class')
+                ->arrayPrototype()
+                    ->children()
+                        ->arrayNode('associations')
+                            ->scalarPrototype()->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()

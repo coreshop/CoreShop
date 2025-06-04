@@ -26,7 +26,7 @@ use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInte
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 final class ORMTranslatableListener implements EventSubscriber
@@ -48,7 +48,7 @@ final class ORMTranslatableListener implements EventSubscriber
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         /**
-         * @var ClassMetadataInfo $classMetadata
+         * @var ClassMetadata $classMetadata
          */
         $classMetadata = $eventArgs->getClassMetadata();
         $reflection = $classMetadata->reflClass;
@@ -77,7 +77,7 @@ final class ORMTranslatableListener implements EventSubscriber
         $this->translatableEntityLocaleAssigner->assignLocale($entity);
     }
 
-    private function mapTranslatable(ClassMetadataInfo $metadata): void
+    private function mapTranslatable(ClassMetadata $metadata): void
     {
         $className = $metadata->name;
 
@@ -99,15 +99,15 @@ final class ORMTranslatableListener implements EventSubscriber
                 'fieldName' => 'translations',
                 'targetEntity' => $translationResourceMetadata->getClass('model'),
                 'mappedBy' => 'translatable',
-                'fetch' => ClassMetadataInfo::FETCH_EXTRA_LAZY,
+                'fetch' => ClassMetadata::FETCH_EXTRA_LAZY,
                 'indexBy' => 'locale',
-                'cascade' => ['persist', 'merge', 'remove'],
+                'cascade' => ['persist', 'remove'],
                 'orphanRemoval' => true,
             ]);
         }
     }
 
-    private function mapTranslation(ClassMetadataInfo $metadata): void
+    private function mapTranslation(ClassMetadata $metadata): void
     {
         $className = $metadata->name;
 
@@ -162,7 +162,7 @@ final class ORMTranslatableListener implements EventSubscriber
         }
     }
 
-    private function hasUniqueConstraint(ClassMetadataInfo $metadata, array $columns): bool
+    private function hasUniqueConstraint(ClassMetadata $metadata, array $columns): bool
     {
         if (!isset($metadata->table['uniqueConstraints'])) {
             return false;

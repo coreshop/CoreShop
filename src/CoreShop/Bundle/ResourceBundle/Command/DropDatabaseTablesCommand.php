@@ -100,7 +100,9 @@ EOT
             $ui->text('Drop database schema...');
             $ui->newLine();
 
-            $schemaTool->dropSchema($metadatas);
+            foreach ($sqls as $sql) {
+                $em->getConnection()->executeStatement($sql);
+            }
 
             $pluralization = (1 === count($sqls)) ? 'query was' : 'queries were';
 

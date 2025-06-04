@@ -31,7 +31,7 @@
     "robertfausk/behat-panther-extension": "^1.0",
     "behat/mink": "^1.8",
     "dbrekelmans/bdi": "^1.0.0",
-    "doctrine/orm": "^2.9",
+    "doctrine/orm": "^3.0",
     "doctrine/data-fixtures": "^1.5",
     "friends-of-behat/mink-debug-extension": "^2.0",
     "friends-of-behat/mink-extension": "^2.4",

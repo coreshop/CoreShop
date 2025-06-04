@@ -73,6 +73,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
         $container->setParameter('coreshop.resources', []);
         $container->setParameter('coreshop.resource.mapping', $configs['mapping']);
+        $container->setParameter('coreshop.orm_cascade_merge', $configs['orm_cascade_merge_associations']);
 
         $this->autoRegisterPimcoreModels($configs, $container);
 
