@@ -161,7 +161,7 @@ final class CartPriceRuleContext implements Context
      * @Given /^the (cart rule) is a voucher rule$/
      * @Given /^the (cart rule) is a voucher rule with code "([^"]+)"$/
      */
-    public function theCartPriceRuleIsVoucherRule(CartPriceRuleInterface $rule, $code = null): void
+    public function theCartPriceRuleIsVoucherRule(CartPriceRuleInterface $rule, ?string $code = null): void
     {
         $rule->setIsVoucherRule(true);
 

@@ -27,9 +27,9 @@ interface SluggableInterface
     public function getKey(): ?string;
 
     /**
-     * @return UrlSlug[]
+     * @return UrlSlug[]|null
      */
-    public function getSlug(?string $language = null): array;
+    public function getSlug(?string $language = null): ?array;
 
     /**
      * @param UrlSlug[] $slug

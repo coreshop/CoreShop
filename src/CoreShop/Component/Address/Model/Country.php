@@ -47,10 +47,7 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
      */
     protected $isoCode;
 
-    /**
-     * @var ZoneInterface
-     */
-    protected $zone;
+    protected ?ZoneInterface $zone = null;
 
     /**
      * @var Collection|StateInterface[]
@@ -151,7 +148,7 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
         return $this->zone;
     }
 
-    public function setZone(?ZoneInterface $zone = null)
+    public function setZone(?ZoneInterface $zone)
     {
         $this->zone = $zone;
 

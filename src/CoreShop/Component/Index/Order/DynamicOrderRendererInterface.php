@@ -23,9 +23,6 @@ use CoreShop\Component\Index\Worker\WorkerInterface;
 interface DynamicOrderRendererInterface
 {
     /**
-     * Renders the condition.
-     *
-     *
      * @return mixed
      */
     public function render(WorkerInterface $worker, OrderInterface $order, ?string $prefix = null);

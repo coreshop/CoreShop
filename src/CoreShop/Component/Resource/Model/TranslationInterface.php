@@ -21,11 +21,11 @@ namespace CoreShop\Component\Resource\Model;
 interface TranslationInterface
 {
     /**
-     * @return TranslatableInterface
+     * @return TranslatableInterface|null
      */
     public function getTranslatable();
 
-    public function setTranslatable(?TranslatableInterface $translatable = null);
+    public function setTranslatable(?TranslatableInterface $translatable);
 
     /**
      * @return string

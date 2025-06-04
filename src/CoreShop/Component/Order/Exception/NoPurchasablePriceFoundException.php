@@ -21,7 +21,7 @@ namespace CoreShop\Component\Order\Exception;
 class NoPurchasablePriceFoundException extends \Exception
 {
     public function __construct(
-        $calculatorClass,
+        string $calculatorClass,
         ?\Exception $previousException = null,
     ) {
         parent::__construct(sprintf('Price Calculator "%s" was not able to match a valid price.', $calculatorClass), 0, $previousException);

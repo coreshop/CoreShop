@@ -21,7 +21,7 @@ namespace CoreShop\Component\Shipping\Exception;
 class NoShippingPriceFoundException extends \Exception
 {
     public function __construct(
-        $calculatorClass,
+        string $calculatorClass,
         ?\Exception $previousException = null,
     ) {
         parent::__construct(sprintf('Price Calculator "%s" was not able to match a valid shipping price.', $calculatorClass), 0, $previousException);

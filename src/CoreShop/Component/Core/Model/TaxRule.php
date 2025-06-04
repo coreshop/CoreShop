@@ -27,15 +27,8 @@ use CoreShop\Component\Taxation\Model\TaxRule as BaseTaxRule;
  */
 class TaxRule extends BaseTaxRule implements TaxRuleInterface, \Stringable
 {
-    /**
-     * @var CountryInterface
-     */
-    protected $country;
-
-    /**
-     * @var StateInterface
-     */
-    protected $state;
+    protected ?CountryInterface $country = null;
+    protected ?StateInterface $state = null;
 
     public function __toString(): string
     {
@@ -54,7 +47,7 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface, \Stringable
         return $this->country;
     }
 
-    public function setCountry(?CountryInterface $country = null)
+    public function setCountry(?CountryInterface $country)
     {
         $this->country = $country;
 
@@ -66,7 +59,7 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface, \Stringable
         return $this->state;
     }
 
-    public function setState(?StateInterface $state = null)
+    public function setState(?StateInterface $state)
     {
         $this->state = $state;
 

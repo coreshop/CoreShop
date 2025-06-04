@@ -26,41 +26,41 @@ interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
     /**
      * Field Type Integer for Index.
      */
-    public const FIELD_TYPE_INTEGER = 'INTEGER';
+    public const string FIELD_TYPE_INTEGER = 'INTEGER';
 
     /**
      * Field Type Double for Index.
      */
-    public const FIELD_TYPE_DOUBLE = 'DOUBLE';
+    public const string FIELD_TYPE_DOUBLE = 'DOUBLE';
 
     /**
      * Field Type String for Index.
      */
-    public const FIELD_TYPE_STRING = 'STRING';
+    public const string FIELD_TYPE_STRING = 'STRING';
 
     /**
      * Field Type Text for Index.
      */
-    public const FIELD_TYPE_TEXT = 'TEXT';
+    public const string FIELD_TYPE_TEXT = 'TEXT';
 
     /**
      * Field Type Boolean for Index.
      */
-    public const FIELD_TYPE_BOOLEAN = 'BOOLEAN';
+    public const string FIELD_TYPE_BOOLEAN = 'BOOLEAN';
 
     /**
      * Field Type Date for Index.
      */
-    public const FIELD_TYPE_DATE = 'DATE';
+    public const string FIELD_TYPE_DATE = 'DATE';
 
     public function getId(): ?int;
 
     /**
-     * @return IndexInterface
+     * @return IndexInterface|null
      */
     public function getIndex();
 
-    public function setIndex(?IndexInterface $index = null);
+    public function setIndex(?IndexInterface $index);
 
     /**
      * @return string

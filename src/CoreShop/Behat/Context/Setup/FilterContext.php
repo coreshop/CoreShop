@@ -78,7 +78,7 @@ final class FilterContext implements Context
      * @Given /the (filter) has a category condition with (category "[^"]+")$/
      * @Given /the (filter) has a category condition with (category "[^"]+") and it (includes all subcategories)$/
      */
-    public function theFilterHasACategoryConditionWithCategory(FilterInterface $filter, ?CategoryInterface $category = null, string $includeAllChilds = ''): void
+    public function theFilterHasACategoryConditionWithCategory(FilterInterface $filter, ?CategoryInterface $category = null, $includeAllChilds = ''): void
     {
         $condition = $this->filterConditionFactory->createNew();
         $condition->setType('category_select');

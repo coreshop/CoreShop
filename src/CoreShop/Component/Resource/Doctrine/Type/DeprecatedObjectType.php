@@ -16,14 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Product\Exception;
+namespace CoreShop\Component\Resource\Doctrine\Type;
 
-class NoPriceFoundException extends \Exception
+use Doctrine\DBAL\Types\JsonType;
+
+class DeprecatedObjectType extends JsonType
 {
-    public function __construct(
-        string $calculatorClass,
-        ?\Exception $previousException = null,
-    ) {
-        parent::__construct(sprintf('Price Calculator "%s" was not able to match a valid price.', $calculatorClass), 0, $previousException);
+    public function getName(): string
+    {
+        return 'object';
     }
 }
