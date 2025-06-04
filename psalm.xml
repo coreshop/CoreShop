@@ -275,10 +275,28 @@
         <MethodSignatureMismatch errorLevel="info" />
 
         <!-- Custom -->
-
-        <!-- remove after guzzlehttp-release -->
-        <!-- see https://github.com/guzzle/guzzle/pull/2273 -->
-        <InvalidCatch errorLevel="info" />
+        <MissingOverrideAttribute errorLevel="info" />
+        <ClassMustBeFinal errorLevel="info" />
+        <PossiblyUnusedMethod errorLevel="info" />
+        <UnusedClass errorLevel="info" />
+        <InvalidOperand errorLevel="info" />
+        <PossiblyFalseArgument errorLevel="info" />
+        <PossiblyUnusedReturnValue errorLevel="info" />
+        <UnusedVariable errorLevel="info" />
+        <PossiblyUnusedProperty errorLevel="info" />
+        <PossiblyUnusedParam errorLevel="info" />
+        <UnusedParam errorLevel="info" />
+        <PossiblyUnusedProperty errorLevel="info" />
+        <UnnecessaryVarAnnotation errorLevel="info" />
+        <UnusedProperty errorLevel="info" />
+        <InvalidPropertyFetch errorLevel="info" />
+        <UnusedClosureParam errorLevel="info" />
+        <UnusedMethod errorLevel="info" />
+        <UnusedMethodCall errorLevel="info" />
+        <UnevaluatedCode errorLevel="info" />
+        <PossiblyFalseIterator errorLevel="info" />
+        <UndefinedMethod errorLevel="info" />
+        <ReservedWord errorLevel="info" />
     </issueHandlers>
 
     <stubs>

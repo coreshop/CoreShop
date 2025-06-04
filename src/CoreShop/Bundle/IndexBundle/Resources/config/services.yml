@@ -125,6 +125,8 @@ services:
             - '@CoreShop\Component\Index\Condition\ConditionRendererInterface'
             - '@CoreShop\Component\Index\Order\OrderRendererInterface'
             - '@doctrine.dbal.default_connection'
+            - false
+            - '@doctrine.migrations.dependency_factory'
         shared: false
         calls:
             - { method: setLogger, arguments: ['@logger'] }
