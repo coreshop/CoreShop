@@ -34,6 +34,7 @@ use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Migrations\DependencyFactory;
@@ -88,11 +89,13 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
         $this->createLocalizedTableSchema($index, $newSchema);
         $this->createRelationalTableSchema($index, $newSchema);
 
-        /** @psalm-suppress DeprecatedMethod */
-        $upQueries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
+        $comparator = $this->database->createSchemaManager()->createComparator();
 
-        /** @psalm-suppress DeprecatedMethod */
-        $downQueries = $oldSchema->getMigrateFromSql($newSchema, $this->database->getDatabasePlatform());
+        $upDiff = $comparator->compareSchemas($oldSchema, $newSchema);
+        $upQueries = $this->database->getDatabasePlatform()->getAlterSchemaSQL($upDiff);
+
+        $downDiff = $comparator->compareSchemas($newSchema, $oldSchema);
+        $downQueries = $this->database->getDatabasePlatform()->getAlterSchemaSQL($downDiff);
 
         //Show run in an Transaction, but doctrine transactional does not work with PDO for some odd reason....
         foreach ($upQueries as $qry) {
@@ -161,12 +164,12 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
         $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('o_id', 'integer');
-        $table->addColumn('o_key', 'string');
+        $table->addColumn('o_key', 'string')->setLength(255);
         $table->addColumn('o_virtualObjectId', 'integer');
         $table->addColumn('o_virtualObjectActive', 'boolean');
         $table->addColumn('o_classId', 'string')->setLength(50);
-        $table->addColumn('o_className', 'string');
-        $table->addColumn('o_type', 'string');
+        $table->addColumn('o_className', 'string')->setLength(255);
+        $table->addColumn('o_type', 'string')->setLength(255);
         $table->addColumn('active', 'boolean');
         $table->setPrimaryKey(['o_id']);
 
@@ -182,8 +185,16 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
 
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexColumnsExtensionInterface) {
-                foreach ($extension->getSystemColumns() as $name => $type) {
-                    $table->addColumn($name, $this->renderFieldType($type), $this->getSystemFieldTypeConfig($index, $name, $type));
+                foreach ($extension->getSystemColumns() as $column) {
+                    if (!$column instanceof Column) {
+                        continue;
+                    }
+
+                    $options = $column->toArray();
+
+                    unset($options['name']);
+
+                    $table->addColumn($column->getName(), Type::lookupName($column->getType()), $options);
                 }
             }
         }
@@ -210,8 +221,8 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
         $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('oo_id', 'integer');
-        $table->addColumn('language', 'string');
-        $table->addColumn('name', 'string', ['notnull' => false]);
+        $table->addColumn('language', 'string')->setLength(255);
+        $table->addColumn('name', 'string', ['notnull' => false])->setLength(255);
         $table->setPrimaryKey(['oo_id', 'language']);
         $table->addIndex(['oo_id']);
         $table->addIndex(['language']);
@@ -226,14 +237,16 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
 
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexColumnsExtensionInterface) {
-                foreach ($extension->getLocalizedSystemColumns() as $name => $type) {
-                    $config = ['notnull' => false];
-
-                    if ($extension instanceof IndexSystemColumnTypeConfigExtension) {
-                        $config = array_merge($config, $extension->getSystemColumnConfig($name, $type));
+                foreach ($extension->getLocalizedSystemColumns() as $column) {
+                    if (!$column instanceof Column) {
+                        continue;
                     }
 
-                    $table->addColumn($name, $this->renderFieldType($type), $config);
+                    $options = $column->toArray();
+
+                    unset($options['name']);
+
+                    $table->addColumn($column->getName(), Type::lookupName($column->getType()), $options);
                 }
             }
         }
@@ -262,20 +275,22 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
         $table->addColumn('src', 'integer');
         $table->addColumn('src_virtualObjectId', 'integer');
         $table->addColumn('dest', 'integer');
-        $table->addColumn('fieldname', 'string');
-        $table->addColumn('type', 'string');
+        $table->addColumn('fieldname', 'string')->setLength(255);
+        $table->addColumn('type', 'string')->setLength(255);
         $table->setPrimaryKey(['src', 'dest', 'fieldname', 'type']);
 
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexRelationalColumnsExtensionInterface) {
-                foreach ($extension->getRelationalColumns() as $name => $type) {
-                    $config = ['notnull' => false];
-
-                    if ($extension instanceof IndexSystemColumnTypeConfigExtension) {
-                        $config = array_merge($config, $extension->getSystemColumnConfig($name, $type));
+                foreach ($extension->getRelationalColumns() as $column) {
+                    if (!$column instanceof Column) {
+                        continue;
                     }
 
-                    $table->addColumn($name, $this->renderFieldType($type), $config);
+                    $options = $column->toArray();
+
+                    unset($options['name']);
+
+                    $table->addColumn($column->getName(), Type::lookupName($column->getType()), $options);
                 }
             }
         }
@@ -368,7 +383,7 @@ QUERY;
             }
 
             foreach ($potentialTables as $oldTable => $newTable) {
-                if (array_key_exists($oldTable, $allViews) || $this->database->createSchemaManager()->tablesExist($oldTable)) {
+                if (array_key_exists($oldTable, $allViews) || $this->database->createSchemaManager()->tablesExist([$oldTable])) {
                     $this->database->executeQuery(
                         sprintf(
                             'RENAME TABLE `%s` TO `%s`',
@@ -550,8 +565,7 @@ QUERY;
         }
 
         if (Type::hasType($doctrineType)) {
-            /** @psalm-suppress DeprecatedMethod */
-            return Type::getType($doctrineType)->getName();
+            return Type::lookupName(Type::getType($doctrineType));
         }
 
         throw new \Exception($type . ' is not supported by MySQL Index');

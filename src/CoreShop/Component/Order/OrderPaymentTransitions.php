@@ -20,21 +20,21 @@ namespace CoreShop\Component\Order;
 
 final class OrderPaymentTransitions
 {
-    public const IDENTIFIER = 'coreshop_order_payment';
+    public const string IDENTIFIER = 'coreshop_order_payment';
 
-    public const TRANSITION_REQUEST_PAYMENT = 'request_payment';
+    public const string TRANSITION_REQUEST_PAYMENT = 'request_payment';
 
-    public const TRANSITION_PARTIALLY_AUTHORIZE = 'partially_authorize';
+    public const string TRANSITION_PARTIALLY_AUTHORIZE = 'partially_authorize';
 
-    public const TRANSITION_AUTHORIZE = 'authorize';
+    public const string TRANSITION_AUTHORIZE = 'authorize';
 
-    public const TRANSITION_PARTIALLY_PAY = 'partially_pay';
+    public const string TRANSITION_PARTIALLY_PAY = 'partially_pay';
 
-    public const TRANSITION_CANCEL = 'cancel';
+    public const string TRANSITION_CANCEL = 'cancel';
 
-    public const TRANSITION_PAY = 'pay';
+    public const string TRANSITION_PAY = 'pay';
 
-    public const TRANSITION_PARTIALLY_REFUND = 'partially_refund';
+    public const string TRANSITION_PARTIALLY_REFUND = 'partially_refund';
 
-    public const TRANSITION_REFUND = 'refund';
+    public const string TRANSITION_REFUND = 'refund';
 }

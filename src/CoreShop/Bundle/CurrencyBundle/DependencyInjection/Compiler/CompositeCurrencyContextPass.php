@@ -24,7 +24,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeCurrencyContextPass extends PrioritizedCompositeServicePass
 {
-    public const CURRENCY_CONTEXT_SERVICE_TAG = 'coreshop.context.currency';
+    public const string CURRENCY_CONTEXT_SERVICE_TAG = 'coreshop.context.currency';
 
     public function __construct(
         ) {

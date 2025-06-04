@@ -19,7 +19,7 @@ declare(strict_types=1);
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Pimcore\Kernel as PimcoreKernel;
 
-final class Kernel extends PimcoreKernel
+class Kernel extends PimcoreKernel
 {
     public function registerBundlesToCollection(BundleCollection $collection): void
     {

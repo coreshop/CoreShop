@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RuleAvailabilityAssessorPass extends RegisterSimpleRegistryTypePass
 {
-    public const RULE_AVAILABILITY_ASSESSOR_TAG = 'coreshop.registry.rule_availability_assessor';
+    public const string RULE_AVAILABILITY_ASSESSOR_TAG = 'coreshop.registry.rule_availability_assessor';
 
     public function __construct(
         ) {

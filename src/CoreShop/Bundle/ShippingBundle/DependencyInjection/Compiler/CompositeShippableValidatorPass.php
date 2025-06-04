@@ -24,7 +24,7 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CompositeShippableValidatorPass extends PrioritizedCompositeServicePass
 {
-    public const SHIPABLE_VALIDATOR_TAG = 'coreshop.shipping.carrier.validator';
+    public const string SHIPABLE_VALIDATOR_TAG = 'coreshop.shipping.carrier.validator';
 
     public function __construct(
         ) {

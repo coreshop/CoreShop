@@ -313,7 +313,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getDataFromResource(mixed $data, ?Concrete $object = null, array $params = []): mixed
+    public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
     }

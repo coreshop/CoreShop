@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class ShippingRuleConditionPass extends RegisterRegistryTypePass
 {
-    public const SHIPPING_RULE_CONDITION_TAG = 'coreshop.shipping_rule.condition';
+    public const string SHIPPING_RULE_CONDITION_TAG = 'coreshop.shipping_rule.condition';
 
     public function __construct(
         ) {

@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterGetterPass extends RegisterRegistryTypePass
 {
-    public const INDEX_GETTER_TAG = 'coreshop.index.getter';
+    public const string INDEX_GETTER_TAG = 'coreshop.index.getter';
 
     public function __construct(
         ) {

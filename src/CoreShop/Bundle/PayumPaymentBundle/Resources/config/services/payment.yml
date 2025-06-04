@@ -16,6 +16,5 @@ services:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
     coreshop.payum.http_client:
-        class: Payum\Core\Bridge\Httplug\HttplugClient
-        arguments:
-            - '@pimcore.http_client'
+        class: Payum\Core\HttpClientInterface
+        factory: [Payum\Core\Bridge\Guzzle\HttpClientFactory, create]

@@ -437,8 +437,6 @@ class ProductQuantityPriceRules extends Data implements
 
     /**
      * @return ProductQuantityPriceRuleInterface
-     *
-     * @throws \Doctrine\ORM\ORMException
      */
     protected function checkForRangeOrphans(EntityManager $entityManager, ProductQuantityPriceRuleInterface $storedRule, array $currentRule)
     {

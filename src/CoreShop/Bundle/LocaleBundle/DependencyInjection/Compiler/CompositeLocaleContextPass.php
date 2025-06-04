@@ -24,7 +24,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeLocaleContextPass extends PrioritizedCompositeServicePass
 {
-    public const LOCALE_CONTEXT_SERVICE_TAG = 'coreshop.context.locale';
+    public const string LOCALE_CONTEXT_SERVICE_TAG = 'coreshop.context.locale';
 
     public function __construct(
         ) {

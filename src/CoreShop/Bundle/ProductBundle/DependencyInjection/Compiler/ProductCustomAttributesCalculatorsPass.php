@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class ProductCustomAttributesCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
-    public const PRODUCT_CUSTOM_ATTRIBUTES_CALCULATOR_TAG = 'coreshop.product.custom_attributes_calculator';
+    public const string PRODUCT_CUSTOM_ATTRIBUTES_CALCULATOR_TAG = 'coreshop.product.custom_attributes_calculator';
 
     public function __construct(
         ) {

@@ -25,7 +25,7 @@ use Payum\Core\Bridge\Doctrine\Storage\DoctrineStorage;
 
 class LockingStorage extends DoctrineStorage
 {
-    protected function doFind($id): ?object
+    protected function doFind($id)
     {
         $objectManager = $this->objectManager;
         /** @psalm-var class-string $modelClass */

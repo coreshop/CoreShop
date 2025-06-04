@@ -24,8 +24,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
+use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
-final class ShopUserLogoutHandler
+/**
+ * TOOD: Refactor https://symfony.com/blog/new-in-symfony-5-1-simpler-logout-customization
+ */
+
+/** @psalm-suppress DeprecatedInterface */
+final class ShopUserLogoutHandler /*implements LogoutSuccessHandlerInterface*/
 {
     public function __construct(
         private RouterInterface $router,
@@ -40,7 +46,7 @@ final class ShopUserLogoutHandler
         $store = $this->storeContext->getStore();
 
         if ($store instanceof StoreInterface) {
-            $request->getSession()->remove(sprintf('coreshop.cart.%s',  $store->getId()));
+            $request->getSession()->remove('coreshop.cart.' . $store->getId());
         }
 
         return new RedirectResponse($this->router->generate($this->routeName, ['_locale' => $request->getLocale()]));

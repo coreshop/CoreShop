@@ -23,13 +23,13 @@ use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 
 class UserTypeChecker extends AbstractConditionChecker
 {
-    public const TYPE_REGISTER = 'register';
+    public const string TYPE_REGISTER = 'register';
 
-    public const TYPE_PASSWORD_RESET = 'password-reset';
+    public const string TYPE_PASSWORD_RESET = 'password-reset';
 
-    public const TYPE_NEWSLETTER_DOUBLE_OPT_IN = 'newsletter-double-opt-in';
+    public const string TYPE_NEWSLETTER_DOUBLE_OPT_IN = 'newsletter-double-opt-in';
 
-    public const TYPE_NEWSLETTER_CONFIRMED = 'newsletter-confirmed';
+    public const string TYPE_NEWSLETTER_CONFIRMED = 'newsletter-confirmed';
 
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {

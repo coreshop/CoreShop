@@ -25,7 +25,7 @@ use Pimcore\Model\Asset;
 
 class PimcoreAsset extends Type
 {
-    public const PIMCORE_ASSET = 'pimcoreAsset';
+    public const string PIMCORE_ASSET = 'pimcoreAsset';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {

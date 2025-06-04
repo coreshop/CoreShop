@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
-    public const OPTION_UPDATE_CLASSES = 'update-classes';
+    public const string OPTION_UPDATE_CLASSES = 'update-classes';
 
     private array $installedClasses = [];
 

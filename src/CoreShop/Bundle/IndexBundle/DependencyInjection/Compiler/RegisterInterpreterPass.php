@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterInterpreterPass extends RegisterRegistryTypePass
 {
-    public const INDEX_INTERPRETER_TAG = 'coreshop.index.interpreter';
+    public const string INDEX_INTERPRETER_TAG = 'coreshop.index.interpreter';
 
     public function __construct(
         ) {

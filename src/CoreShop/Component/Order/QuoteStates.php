@@ -20,11 +20,11 @@ namespace CoreShop\Component\Order;
 
 final class QuoteStates
 {
-    public const STATE_INITIALIZED = 'initialized';
+    public const string STATE_INITIALIZED = 'initialized';
 
-    public const STATE_NEW = 'new';
+    public const string STATE_NEW = 'new';
 
-    public const STATE_CANCELLED = 'cancelled';
+    public const string STATE_CANCELLED = 'cancelled';
 
-    public const STATE_COMPLETE = 'complete';
+    public const string STATE_COMPLETE = 'complete';
 }

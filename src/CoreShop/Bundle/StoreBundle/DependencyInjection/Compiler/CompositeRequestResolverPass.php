@@ -24,7 +24,7 @@ use CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface;
 
 final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
 {
-    public const STORE_REQUEST_RESOLVER_TAG = 'coreshop.context.store.request_based.resolver';
+    public const string STORE_REQUEST_RESOLVER_TAG = 'coreshop.context.store.request_based.resolver';
 
     public function __construct(
         ) {

@@ -112,7 +112,7 @@ class CustomerPage extends AbstractFrontendPage implements CustomerPageInterface
 
     public function acceptTermsOfService(): void
     {
-        $this->getElement('terms_of_service')->click();
+        $this->getElement('terms_of_service')->check();
     }
 
     public function submitGuestCheckout(): void

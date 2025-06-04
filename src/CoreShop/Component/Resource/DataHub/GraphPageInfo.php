@@ -34,7 +34,7 @@ use GraphQL\Type\Definition\Type;
 
 class GraphPageInfo
 {
-    public const NAME = 'PageInfo';
+    public const string NAME = 'PageInfo';
 
     public $cursor;
 

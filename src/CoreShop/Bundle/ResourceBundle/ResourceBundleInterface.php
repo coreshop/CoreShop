@@ -20,11 +20,11 @@ namespace CoreShop\Bundle\ResourceBundle;
 
 interface ResourceBundleInterface
 {
-    public const MAPPING_XML = 'xml';
+    public const string MAPPING_XML = 'xml';
 
-    public const MAPPING_YAML = 'yaml';
+    public const string MAPPING_YAML = 'yaml';
 
-    public const MAPPING_ANNOTATION = 'annotation';
+    public const string MAPPING_ANNOTATION = 'annotation';
 
     /**
      * Returns a vector of supported drivers.

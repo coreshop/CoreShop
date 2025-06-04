@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class PaymentProviderRuleActionPass extends RegisterRegistryTypePass
 {
-    public const PAYMENT_PROVIDER_RULE_ACTION_TAG = 'coreshop.payment_provider_rule.action';
+    public const string PAYMENT_PROVIDER_RULE_ACTION_TAG = 'coreshop.payment_provider_rule.action';
 
     public function __construct(
         ) {

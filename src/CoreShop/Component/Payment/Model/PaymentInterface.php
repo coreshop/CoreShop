@@ -23,21 +23,21 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 
 interface PaymentInterface extends ResourceInterface, TimestampableInterface
 {
-    public const STATE_NEW = 'new';
+    public const string STATE_NEW = 'new';
 
-    public const STATE_AUTHORIZED = 'authorized';
+    public const string STATE_AUTHORIZED = 'authorized';
 
-    public const STATE_PROCESSING = 'processing';
+    public const string STATE_PROCESSING = 'processing';
 
-    public const STATE_COMPLETED = 'completed';
+    public const string STATE_COMPLETED = 'completed';
 
-    public const STATE_FAILED = 'failed';
+    public const string STATE_FAILED = 'failed';
 
-    public const STATE_CANCELLED = 'cancelled';
+    public const string STATE_CANCELLED = 'cancelled';
 
-    public const STATE_REFUNDED = 'refunded';
+    public const string STATE_REFUNDED = 'refunded';
 
-    public const STATE_UNKNOWN = 'unknown';
+    public const string STATE_UNKNOWN = 'unknown';
 
     public function getId(): ?int;
 

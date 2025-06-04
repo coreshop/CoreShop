@@ -23,10 +23,10 @@ final class Events
     /**
      * Fired before a order mail will be sent.
      */
-    public const PRE_MAIL_SEND = 'coreshop.mail.pre_send';
+    public const string PRE_MAIL_SEND = 'coreshop.mail.pre_send';
 
     /**
      * Fired after a order mail has been sent.
      */
-    public const POST_MAIL_SEND = 'coreshop.mail.post_send';
+    public const string POST_MAIL_SEND = 'coreshop.mail.post_send';
 }

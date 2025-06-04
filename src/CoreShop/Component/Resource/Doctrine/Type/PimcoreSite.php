@@ -25,7 +25,7 @@ use Pimcore\Model\Site;
 
 class PimcoreSite extends Type
 {
-    public const PIMCORE_SITE = 'pimcoreSite';
+    public const string PIMCORE_SITE = 'pimcoreSite';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {

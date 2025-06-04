@@ -25,7 +25,7 @@ use Pimcore\Model\Document;
 
 class PimcoreDocument extends Type
 {
-    public const PIMCORE_DOCUMENT = 'pimcoreDocument';
+    public const string PIMCORE_DOCUMENT = 'pimcoreDocument';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {

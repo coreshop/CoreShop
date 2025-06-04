@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterExtensionsPass implements CompilerPassInterface
 {
-    public const INDEX_EXTENSION_TAG = 'coreshop.index.extension';
+    public const string INDEX_EXTENSION_TAG = 'coreshop.index.extension';
 
     public function process(ContainerBuilder $container): void
     {

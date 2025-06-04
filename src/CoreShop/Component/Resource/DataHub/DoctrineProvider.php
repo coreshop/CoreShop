@@ -45,9 +45,9 @@ use PHPStan\Type\BooleanType;
 
 class DoctrineProvider
 {
-    public const JSON = 'Json';
+    public const string JSON = 'Json';
 
-    public const ARRAY = 'Array';
+    public const string ARRAY = 'Array';
 
     /** @var Type[] */
     private static array|null $standardTypes = null;

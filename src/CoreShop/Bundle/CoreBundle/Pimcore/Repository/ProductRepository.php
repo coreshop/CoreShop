@@ -33,7 +33,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
-    public const VARIANT_RECURSIVE_QUERY_CACHE_TAG = 'coreshop_variant_recursive';
+    public const string VARIANT_RECURSIVE_QUERY_CACHE_TAG = 'coreshop_variant_recursive';
 
     public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
