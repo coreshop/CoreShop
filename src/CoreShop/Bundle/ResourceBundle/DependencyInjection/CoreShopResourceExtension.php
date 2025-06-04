@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use CoreShop\Bundle\ResourceBundle\Attribute\AsPimcoreModel;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
@@ -28,10 +27,7 @@ use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Reflection\ClassReflection;
-use Pimcore\Bundle\GenericDataIndexBundle\PimcoreGenericDataIndexBundle;
 use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
-use Pimcore\Bundle\StudioBackendBundle\PimcoreStudioBackendBundle;
-use Pimcore\Bundle\StudioUiBundle\PimcoreStudioUiBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -87,10 +83,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension
         $this->registerDependantBundles(
             'coreshop',
             [
-                PimcoreGenericDataIndexBundle::class,
-                PimcoreStudioBackendBundle::class,
-                PimcoreStudioUiBundle::class,
-                PimcoreGenericDataIndexBundle::class,
                 PimcoreGenericExecutionEngineBundle::class,
             ],
             $container
