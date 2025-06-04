@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class FrontendInstallerPass extends RegisterSimpleRegistryTypePass
 {
-    public const string FRONTEND_INSTALLER_TAG = 'coreshop.frontend.installer';
+    public const FRONTEND_INSTALLER_TAG = 'coreshop.frontend.installer';
 
     public function __construct(
         ) {
