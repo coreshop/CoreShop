@@ -34,9 +34,7 @@
     "phpstan/phpstan-webmozart-assert": "^1.2.4"
   },
   "suggest": {
-    "pimcore/admin-ui-classic-bundle": "If you wanna use the Classic Admin UI",
-    "pimcore/studio-backend-bundle": "If you wanna use the Studio Backend",
-    "pimcore/studio-ui-bundle": "If you wanna use the Studio UI"
+    "pimcore/admin-ui-classic-bundle": "If you wanna use the Classic Admin UI"
   },
   "autoload": {
     "psr-4": {

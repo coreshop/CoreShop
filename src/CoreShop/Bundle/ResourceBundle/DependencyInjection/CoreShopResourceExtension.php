@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use CoreShop\Bundle\ResourceBundle\Attribute\AsPimcoreModel;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
@@ -30,8 +29,6 @@ use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Reflection\ClassReflection;
 use Pimcore\Bundle\GenericDataIndexBundle\PimcoreGenericDataIndexBundle;
 use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
-use Pimcore\Bundle\StudioBackendBundle\PimcoreStudioBackendBundle;
-use Pimcore\Bundle\StudioUiBundle\PimcoreStudioUiBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -46,7 +43,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('services.yml');
 
@@ -87,8 +84,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             'coreshop',
             [
                 PimcoreGenericDataIndexBundle::class,
-                PimcoreStudioBackendBundle::class,
-                PimcoreStudioUiBundle::class,
                 PimcoreGenericDataIndexBundle::class,
                 PimcoreGenericExecutionEngineBundle::class,
             ],
@@ -106,8 +101,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(ResourceInstallerInterface::class)
-            ->addTag(RegisterInstallersPass::INSTALLER_TAG)
-        ;
+            ->addTag(RegisterInstallersPass::INSTALLER_TAG);
     }
 
     private function autoRegisterPimcoreModels(array &$config, ContainerBuilder $container): void
@@ -164,20 +158,22 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             return $alias;
         }
 
-        $shortName = Container::underscore(substr((string) strrchr($className, '\\'), 1));
+        $shortName = Container::underscore(substr((string)strrchr($className, '\\'), 1));
 
-        return 'app.' . u($shortName)->snake()->toString();
+        return 'app.'.u($shortName)->snake()->toString();
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader): void
     {
         foreach ($resources as $alias => $resource) {
             if (!in_array($resource['driver'], $drivers, true)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Resource "%s" uses driver "%s", but this driver has not been enabled.',
-                    $alias,
-                    $resource['driver'],
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Resource "%s" uses driver "%s", but this driver has not been enabled.',
+                        $alias,
+                        $resource['driver'],
+                    )
+                );
             }
         }
 
@@ -191,7 +187,9 @@ final class CoreShopResourceExtension extends AbstractModelExtension
         /**
          * @var array $resources
          */
-        $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
+        $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter(
+            'coreshop.resources'
+        ) : [];
 
         foreach ($loadedResources as $alias => $resourceConfig) {
             $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
@@ -239,7 +237,10 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
             $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
 
-            foreach (['coreshop.all.pimcore_classes', sprintf('%s.pimcore_classes', $metadata->getApplicationName())] as $parameter) {
+            foreach ([
+                         'coreshop.all.pimcore_classes',
+                         sprintf('%s.pimcore_classes', $metadata->getApplicationName()),
+                     ] as $parameter) {
                 /**
                  * @var array $resources
                  */
