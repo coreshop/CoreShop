@@ -18,12 +18,48 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Doctrine\Type;
 
-use Doctrine\DBAL\Types\JsonType;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Type;
 
-class DeprecatedObjectType extends JsonType
+class DeprecatedObjectType extends Type
 {
-    public function getName(): string
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return $platform->getClobTypeDeclarationSQL($column);
+    }
+
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    {
+        return serialize($value);
+    }
+
+    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $value = is_resource($value) ? stream_get_contents($value) : $value;
+
+        set_error_handler(function (int $code, string $message): bool {
+            throw new ConversionException($message);
+        });
+
+        try {
+            return unserialize($value);
+        } finally {
+            restore_error_handler();
+        }
+    }
+
+    public function getName()
     {
         return 'object';
+    }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
     }
 }
