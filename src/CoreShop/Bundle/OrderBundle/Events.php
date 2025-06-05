@@ -23,25 +23,25 @@ final class Events
     /**
      * Fired before a Sale (Cart, Order, Quote) is passed to the client
      */
-    public const SALE_DETAIL_PREPARE = 'coreshop.sale.detail.prepare';
+    public const string SALE_DETAIL_PREPARE = 'coreshop.sale.detail.prepare';
 
     /**
      * Fired when an Admin creates a new Customer via a CoreShop UI
      */
-    public const ADMIN_CUSTOMER_CREATION = 'coreshop.customer.admin_creation';
+    public const string ADMIN_CUSTOMER_CREATION = 'coreshop.customer.admin_creation';
 
     /**
      * Fired when an Admin creates a new Address via a CoreShop UI
      */
-    public const ADMIN_ADDRESS_CREATION = 'coreshop.address.admin_creation';
+    public const string ADMIN_ADDRESS_CREATION = 'coreshop.address.admin_creation';
 
     /**
      * Fired when an Admin updates an Order in the Backend for preview
      */
-    public const ORDER_BACKEND_UPDATE_PREVIEW = 'coreshop.order.backend_update_preview';
+    public const string ORDER_BACKEND_UPDATE_PREVIEW = 'coreshop.order.backend_update_preview';
 
     /**
      * Fired when an Admin updates an Order in the Backend for saving
      */
-    public const ORDER_BACKEND_UPDATE_SAVE = 'coreshop.order.backend_update_save';
+    public const string ORDER_BACKEND_UPDATE_SAVE = 'coreshop.order.backend_update_save';
 }

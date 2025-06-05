@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class RegisterFilterConditionTypesPass implements CompilerPassInterface
 {
-    public const INDEX_FILTER_CONDITION_TAG = 'coreshop.filter.condition_type';
+    public const string INDEX_FILTER_CONDITION_TAG = 'coreshop.filter.condition_type';
 
     public function process(ContainerBuilder $container): void
     {

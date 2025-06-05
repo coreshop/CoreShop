@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterPortletsPass extends RegisterSimpleRegistryTypePass
 {
-    public const PORTLET_TAG = 'coreshop.portlet';
+    public const string PORTLET_TAG = 'coreshop.portlet';
 
     public function __construct(
         ) {

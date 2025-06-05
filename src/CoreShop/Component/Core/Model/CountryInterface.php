@@ -24,9 +24,9 @@ use CoreShop\Component\Store\Model\StoresAwareInterface;
 interface CountryInterface extends BaseCountryInterface, StoresAwareInterface
 {
     /**
-     * @return CurrencyInterface
+     * @return CurrencyInterface|null
      */
     public function getCurrency();
 
-    public function setCurrency(CurrencyInterface $currency = null);
+    public function setCurrency(?CurrencyInterface $currency);
 }

@@ -24,7 +24,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeCountryContextPass extends PrioritizedCompositeServicePass
 {
-    public const COUNTRY_CONTEXT_SERVICE_TAG = 'coreshop.context.country';
+    public const string COUNTRY_CONTEXT_SERVICE_TAG = 'coreshop.context.country';
 
     public function __construct(
         ) {

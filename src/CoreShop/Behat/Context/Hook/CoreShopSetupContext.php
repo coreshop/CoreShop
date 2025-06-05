@@ -49,7 +49,7 @@ final class CoreShopSetupContext implements Context
     public function purgeIndexTables(): void
     {
         $connection = $this->entityManager->getConnection();
-        $schemaManager = $connection->getSchemaManager();
+        $schemaManager = $connection->createSchemaManager();
 
         $tables = $schemaManager->listTableNames();
         $views = $schemaManager->listViews();

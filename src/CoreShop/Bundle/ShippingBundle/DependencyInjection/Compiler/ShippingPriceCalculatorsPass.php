@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class ShippingPriceCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
-    public const SHIPPING_PRICE_CALCULATOR_TAG = 'coreshop.shipping.price_calculator';
+    public const string SHIPPING_PRICE_CALCULATOR_TAG = 'coreshop.shipping.price_calculator';
 
     public function __construct(
         ) {

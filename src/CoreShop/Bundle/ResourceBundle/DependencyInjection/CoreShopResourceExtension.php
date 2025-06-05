@@ -18,15 +18,16 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use CoreShop\Bundle\ResourceBundle\Attribute\AsPimcoreModel;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Reflection\ClassReflection;
+use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -36,7 +37,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use function Symfony\Component\String\u;
 
-final class CoreShopResourceExtension extends AbstractPimcoreExtension
+final class CoreShopResourceExtension extends AbstractModelExtension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -71,12 +72,21 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
 
         $container->setParameter('coreshop.resources', []);
         $container->setParameter('coreshop.resource.mapping', $configs['mapping']);
+        $container->setParameter('coreshop.orm_cascade_merge', $configs['orm_cascade_merge_associations']);
 
         $this->autoRegisterPimcoreModels($configs, $container);
 
         $this->loadPersistence($configs['drivers'], $configs['resources'], $loader);
         $this->loadResources($configs['resources'], $container);
         $this->loadPimcoreModels($configs['pimcore'], $container);
+
+        $this->registerDependantBundles(
+            'coreshop',
+            [
+                PimcoreGenericExecutionEngineBundle::class,
+            ],
+            $container
+        );
 
         $bodyListener = new Definition(BodyListener::class);
         $bodyListener->addTag('kernel.event_listener', [

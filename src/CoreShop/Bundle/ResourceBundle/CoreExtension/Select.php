@@ -108,7 +108,7 @@ abstract class Select extends Data implements
         return false;
     }
 
-    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
+    public function getDiffDataForEditMode(mixed $data, ?Concrete $object = null, array $params = []): ?array
     {
         return [];
     }

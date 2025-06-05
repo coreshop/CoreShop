@@ -20,19 +20,19 @@ namespace CoreShop\Component\Payment;
 
 final class PaymentTransitions
 {
-    public const IDENTIFIER = 'coreshop_payment';
+    public const string IDENTIFIER = 'coreshop_payment';
 
-    public const TRANSITION_CREATE = 'create';
+    public const string TRANSITION_CREATE = 'create';
 
-    public const TRANSITION_PROCESS = 'process';
+    public const string TRANSITION_PROCESS = 'process';
 
-    public const TRANSITION_COMPLETE = 'complete';
+    public const string TRANSITION_COMPLETE = 'complete';
 
-    public const TRANSITION_FAIL = 'fail';
+    public const string TRANSITION_FAIL = 'fail';
 
-    public const TRANSITION_CANCEL = 'cancel';
+    public const string TRANSITION_CANCEL = 'cancel';
 
-    public const TRANSITION_REFUND = 'refund';
+    public const string TRANSITION_REFUND = 'refund';
 
-    public const TRANSITION_VOID = 'void';
+    public const string TRANSITION_VOID = 'void';
 }

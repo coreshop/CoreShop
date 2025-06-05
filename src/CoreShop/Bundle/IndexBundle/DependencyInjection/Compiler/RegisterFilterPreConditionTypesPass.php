@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterFilterPreConditionTypesPass extends RegisterRegistryTypePass
 {
-    public const INDEX_FILTER_PRE_CONDITION_TAG = 'coreshop.filter.pre_condition_type';
+    public const string INDEX_FILTER_PRE_CONDITION_TAG = 'coreshop.filter.pre_condition_type';
 
     public function __construct(
         ) {

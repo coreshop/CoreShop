@@ -30,7 +30,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class MenuBuilderPass implements CompilerPassInterface
 {
-    public const MENU_BUILDER_TAG = 'coreshop.menu';
+    public const string MENU_BUILDER_TAG = 'coreshop.menu';
 
     public function process(ContainerBuilder $container): void
     {

@@ -24,7 +24,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeCustomerContextPass extends PrioritizedCompositeServicePass
 {
-    public const CUSTOMER_CONTEXT_SERVICE_TAG = 'coreshop.context.customer';
+    public const string CUSTOMER_CONTEXT_SERVICE_TAG = 'coreshop.context.customer';
 
     public function __construct(
         ) {

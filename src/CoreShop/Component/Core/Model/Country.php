@@ -30,10 +30,7 @@ class Country extends BaseCountry implements CountryInterface
         __construct as storesAwareConstructor;
     }
 
-    /**
-     * @var CurrencyInterface
-     */
-    protected $currency;
+    protected ?CurrencyInterface $currency = null;
 
     public function __construct(
         ) {
@@ -47,7 +44,7 @@ class Country extends BaseCountry implements CountryInterface
         return $this->currency;
     }
 
-    public function setCurrency(CurrencyInterface $currency = null)
+    public function setCurrency(?CurrencyInterface $currency)
     {
         $this->currency = $currency;
 

@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterIndexWorkerPass extends RegisterRegistryTypePass
 {
-    public const INDEX_WORKER_TAG = 'coreshop.index.worker';
+    public const string INDEX_WORKER_TAG = 'coreshop.index.worker';
 
     public function __construct(
         ) {

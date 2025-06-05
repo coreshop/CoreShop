@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 interface UserInterface extends ResourceInterface, PimcoreModelInterface, SymfonyUserInterface, EquatableInterface, PasswordAuthenticatedUserInterface
 {
-    public const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
+    public const string CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
 
     public function getId(): ?int;
 

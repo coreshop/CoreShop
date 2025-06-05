@@ -20,5 +20,5 @@ namespace CoreShop\Component\Core;
 
 final class Events
 {
-    public const SUPPORTS_PAYMENT_PROVIDER = 'coreshop.payment_provider.supports';
+    public const string SUPPORTS_PAYMENT_PROVIDER = 'coreshop.payment_provider.supports';
 }

@@ -24,7 +24,7 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class CompositeStoreContextPass extends PrioritizedCompositeServicePass
 {
-    public const STORE_CONTEXT_TAG = 'coreshop.context.store';
+    public const string STORE_CONTEXT_TAG = 'coreshop.context.store';
 
     public function __construct(
         ) {

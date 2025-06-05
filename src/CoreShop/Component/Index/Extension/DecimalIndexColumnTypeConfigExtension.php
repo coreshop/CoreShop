@@ -26,7 +26,7 @@ class DecimalIndexColumnTypeConfigExtension implements IndexColumnTypeConfigExte
     public function getColumnConfig(IndexColumnInterface $column): array
     {
         if ($column->getColumnType() === IndexColumnInterface::FIELD_TYPE_DOUBLE) {
-            return ['scale' => 2];
+            return ['scale' => 2, 'precision' => 10];
         }
 
         return [];

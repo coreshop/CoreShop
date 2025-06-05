@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class ProductPriceRuleActionPass extends RegisterRegistryTypePass
 {
-    public const PRODUCT_PRICE_RULE_ACTION_TAG = 'coreshop.product_price_rule.action';
+    public const string PRODUCT_PRICE_RULE_ACTION_TAG = 'coreshop.product_price_rule.action';
 
     public function __construct(
         ) {

@@ -216,19 +216,6 @@
 
         <!-- level 5 issues - should be avoided at mosts costs... -->
 
-        <TooManyArguments>
-            <errorLevel type="info">
-                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
-                <referencedFunction name="Symfony\Component\HttpKernel\Config\FileLocator::__construct" />
-                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
-                <referencedFunction name="Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken::__construct" /> <!-- removed parameter in Symfony 5.4 -->
-            </errorLevel>
-            <errorLevel type="suppress">
-                <referencedFunction name="Doctrine\ORM\Query\Expr::andX" />
-                <referencedFunction name="Doctrine\ORM\Query\Expr::orX" />
-                <referencedFunction name="Symfony\Component\Serializer\Attribute\SerializedName::__construct" />
-            </errorLevel>
-        </TooManyArguments>
 
         <!-- level 6 issues - really bad things -->
 

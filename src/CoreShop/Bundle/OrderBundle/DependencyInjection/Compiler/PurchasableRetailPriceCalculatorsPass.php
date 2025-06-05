@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class PurchasableRetailPriceCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
-    public const PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG = 'coreshop.order.purchasable.retail_price_calculator';
+    public const string PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG = 'coreshop.order.purchasable.retail_price_calculator';
 
     public function __construct(
         ) {

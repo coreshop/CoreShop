@@ -20,13 +20,13 @@ namespace CoreShop\Component\Order;
 
 class CheckoutEvents
 {
-    public const CHECKOUT_STEP_PRE = 'coreshop.checkout.step.pre';
+    public const string CHECKOUT_STEP_PRE = 'coreshop.checkout.step.pre';
 
-    public const CHECKOUT_STEP_POST = 'coreshop.checkout.step.post';
+    public const string CHECKOUT_STEP_POST = 'coreshop.checkout.step.post';
 
-    public const CHECKOUT_DO_PRE = 'coreshop.checkout.do.pre';
+    public const string CHECKOUT_DO_PRE = 'coreshop.checkout.do.pre';
 
-    public const CHECKOUT_DO_POST = 'coreshop.checkout.do.post';
+    public const string CHECKOUT_DO_POST = 'coreshop.checkout.do.post';
 
-    public const CHECKOUT_PAYMENT_PRE = 'coreshop.checkout.payment.pre';
+    public const string CHECKOUT_PAYMENT_PRE = 'coreshop.checkout.payment.pre';
 }

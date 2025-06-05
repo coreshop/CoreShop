@@ -26,11 +26,11 @@ interface PaymentProviderRuleGroupInterface extends ResourceInterface, Timestamp
     public function getId(): ?int;
 
     /**
-     * @return PaymentProviderInterface
+     * @return PaymentProviderInterface|null
      */
     public function getPaymentProvider();
 
-    public function setPaymentProvider(PaymentProviderInterface $paymentProvider = null);
+    public function setPaymentProvider(?PaymentProviderInterface $paymentProvider);
 
     /**
      * @return int

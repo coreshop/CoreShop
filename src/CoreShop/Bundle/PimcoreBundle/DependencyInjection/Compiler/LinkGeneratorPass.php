@@ -23,7 +23,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class LinkGeneratorPass extends PrioritizedCompositeServicePass
 {
-    public const LINK_GENERATOR_TAG = 'coreshop.link_generator';
+    public const string LINK_GENERATOR_TAG = 'coreshop.link_generator';
 
     public function __construct(
         ) {

@@ -23,10 +23,10 @@ final class Events
     /**
      * Fired before a rule will be applied.
      */
-    public const PRE_APPLY = 'coreshop.notification.pre_process_rules';
+    public const string PRE_APPLY = 'coreshop.notification.pre_process_rules';
 
     /**
      * Fired after a rule has been applied.
      */
-    public const POST_APPLY = 'coreshop.notification.post_process_rules';
+    public const string POST_APPLY = 'coreshop.notification.post_process_rules';
 }

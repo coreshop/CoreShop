@@ -33,7 +33,7 @@ use GraphQL\Type\Definition\Type;
 
 class GraphSortField
 {
-    public const NAME = 'SortField';
+    public const string NAME = 'SortField';
 
     public $field;
 

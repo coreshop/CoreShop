@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class TrackingExtractorPass extends RegisterSimpleRegistryTypePass
 {
-    public const TRACKING_EXTRACTOR_TAG = 'coreshop.tracking.extractor';
+    public const string TRACKING_EXTRACTOR_TAG = 'coreshop.tracking.extractor';
 
     public function __construct(
         ) {

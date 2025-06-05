@@ -24,7 +24,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
 {
-    public const COUNTRY_REQUEST_RESOLVER_SERVICE_TAG = 'coreshop.context.country.request_based.resolver';
+    public const string COUNTRY_REQUEST_RESOLVER_SERVICE_TAG = 'coreshop.context.country.request_based.resolver';
 
     public function __construct(
         ) {

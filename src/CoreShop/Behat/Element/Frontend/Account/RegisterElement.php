@@ -151,7 +151,7 @@ final class RegisterElement extends Element implements RegisterElementInterface
 
     public function acceptTermsOfService(): void
     {
-        $this->getElement('terms_of_service')->check();
+        $this->getElement('terms_of_service')->click();
     }
 
     protected function getDefinedElements(): array

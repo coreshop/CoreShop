@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterConditionRendererTypesPass extends RegisterSimpleRegistryTypePass
 {
-    public const INDEX_CONDITION_RENDERER_TAG = 'coreshop.index.condition.renderer';
+    public const string INDEX_CONDITION_RENDERER_TAG = 'coreshop.index.condition.renderer';
 
     public function __construct(
         ) {

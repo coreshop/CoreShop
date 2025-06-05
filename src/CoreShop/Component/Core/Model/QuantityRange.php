@@ -26,25 +26,10 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange as BaseQuan
  */
 class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
 {
-    /**
-     * @var int
-     */
-    protected $amount = 0;
-
-    /**
-     * @var CurrencyInterface|null
-     */
-    protected $currency;
-
-    /**
-     * @var ProductUnitDefinitionInterface|null
-     */
-    protected $unitDefinition;
-
-    /**
-     * @var int|null
-     */
-    protected $pseudoPrice = 0;
+    protected int $amount = 0;
+    protected ?CurrencyInterface $currency = null;
+    protected ?ProductUnitDefinitionInterface $unitDefinition = null;
+    protected int $pseudoPrice = 0;
 
     public function getAmount()
     {
@@ -61,7 +46,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
         return $this->currency;
     }
 
-    public function setCurrency(CurrencyInterface $currency = null)
+    public function setCurrency(?CurrencyInterface $currency)
     {
         $this->currency = $currency;
     }
@@ -71,7 +56,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
         return $this->unitDefinition;
     }
 
-    public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition = null)
+    public function setUnitDefinition(?ProductUnitDefinitionInterface $unitDefinition)
     {
         $this->unitDefinition = $unitDefinition;
     }

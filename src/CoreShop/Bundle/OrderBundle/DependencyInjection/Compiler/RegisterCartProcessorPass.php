@@ -24,7 +24,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class RegisterCartProcessorPass extends PrioritizedCompositeServicePass
 {
-    public const CART_PROCESSOR_TAG = 'coreshop.cart_processor';
+    public const string CART_PROCESSOR_TAG = 'coreshop.cart_processor';
 
     public function __construct(
         ) {

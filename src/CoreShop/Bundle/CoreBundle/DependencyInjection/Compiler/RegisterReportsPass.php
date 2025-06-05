@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterReportsPass extends RegisterSimpleRegistryTypePass
 {
-    public const REPORT_TAG = 'coreshop.report';
+    public const string REPORT_TAG = 'coreshop.report';
 
     public function __construct(
         ) {
