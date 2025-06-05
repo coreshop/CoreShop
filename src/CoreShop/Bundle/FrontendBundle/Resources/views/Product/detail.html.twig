@@ -25,7 +25,7 @@
                 <div class="swiper js-slider mb-2">
                     <div class="swiper-wrapper">
                     {% for image in product.images %}
-                        <div class="swiper-slide">{{ image|pimcore_image_thumbnail_html("coreshop_productDetailThumbnail", {'imgAttributes': {'class': 'img-fluid img-thumbnail'}}) }}</div>
+                        <div class="swiper-slide">{{ image|pimcore_image_thumbnail_html("coreshop_productDetail", {'imgAttributes': {'class': 'img-fluid img-thumbnail'}}) }}</div>
                     {% endfor %}
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     {%  if not coreshop_wishlist_product_in(product) %}
                         <div class="d-flex align-items-center">
                             {{ render(url('coreshop_partial_wishlist_add', {'product': product.id|coreshop_string})) }}
-                            <span class="link-description">Add to favorites</span>
+                            <span class="link-description">{{ 'coreshop.ui.add_to_wishlist'|trans }}</span>
                         </div>
                     {%  else %}
                         <div class="d-flex align-items-center">
@@ -101,8 +101,6 @@
             {% endif %}
             {% include '@CoreShopFrontend/Product/_variants.html.twig' %}
 
-
-            {# TODO THE PRICE PER UNIT #}
             {% if product.hasUnitDefinitions == true %}
                 <div class="product-price d-flex flex-column">
                     {{ product_price.display_product_unit_prices(product, true, false, true) }}
@@ -121,7 +119,6 @@
                     </span>
                 </div>
             {% endif %}
-
 
             {% if coreshop_quantity_price_rule_ranges_available(product, coreshop.context) %}
                 {% set rule = coreshop_quantity_price_rule(product, coreshop.context) %}
