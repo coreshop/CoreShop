@@ -16,3 +16,4 @@ pimcore_admin:
     excluded_routes:
       - coreshop_country_save
       - coreshop_country_add
+      - coreshop_country_delete

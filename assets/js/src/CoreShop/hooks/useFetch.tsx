@@ -1,9 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export function useFetch<T = any>(url: string, options?: RequestInit) {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // State to trigger reload
+    const [reloadFlag, setReloadFlag] = useState(0);
+
+    const refetch = useCallback(() => {
+        setReloadFlag(prev => prev + 1);
+    }, []);
 
     useEffect(() => {
         let isCancelled = false;
@@ -15,7 +22,7 @@ export function useFetch<T = any>(url: string, options?: RequestInit) {
             try {
                 const response = await fetch(url, options);
                 if (!response.ok) {
-                    throw new Error(`HTTP error: ${response.status}`);
+                    console.log(`HTTP error: ${response.status}`);
                 }
 
                 const json = await response.json();
@@ -33,12 +40,12 @@ export function useFetch<T = any>(url: string, options?: RequestInit) {
             }
         };
 
-        fetchData();
+        fetchData().then(r => {});
 
         return () => {
             isCancelled = true;
         };
-    }, [url]);
+    }, [url, options, reloadFlag]);
 
-    return { data, loading, error };
+    return { data, loading, error, refetch };
 }

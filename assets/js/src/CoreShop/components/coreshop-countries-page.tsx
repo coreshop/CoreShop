@@ -1,11 +1,12 @@
-import { Content, Header } from '@pimcore/studio-ui-bundle/components';
-import React from 'react';
+import { Header, Content } from '@pimcore/studio-ui-bundle/components';
+import React, { useState } from 'react';
 import { useFetch } from '../hooks/useFetch';
-import {Collapse, List, Typography, Tag, Spin, Button} from 'antd';
-const { Panel } = Collapse;
-import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager';
+import { Collapse, List, Typography, Tag, Spin, Button, Layout, Row, Col, Flex, Dropdown, Menu } from 'antd';
 import { useFormModal } from '@pimcore/studio-ui-bundle/components';
 import { useCountryActions } from '../hooks/useCountryActions';
+import { CoreShopCountryDetailPage } from './coreshop-country-detail-page';
+
+const { Panel } = Collapse;
 
 type Country = {
     id: number;
@@ -16,24 +17,14 @@ type Country = {
 };
 
 export const CoreShopCountriesPage = (): React.JSX.Element => {
-    const widgetManager = useWidgetManager();
-    const { data: countries, loading, error } = useFetch<Country[]>('/admin/coreshop/countries/list');
+    const { data: countries, loading, error, refetch } = useFetch<Country[]>('/admin/coreshop/countries/list');
     const { input } = useFormModal();
-    const { createCountry } = useCountryActions();
+    const { createCountry, deleteCountry } = useCountryActions();
 
-    const handleCountryClick = (country: any) => {
-        widgetManager.openMainWidget({
-            name: 'CoreShopCountryDetailPage',
-            component: 'CoreShopCountryDetailPage',
-            config: {
-                id: country.id,
-                icon: {
-                    type: 'name',
-                    value: 'coreshop-icon'
-                },
-            },
+    const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
-        });
+    const handleCountryClick = (country: Country) => {
+        setSelectedCountry(country);
     };
 
     const groupedByZone = (Array.isArray(countries) ? countries : []).reduce(
@@ -50,56 +41,112 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
     if (loading) return <Spin />;
     if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
-    const handleCountryCreation = (value: string) => {
-        console.log(value);
-        createCountry(value, '/admin/coreshop/countries/add').then(r => {});
-    }
+    const handleCountryCreation = async (value: string) => {
+        await createCountry(value, '/admin/coreshop/countries/add');
+        refetch();
+    };
+
+    const handleDelete = async (id: number) => {
+        await deleteCountry(id, '/admin/coreshop/countries/delete');
+        if (selectedCountry?.id === id) {
+            setSelectedCountry(null);
+        }
+        refetch();
+    };
 
     const openNewCountry = () => {
-        console.log("Creating new country...");
         input({
-            title: 'new country',
-            label: 'label country',
+            title: 'New Country',
+            label: 'Country Name',
             rule: {
                 required: true,
                 message: 'Please enter a country name'
             },
-            okText: 'created',
+            okText: 'Create',
             onOk: async (value: string) => {
-                handleCountryCreation(value);
+                await handleCountryCreation(value);
             }
-        })
+        });
     };
 
     return (
-        <Content padded>
-            <Header title='Regions' />
-            <Button type={'primary'}  onClick={openNewCountry} >Create Country</Button>
-            <Collapse accordion>
-                {Object.entries(groupedByZone).map(([zoneName, countries]) => (
-                    <Panel header={`${zoneName} (${countries.length})`} key={zoneName}>
-                        <List
-                            dataSource={countries}
-                            renderItem={(country) => (
-                                <List.Item
-                                    key={country.id}
-                                    onClick={() => handleCountryClick(country)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <Typography.Text>
-                                        {country.name} ({country.isoCode})
-                                    </Typography.Text>
-                                    {country.active ? (
-                                        <Tag color="green">Active</Tag>
-                                    ) : (
-                                        <Tag color="red">Inactive</Tag>
-                                    )}
-                                </List.Item>
-                            )}
-                        />
-                    </Panel>
-                ))}
-            </Collapse>
-        </Content>
-    )
-}
+        <Layout>
+            <Content padded overflow={{ x: 'hidden', y: 'auto' }}>
+                <Header title="Regions" />
+                <Flex gap="small" wrap>
+                    <Button
+                        type="primary"
+                        onClick={openNewCountry}
+                        style={{ display: 'inline-block', marginBottom: 16 }}
+                    >
+                        Create Country
+                    </Button>
+                </Flex>
+                <Row gutter={24}>
+                    <Col span={5}>
+                        <Collapse accordion>
+                            {Object.entries(groupedByZone).map(([zoneName, countries]) => (
+                                <Panel header={`${zoneName} (${countries.length})`} key={zoneName}>
+                                    <List
+                                        dataSource={countries}
+                                        renderItem={(country) => {
+                                            const menu = (
+                                                <Menu>
+                                                    <Menu.Item
+                                                        key="delete"
+                                                        onClick={() => handleDelete(country.id)}
+                                                    >
+                                                        Delete
+                                                    </Menu.Item>
+                                                </Menu>
+                                            );
+
+                                            return (
+                                                <Dropdown
+                                                    overlay={menu}
+                                                    trigger={['contextMenu']}
+                                                    key={country.id}
+                                                >
+                                                    <List.Item
+                                                        onClick={() => handleCountryClick(country)}
+                                                        style={{ cursor: 'pointer' }}
+                                                        className={
+                                                            selectedCountry?.id === country.id
+                                                                ? 'ant-list-item-selected'
+                                                                : ''
+                                                        }
+                                                    >
+                                                        <Typography.Text>
+                                                            {country.name} ({country.isoCode})
+                                                        </Typography.Text>
+                                                        {country.active ? (
+                                                            <Tag color="green">Active</Tag>
+                                                        ) : (
+                                                            <Tag color="red">Inactive</Tag>
+                                                        )}
+                                                    </List.Item>
+                                                </Dropdown>
+                                            );
+                                        }}
+                                    />
+                                </Panel>
+                            ))}
+                        </Collapse>
+                    </Col>
+                    <Col span={19} style={{ background: '#fff', minHeight: 400 }}>
+                        {selectedCountry ? (
+                            <CoreShopCountryDetailPage id={selectedCountry.id} />
+                        ) : (
+                            <div style={{ padding: 16 }}>
+                                <Typography.Text type="secondary">
+                                    Select a country to view details.
+                                </Typography.Text>
+                            </div>
+                        )}
+                    </Col>
+                </Row>
+            </Content>
+        </Layout>
+    );
+
+};

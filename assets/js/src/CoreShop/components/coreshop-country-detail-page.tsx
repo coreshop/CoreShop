@@ -3,7 +3,7 @@ import { useFetch } from '../hooks/useFetch';
 import { useCountryActions } from '../hooks/useCountryActions';
 import { ZoneSelect } from './countries/ZoneSelect';
 import { CurrencySelect } from './countries/CurrencySelect';
-import { Typography, Spin, Tabs, Form, Input, Select, Checkbox, Button, message } from 'antd';
+import { Typography, Spin, Tabs, Form, Input, Select, Checkbox, Button, Flex } from 'antd';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -31,7 +31,7 @@ type CountryDetailProps = {
 };
 
 export const CoreShopCountryDetailPage: React.FC<CountryDetailProps> = ({ id }) => {
-    const { data, loading, error } = useFetch(`/admin/coreshop/countries/get?id=${id}`);
+    const { data, loading, error, refetch } = useFetch(`/admin/coreshop/countries/get?id=${id}`);
     const [form] = Form.useForm();
     const { updateCountry } = useCountryActions();
 
@@ -57,10 +57,11 @@ export const CoreShopCountryDetailPage: React.FC<CountryDetailProps> = ({ id }) 
 
     const onFinish = async (values: any) => {
         await updateCountry(values, country.id, '/admin/coreshop/countries/save');
+        refetch();
     };
 
     return (
-        <div style={{ padding: 24 }}>
+        <div style={{ paddingLeft: 24, paddingRight: 24 }}>
             <Title level={2}>{country.name}</Title>
             <Form
                 form={form}

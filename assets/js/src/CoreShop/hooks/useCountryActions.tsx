@@ -50,8 +50,34 @@ export function useCountryActions() {
         }
     };
 
+    const deleteCountry = async (id: number, url: string) => {
+        const payload = {
+            id: id,
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                message.error('Error deleting country');
+                return false;
+            }
+
+            message.success('Country deleted successfully');
+            return true;
+        } catch (error) {
+            message.error('Failed to delete country');
+            return false;
+        }
+    };
+
     return {
         createCountry,
         updateCountry,
+        deleteCountry
     };
 }
