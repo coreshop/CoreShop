@@ -17,3 +17,6 @@ pimcore_admin:
       - coreshop_country_save
       - coreshop_country_add
       - coreshop_country_delete
+      - coreshop_state_save
+      - coreshop_state_add
+      - coreshop_state_delete

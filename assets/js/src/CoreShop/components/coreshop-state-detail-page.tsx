@@ -1,9 +1,8 @@
 import React from 'react';
 import { useFetch } from '../hooks/useFetch';
-import { useCountryActions } from '../hooks/useCountryActions';
-import { ZoneSelect } from './countries/ZoneSelect';
-import { CurrencySelect } from './countries/CurrencySelect';
 import { Typography, Spin, Tabs, Form, Input, Select, Checkbox, Button, Flex } from 'antd';
+import {CountrySelect} from "./states/CountrySelect";
+import {useStateActions} from "../hooks/useStateActions";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -13,57 +12,52 @@ type Translation = {
     name: string;
 };
 
-type Country = {
+type State = {
     id: number;
     isoCode: string;
-    zoneName: string;
+    country: number;
+    countryName: string;
     active: boolean;
     name: string;
-    addressFormat: string;
-    zone: number;
-    currency:  number;
-    salutations: string[];
     translations: Record<string, Translation>;
 };
 
-type CountryDetailProps = {
+type StateDetailProps = {
     id: number;
     onAfterSave?: () => void;
 };
 
-export const CoreShopCountryDetailPage: React.FC<CountryDetailProps> = ({ id, onAfterSave }) => {
-    const { data, loading, error, refetch } = useFetch(`/admin/coreshop/countries/get?id=${id}`);
+export const CoreShopStateDetailPage: React.FC<StateDetailProps> = ({ id, onAfterSave }) => {
+    const { data, loading, error} = useFetch(`/admin/coreshop/states/get?id=${id}`);
     const [form] = Form.useForm();
-    const { updateCountry } = useCountryActions();
+    const { updateState } = useStateActions();
 
     if (loading) return <Spin />;
     if (error) return <p>Error loading country</p>;
     if (!data || !data.data) return <p>No country data</p>;
 
-    const country: Country = data.data;
-    const translationKeys = Object.keys(country.translations);
+    const state: State = data.data;
+    const translationKeys = Object.keys(state.translations);
 
     // init values
     const initialValues = {
-        zone: country.zone,
-        currency: country.currency,
-        isoCode: country.isoCode,
-        active: country.active,
-        addressFormat: country.addressFormat,
-        salutations: country.salutations ,
+        countryName: state.countryName,
+        isoCode: state.isoCode,
+        country: state.country,
+        active: state.active,
         translations: Object.fromEntries(
-            translationKeys.map((lang) => [lang, { name: country.translations[lang].name }])
+            translationKeys.map((lang) => [lang, { name: state.translations[lang].name }])
         ),
     };
 
     const onFinish = async (values: any) => {
-        await updateCountry(values, country.id, '/admin/coreshop/countries/save');
+        await updateState(values, state.id, '/admin/coreshop/states/save');
         onAfterSave?.();
     };
 
     return (
         <div style={{ paddingLeft: 24, paddingRight: 24 }}>
-            <Title level={2}>{country.name}</Title>
+            <Title level={2}>{state.name}</Title>
             <Form
                 form={form}
                 layout="vertical"
@@ -92,37 +86,16 @@ export const CoreShopCountryDetailPage: React.FC<CountryDetailProps> = ({ id, on
                     <Input />
                 </Form.Item>
 
-                <Form.Item
-                    label="Zone"
-                    name="zone"
-                    rules={[{ required: true, message: 'Please select a zone' }]}
-                >
-                    <ZoneSelect />
-                </Form.Item>
-
                 <Form.Item name="active" valuePropName="checked" label="Active">
                     <Checkbox />
                 </Form.Item>
 
-
                 <Form.Item
-                    label="Address Format"
-                    name="addressFormat"
-                    rules={[{ required: true, message: 'Please insert Address Format' }]}
+                    label="Country"
+                    name="country"
+                    rules={[{ required: true, message: 'Please select a country' }]}
                 >
-                    <Input.TextArea rows={6} />
-                </Form.Item>
-
-                <Form.Item name="salutations" label="Salutations">
-                    <Select mode="tags" style={{ width: '100%' }} placeholder="Add salutations" />
-                </Form.Item>
-
-                <Form.Item
-                    label="Currency"
-                    name="currency"
-                    rules={[{ required: true, message: 'Please select a currency' }]}
-                >
-                    <CurrencySelect />
+                    <CountrySelect value={state.country}/>
                 </Form.Item>
 
                 <Form.Item>

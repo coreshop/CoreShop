@@ -37,4 +37,18 @@ export function registerMainNav() {
             }
         }
     });
+
+    mainNavRegistryService.registerMainNavItem({
+        path: 'Coreshop/Localization/States',
+        widgetConfig: {
+            name: 'CoreShopStatesPage',
+            component: 'CoreShopStatesPage',
+            config: {
+                icon: {
+                    type: 'name',
+                    value: 'coreshop-icon'
+                }
+            }
+        }
+    });
 }

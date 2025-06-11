@@ -3,36 +3,35 @@ import React, { useState } from 'react';
 import { useFetch } from '../hooks/useFetch';
 import { Collapse, List, Typography, Tag, Spin, Button, Layout, Row, Col, Flex, Dropdown, Menu } from 'antd';
 import { useFormModal } from '@pimcore/studio-ui-bundle/components';
-import { useCountryActions } from '../hooks/useCountryActions';
-import { CoreShopCountryDetailPage } from './coreshop-country-detail-page';
+import { useStateActions } from '../hooks/useStateActions';
+import { CoreShopStateDetailPage } from './coreshop-state-detail-page';
 
 const { Panel } = Collapse;
 
-type Country = {
+type State = {
     id: number;
     name: string;
-    isoCode: string;
-    zoneName: string;
+    countryName: string;
     active: boolean;
 };
 
-export const CoreShopCountriesPage = (): React.JSX.Element => {
-    const { data: countries, loading, error, refetch } = useFetch<Country[]>('/admin/coreshop/countries/list');
+export const CoreShopStatesPage = (): React.JSX.Element => {
+    const { data: states, loading, error, refetch } = useFetch<State[]>('/admin/coreshop/states/list');
     const { input } = useFormModal();
-    const { createCountry, deleteCountry } = useCountryActions();
+    const { createState, deleteState} = useStateActions();
 
-    const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+    const [selectedState, setSelectedState] = useState<State | null>(null);
 
-    const handleCountryClick = (country: Country) => {
-        setSelectedCountry(country);
+    const handleStateClick = (state: State) => {
+        setSelectedState(state);
     };
 
-    const groupedByZone = (Array.isArray(countries) ? countries : []).reduce(
-        (acc: Record<string, Country[]>, country) => {
-            if (!acc[country.zoneName]) {
-                acc[country.zoneName] = [];
+    const groupedByZone = (Array.isArray(states) ? states : []).reduce(
+        (acc: Record<string, State[]>, state) => {
+            if (!acc[state.countryName]) {
+                acc[state.countryName] = [];
             }
-            acc[country.zoneName].push(country);
+            acc[state.countryName].push(state);
             return acc;
         },
         {}
@@ -41,30 +40,30 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
     if (loading) return <Spin />;
     if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
-    const handleCountryCreation = async (value: string) => {
-        await createCountry(value, '/admin/coreshop/countries/add');
+    const handleStateCreation = async (value: string) => {
+        await createState(value, '/admin/coreshop/states/add');
         refetch();
     };
 
     const handleDelete = async (id: number) => {
-        await deleteCountry(id, '/admin/coreshop/countries/delete');
-        if (selectedCountry?.id === id) {
-            setSelectedCountry(null);
+        await deleteState(id, '/admin/coreshop/states/delete');
+        if (selectedState?.id === id) {
+            setSelectedState(null);
         }
         refetch();
     };
 
-    const openNewCountry = () => {
+    const openNewState = () => {
         input({
-            title: 'New Country',
-            label: 'Country Name',
+            title: 'New State',
+            label: 'State Name',
             rule: {
                 required: true,
-                message: 'Please enter a country name'
+                message: 'Please enter a state name'
             },
             okText: 'Create',
             onOk: async (value: string) => {
-                await handleCountryCreation(value);
+                await handleStateCreation(value);
             }
         });
     };
@@ -76,25 +75,25 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
                 <Flex gap="small" wrap>
                     <Button
                         type="primary"
-                        onClick={openNewCountry}
+                        onClick={openNewState}
                         style={{ display: 'inline-block', marginBottom: 16 }}
                     >
-                        Create Country
+                        Create State
                     </Button>
                 </Flex>
                 <Row gutter={24}>
                     <Col span={5}>
                         <Collapse accordion>
-                            {Object.entries(groupedByZone).map(([zoneName, countries]) => (
-                                <Panel header={`${zoneName} (${countries.length})`} key={zoneName}>
+                            {Object.entries(groupedByZone).map(([zoneName, states]) => (
+                                <Panel header={`${zoneName} (${states.length})`} key={zoneName}>
                                     <List
-                                        dataSource={countries}
-                                        renderItem={(country) => {
+                                        dataSource={states}
+                                        renderItem={(state) => {
                                             const menu = (
                                                 <Menu>
                                                     <Menu.Item
                                                         key="delete"
-                                                        onClick={() => handleDelete(country.id)}
+                                                        onClick={() => handleDelete(state.id)}
                                                     >
                                                         Delete
                                                     </Menu.Item>
@@ -105,21 +104,21 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
                                                 <Dropdown
                                                     overlay={menu}
                                                     trigger={['contextMenu']}
-                                                    key={country.id}
+                                                    key={state.id}
                                                 >
                                                     <List.Item
-                                                        onClick={() => handleCountryClick(country)}
+                                                        onClick={() => handleStateClick(state)}
                                                         style={{ cursor: 'pointer' }}
                                                         className={
-                                                            selectedCountry?.id === country.id
+                                                            selectedState?.id === state.id
                                                                 ? 'ant-list-item-selected'
                                                                 : ''
                                                         }
                                                     >
                                                         <Typography.Text>
-                                                            {country.name} ({country.isoCode})
+                                                            {state.name}
                                                         </Typography.Text>
-                                                        {country.active ? (
+                                                        {state.active ? (
                                                             <Tag color="green">Active</Tag>
                                                         ) : (
                                                             <Tag color="red">Inactive</Tag>
@@ -134,8 +133,8 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
                         </Collapse>
                     </Col>
                     <Col span={19} style={{ background: '#fff', minHeight: 400 }}>
-                        {selectedCountry ? (
-                            <CoreShopCountryDetailPage key={selectedCountry.id} id={selectedCountry.id} onAfterSave={refetch} />
+                        {selectedState ? (
+                            <CoreShopStateDetailPage key={selectedState.id} id={selectedState.id} onAfterSave={refetch} />
                         ) : (
                             <div style={{ padding: 16 }}>
                                 <Typography.Text type="secondary">
