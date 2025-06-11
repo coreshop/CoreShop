@@ -15,7 +15,8 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "paths": {
-      "*": ["./@mf-types/*"]
+      "*": ["./@mf-types/*"],
+      "@pimcore/studio-ui-bundle": ["./assets/node_modules/@pimcore/studio-ui-bundle"]
     }
   },
 

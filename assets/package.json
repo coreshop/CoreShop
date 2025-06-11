@@ -20,6 +20,7 @@
     "@rsbuild/plugin-react": "^1.3.1",
     "@types/jest": "^29.5.12",
     "@types/react-dom": "18.3.x",
+    "@types/uuid": "^10.0.0",
     "@types/webpack-env": "^1.18.4",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "eslint": "^8.56.0",
@@ -37,7 +38,7 @@
     "whatwg-fetch": "^3.6.20"
   },
   "dependencies": {
-    "@pimcore/studio-ui-bundle": "file:../../../../pimcore-studio-ui-bundle-0.0.1.tgz",
+    "@pimcore/studio-ui-bundle": "file:pimcore-studio-ui-0.0.1.tgz",
     "inversify": "^6.1.4",
     "nodemon": "^3.1.10",
     "react": "18.3.x",

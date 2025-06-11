@@ -1,10 +1,9 @@
-
-import { defineConfig } from '@rsbuild/core'
-import { pluginReact } from '@rsbuild/plugin-react'
+import { defineConfig } from '@rsbuild/core';
+import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { pluginGenerateEntrypoints } from '@pimcore/studio-ui-bundle/rsbuild/plugins';
-import path from 'path'
-import fs from 'fs';
+import * as path from 'path';
+import * as fs from 'fs';
 import { v4 } from 'uuid';
 
 const buildId = v4();
@@ -45,7 +44,7 @@ export default defineConfig({
     },
     source: {
         entry: {
-            main: './js/src/CoreShop/main.ts'
+            main: './js/src/CoreShop/main.tsx'
         },
         decorators: {
             version: 'legacy'
@@ -70,7 +69,7 @@ export default defineConfig({
             name: 'coreshopcore',
             filename: 'static/js/remoteEntry.js',
             exposes: {
-                '.': './js/src/CoreShop/plugin.ts',
+                '.': './js/src/CoreShop/plugin.tsx',
             },
             dts: false,
             remotes: {
