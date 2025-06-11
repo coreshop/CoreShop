@@ -135,7 +135,7 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
                     </Col>
                     <Col span={19} style={{ background: '#fff', minHeight: 400 }}>
                         {selectedCountry ? (
-                            <CoreShopCountryDetailPage id={selectedCountry.id} />
+                            <CoreShopCountryDetailPage key={selectedCountry.id} id={selectedCountry.id} />
                         ) : (
                             <div style={{ padding: 16 }}>
                                 <Typography.Text type="secondary">
