@@ -4,6 +4,7 @@ import { useCountryActions } from '../hooks/useCountryActions';
 import { ZoneSelect } from './countries/ZoneSelect';
 import { CurrencySelect } from './countries/CurrencySelect';
 import { Typography, Spin, Tabs, Form, Input, Select, Checkbox, Button, Flex } from 'antd';
+import {useFetchGetValidLanguages} from "../hooks/useFetchGetValidLanguages";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -33,6 +34,7 @@ type CountryDetailProps = {
 
 export const CoreShopCountryDetailPage: React.FC<CountryDetailProps> = ({ id, onAfterSave }) => {
     const { data, loading, error, refetch } = useFetch(`/admin/coreshop/countries/get?id=${id}`);
+    const { languages, loading: langLoading } = useFetchGetValidLanguages();
     const [form] = Form.useForm();
     const { updateCountry } = useCountryActions();
 
@@ -71,7 +73,7 @@ export const CoreShopCountryDetailPage: React.FC<CountryDetailProps> = ({ id, on
                 onFinish={onFinish}
             >
                 <Tabs defaultActiveKey={translationKeys[0]}>
-                    {translationKeys.map((langCode) => (
+                    {languages.map((langCode) => (
                         <TabPane tab={langCode.toUpperCase()} key={langCode} forceRender> {/* we need the forceRender because by default the ANtDesign not mount the non visible tabs */}
                             <Form.Item
                                 label="Name"

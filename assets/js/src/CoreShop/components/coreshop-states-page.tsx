@@ -70,13 +70,13 @@ export const CoreShopStatesPage = (): React.JSX.Element => {
 
     return (
         <Layout>
-            <Content padded overflow={{ x: 'hidden', y: 'auto' }}>
-                <Header title="Regions" />
+            <Content padded overflow={{x: 'hidden', y: 'auto'}}>
+                <Header title="Regions"/>
                 <Flex gap="small" wrap>
                     <Button
                         type="primary"
                         onClick={openNewState}
-                        style={{ display: 'inline-block', marginBottom: 16 }}
+                        style={{display: 'inline-block', marginBottom: 16}}
                     >
                         Create State
                     </Button>
@@ -108,7 +108,7 @@ export const CoreShopStatesPage = (): React.JSX.Element => {
                                                 >
                                                     <List.Item
                                                         onClick={() => handleStateClick(state)}
-                                                        style={{ cursor: 'pointer' }}
+                                                        style={{cursor: 'pointer'}}
                                                         className={
                                                             selectedState?.id === state.id
                                                                 ? 'ant-list-item-selected'
@@ -132,11 +132,12 @@ export const CoreShopStatesPage = (): React.JSX.Element => {
                             ))}
                         </Collapse>
                     </Col>
-                    <Col span={19} style={{ background: '#fff', minHeight: 400 }}>
+                    <Col span={19} style={{background: '#fff', minHeight: 400}}>
                         {selectedState ? (
-                            <CoreShopStateDetailPage key={selectedState.id} id={selectedState.id} onAfterSave={refetch} />
+                            <CoreShopStateDetailPage key={selectedState.id} id={selectedState.id}
+                                                     onAfterSave={refetch}/>
                         ) : (
-                            <div style={{ padding: 16 }}>
+                            <div style={{padding: 16}}>
                                 <Typography.Text type="secondary">
                                     Select a country to view details.
                                 </Typography.Text>

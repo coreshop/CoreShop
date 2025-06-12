@@ -3,6 +3,7 @@ import { useFetch } from '../hooks/useFetch';
 import { Typography, Spin, Tabs, Form, Input, Select, Checkbox, Button, Flex } from 'antd';
 import {CountrySelect} from "./states/CountrySelect";
 import {useStateActions} from "../hooks/useStateActions";
+import { useFetchGetValidLanguages } from '../hooks/useFetchGetValidLanguages';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -29,6 +30,7 @@ type StateDetailProps = {
 
 export const CoreShopStateDetailPage: React.FC<StateDetailProps> = ({ id, onAfterSave }) => {
     const { data, loading, error} = useFetch(`/admin/coreshop/states/get?id=${id}`);
+    const { languages, loading: langLoading } = useFetchGetValidLanguages();
     const [form] = Form.useForm();
     const { updateState } = useStateActions();
 
@@ -65,7 +67,7 @@ export const CoreShopStateDetailPage: React.FC<StateDetailProps> = ({ id, onAfte
                 onFinish={onFinish}
             >
                 <Tabs defaultActiveKey={translationKeys[0]}>
-                    {translationKeys.map((langCode) => (
+                    {languages.map((langCode) => (
                         <TabPane tab={langCode.toUpperCase()} key={langCode} forceRender> {/* we need the forceRender because by default the ANtDesign not mount the non visible tabs */}
                             <Form.Item
                                 label="Name"
