@@ -1,31 +1,14 @@
 import React from 'react';
-import { useFetch } from '../hooks/useFetch';
-import { useCountryActions } from '../hooks/useCountryActions';
-import { ZoneSelect } from './countries/ZoneSelect';
-import { CurrencySelect } from './countries/CurrencySelect';
-import { Typography, Spin, Tabs, Form, Input, Select, Checkbox, Button, Flex } from 'antd';
-import {useFetchGetValidLanguages} from "../hooks/useFetchGetValidLanguages";
+import { useFetch } from '../../hooks/useFetch';
+import { useCountryActions } from '../../hooks/useCountryActions';
+import { ZoneSelect } from '../../fields/ZoneSelect';
+import { CurrencySelect } from '../../fields/CurrencySelect';
+import { Typography, Spin, Tabs, Form, Input, Select, Checkbox, Button } from 'antd';
+import {useFetchGetValidLanguages} from "../../hooks/useFetchGetValidLanguages";
+import { Country } from "./types";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
-
-type Translation = {
-    locale: string;
-    name: string;
-};
-
-type Country = {
-    id: number;
-    isoCode: string;
-    zoneName: string;
-    active: boolean;
-    name: string;
-    addressFormat: string;
-    zone: number;
-    currency:  number;
-    salutations: string[];
-    translations: Record<string, Translation>;
-};
 
 type CountryDetailProps = {
     id: number;
@@ -36,7 +19,7 @@ export const CoreShopCountryDetailPage: React.FC<CountryDetailProps> = ({ id, on
     const { data, loading, error, refetch } = useFetch(`/admin/coreshop/countries/get?id=${id}`);
     const { languages, loading: langLoading } = useFetchGetValidLanguages();
     const [form] = Form.useForm();
-    const { updateCountry } = useCountryActions();
+    const { update: updateCountry } = useCountryActions();
 
     if (loading) return <Spin />;
     if (error) return <p>Error loading country</p>;

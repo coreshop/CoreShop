@@ -1,27 +1,29 @@
 import { Header, Content } from '@pimcore/studio-ui-bundle/components';
 import React, { useState } from 'react';
-import { useFetch } from '../hooks/useFetch';
+import { useFetch } from '../../hooks/useFetch';
 import { Collapse, List, Typography, Tag, Spin, Button, Layout, Row, Col, Flex, Dropdown, Menu } from 'antd';
-import { useFormModal } from '@pimcore/studio-ui-bundle/components';
-import { useCountryActions } from '../hooks/useCountryActions';
+import { useCountryActions } from '../../hooks/useCountryActions';
+import { useEntityActions } from '../../hooks/useEntityActions';
 import { CoreShopCountryDetailPage } from './coreshop-country-detail-page';
+import { Country } from './types';
 
 const { Panel } = Collapse;
 
-type Country = {
-    id: number;
-    name: string;
-    isoCode: string;
-    zoneName: string;
-    active: boolean;
-};
-
-export const CoreShopCountriesPage = (): React.JSX.Element => {
+export const CoreshopCountriesPage = (): React.JSX.Element => {
     const { data: countries, loading, error, refetch } = useFetch<Country[]>('/admin/coreshop/countries/list');
-    const { input } = useFormModal();
-    const { createCountry, deleteCountry } = useCountryActions();
+    const { create: createCountry, remove: deleteCountry } = useCountryActions();
 
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+
+    const { handleDelete, openCreateModal } = useEntityActions<Country>({
+        createEndpoint: '/admin/coreshop/countries/add',
+        deleteEndpoint: '/admin/coreshop/countries/delete',
+        createFn: createCountry,
+        deleteFn: deleteCountry,
+        refetch,
+        getSelected: () => selectedCountry,
+        clearSelected: () => setSelectedCountry(null),
+    });
 
     const handleCountryClick = (country: Country) => {
         setSelectedCountry(country);
@@ -41,34 +43,6 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
     if (loading) return <Spin />;
     if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
-    const handleCountryCreation = async (value: string) => {
-        await createCountry(value, '/admin/coreshop/countries/add');
-        refetch();
-    };
-
-    const handleDelete = async (id: number) => {
-        await deleteCountry(id, '/admin/coreshop/countries/delete');
-        if (selectedCountry?.id === id) {
-            setSelectedCountry(null);
-        }
-        refetch();
-    };
-
-    const openNewCountry = () => {
-        input({
-            title: 'New Country',
-            label: 'Country Name',
-            rule: {
-                required: true,
-                message: 'Please enter a country name'
-            },
-            okText: 'Create',
-            onOk: async (value: string) => {
-                await handleCountryCreation(value);
-            }
-        });
-    };
-
     return (
         <Layout>
             <Content padded overflow={{ x: 'hidden', y: 'auto' }}>
@@ -76,7 +50,7 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
                 <Flex gap="small" wrap>
                     <Button
                         type="primary"
-                        onClick={openNewCountry}
+                        onClick={openCreateModal}
                         style={{ display: 'inline-block', marginBottom: 16 }}
                     >
                         Create Country
@@ -90,20 +64,17 @@ export const CoreShopCountriesPage = (): React.JSX.Element => {
                                     <List
                                         dataSource={countries}
                                         renderItem={(country) => {
-                                            const menu = (
-                                                <Menu>
-                                                    <Menu.Item
-                                                        key="delete"
-                                                        onClick={() => handleDelete(country.id)}
-                                                    >
-                                                        Delete
-                                                    </Menu.Item>
-                                                </Menu>
-                                            );
-
                                             return (
                                                 <Dropdown
-                                                    overlay={menu}
+                                                    menu={{
+                                                        items: [
+                                                            {
+                                                                key: 'delete',
+                                                                label: 'Delete',
+                                                                onClick: () => handleDelete(country.id),
+                                                            },
+                                                        ],
+                                                    }}
                                                     trigger={['contextMenu']}
                                                     key={country.id}
                                                 >

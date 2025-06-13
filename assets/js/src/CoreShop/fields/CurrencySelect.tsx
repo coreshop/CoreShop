@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select, Spin, message } from 'antd';
-import { useFetch } from '../../hooks/useFetch';
+import { useFetch } from '../hooks/useFetch';
 
 const { Option } = Select;
 

@@ -51,4 +51,18 @@ export function registerMainNav() {
             }
         }
     });
+
+    mainNavRegistryService.registerMainNavItem({
+        path: 'Coreshop/Localization/Currencies',
+        widgetConfig: {
+            name: 'CoreShopCurrenciesPage',
+            component: 'CoreShopCurrenciesPage',
+            config: {
+                icon: {
+                    type: 'name',
+                    value: 'coreshop-icon'
+                }
+            }
+        }
+    });
 }

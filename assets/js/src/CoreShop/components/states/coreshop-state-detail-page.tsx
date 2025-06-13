@@ -1,27 +1,13 @@
 import React from 'react';
-import { useFetch } from '../hooks/useFetch';
-import { Typography, Spin, Tabs, Form, Input, Select, Checkbox, Button, Flex } from 'antd';
-import {CountrySelect} from "./states/CountrySelect";
-import {useStateActions} from "../hooks/useStateActions";
-import { useFetchGetValidLanguages } from '../hooks/useFetchGetValidLanguages';
+import { useFetch } from '../../hooks/useFetch';
+import { Typography, Spin, Tabs, Form, Input, Checkbox, Button } from 'antd';
+import { CountrySelect } from "../../fields/CountrySelect";
+import { useStateActions } from "../../hooks/useStateActions";
+import { useFetchGetValidLanguages } from '../../hooks/useFetchGetValidLanguages';
+import { State } from "./types";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
-
-type Translation = {
-    locale: string;
-    name: string;
-};
-
-type State = {
-    id: number;
-    isoCode: string;
-    country: number;
-    countryName: string;
-    active: boolean;
-    name: string;
-    translations: Record<string, Translation>;
-};
 
 type StateDetailProps = {
     id: number;
@@ -32,7 +18,7 @@ export const CoreShopStateDetailPage: React.FC<StateDetailProps> = ({ id, onAfte
     const { data, loading, error} = useFetch(`/admin/coreshop/states/get?id=${id}`);
     const { languages, loading: langLoading } = useFetchGetValidLanguages();
     const [form] = Form.useForm();
-    const { updateState } = useStateActions();
+    const { update: updateState } = useStateActions();
 
     if (loading) return <Spin />;
     if (error) return <p>Error loading country</p>;

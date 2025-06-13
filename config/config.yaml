@@ -20,3 +20,6 @@ pimcore_admin:
       - coreshop_state_save
       - coreshop_state_add
       - coreshop_state_delete
+      - coreshop_currency_save
+      - coreshop_currency_add
+      - coreshop_currency_delete
