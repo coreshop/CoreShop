@@ -1,0 +1,63 @@
+name: Upmerge PR
+
+on:
+  schedule:
+    -
+      cron: "0 2 * * *"
+  workflow_dispatch: ~
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  upmerge:
+    runs-on: ubuntu-latest
+    if: github.repository == 'coreshop/coreshop'
+    name: Upmerge
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          -
+            base_branch: "3.2"
+            target_branch: "4.0"
+          -
+            base_branch: "4.0"
+            target_branch: "4.1"
+          -
+            base_branch: "4.1"
+            target_branch: "next"
+
+    steps:
+      -
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.target_branch }}
+
+      -
+        name: Reset upmerge branch
+        run: |
+          git fetch origin ${{ matrix.base_branch }}:${{ matrix.base_branch }}
+          git reset --hard ${{ matrix.base_branch }}
+
+      -
+        name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: '[UPMERGE] ${{ matrix.base_branch }} -> ${{ matrix.target_branch }}'
+          body: |
+            This PR has been generated automatically.
+            
+            **Remember!** The upmerge should always be merged with using `Merge pull request` button.
+            
+            In case of conflicts, please resolve them manually with usign the following commands:
+            ```
+            git fetch upstream
+            gh pr checkout <this-pr-number>
+            git merge upstream/${{ matrix.target_branch }} -m "Resolve conflicts between ${{ matrix.base_branch }} and ${{ matrix.target_branch }}"
+            ```
+          branch: "upmerge/${{ matrix.base_branch }}_${{ matrix.target_branch }}"
+          delete-branch: true
+          base: ${{ matrix.target_branch }}

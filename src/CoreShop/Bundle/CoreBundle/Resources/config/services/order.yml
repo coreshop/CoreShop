@@ -73,6 +73,8 @@ services:
 
     CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier
+        arguments:
+            $eventDispatcher: '@event_dispatcher'
 
     coreshop.cart_item.quantity_modifier.backend:
         class: CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier

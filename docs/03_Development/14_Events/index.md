@@ -26,6 +26,8 @@ Events related to cart operations:
 | `coreshop.cart.post_add_item`    | GenericEvent | Fires after adding an item to cart      |
 | `coreshop.cart.pre_remove_item`  | GenericEvent | Fires before removing an item from cart |
 | `coreshop.cart.post_remove_item` | GenericEvent | Fires after removing an item from cart  |
+| `coreshop.cart.pre_update_item`  | GenericEvent | Fires before updating an item from cart |
+| `coreshop.cart.post_update_item` | GenericEvent | Fires after updating an item from cart  |
 
 ## Customer Events
 

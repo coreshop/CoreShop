@@ -20,15 +20,19 @@ namespace CoreShop\Component\Core\Order\Modifier;
 
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Order\CartEvents;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
     public function __construct(
         protected bool $allowZeroQuantity = false,
+        protected ?EventDispatcherInterface $eventDispatcher = null,
     ) {
     }
 
@@ -46,6 +50,11 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
 
         $cleanTargetQuantity = $this->roundQuantity($item, $targetQuantity);
 
+        $this->eventDispatcher?->dispatch(
+            new GenericEvent($item, ['targetQuantity' => $cleanTargetQuantity]),
+            CartEvents::PRE_UPDATE_ITEM,
+        );
+
         $item->setQuantity($cleanTargetQuantity);
 
         if ($item->hasUnitDefinition()) {
@@ -53,6 +62,11 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         } else {
             $item->setDefaultUnitQuantity($item->getQuantity() ?? 1.0);
         }
+
+        $this->eventDispatcher?->dispatch(
+            new GenericEvent($item, ['targetQuantity' => $cleanTargetQuantity]),
+            CartEvents::POST_UPDATE_ITEM,
+        );
     }
 
     public function roundQuantity(StorageListItemInterface $item, float $targetQuantity): float
