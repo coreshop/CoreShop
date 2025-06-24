@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use CoreShop\Bundle\ResourceBundle\Attribute\AsPimcoreModel;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
@@ -32,6 +31,7 @@ use Pimcore\Bundle\GenericDataIndexBundle\PimcoreGenericDataIndexBundle;
 use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
 use Pimcore\Bundle\StudioBackendBundle\PimcoreStudioBackendBundle;
 use Pimcore\Bundle\StudioUiBundle\PimcoreStudioUiBundle;
+use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Container;

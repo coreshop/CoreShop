@@ -23,3 +23,4 @@ pimcore_admin:
       - coreshop_currency_save
       - coreshop_currency_add
       - coreshop_currency_delete
+
