@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class ExtractorRegistryServicePass extends RegisterSimpleRegistryTypePass
 {
-    public const EXTRACTOR_TAG = 'coreshop.seo.extractor';
+    public const string EXTRACTOR_TAG = 'coreshop.seo.extractor';
 
     public function __construct(
         ) {

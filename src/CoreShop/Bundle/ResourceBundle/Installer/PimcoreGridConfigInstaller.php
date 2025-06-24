@@ -41,7 +41,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     ) {
     }
 
-    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
+    public function installResources(OutputInterface $output, ?string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.grid_config', $applicationName) : 'coreshop.all.pimcore.admin.install.grid_config';
 
@@ -65,7 +65,13 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
                 $file = $this->kernel->locateResource($file);
 
                 if (file_exists($file)) {
-                    $gridConfigs = Yaml::parse(file_get_contents($file));
+                    $content = file_get_contents($file);
+
+                    if (!$content) {
+                        continue;
+                    }
+
+                    $gridConfigs = Yaml::parse($content);
                     $gridConfigs = $processor->processConfiguration($configurationDefinition, ['grid_config' => $gridConfigs]);
                     $gridConfigs = $gridConfigs['grid_config'];
 

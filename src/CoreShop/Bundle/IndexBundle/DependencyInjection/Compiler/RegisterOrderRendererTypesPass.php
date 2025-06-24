@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterOrderRendererTypesPass extends RegisterSimpleRegistryTypePass
 {
-    public const INDEX_ORDER_RENDERER_TAG = 'coreshop.index.order.renderer';
+    public const string INDEX_ORDER_RENDERER_TAG = 'coreshop.index.order.renderer';
 
     public function __construct(
         ) {

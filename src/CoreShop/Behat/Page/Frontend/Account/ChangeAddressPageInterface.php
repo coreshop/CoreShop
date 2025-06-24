@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend\Account;
 
 use CoreShop\Bundle\TestBundle\Page\Frontend\FrontendPageInterface;
+use CoreShop\Component\Address\Model\CountryInterface;
 
 interface ChangeAddressPageInterface extends FrontendPageInterface
 {
@@ -32,7 +33,7 @@ interface ChangeAddressPageInterface extends FrontendPageInterface
 
     public function specifyLastname(?string $lastname = null): void;
 
-    public function specifyStreet(?string $street = null, $number = null): void;
+    public function specifyStreet(?string $street = null, ?string $number = null): void;
 
     public function specifyPhoneNumber(string $phoneNumber): void;
 
@@ -42,5 +43,15 @@ interface ChangeAddressPageInterface extends FrontendPageInterface
 
     public function addAddress(): void;
 
-    public function fillAddress($country = null, $city = null, $postcode = null, $number = null, $street = null, $firstname = null, $lastname = null, $salutation = null, $phone = null): void;
+    public function fillAddress(
+        ?CountryInterface $country = null,
+        ?string $city = null,
+        ?string $postcode = null,
+        ?string $number = null,
+        ?string $street = null,
+        ?string $firstname = null,
+        ?string $lastname = null,
+        ?string $salutation = null,
+        ?string $phone = null
+    ): void;
 }

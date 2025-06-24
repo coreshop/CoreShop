@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class ShippingTaxCalculationStrategyPass extends RegisterRegistryTypePass
 {
-    public const SHIPPING_TAX_STRATEGY_TAG = 'coreshop.shipping.tax_calculation_strategy';
+    public const string SHIPPING_TAX_STRATEGY_TAG = 'coreshop.shipping.tax_calculation_strategy';
 
     public function __construct(
         ) {

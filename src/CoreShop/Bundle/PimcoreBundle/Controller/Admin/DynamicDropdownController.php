@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
-use Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController;
+use Pimcore\Controller\UserAwareController;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Service;
 use Pimcore\Model\Factory;
@@ -28,16 +28,16 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @psalm-suppress InternalClass
  */
-final class DynamicDropdownController extends AdminAbstractController
+final class DynamicDropdownController extends UserAwareController
 {
     private string $separator = ' - ';
 
     public function optionsAction(Request $request): JsonResponse
     {
-        $folderName = (string) $request->query->get('folderName');
+        $folderName = $request->query->getString('folderName', '/');
         $parts = array_map(static function (string $part) {
             return Service::getValidKey($part, 'object');
-        }, preg_split('/\//', $folderName, 0, \PREG_SPLIT_NO_EMPTY));
+        }, preg_split('/\//', $folderName, 0, \PREG_SPLIT_NO_EMPTY) ?: []);
         $parentFolderPath = sprintf('/%s', implode('/', $parts));
         $sort = (string) $request->query->get('sortBy', '');
         $options = [];

@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
-    public const OPTION_UPDATE_CLASSES = 'update-classes';
+    public const string OPTION_UPDATE_CLASSES = 'update-classes';
 
     private array $installedClasses = [];
 
@@ -40,7 +40,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
     ) {
     }
 
-    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
+    public function installResources(OutputInterface $output, ?string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
 

@@ -52,7 +52,7 @@ class Setup
         // use a dedicated setup connection as the framework connection is bound to the DB and will
         // fail if the DB doesn't exist
         $setupConnection = DriverManager::getConnection($params, $config);
-        $schemaManager = $setupConnection->getSchemaManager();
+        $schemaManager = $setupConnection->createSchemaManager();
 
         $databases = $schemaManager->listDatabases();
         if (in_array($dbName, $databases)) {
@@ -60,10 +60,6 @@ class Setup
         }
 
         $schemaManager->createDatabase($connection->quoteIdentifier($dbName));
-
-        if (!$connection->isConnected()) {
-            $connection->connect();
-        }
 
         $installer = new \Pimcore\Bundle\InstallBundle\Installer(
             \Pimcore::getContainer()->get('monolog.logger.pimcore'),

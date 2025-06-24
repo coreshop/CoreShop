@@ -31,7 +31,7 @@ final class SqlInstaller implements ResourceInstallerInterface
     ) {
     }
 
-    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
+    public function installResources(OutputInterface $output, ?string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.sql', $applicationName) : 'coreshop.all.pimcore.admin.install.sql';
 
@@ -52,7 +52,13 @@ final class SqlInstaller implements ResourceInstallerInterface
             foreach ($sqlFilesToExecute as $sqlFile) {
                 $progress->setMessage(sprintf('<info>Execute SQL File %s</info>', $sqlFile));
 
-                $this->connection->executeQuery(file_get_contents($this->kernel->locateResource($sqlFile)));
+                $content = file_get_contents($this->kernel->locateResource($sqlFile));
+
+                if (!$content) {
+                    continue;
+                }
+
+                $this->connection->executeQuery($content);
 
                 $progress->advance();
             }

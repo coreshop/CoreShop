@@ -22,11 +22,11 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface AdjustmentInterface extends ResourceInterface
 {
-    public const SHIPPING = 'shipping';
+    public const string SHIPPING = 'shipping';
 
-    public const PAYMENT = 'payment';
+    public const string PAYMENT = 'payment';
 
-    public const CART_PRICE_RULE = 'cart_price_rule';
+    public const string CART_PRICE_RULE = 'cart_price_rule';
 
     public function getId(): ?int;
 

@@ -20,11 +20,11 @@ namespace CoreShop\Component\Wishlist;
 
 class WishlistEvents
 {
-    public const PRE_REMOVE_ITEM = 'coreshop.wishlist.pre_remove_item';
+    public const string PRE_REMOVE_ITEM = 'coreshop.wishlist.pre_remove_item';
 
-    public const POST_REMOVE_ITEM = 'coreshop.wishlist.post_remove_item';
+    public const string POST_REMOVE_ITEM = 'coreshop.wishlist.post_remove_item';
 
-    public const PRE_ADD_ITEM = 'coreshop.wishlist.pre_add_item';
+    public const string PRE_ADD_ITEM = 'coreshop.wishlist.pre_add_item';
 
-    public const POST_ADD_ITEM = 'coreshop.wishlist.post_add_item';
+    public const string POST_ADD_ITEM = 'coreshop.wishlist.post_add_item';
 }

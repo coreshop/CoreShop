@@ -36,7 +36,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     ) {
     }
 
-    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
+    public function installResources(OutputInterface $output, ?string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf(
             '%s.pimcore.admin.install.documents',
@@ -63,7 +63,13 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 $file = $this->kernel->locateResource($file);
 
                 if (file_exists($file)) {
-                    $documents = Yaml::parse(file_get_contents($file));
+                    $content = file_get_contents($file);
+
+                    if (!$content) {
+                        continue;
+                    }
+
+                    $documents = Yaml::parse($content);
                     $documents = $processor->processConfiguration(
                         $configurationDefinition,
                         ['documents' => $documents],

@@ -20,9 +20,9 @@ namespace CoreShop\Component\Registry;
 
 class PriorityMap implements \Iterator, \Countable
 {
-    public const ORDER_ASC = 'asc';
+    public const string ORDER_ASC = 'asc';
 
-    public const ORDER_DESC = 'desc';
+    public const string ORDER_DESC = 'desc';
 
     private int $lastSequence = 0;
 
@@ -198,6 +198,9 @@ class PriorityMap implements \Iterator, \Countable
     {
         $item = current($this->list);
 
+        /**
+         * @psalm-suppress InvalidPropertyFetch
+         */
         return $item->value;
     }
 

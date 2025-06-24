@@ -33,7 +33,7 @@ use GraphQL\Type\Definition\Type;
 
 class FilterNumber
 {
-    public const NAME = 'filternumber';
+    public const string NAME = 'filternumber';
 
     public static function getType($dataType)
     {

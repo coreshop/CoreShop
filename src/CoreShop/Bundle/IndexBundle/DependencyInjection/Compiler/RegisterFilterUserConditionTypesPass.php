@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterFilterUserConditionTypesPass extends RegisterRegistryTypePass
 {
-    public const INDEX_FILTER_USER_CONDITION_TAG = 'coreshop.filter.user_condition_type';
+    public const string INDEX_FILTER_USER_CONDITION_TAG = 'coreshop.filter.user_condition_type';
 
     public function __construct(
         ) {

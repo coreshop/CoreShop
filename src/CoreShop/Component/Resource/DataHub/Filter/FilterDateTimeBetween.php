@@ -32,7 +32,7 @@ use GraphQL\Type\Definition\InputObjectType;
 
 class FilterDateTimeBetween
 {
-    public const NAME = 'filterdatetimebetween';
+    public const string NAME = 'filterdatetimebetween';
 
     public static function getType($dateType)
     {

@@ -33,7 +33,7 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     ) {
     }
 
-    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
+    public function installResources(OutputInterface $output, ?string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.routes', $applicationName) : 'coreshop.all.pimcore.admin.install.routes';
 
@@ -57,7 +57,13 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
                 $file = $this->kernel->locateResource($file);
 
                 if (file_exists($file)) {
-                    $routes = Yaml::parse(file_get_contents($file));
+                    $content = file_get_contents($file);
+
+                    if (!$content) {
+                        continue;
+                    }
+
+                    $routes = Yaml::parse($content);
                     $routes = $processor->processConfiguration($configurationDefinition, ['staticroutes' => $routes]);
                     $routes = $routes['routes'];
 

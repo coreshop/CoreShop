@@ -24,12 +24,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ResolvedAttribute
 {
-    private AttributeInterface $attribute;
+    private ?AttributeInterface $attribute;
 
     private ArrayCollection $products;
 
     public function __construct(
-        AttributeInterface $attribute = null,
+        ?AttributeInterface $attribute = null,
     ) {
         $this->products = new ArrayCollection();
         if ($attribute) {
@@ -37,12 +37,12 @@ class ResolvedAttribute
         }
     }
 
-    public function getAttribute(): AttributeInterface
+    public function getAttribute(): ?AttributeInterface
     {
         return $this->attribute;
     }
 
-    public function setAttribute(AttributeInterface $attribute): void
+    public function setAttribute(?AttributeInterface $attribute): void
     {
         $this->attribute = $attribute;
     }

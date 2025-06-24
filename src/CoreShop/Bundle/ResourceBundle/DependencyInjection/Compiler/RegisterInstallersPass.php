@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class RegisterInstallersPass extends RegisterSimpleRegistryTypePass
 {
-    public const INSTALLER_TAG = 'coreshop.resource.installer';
+    public const string INSTALLER_TAG = 'coreshop.resource.installer';
 
     public function __construct(
         ) {

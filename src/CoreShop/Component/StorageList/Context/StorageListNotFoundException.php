@@ -21,8 +21,8 @@ namespace CoreShop\Component\StorageList\Context;
 class StorageListNotFoundException extends \RuntimeException
 {
     public function __construct(
-        $message = null,
-        \Exception $previousException = null,
+        ?string $message = null,
+        ?\Exception $previousException = null,
     ) {
         parent::__construct(
             $message ?: 'CoreShop was not able to find out the requested Storage List.',

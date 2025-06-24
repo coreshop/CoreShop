@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
 
 class LikeRenderer extends AbstractMysqlDynamicRenderer
 {
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, ?string $prefix = null): string
     {
         /**
          * @var LikeCondition $condition

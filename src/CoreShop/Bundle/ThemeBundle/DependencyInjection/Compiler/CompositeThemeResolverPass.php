@@ -24,7 +24,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeThemeResolverPass extends PrioritizedCompositeServicePass
 {
-    public const THEME_RESOLVER_TAG = 'coreshop.theme.resolver';
+    public const string THEME_RESOLVER_TAG = 'coreshop.theme.resolver';
 
     public function __construct(
         ) {

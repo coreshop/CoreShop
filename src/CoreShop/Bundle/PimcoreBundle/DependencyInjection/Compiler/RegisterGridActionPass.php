@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterGridActionPass extends RegisterSimpleRegistryTypePass
 {
-    public const GRID_ACTION_TAG = 'coreshop.grid.action';
+    public const string GRID_ACTION_TAG = 'coreshop.grid.action';
 
     public function __construct(
         ) {

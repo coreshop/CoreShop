@@ -28,70 +28,19 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
 {
     use TimestampableTrait;
 
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $type;
-
-    /**
-     * @var string
-     */
-    public $objectKey;
-
-    /**
-     * @var string
-     */
-    public $name;
-
-    /**
-     * @var string
-     */
-    public $objectType;
-
-    /**
-     * @var string
-     */
-    public $getter;
-
-    /**
-     * @var array
-     */
-    public $getterConfig = [];
-
-    /**
-     * @var string
-     */
-    public $dataType;
-
-    /**
-     * @var string
-     */
-    public $interpreter;
-
-    /**
-     * @var array
-     */
-    public $interpreterConfig = [];
-
-    /**
-     * @var string
-     */
-    public $columnType;
-
-    /**
-     * @var array
-     */
-    public $configuration = [];
-
-    /**
-     * @var IndexInterface
-     */
-    public $index;
+    public ?int $id = null;
+    public ?string $type = null;
+    public ?string $objectKey = null;
+    public ?string $name = null;
+    public ?string $objectType = null;
+    public ?string $getter = null;
+    public array $getterConfig = [];
+    public ?string $dataType = null;
+    public ?string $interpreter = null;
+    public array $interpreterConfig = [];
+    public ?string $columnType = null;
+    public array $configuration = [];
+    public ?IndexInterface $index;
 
     public function __toString(): string
     {
@@ -248,7 +197,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->index;
     }
 
-    public function setIndex(IndexInterface $index = null)
+    public function setIndex(?IndexInterface $index)
     {
         $this->index = $index;
     }

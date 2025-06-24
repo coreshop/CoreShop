@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class ProductPriceRuleConditionPass extends RegisterRegistryTypePass
 {
-    public const PRODUCT_PRICE_RULE_CONDITION_TAG = 'coreshop.product_price_rule.condition';
+    public const string PRODUCT_PRICE_RULE_CONDITION_TAG = 'coreshop.product_price_rule.condition';
 
     public function __construct(
         ) {

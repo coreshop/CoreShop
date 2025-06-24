@@ -33,7 +33,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
     ) {
     }
 
-    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
+    public function installResources(OutputInterface $output, ?string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.image_thumbnails', $applicationName) : 'coreshop.all.pimcore.admin.install.image_thumbnails';
 
@@ -57,7 +57,13 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
                 $file = $this->kernel->locateResource($file);
 
                 if (file_exists($file)) {
-                    $thumbnails = Yaml::parse(file_get_contents($file));
+                    $content = file_get_contents($file);
+
+                    if (!$content) {
+                        continue;
+                    }
+
+                    $thumbnails = Yaml::parse($content);
                     $thumbnails = $processor->processConfiguration($configurationDefinition, ['thumbnails' => $thumbnails]);
                     $thumbnails = $thumbnails['thumbnails'];
 

@@ -24,7 +24,7 @@ use Doctrine\DBAL\Types\Type;
 
 class BigIntIntegerType extends Type
 {
-    public const BIGINT_INTEGER = 'bigintInteger';
+    public const string BIGINT_INTEGER = 'bigintInteger';
 
     public function getName(): string
     {
@@ -36,7 +36,7 @@ class BigIntIntegerType extends Type
         return $platform->getBigIntTypeDeclarationSQL($column);
     }
 
-    public function getBindingType(): int
+    public function getBindingType(): ParameterType
     {
         return ParameterType::STRING;
     }

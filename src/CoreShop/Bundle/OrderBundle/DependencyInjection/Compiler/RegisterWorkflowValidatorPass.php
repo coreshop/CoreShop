@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterWorkflowValidatorPass implements CompilerPassInterface
 {
-    public const WORKFLOW_VALIDATOR_TAG = 'coreshop.workflow.validator';
+    public const string WORKFLOW_VALIDATOR_TAG = 'coreshop.workflow.validator';
 
     public function process(ContainerBuilder $container): void
     {
@@ -34,7 +34,7 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
 
             foreach ($attributes as $tag) {
                 if (!isset($tag['type'])) {
-                    $tag['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                    $tag['type'] = Container::underscore(substr((string) strrchr($definition->getClass(), '\\'), 1));
                 }
 
                 if (!isset($tag['manager'])) {

@@ -25,7 +25,7 @@ use Pimcore\Model\DataObject\AbstractObject;
 
 class PimcoreObject extends Type
 {
-    public const PIMCORE_OBJECT = 'pimcoreObject';
+    public const string PIMCORE_OBJECT = 'pimcoreObject';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
@@ -50,7 +50,7 @@ class PimcoreObject extends Type
         return null;
     }
 
-    public function getBindingType(): int
+    public function getBindingType(): ParameterType
     {
         return ParameterType::INTEGER;
     }

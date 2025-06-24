@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class PurchasableCustomAttributesCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
-    public const PURCHASABLE_CUSTOM_ATTRIBUTES__CALCULATOR_TAG = 'coreshop.order.purchasable.custom_attributes_calculator';
+    public const string PURCHASABLE_CUSTOM_ATTRIBUTES__CALCULATOR_TAG = 'coreshop.order.purchasable.custom_attributes_calculator';
 
     public function __construct(
         ) {

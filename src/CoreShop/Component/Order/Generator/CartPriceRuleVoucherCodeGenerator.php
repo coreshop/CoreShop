@@ -26,11 +26,11 @@ use Webmozart\Assert\Assert;
 
 class CartPriceRuleVoucherCodeGenerator
 {
-    public const FORMAT_ALPHANUMERIC = 'alphanumeric';
+    public const string FORMAT_ALPHANUMERIC = 'alphanumeric';
 
-    public const FORMAT_ALPHABETIC = 'alphabetic';
+    public const string FORMAT_ALPHABETIC = 'alphabetic';
 
-    public const FORMAT_NUMERIC = 'numeric';
+    public const string FORMAT_NUMERIC = 'numeric';
 
     public function __construct(
         private FactoryInterface $voucherCodeFactory,

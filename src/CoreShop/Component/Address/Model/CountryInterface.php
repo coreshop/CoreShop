@@ -57,11 +57,11 @@ interface CountryInterface extends
     public function setName($name, ?string $language = null);
 
     /**
-     * @return ZoneInterface
+     * @return ZoneInterface|null
      */
     public function getZone();
 
-    public function setZone(ZoneInterface $zone = null);
+    public function setZone(?ZoneInterface $zone);
 
     /**
      * @return string

@@ -445,11 +445,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected function addOrderBy(QueryBuilder $queryBuilder)
     {
         if ($this->order instanceof SimpleOrder) {
-            $queryBuilder->add('orderBy', $this->getWorker()->renderOrder($this->order, 'q'));
+            $queryBuilder->addOrderBy($this->getWorker()->renderOrder($this->order, 'q'));
         }
 
         foreach ($this->orders as $order) {
-            $queryBuilder->add('orderBy', $this->getWorker()->renderOrder($order, 'q'), true);
+            $queryBuilder->addOrderBy($this->getWorker()->renderOrder($order, 'q'));
         }
     }
 

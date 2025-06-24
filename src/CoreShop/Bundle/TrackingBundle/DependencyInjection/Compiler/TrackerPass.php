@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class TrackerPass extends RegisterSimpleRegistryTypePass
 {
-    public const TRACKER_TAG = 'coreshop.tracking.tracker';
+    public const string TRACKER_TAG = 'coreshop.tracking.tracker';
 
     public function __construct(
         ) {

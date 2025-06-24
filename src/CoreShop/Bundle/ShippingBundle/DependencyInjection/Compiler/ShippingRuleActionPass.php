@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class ShippingRuleActionPass extends RegisterRegistryTypePass
 {
-    public const SHIPPING_RULE_ACTION_TAG = 'coreshop.shipping_rule.action';
+    public const string SHIPPING_RULE_ACTION_TAG = 'coreshop.shipping_rule.action';
 
     public function __construct(
         ) {

@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class ProductDiscountCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
-    public const PRODUCT_DISCOUNT_CALCULATOR_TAG = 'coreshop.product.discount_calculator';
+    public const string PRODUCT_DISCOUNT_CALCULATOR_TAG = 'coreshop.product.discount_calculator';
 
     public function __construct(
         ) {

@@ -76,14 +76,14 @@ class StackRepository extends PimcoreRepository implements StackRepositoryInterf
             return null;
         }
 
-        if (!in_array($this->interface, class_implements($instance), true)) {
+        if (!in_array($this->interface, class_implements($instance) ?: [], true)) {
             return null;
         }
 
         return $instance;
     }
 
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null)
     {
         $criteria['variable'] = implode(',', $this->classNames);
 
@@ -94,7 +94,7 @@ class StackRepository extends PimcoreRepository implements StackRepositoryInterf
     {
         $instance = parent::findOneBy($criteria);
 
-        if (!in_array($this->interface, class_implements($instance), true)) {
+        if (!in_array($this->interface, class_implements($instance) ?: [], true)) {
             return null;
         }
 

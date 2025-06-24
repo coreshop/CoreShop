@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterGridFilterPass extends RegisterSimpleRegistryTypePass
 {
-    public const GRID_FILTER_TAG = 'coreshop.grid.filter';
+    public const string GRID_FILTER_TAG = 'coreshop.grid.filter';
 
     public function __construct(
         ) {
