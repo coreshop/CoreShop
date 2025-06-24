@@ -27,8 +27,6 @@ class CartEvents
     public const string PRE_ADD_ITEM = 'coreshop.cart.pre_add_item';
 
     public const string POST_ADD_ITEM = 'coreshop.cart.post_add_item';
-  
-    public const string POST_ADD_ITEM = 'coreshop.cart.post_add_item';
 
     public const string PRE_UPDATE_ITEM = 'coreshop.cart.pre_update_item';
 
