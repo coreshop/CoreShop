@@ -12,6 +12,8 @@ Ext.define('CoreShop.address.CountrySalutation', {
     },
 
     initComponent: function () {
+        const containerId = Ext.id();
+
         this.items = [Ext.mergeIf(this.country, {
             xtype: 'coreshop.country',
             store: {
@@ -34,9 +36,13 @@ Ext.define('CoreShop.address.CountrySalutation', {
             allowBlank: false,
             listeners: {
                 change: function(cmb) {
+                    const container = cmb.up('container');
+                    const salutationCombo = container.down('#salutation');
+                    if (!salutationCombo) return;
+
                     if (cmb.getValue() === null) {
-                        cmb.up('panel').down('#salutation').setValue(null);
-                        cmb.up('panel').down('#salutation').setDisabled(true);
+                        salutationCombo.setValue(null);
+                        salutationCombo.setDisabled(true);
                     }
                     else {
                         Ext.Ajax.request({
@@ -47,12 +53,11 @@ Ext.define('CoreShop.address.CountrySalutation', {
                             },
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
-
                                 if (res.success) {
-                                    cmb.up('panel').down('#salutation').setStore(res.data.salutations.map(function(entry) {
+                                    salutationCombo.setStore(res.data.salutations.map(function(entry) {
                                         return [entry, t('coreshop_salutation_' + entry)];
                                     }));
-                                    cmb.up('panel').down('#salutation').setDisabled(false);
+                                    salutationCombo.setDisabled(false);
                                 }
                             }.bind(this)
                         });

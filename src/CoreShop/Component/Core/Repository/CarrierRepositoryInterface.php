@@ -28,4 +28,9 @@ interface CarrierRepositoryInterface extends RepositoryInterface
      * @return CarrierInterface[]
      */
     public function findForStore(StoreInterface $store): array;
+
+    /**
+     * @return CarrierInterface[]
+     */
+    public function findForStoreIgnoreHideForCheckout(StoreInterface $store): array;
 }

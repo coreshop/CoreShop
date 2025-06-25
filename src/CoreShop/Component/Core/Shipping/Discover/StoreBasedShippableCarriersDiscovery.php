@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Shipping\Discover;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
@@ -36,8 +37,14 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
 
     public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array
     {
-        if ($shippable instanceof StoreAwareInterface) {
-            $carriers = $this->carrierRepository->findForStore($shippable->getStore());
+        if ($shippable instanceof OrderInterface) {
+            if ($shippable->getBackendCreated()) {
+                $carriers = $this->carrierRepository->findForStoreIgnoreHideForCheckout($shippable->getStore());
+            }
+            else {
+                $carriers = $this->carrierRepository->findForStore($shippable->getStore());
+            }
+
             $availableCarriers = [];
 
             foreach ($carriers as $carrier) {

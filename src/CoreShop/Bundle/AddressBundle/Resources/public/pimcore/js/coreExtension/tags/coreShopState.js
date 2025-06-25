@@ -14,5 +14,14 @@ pimcore.registerNS('pimcore.object.tags.coreShopState');
 pimcore.object.tags.coreShopState = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopState',
-    storeName: 'coreshop_states'
+    storeName: 'coreshop_states',
+    getLayoutEdit: function () {
+        const layout = coreshop.object.tags.select.prototype.getLayoutEdit.call(this);
+
+        if (layout && layout.setEditable) {
+            layout.setEditable(true);
+        }
+
+        return layout;
+    }
 });

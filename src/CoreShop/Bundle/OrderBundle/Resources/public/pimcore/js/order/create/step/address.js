@@ -23,8 +23,28 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
             });
         }
 
+        const allAddresses = this.creationPanel.customerDetail.addresses;
+
         this.addressStore = new Ext.data.JsonStore({
-            data: this.creationPanel.customerDetail.addresses,
+            data: allAddresses,
+            model: modelName
+        });
+
+        const shippingAddresses = allAddresses.filter(addr =>
+            addr.addressIdentifier === 1 // shipping
+        );
+
+        this.shippingAddressStore = new Ext.data.JsonStore({
+            data: shippingAddresses,
+            model: modelName
+        });
+
+        const invoiceAddresses = allAddresses.filter(addr =>
+            addr.addressIdentifier === 2 // invoice
+        );
+
+        this.invoiceAddressStore = new Ext.data.JsonStore({
+            data: invoiceAddresses,
             model: modelName
         });
 
@@ -74,6 +94,15 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
         var key = 'addressPanel' + type;
         var addressKey = 'address' + type;
 
+        var store = this.invoiceAddressStore;
+        if(type === 'shipping') {
+            store = this.shippingAddressStore;
+        }
+
+        if(store.data.items.length <= 0 ){
+            store = this.addressStore
+        }
+
         if (!this[key]) {
             var addressDetailPanelKey = 'addressDetailPanel' + type;
 
@@ -89,7 +118,7 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
                         labelWidth: 150,
                         itemId: 'address',
                         name: type + 'Address',
-                        store: this.addressStore,
+                        store: store,
                         editable: false,
                         triggerAction: 'all',
                         queryMode: 'local',
@@ -125,7 +154,8 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
                                 {
                                     prefix: 'address.',
                                     params: {
-                                        customer: this.creationPanel.customerId
+                                        customer: this.creationPanel.customerId,
+                                        mode: 'primary'
                                     }
                                 }, function(id) {
                                     this[key].down('#address').setValue(id);

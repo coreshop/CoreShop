@@ -14,6 +14,15 @@ pimcore.registerNS('pimcore.object.tags.coreShopCountry');
 pimcore.object.tags.coreShopCountry = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopCountry',
-    storeName: 'coreshop_countries'
+    storeName: 'coreshop_countries',
+    getLayoutEdit: function () {
+        const layout = coreshop.object.tags.select.prototype.getLayoutEdit.call(this);
+
+        if (layout && layout.setEditable) {
+            layout.setEditable(true);
+        }
+
+        return layout;
+    }
 
 });

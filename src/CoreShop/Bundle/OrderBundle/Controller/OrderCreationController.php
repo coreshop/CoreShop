@@ -76,7 +76,12 @@ class OrderCreationController extends PimcoreController
         FormFactoryInterface $formFactory,
         CartProcessorInterface $cartProcessor,
     ): Response {
+        /**
+         * @var OrderInterface $cart
+         */
         $cart = $orderFactory->createNew();
+        $cart->setBackendCreated(true);
+
         $form = $formFactory->createNamed('', CartCreationType::class, $cart, [
             'customer' => $this->getParameterFromRequest($request, 'customer'),
         ]);
@@ -111,7 +116,12 @@ class OrderCreationController extends PimcoreController
 
         $type = $this->getParameterFromRequest($request, 'saleType', OrderSaleTransitions::TRANSITION_CART);
 
+        /**
+         * @var OrderInterface $cart
+         */
         $cart = $orderFactory->createNew();
+        $cart->setBackendCreated(true);
+
         $form = $formFactory->createNamed('', CartCreationType::class, $cart, [
             'customer' => $this->getParameterFromRequest($request, 'customer'),
         ]);

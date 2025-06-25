@@ -58,6 +58,10 @@ final class AddressType extends AbstractResourceType
                 'active' => true,
                 'label' => 'coreshop.form.address.country',
             ])
+            ->add('state', StateChoiceType::class, [
+                'active' => true,
+                'label' => 'coreshop.form.address.state',
+            ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'coreshop.form.address.phone_number',
                 'required' => false,

@@ -15,9 +15,24 @@ coreshop.order.order.create.address = Class.create(coreshop.resource.creation, {
     route: 'coreshop_admin_order_address_creation',
     type: 'address',
 
-    getSettings: function() {
+    initialize: function (options, callback) {
+        coreshop.resource.creation.prototype.initialize.apply(this, arguments);
+
+        this.options = options;
+        this.mode = options?.params?.mode || null;
+    },
+
+
+    getSettings: function () {
+        const mode = this.mode || this.options?.params?.mode || null;
+
+        if (mode === 'primary') {
+            return [this.getAddressSettings()];
+        }
+
         return [this.getAddressSettings()];
     },
+
 
     getAddressSettings: function () {
         this.addressForm = Ext.create('Ext.form.FieldSet', {
@@ -63,6 +78,10 @@ coreshop.order.order.create.address = Class.create(coreshop.resource.creation, {
                 fieldLabel: t('coreshop_address_create_city'),
                 allowBlank: false
             }, {
+                xtype: 'coreshop.state',
+                name: this.options.prefix + 'state',
+                allowBlank: false
+            }, {
                 xtype: 'textfield',
                 name: this.options.prefix + 'phoneNumber',
                 fieldLabel: t('coreshop_address_create_phone_number')
@@ -70,5 +89,5 @@ coreshop.order.order.create.address = Class.create(coreshop.resource.creation, {
         });
 
         return this.addressForm;
-    },
+    }
 });

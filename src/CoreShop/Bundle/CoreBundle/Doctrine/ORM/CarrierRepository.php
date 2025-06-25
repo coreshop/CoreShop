@@ -35,4 +35,15 @@ class CarrierRepository extends EntityRepository implements CarrierRepositoryInt
             ->getResult()
         ;
     }
+
+    public function findForStoreIgnoreHideForCheckout(StoreInterface $store): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.stores', 's')
+            ->andWhere('s.id = :store')
+            ->setParameter('store', [$store])
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
