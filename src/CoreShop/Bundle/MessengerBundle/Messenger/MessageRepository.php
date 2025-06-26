@@ -18,7 +18,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
+use CoreShop\Bundle\MessengerBundle\Event\MessageDetailsEvent;
 use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
@@ -27,6 +29,7 @@ final class MessageRepository implements MessageRepositoryInterface
 {
     public function __construct(
         private ReceiversRepositoryInterface $receivers,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -45,11 +48,19 @@ final class MessageRepository implements MessageRepositoryInterface
          * @var Envelope $envelope
          */
         foreach ($envelopes as $envelope) {
-            $rows[] = new MessageDetails(
+            $messageDetails = new MessageDetails(
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
-                print_r($envelope->getMessage(), true),
+                '<pre>' . print_r($envelope->getMessage(), true) . '</pre>',
             );
+
+            /** @var MessageDetailsEvent $event */
+            $event = $this->eventDispatcher->dispatch(
+                new MessageDetailsEvent($receiverName, $envelope, $messageDetails),
+                'coreshop.messenger.message_details',
+            );
+
+            $rows[] = $event->getMessageDetails();
         }
 
         return $rows;

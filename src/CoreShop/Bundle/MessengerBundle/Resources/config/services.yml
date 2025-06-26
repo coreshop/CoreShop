@@ -38,6 +38,7 @@ services:
   CoreShop\Bundle\MessengerBundle\Messenger\MessageRepository:
     arguments:
       - '@CoreShop\Bundle\MessengerBundle\Messenger\ReceiversRepository'
+      - '@event_dispatcher'
 
   CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRetryerInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRetryer'
   CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRetryer:
