@@ -44,6 +44,6 @@ class CarrierRepository extends EntityRepository implements CarrierRepositoryInt
             ->setParameter('store', [$store])
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 }

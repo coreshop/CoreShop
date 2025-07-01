@@ -42,12 +42,11 @@ final class MessageDetails implements \JsonSerializable
         return $this->serialized;
     }
 
-  
     public function setSerialized(string $serialized): void
     {
         $this->serialized = $serialized;
     }
-  
+
     public function jsonSerialize(): mixed
     {
         return [

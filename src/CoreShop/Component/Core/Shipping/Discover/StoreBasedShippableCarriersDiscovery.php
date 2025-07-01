@@ -24,7 +24,6 @@ use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
-use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInterface
 {
@@ -40,8 +39,7 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
         if ($shippable instanceof OrderInterface) {
             if ($shippable->getBackendCreated()) {
                 $carriers = $this->carrierRepository->findForStoreIgnoreHideForCheckout($shippable->getStore());
-            }
-            else {
+            } else {
                 $carriers = $this->carrierRepository->findForStore($shippable->getStore());
             }
 
