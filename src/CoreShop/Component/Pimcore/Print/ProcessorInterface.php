@@ -16,24 +16,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Migrations;
+namespace CoreShop\Component\Pimcore\Print;
 
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
-
-final class Version20230609175611 extends AbstractMigration
+interface ProcessorInterface
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
-    public function up(Schema $schema): void
-    {
-        //Empty migration
-    }
-
-    public function down(Schema $schema): void
-    {
-    }
+    public function createPdfFromString(string $content, array $params): string;
 }

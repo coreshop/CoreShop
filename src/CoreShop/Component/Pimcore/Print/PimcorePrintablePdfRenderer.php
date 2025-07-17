@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Print;
 
-use Pimcore\Bundle\WebToPrintBundle\Processor;
 use Pimcore\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
@@ -27,6 +26,7 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 class PimcorePrintablePdfRenderer implements PrintablePdfRendererInterface
 {
     public function __construct(
+        private ProcessorInterface $processor,
         private FragmentRendererInterface $fragmentRenderer,
     ) {
     }
@@ -66,9 +66,10 @@ class PimcorePrintablePdfRenderer implements PrintablePdfRendererInterface
             'headerTemplate' => $contentHeaderFile,
             'footerTemplate' => $contentFooterFile,
             'marginTop' => 1,
+            'document' => $printable,
         ]);
 
-        return Processor::getInstance()->getPdfFromString(
+        return $this->processor->createPdfFromString(
             $content ?: '',
             $params,
         );

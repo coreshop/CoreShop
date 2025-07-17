@@ -1,11 +1,27 @@
 FROM ghcr.io/cors-gmbh/pimcore-docker/php-fpm-debug:8.3-alpine3.21-7.1.0 AS dev
 RUN set -eux; \
     apk update; \
-    apk add $PHPIZE_DEPS libxslt-dev; \
+    apk add $PHPIZE_DEPS libxslt-dev  \
+      libstdc++ \
+      libx11 \
+      libxrender \
+      libxext \
+      libssl3 \
+      ca-certificates \
+      fontconfig \
+      freetype \
+      ttf-dejavu \
+      ttf-droid \
+      ttf-freefont \
+      ttf-liberation; \
     docker-php-ext-install xsl; \
     docker-php-ext-install sockets; \
     sync; \
     rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+COPY --from=surnet/alpine-wkhtmltopdf:3.21.2-0.12.6-full /bin/wkhtmltopdf /bin/wkhtmltopdf
+COPY --from=surnet/alpine-wkhtmltopdf:3.21.2-0.12.6-full /bin/wkhtmltoimage /bin/wkhtmltoimage
+COPY --from=surnet/alpine-wkhtmltopdf:3.21.2-0.12.6-full /bin/libwkhtmltox* /bin/
 
 RUN echo 'xdebug.idekey = PHPSTORM' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo 'xdebug.mode = debug' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini

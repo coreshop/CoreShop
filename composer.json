@@ -104,7 +104,6 @@
     "pimcore/google-marketing-bundle": "^2.0",
     "pimcore/newsletter-bundle": "^2.0",
     "pimcore/pimcore": "^12.0",
-    "pimcore/web-to-print-bundle": "^2.0",
     "rinvex/countries": "^9.0",
     "sebastian/diff": "^4.0 | ^5.0 | ^6.0",
     "stof/doctrine-extensions-bundle": "^1.6",

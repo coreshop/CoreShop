@@ -45,12 +45,9 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
         }
 
         $resolveTargetEntityListenerClass = $container->getParameterBag()->resolveValue($resolveTargetEntityListener->getClass());
-        if (is_a($resolveTargetEntityListenerClass, EventSubscriber::class, true)) {
-            if (!$resolveTargetEntityListener->hasTag('doctrine.event_subscriber')) {
-                $resolveTargetEntityListener->addTag('doctrine.event_subscriber');
-            }
-        } elseif (!$resolveTargetEntityListener->hasTag('doctrine.event_listener')) {
+        if (!$resolveTargetEntityListener->hasTag('doctrine.event_listener')) {
             $resolveTargetEntityListener->addTag('doctrine.event_listener', ['event' => 'loadClassMetadata']);
+            $resolveTargetEntityListener->addTag('doctrine.event_listener', ['event' => 'onClassMetadataNotFound']);
         }
     }
 

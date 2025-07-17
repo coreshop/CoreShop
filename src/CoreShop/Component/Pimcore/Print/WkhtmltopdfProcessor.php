@@ -16,77 +16,66 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
+namespace CoreShop\Component\Pimcore\Print;
 
+use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
+use Pimcore\File;
 use Pimcore\Tool\Console;
 use Symfony\Component\Process\Process;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @deprecated Deprecated since CoreShop 4.1, to be removed in CoreShop 5.0. No replacement available, use Pimcore's Web2Print Renderer instead.
- *
- * @psalm-suppress DeprecatedInterface
- */
-final class WkHtmlToPdf implements PdfRendererInterface
+class WkhtmltopdfProcessor implements ProcessorInterface
 {
     public function __construct(
-        private string $kernelCacheDir,
-        private string $kernelRootDir,
+        private readonly string $kernelRootDir,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
-    public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string
+    public function createPdfFromString(string $content, array $params): string
     {
-        trigger_deprecation(
-            'coreshop/order-bundle',
-            '4.1',
-            'The "%s" class is deprecated and will be removed in CoreShop 5.0. No replacement available, use Pimcore\'s Web2Print Renderer instead.',
-            self::class,
+        $header = $params['headerTemplate'] ?? null;
+        $footer = $params['footerTemplate'] ?? null;
+        $orderDocument = $params['document'] ?? null;
+
+        $event = new WkhtmlOptionsEvent($orderDocument);
+        $this->eventDispatcher->dispatch(
+            $event,
+            sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType()),
         );
 
-        $bodyHtml = $this->createHtmlFile($string);
+        $bodyHtml = $this->createHtmlFile($content);
         $headerHtml = $this->createHtmlFile($header);
         $footerHtml = $this->createHtmlFile($footer);
 
-        if (!is_array($config['options'])) {
-            $config['options'] = [];
+        if (!is_array($params['options'] ?? null)) {
+            $params['options'] = [];
         }
 
+        $params['options']['*'] = $event->getOptions();
+
         if ($headerHtml) {
-            $config['options']['--header-html'] = $headerHtml;
+            $params['options']['--header-html'] = $headerHtml;
         }
 
         if ($footerHtml) {
-            $config['options']['--footer-html'] = $footerHtml;
+            $params['options']['--footer-html'] = $footerHtml;
         }
-
-        $pdfContent = null;
 
         try {
-            $pdfContent = $this->convert($bodyHtml, $config);
+            $pdfContent = $this->convert($bodyHtml, $params);
         } catch (\Exception $e) {
-            $this->unlinkFile($bodyHtml);
-            $this->unlinkFile($headerHtml);
-            $this->unlinkFile($footerHtml);
-
-            throw new \Exception('error while converting pdf. message was: ' . $e->getMessage(), 0, $e);
+            throw new \Exception('error while converting pdf. message was: '.$e->getMessage(), 0, $e);
         }
-
-        $this->unlinkFile($bodyHtml);
-        $this->unlinkFile($headerHtml);
-        $this->unlinkFile($footerHtml);
 
         return $pdfContent;
     }
 
-    /**
-     * Creates an Temporary HTML File.
-     *
-     * @param string $string
-     */
-    private function createHtmlFile($string): ?string
+    private function createHtmlFile(?string $string): ?string
     {
         if ($string) {
-            $tmpHtmlFile = $this->kernelCacheDir . '/' . uniqid() . '.htm';
+            $tmpHtmlFile = File::getLocalTempFilePath('html');
+
             file_put_contents($tmpHtmlFile, $this->replaceUrls($string));
 
             return $tmpHtmlFile;
@@ -100,35 +89,35 @@ final class WkHtmlToPdf implements PdfRendererInterface
      */
     private function replaceUrls($string): string
     {
-        $hostUrl = $this->kernelRootDir . '/public';
+        $hostUrl = $this->kernelRootDir.'/public';
         $replacePrefix = '';
 
         //matches all links
         preg_match_all(
             "@(href|src)\s*=[\"']([^(http|mailto|javascript|data:|#)].*?(css|jpe?g|gif|png)?)[\"']@is",
             $string,
-            $matches,
+            $matches
         );
         if (!empty($matches[0])) {
             foreach ($matches[0] as $key => $value) {
                 $path = $matches[2][$key];
 
                 if (str_starts_with($path, '//')) {
-                    $absolutePath = 'http:' . $path;
+                    $absolutePath = 'http:'.$path;
                 } elseif (str_starts_with($path, '/')) {
-                    $absolutePath = preg_replace('@^' . $replacePrefix . '/@', '/', $path);
-                    $absolutePath = $hostUrl . $absolutePath;
+                    $absolutePath = preg_replace('@^'.$replacePrefix.'/@', '/', $path);
+                    $absolutePath = $hostUrl.$absolutePath;
                 } else {
-                    $absolutePath = $hostUrl . "/$path";
+                    $absolutePath = $hostUrl."/$path";
                     if ($path[0] == '?') {
-                        $absolutePath = $hostUrl . $path;
+                        $absolutePath = $hostUrl.$path;
                     }
                     $netUrl = new \Net_URL2($absolutePath);
                     $absolutePath = $netUrl->getNormalizedURL();
                 }
 
                 $path = preg_quote($path);
-                $string = preg_replace("!([\"'])$path([\"'])!is", '\\1' . $absolutePath . '\\2', $string);
+                $string = preg_replace("!([\"'])$path([\"'])!is", '\\1'.$absolutePath.'\\2', $string);
             }
         }
 
@@ -136,9 +125,9 @@ final class WkHtmlToPdf implements PdfRendererInterface
         foreach ($matches[1] as $i => $value) {
             $parts = explode(',', $value);
             foreach ($parts as $key => $v) {
-                $parts[$key] = $hostUrl . trim($v);
+                $parts[$key] = $hostUrl.trim($v);
             }
-            $s = ' srcset="' . implode(', ', $parts) . '" ';
+            $s = ' srcset="'.implode(', ', $parts).'" ';
             if ($matches[0][$i]) {
                 $string = str_replace($matches[0][$i], $s, $string);
             }
@@ -159,17 +148,17 @@ final class WkHtmlToPdf implements PdfRendererInterface
      */
     private function convert($httpSource, $config = []): string
     {
-        $tmpPdfFile = $this->kernelCacheDir . '/' . uniqid() . '.pdf';
+        $tmpPdfFile = File::getLocalTempFilePath('pdf');
         $options = ' ';
         $optionConfig = [];
 
         if (is_array($config['options'])) {
             foreach ($config['options'] as $argument => $value) {
                 // there is no value only the option
-                if (is_numeric($argument)) {
+                if (is_numeric($argument) || $argument === '*') {
                     $optionConfig[] = $value;
                 } else {
-                    $optionConfig[] = $argument . ' ' . $value;
+                    $optionConfig[] = $argument.' '.$value;
                 }
             }
 
@@ -187,52 +176,34 @@ final class WkHtmlToPdf implements PdfRendererInterface
         }
 
         // use xvfb if possible
-        if ($xvfb = self::getXvfbBinary()) {
-            $command = $xvfb . ' --auto-servernum --server-args="-screen 0, 1280x1024x24" ' . $wkHtmlTopPfBinary . ' --use-xserver ' . $options;
+        if ($xvfb = $this->getXvfbBinary()) {
+            $command = $xvfb.' --auto-servernum --server-args="-screen 0, 1280x1024x24" '.$wkHtmlTopPfBinary.' --use-xserver '.$options;
         } else {
-            $command = $wkHtmlTopPfBinary . $options;
+            $command = $wkHtmlTopPfBinary.$options;
         }
 
-        $process = Process::fromShellCommandline($command . ' ' . $httpSource . ' ' . $tmpPdfFile);
+        $process = Process::fromShellCommandline($command.' '.$httpSource.' '.$tmpPdfFile);
         $process->run();
 
         if (!file_exists($tmpPdfFile)) {
             throw new \Exception(
                 sprintf(
                     'wkhtmltopdf pdf conversion failed. This could be a command error. Executed command was: "%s"',
-                    $process->getCommandLine(),
-                ),
+                    $process->getCommandLine()
+                )
             );
         }
 
-        $pdfContent = file_get_contents($tmpPdfFile);
-
-        // remove temp pdf file
-        $this->unlinkFile($tmpPdfFile);
-
-        return $pdfContent;
-    }
-
-    private function unlinkFile(?string $file): void
-    {
-        if ($file === null) {
-            return;
-        }
-
-        if (!file_exists($file)) {
-            return;
-        }
-
-        unlink($file);
+        return file_get_contents($tmpPdfFile);
     }
 
     private function getWkHtmlToPdfBinary(): string
     {
-        return (string) Console::getExecutable('wkhtmltopdf', true);
+        return (string)Console::getExecutable('wkhtmltopdf', true);
     }
 
     private function getXvfbBinary(): string
     {
-        return (string) Console::getExecutable('xvfb-run');
+        return (string)Console::getExecutable('xvfb-run', false);
     }
 }

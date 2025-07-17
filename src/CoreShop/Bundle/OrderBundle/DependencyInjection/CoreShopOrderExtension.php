@@ -48,7 +48,6 @@ use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterf
 use CoreShop\Component\Order\Cart\Rule\Condition\CartRuleConditionCheckerInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Registry\Autoconfiguration;
-use Pimcore\Bundle\WebToPrintBundle\PimcoreWebToPrintBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -66,25 +65,6 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
         $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
-        $this->registerDependantBundles('coreshop', [PimcoreWebToPrintBundle::class], $container);
-
-        if ($configs['use_pimcore_pdf_rendering']) {
-            $container->setAlias(OrderDocumentRendererInterface::class, PimcoreOrderDocumentPdfRenderer::class);
-        } else {
-            /**
-             * @psalm-suppress DeprecatedClass
-             */
-            $container->setAlias(OrderDocumentRendererInterface::class, OrderDocumentPdfRenderer::class);
-
-            trigger_deprecation(
-                'coreshop/order-bundle',
-                '4.1',
-                '
-                    Not setting core_shop_order.use_pimcore_pdf_rendering to true is deprecated and will be removed and the default in CoreShop 5.0.
-                    Reason is that Pimcore\'s Web2Print Renderer is the recommended way to render PDFs.
-                ',
-            );
-        }
 
         if (array_key_exists('pimcore_admin', $configs)) {
             $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);

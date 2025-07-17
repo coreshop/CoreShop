@@ -209,7 +209,7 @@ class OrderInvoiceController extends PimcoreController
 
     private function getOrderDocumentRenderer(): OrderDocumentRendererInterface
     {
-        return $this->container->get('coreshop.renderer.order.pdf');
+        return $this->container->get(OrderDocumentRendererInterface::class);
     }
 
     private function getOrderInvoiceRepository(): OrderInvoiceRepositoryInterface
@@ -239,7 +239,7 @@ class OrderInvoiceController extends PimcoreController
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
                 new SubscribedService('coreshop.order.invoice.processable', NoteServiceInterface::class, attributes: new Autowire(service:'coreshop.order.invoice.processable')),
-                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire(service:'coreshop.renderer.order.pdf')),
+                new SubscribedService(OrderDocumentRendererInterface::class, OrderDocumentRendererInterface::class),
                 new SubscribedService('coreshop.factory.order_invoice', FactoryInterface::class, attributes: new Autowire(service:'coreshop.factory.order_invoice')),
                 new SubscribedService('coreshop.order.transformer.order_to_invoice', OrderDocumentTransformerInterface::class, attributes: new Autowire('@CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer')),
                 new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_invoice')),
