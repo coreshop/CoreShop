@@ -16,8 +16,10 @@ pimcore.registerNS('coreshop.index.fields');
 coreshop.index.fields = Class.create({
     data: {},
     brickKeys: [],
+    parent: null,
 
-    initialize: function (data, klass) {
+    initialize: function (parent, data, klass) {
+        this.parent = parent;
         this.data = data;
         this.class = klass;
     },

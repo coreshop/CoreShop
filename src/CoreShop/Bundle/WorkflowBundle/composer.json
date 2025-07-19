@@ -32,9 +32,9 @@
   "require": {
     "coreshop/pimcore": "^5.0",
     "coreshop/registry": "^5.0",
-    "symfony/config": "^6.3",
-    "symfony/workflow": "^6.3",
-    "symfony/yaml": "^6.3",
+    "symfony/config": "^6.3 || ^7.0",
+    "symfony/workflow": "^6.3 || ^7.0",
+    "symfony/yaml": "^6.3 || ^7.0",
     "pimcore/pimcore": "^12.0"
   },
   "require-dev": {

@@ -40,6 +40,12 @@ interface ListingInterface extends \Countable, PaginateListingInterface
 
     /**
      * Variant mode defines how to consider variants in product list results
+     * - considers variants in search results and returns ONLY variants
+     */
+    public const VARIANT_MODE_VARIANTS_ONLY = 'variants_only';
+
+    /**
+     * Variant mode defines how to consider variants in product list results
      * - considers variants in search results but only returns corresponding objects in search results.
      */
     public const string VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';

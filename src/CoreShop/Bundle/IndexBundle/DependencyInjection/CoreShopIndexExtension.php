@@ -63,7 +63,15 @@ final class CoreShopIndexExtension extends AbstractModelExtension
 
         $bundles = $container->getParameter('kernel.bundles');
 
+        if (isset($configs['mapping_types'])) {
+            $configs['worker_mapping_types']['mysql'] = array_merge(
+                $configs['mapping_types'],
+                $configs['worker_mapping_types']['mysql'] ?? [],
+            );
+        }
+
         $container->setParameter('coreshop.index.mapping_types', array_keys($configs['mapping_types']));
+        $container->setParameter('coreshop.index.worker_mapping_types', $configs['worker_mapping_types']);
 
         $loader->load('services.yml');
 

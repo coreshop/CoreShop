@@ -191,6 +191,12 @@
             </errorLevel>
         </UndefinedMethod>
         
+        <UndefinedClass>
+            <errorLevel type="info">
+                <referencedClass name="OpenSearch\Client" />
+            </errorLevel>
+        </UndefinedClass>
+        
         <AmbiguousConstantInheritance>
             <errorLevel type="info">
                 <referencedConstant name="CoreShop\Component\Core\Model\Payment::STATE_NEW" />

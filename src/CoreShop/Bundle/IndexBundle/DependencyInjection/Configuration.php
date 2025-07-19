@@ -182,8 +182,16 @@ final class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->arrayNode('mapping_types')
+                    ->setDeprecated('coreshop/index-bundle', '4.1', 'The "%path%" configuration key is deprecated and will be removed in 5.0. Use "worker_mapping_types" instead.')
                     ->useAttributeAsKey('name')
                     ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('worker_mapping_types')
+                    ->useAttributeAsKey('type')
+                    ->arrayPrototype()
+                        ->useAttributeAsKey('mapping')
+                        ->scalarPrototype()->end()
+                    ->end()
                 ->end()
             ->end()
         ;

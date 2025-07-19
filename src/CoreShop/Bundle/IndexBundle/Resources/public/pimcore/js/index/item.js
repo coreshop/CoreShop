@@ -140,7 +140,7 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
     },
 
     getIndexFields: function () {
-        this.fieldsPanel = new coreshop.index.fields(this.data, this.data.class);
+        this.fieldsPanel = new coreshop.index.fields(this, this.data, this.data.class);
         this.indexFields = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_indexes_fields',
             title: t('coreshop_indexes_fields'),

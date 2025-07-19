@@ -19,12 +19,13 @@ namespace CoreShop\Component\Index\Extension;
 
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 
 class DecimalIndexColumnTypeConfigExtension implements IndexColumnTypeConfigExtension
 {
     public function getColumnConfig(IndexColumnInterface $column): array
     {
-        if ($column->getColumnType() === IndexColumnInterface::FIELD_TYPE_DOUBLE) {
+        if ($column->getColumnType() === MysqlWorkerInterface::FIELD_TYPE_DOUBLE) {
             return ['scale' => 2, 'precision' => 10];
         }
 

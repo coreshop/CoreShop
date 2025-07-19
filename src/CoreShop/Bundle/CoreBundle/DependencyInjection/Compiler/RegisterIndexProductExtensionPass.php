@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Core\Index\Extensions\OpenSearchProductClassExtension;
 use CoreShop\Component\Core\Index\Extensions\ProductClassExtension;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -50,6 +51,15 @@ class RegisterIndexProductExtensionPass implements CompilerPassInterface
 
                 $container->setDefinition($definitionId, $definition);
                 $registry->addMethodCall('register', [$class, new Reference($definitionId)]);
+
+                $definitionId = sprintf('%s.%s', 'coreshop.index.extension.open_search_product', strtolower($class));
+                $definition = new Definition(OpenSearchProductClassExtension::class);
+                $definition->setArguments([
+                    $class,
+                ]);
+
+                $container->setDefinition($definitionId, $definition);
+                $registry->addMethodCall('register', [$class . 'opensearch', new Reference($definitionId)]);
             }
         }
     }

@@ -19,6 +19,11 @@ coreshop_admin_index:
           action: getClassDefinitionForFieldSelection
           methods:
             - GET
+        openSearchClients:
+          path: get-opensearch-clients
+          action: getOpenSearchClients
+          methods:
+            - GET
 
 coreshop_admin_filter:
     type: coreshop.resources

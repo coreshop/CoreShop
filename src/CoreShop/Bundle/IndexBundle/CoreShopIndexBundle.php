@@ -26,10 +26,12 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterUserC
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOpenSearchClientPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
 use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Pimcore\Bundle\OpenSearchClientBundle\PimcoreOpenSearchClientBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -63,6 +65,10 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterOrderRendererTypesPass());
         $container->addCompilerPass(new RegisterFilterPreConditionTypesPass());
         $container->addCompilerPass(new RegisterFilterUserConditionTypesPass());
+
+        if (class_exists(PimcoreOpenSearchClientBundle::class)) {
+            $container->addCompilerPass(new RegisterOpenSearchClientPass());
+        }
     }
 
     protected function getModelNamespace(): string

@@ -22,7 +22,7 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 class FrontendInstaller implements FrontendInstallerInterface
 {
     public function __construct(
-        private readonly ServiceRegistryInterface $installers,
+        private ServiceRegistryInterface $installers,
     ) {
     }
 

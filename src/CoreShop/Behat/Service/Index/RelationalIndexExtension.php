@@ -21,6 +21,7 @@ use CoreShop\Component\Index\Extension\IndexRelationalColumnsExtensionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
+use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 
 class RelationalIndexExtension implements IndexRelationalColumnsExtensionInterface
 {

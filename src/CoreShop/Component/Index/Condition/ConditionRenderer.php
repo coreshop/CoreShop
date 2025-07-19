@@ -27,14 +27,14 @@ final class ConditionRenderer implements ConditionRendererInterface
     ) {
     }
 
-    public function render(WorkerInterface $worker, ConditionInterface $condition, ?string $prefix = null): mixed
+    public function render(WorkerInterface $worker, ConditionInterface $condition, array $params = []): mixed
     {
         /**
          * @var DynamicRendererInterface $renderer
          */
         foreach ($this->registry->all() as $renderer) {
             if ($renderer->supports($worker, $condition)) {
-                return $renderer->render($worker, $condition, $prefix);
+                return $renderer->render($worker, $condition, $params);
             }
         }
 

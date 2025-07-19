@@ -24,6 +24,7 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
+use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 
 final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
@@ -34,7 +35,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
 
     public function supports(IndexInterface $index): bool
     {
-        return $this->productClassName === $index->getClass();
+        return $this->productClassName === $index->getClass() && $index->getWorker() === 'mysql';
     }
 
     public function getSystemColumns(): array

@@ -119,6 +119,9 @@
     "symfony/webpack-encore-bundle": "^1.17",
     "webmozart/assert": "^1.10"
   },
+  "suggest": {
+    "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine."
+  },
   "require-dev": {
     "behat/behat": "^3.22",
     "behat/mink": "^1.12",
@@ -134,6 +137,7 @@
     "phpstan/phpstan-symfony": "^2.0",
     "phpstan/phpstan-webmozart-assert": "^2.0",
     "phpunit/phpunit": "^10.0",
+    "pimcore/opensearch-client": "^1.0",
     "robertfausk/behat-panther-extension": "^1.0",
     "symfony/panther": "^2.2",
     "symfony/runtime": "^6.4",

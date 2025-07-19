@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Service\Index;
 use CoreShop\Component\Index\Extension\IndexColumnTypeConfigExtension;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 
 class IndexColumnExtension implements IndexColumnTypeConfigExtension
 {
@@ -27,7 +28,7 @@ class IndexColumnExtension implements IndexColumnTypeConfigExtension
     {
         $config = [];
 
-        if ($column->getColumnType() === IndexColumnInterface::FIELD_TYPE_DOUBLE) {
+        if ($column->getColumnType() === MysqlWorkerInterface::FIELD_TYPE_DOUBLE) {
             return ['scale' => 20, 'precision' => 20];
         }
 

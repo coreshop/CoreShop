@@ -37,11 +37,26 @@ coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect,
             queryMode: 'local',
             displayField: this.displayField,
             valueField: 'id',
+            labelWidth: this.fieldConfig.labelWidth || 100,
             listeners: {
                 beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
+                    if (!store.isLoaded() && !store.isLoading()) {
                         store.load();
-                }
+                    }
+                },
+                change: function (multiselect, newValue, oldValue) {
+                    if (this.fieldConfig.maxItems && multiselect.getValue().length > this.fieldConfig.maxItems) {
+                        // we need to set a timeout so setValue is applied when change event is totally finished
+                        // without this, multiselect won't be updated visually with oldValue (but internal value will be oldValue)
+                        setTimeout(function(multiselect, oldValue){
+                            multiselect.setValue(oldValue);
+                        }, 100, multiselect, oldValue);
+
+                        Ext.Msg.alert(t('error'), t('limit_reached'));
+                    }
+
+                    return true;
+                }.bind(this),
             }
         };
 
@@ -53,11 +68,28 @@ coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect,
             options.height = this.fieldConfig.height;
         }
 
+        if (this.fieldConfig.labelAlign) {
+            options.labelAlign = this.fieldConfig.labelAlign;
+        }
+
+        if (!this.fieldConfig.labelAlign || 'left' === this.fieldConfig.labelAlign) {
+            options.width = this.sumWidths(options.width, options.labelWidth);
+        }
+
         if (typeof this.data == 'string' || typeof this.data == 'number') {
             options.value = this.data;
         }
 
-        this.component = new Ext.ux.form.MultiSelect(options);
+        if (this.fieldConfig.renderType === 'tags') {
+            options.queryMode = 'local';
+            options.editable = true;
+            options.anyMatch = true;
+            options.plugins = 'dragdroptag';
+
+            this.component = new Ext.form.field.Tag(options);
+        } else {
+            this.component = new Ext.ux.form.MultiSelect(options);
+        }
 
         return this.component;
     }

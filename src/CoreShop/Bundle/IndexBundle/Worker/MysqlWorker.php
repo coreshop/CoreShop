@@ -30,6 +30,7 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderRendererInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
+use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
@@ -42,7 +43,7 @@ use Doctrine\Migrations\Version\ExecutionResult;
 use Doctrine\Migrations\Version\Version;
 use Pimcore\Tool;
 
-class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterface
+class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, WorkerDeleteableByIdInterface
 {
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
@@ -553,11 +554,11 @@ QUERY;
         $doctrineType = strtolower($type);
 
         switch ($type) {
-            case IndexColumnInterface::FIELD_TYPE_DATE:
+            case self::FIELD_TYPE_DATE:
                 $doctrineType = 'date';
 
                 break;
-            case IndexColumnInterface::FIELD_TYPE_DOUBLE:
+            case self::FIELD_TYPE_DOUBLE:
                 $doctrineType = 'decimal';
 
                 break;

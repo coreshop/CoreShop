@@ -1,5 +1,6 @@
 name: Monorepo split
 on:
+    workflow_dispatch: ~
     push:
         branches:
             - next
