@@ -416,7 +416,7 @@ class Listing extends AbstractListing
         return [];
     }
 
-    private function getSearchParams(string $excludedFieldName = null): array
+    private function getSearchParams(?string $excludedFieldName = null): array
     {
         $body = [
             'query' => [

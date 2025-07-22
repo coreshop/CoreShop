@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Print;
 
-use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
 use Pimcore\File;
 use Pimcore\Tool\Console;
 use Symfony\Component\Process\Process;

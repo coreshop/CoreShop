@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\Order;
 
-use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Component\Pimcore\Print\WkhtmlOptionsEvent;
 
 final class OrderDocumentWkhtmlPrintOptionsListener
 {

@@ -15,7 +15,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\OrderBundle\Event;
+namespace CoreShop\Component\Pimcore\Print;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use Symfony\Contracts\EventDispatcher\Event;
