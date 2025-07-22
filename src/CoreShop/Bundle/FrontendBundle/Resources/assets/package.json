@@ -8,7 +8,7 @@
     "not IE >= 0"
   ],
   "devDependencies": {
-    "@symfony/webpack-encore": "^4.7.0",
+    "@symfony/webpack-encore": "^5.1.0",
     "@types/bootstrap": "^5.2.10",
     "@types/node": "^22.5.4",
     "bootstrap": "^5.3.3",
