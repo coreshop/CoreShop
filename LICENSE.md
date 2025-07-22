@@ -8,12 +8,14 @@ TO THESE TERMS AND CONDITIONS, YOU MAY NOT INSTALL OR USE THE SOFTWARE!
 
 ## 1. Subject matter and acceptance
 
-1.1. This open core software license agreement (“CCL”) is between CoreShop GmbH, registered in the commercial register of the
+1.1. This open core software license agreement (“CCL”) is between CoreShop GmbH, registered in the commercial register
+of the
 Wels Regional Court under no. FN 559687w, with its business address at Zeileisstraße 6, 4600 Wels, Austria, as the sole
 licensor ("CoreShop"), and the user of the software as the licensee ("Customer"). CoreShop and Customer may be referred
 to herein collectively as the "Parties" or individually as a "Party".
 
-1.2. Subject of the CCL is the usage of the CoreShop software, offered by CoreShop (“Software“). The Software is a set of
+1.2. Subject of the CCL is the usage of the CoreShop software, offered by CoreShop (“Software“). The Software is a set
+of
 extensions (such extension “Bundle”) for Pimcore software. Usage of the Software therefore requires the Customer to
 having entered into a Pimcore Commercial License (“PCL”) with Pimcore GmbH, Söllheimer Straße 16, 5020 Salzburg,
 Austria, or a Pimcore entity authorized by Pimcore GmbH, related to the Pimcore software. The Bundles are offered
@@ -22,11 +24,13 @@ publicly available but is not licensed out as open-source software (thus, the So
 single Bundle, except from the CoreBundle, may be used free of charge, whereas the right to use the Suite costs license
 fees.
 
-1.3. The Bundles are defined in the additional contractual documents or by inclusion of, or referral to, this CCL within the
+1.3. The Bundles are defined in the additional contractual documents or by inclusion of, or referral to, this CCL within
+the
 source code or within the source code repositories. CoreShop may provide the Customer with minor updates and
 improvements to a Module or the Bundle at CoreShop’s free discretion. The Software is protected by copyright worldwide.
 
-1.4. By installing or starting to use any Software (the day of such installation or starting of usage being the “**Effective
+1.4. By installing or starting to use any Software (the day of such installation or starting of usage being the “*
+*Effective
 Day**”), the Customer agrees to all terms and conditions of the CCL and confirms that
 
 a) Currently a valid PCL does exist between Customer and Pimcore and has not yet been terminated,
@@ -34,7 +38,7 @@ a) Currently a valid PCL does exist between Customer and Pimcore and has not yet
 b) The Customer comprehensively complies with such PCL, and
 
 c) The Customer’s statement – if such statement is provided – on the relevant total global revenue is correct and
-  complete.
+complete.
 
 ## 2. License
 
@@ -132,8 +136,9 @@ other rights.
 ## 3. Contribution and distribution of Derivatives
 
 3.1. If the Customer wishes to contribute to the Software or to distribute a Derivative, both must be made in accordance
-with the CoreShop GmbH Contributors License Agreement (“**CLA**”), available at https://github.com/CoreShop
-GmbH/CoreShop GmbH/blob/5.0/CLA.md. The CLA stipulates the terms under which intellectual contributions are managed,
+with the CoreShop GmbH Contributors License Agreement (“**CLA**”), available
+at https://github.com/CoreShop/CoreShop/blob/5.0/CLA.md. The CLA stipulates the terms under which intellectual
+contributions are managed,
 ensuring that all parties' rights are protected. Acceptance of the CLA is mandatory for all contributors and can be
 reviewed on the source-code repository. Contributions without adherence to the CLA will not be accepted.
 
