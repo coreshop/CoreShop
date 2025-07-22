@@ -21,6 +21,7 @@ use Pimcore\Bundle\AdminBundle\Event\AdminEvents;
 use Pimcore\Bundle\AdminBundle\Event\IndexActionSettingsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+
 class IndexActionSettingsSubscriber implements EventSubscriberInterface
 {
     public function __construct(
@@ -32,17 +33,29 @@ class IndexActionSettingsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            /**
+             * @phpstan-ignore-next-line
+             */
             AdminEvents::INDEX_ACTION_SETTINGS => 'onIndexActionSettings',
         ];
     }
 
+    /**
+     * @phpstan-ignore-next-line
+     */
     public function onIndexActionSettings(IndexActionSettingsEvent $event): void
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         $settings = $event->getSettings();
         $settings['coreshop_money'] = [
             'decimal_precision' => $this->decimalPrecision,
             'decimal_factor' => $this->decimalFactor,
         ];
+        /**
+         * @phpstan-ignore-next-line
+         */
         $event->setSettings($settings);
     }
 }

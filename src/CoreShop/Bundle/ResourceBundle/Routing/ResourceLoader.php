@@ -22,6 +22,7 @@ use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Yaml\Yaml;
 
 final class ResourceLoader extends Loader
@@ -34,7 +35,7 @@ final class ResourceLoader extends Loader
         parent::__construct($env);
     }
 
-    public function load($resource, $type = null)
+    public function load($resource, $type = null): RouteCollection
     {
         $processor = new Processor();
         $configurationDefinition = new Configuration();

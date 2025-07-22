@@ -34,9 +34,13 @@ final class AdminJavascriptListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            /** @phpstan-ignore-next-line */
             BundleManagerEvents::JS_PATHS => 'getAdminJavascript',
+            /** @phpstan-ignore-next-line */
             BundleManagerEvents::CSS_PATHS => 'getAdminCss',
+            /** @phpstan-ignore-next-line */
             BundleManagerEvents::EDITMODE_JS_PATHS => 'getEditmodeAdminJavascript',
+            /** @phpstan-ignore-next-line */
             BundleManagerEvents::EDITMODE_CSS_PATHS => 'getEditmodeAdminCSS',
         ];
     }
