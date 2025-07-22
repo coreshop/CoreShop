@@ -42,6 +42,7 @@ abstract class AbstractDatabaseTablesCommand extends Command
         $coreShopSchema = $schemaTool->getSchemaFromMetadata($metadatas);
         $tableNames = array_map(
             static function (Table $table) {
+                /** @psalm-suppress InternalMethod */
                 return $table->getName();
             },
             $coreShopSchema->getTables(),
@@ -51,6 +52,7 @@ abstract class AbstractDatabaseTablesCommand extends Command
         $assetFilter = $configuration->getSchemaAssetsFilter();
         $configuration->setSchemaAssetsFilter(function (mixed $tableName) use ($tableNames) {
             if ($tableName instanceof AbstractAsset) {
+                /** @psalm-suppress InternalMethod */
                 $tableName = $tableName->getName();
             }
 

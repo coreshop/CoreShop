@@ -23,48 +23,6 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 
 interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
 {
-    /**
-     * Field Type Integer for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_INTEGER = MysqlWorkerInterface::FIELD_TYPE_INTEGER;
-
-    /**
-     * Field Type Double for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_DOUBLE = MysqlWorkerInterface::FIELD_TYPE_DOUBLE;
-
-    /**
-     * Field Type String for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_STRING = MysqlWorkerInterface::FIELD_TYPE_STRING;
-
-    /**
-     * Field Type Text for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_TEXT = MysqlWorkerInterface::FIELD_TYPE_TEXT;
-
-    /**
-     * Field Type Boolean for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_BOOLEAN = MysqlWorkerInterface::FIELD_TYPE_BOOLEAN;
-
-    /**
-     * Field Type Date for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_DATE = MysqlWorkerInterface::FIELD_TYPE_DATE;
-
     public function getId(): ?int;
 
     /**

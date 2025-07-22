@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Column;
 use Pimcore\Model\User\Permission;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -60,10 +59,6 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             $progress->setProgressCharacter('<comment>░</comment>');
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
             $progress->start(count($permissionGroups, \COUNT_RECURSIVE));
-
-            $columns = array_map(function (Column $column) {
-                return $column->getName();
-            }, $this->connection->createSchemaManager()->listTableColumns('users_permission_definitions'));
 
             foreach ($permissionGroups as $group => $permissions) {
                 foreach ($permissions as $permission) {

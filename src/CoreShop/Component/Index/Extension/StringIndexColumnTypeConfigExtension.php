@@ -19,12 +19,13 @@ namespace CoreShop\Component\Index\Extension;
 
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 
 class StringIndexColumnTypeConfigExtension implements IndexColumnTypeConfigExtension
 {
     public function getColumnConfig(IndexColumnInterface $column): array
     {
-        if ($column->getColumnType() === IndexColumnInterface::FIELD_TYPE_STRING) {
+        if ($column->getColumnType() === MysqlWorkerInterface::FIELD_TYPE_STRING) {
             return ['length' => 255];
         }
 

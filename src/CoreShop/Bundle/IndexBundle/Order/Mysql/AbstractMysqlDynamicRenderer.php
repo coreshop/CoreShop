@@ -29,7 +29,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInter
 
     protected function quoteIdentifier(string $identifier): string
     {
-        return $this->connection->quoteIdentifier($identifier);
+        return $this->connection->quoteSingleIdentifier($identifier);
     }
 
     protected function renderPrefix(?string $prefix): string

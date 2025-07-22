@@ -118,6 +118,8 @@
                 <referencedMethod name="Symfony\Bundle\SecurityBundle\Security\_FirewallMap::getFirewallConfig" />
                 <referencedMethod name="Symfony\Component\Workflow\Registry::get" />
                 <referencedMethod name="Pimcore\File::getValidFilename" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Column::__construct" />
+                <referencedMethod name="Pimcore\File::getLocalTempFilePath" />
             </errorLevel>
         </InternalMethod>
 

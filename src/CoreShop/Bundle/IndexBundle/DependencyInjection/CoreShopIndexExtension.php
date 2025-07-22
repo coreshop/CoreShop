@@ -70,7 +70,7 @@ final class CoreShopIndexExtension extends AbstractModelExtension
             );
         }
 
-        $container->setParameter('coreshop.index.mapping_types', array_keys($configs['mapping_types']));
+        $container->setParameter('coreshop.index.mapping_types', array_keys($configs['mapping_types'] ?? []));
         $container->setParameter('coreshop.index.worker_mapping_types', $configs['worker_mapping_types']);
 
         $loader->load('services.yml');
