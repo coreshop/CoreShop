@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterOpenSearchClientPass implements CompilerPassInterface
 {
-    private const CLIENT_SERVICE_PREFIX = 'pimcore.open_search_client.';
+    private const string CLIENT_SERVICE_PREFIX = 'pimcore.open_search_client.';
 
     /**
      * @inheritDoc
