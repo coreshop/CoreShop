@@ -29,7 +29,11 @@ final class OrderDocumentWkhtmlPrintOptionsListener
 
     public function resolveOptions(WkhtmlOptionsEvent $event): void
     {
-        $orderDocument = $event->getOrderDocument();
+        $orderDocument = $event->printable;
+
+        if (!$orderDocument instanceof \CoreShop\Component\Order\Model\OrderDocumentInterface) {
+            return;
+        }
 
         $event->setOptions($this->configurationHelper->getForStore(sprintf('system.%s.wkhtml', $orderDocument::getDocumentType()), $orderDocument->getOrder()->getStore()));
     }

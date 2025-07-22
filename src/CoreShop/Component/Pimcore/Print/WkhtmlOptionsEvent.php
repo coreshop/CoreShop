@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Print;
 
-use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class WkhtmlOptionsEvent extends Event
@@ -25,13 +24,8 @@ final class WkhtmlOptionsEvent extends Event
     protected string $options;
 
     public function __construct(
-        protected OrderDocumentInterface $orderDocument,
+        public readonly PrintableInterface $printable,
     ) {
-    }
-
-    public function getOrderDocument(): OrderDocumentInterface
-    {
-        return $this->orderDocument;
     }
 
     public function getOptions(): string

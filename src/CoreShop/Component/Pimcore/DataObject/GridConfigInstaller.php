@@ -24,6 +24,10 @@ class GridConfigInstaller implements GridConfigInstallerInterface
 {
     public function installGridConfig(array $config, string $name, string $class, bool $overwrite = false): void
     {
+        if (!class_exists(GridConfig\Listing::class) || !class_exists(GridConfig::class)) {
+            throw new \RuntimeException('GridConfigInstaller only works with the Pimcore Classs AdminBundle installed.');
+        }
+
         /** @psalm-suppress InternalClass */
         $list = new GridConfig\Listing();
         $list->addConditionParam('name = ?', $name);
