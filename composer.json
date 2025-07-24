@@ -171,10 +171,7 @@
     "symfony-bin-dir": "bin",
     "symfony-var-dir": "var",
     "symfony-tests-dir": "tests",
-    "symfony-assets-install": "relative",
-    "branch-alias": {
-      "dev-next": "5.0-dev"
-    }
+    "symfony-assets-install": "relative"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
