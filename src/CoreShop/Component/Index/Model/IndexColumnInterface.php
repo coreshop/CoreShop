@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Model;
 
-use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 

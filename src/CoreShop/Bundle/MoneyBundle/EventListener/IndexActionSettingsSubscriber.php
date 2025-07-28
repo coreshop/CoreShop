@@ -21,7 +21,6 @@ use Pimcore\Bundle\AdminBundle\Event\AdminEvents;
 use Pimcore\Bundle\AdminBundle\Event\IndexActionSettingsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 class IndexActionSettingsSubscriber implements EventSubscriberInterface
 {
     public function __construct(

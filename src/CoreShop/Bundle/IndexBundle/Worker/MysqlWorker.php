@@ -35,7 +35,6 @@ use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Identifier;
 use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
@@ -178,7 +177,7 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
          * @psalm-suppress InternalMethod
          */
         $table->addPrimaryKeyConstraint(
-            new PrimaryKeyConstraint(null, [new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('o_id'))], true)
+            new PrimaryKeyConstraint(null, [new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('o_id'))], true),
         );
 
         foreach ($index->getColumns() as $column) {
@@ -189,7 +188,7 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
                     $table->addColumn(
                         $column->getName(),
                         $this->renderFieldType($column->getColumnType()),
-                        $this->getFieldTypeConfig($column)
+                        $this->getFieldTypeConfig($column),
                     );
                 }
             }
@@ -251,8 +250,8 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
                     new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('oo_id')),
                     new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('language')),
                 ],
-                true
-            )
+                true,
+            ),
         );
 
         foreach ($index->getColumns() as $column) {
@@ -265,7 +264,7 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
                 $table->addColumn(
                     $column->getName(),
                     $this->renderFieldType($column->getColumnType()),
-                    $this->getFieldTypeConfig($column)
+                    $this->getFieldTypeConfig($column),
                 );
             }
         }
@@ -328,8 +327,8 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
                     new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('fieldname')),
                     new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('type')),
                 ],
-                true
-            )
+                true,
+            ),
         );
 
         foreach ($this->getExtensions($index) as $extension) {
@@ -403,7 +402,7 @@ QUERY;
 
     protected function handleArrayValues(IndexInterface $index, array $value)
     {
-        return ','.implode(',', $value).',';
+        return ',' . implode(',', $value) . ',';
     }
 
     public function deleteIndexStructures(IndexInterface $index)
@@ -413,15 +412,15 @@ QUERY;
 
             foreach ($languages as $language) {
                 $this->database->executeQuery(
-                    'DROP VIEW IF EXISTS `'.$this->getLocalizedViewName($index->getName(), $language).'`'
+                    'DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index->getName(), $language) . '`',
                 );
             }
 
-            $this->database->executeQuery('DROP TABLE IF EXISTS `'.$this->getTablename($index->getName()).'`');
-            $this->database->executeQuery('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index->getName()).'`');
-            $this->database->executeQuery('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index->getName()).'`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getTablename($index->getName()) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index->getName()) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index->getName()) . '`');
         } catch (\Exception $e) {
-            $this->logger->error((string)$e);
+            $this->logger->error((string) $e);
         }
     }
 
@@ -439,14 +438,14 @@ QUERY;
             foreach ($languages as $language) {
                 $potentialTables[$this->getLocalizedViewName($oldName, $language)] = $this->getLocalizedViewName(
                     $newName,
-                    $language
+                    $language,
                 );
             }
 
             foreach ($potentialTables as $oldTable => $newTable) {
                 if (array_key_exists($oldTable, $allViews) || $this->database->createSchemaManager()->tablesExist(
-                        [$oldTable]
-                    )) {
+                    [$oldTable],
+                )) {
                     $this->database->executeQuery(
                         sprintf(
                             'RENAME TABLE `%s` TO `%s`',
@@ -457,7 +456,7 @@ QUERY;
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error((string)$e);
+            $this->logger->error((string) $e);
         }
     }
 
@@ -485,13 +484,13 @@ QUERY;
             try {
                 $this->doInsertData($index, $preparedData['data']);
             } catch (\Exception $e) {
-                $this->logger->warning('Error during updating index table: '.$e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index table: ' . $e->getMessage(), [$e]);
             }
 
             try {
                 $this->doInsertLocalizedData($index, $preparedData['localizedData']);
             } catch (\Exception $e) {
-                $this->logger->warning('Error during updating index table: '.$e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index table: ' . $e->getMessage(), [$e]);
             }
 
             try {
@@ -499,10 +498,10 @@ QUERY;
 
                 $this->doInsertRelationalData($index, $preparedData['relation']);
             } catch (\Exception $e) {
-                $this->logger->warning('Error during updating index relation table: '.$e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index relation table: ' . $e->getMessage(), [$e]);
             }
         } else {
-            $this->logger->info('Don\'t adding object '.$object->getId().' to index.');
+            $this->logger->info('Don\'t adding object ' . $object->getId() . ' to index.');
 
             $this->deleteFromIndex($index, $object);
         }
@@ -528,7 +527,7 @@ QUERY;
 
             $dataKeys[$this->database->quoteSingleIdentifier($key)] = '?';
             $updateData[] = $value;
-            $insertStatement[] = $this->database->quoteSingleIdentifier($key).' = ?';
+            $insertStatement[] = $this->database->quoteSingleIdentifier($key) . ' = ?';
             $insertData[] = $value;
         }
 
@@ -540,20 +539,20 @@ QUERY;
             $value = $data[$column->getName()];
 
             $dataKeys[$this->database->quoteSingleIdentifier($column->getName())] = $this->typeCastValueSQLDecleration(
-                $column
+                $column,
             );
             $updateData[] = $value;
             $insertStatement[] = $this->database->quoteSingleIdentifier(
-                    $column->getName()
-                ).' = '.$this->typeCastValueSQLDecleration($column);
+                $column->getName(),
+            ) . ' = ' . $this->typeCastValueSQLDecleration($column);
             $insertData[] = $value;
         }
 
-        $insert = 'INSERT INTO '.$this->getTablename($index->getName()).' ('.implode(
-                ',',
-                array_keys($dataKeys)
-            ).') VALUES ('.implode(',', $dataKeys).')'
-            .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
+        $insert = 'INSERT INTO ' . $this->getTablename($index->getName()) . ' (' . implode(
+            ',',
+            array_keys($dataKeys),
+        ) . ') VALUES (' . implode(',', $dataKeys) . ')'
+            . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
         $this->database->executeQuery($insert, array_merge($updateData, $insertData));
     }
@@ -597,7 +596,7 @@ QUERY;
 
                 $dataKeys[$this->database->quoteSingleIdentifier($key)] = '?';
                 $updateData[] = $value;
-                $insertStatement[] = $this->database->quoteSingleIdentifier($key).' = ?';
+                $insertStatement[] = $this->database->quoteSingleIdentifier($key) . ' = ?';
                 $insertData[] = $value;
             }
 
@@ -609,21 +608,21 @@ QUERY;
                 $value = $values[$column->getName()];
 
                 $dataKeys[$this->database->quoteSingleIdentifier(
-                    $column->getName()
+                    $column->getName(),
                 )] = $this->typeCastValueSQLDecleration($column);
                 $updateData[] = $value;
 
                 $insertStatement[] = $this->database->quoteSingleIdentifier(
-                        $column->getName()
-                    ).' = '.$this->typeCastValueSQLDecleration($column);
+                    $column->getName(),
+                ) . ' = ' . $this->typeCastValueSQLDecleration($column);
                 $insertData[] = $value;
             }
 
-            $insert = 'INSERT INTO '.$this->getLocalizedTablename($index->getName()).' ('.implode(
-                    ',',
-                    array_keys($dataKeys)
-                ).') VALUES ('.implode(',', $dataKeys).')'
-                .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
+            $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index->getName()) . ' (' . implode(
+                ',',
+                array_keys($dataKeys),
+            ) . ') VALUES (' . implode(',', $dataKeys) . ')'
+                . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
             $this->database->executeQuery($insert, array_merge($updateData, $insertData));
         }
@@ -649,7 +648,7 @@ QUERY;
             return Type::lookupName(Type::getType($doctrineType));
         }
 
-        throw new \Exception($type.' is not supported by MySQL Index');
+        throw new \Exception($type . ' is not supported by MySQL Index');
     }
 
     public function getFieldTypeConfig(IndexColumnInterface $column)
@@ -685,21 +684,21 @@ QUERY;
 
     public function getTablename(string $name): string
     {
-        return 'coreshop_index_mysql_'.$name;
+        return 'coreshop_index_mysql_' . $name;
     }
 
     public function getLocalizedTablename(string $name): string
     {
-        return 'coreshop_index_mysql_localized_'.$name;
+        return 'coreshop_index_mysql_localized_' . $name;
     }
 
     public function getLocalizedViewName(string $name, string $language): string
     {
-        return $this->getLocalizedTablename($name).'_'.$language;
+        return $this->getLocalizedTablename($name) . '_' . $language;
     }
 
     public function getRelationTablename(string $name): string
     {
-        return 'coreshop_index_mysql_relations_'.$name;
+        return 'coreshop_index_mysql_relations_' . $name;
     }
 }
