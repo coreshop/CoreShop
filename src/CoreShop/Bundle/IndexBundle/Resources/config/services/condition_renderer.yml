@@ -54,3 +54,29 @@ services:
         parent: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_range }
+
+    CoreShop\Bundle\IndexBundle\Condition\OpenSearch\IsRenderer:
+        tags:
+            - { name: coreshop.index.condition.renderer, type: opensearch_is }
+
+    CoreShop\Bundle\IndexBundle\Condition\OpenSearch\InRenderer:
+        tags:
+            - { name: coreshop.index.condition.renderer, type: opensearch_in }
+
+    CoreShop\Bundle\IndexBundle\Condition\OpenSearch\IsNullRenderer:
+        tags:
+            - { name: coreshop.index.condition.renderer, type: opensearch_is_null }
+
+    CoreShop\Bundle\IndexBundle\Condition\OpenSearch\ConcatRenderer:
+        arguments:
+            - '@CoreShop\Component\Index\Condition\ConditionRenderer'
+        tags:
+            - { name: coreshop.index.condition.renderer, type: opensearch_concat }
+
+    CoreShop\Bundle\IndexBundle\Condition\OpenSearch\LikeRenderer:
+        tags:
+            - { name: coreshop.index.condition.renderer, type: opensearch_like }
+
+    CoreShop\Bundle\IndexBundle\Condition\OpenSearch\RangeRenderer:
+        tags:
+            - { name: coreshop.index.condition.renderer, type: opensearch_range }

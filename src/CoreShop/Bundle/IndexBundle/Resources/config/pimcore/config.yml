@@ -21,6 +21,24 @@ core_shop_index:
         TEXT: ~
         BOOLEAN: ~
         DATE: ~
+    worker_mapping_types:
+        mysql:
+            INTEGER: ~
+            DOUBLE: ~
+            STRING: ~
+            TEXT: ~
+            BOOLEAN: ~
+            DATE: ~
+        opensearch:
+            "null": ~
+            boolean: ~
+            float: ~
+            double: ~
+            integer: ~
+            object: ~
+            nested: ~
+            text: ~
+            keyword: ~
 
 jms_serializer:
     metadata:

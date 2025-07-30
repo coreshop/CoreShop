@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -27,10 +26,12 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterUserC
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOpenSearchClientPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
 use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Pimcore\Bundle\OpenSearchClientBundle\PimcoreOpenSearchClientBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -64,6 +65,10 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterOrderRendererTypesPass());
         $container->addCompilerPass(new RegisterFilterPreConditionTypesPass());
         $container->addCompilerPass(new RegisterFilterUserConditionTypesPass());
+
+        if (class_exists(PimcoreOpenSearchClientBundle::class)) {
+            $container->addCompilerPass(new RegisterOpenSearchClientPass());
+        }
     }
 
     protected function getModelNamespace(): string

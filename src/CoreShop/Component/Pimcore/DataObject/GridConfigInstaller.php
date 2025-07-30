@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -25,6 +24,10 @@ class GridConfigInstaller implements GridConfigInstallerInterface
 {
     public function installGridConfig(array $config, string $name, string $class, bool $overwrite = false): void
     {
+        if (!class_exists(GridConfig\Listing::class) || !class_exists(GridConfig::class)) {
+            throw new \RuntimeException('GridConfigInstaller only works with the Pimcore Classs AdminBundle installed.');
+        }
+
         /** @psalm-suppress InternalClass */
         $list = new GridConfig\Listing();
         $list->addConditionParam('name = ?', $name);

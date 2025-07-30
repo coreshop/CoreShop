@@ -1,3 +1,10 @@
+# 3.2.20
+* [Messenger] [Messenger] Fix MessageRepository service registration tags by @jdreesen in https://github.com/coreshop/CoreShop/pull/2876
+
+# 3.2.19
+* [Messenger] wrap message details info modal data in `<pre>` tags by @jdreesen in https://github.com/coreshop/CoreShop/pull/2855
+* [Messenger] dispatch `MessageDetailsEvent` to allow customization of message details generation by @jdreesen in https://github.com/coreshop/CoreShop/pull/2854
+
 # 3.2.18
 * [giftDigitaProduct] - fix for gift digital product by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2820
 * [Core] fix for gift digital product (revert bc break) by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2821

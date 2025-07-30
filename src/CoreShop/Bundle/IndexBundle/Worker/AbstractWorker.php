@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -70,14 +69,33 @@ abstract class AbstractWorker implements WorkerInterface
         return $eligibleExtensions;
     }
 
-    public function renderCondition(ConditionInterface $condition, $prefix = null)
+    public function renderCondition(ConditionInterface $condition, array|string $params = [])
     {
-        return $this->conditionRenderer->render($this, $condition, $prefix);
+        if (is_string($params)) {
+            trigger_deprecation('coreshop/index-bundle', '4.1', 'passing a string as second parameter for renderCondition is deprecated, use a array with a prefix key');
+
+            $params = [
+                'prefix' => 'q',
+            ];
+        }
+
+        return $this->conditionRenderer->render($this, $condition, $params);
     }
 
     public function renderOrder(OrderInterface $condition, $prefix = null)
     {
         return $this->orderRenderer->render($this, $condition, $prefix);
+    }
+
+    public function getSupportedFieldTypes(): array
+    {
+        $reflection = new \ReflectionClass($this);
+
+        return \array_filter(
+            $reflection->getConstants(\ReflectionClassConstant::IS_PUBLIC),
+            static fn (string $name) => \str_starts_with($name, 'FIELD_TYPE_'),
+            \ARRAY_FILTER_USE_KEY,
+        );
     }
 
     protected function prepareData(IndexInterface $index, IndexableInterface $object): array
@@ -118,7 +136,7 @@ abstract class AbstractWorker implements WorkerInterface
 
         foreach ($extensions as $extension) {
             if ($extension instanceof IndexColumnsExtensionInterface) {
-                $data = array_merge($data, $extension->getIndexColumns($object));
+                $data = [...$data, ...$extension->getIndexColumns($object)];
             }
         }
 
@@ -300,28 +318,4 @@ abstract class AbstractWorker implements WorkerInterface
     abstract public function getList(IndexInterface $index): ListingInterface;
 
     abstract public function renderFieldType(string $type);
-
-    protected function getSystemAttributes(): array
-    {
-        return [
-            'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
-            'oo_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
-            'o_key' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'o_classId' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'o_className' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'o_virtualObjectId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
-            'o_virtualObjectActive' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
-            'o_type' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'active' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
-        ];
-    }
-
-    protected function getLocalizedSystemAttributes(): array
-    {
-        return [
-            'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
-            'language' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'name' => IndexColumnInterface::FIELD_TYPE_STRING,
-        ];
-    }
 }

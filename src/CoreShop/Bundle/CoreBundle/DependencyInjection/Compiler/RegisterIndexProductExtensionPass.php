@@ -5,19 +5,19 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Core\Index\Extensions\OpenSearchProductClassExtension;
 use CoreShop\Component\Core\Index\Extensions\ProductClassExtension;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -51,6 +51,15 @@ class RegisterIndexProductExtensionPass implements CompilerPassInterface
 
                 $container->setDefinition($definitionId, $definition);
                 $registry->addMethodCall('register', [$class, new Reference($definitionId)]);
+
+                $definitionId = sprintf('%s.%s', 'coreshop.index.extension.open_search_product', strtolower($class));
+                $definition = new Definition(OpenSearchProductClassExtension::class);
+                $definition->setArguments([
+                    $class,
+                ]);
+
+                $container->setDefinition($definitionId, $definition);
+                $registry->addMethodCall('register', [$class . 'opensearch', new Reference($definitionId)]);
             }
         }
     }

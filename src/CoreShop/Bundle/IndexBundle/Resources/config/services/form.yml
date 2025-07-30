@@ -196,7 +196,7 @@ services:
             - '%coreshop.form.type.filter.condition.category.validation_groups%'
         tags:
             - { name: form.type }
-              
+
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategoryMultiSelectType:
         arguments:
             - '%coreshop.form.type.filter.condition.category_multiselect.validation_groups%'
@@ -236,5 +236,11 @@ services:
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterUserConditionNestedType:
         arguments:
             - '%coreshop.form.type.filter.condition.user_nested.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Worker\OpenSearchWorkerType:
+        arguments:
+            - '@coreshop.registry.index.opensearch_client'
         tags:
             - { name: form.type }

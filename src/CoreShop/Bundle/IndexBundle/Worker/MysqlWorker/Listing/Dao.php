@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -227,7 +226,7 @@ class Dao
      */
     public function quoteIdentifier($value)
     {
-        return $this->database->quoteIdentifier($value);
+        return $this->database->quoteSingleIdentifier($value);
     }
 
     /**
@@ -249,8 +248,8 @@ class Dao
                     }
 
 
-                    $fieldString .= $this->db->quoteIdentifier($field->getField());
-                    $maxFieldString .= 'MAX('.$this->db->quoteIdentifier($field->getField()).') as '.$this->db->quoteIdentifier($field->getField());
+                    $fieldString .= $this->db->quoteSingleIdentifier($field->getField());
+                    $maxFieldString .= 'MAX('.$this->db->quoteSingleIdentifier($field->getField()).') as '.$this->db->quoteSingleIdentifier($field->getField());
                 }
             }
 

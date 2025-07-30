@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -20,12 +19,13 @@ namespace CoreShop\Component\Index\Extension;
 
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 
 class StringIndexColumnTypeConfigExtension implements IndexColumnTypeConfigExtension
 {
     public function getColumnConfig(IndexColumnInterface $column): array
     {
-        if ($column->getColumnType() === IndexColumnInterface::FIELD_TYPE_STRING) {
+        if ($column->getColumnType() === MysqlWorkerInterface::FIELD_TYPE_STRING) {
             return ['length' => 255];
         }
 

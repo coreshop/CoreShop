@@ -1,3 +1,17 @@
+## 4.1.3
+* [MoneyBundle] add MutationType for coreShopMoney by @breakone in https://github.com/coreshop/CoreShop/pull/2836
+* [CoreBundle] fix backend-order-creation carrier selection by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2839
+* [Composer] update dev dependencies by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2841
+* [OrderBundle] make order-creation action column wider to see delete button by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2842
+* Bugfix/Light Theme Icon by @torqdev in https://github.com/coreshop/CoreShop/pull/2838
+* [CS] Refactor by @github-actions in https://github.com/coreshop/CoreShop/pull/2835
+* Added cart events for modifying items in the cart by @aashan10 in https://github.com/coreshop/CoreShop/pull/2853
+* [Messenger] wrap message details info modal data in `<pre>` tags by @jdreesen in https://github.com/coreshop/CoreShop/pull/2855
+* [Messenger] dispatch `MessageDetailsEvent` to allow customization of message details generation by @jdreesen in https://github.com/coreshop/CoreShop/pull/2854
+* [CORS-49] - CoreShop Improvements by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2845
+* [Core] show "hideFromCheckout" Carriers in Backend Order creation by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2856
+* [IndexBundle] Add OpenSearch Index Worker by @aarongerig in https://github.com/coreshop/CoreShop/pull/2840
+
 ## 4.1.2
 * [Docs] update payum link by @cngJo in https://github.com/coreshop/CoreShop/pull/2819
 * [FrontendBundle] install css/js (public) files too by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2818

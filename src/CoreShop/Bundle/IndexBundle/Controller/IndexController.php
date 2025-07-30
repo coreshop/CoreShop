@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -22,7 +21,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Registry\ServiceRegistry;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,16 +77,20 @@ class IndexController extends ResourceController
         }
 
         /**
-         * @var array $fieldTypes
+         * @var array $workerFieldTypes
          */
-        $fieldTypes = $this->getParameter('coreshop.index.mapping_types');
+        $workerFieldTypes = $this->getParameter('coreshop.index.worker_mapping_types');
         $fieldTypesResult = [];
 
-        foreach ($fieldTypes as $type) {
-            $fieldTypesResult[] = [
-                'type' => $type,
-                'name' => ucfirst(strtolower($type)),
-            ];
+        foreach ($workerFieldTypes as $workerType => $fieldTypes) {
+            $fieldTypesResult[$workerType] = [];
+
+            foreach ($fieldTypes as $type => $mapping) {
+                $fieldTypesResult[$workerType][] = [
+                    'type' => $type,
+                    'name' => ucfirst(strtolower($type)),
+                ];
+            }
         }
 
         $classes = new DataObject\ClassDefinition\Listing();
@@ -114,6 +117,7 @@ class IndexController extends ResourceController
                 'getters' => $gettersResult,
                 'fieldTypes' => $fieldTypesResult,
                 'classes' => $availableClasses,
+                'workerTypes' => $this->getWorkerTypes(),
             ],
         );
     }
@@ -165,6 +169,20 @@ class IndexController extends ResourceController
 
         $this->getObjectbrickFields($allowedBricks, $result);
         $this->getFieldcollectionFields($allowedCollections, $result);
+
+        return $this->viewHandler->handle($result);
+    }
+
+    public function getOpenSearchClientsAction(): Response
+    {
+        $clientRegistry = $this->container->get('coreshop.registry.index.opensearch_client');
+
+        $result = [
+            'clients' => \array_map(
+                static fn (string $client) => ['name' => $client],
+                \array_keys($clientRegistry->all()),
+            ),
+        ];
 
         return $this->viewHandler->handle($result);
     }
@@ -334,7 +352,7 @@ class IndexController extends ResourceController
          * @var DataObject\Classificationstore\GroupConfig $config
          */
         foreach ($groupConfigList as $config) {
-            $key = $config->getId() . ($config->getName() ? $config->getName() : 'EMPTY');
+            $key = $config->getId() . ($config->getName() ?: 'EMPTY');
 
             $result[$key] = $this->getClassificationStoreGroupConfiguration($config);
         }
@@ -407,7 +425,16 @@ class IndexController extends ResourceController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            new SubscribedService('coreshop.registry.index.interpreter', ServiceRegistry::class, attributes: new Autowire(service: 'coreshop.registry.index.interpreter')),
+            new SubscribedService(
+                'coreshop.registry.index.interpreter',
+                ServiceRegistryInterface::class,
+                attributes: new Autowire(service: 'coreshop.registry.index.interpreter'),
+            ),
+            new SubscribedService(
+                'coreshop.registry.index.opensearch_client',
+                ServiceRegistryInterface::class,
+                attributes: new Autowire(service: 'coreshop.registry.index.opensearch_client'),
+            ),
         ]);
     }
 

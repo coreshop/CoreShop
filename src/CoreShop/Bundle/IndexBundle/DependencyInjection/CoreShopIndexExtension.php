@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -64,7 +63,15 @@ final class CoreShopIndexExtension extends AbstractModelExtension
 
         $bundles = $container->getParameter('kernel.bundles');
 
-        $container->setParameter('coreshop.index.mapping_types', array_keys($configs['mapping_types']));
+        if (isset($configs['mapping_types'])) {
+            $configs['worker_mapping_types']['mysql'] = array_merge(
+                $configs['mapping_types'],
+                $configs['worker_mapping_types']['mysql'] ?? [],
+            );
+        }
+
+        $container->setParameter('coreshop.index.mapping_types', array_keys($configs['mapping_types'] ?? []));
+        $container->setParameter('coreshop.index.worker_mapping_types', $configs['worker_mapping_types']);
 
         $loader->load('services.yml');
 

@@ -21,6 +21,7 @@ core_shop_index:
             index_interpreter_objecttype: '/bundles/coreshopindex/pimcore/js/index/objecttype/abstract.js'
             index_worker_abstract: '/bundles/coreshopindex/pimcore/js/index/worker/abstract.js'
             index_worker_mysql: '/bundles/coreshopindex/pimcore/js/index/worker/mysql.js'
+            index_worker_opensearch: '/bundles/coreshopindex/pimcore/js/index/worker/opensearch.js'
             filter_item: '/bundles/coreshopindex/pimcore/js/filter/item.js'
             filter_panel: '/bundles/coreshopindex/pimcore/js/filter/panel.js'
             filter_abstract: '/bundles/coreshopindex/pimcore/js/filter/abstract.js'

@@ -1,12 +1,13 @@
 /*
- * CoreShop.
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -139,7 +140,7 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
     },
 
     getIndexFields: function () {
-        this.fieldsPanel = new coreshop.index.fields(this.data, this.data.class);
+        this.fieldsPanel = new coreshop.index.fields(this, this.data, this.data.class);
         this.indexFields = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_indexes_fields',
             title: t('coreshop_indexes_fields'),

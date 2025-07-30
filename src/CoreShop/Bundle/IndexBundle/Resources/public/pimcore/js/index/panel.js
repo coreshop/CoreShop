@@ -1,12 +1,13 @@
 /*
- * CoreShop.
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -60,10 +61,6 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
             model: modelName
         });
 
-        this.fieldTypeStore = new Ext.data.JsonStore({
-            data: []
-        });
-
         this.classes = new Ext.data.JsonStore({
             data: []
         });
@@ -71,7 +68,7 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
         pimcore.globalmanager.add('coreshop_index_getters', this.getterStore);
         pimcore.globalmanager.add('coreshop_index_interpreters', this.interpreterStore);
         pimcore.globalmanager.add('coreshop_index_classes', this.classes);
-        pimcore.globalmanager.add('coreshop_index_field_types', this.fieldTypeStore);
+        // pimcore.globalmanager.add('coreshop_index_field_types', this.fieldTypeStore);
 
         Ext.Ajax.request({
             url: Routing.generate(this.routing.config),
@@ -82,8 +79,19 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
 
                     this.getterStore.loadData(res.getters);
                     this.interpreterStore.loadData(res.interpreters);
-                    this.fieldTypeStore.loadData(res.fieldTypes);
                     this.classes.loadData(res.classes);
+
+                    for (let i = 0; i < Object.keys(res.workerTypes).length; i++) {
+                        const name = Object.keys(res.workerTypes)[i];
+
+                        const workerFieldTypeStore = new Ext.data.JsonStore({
+                            data: []
+                        });
+
+                        workerFieldTypeStore.loadData(res.fieldTypes.hasOwnProperty(name) ? res.fieldTypes[name] : []);
+
+                        pimcore.globalmanager.add('coreshop_index_field_types_' + name, workerFieldTypeStore);
+                    }
 
                     // create layout
                     this.getLayout();

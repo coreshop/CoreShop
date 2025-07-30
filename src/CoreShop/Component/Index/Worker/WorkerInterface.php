@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -62,11 +61,9 @@ interface WorkerInterface
     /**
      * Renders the condition to fit the service.
      *
-     * @param string             $prefix
-     *
      * @return mixed
      */
-    public function renderCondition(ConditionInterface $condition, $prefix = null);
+    public function renderCondition(ConditionInterface $condition, array|string $params = []);
 
     /**
      * Renders field type for the service.
@@ -82,4 +79,11 @@ interface WorkerInterface
     public function getFilterGroupHelper();
 
     public function renameIndexStructures(IndexInterface $index, string $oldName, string $newName): void;
+
+    /**
+     * Returns the list of supported field types.
+     *
+     * @return string[]
+     */
+    public function getSupportedFieldTypes(): array;
 }

@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -40,7 +39,6 @@ use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
 use CoreShop\Bundle\StorageListBundle\CoreShopStorageListBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
-use Pimcore\Bundle\WebToPrintBundle\PimcoreWebToPrintBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -83,8 +81,6 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopPaymentBundle(), 2200);
         $collection->addBundle(new CoreShopMoneyBundle(), 1550);
         $collection->addBundle(new CoreShopStorageListBundle(), 100);
-
-        $collection->addBundle(new PimcoreWebToPrintBundle(), 70);
     }
 
     protected function getModelNamespace(): string
