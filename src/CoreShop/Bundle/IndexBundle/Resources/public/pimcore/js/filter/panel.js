@@ -22,6 +22,7 @@ coreshop.filter.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_filters',
     iconCls: 'coreshop_icon_filters',
     type: 'coreshop_filters',
+    permission: 'coreshop_permission_filter',
 
     routing: {
         add: 'coreshop_filter_add',

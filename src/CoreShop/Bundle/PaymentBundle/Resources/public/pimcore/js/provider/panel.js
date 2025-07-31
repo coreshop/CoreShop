@@ -21,6 +21,7 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_payment_providers',
     iconCls: 'coreshop_icon_payment_provider',
     type: 'coreshop_payment_provider',
+    permission: 'coreshop_permission_payment_provider',
 
     routing: {
         add: 'coreshop_payment_provider_add',

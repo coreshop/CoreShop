@@ -21,6 +21,7 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_carriers',
     iconCls: 'coreshop_icon_carriers',
     type: 'coreshop_carriers',
+    permission: 'coreshop_permission_carrier',
 
     routing: {
         add: 'coreshop_carrier_add',

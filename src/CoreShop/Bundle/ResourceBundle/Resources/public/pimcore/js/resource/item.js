@@ -15,6 +15,7 @@ pimcore.registerNS('coreshop.resource.item');
 coreshop.resource.item = Class.create({
 
     iconCls: '',
+    formPanel: null,
 
     url: {
         save: ''
@@ -73,7 +74,42 @@ coreshop.resource.item = Class.create({
     },
 
     getItems: function () {
+        return [this.getFormPanel()];
+    },
+
+    getFormPanelItems: function () {
         return [];
+    },
+
+    getFormPanel: function () {
+        var buttons = [];
+
+        if (this.isAllowed('edit')) {
+            buttons.push({
+                text: t('save'),
+                handler: this.save.bind(this),
+                iconCls: 'pimcore_icon_apply'
+            });
+        }
+
+        this.formPanel = new Ext.form.Panel({
+            bodyStyle: 'padding:20px 5px 20px 5px;',
+            border: false,
+            region: 'center',
+            autoScroll: true,
+            forceLayout: true,
+            defaults: {
+                forceLayout: true
+            },
+            buttons: buttons,
+            items: this.getFormPanelItems(),
+        });
+
+        if (!this.isAllowed('edit')) {
+            this.formPanel.disable();
+        }
+
+        return this.formPanel;
     },
 
     getSaveData: function () {
@@ -190,5 +226,9 @@ coreshop.resource.item = Class.create({
 
     convertDotNotationToObject: function (data) {
         return coreshop.helpers.convertDotNotationToObject(data);
+    },
+
+    isAllowed: function (type) {
+        return this.parentPanel.isAllowed(type);
     }
 });

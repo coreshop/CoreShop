@@ -14,8 +14,9 @@
 pimcore.registerNS('coreshop.notification.rule.condition');
 
 coreshop.notification.rule.condition = Class.create(coreshop.rules.condition, {
-    initialize: function (conditions, type) {
+    initialize: function (conditions, panel, type) {
         this.conditions = conditions;
+        this.panel = panel;
         this.type = type;
     },
 

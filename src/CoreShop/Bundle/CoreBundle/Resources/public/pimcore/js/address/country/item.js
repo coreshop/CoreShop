@@ -16,12 +16,15 @@ coreshop.country.item = Class.create(coreshop.country.item, {
         var panel = $super(),
             data = this.data;
 
-        panel.down("fieldset").add([
+        panel.add([
             {
                 xtype: 'coreshop.currency',
                 value: data.currency
             }
         ]);
+
+        panel.setDisabled(false);
+        panel.setDisabled(!this.isAllowed('edit'));
 
         this.formPanel = panel;
 

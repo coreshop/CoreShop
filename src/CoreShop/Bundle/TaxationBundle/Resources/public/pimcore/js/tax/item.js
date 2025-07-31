@@ -20,15 +20,11 @@ coreshop.tax.item = Class.create(coreshop.resource.item, {
         save: 'coreshop_tax_rate_save'
     },
 
-    getItems: function () {
-        return [this.getFormPanel()];
-    },
-
     getTitleText: function () {
         return this.data.name;
     },
 
-    getFormPanel: function () {
+    getFormPanelItems: function () {
         var data = this.data;
 
         var langTabs = [];
@@ -49,60 +45,39 @@ coreshop.tax.item = Class.create(coreshop.resource.item, {
             langTabs.push(tab);
         });
 
-        this.formPanel = new Ext.form.Panel({
-            bodyStyle: 'padding:20px 5px 20px 5px;',
-            border: false,
-            region: 'center',
-            autoScroll: true,
-            forceLayout: true,
-            defaults: {
-                forceLayout: true
-            },
-            buttons: [
-                {
-                    text: t('save'),
-                    handler: this.save.bind(this),
-                    iconCls: 'pimcore_icon_apply'
-                }
-            ],
+        return [{
+            xtype: 'fieldset',
+            autoHeight: true,
+            labelWidth: 350,
+            defaultType: 'textfield',
+            defaults: {width: '100%'},
             items: [
                 {
-                    xtype: 'fieldset',
-                    autoHeight: true,
-                    labelWidth: 350,
-                    defaultType: 'textfield',
-                    defaults: {width: '100%'},
-                    items: [
-                        {
-                            xtype: 'tabpanel',
-                            activeTab: 0,
-                            defaults: {
-                                autoHeight: true,
-                                bodyStyle: 'padding:10px;'
-                            },
-                            items: langTabs
-                        },
-                        {
-                            xtype: 'numberfield',
-                            name: 'rate',
-                            fieldLabel: t('coreshop_tax_rate'),
-                            width: 400,
-                            value: data.rate,
-                            decimalPrecision: 2,
-                            step: 1
-                        }, {
-                            xtype: 'checkbox',
-                            name: 'active',
-                            fieldLabel: t('active'),
-                            width: 250,
-                            checked: data.active
-                        }
-                    ]
+                    xtype: 'tabpanel',
+                    activeTab: 0,
+                    defaults: {
+                        autoHeight: true,
+                        bodyStyle: 'padding:10px;'
+                    },
+                    items: langTabs
+                },
+                {
+                    xtype: 'numberfield',
+                    name: 'rate',
+                    fieldLabel: t('coreshop_tax_rate'),
+                    width: 400,
+                    value: data.rate,
+                    decimalPrecision: 2,
+                    step: 1
+                }, {
+                    xtype: 'checkbox',
+                    name: 'active',
+                    fieldLabel: t('active'),
+                    width: 250,
+                    checked: data.active
                 }
             ]
-        });
-
-        return this.formPanel;
+        }];
     },
 
     getSaveData: function () {

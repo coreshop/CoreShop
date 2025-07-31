@@ -23,6 +23,15 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
 
     getPanel: function () {
         var items = this.getItems();
+        const buttons = [];
+
+        if (this.isAllowed('edit')) {
+            buttons.push({
+                text: t('save'),
+                iconCls: 'pimcore_icon_save',
+                handler: this.save.bind(this)
+            });
+        }
 
         this.panel = new Ext.TabPanel({
             activeTab: 0,
@@ -31,11 +40,7 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
             deferredRender: false,
             forceLayout: true,
             iconCls: this.iconCls,
-            buttons: [{
-                text: t('save'),
-                iconCls: 'pimcore_icon_apply',
-                handler: this.save.bind(this)
-            }],
+            buttons: buttons,
             items: items
         });
 
@@ -61,8 +66,7 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
         });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: 'coreshop_icon_settings',
-            title: t('settings'),
+            disabled: !this.isAllowed('edit'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
             border: false,
@@ -98,7 +102,13 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
             ]
         });
 
-        return this.settingsForm;
+        return new Ext.Panel({
+            iconCls: 'coreshop_icon_settings',
+            title: t('settings'),
+            autoScroll: true,
+            border: false,
+            items: [this.settingsForm]
+        });
     },
 
     getItems: function () {
@@ -128,8 +138,8 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
         var allowedActions = this.parentPanel.getActionsForType(type);
         var allowedConditions = this.parentPanel.getConditionsForType(type);
 
-        this.actions = new actionContainerClass(allowedActions, type);
-        this.conditions = new conditionContainerClass(allowedConditions, type);
+        this.actions = new actionContainerClass(allowedActions, this.parentPanel, type);
+        this.conditions = new conditionContainerClass(allowedConditions, this.parentPanel, type);
 
         var items = [
             this.conditions.getLayout(),

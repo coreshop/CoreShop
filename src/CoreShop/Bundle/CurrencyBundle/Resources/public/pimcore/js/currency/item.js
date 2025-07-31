@@ -20,62 +20,30 @@ coreshop.currency.item = Class.create(coreshop.resource.item, {
         save: 'coreshop_currency_save'
     },
 
-    getItems: function () {
-        return [this.getFormPanel()];
-    },
-
-    getFormPanel: function () {
-        this.formPanel = new Ext.form.Panel({
-            bodyStyle: 'padding:20px 5px 20px 5px;',
-            border: false,
-            region: 'center',
-            autoScroll: true,
-            forceLayout: true,
-            defaults: {
-                forceLayout: true
+    getFormPanelItems: function () {
+        return [
+            {
+                fieldLabel: t('name'),
+                name: 'name',
+                value: this.data.name
             },
-            buttons: [
-                {
-                    text: t('save'),
-                    handler: this.save.bind(this),
-                    iconCls: 'pimcore_icon_apply'
-                }
-            ],
-            items: [
-                {
-                    xtype: 'fieldset',
-                    autoHeight: true,
-                    labelWidth: 250,
-                    defaultType: 'textfield',
-                    defaults: {width: 300},
-                    items: [
-                        {
-                            fieldLabel: t('name'),
-                            name: 'name',
-                            value: this.data.name
-                        },
-                        {
-                            fieldLabel: t('coreshop_currency_isoCode'),
-                            name: 'isoCode',
-                            value: this.data.isoCode
-                        },
-                        {
-                            xtype: 'numberfield',
-                            fieldLabel: t('coreshop_currency_numericIsoCode'),
-                            name: 'numericIsoCode',
-                            value: this.data.numericIsoCode
-                        },
-                        {
-                            fieldLabel: t('coreshop_currency_symbol'),
-                            name: 'symbol',
-                            value: this.data.symbol
-                        }
-                    ]
-                }
-            ]
-        });
-
-        return this.formPanel;
+            {
+                fieldLabel: t('coreshop_currency_isoCode'),
+                name: 'isoCode',
+                value: this.data.isoCode
+            },
+            {
+                xtype: 'numberfield',
+                fieldLabel: t('coreshop_currency_numericIsoCode'),
+                name: 'numericIsoCode',
+                value: this.data.numericIsoCode
+            },
+            {
+                fieldLabel: t('coreshop_currency_symbol'),
+                name: 'symbol',
+                value: this.data.symbol
+            }
+        ];
     },
 
     getSaveData: function () {

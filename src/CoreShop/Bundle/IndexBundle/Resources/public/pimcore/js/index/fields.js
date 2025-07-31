@@ -49,8 +49,8 @@ coreshop.index.fields = Class.create({
 
         this.configPanel = new Ext.Panel({
             layout: 'border',
-            items: items
-
+            items: items,
+            disabled: !this.parent.isAllowed('edit'),
         });
 
         return this.configPanel;
@@ -191,6 +191,10 @@ coreshop.index.fields = Class.create({
     },
 
     onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts) {
+        if (!this.parent.isAllowed('edit')) {
+            return;
+        }
+
         e.stopEvent();
 
         tree.select();
@@ -273,6 +277,10 @@ coreshop.index.fields = Class.create({
         });
 
         tree.addListener('itemdblclick', function (tree, record, item, index, e, eOpts) {
+            if (!this.parent.isAllowed('edit')) {
+                return;
+            }
+
             if (
                 !record.data.root &&
                 (

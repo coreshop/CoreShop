@@ -18,6 +18,7 @@ coreshop.resource.panel = Class.create({
     storeId: 'abstract_store',
     iconCls: 'coreshop_abstract_icon',
     type: 'abstract',
+    permission: '',
 
     url: {
         add: '',
@@ -162,6 +163,10 @@ coreshop.resource.panel = Class.create({
     },
 
     getTopBar: function () {
+        if (!this.isAllowed('add')) {
+            return [];
+        }
+
         return [
             {
                 // add button
@@ -174,10 +179,16 @@ coreshop.resource.panel = Class.create({
     },
 
     getTreeNodeListeners: function () {
-        return {
-            itemclick: this.onTreeNodeClick.bind(this),
+        const items = {
             itemcontextmenu: this.onTreeNodeContextmenu.bind(this)
         };
+
+        if (this.isAllowed('view')) {
+            items.itemclick = this.onTreeNodeClick.bind(this);
+        }
+
+
+        return items;
     },
 
     onTreeNodeContextmenu: function (tree, record, item, index, e, eOpts) {
@@ -185,13 +196,16 @@ coreshop.resource.panel = Class.create({
         tree.select();
 
         var menu = new Ext.menu.Menu();
-        menu.add(new Ext.menu.Item({
-            text: t('delete'),
-            iconCls: 'pimcore_icon_delete',
-            handler: this.deleteItem.bind(this, record)
-        }));
 
-        menu.showAt(e.pageX, e.pageY);
+        if (this.isAllowed('delete')) {
+            menu.add(new Ext.menu.Item({
+                text: t('delete'),
+                iconCls: 'pimcore_icon_delete',
+                handler: this.deleteItem.bind(this, record)
+            }));
+
+            menu.showAt(e.pageX, e.pageY);
+        }
     },
 
     onTreeNodeClick: function (tree, record, item, index, e, eOpts) {
@@ -313,5 +327,11 @@ coreshop.resource.panel = Class.create({
         }
 
         return this.panel;
+    },
+
+    isAllowed: function (type) {
+        const permission = this.permission + '_' + type;
+
+        return pimcore.globalmanager.get("user").isAllowed(permission);
     }
 });

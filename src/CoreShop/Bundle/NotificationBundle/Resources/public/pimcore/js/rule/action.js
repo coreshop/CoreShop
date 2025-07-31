@@ -14,8 +14,9 @@
 pimcore.registerNS('coreshop.notification.rule.action');
 
 coreshop.notification.rule.action = Class.create(coreshop.rules.action, {
-    initialize: function (actions, type) {
+    initialize: function (actions, panel, type) {
         this.actions = actions;
+        this.panel = panel;
         this.type = type;
     },
 

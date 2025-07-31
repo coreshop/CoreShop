@@ -21,6 +21,7 @@ coreshop.state.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_states',
     iconCls: 'coreshop_icon_state',
     type: 'coreshop_states',
+    permission: 'coreshop_permission_state',
 
     routing: {
         add: 'coreshop_state_add',

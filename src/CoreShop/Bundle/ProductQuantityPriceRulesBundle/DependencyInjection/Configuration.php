@@ -128,7 +128,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['notification'])
+                        ->defaultValue([])
                     ->end()
                 ->end()
             ->end()

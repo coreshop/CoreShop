@@ -22,6 +22,16 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
     },
 
     getPanel: function () {
+        const buttons = [];
+
+        if (this.isAllowed('edit')) {
+            buttons.push({
+                text: t('save'),
+                iconCls: 'pimcore_icon_save',
+                handler: this.save.bind(this)
+            });
+        }
+
         return new Ext.TabPanel({
             activeTab: 0,
             title: this.getTitleText(),
@@ -29,18 +39,14 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             deferredRender: false,
             forceLayout: true,
             iconCls: this.iconCls,
-            buttons: [{
-                text: t('save'),
-                iconCls: 'pimcore_icon_apply',
-                handler: this.save.bind(this)
-            }],
+            buttons: buttons,
             items: this.getItems()
         });
     },
 
     getItems: function () {
         return [
-            this.getFormPanel(),
+            this.getSettings(),
             this.getPaymentLocationsAndCosts()
 
         ];
@@ -50,7 +56,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         return this.data.identifier;
     },
 
-    getFormPanel: function () {
+    getSettings: function () {
         var data = this.data,
             langTabs = [];
 
@@ -146,7 +152,9 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             items: [
                 {
                     xtype: 'fieldset',
+                    disabled: !this.isAllowed('edit'),
                     autoHeight: true,
+                    border: false,
                     labelWidth: 350,
                     defaultType: 'textfield',
                     defaults: {width: '100%'},
@@ -187,6 +195,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         }.bind(this));
 
         this.paymentProviderRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
+            disabled: !this.isAllowed('edit'),
             columns: [
                 {
                     header: t('coreshop_payment_provider_rule'),

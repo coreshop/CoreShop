@@ -21,6 +21,7 @@ coreshop.currency.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_currencies',
     iconCls: 'coreshop_icon_currency',
     type: 'coreshop_currencies',
+    permission: 'coreshop_permission_currency',
 
     routing: {
         add: 'coreshop_currency_add',

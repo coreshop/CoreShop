@@ -16,7 +16,7 @@ coreshop.carrier.item  = Class.create(coreshop.carrier.item, {
         var panel = $super(),
             data = this.data;
 
-        panel.down("fieldset").add([
+        panel.down("form").add([
             {
                 xtype: 'coreshop.store',
                 name: 'stores',
@@ -30,8 +30,9 @@ coreshop.carrier.item  = Class.create(coreshop.carrier.item, {
             }
         ]);
 
-        this.formPanel = panel;
+        panel.down("form").setDisabled(false);
+        panel.down("form").setDisabled(!this.isAllowed('edit'));
 
-        return this.formPanel;
+        return panel;
     }
 });

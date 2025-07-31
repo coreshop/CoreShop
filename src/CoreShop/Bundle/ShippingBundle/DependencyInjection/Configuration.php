@@ -176,7 +176,14 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['carrier', 'shipping_rule'])
+                        ->defaultValue([
+                            'carrier_show',
+                            'carrier_list',
+                            'carrier_edit',
+                            'shipping_rule_show',
+                            'shipping_rule_list',
+                            'shipping_rule_edit',
+                        ])
                     ->end()
                 ->end()
             ->end()

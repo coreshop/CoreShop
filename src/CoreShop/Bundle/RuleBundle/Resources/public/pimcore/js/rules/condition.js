@@ -14,10 +14,12 @@
 pimcore.registerNS('coreshop.rules.condition');
 coreshop.rules.condition = Class.create({
     dirty: false,
+    panel: false,
 
-    initialize: function (conditions) {
+    initialize: function (conditions, panel) {
         this.conditions = conditions;
         this.dirty = false;
+        this.panel = panel;
     },
 
     reload: function (conditions) {
@@ -44,8 +46,16 @@ coreshop.rules.condition = Class.create({
                 text: t('coreshop_condition_' + condition),
                 handler: _this.addCondition.bind(_this, condition, null, true)
             });
-
         });
+
+        const buttons = [];
+
+        if (!this.panel || this.panel.isAllowed('edit')) {
+            buttons.push({
+                iconCls: 'pimcore_icon_add',
+                menu: addMenu
+            });
+        }
 
         this.conditionsContainer = new Ext.Panel({
             iconCls: 'coreshop_rule_conditions',
@@ -53,10 +63,7 @@ coreshop.rules.condition = Class.create({
             autoScroll: true,
             style: 'padding: 10px',
             forceLayout: true,
-            tbar: [{
-                iconCls: 'pimcore_icon_add',
-                menu: addMenu
-            }],
+            tbar: buttons,
             border: false
         });
 
@@ -98,10 +105,13 @@ coreshop.rules.condition = Class.create({
         var conditionClass = this.getConditionClassItem(type);
         var item = new conditionClass(this, type, data);
 
-        // add logic for brackets
-        var tab = this;
+        const itemLayout = item.getLayout();
 
-        this.conditionsContainer.add(item.getLayout());
+        if (this.panel && !this.panel.isAllowed('edit')) {
+            itemLayout.disable();
+        }
+
+        this.conditionsContainer.add(itemLayout);
         this.conditionsContainer.updateLayout();
 
         if (dirty) {

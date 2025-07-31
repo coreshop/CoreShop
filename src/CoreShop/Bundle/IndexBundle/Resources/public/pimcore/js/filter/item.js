@@ -25,6 +25,21 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
     indexFieldsStore: null,
 
     getPanel: function () {
+        const buttons = [];
+
+        if (this.isAllowed('edit')) {
+            buttons.push({
+                text: t('clone'),
+                iconCls: 'pimcore_icon_clone',
+                handler: this.clone.bind(this)
+            });
+            buttons.push({
+                text: t('save'),
+                iconCls: 'pimcore_icon_apply',
+                handler: this.save.bind(this)
+            });
+        }
+
         panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -32,15 +47,7 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
             deferredRender: false,
             forceLayout: true,
             iconCls: this.iconCls,
-            buttons: [{
-                text: t('clone'),
-                iconCls: 'pimcore_icon_clone',
-                handler: this.clone.bind(this)
-            }, {
-                text: t('save'),
-                iconCls: 'pimcore_icon_apply',
-                handler: this.save.bind(this)
-            }],
+            buttons: buttons,
             items: this.getItems()
         });
 
@@ -152,8 +159,7 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
         });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: 'coreshop_icon_settings',
-            title: t('settings'),
+            disabled: !this.isAllowed('edit'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
             border: false,
@@ -192,7 +198,13 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
             }]
         });
 
-        return this.settingsForm;
+        return new Ext.Panel({
+            iconCls: 'coreshop_icon_settings',
+            title: t('settings'),
+            autoScroll: true,
+            border: false,
+            items: [this.settingsForm]
+        });
     },
 
     getSaveData: function () {

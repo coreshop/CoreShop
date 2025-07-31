@@ -21,6 +21,7 @@ coreshop.store.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_stores',
     iconCls: 'coreshop_icon_store',
     type: 'coreshop_stores',
+    permission: 'coreshop_permission_store',
 
     routing: {
         add: 'coreshop_store_add',

@@ -21,6 +21,7 @@ coreshop.taxrulegroup.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_taxrulegroups',
     iconCls: 'coreshop_icon_tax_rule_groups',
     type: 'coreshop_taxrulegroups',
+    permission: 'coreshop_permission_tax_rule_group',
 
     routing: {
         add: 'coreshop_tax_rule_group_add',

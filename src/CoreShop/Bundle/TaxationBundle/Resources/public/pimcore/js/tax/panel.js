@@ -21,6 +21,7 @@ coreshop.tax.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_tax_rates',
     iconCls: 'coreshop_icon_taxes',
     type: 'coreshop_taxes',
+    permission: 'coreshop_permission_tax_rate',
 
     routing: {
         add: 'coreshop_tax_rate_add',

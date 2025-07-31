@@ -20,6 +20,7 @@ coreshop.product.pricerule.panel = Class.create(coreshop.rules.panel, {
     storeId: 'coreshop_product_price_rule',
     iconCls: 'coreshop_icon_price_rule',
     type: 'coreshop_product_pricerules',
+    permission: 'coreshop_permission_product_price_rule',
 
     /**
      * @var array

@@ -22,6 +22,7 @@ coreshop.notification.rule.panel = Class.create(coreshop.rules.panel, {
     storeId: 'coreshop_notification_rules',
     iconCls: 'coreshop_icon_notification_rule',
     type: 'coreshop_notification_rule',
+    permission: 'coreshop_permission_notification',
 
     routing: {
         add: 'coreshop_notification_rule_add',

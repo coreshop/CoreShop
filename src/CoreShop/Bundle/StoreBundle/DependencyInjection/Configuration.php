@@ -106,7 +106,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['store'])
+                        ->defaultValue([])
                     ->end()
                 ->end()
             ->end()

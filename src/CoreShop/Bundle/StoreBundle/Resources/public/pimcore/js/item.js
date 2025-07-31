@@ -20,11 +20,7 @@ coreshop.store.item = Class.create(coreshop.resource.item, {
         save: 'coreshop_store_save'
     },
 
-    getItems: function () {
-        return [this.getFormPanel()];
-    },
-
-    getFormPanel: function () {
+    getFormPanelItems: function () {
         this.store = new Ext.data.Store({
             restful: false,
             idProperty: 'id',
@@ -40,65 +36,44 @@ coreshop.store.item = Class.create(coreshop.resource.item, {
 
         this.store.load();
 
-        this.formPanel = new Ext.form.Panel({
-            bodyStyle: 'padding:20px 5px 20px 5px;',
-            border: false,
-            region: 'center',
-            autoScroll: true,
-            forceLayout: true,
-            defaults: {
-                forceLayout: true
-            },
-            buttons: [
-                {
-                    text: t('save'),
-                    handler: this.save.bind(this),
-                    iconCls: 'pimcore_icon_apply'
-                }
-            ],
+        return [{
+            xtype: 'fieldset',
+            autoHeight: true,
+            labelWidth: 250,
+            defaultType: 'textfield',
+            defaults: {width: 300},
             items: [
                 {
-                    xtype: 'fieldset',
-                    autoHeight: true,
-                    labelWidth: 250,
-                    defaultType: 'textfield',
-                    defaults: {width: 300},
-                    items: [
-                        {
-                            fieldLabel: t('name'),
-                            name: 'name',
-                            value: this.data.name
-                        },
-                        {
-                            fieldLabel: t('coreshop_store_site'),
-                            xtype: 'combo',
-                            name: 'siteId',
-                            width: 400,
-                            store: this.store,
-                            displayField: 'name',
-                            valueField: 'id',
-                            triggerAction: 'all',
-                            typeAhead: false,
-                            editable: false,
-                            forceSelection: true,
-                            queryMode: 'local',
-                            value: this.data.siteId
-                        },
-                        {
-                            fieldLabel: t('coreshop_store_template'),
-                            name: 'template',
-                            value: this.data.template
-                        },
-                        {
-                            xtype: 'coreshop.currency',
-                            value: this.data.currency
-                        },
-                    ]
-                }
+                    fieldLabel: t('name'),
+                    name: 'name',
+                    value: this.data.name
+                },
+                {
+                    fieldLabel: t('coreshop_store_site'),
+                    xtype: 'combo',
+                    name: 'siteId',
+                    width: 400,
+                    store: this.store,
+                    displayField: 'name',
+                    valueField: 'id',
+                    triggerAction: 'all',
+                    typeAhead: false,
+                    editable: false,
+                    forceSelection: true,
+                    queryMode: 'local',
+                    value: this.data.siteId
+                },
+                {
+                    fieldLabel: t('coreshop_store_template'),
+                    name: 'template',
+                    value: this.data.template
+                },
+                {
+                    xtype: 'coreshop.currency',
+                    value: this.data.currency
+                },
             ]
-        });
-
-        return this.formPanel;
+        }];
     },
 
     getSaveData: function () {

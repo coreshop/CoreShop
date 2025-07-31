@@ -20,11 +20,7 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
         save: 'coreshop_country_save'
     },
 
-    getItems: function () {
-        return [this.getFormPanel()];
-    },
-
-    getFormPanel: function () {
+    getFormPanelItems: function () {
         var data = this.data,
             langTabs = [],
             salutationsStore = Ext.create('Ext.data.ArrayStore', {
@@ -104,35 +100,7 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
             }
         ];
 
-        this.formPanel = new Ext.form.Panel({
-            bodyStyle: 'padding:20px 5px 20px 5px;',
-            border: false,
-            region: 'center',
-            autoScroll: true,
-            forceLayout: true,
-            defaults: {
-                forceLayout: true
-            },
-            buttons: [
-                {
-                    text: t('save'),
-                    handler: this.save.bind(this),
-                    iconCls: 'pimcore_icon_apply'
-                }
-            ],
-            items: [
-                {
-                    xtype: 'fieldset',
-                    autoHeight: true,
-                    labelWidth: 350,
-                    defaultType: 'textfield',
-                    defaults: {width: 300},
-                    items: items
-                }
-            ]
-        });
-
-        return this.formPanel;
+        return items;
     },
 
     getSaveData: function () {

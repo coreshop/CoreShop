@@ -389,7 +389,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['product_price_rule', 'product_unit'])
+                        ->defaultValue([])
                     ->end()
                 ->end()
             ->end()

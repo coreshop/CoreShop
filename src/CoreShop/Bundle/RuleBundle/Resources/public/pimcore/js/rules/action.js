@@ -14,10 +14,12 @@
 pimcore.registerNS('coreshop.rules.action');
 coreshop.rules.action = Class.create({
     dirty: false,
+    panel: null,
 
-    initialize: function (actions) {
+    initialize: function (actions, panel) {
         this.actions = actions;
         this.dirty = false;
+        this.panel = panel;
     },
 
     reload: function (actions) {
@@ -46,16 +48,22 @@ coreshop.rules.action = Class.create({
             });
         });
 
+        const buttons = [];
+
+        if (!this.panel || this.panel.isAllowed('edit')) {
+            buttons.push({
+                iconCls: 'pimcore_icon_add',
+                menu: addMenu
+            });
+        }
+
         this.actionsContainer = new Ext.Panel({
             iconCls: 'coreshop_rule_actions',
             title: t('actions'),
             autoScroll: true,
             forceLayout: true,
             style: 'padding: 10px',
-            tbar: [{
-                iconCls: 'pimcore_icon_add',
-                menu: addMenu
-            }],
+            tbar: buttons,
             border: false
         });
 
@@ -76,7 +84,13 @@ coreshop.rules.action = Class.create({
         var actionClass = this.getActionClassItem(type);
         var item = new actionClass(this, type, data);
 
-        this.actionsContainer.add(item.getLayout());
+        const itemLayout = item.getLayout();
+
+        if (this.panel && !this.panel.isAllowed('edit')) {
+            itemLayout.disable();
+        }
+
+        this.actionsContainer.add(itemLayout);
         this.actionsContainer.updateLayout();
 
         if (dirty) {

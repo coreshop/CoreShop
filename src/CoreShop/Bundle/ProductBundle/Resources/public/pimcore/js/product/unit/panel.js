@@ -18,6 +18,7 @@ coreshop.product.unit.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_product_units',
     iconCls: 'coreshop_icon_product_units',
     type: 'coreshop_product_units',
+    permission: 'coreshop_permission_product_unit',
 
     routing : {
         add: 'coreshop_product_unit_add',

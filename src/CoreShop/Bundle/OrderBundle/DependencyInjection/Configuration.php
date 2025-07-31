@@ -420,7 +420,6 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
                         ->defaultValue([
-                            'cart_price_rule',
                             'order_list',
                             'order_detail',
                             'order_create',

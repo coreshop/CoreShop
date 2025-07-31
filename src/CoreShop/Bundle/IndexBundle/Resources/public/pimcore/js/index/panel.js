@@ -19,6 +19,7 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_indexes',
     iconCls: 'coreshop_icon_indexes',
     type: 'coreshop_indexes',
+    permission: 'coreshop_permission_index',
 
     routing: {
         add: 'coreshop_index_add',

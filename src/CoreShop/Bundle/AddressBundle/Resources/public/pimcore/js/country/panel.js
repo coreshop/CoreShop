@@ -21,6 +21,7 @@ coreshop.country.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_countries',
     iconCls: 'coreshop_icon_country',
     type: 'coreshop_countries',
+    permission: 'coreshop_permission_country',
 
     routing: {
         add: 'coreshop_country_add',

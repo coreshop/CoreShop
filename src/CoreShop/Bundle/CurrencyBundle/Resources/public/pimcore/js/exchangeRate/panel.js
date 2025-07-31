@@ -21,6 +21,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
     storeId: 'coreshop_exchange_rates',
     iconCls: 'coreshop_icon_exchange_rate',
     type: 'coreshop_exchange_rate',
+    permission: 'coreshop_permission_exchange_rate',
 
     routing: {
         add: 'coreshop_exchange_rate_add',
@@ -43,6 +44,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
         this.grid = Ext.create('Ext.grid.Panel', {
             store: pimcore.globalmanager.get(this.storeId),
             region: 'center',
+            disabled: !this.isAllowed('edit'),
             columns: [
                 {
                     header: t('coreshop_from_currency'),

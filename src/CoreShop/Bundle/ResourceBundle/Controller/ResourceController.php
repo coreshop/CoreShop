@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
+use CoreShop\Bundle\ResourceBundle\ResourcePermission;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -55,10 +56,10 @@ class ResourceController extends AdminController
     /**
      * @throws AccessDeniedException
      */
-    protected function isGrantedOr403(): void
+    protected function isGrantedOr403(string $type): void
     {
         if ($this->metadata->hasParameter('permission')) {
-            $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
+            $permission = sprintf('%s_permission_%s_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'), $type);
 
             $user = $this->tokenStorage->getToken()?->getUser();
 
@@ -72,16 +73,20 @@ class ResourceController extends AdminController
                 return;
             }
 
+            // Fallback to permission without type
+            // Todo: Remove in 5.0
+            $permissionWithoutType = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
+
+            if ($user->isAllowed($permissionWithoutType)) {
+                return;
+            }
+
             throw new AccessDeniedException();
         }
     }
 
     public function listAction(Request $request): JsonResponse
     {
-        $start = $request->query->get('start', 0);
-        $limit = $request->query->get('limit', 25);
-
-        // TODO: use start and limit as soon as Admin UI has pagination
         $data = $this->repository->findAll();
 
         return $this->viewHandler->handle($data, ['group' => 'List']);
@@ -89,7 +94,7 @@ class ResourceController extends AdminController
 
     public function getAction(Request $request): JsonResponse
     {
-        $this->isGrantedOr403();
+        $this->isGrantedOr403(ResourcePermission::VIEW);
 
         $resources = $this->findOr404((int) $this->getParameterFromRequest($request, 'id'));
 
@@ -98,7 +103,7 @@ class ResourceController extends AdminController
 
     public function saveAction(Request $request): JsonResponse
     {
-        $this->isGrantedOr403();
+        $this->isGrantedOr403(ResourcePermission::EDIT);
 
         $resource = $this->findOr404($this->getParameterFromRequest($request, 'id'));
 
@@ -135,7 +140,7 @@ class ResourceController extends AdminController
 
     public function cloneAction(Request $request): JsonResponse
     {
-        $this->isGrantedOr403();
+        $this->isGrantedOr403(ResourcePermission::EDIT);
 
         $resource = $this->factory->createNew();
         $form = $this->resourceFormFactory->create($this->metadata, $resource);
@@ -175,7 +180,7 @@ class ResourceController extends AdminController
 
     public function addAction(Request $request): JsonResponse
     {
-        $this->isGrantedOr403();
+        $this->isGrantedOr403(ResourcePermission::CREATE);
 
         $name = $this->getParameterFromRequest($request, 'name');
 
@@ -205,7 +210,7 @@ class ResourceController extends AdminController
 
     public function deleteAction(Request $request): JsonResponse
     {
-        $this->isGrantedOr403();
+        $this->isGrantedOr403(ResourcePermission::DELETE);
 
         $id = $this->getParameterFromRequest($request, 'id');
 
@@ -227,8 +232,6 @@ class ResourceController extends AdminController
 
     public function folderConfigurationAction(): JsonResponse
     {
-        $this->isGrantedOr403();
-
         $repo = $this->repository;
 
         if (!$repo instanceof PimcoreRepositoryInterface) {

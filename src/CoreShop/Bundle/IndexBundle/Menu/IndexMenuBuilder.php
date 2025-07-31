@@ -28,7 +28,7 @@ class IndexMenuBuilder implements MenuBuilderInterface
         $menuItem
             ->addChild('coreshop_indexes')
             ->setLabel('coreshop_indexes')
-            ->setAttribute('permission', 'coreshop_permission_index')
+            ->setAttribute('permission', 'coreshop_permission_index_list')
             ->setAttribute('iconCls', 'coreshop_nav_icon_indexes')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'index')
@@ -37,7 +37,7 @@ class IndexMenuBuilder implements MenuBuilderInterface
         $menuItem
             ->addChild('coreshop_filters')
             ->setLabel('coreshop_filters')
-            ->setAttribute('permission', 'coreshop_permission_filter')
+            ->setAttribute('permission', 'coreshop_permission_filter_list')
             ->setAttribute('iconCls', 'coreshop_nav_icon_filters')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'filter')

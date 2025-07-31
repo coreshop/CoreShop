@@ -35,6 +35,16 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
     },
 
     getPanel: function () {
+        const buttons = [];
+
+        if (this.isAllowed('edit')) {
+            buttons.push({
+                text: t('save'),
+                iconCls: 'pimcore_icon_save',
+                handler: this.save.bind(this)
+            });
+        }
+
         return new Ext.TabPanel({
             activeTab: 0,
             title: this.data.identifier,
@@ -42,11 +52,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             deferredRender: false,
             forceLayout: true,
             iconCls: this.iconCls,
-            buttons: [{
-                text: t('save'),
-                iconCls: 'pimcore_icon_apply',
-                handler: this.save.bind(this)
-            }],
+            buttons: buttons,
             items: this.getItems()
         });
     },
@@ -95,62 +101,60 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
 
         this.logoSelect = this.getLogoSelect();
         this.settingsForm = new Ext.form.Panel({
-            iconCls: 'coreshop_icon_settings',
-            title: t('settings'),
+            disabled: !this.isAllowed('edit'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
             border: false,
-            items: [{
-                xtype: 'fieldset',
-                autoHeight: true,
-                labelWidth: 350,
-                defaultType: 'textfield',
-                defaults: {width: '100%'},
-                items: [
-                    {
-                        xtype: 'textfield',
-                        name: 'identifier',
-                        fieldLabel: t('coreshop_identifier'),
-                        value: data.identifier,
-                        required: true
-                    }, {
-                        xtype: 'textfield',
-                        name: 'trackingUrl',
-                        fieldLabel: t('coreshop_carrier_trackingUrl'),
-                        value: data.trackingUrl
+            items: [
+                {
+                    xtype: 'textfield',
+                    name: 'identifier',
+                    fieldLabel: t('coreshop_identifier'),
+                    value: data.identifier,
+                    required: true
+                }, {
+                    xtype: 'textfield',
+                    name: 'trackingUrl',
+                    fieldLabel: t('coreshop_carrier_trackingUrl'),
+                    value: data.trackingUrl
+                },
+                this.logoSelect.getLayoutEdit(),
+                {
+                    xtype: 'tabpanel',
+                    activeTab: 0,
+                    defaults: {
+                        autoHeight: true,
+                        bodyStyle: 'padding:10px;'
                     },
-                    this.logoSelect.getLayoutEdit(),
-                    {
-                        xtype: 'tabpanel',
-                        activeTab: 0,
-                        defaults: {
-                            autoHeight: true,
-                            bodyStyle: 'padding:10px;'
-                        },
-                        items: langTabs
-                    },
-                    {
-                        xtype: 'combo',
-                        name: 'taxCalculationStrategy',
-                        fieldLabel: t('coreshop_shipping_tax_calc_strategy'),
-                        value: data.taxCalculationStrategy,
-                        forceSelection: true,
-                        queryMode: 'local',
-                        valueField: 'value',
-                        displayField: 'label',
-                        store: pimcore.globalmanager.get('coreshop_shipping_tax_calculation_strategies')
-                    },
-                    {
-                        xtype: 'checkbox',
-                        name: 'hideFromCheckout',
-                        fieldLabel: t('coreshop_carrier_hideFromCheckout'),
-                        value: this.data.hideFromCheckout
-                    }
-                ]
-            }]
+                    items: langTabs
+                },
+                {
+                    xtype: 'combo',
+                    name: 'taxCalculationStrategy',
+                    fieldLabel: t('coreshop_shipping_tax_calc_strategy'),
+                    value: data.taxCalculationStrategy,
+                    forceSelection: true,
+                    queryMode: 'local',
+                    valueField: 'value',
+                    displayField: 'label',
+                    store: pimcore.globalmanager.get('coreshop_shipping_tax_calculation_strategies')
+                },
+                {
+                    xtype: 'checkbox',
+                    name: 'hideFromCheckout',
+                    fieldLabel: t('coreshop_carrier_hideFromCheckout'),
+                    value: this.data.hideFromCheckout
+                }
+            ]
         });
 
-        return this.settingsForm;
+        return new Ext.Panel({
+            iconCls: 'coreshop_icon_settings',
+            title: t('settings'),
+            autoScroll: true,
+            border: false,
+            items: [this.settingsForm]
+        });
     },
 
     getLogoSelect: function () {
@@ -180,6 +184,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         }.bind(this));
 
         this.shippingRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
+            disabled: !this.isAllowed('edit'),
             columns: [
                 {
                     header: t('coreshop_carriers_shipping_rule'),

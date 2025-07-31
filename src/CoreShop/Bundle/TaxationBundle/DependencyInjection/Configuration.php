@@ -183,7 +183,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['tax_rate', 'tax_rule_group'])
+                        ->defaultValue([])
                     ->end()
                 ->end()
             ->end()

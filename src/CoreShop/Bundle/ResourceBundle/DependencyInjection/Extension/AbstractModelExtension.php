@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
+use CoreShop\Bundle\ResourceBundle\ResourcePermission;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -150,50 +151,57 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             }
         }
 
+        $applicationPermissions = [];
+        $applicationParameter = sprintf('%s.permissions', $applicationName);
+        $globalPermissions = [];
+        $globalParameter = 'coreshop.all.permissions';
+
+        if ($container->hasParameter($applicationParameter)) {
+            /**
+             * @var array $applicationPermissions
+             */
+            $applicationPermissions = $container->getParameter($applicationParameter);
+        }
+
+        if ($container->hasParameter($globalParameter)) {
+            /**
+             * @var array $globalPermissions
+             */
+            $globalPermissions = $container->getParameter($globalParameter);
+        }
+
+        if (!isset($globalPermissions[$applicationName])) {
+            $globalPermissions[$applicationName] = [];
+        }
+
+        $permissions = [];
+
         if (array_key_exists('permissions', $bundleResources)) {
-            $applicationPermissions = [];
-            $applicationParameter = sprintf('%s.permissions', $applicationName);
-            $resourcePermissions = [];
-            $globalParameter = 'coreshop.all.permissions';
-            $globalPermissions = [];
-
-            if ($container->hasParameter($applicationParameter)) {
-                /**
-                 * @var array $applicationPermissions
-                 */
-                $applicationPermissions = $container->getParameter($applicationParameter);
-            }
-
-            if ($container->hasParameter($globalParameter)) {
-                /**
-                 * @var array $globalPermissions
-                 */
-                $globalPermissions = $container->getParameter($globalParameter);
-            }
-
-            $permissions = [];
-
             foreach ($bundleResources['permissions'] as $permission) {
                 $identifier = sprintf('%s_permission_%s', $applicationName, $permission);
 
-                $permissions[] = $identifier;
-                $resourcePermissions[] = $identifier;
+                $permissions[$identifier] = true;
             }
-
-            $globalApplicationPermissions = array_key_exists($applicationName, $globalPermissions) ? $globalPermissions[$applicationName] : [];
-            $globalApplicationPermissions = array_merge($globalApplicationPermissions, $resourcePermissions);
-            $globalPermissions[$applicationName] = $globalApplicationPermissions;
-
-            $container->setParameter($globalParameter, $globalPermissions);
-            $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
         }
+
+        if (array_key_exists('resource_permissions', $bundleResources)) {
+            foreach ($bundleResources['resource_permissions'] as $permission) {
+                foreach (ResourcePermission::getAllPermissions() as $type) {
+                    $identifier = sprintf('%s_permission_%s_%s', $applicationName, $permission, $type);
+
+                    $permissions[$identifier] = true;
+                }
+            }
+        }
+
+        $applicationPermissions = array_merge($applicationPermissions, array_keys($permissions));
+        $globalPermissions[$applicationName] = array_merge($globalPermissions[$applicationName], array_keys($permissions));
+
+        $container->setParameter($globalParameter, $globalPermissions);
+        $container->setParameter($applicationParameter, $applicationPermissions);
     }
 
-    /**
-     * @param string           $applicationName
-     * @param array            $bundles
-     */
-    public function registerDependantBundles($applicationName, $bundles, ContainerBuilder $container): void
+    public function registerDependantBundles(string $applicationName, array $bundles, ContainerBuilder $container): void
     {
         $appParameterName = sprintf('%s.dependant.bundles', $applicationName);
         $globalParameterName = 'coreshop.all.dependant.bundles';

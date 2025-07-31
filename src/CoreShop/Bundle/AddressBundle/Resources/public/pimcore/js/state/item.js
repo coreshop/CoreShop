@@ -20,11 +20,7 @@ coreshop.state.item = Class.create(coreshop.resource.item, {
         save: 'coreshop_state_save'
     },
 
-    getItems: function () {
-        return [this.getFormPanel()];
-    },
-
-    getFormPanel: function () {
+    getFormPanelItems: function () {
         var data = this.data,
             langTabs = [];
 
@@ -45,62 +41,35 @@ coreshop.state.item = Class.create(coreshop.resource.item, {
             langTabs.push(tab);
         });
 
-        this.formPanel = new Ext.form.Panel({
-            bodyStyle: 'padding:20px 5px 20px 5px;',
-            border: false,
-            region: 'center',
-            autoScroll: true,
-            forceLayout: true,
-            defaults: {
-                forceLayout: true
-            },
-            buttons: [
-                {
-                    text: t('save'),
-                    handler: this.save.bind(this),
-                    iconCls: 'pimcore_icon_apply'
-                }
-            ],
-            items: [
-                {
-                    xtype: 'fieldset',
-                    autoHeight: true,
-                    labelWidth: 350,
-                    defaultType: 'textfield',
-                    defaults: {width: 300},
-                    items: [
-                        {
-                            xtype: 'tabpanel',
-                            activeTab: 0,
-                            defaults: {
-                                autoHeight: true,
-                                bodyStyle: 'padding:10px;'
-                            },
-                            width: '100%',
-                            items: langTabs
-                        },
-                        {
-                            fieldLabel: t('coreshop_state_isoCode'),
-                            name: 'isoCode',
-                            value: data.isoCode
-                        },
-                        {
-                            xtype: 'checkbox',
-                            fieldLabel: t('active'),
-                            name: 'active',
-                            checked: data.active
-                        },
-                        {
-                            xtype: 'coreshop.country',
-                            value: data.country,
-                            name: 'country'
-                        }
-                    ]
-                }
-            ]
-        });
 
-        return this.formPanel;
+        return [
+            {
+                xtype: 'tabpanel',
+                activeTab: 0,
+                defaults: {
+                    autoHeight: true,
+                    bodyStyle: 'padding:10px;'
+                },
+                width: '100%',
+                items: langTabs
+            },
+            {
+                fieldLabel: t('coreshop_state_isoCode'),
+                name: 'isoCode',
+                value: data.isoCode
+            },
+            {
+                xtype: 'checkbox',
+                fieldLabel: t('active'),
+                name: 'active',
+                checked: data.active
+            },
+            {
+                xtype: 'coreshop.country',
+                value: data.country,
+                name: 'country'
+            }
+        ];
     },
 
     getSaveData: function () {

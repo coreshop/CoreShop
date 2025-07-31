@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PayumPaymentBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\ResourcePermission;
 use CoreShop\Component\PayumPayment\Model\PaymentProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +28,7 @@ class PaymentProviderController extends ResourceController
 {
     public function getAction(Request $request): JsonResponse
     {
-        $this->isGrantedOr403();
+        $this->isGrantedOr403(ResourcePermission::VIEW);
 
         $resources = $this->findOr404((int) $this->getParameterFromRequest($request, 'id'));
 

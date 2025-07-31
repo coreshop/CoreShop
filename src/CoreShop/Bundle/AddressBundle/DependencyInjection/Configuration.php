@@ -278,7 +278,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['country', 'state', 'zone'])
+                        ->defaultValue([])
                     ->end()
                 ->end()
             ->end()

@@ -40,8 +40,16 @@ coreshop.filter.condition = Class.create({
                 text: t('coreshop_filters_' + condition),
                 handler: _this.addCondition.bind(_this, condition, {}, true)
             });
-
         });
+
+        const buttons = [];
+
+        if (!this.parent || this.parent.isAllowed('edit')) {
+            buttons.push({
+                iconCls: 'pimcore_icon_add',
+                menu: addMenu
+            });
+        }
 
         this.fieldsContainer = new Ext.Panel({
             iconCls: 'coreshop_filters_' + this.type,
@@ -49,10 +57,7 @@ coreshop.filter.condition = Class.create({
             autoScroll: true,
             style: 'padding: 10px',
             forceLayout: true,
-            tbar: [{
-                iconCls: 'pimcore_icon_add',
-                menu: addMenu
-            }],
+            tbar: buttons,
             border: false
         });
 
@@ -72,10 +77,13 @@ coreshop.filter.condition = Class.create({
             // create condition
             var item = new coreshop.filter.conditions[type](this, data);
 
-            // add logic for brackets
-            var tab = this;
+            const itemLayout = item.getLayout();
 
-            this.fieldsContainer.add(item.getLayout());
+            if (this.parent && !this.parent.isAllowed('edit')) {
+                itemLayout.disable();
+            }
+
+            this.fieldsContainer.add(itemLayout);
             this.fieldsContainer.updateLayout();
         }
     },

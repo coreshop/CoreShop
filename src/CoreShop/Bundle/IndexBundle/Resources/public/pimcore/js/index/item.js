@@ -23,6 +23,21 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
     },
 
     getPanel: function () {
+        const buttons = [];
+
+        if (this.isAllowed('edit')) {
+            buttons.push({
+                text: t('clone'),
+                iconCls: 'pimcore_icon_clone',
+                handler: this.clone.bind(this)
+            });
+            buttons.push({
+                text: t('save'),
+                iconCls: 'pimcore_icon_apply',
+                handler: this.save.bind(this)
+            });
+        }
+
         return new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -30,15 +45,7 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
             deferredRender: false,
             forceLayout: true,
             iconCls: this.iconCls,
-            buttons: [{
-                text: t('clone'),
-                iconCls: 'pimcore_icon_clone',
-                handler: this.clone.bind(this)
-            }, {
-                text: t('save'),
-                iconCls: 'pimcore_icon_apply',
-                handler: this.save.bind(this)
-            }],
+            buttons: buttons,
             items: this.getItems()
         });
     },
@@ -57,8 +64,7 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
         this.indexWorkerSettings = new Ext.form.Panel({});
 
         this.formPanel = new Ext.panel.Panel({
-            iconCls: 'coreshop_icon_settings',
-            title: t('settings'),
+            disabled: !this.isAllowed('edit'),
             bodyStyle: 'padding:20px 5px 20px 5px;',
             border: false,
             region: 'center',
@@ -136,7 +142,13 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
             this.getIndexWorkerConfig(this.data.worker);
         }
 
-        return this.formPanel;
+        return new Ext.Panel({
+            iconCls: 'coreshop_icon_settings',
+            title: t('settings'),
+            autoScroll: true,
+            border: false,
+            items: [this.formPanel]
+        });
     },
 
     getIndexFields: function () {

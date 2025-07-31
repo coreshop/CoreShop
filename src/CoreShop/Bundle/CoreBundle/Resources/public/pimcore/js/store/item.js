@@ -69,6 +69,9 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                 }
             ]
         );
+        
+        panel.setDisabled(false);
+        panel.setDisabled(!this.isAllowed('edit'));
 
         return this.formPanel;
     }

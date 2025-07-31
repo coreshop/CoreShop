@@ -16,7 +16,7 @@ coreshop.provider.item = Class.create(coreshop.provider.item, {
         var panel = $super(),
             data = this.data;
 
-        panel.down("fieldset").add([
+        panel.add([
             {
                 xtype: 'coreshop.store',
                 name: 'stores',
@@ -25,6 +25,9 @@ coreshop.provider.item = Class.create(coreshop.provider.item, {
                 value: data.stores
             }
         ]);
+
+        panel.setDisabled(false);
+        panel.setDisabled(!this.isAllowed('edit'));
 
         this.formPanel = panel;
 

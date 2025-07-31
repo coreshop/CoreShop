@@ -20,6 +20,7 @@ coreshop.paymentproviderrule.panel = Class.create(coreshop.rules.panel, {
     storeId: 'coreshop_payment_provider_rules',
     iconCls: 'coreshop_nav_icon_payment_provider_rule',
     type: 'coreshop_payment_provider_rule',
+    permission: 'coreshop_permission_payment_provider_rule',
 
     routing: {
         add: 'coreshop_payment_provider_rule_add',

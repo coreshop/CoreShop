@@ -20,11 +20,7 @@ coreshop.taxrulegroup.item = Class.create(coreshop.resource.item, {
         save: 'coreshop_tax_rule_group_save'
     },
 
-    getItems: function () {
-        return [this.getFormPanel()];
-    },
-
-    getFormPanel: function () {
+    getFormPanelItems: function () {
         var data = this.data;
 
         var items = [
@@ -41,36 +37,17 @@ coreshop.taxrulegroup.item = Class.create(coreshop.resource.item, {
             }
         ];
 
-        this.formPanel = new Ext.form.Panel({
-            bodyStyle: 'padding:20px 5px 20px 5px;',
-            border: false,
-            region: 'center',
-            autoScroll: true,
-            forceLayout: true,
-            defaults: {
-                forceLayout: true
+        return [
+            {
+                xtype: 'fieldset',
+                autoHeight: true,
+                labelWidth: 350,
+                defaultType: 'textfield',
+                defaults: {width: 400},
+                items: items
             },
-            buttons: [
-                {
-                    text: t('save'),
-                    handler: this.save.bind(this),
-                    iconCls: 'pimcore_icon_apply'
-                }
-            ],
-            items: [
-                {
-                    xtype: 'fieldset',
-                    autoHeight: true,
-                    labelWidth: 350,
-                    defaultType: 'textfield',
-                    defaults: {width: 400},
-                    items: items
-                },
-                this.getGrid()
-            ]
-        });
-
-        return this.formPanel;
+            this.getGrid()
+        ];
     },
 
     getGrid: function () {

@@ -26,8 +26,8 @@ coreshop.rules.item = Class.create(coreshop.resource.item, {
         var actionContainerClass = this.getActionContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.actions = new actionContainerClass(this.parentPanel.getActions());
-        this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
+        this.actions = new actionContainerClass(this.parentPanel.getActions(), this.parentPanel);
+        this.conditions = new conditionContainerClass(this.parentPanel.getConditions(), this.parentPanel);
 
         var items = [
             this.getSettings(),

@@ -215,7 +215,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['payment_provider', 'payment_provider_rule'])
+                        ->defaultValue([])
                     ->end()
                 ->end()
             ->end()

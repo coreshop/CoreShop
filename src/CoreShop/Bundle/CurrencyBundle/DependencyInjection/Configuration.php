@@ -132,7 +132,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['currency', 'exchange_rate'])
+                        ->defaultValue([])
                     ->end()
                 ->end()
             ->end()

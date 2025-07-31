@@ -20,28 +20,7 @@ coreshop.product.unit.item = Class.create(coreshop.resource.item, {
         save: 'coreshop_product_unit_save'
     },
 
-    getPanel: function () {
-        this.panel = new Ext.TabPanel({
-            activeTab: 0,
-            closable: true,
-            deferredRender: false,
-            forceLayout: true,
-            iconCls: this.iconCls,
-            items: this.getItems(),
-            buttons: [{
-                text: t('save'),
-                iconCls: 'pimcore_icon_apply',
-                handler: this.save.bind(this)
-            }],
-            tabConfig: {
-                html: this.data.name
-            }
-        });
-
-        return this.panel;
-    },
-
-    getItems: function () {
+    getFormPanelItems: function () {
         var data = this.data,
             langTabs = [];
 
@@ -80,37 +59,28 @@ coreshop.product.unit.item = Class.create(coreshop.resource.item, {
             langTabs.push(tab);
         });
 
-        this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: 'coreshop_icon_settings',
-            title: t('settings'),
-            bodyStyle: 'padding:10px;',
-            autoScroll: true,
-            border: false,
-            items: [{
-                xtype: 'textfield',
-                name: 'name',
-                fieldLabel: t('coreshop_product_unit_name'),
-                width: 250,
-                value: data.name,
-                enableKeyEvents: true,
-                listeners: {
-                    keyup: function (field) {
-                        this.panel.setTitle(field.getValue());
-                    }.bind(this)
-                }
-            }, {
-                xtype: 'tabpanel',
-                activeTab: 0,
-                defaults: {
-                    autoHeight: true,
-                    bodyStyle: 'padding:10px;'
-                },
-                width: '100%',
-                items: langTabs
-            }]
-        });
-
-        return this.settingsForm;
+        return [{
+            xtype: 'textfield',
+            name: 'name',
+            fieldLabel: t('coreshop_product_unit_name'),
+            width: 250,
+            value: data.name,
+            enableKeyEvents: true,
+            listeners: {
+                keyup: function (field) {
+                    this.panel.setTitle(field.getValue());
+                }.bind(this)
+            }
+        }, {
+            xtype: 'tabpanel',
+            activeTab: 0,
+            defaults: {
+                autoHeight: true,
+                bodyStyle: 'padding:10px;'
+            },
+            width: '100%',
+            items: langTabs
+        }];
     },
 
     getSaveData: function () {

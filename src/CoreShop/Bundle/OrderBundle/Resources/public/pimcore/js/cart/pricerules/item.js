@@ -21,6 +21,16 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
     },
 
     getPanel: function () {
+        const buttons = [];
+
+        if (this.isAllowed('edit')) {
+            buttons.push({
+                text: t('save'),
+                iconCls: 'pimcore_icon_save',
+                handler: this.save.bind(this)
+            });
+        }
+
         this.panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -28,11 +38,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
             deferredRender: false,
             forceLayout: true,
             iconCls: this.iconCls,
-            buttons: [{
-                text: t('save'),
-                iconCls: 'pimcore_icon_apply',
-                handler: this.save.bind(this)
-            }],
+            buttons: buttons,
             items: this.getItems()
         });
 
@@ -71,11 +77,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
         });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: 'coreshop_icon_settings',
-            title: t('settings'),
             bodyStyle: 'padding:10px;',
-            autoScroll: true,
-            border: false,
+            disabled: !this.isAllowed('edit'),
             items: [{
                 xtype: 'textfield',
                 name: 'name',
@@ -126,7 +129,13 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
             }]
         });
 
-        return this.settingsForm;
+        return new Ext.Panel({
+            iconCls: 'coreshop_icon_settings',
+            title: t('settings'),
+            autoScroll: true,
+            border: false,
+            items: [this.settingsForm]
+        });
     },
 
     addVoucherCodes: function () {
@@ -249,6 +258,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_create_voucher'),
+                            disabled: !this.isAllowed('edit'),
                             handler: function () {
                                 this.openVoucherCreateDialog();
                             }.bind(this)
@@ -256,6 +266,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_generate_vouchers'),
+                            disabled: !this.isAllowed('edit'),
                             handler: function () {
                                 this.openVoucherGenerationDialog();
                             }.bind(this)
@@ -263,6 +274,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
+                            disabled: !this.isAllowed('edit'),
                             handler: function () {
                                 var page = store.currentPage;
                                 var size = store.getPageSize();

@@ -43,11 +43,10 @@ coreshop.product.pricerule.item = Class.create(coreshop.rules.item, {
 
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
-            iconCls: 'coreshop_icon_settings',
-            title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
             border: false,
+            disabled: !this.isAllowed('edit'),
             items: [{
                 xtype: 'textfield',
                 name: 'name',
@@ -82,10 +81,26 @@ coreshop.product.pricerule.item = Class.create(coreshop.rules.item, {
             }]
         });
 
-        return this.settingsForm;
+        return new Ext.Panel({
+            iconCls: 'coreshop_icon_settings',
+            title: t('settings'),
+            autoScroll: true,
+            border: false,
+            items: [this.settingsForm]
+        });
     },
 
     getPanel: function () {
+        const buttons = [];
+
+        if (this.isAllowed('edit')) {
+            buttons.push({
+                text: t('save'),
+                iconCls: 'pimcore_icon_save',
+                handler: this.save.bind(this)
+            });
+        }
+
         this.panel = new Ext.TabPanel({
             activeTab: 0,
             title: this.data.name,
@@ -93,11 +108,7 @@ coreshop.product.pricerule.item = Class.create(coreshop.rules.item, {
             deferredRender: false,
             forceLayout: true,
             iconCls: this.iconCls,
-            buttons: [{
-                text: t('save'),
-                iconCls: 'pimcore_icon_apply',
-                handler: this.save.bind(this)
-            }],
+            buttons: buttons,
             items: this.getItems()
         });
 
