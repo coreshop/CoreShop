@@ -1,3 +1,12 @@
+## 4.1.4
+* [Pimcore] DynamicDropdown - check if null by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2874
+* [Messenger] Fix `MessageRepository` service registration by @jdreesen in https://github.com/coreshop/CoreShop/pull/2876
+* [UPMERGE] 3.2 -> 4.0 by @github-actions[bot] in https://github.com/coreshop/CoreShop/pull/2878
+* [UPMERGE] 4.0 -> 4.1 by @github-actions[bot] in https://github.com/coreshop/CoreShop/pull/2879
+* [UPMERGE] 4.0 -> 4.1 by @github-actions[bot] in https://github.com/coreshop/CoreShop/pull/2875
+* [Index] CoreShop Index Command with Opensearch by @aarongerig in https://github.com/coreshop/CoreShop/pull/2880
+* [Resource Bundle] Add specific settings for Multiselect Datatype by @aarongerig in https://github.com/coreshop/CoreShop/pull/2881
+
 ## 4.1.3
 * [MoneyBundle] add MutationType for coreShopMoney by @breakone in https://github.com/coreshop/CoreShop/pull/2836
 * [CoreBundle] fix backend-order-creation carrier selection by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2839

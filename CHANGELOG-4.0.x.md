@@ -1,3 +1,8 @@
+# 4.0.17
+* [Pimcore] DynamicDropdown - check if null by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2874
+* [Messenger] Fix `MessageRepository` service registration by @jdreesen in https://github.com/coreshop/CoreShop/pull/2876
+* [UPMERGE] 3.2 -> 4.0 by @github-actions[bot] in https://github.com/coreshop/CoreShop/pull/2878
+
 # 4.0.16
 * [MoneyBundle] add MutationType for coreShopMoney by @breakone in https://github.com/coreshop/CoreShop/pull/2836
 * [CoreBundle] fix backend-order-creation carrier selection by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2839
