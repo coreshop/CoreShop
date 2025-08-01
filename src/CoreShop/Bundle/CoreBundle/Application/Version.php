@@ -25,7 +25,7 @@ final class Version
 
     public const string RELEASE_VERSION = '0';
 
-    public const string EXTRA_VERSION = 'pre.alpha';
+    public const string EXTRA_VERSION = 'beta.1';
 
     public static function getVersion(): string
     {
