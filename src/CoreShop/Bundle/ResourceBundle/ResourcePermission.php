@@ -19,15 +19,15 @@ namespace CoreShop\Bundle\ResourceBundle;
 
 class ResourcePermission
 {
-    public const CREATE = 'create';
+    public const string CREATE = 'create';
 
-    public const EDIT = 'edit';
+    public const string EDIT = 'edit';
 
-    public const LIST = 'list';
+    public const string LIST = 'list';
 
-    public const VIEW = 'view';
+    public const string VIEW = 'view';
 
-    public const DELETE = 'delete';
+    public const string DELETE = 'delete';
 
     public static function getAllPermissions(): array
     {
