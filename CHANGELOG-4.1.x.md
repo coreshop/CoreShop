@@ -1,3 +1,6 @@
+## 4.1.5
+* [IndexBundle] Optimize 404 Exception Handling on Index Item Deletion by @aarongerig in https://github.com/coreshop/CoreShop/pull/2894
+
 ## 4.1.4
 * [Pimcore] DynamicDropdown - check if null by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2874
 * [Messenger] Fix `MessageRepository` service registration by @jdreesen in https://github.com/coreshop/CoreShop/pull/2876
