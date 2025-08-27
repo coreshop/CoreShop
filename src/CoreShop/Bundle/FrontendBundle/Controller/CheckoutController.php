@@ -32,7 +32,6 @@ use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\Request;
