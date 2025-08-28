@@ -144,7 +144,7 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
 
     getGridColumnConfig: function (field) {
         return {
-            header: ts(field.label), width: 150, sortable: false, dataIndex: field.key,
+            header: t(field.label), width: 150, sortable: false, dataIndex: field.key,
             renderer: function (key, value, metaData, record) {
                 this.applyPermissionStyle(key, value, metaData, record);
 
