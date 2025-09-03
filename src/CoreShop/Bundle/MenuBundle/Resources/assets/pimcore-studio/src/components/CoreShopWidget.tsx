@@ -4,7 +4,7 @@
  * Simple React component for CoreShop menu widgets in Pimcore Studio UI
  */
 
-import React from 'react'
+import * as React from 'react'
 import { CoreShopMenuItem } from '../types'
 
 interface CoreShopWidgetProps {

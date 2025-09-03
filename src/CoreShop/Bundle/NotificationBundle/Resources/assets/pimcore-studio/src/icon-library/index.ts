@@ -12,14 +12,14 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import mailIcon from '@CoreShopNotification/assets/mail.svg?react'
-import notificationRuleIcon from '@CoreShopNotification/assets/notification-rule.svg?react'
+// @ts-ignore
+import mailIcon from '../assets/mail.svg?react'
+// @ts-ignore
+import notificationRuleIcon from '../assets/notification-rule.svg?react'
 
 export const NotificationBundleIconExtension: AbstractModule = {
-  name: 'coreshop-notification-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

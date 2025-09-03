@@ -3,89 +3,141 @@ payum_all:
 
 coreshop_admin_payment_provider_config:
     path: /%coreshop.admin.route.base%/payment_providers/get-config
-    defaults: { _controller: 'coreshop.admin_controller.payment_provider::getConfigAction'}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
+    defaults:
+        backend: admin
+        _controller: 'coreshop.admin_controller.payment_provider::getConfigAction'
     options:
         expose: true
 
 coreshop_admin_configuration_save_all:
     path: /%coreshop.admin.route.base%/configurations/save-all
-    defaults: { _controller: 'coreshop.admin_controller.configuration::saveAllAction'}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
+    defaults:
+        backend: admin
+        _controller: 'coreshop.admin_controller.configuration::saveAllAction'
     options:
         expose: true
 
 coreshop_admin_configuration_get_all:
     path: /%coreshop.admin.route.base%/configurations/get-all
-    defaults: { _controller: 'coreshop.admin_controller.configuration::getAllAction'}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
+    defaults:
+        backend: admin
+        _controller: 'coreshop.admin_controller.configuration::getAllAction'
     options:
         expose: true
 
 coreshop_admin_settings_get_settings:
     path: /%coreshop.admin.route.base%/settings/get-settings
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\SettingsController::getSettingsAction }
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\SettingsController::getSettingsAction
     options:
         expose: true
 
 coreshop_admin_report_get_data:
     path: /%coreshop.admin.route.base%/report/get-data
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController::getReportDataAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController::getReportDataAction
     options:
         expose: true
 
 coreshop_admin_report_export:
     path: /%coreshop.admin.route.base%/report/export
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController::exportReportCsvAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController::exportReportCsvAction
     options:
         expose: true
 
 coreshop_admin_portlet_get_data:
     path: /%coreshop.admin.route.base%/portlet/get-data
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController::getPortletDataAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController::getPortletDataAction
     options:
         expose: true
 
 coreshop_admin_report_portlet:
     path: /%coreshop.admin.route.base%/portlet/export
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController::exportPortletCsvAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController::exportPortletCsvAction
     options:
         expose: true
 
 coreshop_admin_settings_get:
     path: /%coreshop.admin.route.base%/settings/get
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.settings::getAction }
+    defaults:
+        backend: admin
+        _controller: coreshop.admin_controller.settings::getAction
     options:
         expose: true
 
 coreshop_admin_settings_set:
     path: /%coreshop.admin.route.base%/settings/set
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [POST]
-    defaults:  { _controller: coreshop.admin_controller.settings::setAction }
+    defaults:
+        backend: admin
+        _controller: coreshop.admin_controller.settings::setAction
     options:
         expose: true
 
 coreshop_admin_purchasable_validate_unit_definitions:
     path: /%coreshop.admin.route.base%/product/validation/unit-definitions-deletion
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductValidationController::validateUnitDefinitionDeletionAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\ProductValidationController::validateUnitDefinitionDeletionAction
     options:
         expose: true
 
 coreshop_admin_purchsable_variant_unit_solidifier_check:
     path: /%coreshop.admin.route.base%/product-variant-solidifier/check/{objectId}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController::checkStatusAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController::checkStatusAction
     options:
         expose: true
 
 coreshop_admin_purchsable_variant_unit_solidifier_apply:
     path: /%coreshop.admin.route.base%/product-variant-solidifier/apply/{objectId}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [PUT]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController::applyAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController::applyAction
     options:
         expose: true
 
@@ -104,36 +156,57 @@ coreshop_admin_product:
 ##### CUSTOMER TRANSFORMER
 coreshop_admin_customer_company_modifier_get_entity_details:
     path: /%coreshop.admin.route.base%/customer-company-modifier/get-entity-details/{type}/{objectId}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::getEntityDetailsAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::getEntityDetailsAction
     options:
         expose: true
 
 coreshop_admin_customer_company_modifier_validate_assignment:
     path: /%coreshop.admin.route.base%/customer-company-modifier/validate-assignment/{customerId}/{companyId}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::validateAssignmentAction, companyId: null}
+    defaults:
+        backend: admin
+        companyId: null
+        _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::validateAssignmentAction
     options:
         expose: true
 
 coreshop_admin_customer_company_modifier_dispatch_existing_assignment:
     path: /%coreshop.admin.route.base%/customer-company-modifier/dispatch-existing-assignment/{customerId}/{companyId}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [POST]
-    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::dispatchExistingAssignmentAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::dispatchExistingAssignmentAction
     options:
         expose: true
 
 coreshop_admin_customer_company_modifier_dispatch_new_assignment:
     path: /%coreshop.admin.route.base%/customer-company-modifier/dispatch-new-assignment/{customerId}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [POST]
-    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::dispatchNewAssignmentAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::dispatchNewAssignmentAction
     options:
         expose: true
 
 coreshop_admin_customer_company_name_duplication_check:
     path: /%coreshop.admin.route.base%/customer-company-modifier/duplication-name-check
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
     methods: [GET]
-    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::checkForNameDuplicatesAction}
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::checkForNameDuplicatesAction
     options:
         expose: true
 

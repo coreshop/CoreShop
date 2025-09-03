@@ -12,14 +12,14 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-// Import CoreShop Payment icons
-import paymentProviderIcon from '@CoreShopPayment/assets/payment-provider.svg?react'
-import paymentProviderRuleIcon from '@CoreShopPayment/assets/payment-provider-rule.svg?react'
+// @ts-ignore
+import paymentProviderIcon from '../assets/payment-provider.svg?react'
+// @ts-ignore
+import paymentProviderRuleIcon from '../assets/payment-provider-rule.svg?react'
 
 export const PaymentBundleIconExtension: AbstractModule = {
-  name: 'coreshop-payment-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

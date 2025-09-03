@@ -9,7 +9,7 @@
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
  * @license    CoreShop Commercial License (CCL)
  */
-
+// @ts-ignore
 import { type IAbstractPlugin } from '@pimcore/studio-ui-bundle'
 import { MessengerBundleIconExtension } from './icon-library'
 import { MessengerWidget } from './components'

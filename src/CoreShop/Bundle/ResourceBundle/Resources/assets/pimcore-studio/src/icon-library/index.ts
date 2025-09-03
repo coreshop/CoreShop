@@ -12,15 +12,16 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import cursorIcon from '@CoreShopResource/assets/cursor.svg?react'
-import logoIcon from '@CoreShopResource/assets/logo.svg?react'
-import servicesIcon from '@CoreShopResource/assets/services.svg?react'
+// @ts-ignore
+import cursorIcon from '../assets/cursor.svg?react'
+// @ts-ignore
+import logoIcon from '../assets/logo.svg?react'
+// @ts-ignore
+import servicesIcon from '../assets/services.svg?react'
 
 export const ResourceBundleIconExtension: AbstractModule = {
-  name: 'coreshop-resource-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

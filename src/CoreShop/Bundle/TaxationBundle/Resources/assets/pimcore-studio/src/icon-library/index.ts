@@ -12,13 +12,12 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import taxesIcon from '@CoreShopTaxation/assets/taxes.svg?react'
+// @ts-ignore
+import taxesIcon from '../assets/taxes.svg?react'
 
 export const TaxationBundleIconExtension: AbstractModule = {
-  name: 'coreshop-taxation-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

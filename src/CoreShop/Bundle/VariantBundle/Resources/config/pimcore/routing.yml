@@ -1,12 +1,20 @@
 coreshop_admin_variant_attributes:
-    path: /admin/variant/attributes
-    defaults: { _controller: CoreShop\Bundle\VariantBundle\Controller\VariantController::getAttributesAction }
+    path: /%coreshop.admin.route.base%/variant/attributes
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\VariantBundle\Controller\VariantController::getAttributesAction
     options:
         expose: true
 
 coreshop_admin_variant_generator:
-    path: /admin/variant/generate
-    defaults: { _controller: CoreShop\Bundle\VariantBundle\Controller\VariantController::generateVariantsAction }
+    path: /%coreshop.admin.route.base%/variant/generate
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\VariantBundle\Controller\VariantController::generateVariantsAction
     methods: [POST]
     options:
         expose: true

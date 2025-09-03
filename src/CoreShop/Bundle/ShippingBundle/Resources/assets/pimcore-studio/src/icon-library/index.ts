@@ -12,20 +12,26 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import carriersIcon from '@CoreShopShipping/assets/carriers.svg?react'
-import conditionsIcon from '@CoreShopShipping/assets/conditions.svg?react'
-import currenciesIcon from '@CoreShopShipping/assets/currencies.svg?react'
-import dimensionIcon from '@CoreShopShipping/assets/dimension.svg?react'
-import postcodeIcon from '@CoreShopShipping/assets/postcode.svg?react'
-import shippingIcon from '@CoreShopShipping/assets/shipping.svg?react'
-import shippingRulesIcon from '@CoreShopShipping/assets/shippingrules.svg?react'
-import weightIcon from '@CoreShopShipping/assets/weight.svg?react'
+// @ts-ignore
+import carriersIcon from '../assets/carriers.svg?react'
+// @ts-ignore
+import conditionsIcon from '../assets/conditions.svg?react'
+// @ts-ignore
+import currenciesIcon from '../assets/currencies.svg?react'
+// @ts-ignore
+import dimensionIcon from '../assets/dimension.svg?react'
+// @ts-ignore
+import postcodeIcon from '../assets/postcode.svg?react'
+// @ts-ignore
+import shippingIcon from '../assets/shipping.svg?react'
+// @ts-ignore
+import shippingRulesIcon from '../assets/shippingrules.svg?react'
+// @ts-ignore
+import weightIcon from '../assets/weight.svg?react'
 
 export const ShippingBundleIconExtension: AbstractModule = {
-  name: 'coreshop-shipping-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

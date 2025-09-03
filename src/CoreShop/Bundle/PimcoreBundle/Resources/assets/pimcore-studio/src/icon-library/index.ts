@@ -12,19 +12,24 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import clearFilterIcon from '@CoreShopPimcore/assets/clear-filter.svg?react'
-import dynamicDropdownIcon from '@CoreShopPimcore/assets/dynamic-dropdown.svg?react'
-import dynamicDropdownMultipleIcon from '@CoreShopPimcore/assets/dynamic-dropdown-multiple.svg?react'
-import embeddedClassIcon from '@CoreShopPimcore/assets/embedded_class.svg?react'
-import itemSelectorIcon from '@CoreShopPimcore/assets/item-selector.svg?react'
-import serializedIcon from '@CoreShopPimcore/assets/serialized.svg?react'
-import superBoxSelectIcon from '@CoreShopPimcore/assets/super-box-select.svg?react'
+// @ts-ignore
+import clearFilterIcon from '../assets/clear-filter.svg?react'
+// @ts-ignore
+import dynamicDropdownIcon from '../assets/dynamic-dropdown.svg?react'
+// @ts-ignore
+import dynamicDropdownMultipleIcon from '../assets/dynamic-dropdown-multiple.svg?react'
+// @ts-ignore
+import embeddedClassIcon from '../assets/embedded_class.svg?react'
+// @ts-ignore
+import itemSelectorIcon from '../assets/item-selector.svg?react'
+// @ts-ignore
+import serializedIcon from '../assets/serialized.svg?react'
+// @ts-ignore
+import superBoxSelectIcon from '../assets/super-box-select.svg?react'
 
 export const PimcoreBundleIconExtension: AbstractModule = {
-  name: 'coreshop-pimcore-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

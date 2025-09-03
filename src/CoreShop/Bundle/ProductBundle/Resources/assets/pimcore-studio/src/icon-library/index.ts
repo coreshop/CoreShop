@@ -12,26 +12,36 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-// Import CoreShop Product icons
-import cartIcon from '@CoreShopProduct/assets/cart.svg?react'
-import categoryIcon from '@CoreShopProduct/assets/category.svg?react'
-import conditionsIcon from '@CoreShopProduct/assets/conditions.svg?react'
-import currenciesIcon from '@CoreShopProduct/assets/currencies.svg?react'
-import notDiscountableIcon from '@CoreShopProduct/assets/not_discountable.svg?react'
-import priceRulesIcon from '@CoreShopProduct/assets/price-rules.svg?react'
-import productIcon from '@CoreShopProduct/assets/product.svg?react'
-import productBlueIcon from '@CoreShopProduct/assets/product_blue.svg?react'
-import productGreenIcon from '@CoreShopProduct/assets/product_green.svg?react'
-import productListIcon from '@CoreShopProduct/assets/product-list.svg?react'
-import productUnitIcon from '@CoreShopProduct/assets/product-unit.svg?react'
-import productUnitsIcon from '@CoreShopProduct/assets/product-units.svg?react'
-import timeSpanIcon from '@CoreShopProduct/assets/time-span.svg?react'
+// @ts-ignore
+import cartIcon from '../assets/cart.svg?react'
+// @ts-ignore
+import categoryIcon from '../assets/category.svg?react'
+// @ts-ignore
+import conditionsIcon from '../assets/conditions.svg?react'
+// @ts-ignore
+import currenciesIcon from '../assets/currencies.svg?react'
+// @ts-ignore
+import notDiscountableIcon from '../assets/not_discountable.svg?react'
+// @ts-ignore
+import priceRulesIcon from '../assets/price-rules.svg?react'
+// @ts-ignore
+import productIcon from '../assets/product.svg?react'
+// @ts-ignore
+import productBlueIcon from '../assets/product_blue.svg?react'
+// @ts-ignore
+import productGreenIcon from '../assets/product_green.svg?react'
+// @ts-ignore
+import productListIcon from '../assets/product-list.svg?react'
+// @ts-ignore
+import productUnitIcon from '../assets/product-unit.svg?react'
+// @ts-ignore
+import productUnitsIcon from '../assets/product-units.svg?react'
+// @ts-ignore
+import timeSpanIcon from '../assets/time-span.svg?react'
 
 export const ProductBundleIconExtension: AbstractModule = {
-  name: 'coreshop-product-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

@@ -10,15 +10,17 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
+// @ts-ignore
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
+// @ts-ignore
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+// @ts-ignore
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import messengerIcon from '@CoreShopMessenger/assets/messenger.svg?react'
+// @ts-ignore
+import messengerIcon from '../assets/messenger.svg?react'
 
 export const MessengerBundleIconExtension: AbstractModule = {
-  name: 'coreshop-messenger-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

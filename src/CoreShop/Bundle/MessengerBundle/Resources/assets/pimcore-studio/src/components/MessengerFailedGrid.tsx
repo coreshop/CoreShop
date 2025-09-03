@@ -235,7 +235,7 @@ export const MessengerFailedGrid: React.FC = () => {
         dataSource={messages}
         rowKey="id"
         loading={messagesLoading}
-        disabled={!selectedReceiver}
+        // disabled={!selectedReceiver}
         scroll={{ y: 'calc(100vh - 450px)' }}
         pagination={false}
       />

@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
+import * as React from 'react'
 import { Tabs, Button } from 'antd'
 import { ReloadOutlined } from '@ant-design/icons'
 import MessengerChart from './MessengerChart'

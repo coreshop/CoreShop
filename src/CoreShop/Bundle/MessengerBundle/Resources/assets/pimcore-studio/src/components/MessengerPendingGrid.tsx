@@ -127,7 +127,7 @@ export const MessengerPendingGrid: React.FC = () => {
         dataSource={messages}
         rowKey="id"
         loading={messagesLoading}
-        disabled={!selectedReceiver}
+        // disabled={!selectedReceiver}
         scroll={{ y: 'calc(100vh - 450px)' }}
         pagination={false}
       />
@@ -137,6 +137,7 @@ export const MessengerPendingGrid: React.FC = () => {
         title="Message Information"
         open={infoModalOpen}
         onCancel={() => setInfoModalOpen(false)}
+
         footer={[
           <Button key="close" onClick={() => setInfoModalOpen(false)}>
             Close

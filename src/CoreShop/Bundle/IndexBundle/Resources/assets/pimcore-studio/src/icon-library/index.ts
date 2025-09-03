@@ -12,25 +12,36 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import filterBooleanIcon from '@CoreShopIndex/assets/filter-boolean.svg?react'
-import filterCategorySelectIcon from '@CoreShopIndex/assets/filter-category-select.svg?react'
-import filterCombinedIcon from '@CoreShopIndex/assets/filter-combined.svg?react'
-import filterEmptyIcon from '@CoreShopIndex/assets/filter-empty.svg?react'
-import filterMultiselectIcon from '@CoreShopIndex/assets/filter-multiselect.svg?react'
-import filterRangeIcon from '@CoreShopIndex/assets/filter-range.svg?react'
-import filterSearchIcon from '@CoreShopIndex/assets/filter-search.svg?react'
-import filterSelectIcon from '@CoreShopIndex/assets/filter-select.svg?react'
-import filtersIcon from '@CoreShopIndex/assets/filters.svg?react'
-import indexesIcon from '@CoreShopIndex/assets/indexes.svg?react'
-import searchIcon from '@CoreShopIndex/assets/search.svg?react'
-import similaritiesFieldIcon from '@CoreShopIndex/assets/similarities-field.svg?react'
-import similarityIcon from '@CoreShopIndex/assets/similarity.svg?react'
+// @ts-ignore
+import filterBooleanIcon from '../assets/filter-boolean.svg?react'
+// @ts-ignore
+import filterCategorySelectIcon from '../assets/filter-category-select.svg?react'
+// @ts-ignore
+import filterCombinedIcon from '../assets/filter-combined.svg?react'
+// @ts-ignore
+import filterEmptyIcon from '../assets/filter-empty.svg?react'
+// @ts-ignore
+import filterMultiselectIcon from '../assets/filter-multiselect.svg?react'
+// @ts-ignore
+import filterRangeIcon from '../assets/filter-range.svg?react'
+// @ts-ignore
+import filterSearchIcon from '../assets/filter-search.svg?react'
+// @ts-ignore
+import filterSelectIcon from '../assets/filter-select.svg?react'
+// @ts-ignore
+import filtersIcon from '../assets/filters.svg?react'
+// @ts-ignore
+import indexesIcon from '../assets/indexes.svg?react'
+// @ts-ignore
+import searchIcon from '../assets/search.svg?react'
+// @ts-ignore
+import similaritiesFieldIcon from '../assets/similarities-field.svg?react'
+// @ts-ignore
+import similarityIcon from '../assets/similarity.svg?react'
 
 export const IndexBundleIconExtension: AbstractModule = {
-  name: 'coreshop-index-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

@@ -12,17 +12,20 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-// Import CoreShop Address icons
-import addressIcon from '@CoreShopAddress/assets/address.svg?react'
-import addressIdentifierIcon from '@CoreShopAddress/assets/address_identifier.svg?react'
-import countriesIcon from '@CoreShopAddress/assets/countries.svg?react'
-import stateIcon from '@CoreShopAddress/assets/state.svg?react'
-import zonesIcon from '@CoreShopAddress/assets/zones.svg?react'
+// @ts-ignore
+import addressIcon from '../assets/address.svg?react'
+// @ts-ignore
+import addressIdentifierIcon from '../assets/address_identifier.svg?react'
+// @ts-ignore
+import countriesIcon from '../assets/countries.svg?react'
+// @ts-ignore
+import stateIcon from '../assets/state.svg?react'
+// @ts-ignore
+import zonesIcon from '../assets/zones.svg?react'
 
 export const AddressBundleIconExtension: AbstractModule = {
-  name: 'coreshop-address-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

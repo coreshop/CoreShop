@@ -12,16 +12,18 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import apiIcon from '@CoreShopRule/assets/api.svg?react'
-import lightningIcon from '@CoreShopRule/assets/lightning.svg?react'
-import searchIcon from '@CoreShopRule/assets/search.svg?react'
-import warningIcon from '@CoreShopRule/assets/warning.svg?react'
+// @ts-ignore
+import apiIcon from '../assets/api.svg?react'
+// @ts-ignore
+import lightningIcon from '../assets/lightning.svg?react'
+// @ts-ignore
+import searchIcon from '../assets/search.svg?react'
+// @ts-ignore
+import warningIcon from '../assets/warning.svg?react'
 
 export const RuleBundleIconExtension: AbstractModule = {
-  name: 'coreshop-rule-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

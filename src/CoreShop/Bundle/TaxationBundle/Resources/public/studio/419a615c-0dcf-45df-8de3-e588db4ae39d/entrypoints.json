@@ -1,0 +1,24 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshoptaxation/studio/419a615c-0dcf-45df-8de3-e588db4ae39d/static/js/118.6dcc5331.js",
+        "/bundles/coreshoptaxation/studio/419a615c-0dcf-45df-8de3-e588db4ae39d/static/js/main.321961f1.js"
+      ],
+      "css": []
+    },
+    "coreshoptaxation": {
+      "js": [
+        "/bundles/coreshoptaxation/studio/419a615c-0dcf-45df-8de3-e588db4ae39d/static/js/async/__federation_expose_default_export.e1b9e9df.js",
+        "/bundles/coreshoptaxation/studio/419a615c-0dcf-45df-8de3-e588db4ae39d/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshoptaxation/studio/419a615c-0dcf-45df-8de3-e588db4ae39d/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}

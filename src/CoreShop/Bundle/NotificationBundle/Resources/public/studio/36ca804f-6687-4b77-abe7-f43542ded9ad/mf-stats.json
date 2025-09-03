@@ -1,0 +1,99 @@
+{
+  "id": "coreshopnotification",
+  "name": "coreshopnotification",
+  "metaData": {
+    "name": "coreshopnotification",
+    "type": "app",
+    "buildInfo": {
+      "buildVersion": "1.0.0",
+      "buildName": "@coreshop/notification-studio-plugin"
+    },
+    "remoteEntry": {
+      "name": "static/js/remoteEntry.js",
+      "path": "",
+      "type": "global"
+    },
+    "types": {
+      "path": "",
+      "name": "",
+      "zip": "",
+      "api": ""
+    },
+    "globalName": "coreshopnotification",
+    "pluginVersion": "0.13.1",
+    "prefetchInterface": false,
+    "publicPath": "/bundles/coreshopnotification/studio/36ca804f-6687-4b77-abe7-f43542ded9ad/"
+  },
+  "shared": [
+    {
+      "singleton": true,
+      "requiredVersion": "^18.3.1",
+      "shareScope": "default",
+      "eager": true,
+      "name": "react",
+      "version": "18.3.1",
+      "id": "coreshopnotification:react",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "static/js/118.4723676e.js",
+            "static/js/remoteEntry.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      },
+      "usedIn": [
+        "."
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "alias": "@pimcore/studio-ui-bundle",
+      "consumingFederationContainerName": "coreshopnotification",
+      "federationContainerName": "promise new Promise(resolve => {\n          const studioUIBundleRemoteUrl = window.StudioUIBundleRemoteUrl\n          const script = document.createElement('script')\n\n          let hasScript = false;\n\n          document.querySelectorAll('script').forEach((el) => {\n            const elPathname = el.src.replace(/https?:\\/\\/[^/]+/, '')\n            const studioUIBundleRemoteUrlPathname = studioUIBundleRemoteUrl.replace(/https?:\\/\\/[^/]+/, '')\n\n            if (elPathname === studioUIBundleRemoteUrlPathname) {\n              hasScript = true;\n              return;\n            }\n          })\n\n          if (hasScript) {\n            resolve({\n              get: (request) => window['pimcore_studio_ui_bundle'].get(request),\n              init: (...arg) => {\n                try {\n                  return window['pimcore_studio_ui_bundle'].init(...arg)\n                } catch(e) {\n                  console.log('remote container already initialized')\n                }\n              }\n            })\n            return\n          }\n\n          script.src = studioUIBundleRemoteUrl\n          script.onload = () => {\n            const proxy = {\n              get: (request) => window['pimcore_studio_ui_bundle'].get(request),\n              init: (...arg) => {\n                try {\n                  return window['pimcore_studio_ui_bundle'].init(...arg)\n                } catch(e) {\n                  console.log('remote container already initialized')\n                }\n              }\n            }\n            resolve(proxy)\n          }\n          document.head.appendChild(script);\n        })\n        ",
+      "moduleName": ".",
+      "usedIn": [
+        "src/main.ts + 3 modules"
+      ],
+      "version": "*"
+    },
+    {
+      "alias": "@pimcore/studio-ui-bundle",
+      "consumingFederationContainerName": "coreshopnotification",
+      "federationContainerName": "promise new Promise(resolve => {\n          const studioUIBundleRemoteUrl = window.StudioUIBundleRemoteUrl\n          const script = document.createElement('script')\n\n          let hasScript = false;\n\n          document.querySelectorAll('script').forEach((el) => {\n            const elPathname = el.src.replace(/https?:\\/\\/[^/]+/, '')\n            const studioUIBundleRemoteUrlPathname = studioUIBundleRemoteUrl.replace(/https?:\\/\\/[^/]+/, '')\n\n            if (elPathname === studioUIBundleRemoteUrlPathname) {\n              hasScript = true;\n              return;\n            }\n          })\n\n          if (hasScript) {\n            resolve({\n              get: (request) => window['pimcore_studio_ui_bundle'].get(request),\n              init: (...arg) => {\n                try {\n                  return window['pimcore_studio_ui_bundle'].init(...arg)\n                } catch(e) {\n                  console.log('remote container already initialized')\n                }\n              }\n            })\n            return\n          }\n\n          script.src = studioUIBundleRemoteUrl\n          script.onload = () => {\n            const proxy = {\n              get: (request) => window['pimcore_studio_ui_bundle'].get(request),\n              init: (...arg) => {\n                try {\n                  return window['pimcore_studio_ui_bundle'].init(...arg)\n                } catch(e) {\n                  console.log('remote container already initialized')\n                }\n              }\n            }\n            resolve(proxy)\n          }\n          document.head.appendChild(script);\n        })\n        ",
+      "moduleName": "app",
+      "usedIn": [
+        "src/main.ts + 3 modules"
+      ],
+      "version": "*"
+    }
+  ],
+  "exposes": [
+    {
+      "path": ".",
+      "id": "coreshopnotification:.",
+      "name": ".",
+      "requires": [
+        "react"
+      ],
+      "file": "src/main.ts",
+      "assets": {
+        "js": {
+          "sync": [
+            "static/js/async/__federation_expose_default_export.50645f96.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      }
+    }
+  ]
+}

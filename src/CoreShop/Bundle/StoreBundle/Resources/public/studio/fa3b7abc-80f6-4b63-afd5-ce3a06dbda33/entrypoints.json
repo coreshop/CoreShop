@@ -1,0 +1,24 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshopstore/studio/fa3b7abc-80f6-4b63-afd5-ce3a06dbda33/static/js/118.ef4273a8.js",
+        "/bundles/coreshopstore/studio/fa3b7abc-80f6-4b63-afd5-ce3a06dbda33/static/js/main.3d54cb82.js"
+      ],
+      "css": []
+    },
+    "coreshopstore": {
+      "js": [
+        "/bundles/coreshopstore/studio/fa3b7abc-80f6-4b63-afd5-ce3a06dbda33/static/js/async/__federation_expose_default_export.956125f6.js",
+        "/bundles/coreshopstore/studio/fa3b7abc-80f6-4b63-afd5-ce3a06dbda33/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshopstore/studio/fa3b7abc-80f6-4b63-afd5-ce3a06dbda33/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}

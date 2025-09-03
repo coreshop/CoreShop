@@ -1,0 +1,36 @@
+{
+  "allFiles": [
+    "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/static/js/main.37a38918.js",
+    "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/static/js/remoteEntry.js",
+    "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/static/js/async/__federation_expose_default_export.023a6032.js",
+    "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/static/js/118.2170540d.js",
+    "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/mf-stats.json",
+    "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/mf-manifest.json",
+    "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/static/js/118.2170540d.js",
+          "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/static/js/main.37a38918.js"
+        ]
+      }
+    },
+    "coreshopshipping": {
+      "initial": {
+        "js": [
+          "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopshipping/studio/67db74f0-3a1b-441a-b28c-a100b2d95cd8/static/js/async/__federation_expose_default_export.023a6032.js"
+        ]
+      }
+    }
+  }
+}

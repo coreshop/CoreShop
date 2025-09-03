@@ -21,10 +21,7 @@ use CoreShop\Bundle\MenuBundle\Renderer\StudioRenderer;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 class MenuController
@@ -45,19 +42,11 @@ class MenuController
     }
 
     public function jsonAction(
-        Request $request,
         MenuProviderInterface $menuProvider,
         StudioRenderer $jsonRenderer,
-        AuthorizationCheckerInterface $authorizationChecker,
         #[Autowire(param: 'coreshop.menus.types')]
         array $menuTypes = [],
     ): JsonResponse {
-        if (!$authorizationChecker->isGranted('ROLE_PIMCORE_ADMIN')) {
-            throw new AccessDeniedException('Access denied');
-        }
-
-        $format = $request->get('format', 'structure');
-
         $allMenus = [];
         $allItems = [];
 

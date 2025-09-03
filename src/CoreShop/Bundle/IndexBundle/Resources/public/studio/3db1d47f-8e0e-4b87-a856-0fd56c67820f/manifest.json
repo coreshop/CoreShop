@@ -1,0 +1,36 @@
+{
+  "allFiles": [
+    "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/static/js/main.06635395.js",
+    "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/static/js/remoteEntry.js",
+    "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/static/js/async/__federation_expose_default_export.6a56b386.js",
+    "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/static/js/118.86e66a6a.js",
+    "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/mf-stats.json",
+    "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/mf-manifest.json",
+    "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/static/js/118.86e66a6a.js",
+          "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/static/js/main.06635395.js"
+        ]
+      }
+    },
+    "coreshopindex": {
+      "initial": {
+        "js": [
+          "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopindex/studio/3db1d47f-8e0e-4b87-a856-0fd56c67820f/static/js/async/__federation_expose_default_export.6a56b386.js"
+        ]
+      }
+    }
+  }
+}

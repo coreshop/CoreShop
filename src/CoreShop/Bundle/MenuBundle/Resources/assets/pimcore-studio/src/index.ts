@@ -12,9 +12,6 @@ const CoreShopMenuPlugin: IAbstractPlugin = {
   name: 'CoreShopMenuPlugin',
   
   onStartup({moduleSystem}): void {
-    console.log('[CoreShop Menu Plugin] Starting up...')
-    
-    // Register the menu extension module
     moduleSystem.registerModule(CoreShopMenuExtension)
   }
 }

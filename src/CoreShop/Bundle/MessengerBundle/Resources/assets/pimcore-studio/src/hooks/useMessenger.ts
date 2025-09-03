@@ -11,7 +11,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
-import { messengerService } from '@/services/messenger'
+import { messengerService } from '../services/messenger'
 import {
   MessengerChartData,
   MessengerMessage,

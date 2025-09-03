@@ -4,8 +4,11 @@
  * Dynamically registers CoreShop navigation items from backend API with Pimcore Studio UI
  */
 
+// @ts-ignore
 import {container} from '@pimcore/studio-ui-bundle'
+// @ts-ignore
 import {serviceIds} from '@pimcore/studio-ui-bundle/app'
+// @ts-ignore
 import {type MainNavRegistry, type WidgetRegistry} from '@pimcore/studio-ui-bundle/modules/app'
 import {menuService} from '../services/MenuService'
 import {CoreShopMenuItem} from '../types'
@@ -94,7 +97,7 @@ export const CoreShopMenuExtension = {
             //TODO: should be removed once every widget is implemented!
             widgetRegistry.registerWidget({
                 name: widgetId,
-                component: (props: any) => CoreShopWidget({item})
+                component: CoreShopWidget({item})
             })
         }
     }

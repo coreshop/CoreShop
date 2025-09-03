@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
+import * as React from 'react'
 import { Card, Spin, Alert, Typography } from 'antd'
 import { useMessengerChart } from '../hooks/useMessenger'
 

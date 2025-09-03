@@ -12,13 +12,12 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-import moneyIcon from '@CoreShopMoney/assets/money.svg?react'
+// @ts-ignore
+import moneyIcon from '../assets/money.svg?react'
 
 export const MoneyBundleIconExtension: AbstractModule = {
-  name: 'coreshop-money-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

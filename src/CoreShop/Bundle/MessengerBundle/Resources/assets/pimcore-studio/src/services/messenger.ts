@@ -22,7 +22,7 @@ import {
 } from '../types'
 
 export class Messenger {
-  private baseUrl = '/admin'
+  private baseUrl = '/pimcore-studio/api/coreshop'
 
   /**
    * Get message count statistics for chart

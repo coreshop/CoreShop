@@ -12,48 +12,76 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
 
-// Import icons (excluding white variants)
-import cartIcon from '@CoreShopCore/assets/cart.svg?react'
-import cartAbandonedIcon from '@CoreShopCore/assets/cart-abandoned.svg?react'
-import categoryIcon from '@CoreShopCore/assets/category.svg?react'
-import chartsIcon from '@CoreShopCore/assets/charts.svg?react'
-import collaborationIcon from '@CoreShopCore/assets/collaboration.svg?react'
-import commentIcon from '@CoreShopCore/assets/comment.svg?react'
-import countriesIcon from '@CoreShopCore/assets/countries.svg?react'
-import currenciesIcon from '@CoreShopCore/assets/currencies.svg?react'
-import customerIcon from '@CoreShopCore/assets/customer.svg?react'
-import customerGroupIcon from '@CoreShopCore/assets/customer-group.svg?react'
-import freeShippingIcon from '@CoreShopCore/assets/free-shipping.svg?react'
-import giftIcon from '@CoreShopCore/assets/gift.svg?react'
-import guestIcon from '@CoreShopCore/assets/guest.svg?react'
-import invoiceIcon from '@CoreShopCore/assets/invoice.svg?react'
-import logoIcon from '@CoreShopCore/assets/logo.svg?react'
-import logoFillIcon from '@CoreShopCore/assets/logo-fill.svg?react'
-import logoFullIcon from '@CoreShopCore/assets/logo-full.svg?react'
-import mailIcon from '@CoreShopCore/assets/mail.svg?react'
-import manufacturerIcon from '@CoreShopCore/assets/manufacturer.svg?react'
-import moneyIcon from '@CoreShopCore/assets/money.svg?react'
-import monitorIcon from '@CoreShopCore/assets/monitor.svg?react'
-import notCombinableIcon from '@CoreShopCore/assets/not_combinable.svg?react'
-import ordersIcon from '@CoreShopCore/assets/orders.svg?react'
-import ordersBackendIcon from '@CoreShopCore/assets/orders-backend.svg?react'
-import paymentsIcon from '@CoreShopCore/assets/payments.svg?react'
-import productIcon from '@CoreShopCore/assets/product.svg?react'
-import quotesIcon from '@CoreShopCore/assets/quotes.svg?react'
-import salesIcon from '@CoreShopCore/assets/sales.svg?react'
-import shipmentIcon from '@CoreShopCore/assets/shipment.svg?react'
-import stockIcon from '@CoreShopCore/assets/stock.svg?react'
-import storeMailIcon from '@CoreShopCore/assets/store-mail.svg?react'
-import storeValuesIcon from '@CoreShopCore/assets/store-values.svg?react'
-import voucherIcon from '@CoreShopCore/assets/voucher.svg?react'
-import customerToCompanyAssignToExisting from '@CoreShopCore/assets/customer_to_company_assign_to_existing.svg?react'
-import customerToCompanyAssignToNew from '@CoreShopCore/assets/customer_to_company_assign_to_new.svg?react'
+// @ts-ignore
+import cartIcon from '../assets/cart.svg?react'
+// @ts-ignore
+import cartAbandonedIcon from '../assets/cart-abandoned.svg?react'
+// @ts-ignore
+import categoryIcon from '../assets/category.svg?react'
+// @ts-ignore
+import chartsIcon from '../assets/charts.svg?react'
+// @ts-ignore
+import collaborationIcon from '../assets/collaboration.svg?react'
+// @ts-ignore
+import commentIcon from '../assets/comment.svg?react'
+// @ts-ignore
+import countriesIcon from '../assets/countries.svg?react'
+// @ts-ignore
+import currenciesIcon from '../assets/currencies.svg?react'
+// @ts-ignore
+import customerIcon from '../assets/customer.svg?react'
+// @ts-ignore
+import customerGroupIcon from '../assets/customer-group.svg?react'
+// @ts-ignore
+import freeShippingIcon from '../assets/free-shipping.svg?react'
+// @ts-ignore
+import giftIcon from '../assets/gift.svg?react'
+// @ts-ignore
+import guestIcon from '../assets/guest.svg?react'
+// @ts-ignore
+import invoiceIcon from '../assets/invoice.svg?react'
+// @ts-ignore
+import logoFillIcon from '../assets/logo-fill.svg?react'
+// @ts-ignore
+import mailIcon from '../assets/mail.svg?react'
+// @ts-ignore
+import manufacturerIcon from '../assets/manufacturer.svg?react'
+// @ts-ignore
+import moneyIcon from '../assets/money.svg?react'
+// @ts-ignore
+import monitorIcon from '../assets/monitor.svg?react'
+// @ts-ignore
+import notCombinableIcon from '../assets/not_combinable.svg?react'
+// @ts-ignore
+import ordersIcon from '../assets/orders.svg?react'
+// @ts-ignore
+import ordersBackendIcon from '../assets/orders-backend.svg?react'
+// @ts-ignore
+import paymentsIcon from '../assets/payments.svg?react'
+// @ts-ignore
+import productIcon from '../assets/product.svg?react'
+// @ts-ignore
+import quotesIcon from '../assets/quotes.svg?react'
+// @ts-ignore
+import salesIcon from '../assets/sales.svg?react'
+// @ts-ignore
+import shipmentIcon from '../assets/shipment.svg?react'
+// @ts-ignore
+import stockIcon from '../assets/stock.svg?react'
+// @ts-ignore
+import storeMailIcon from '../assets/store-mail.svg?react'
+// @ts-ignore
+import storeValuesIcon from '../assets/store-values.svg?react'
+// @ts-ignore
+import voucherIcon from '../assets/voucher.svg?react'
+// @ts-ignore
+import customerToCompanyAssignToExisting from '../assets/customer_to_company_assign_to_existing.svg?react'
+// @ts-ignore
+import customerToCompanyAssignToNew from '../assets/customer_to_company_assign_to_new.svg?react'
 
 export const CoreBundleIconExtension: AbstractModule = {
-  name: 'coreshop-core-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

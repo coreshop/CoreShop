@@ -10,16 +10,18 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
+// @ts-ignore
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
+// @ts-ignore
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { type IconLibrary } from '@pimcore/studio-ui-bundle'
-
-import priceRulesIcon from '@CoreShopProductQuantityPriceRules/assets/price-rules.svg?react'
-import productQuantityPriceRulesIcon from '@CoreShopProductQuantityPriceRules/assets/product-quanity-price-rules.svg?react'
+// @ts-ignore
+import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library'
+// @ts-ignore
+import priceRulesIcon from '../assets/price-rules.svg?react'
+// @ts-ignore
+import productQuantityPriceRulesIcon from '..//assets/product-quanity-price-rules.svg?react'
 
 export const ProductQuantityPriceRulesBundleIconExtension: AbstractModule = {
-  name: 'coreshop-product-quantity-price-rules-icon-extension',
-
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 
