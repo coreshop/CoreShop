@@ -1,0 +1,60 @@
+{
+  "allFiles": [
+    "http://localhost:3032/static/js/main.js",
+    "http://localhost:3032/static/js/remoteEntry.js",
+    "http://localhost:3032/static/js/__federation_expose_default_export.js",
+    "http://localhost:3032/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js",
+    "http://localhost:3032/static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-node_mod-bd800f.js",
+    "http://localhost:3032/mf-stats.json",
+    "http://localhost:3032/mf-manifest.json",
+    "http://localhost:3032/main.html",
+    "http://localhost:3032/static/js/main.js.map",
+    "http://localhost:3032/static/js/remoteEntry.js.map",
+    "http://localhost:3032/static/js/__federation_expose_default_export.js.map",
+    "http://localhost:3032/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js.map",
+    "http://localhost:3032/static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-node_mod-bd800f.js.map"
+  ],
+  "entries": {
+    "main": {
+      "assets": [
+        "static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-node_mod-bd800f.js.map",
+        "static/js/vendors-node_modules_react_jsx-dev-runtime_js.js.map",
+        "static/js/__federation_expose_default_export.js.map",
+        "static/js/main.js.map"
+      ],
+      "html": [
+        "http://localhost:3032/main.html"
+      ],
+      "initial": {
+        "js": [
+          "http://localhost:3032/static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-node_mod-bd800f.js",
+          "http://localhost:3032/static/js/main.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "http://localhost:3032/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js",
+          "http://localhost:3032/static/js/__federation_expose_default_export.js"
+        ]
+      }
+    },
+    "coreshopresource": {
+      "assets": [
+        "static/js/vendors-node_modules_react_jsx-dev-runtime_js.js.map",
+        "static/js/__federation_expose_default_export.js.map",
+        "static/js/remoteEntry.js.map"
+      ],
+      "initial": {
+        "js": [
+          "http://localhost:3032/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "http://localhost:3032/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js",
+          "http://localhost:3032/static/js/__federation_expose_default_export.js"
+        ]
+      }
+    }
+  }
+}

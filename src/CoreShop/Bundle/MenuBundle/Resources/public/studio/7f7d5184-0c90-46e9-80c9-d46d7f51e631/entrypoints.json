@@ -1,0 +1,27 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "http://localhost:3034/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js",
+        "http://localhost:3034/static/js/__federation_expose_default_export.js",
+        "http://localhost:3034/static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-Resource-11b33a.js",
+        "http://localhost:3034/static/js/main.js"
+      ],
+      "css": []
+    },
+    "coreshopmenu": {
+      "js": [
+        "http://localhost:3034/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js",
+        "http://localhost:3034/static/js/__federation_expose_default_export.js",
+        "http://localhost:3034/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshopmenu/studio/7f7d5184-0c90-46e9-80c9-d46d7f51e631/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}

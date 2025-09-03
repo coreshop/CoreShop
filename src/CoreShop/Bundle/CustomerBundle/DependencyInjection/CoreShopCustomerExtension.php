@@ -46,6 +46,12 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         Autoconfiguration::registerForAutoConfiguration(
             $container,
             CustomerContextInterface::class,

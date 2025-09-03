@@ -69,6 +69,10 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         $container->setParameter('coreshop.resources', []);
         $container->setParameter('coreshop.resource.mapping', $configs['mapping']);
         $container->setParameter('coreshop.orm_cascade_merge', $configs['orm_cascade_merge_associations']);

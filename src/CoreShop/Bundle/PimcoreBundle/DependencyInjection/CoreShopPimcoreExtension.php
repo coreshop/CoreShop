@@ -47,6 +47,10 @@ final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
             $loader->load('services/data_hub.yml');
         }
 
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $loader->load('services.yml');

@@ -1,3 +1,7 @@
 coreshop_menu:
     path:     /admin/coreshop/{type}/menu.js
     defaults: { _controller: CoreShop\Bundle\MenuBundle\Controller\MenuController::menuAction }
+
+coreshop_menu_api:
+    path:     /admin/coreshop/menus
+    defaults: { _controller: CoreShop\Bundle\MenuBundle\Controller\MenuController::jsonAction }

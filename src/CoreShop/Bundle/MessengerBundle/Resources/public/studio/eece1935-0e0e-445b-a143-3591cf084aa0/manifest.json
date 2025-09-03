@@ -1,0 +1,109 @@
+{
+  "allFiles": [
+    "http://localhost:3052/static/js/async/vendors-node_modules_immer_dist_immer_mjs.js",
+    "http://localhost:3052/static/js/async/vendors-node_modules_reduxjs_toolkit_dist_redux-toolkit_modern_mjs.js",
+    "http://localhost:3052/static/js/async/vendors-node_modules_react-redux_dist_react-redux_mjs.js",
+    "http://localhost:3052/static/js/vendors-node_modules_ant-design_icons_es_icons_DeleteOutlined_js-node_modules_ant-design_icon-cf60d5.js",
+    "http://localhost:3052/static/js/async/vendors-node_modules_antd_es_index_js.js",
+    "http://localhost:3052/static/js/vendors-node_modules_ant-design_icons_es_icons_ExclamationCircleOutlined_js-node_modules_ant--f11fd3.js",
+    "http://localhost:3052/static/js/async/vendors-node_modules_reselect_dist_reselect_mjs.js",
+    "http://localhost:3052/static/js/async/vendors-node_modules_recharts_es6_index_js.js",
+    "http://localhost:3052/static/js/vendors-node_modules_react-dom_index_js-node_modules_react_index_js-node_modules_rsbuild_core-b1f0a8.js",
+    "http://localhost:3052/static/js/main.js",
+    "http://localhost:3052/static/js/remoteEntry.js",
+    "http://localhost:3052/static/js/__federation_expose_default_export.js",
+    "http://localhost:3052/mf-stats.json",
+    "http://localhost:3052/mf-manifest.json",
+    "http://localhost:3052/main.html",
+    "http://localhost:3052/static/js/async/vendors-node_modules_immer_dist_immer_mjs.js.map",
+    "http://localhost:3052/static/js/async/vendors-node_modules_reduxjs_toolkit_dist_redux-toolkit_modern_mjs.js.map",
+    "http://localhost:3052/static/js/async/vendors-node_modules_react-redux_dist_react-redux_mjs.js.map",
+    "http://localhost:3052/static/js/vendors-node_modules_ant-design_icons_es_icons_DeleteOutlined_js-node_modules_ant-design_icon-cf60d5.js.map",
+    "http://localhost:3052/static/js/async/vendors-node_modules_antd_es_index_js.js.map",
+    "http://localhost:3052/static/js/vendors-node_modules_ant-design_icons_es_icons_ExclamationCircleOutlined_js-node_modules_ant--f11fd3.js.map",
+    "http://localhost:3052/static/js/async/vendors-node_modules_reselect_dist_reselect_mjs.js.map",
+    "http://localhost:3052/static/js/async/vendors-node_modules_recharts_es6_index_js.js.map",
+    "http://localhost:3052/static/js/vendors-node_modules_react-dom_index_js-node_modules_react_index_js-node_modules_rsbuild_core-b1f0a8.js.map",
+    "http://localhost:3052/static/js/main.js.map",
+    "http://localhost:3052/main.7042eb2a8dacb4b9.hot-update.js.map",
+    "http://localhost:3052/coreshopmessenger.7042eb2a8dacb4b9.hot-update.js.map",
+    "http://localhost:3052/static/js/remoteEntry.js.map",
+    "http://localhost:3052/static/js/__federation_expose_default_export.js.map",
+    "http://localhost:3052/__federation_expose_default_export.7042eb2a8dacb4b9.hot-update.js.map"
+  ],
+  "entries": {
+    "coreshopmessenger": {
+      "assets": [
+        "static/js/__federation_expose_default_export.js.map",
+        "__federation_expose_default_export.7042eb2a8dacb4b9.hot-update.js.map",
+        "coreshopmessenger.7042eb2a8dacb4b9.hot-update.js.map",
+        "static/js/remoteEntry.js.map",
+        "static/js/async/vendors-node_modules_recharts_es6_index_js.js.map",
+        "static/js/async/vendors-node_modules_reselect_dist_reselect_mjs.js.map",
+        "static/js/vendors-node_modules_ant-design_icons_es_icons_ExclamationCircleOutlined_js-node_modules_ant--f11fd3.js.map",
+        "static/js/async/vendors-node_modules_antd_es_index_js.js.map",
+        "static/js/vendors-node_modules_ant-design_icons_es_icons_DeleteOutlined_js-node_modules_ant-design_icon-cf60d5.js.map",
+        "static/js/async/vendors-node_modules_react-redux_dist_react-redux_mjs.js.map",
+        "static/js/async/vendors-node_modules_reduxjs_toolkit_dist_redux-toolkit_modern_mjs.js.map",
+        "static/js/async/vendors-node_modules_immer_dist_immer_mjs.js.map"
+      ],
+      "initial": {
+        "js": [
+          "http://localhost:3052/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "http://localhost:3052/static/js/__federation_expose_default_export.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_recharts_es6_index_js.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_reselect_dist_reselect_mjs.js",
+          "http://localhost:3052/static/js/vendors-node_modules_ant-design_icons_es_icons_ExclamationCircleOutlined_js-node_modules_ant--f11fd3.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_antd_es_index_js.js",
+          "http://localhost:3052/static/js/vendors-node_modules_ant-design_icons_es_icons_DeleteOutlined_js-node_modules_ant-design_icon-cf60d5.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_react-redux_dist_react-redux_mjs.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_reduxjs_toolkit_dist_redux-toolkit_modern_mjs.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_immer_dist_immer_mjs.js"
+        ]
+      }
+    },
+    "main": {
+      "assets": [
+        "static/js/__federation_expose_default_export.js.map",
+        "__federation_expose_default_export.7042eb2a8dacb4b9.hot-update.js.map",
+        "static/js/main.js.map",
+        "main.7042eb2a8dacb4b9.hot-update.js.map",
+        "static/js/vendors-node_modules_react-dom_index_js-node_modules_react_index_js-node_modules_rsbuild_core-b1f0a8.js.map",
+        "static/js/async/vendors-node_modules_recharts_es6_index_js.js.map",
+        "static/js/async/vendors-node_modules_reselect_dist_reselect_mjs.js.map",
+        "static/js/vendors-node_modules_ant-design_icons_es_icons_ExclamationCircleOutlined_js-node_modules_ant--f11fd3.js.map",
+        "static/js/async/vendors-node_modules_antd_es_index_js.js.map",
+        "static/js/vendors-node_modules_ant-design_icons_es_icons_DeleteOutlined_js-node_modules_ant-design_icon-cf60d5.js.map",
+        "static/js/async/vendors-node_modules_react-redux_dist_react-redux_mjs.js.map",
+        "static/js/async/vendors-node_modules_reduxjs_toolkit_dist_redux-toolkit_modern_mjs.js.map",
+        "static/js/async/vendors-node_modules_immer_dist_immer_mjs.js.map"
+      ],
+      "html": [
+        "http://localhost:3052/main.html"
+      ],
+      "initial": {
+        "js": [
+          "http://localhost:3052/static/js/main.js",
+          "http://localhost:3052/static/js/vendors-node_modules_react-dom_index_js-node_modules_react_index_js-node_modules_rsbuild_core-b1f0a8.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "http://localhost:3052/static/js/__federation_expose_default_export.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_recharts_es6_index_js.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_reselect_dist_reselect_mjs.js",
+          "http://localhost:3052/static/js/vendors-node_modules_ant-design_icons_es_icons_ExclamationCircleOutlined_js-node_modules_ant--f11fd3.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_antd_es_index_js.js",
+          "http://localhost:3052/static/js/vendors-node_modules_ant-design_icons_es_icons_DeleteOutlined_js-node_modules_ant-design_icon-cf60d5.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_react-redux_dist_react-redux_mjs.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_reduxjs_toolkit_dist_redux-toolkit_modern_mjs.js",
+          "http://localhost:3052/static/js/async/vendors-node_modules_immer_dist_immer_mjs.js"
+        ]
+      }
+    }
+  }
+}

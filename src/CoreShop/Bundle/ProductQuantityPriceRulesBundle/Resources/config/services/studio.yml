@@ -1,0 +1,4 @@
+services:
+  CoreShop\Bundle\ProductQuantityPriceRulesBundle\Studio\WebpackEntryPointProvider:
+    tags:
+      - { name: pimcore_studio_ui.webpack_entry_point_provider }

@@ -1,0 +1,29 @@
+{
+  "name": "coreshop-studio-plugins",
+  "version": "1.0.0",
+  "description": "CoreShop Studio UI Plugins Build System",
+  "scripts": {
+    "studio:install": "node studio-build.js install",
+    "studio:build": "node studio-build.js build",
+    "studio:dev": "node studio-build.js dev",
+    "studio:dev:all": "node studio-build.js dev all",
+    "build": "npm run studio:build",
+    "dev": "npm run studio:dev:all",
+    "install-deps": "npm run studio:install"
+  },
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "studio",
+    "plugins",
+    "react",
+    "typescript"
+  ]
+}

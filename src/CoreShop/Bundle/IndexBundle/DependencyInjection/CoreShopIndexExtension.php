@@ -88,6 +88,10 @@ final class CoreShopIndexExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $container->getDefinition(MysqlWorker::class)->setArgument(

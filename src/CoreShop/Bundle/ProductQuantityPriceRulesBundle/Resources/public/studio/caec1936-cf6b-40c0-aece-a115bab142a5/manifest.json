@@ -1,0 +1,58 @@
+{
+  "allFiles": [
+    "http://localhost:3048/static/js/main.js",
+    "http://localhost:3048/static/js/remoteEntry.js",
+    "http://localhost:3048/static/js/async/__federation_expose_default_export.js",
+    "http://localhost:3048/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js",
+    "http://localhost:3048/static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-Resource-11b33a.js",
+    "http://localhost:3048/mf-stats.json",
+    "http://localhost:3048/mf-manifest.json",
+    "http://localhost:3048/main.html",
+    "http://localhost:3048/static/js/main.js.map",
+    "http://localhost:3048/static/js/remoteEntry.js.map",
+    "http://localhost:3048/static/js/async/__federation_expose_default_export.js.map",
+    "http://localhost:3048/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js.map",
+    "http://localhost:3048/static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-Resource-11b33a.js.map"
+  ],
+  "entries": {
+    "main": {
+      "assets": [
+        "static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-Resource-11b33a.js.map",
+        "static/js/vendors-node_modules_react_jsx-dev-runtime_js.js.map",
+        "static/js/main.js.map"
+      ],
+      "html": [
+        "http://localhost:3048/main.html"
+      ],
+      "initial": {
+        "js": [
+          "http://localhost:3048/static/js/vendors-node_modules_react_index_js-node_modules_rsbuild_core_dist_client_overlay_js-Resource-11b33a.js",
+          "http://localhost:3048/static/js/main.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "http://localhost:3048/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js"
+        ]
+      }
+    },
+    "coreshopproductquantitypricerules": {
+      "assets": [
+        "static/js/vendors-node_modules_react_jsx-dev-runtime_js.js.map",
+        "static/js/async/__federation_expose_default_export.js.map",
+        "static/js/remoteEntry.js.map"
+      ],
+      "initial": {
+        "js": [
+          "http://localhost:3048/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "http://localhost:3048/static/js/vendors-node_modules_react_jsx-dev-runtime_js.js",
+          "http://localhost:3048/static/js/async/__federation_expose_default_export.js"
+        ]
+      }
+    }
+  }
+}

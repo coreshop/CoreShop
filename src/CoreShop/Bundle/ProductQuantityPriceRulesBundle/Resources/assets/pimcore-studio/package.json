@@ -1,0 +1,44 @@
+{
+  "name": "@coreshop/productquantitypricerules-studio-plugin",
+  "version": "1.0.0",
+  "description": "CoreShop ProductQuantityPriceRules Bundle - Pimcore Studio Plugin",
+  "scripts": {
+    "dev": "NODE_ENV=development rsbuild build",
+    "dev-server": "NODE_ENV=dev-server rsbuild dev",
+    "build": "rsbuild build",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
+    "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",
+    "check-types": "tsc --noEmit",
+    "check-types-watch": "tsc --noEmit --watch"
+  },
+  "license": "CCL",
+  "private": true,
+  "devDependencies": {
+    "@babel/preset-react": "^7.23.3",
+    "@module-federation/rsbuild-plugin": "^0.13.1",
+    "@rsbuild/core": "^1.3.16",
+    "@rsbuild/plugin-node-polyfill": "^1.4.1",
+    "@rsbuild/plugin-react": "^1.3.1",
+    "@types/react-dom": "18.3.x",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "eslint": "^8.56.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@pimcore/studio-ui-bundle": "1.0.0-canary.20250901-160146-095dd66",
+    "@reduxjs/toolkit": "^2.0.1",
+    "@rsbuild/plugin-svgr": "^1.2.2",
+    "antd": "^5.12.0",
+    "immer": "^10.1.1",
+    "react": "18.3.x",
+    "react-dom": "18.3.x",
+    "react-redux": "^9.0.4",
+    "zustand": "^5.0.7"
+  }
+}

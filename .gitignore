@@ -64,3 +64,4 @@ docs/.docusaurus
 node_modules
 cache/
 docker-compose.override.yaml
+settings.local.json

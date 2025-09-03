@@ -28,6 +28,8 @@ security:
 
         # Pimcore Admin Bundle firewall
         pimcore_admin: '%pimcore_admin_bundle.firewall_settings%'
+        pimcore_studio: '%pimcore_studio_backend.firewall_settings%'
+
 
         coreshop_frontend:
             provider: coreshop_user
@@ -63,6 +65,8 @@ security:
         - { path: ^/asset/webdav, roles: ROLE_PIMCORE_USER }
         - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
         - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
+        - { path: ^/pimcore-studio/api/(docs|docs/json|translations)$, roles: PUBLIC_ACCESS }
+        - { path: ^/pimcore-studio/api, roles: ROLE_PIMCORE_USER }
 
     role_hierarchy:
         # Pimcore admin  // DO NOT CHANGE!

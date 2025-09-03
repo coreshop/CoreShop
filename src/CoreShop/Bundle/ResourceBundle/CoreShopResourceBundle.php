@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle;
 
 use Composer\InstalledVersions;
+use CoreShop\Bundle\ResourceBundle\Helper\AdminUIDetector;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreRepositoriesPass;
@@ -69,12 +70,11 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $collection->addBundle(new \CoreShop\Bundle\OptimisticEntityLockBundle\CoreShopOptimisticEntityLockBundle(), 3800);
         $collection->addBundle(new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(), 3850);
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
-        $collection->addBundle(new PimcoreAdminBundle(), 10);
+
         $collection->addBundle(new PimcoreApplicationLoggerBundle(), 10);
         $collection->addBundle(new PimcoreStaticRoutesBundle(), 10);
         $collection->addBundle(new PimcoreSimpleBackendSearchBundle(), 10);
     }
-
     public function getNiceName(): string
     {
         return 'CoreShop - Resource';

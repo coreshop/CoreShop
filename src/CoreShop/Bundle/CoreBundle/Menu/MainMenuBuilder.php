@@ -406,6 +406,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_messenger')
             ->setAttribute('resource', 'coreshop.messenger')
             ->setAttribute('function', 'list')
+            ->setAttribute('widgetId', 'coreshop-messenger-widget')
             ->setExtra('order', 110)
         ;
 

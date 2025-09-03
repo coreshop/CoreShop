@@ -1,65 +1,71 @@
 {
-  "name": "coreshop/product-quantity-price-rules-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Product Quantity Price Rules Bundle",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "https://www.coreshop.com",
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "Stefan Hagspiel",
-      "email": "shagspiel@dachcom.com",
-      "homepage": "https://www.dachcom.com/",
-      "role": "Developer"
+    "name": "coreshop/product-quantity-price-rules-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Product Quantity Price Rules Bundle",
+    "keywords": [
+        "coreshop",
+        "pimcore",
+        "ecommerce"
+    ],
+    "homepage": "https://www.coreshop.com",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Stefan Hagspiel",
+            "email": "shagspiel@dachcom.com",
+            "homepage": "https://www.dachcom.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "CoreShop Team",
+            "email": "info@coreshop.com",
+            "homepage": "https://www.coreshop.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "coreshop/product-quantity-price-rules": "^5.0",
+        "coreshop/rule-bundle": "^5.0",
+        "coreshop/money-bundle": "^5.0",
+        "pimcore/pimcore": "^12.0"
     },
-    {
-      "name": "CoreShop Team",
-      "email": "info@coreshop.com",
-      "homepage": "https://www.coreshop.com/",
-      "role": "Developer"
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-doctrine": "^1.3.40",
+        "phpstan/phpstan-webmozart-assert": "^1.2.4"
     },
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\ProductQuantityPriceRulesBundle\\": ""
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../*/*"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "5.0-dev",
+            "dev-master": "5.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "suggest": {
+        "pimcore/admin-ui-classic-bundle": "^2.0 - Classic ExtJS-based admin interface for Pimcore (legacy)",
+        "pimcore/elasticsearch-client": "Allows to use ElasticSearch as your index engine.",
+        "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine.",
+        "pimcore/studio-ui-bundle": "^0.6.30 - Modern React-based Studio UI for Pimcore (recommended)"
     }
-  ],
-  "require": {
-    "coreshop/product-quantity-price-rules": "^5.0",
-    "coreshop/rule-bundle": "^5.0",
-    "coreshop/money-bundle": "^5.0",
-    "pimcore/pimcore": "^12.0"
-  },
-  "require-dev": {
-    "phpstan/phpstan": "^1.10",
-    "phpstan/phpstan-doctrine": "^1.3.40",
-    "phpstan/phpstan-webmozart-assert": "^1.2.4"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\ProductQuantityPriceRulesBundle\\": ""
-    }
-  },
-  "repositories": [
-      {
-          "type": "path",
-          "url": "../../*/*"
-      }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-main": "5.0-dev",
-      "dev-master": "5.0-dev"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }

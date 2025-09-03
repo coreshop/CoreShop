@@ -76,6 +76,10 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         $loader->load('services.yml');
 
         Autoconfiguration::registerForAutoConfiguration(

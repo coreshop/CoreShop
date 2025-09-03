@@ -17,7 +17,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle\Controller;
 
+use CoreShop\Bundle\MenuBundle\Renderer\StudioRenderer;
+use Knp\Menu\Provider\MenuProviderInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 class MenuController
@@ -35,5 +42,99 @@ class MenuController
         $response->headers->set('Expires', '0');
 
         return $response;
+    }
+
+    public function jsonAction(
+        Request $request,
+        MenuProviderInterface $menuProvider,
+        StudioRenderer $jsonRenderer,
+        AuthorizationCheckerInterface $authorizationChecker,
+        #[Autowire(param: 'coreshop.menus.types')]
+        array $menuTypes = [],
+    ): JsonResponse {
+        if (!$authorizationChecker->isGranted('ROLE_PIMCORE_ADMIN')) {
+            throw new AccessDeniedException('Access denied');
+        }
+
+        $format = $request->get('format', 'structure');
+
+        $allMenus = [];
+        $allItems = [];
+
+        foreach ($menuTypes as $type) {
+            try {
+                $type = sprintf('coreshop.%s', $type);
+                $menu = $menuProvider->get($type);
+                $menuData = json_decode($jsonRenderer->render($menu), true);
+                $transformedItems = $this->transformMenuForStudio($menuData);
+
+                if (!empty($transformedItems)) {
+                    $allMenus[$type] = $transformedItems;
+                    $allItems = array_merge($allItems, $transformedItems);
+                }
+            } catch (\Exception $e) {
+                // Log error but continue with other menus
+                error_log(sprintf('Failed to load menu "%s": %s', $type, $e->getMessage()));
+            }
+        }
+
+        // Restructure to have coreshop.main as top level
+        $restructuredItems = [];
+        if (!empty($allItems)) {
+            $restructuredItems['coreshop.main'] = $allItems;
+        }
+
+        return new JsonResponse([
+            'success' => true,
+            'items' => $restructuredItems,
+        ]);
+    }
+
+    private function transformMenuForStudio(array $menuData): array
+    {
+        $items = [];
+
+        if (isset($menuData['children'])) {
+            foreach ($menuData['children'] as $child) {
+                $items[] = $this->transformMenuItem($child);
+            }
+        }
+
+        return $items;
+    }
+
+    private function transformMenuItem(array $item): array
+    {
+        $transformed = [
+            'id' => $item['name'] ?? 'unnamed',
+            'widgetId' => $item['attributes']['widgetId'] ?? null,
+            'label' => $item['label'] ?? $item['name'] ?? 'Unnamed',
+            'path' => $item['uri'] ?? null,
+            'icon' => $item['attributes']['iconCls'] ?? null,
+            'disabled' => !($item['display'] ?? true),
+        ];
+
+        // Add custom attributes
+        if (isset($item['extras'])) {
+            if (isset($item['extras']['permission'])) {
+                $transformed['permission'] = $item['extras']['permission'];
+            }
+            if (isset($item['extras']['badge'])) {
+                $transformed['badge'] = $item['extras']['badge'];
+            }
+            if (isset($item['extras']['widgetId'])) {
+                $transformed['widgetId'] = $item['extras']['widgetId'];
+            }
+        }
+
+        // Handle children
+        if (isset($item['children']) && !empty($item['children'])) {
+            $transformed['children'] = [];
+            foreach ($item['children'] as $child) {
+                $transformed['children'][] = $this->transformMenuItem($child);
+            }
+        }
+
+        return $transformed;
     }
 }

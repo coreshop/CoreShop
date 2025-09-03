@@ -40,6 +40,10 @@ final class CoreShopMenuExtension extends AbstractPimcoreExtension
             $loader->load('services/menu.yml');
         }
 
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         Autoconfiguration::registerForAutoConfiguration(
             $container,
             MenuBuilderInterface::class,
