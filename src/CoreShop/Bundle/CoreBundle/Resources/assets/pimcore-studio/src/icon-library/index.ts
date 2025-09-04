@@ -81,7 +81,7 @@ import customerToCompanyAssignToExisting from '../assets/customer_to_company_ass
 // @ts-ignore
 import customerToCompanyAssignToNew from '../assets/customer_to_company_assign_to_new.svg?react'
 
-export const CoreBundleIconExtension: AbstractModule = {
+export const CoreBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

@@ -44,6 +44,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_order')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'open_order_by_number')
+            ->setAttribute('widgetButton', 'coreShopOpenOrderByNumberModal')
             ->setExtra('order', 10)
         ;
 

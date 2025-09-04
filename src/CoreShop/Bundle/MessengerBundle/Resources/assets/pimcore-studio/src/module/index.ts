@@ -10,19 +10,16 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import { serviceIds, WidgetRegistry } from '@pimcore/studio-ui-bundle/app'
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
-import { MessengerList } from './MessengerList'
+import { MessengerList } from '../components/MessengerList'
 
-export const MessengerWidget: AbstractModule = {
-  name: 'coreshop-messenger-widget',
-
-  onInit(): void {
-    const widgetRegistryService = container.get<WidgetRegistry>(serviceIds.widgetManager)
-    widgetRegistryService.registerWidget({
-      name: 'coreshop-messenger-widget',
-      component: MessengerList
-    })
-
-  }
+export const MessengerModule: AbstractModule = {
+    onInit(): void {
+        const widgetRegistryService = container.get<WidgetRegistry>(serviceIds.widgetManager)
+        widgetRegistryService.registerWidget({
+            name: 'coreshop-messenger-widget',
+            component: MessengerList
+        })
+    }
 }

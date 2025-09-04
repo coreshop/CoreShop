@@ -11,7 +11,7 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { TaxationBundleIconExtension } from './icon-library'
+import { TaxationBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-taxation',
@@ -21,7 +21,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(TaxationBundleIconExtension)
+        moduleSystem.registerModule(TaxationBundleIconModule)
     }
 }
 

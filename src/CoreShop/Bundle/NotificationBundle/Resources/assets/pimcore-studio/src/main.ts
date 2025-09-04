@@ -11,7 +11,7 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { NotificationBundleIconExtension } from './icon-library'
+import { NotificationBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-notification',
@@ -21,7 +21,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(NotificationBundleIconExtension)
+        moduleSystem.registerModule(NotificationBundleIconModule)
     }
 }
 

@@ -11,7 +11,7 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { PimcoreBundleIconExtension } from './icon-library'
+import { PimcoreBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-pimcore',
@@ -21,7 +21,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(PimcoreBundleIconExtension)
+        moduleSystem.registerModule(PimcoreBundleIconModule)
     }
 }
 

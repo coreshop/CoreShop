@@ -209,4 +209,3 @@ coreshop_admin_customer_company_name_duplication_check:
         _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::checkForNameDuplicatesAction
     options:
         expose: true
-

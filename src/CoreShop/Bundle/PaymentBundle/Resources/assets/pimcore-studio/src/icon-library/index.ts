@@ -19,7 +19,7 @@ import paymentProviderIcon from '../assets/payment-provider.svg?react'
 // @ts-ignore
 import paymentProviderRuleIcon from '../assets/payment-provider-rule.svg?react'
 
-export const PaymentBundleIconExtension: AbstractModule = {
+export const PaymentBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

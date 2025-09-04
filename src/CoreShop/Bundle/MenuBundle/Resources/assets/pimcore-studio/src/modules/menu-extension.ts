@@ -4,20 +4,22 @@
  * Dynamically registers CoreShop navigation items from backend API with Pimcore Studio UI
  */
 
-// @ts-ignore
 import {container} from '@pimcore/studio-ui-bundle'
-// @ts-ignore
 import {serviceIds} from '@pimcore/studio-ui-bundle/app'
-// @ts-ignore
-import {type MainNavRegistry, type WidgetRegistry} from '@pimcore/studio-ui-bundle/modules/app'
+import {IMainNavItem, type MainNavRegistry} from '@pimcore/studio-ui-bundle/modules/app'
+import { type WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import {menuService} from '../services/MenuService'
 import {CoreShopMenuItem} from '../types'
 import {CoreShopWidget} from '../components/CoreShopWidget'
+import {MenuButtonRegistry} from "../services/button-registry";
+import React from "react";
 
 export const CoreShopMenuExtension = {
     onInit(): void {
         const mainNavRegistryService = container.get<MainNavRegistry>(serviceIds.mainNavRegistry)
         const widgetRegistryService = container.get<WidgetRegistry>(serviceIds.widgetManager)
+
+        container.bind('CoreShopMenuButtons').to(MenuButtonRegistry).inSingletonScope()
 
         // Load and register menu items dynamically
         this.loadAndRegisterMenuItems(mainNavRegistryService, widgetRegistryService)
@@ -56,7 +58,7 @@ export const CoreShopMenuExtension = {
         const fullPath = parentPath ? `${parentPath}/${item.label}` : item.label
 
         // Register main navigation item
-        const navItem: any = {
+        const navItem: IMainNavItem = {
             path: fullPath
         }
 
@@ -79,7 +81,6 @@ export const CoreShopMenuExtension = {
             navItem.widgetConfig = {
                 name: item.label,
                 id: widgetId,
-                component: widgetId,
                 config: {
                     icon: {
                         type: 'name',
@@ -88,16 +89,49 @@ export const CoreShopMenuExtension = {
                 }
             }
 
-            mainNavRegistry.registerMainNavItem(navItem)
+            if (item.widgetEvent) {
+                navItem.onClick = () => {
+                    const event = new CustomEvent(item.widgetEvent as string)
+                    window.dispatchEvent(event)
+                }
 
-            if (widgetRegistry.getWidget(item.widgetId)) {
+                mainNavRegistry.registerMainNavItem(navItem)
+
                 return;
             }
 
-            //TODO: should be removed once every widget is implemented!
+            if (item.widgetButton) {
+                const buttonRegistry = container.get<MenuButtonRegistry>('CoreShopMenuButtons');
+                const button = buttonRegistry.get(item.widgetButton);
+
+                if (button) {
+                    navItem.button = () => React.createElement(button.button, {
+                        icon: item.icon,
+                        label: item.label
+                    })
+
+                    mainNavRegistry.registerMainNavItem(navItem)
+                }
+
+                return;
+            }
+
+            navItem.widgetConfig.component = widgetId;
+
+            mainNavRegistry.registerMainNavItem(navItem)
+
+            if (!item.widgetId || !widgetRegistry.getWidget(item.widgetId)) {
+                widgetRegistry.registerWidget({
+                    name: widgetId,
+                    component: props => CoreShopWidget({item}),
+                })
+
+                return;
+            }
+
             widgetRegistry.registerWidget({
                 name: widgetId,
-                component: CoreShopWidget({item})
+                component: props => CoreShopWidget({item}),
             })
         }
     }

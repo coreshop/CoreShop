@@ -11,7 +11,7 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { ProductQuantityPriceRulesBundleIconExtension } from './icon-library'
+import { ProductQuantityPriceRulesBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-product-quantity-price-rules',
@@ -21,7 +21,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(ProductQuantityPriceRulesBundleIconExtension)
+        moduleSystem.registerModule(ProductQuantityPriceRulesBundleIconModule)
     }
 }
 

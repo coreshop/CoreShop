@@ -11,18 +11,17 @@
  */
 // @ts-ignore
 import { type IAbstractPlugin } from '@pimcore/studio-ui-bundle'
-import { MessengerBundleIconExtension } from './icon-library'
-import { MessengerWidget } from './components'
+import { MessengerBundleIconModule } from './icon-library'
+import { MessengerModule } from './module'
 const plugin: IAbstractPlugin = {
     name: 'coreshop-messenger',
-    version: '1.0.0',
 
     onInit() {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(MessengerBundleIconExtension)
-        moduleSystem.registerModule(MessengerWidget)
+        moduleSystem.registerModule(MessengerBundleIconModule)
+        moduleSystem.registerModule(MessengerModule)
     }
 }
 

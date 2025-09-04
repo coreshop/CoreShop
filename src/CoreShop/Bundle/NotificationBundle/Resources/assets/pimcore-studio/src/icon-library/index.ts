@@ -19,7 +19,7 @@ import mailIcon from '../assets/mail.svg?react'
 // @ts-ignore
 import notificationRuleIcon from '../assets/notification-rule.svg?react'
 
-export const NotificationBundleIconExtension: AbstractModule = {
+export const NotificationBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

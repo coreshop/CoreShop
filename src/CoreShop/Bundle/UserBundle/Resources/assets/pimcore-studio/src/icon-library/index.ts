@@ -19,7 +19,7 @@ import customerIcon from '../assets/customer.svg?react'
 // @ts-ignore
 import customerGroupIcon from '../assets/customer-group.svg?react'
 
-export const UserBundleIconExtension: AbstractModule = {
+export const UserBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

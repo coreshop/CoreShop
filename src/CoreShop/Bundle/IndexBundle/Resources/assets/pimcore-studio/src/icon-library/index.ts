@@ -41,7 +41,7 @@ import similaritiesFieldIcon from '../assets/similarities-field.svg?react'
 // @ts-ignore
 import similarityIcon from '../assets/similarity.svg?react'
 
-export const IndexBundleIconExtension: AbstractModule = {
+export const IndexBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

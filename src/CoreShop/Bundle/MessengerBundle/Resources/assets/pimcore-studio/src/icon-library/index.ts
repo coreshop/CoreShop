@@ -20,7 +20,7 @@ import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library
 // @ts-ignore
 import messengerIcon from '../assets/messenger.svg?react'
 
-export const MessengerBundleIconExtension: AbstractModule = {
+export const MessengerBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

@@ -57,7 +57,7 @@ import removeIcon from '../assets/remove.svg?react'
 // @ts-ignore
 import productAddIcon from '../assets/product-add.svg?react'
 
-export const OrderBundleIconExtension: AbstractModule = {
+export const OrderBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

@@ -25,7 +25,7 @@ import stateIcon from '../assets/state.svg?react'
 // @ts-ignore
 import zonesIcon from '../assets/zones.svg?react'
 
-export const AddressBundleIconExtension: AbstractModule = {
+export const AddressBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

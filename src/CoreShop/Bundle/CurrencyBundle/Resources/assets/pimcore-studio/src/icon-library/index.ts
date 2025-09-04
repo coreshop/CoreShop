@@ -19,7 +19,7 @@ import currenciesIcon from '../assets/currencies.svg?react'
 // @ts-ignore
 import exchangeRateIcon from '../assets/exchange_rate.svg?react'
 
-export const CurrencyBundleIconExtension: AbstractModule = {
+export const CurrencyBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

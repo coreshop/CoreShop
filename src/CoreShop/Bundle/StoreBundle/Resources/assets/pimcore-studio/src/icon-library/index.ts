@@ -17,7 +17,7 @@ import { type IconLibrary } from '@pimcore/studio-ui-bundle/modules/icon-library
 // @ts-ignore
 import storeIcon from '../assets/store.svg?react'
 
-export const StoreBundleIconExtension: AbstractModule = {
+export const StoreBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

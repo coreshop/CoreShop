@@ -7,7 +7,7 @@
 export interface CoreShopMenuItem {
   id: string
   label: string
-  icon?: string | React.ReactNode
+  icon?: string
   path?: string
   children?: CoreShopMenuItem[]
   onClick?: () => void
@@ -18,6 +18,8 @@ export interface CoreShopMenuItem {
   disabled?: boolean
   permission?: string
   widgetId?: string
+  widgetEvent?: string
+  widgetButton?: string
 }
 
 export interface MenuCategory {

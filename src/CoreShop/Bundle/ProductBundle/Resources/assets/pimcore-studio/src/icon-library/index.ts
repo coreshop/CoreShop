@@ -41,7 +41,7 @@ import productUnitsIcon from '../assets/product-units.svg?react'
 // @ts-ignore
 import timeSpanIcon from '../assets/time-span.svg?react'
 
-export const ProductBundleIconExtension: AbstractModule = {
+export const ProductBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

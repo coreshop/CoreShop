@@ -21,7 +21,7 @@ import logoIcon from '../assets/logo.svg?react'
 // @ts-ignore
 import servicesIcon from '../assets/services.svg?react'
 
-export const ResourceBundleIconExtension: AbstractModule = {
+export const ResourceBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

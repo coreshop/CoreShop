@@ -97,6 +97,8 @@ class MenuController
         $transformed = [
             'id' => $item['name'] ?? 'unnamed',
             'widgetId' => $item['attributes']['widgetId'] ?? null,
+            'widgetEvent' => $item['attributes']['widgetEvent'] ?? null,
+            'widgetButton' => $item['attributes']['widgetButton'] ?? null,
             'label' => $item['label'] ?? $item['name'] ?? 'Unnamed',
             'path' => $item['uri'] ?? null,
             'icon' => $item['attributes']['iconCls'] ?? null,
@@ -113,6 +115,12 @@ class MenuController
             }
             if (isset($item['extras']['widgetId'])) {
                 $transformed['widgetId'] = $item['extras']['widgetId'];
+            }
+            if (isset($item['extras']['widgetEvent'])) {
+                $transformed['widgetEvent'] = $item['extras']['widgetEvent'];
+            }
+            if (isset($item['extras']['widgetButton'])) {
+                $transformed['widgetButton'] = $item['extras']['widgetEvent'];
             }
         }
 

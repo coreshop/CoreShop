@@ -29,7 +29,7 @@ import serializedIcon from '../assets/serialized.svg?react'
 // @ts-ignore
 import superBoxSelectIcon from '../assets/super-box-select.svg?react'
 
-export const PimcoreBundleIconExtension: AbstractModule = {
+export const PimcoreBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

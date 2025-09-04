@@ -11,7 +11,7 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { MoneyBundleIconExtension } from './icon-library'
+import { MoneyBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-money',
@@ -21,7 +21,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(MoneyBundleIconExtension)
+        moduleSystem.registerModule(MoneyBundleIconModule)
     }
 }
 

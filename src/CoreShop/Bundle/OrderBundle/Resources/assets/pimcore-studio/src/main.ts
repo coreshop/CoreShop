@@ -11,7 +11,7 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { OrderBundleIconExtension } from './icon-library'
+import { OrderBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-order',
@@ -21,7 +21,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(OrderBundleIconExtension)
+        moduleSystem.registerModule(OrderBundleIconModule)
     }
 }
 

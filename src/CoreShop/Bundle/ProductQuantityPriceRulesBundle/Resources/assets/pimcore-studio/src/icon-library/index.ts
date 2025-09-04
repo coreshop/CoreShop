@@ -21,7 +21,7 @@ import priceRulesIcon from '../assets/price-rules.svg?react'
 // @ts-ignore
 import productQuantityPriceRulesIcon from '..//assets/product-quanity-price-rules.svg?react'
 
-export const ProductQuantityPriceRulesBundleIconExtension: AbstractModule = {
+export const ProductQuantityPriceRulesBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

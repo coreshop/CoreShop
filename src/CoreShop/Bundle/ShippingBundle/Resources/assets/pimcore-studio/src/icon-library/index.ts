@@ -31,7 +31,7 @@ import shippingRulesIcon from '../assets/shippingrules.svg?react'
 // @ts-ignore
 import weightIcon from '../assets/weight.svg?react'
 
-export const ShippingBundleIconExtension: AbstractModule = {
+export const ShippingBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

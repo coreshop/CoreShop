@@ -10,8 +10,10 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
+// @ts-ignore
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { CoreBundleIconExtension } from './icon-library'
+import { CoreBundleIconModule } from './icon-library'
+import { CoreBundle } from './module'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-core',
@@ -21,7 +23,8 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(CoreBundleIconExtension)
+        moduleSystem.registerModule(CoreBundleIconModule)
+        moduleSystem.registerModule(CoreBundle)
     }
 }
 

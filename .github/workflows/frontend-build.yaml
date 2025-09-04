@@ -2,9 +2,9 @@ name: CoreShop Studio Frontend Build
 
 on:
   push:
-    branches: [ master, 4.0, 4.1, 5.0, next, studiov2 ]
+    branches: [ '4.0', '4.1', '5.0', 'next', 'studiov2' ]
   pull_request:
-    branches: [ master, 4.0, 4.1, 5.0, next, studiov2 ]
+    branches: [ '4.0', '4.1', '5.0', 'next', 'studiov2' ]
 
 jobs:
   frontend-build:

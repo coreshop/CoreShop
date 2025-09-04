@@ -11,9 +11,9 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { CurrencyBundleIconExtension } from './icon-library'
+import { CurrencyBundleIconModule } from './icon-library'
 
-import { CurrencyBundleIconExtension } from './icon-library'
+import { CurrencyBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-currency',
@@ -23,7 +23,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(CurrencyBundleIconExtension)
+        moduleSystem.registerModule(CurrencyBundleIconModule)
     }
 }
 

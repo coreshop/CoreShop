@@ -23,7 +23,7 @@ import searchIcon from '../assets/search.svg?react'
 // @ts-ignore
 import warningIcon from '../assets/warning.svg?react'
 
-export const RuleBundleIconExtension: AbstractModule = {
+export const RuleBundleIconModule: AbstractModule = {
   onInit(): void {
     const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
 

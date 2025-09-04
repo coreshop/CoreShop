@@ -11,7 +11,7 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { ResourceBundleIconExtension } from './icon-library'
+import { ResourceBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-resource',
@@ -21,7 +21,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(ResourceBundleIconExtension);
+        moduleSystem.registerModule(ResourceBundleIconModule);
     }
 }
 

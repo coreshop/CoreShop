@@ -11,7 +11,7 @@
  */
 
 import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { AddressBundleIconExtension } from './icon-library'
+import { AddressBundleIconModule } from './icon-library'
 
 const plugin: PluginDefinition = {
     name: 'coreshop-address-plugin',
@@ -21,7 +21,7 @@ const plugin: PluginDefinition = {
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(AddressBundleIconExtension)
+        moduleSystem.registerModule(AddressBundleIconModule)
     }
 }
 
