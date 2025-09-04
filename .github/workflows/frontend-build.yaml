@@ -1,0 +1,63 @@
+name: CoreShop Studio Frontend Build
+
+on:
+  push:
+    branches: [ master, 4.0, 4.1, 5.0, next, studiov2 ]
+  pull_request:
+    branches: [ master, 4.0, 4.1, 5.0, next, studiov2 ]
+
+jobs:
+  frontend-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Lint and fix
+        run: npm run lint || true
+        
+      - name: Type check
+        run: npm run check-types
+        
+      - name: Build all bundles
+        run: npm run build
+        
+      - name: Force add built assets to git
+        run: |
+          git add -f src/CoreShop/Bundle/*/Resources/public/studio/*/
+          git status --porcelain
+        
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Commit built assets
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "🚀 Build CoreShop Studio bundles
+
+          🤖 Generated with [GitHub Actions](https://github.com/coreshop/CoreShop/actions)
+          
+          Co-Authored-By: GitHub Action <action@github.com>"
+          
+      - name: Push changes
+        if: steps.verify-changed-files.outputs.changed == 'true' && github.event_name == 'push'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
