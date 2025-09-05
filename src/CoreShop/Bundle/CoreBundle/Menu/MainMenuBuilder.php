@@ -48,14 +48,15 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setExtra('order', 10)
         ;
 
-        $menuItem->addChild('coreshop_quote_by_number')
-            ->setLabel('coreshop_quote_by_number')
-            ->setAttribute('permission', 'coreshop_permission_quote_detail')
-            ->setAttribute('iconCls', 'coreshop_nav_icon_quote')
-            ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'coreshop_quote_by_number')
-            ->setExtra('order', 20)
-        ;
+//        $menuItem->addChild('coreshop_quote_by_number')
+//            ->setLabel('coreshop_quote_by_number')
+//            ->setAttribute('permission', 'coreshop_permission_quote_detail')
+//            ->setAttribute('iconCls', 'coreshop_nav_icon_quote')
+//            ->setAttribute('resource', 'coreshop.order')
+//            ->setAttribute('function', 'open_quote_by_number')
+//            ->setAttribute('widgetButton', 'coreShopOpenQuoteByNumberModal')
+//            ->setExtra('order', 20)
+//        ;
 
         $menuItem->addChild('coreshop_settings')
             ->setLabel('coreshop_settings')

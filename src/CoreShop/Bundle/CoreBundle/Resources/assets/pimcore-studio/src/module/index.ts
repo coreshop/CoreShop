@@ -15,7 +15,6 @@ import {OrderByNumberButton} from "../components/OrderByNumberButton";
 
 import MenuButtonRegistry from '@coreshop/menu-studio-plugin';
 
-export {useOrderByNumber} from '../hooks/useOrderByNumber'
 export {orderService} from '../services/OrderService'
 export {OrderByNumberButton} from '../components/OrderByNumberButton'
 
@@ -26,8 +25,6 @@ export const CoreBundle: AbstractModule = {
         buttonRegistry.add({
             button: OrderByNumberButton,
             name: 'coreShopOpenOrderByNumberModal',
-            icon: 'search',
-            label: 'Find Order'
         })
     }
 }
