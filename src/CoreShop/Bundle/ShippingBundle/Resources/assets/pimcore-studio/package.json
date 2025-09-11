@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/shipping-studio-plugin",
+  "name": "@coreshop/shipping",
   "version": "1.0.0",
   "description": "CoreShop ShippingBundle - Pimcore Studio Plugin",
   "scripts": {

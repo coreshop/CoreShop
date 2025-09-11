@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/order-studio-plugin",
+  "name": "@coreshop/order",
   "version": "1.0.0",
   "description": "CoreShop OrderBundle - Pimcore Studio Plugin",
   "scripts": {

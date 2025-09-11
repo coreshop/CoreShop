@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/currency-studio-plugin",
+  "name": "@coreshop/currency",
   "version": "1.0.0",
   "description": "CoreShop CurrencyBundle - Pimcore Studio Plugin",
   "scripts": {
@@ -12,6 +12,7 @@
   "license": "CCL",
   "private": true,
   "dependencies": {
+    "@coreshop/resource-studio-plugin": "file:../../../../ResourceBundle/Resources/assets/pimcore-studio",
     "@pimcore/studio-ui-bundle": "1.0.0-canary.20250901-160146-095dd66",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",

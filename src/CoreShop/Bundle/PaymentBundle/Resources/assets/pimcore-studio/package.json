@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/payment-studio-plugin",
+  "name": "@coreshop/payment",
   "version": "1.0.0",
   "description": "CoreShop PaymentBundle - Pimcore Studio Plugin",
   "scripts": {

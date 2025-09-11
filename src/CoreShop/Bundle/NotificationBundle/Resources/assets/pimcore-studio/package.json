@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/notification-studio-plugin",
+  "name": "@coreshop/notification",
   "version": "1.0.0",
   "description": "CoreShop NotificationBundle - Pimcore Studio Plugin",
   "scripts": {

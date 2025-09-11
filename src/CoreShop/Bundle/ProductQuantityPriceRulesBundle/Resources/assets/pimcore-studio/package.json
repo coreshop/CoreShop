@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/productquantitypricerules-studio-plugin",
+  "name": "@coreshop/productquantitypricerules",
   "version": "1.0.0",
   "description": "CoreShop ProductQuantityPriceRulesBundle - Pimcore Studio Plugin",
   "scripts": {

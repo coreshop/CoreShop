@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/money-studio-plugin",
+  "name": "@coreshop/money",
   "version": "1.0.0",
   "description": "CoreShop MoneyBundle - Pimcore Studio Plugin",
   "scripts": {

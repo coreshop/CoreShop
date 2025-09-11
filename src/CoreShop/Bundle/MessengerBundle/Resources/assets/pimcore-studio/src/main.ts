@@ -11,7 +11,7 @@
  */
 // @ts-ignore
 import { type IAbstractPlugin } from '@pimcore/studio-ui-bundle'
-import { MessengerBundleIconModule } from './icon-library'
+import { MessengerBundleIconModule } from './modules/icon-library'
 import { MessengerModule } from './module'
 const plugin: IAbstractPlugin = {
     name: 'coreshop-messenger',

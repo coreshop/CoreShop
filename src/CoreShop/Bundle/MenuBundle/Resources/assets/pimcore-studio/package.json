@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/menu-studio-plugin",
+  "name": "@coreshop/menu",
   "version": "1.0.0",
   "description": "CoreShop MenuBundle - Pimcore Studio Plugin",
   "scripts": {

@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { useDataObjectHelper } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { orderService } from '../services/OrderService'
 import { message } from 'antd'
-import { type MenuButtonProps } from '@coreshop/menu-studio-plugin/src'
+import { type MenuButtonProps } from '@coreshop/menu/src'
 
 export const OrderByNumberButton = ({ icon, label }: MenuButtonProps): React.JSX.Element => {
   const { input } = useFormModal()

@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/core-studio-plugin",
+  "name": "@coreshop/core",
   "version": "1.0.0",
   "description": "CoreShop CoreBundle - Pimcore Studio Plugin",
   "scripts": {
@@ -12,6 +12,9 @@
   "license": "CCL",
   "private": true,
   "dependencies": {
+    "@coreshop/resource": "file:../../../../ResourceBundle/Resources/assets/pimcore-studio",
+    "@coreshop/currency": "file:../../../../CurrencyBundle/Resources/assets/pimcore-studio",
+    "@coreshop/menu": "file:../../../../MenuBundle/Resources/assets/pimcore-studio",
     "@pimcore/studio-ui-bundle": "1.0.0-canary.20250901-160146-095dd66",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",

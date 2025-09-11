@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/customer-studio-plugin",
+  "name": "@coreshop/customer",
   "version": "1.0.0",
   "description": "CoreShop CustomerBundle - Pimcore Studio Plugin",
   "scripts": {

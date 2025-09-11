@@ -10,12 +10,11 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { ProductBundleIconModule } from './icon-library'
+import { IAbstractPlugin } from '@pimcore/studio-ui-bundle'
+import { ProductBundleIconModule } from './modules/icon-library'
 
-const plugin: PluginDefinition = {
+const plugin: IAbstractPlugin = {
     name: 'coreshop-product',
-    version: '1.0.0',
 
     onInit() {
     },

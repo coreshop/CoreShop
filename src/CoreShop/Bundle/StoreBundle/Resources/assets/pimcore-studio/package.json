@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/store-studio-plugin",
+  "name": "@coreshop/store",
   "version": "1.0.0",
   "description": "CoreShop StoreBundle - Pimcore Studio Plugin",
   "scripts": {

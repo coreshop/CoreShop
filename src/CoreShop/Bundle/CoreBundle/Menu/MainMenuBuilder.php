@@ -110,6 +110,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_country')
             ->setAttribute('resource', 'coreshop.address')
             ->setAttribute('function', 'country')
+            ->setAttribute('widgetId', 'coreshop-address-countries')
             ->setExtra('order', 10)
         ;
 
@@ -120,6 +121,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_state')
             ->setAttribute('resource', 'coreshop.address')
             ->setAttribute('function', 'state')
+            ->setAttribute('widgetId', 'coreshop-address-states')
             ->setExtra('order', 20)
         ;
 
@@ -130,6 +132,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_currency')
             ->setAttribute('resource', 'coreshop.currency')
             ->setAttribute('function', 'currency')
+            ->setAttribute('widgetId', 'coreshop-currency-currencies')
             ->setExtra('order', 30)
         ;
 
@@ -150,6 +153,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_zone')
             ->setAttribute('resource', 'coreshop.address')
             ->setAttribute('function', 'zone')
+            ->setAttribute('widgetId', 'coreshop-address-zones')
             ->setExtra('order', 50)
         ;
 

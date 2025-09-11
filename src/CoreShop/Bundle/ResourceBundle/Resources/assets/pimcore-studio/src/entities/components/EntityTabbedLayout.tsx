@@ -1,0 +1,201 @@
+import React from 'react'
+import { SplitLayout, Content, ContentLayout, Popconfirm } from '@pimcore/studio-ui-bundle/components'
+import { Tabs } from '@pimcore/studio-ui-bundle/components'
+import type { EntityListItem } from '../types'
+import { EntityApi } from '../api'
+import { useEntityTabs } from './useEntityTabs'
+import { EntityFooterToolbar } from './EntityFooterToolbar'
+import { LocalizationProvider, useLocalization } from './localization/LocalizationContext'
+import { Select, Skeleton } from 'antd'
+import { useEntityTabbedLayoutStyles } from './entity-tabbed-layout.styles'
+
+export interface LeftPaneContext {
+  items: EntityListItem[]
+  loading: boolean
+  loadList: () => Promise<void>
+  openTab: (id: number) => Promise<void>
+  onDelete: (id: number) => Promise<void>
+}
+
+export interface EntityTabbedLayoutProps<TDetail extends Record<string, any>> {
+  api: EntityApi<TDetail>
+  getTitle?: (listItem?: EntityListItem, data?: TDetail) => string
+  buildSavePayload?: (data: TDetail) => Record<string, any>
+  renderLeft: (ctx: LeftPaneContext) => React.ReactNode
+  renderDetail: (data: TDetail | undefined, setData: (draft: Partial<TDetail>) => void, ctx?: { currentLocale?: string, locales?: string[] }) => React.ReactNode
+  leftExtras?: React.ReactNode
+  localizable?: boolean
+}
+
+export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, getTitle, buildSavePayload, renderLeft, renderDetail, leftExtras, localizable }: EntityTabbedLayoutProps<TDetail>): React.JSX.Element {
+  const { styles } = useEntityTabbedLayoutStyles()
+  const {
+    list,
+    loadingList,
+    loadList,
+    tabs,
+    activeKey,
+    setActiveKey,
+    activeTab,
+    findTab,
+    updateTab,
+    openTab,
+    onSave,
+    onReload,
+    onDelete,
+    forceCloseTab,
+  } = useEntityTabs<TDetail>({ api, getTitle, buildSavePayload })
+
+  const [popConfirmOpen, setPopConfirmOpen] = React.useState<number | null>(null)
+
+  const onHandleClose = (key: string): void => {
+    const id = parseInt(key)
+    const tab = findTab(id)
+    if (!tab) return
+    if (tab.dirty) {
+      setPopConfirmOpen(id)
+    } else {
+      forceCloseTab(id)
+    }
+  }
+
+  const left = {
+    id: 'entity-list',
+    size: 25,
+    minSize: 220,
+    children: [
+      renderLeft({
+        items: list,
+        loading: loadingList,
+        loadList,
+        openTab,
+        onDelete,
+      })
+    ]
+  }
+
+  const right = {
+    id: 'entity-detail-tabs',
+    size: 75,
+    minSize: 400,
+    children: [
+      <ContentLayout
+        key='tabs-layout'
+        renderToolbar={ (
+          <ToolbarWithLocalization
+            leftExtras={ (
+              <>
+                {leftExtras}
+              </>
+            ) }
+            dirty={ activeTab?.dirty }
+            loading={ activeTab?.loading }
+            onReload={ () => { if (activeTab) void onReload(activeTab.id) } }
+            onSave={ () => { if (activeTab) void onSave(activeTab.id) } }
+            enabled={ !!localizable }
+          />
+        ) }
+      >
+        <div className='detail-tabs'>
+          <Tabs
+            activeKey={ activeKey }
+            items={ tabs.map(t => ({ key: String(t.id), label: (
+              <Popconfirm
+                onCancel={ () => { setPopConfirmOpen(null) } }
+                onConfirm={ () => { forceCloseTab(t.id); setPopConfirmOpen(null) } }
+                open={ popConfirmOpen === t.id }
+                title={ 'Discard changes and close?' }
+              >
+                {`${t.title}${t.dirty ? ' *' : ''}`}
+              </Popconfirm>
+            ) })) }
+            onChange={ (key) => setActiveKey(key) }
+            onClose={ (key) => onHandleClose(key as string) }
+          />
+          <Content className='detail-tabs__content'>
+            {activeTab !== undefined && (
+              activeTab.loading ? (
+                <div className={ styles.contentPadding }>
+                  <Skeleton active paragraph={{ rows: 10 }} />
+                </div>
+              ) : (
+                localizable ? (
+                  <LocalizationProvider>
+                    <RenderWithLocale
+                      render={ (ctx) => renderDetail(activeTab.data, (draft) => {
+                        if (activeTab) {
+                          updateTab(activeTab.id, { data: { ...(activeTab.data as any), ...draft } })
+                          updateTab(activeTab.id, { dirty: true })
+                        }
+                      }, ctx) }
+                    />
+                  </LocalizationProvider>
+                ) : (
+                  renderDetail(activeTab.data, (draft) => {
+                    if (activeTab) {
+                      updateTab(activeTab.id, { data: { ...(activeTab.data as any), ...draft } })
+                      updateTab(activeTab.id, { dirty: true })
+                    }
+                  })
+                )
+              )
+            )}
+          </Content>
+        </div>
+      </ContentLayout>
+    ]
+  }
+
+  return (
+    <SplitLayout leftItem={ left } rightItem={ right } withDivider withToolbar />
+  )
+}
+
+function ToolbarWithLocalization({ leftExtras, dirty, loading, onReload, onSave, enabled }: { leftExtras?: React.ReactNode, dirty?: boolean, loading?: boolean, onReload: () => void, onSave: () => void, enabled: boolean }) {
+  if (!enabled) {
+    return (
+      <EntityFooterToolbar
+        dirty={ dirty }
+        loading={ loading }
+        onReload={ onReload }
+        onSave={ onSave }
+        leftExtras={ leftExtras }
+      />
+    )
+  }
+
+  return (
+    <LocalizationProvider>
+      <LocalizedToolbar dirty={ dirty } loading={ loading } onReload={ onReload } onSave={ onSave } leftExtras={ leftExtras } />
+    </LocalizationProvider>
+  )
+}
+
+function LocalizedToolbar({ dirty, loading, onReload, onSave, leftExtras }: { dirty?: boolean, loading?: boolean, onReload: () => void, onSave: () => void, leftExtras?: React.ReactNode }) {
+  const { locales, currentLocale, setCurrentLocale } = useLocalization()
+  return (
+    <EntityFooterToolbar
+      dirty={ dirty }
+      loading={ loading }
+      onReload={ onReload }
+      onSave={ onSave }
+      leftExtras={ (
+        <>
+          <Select
+            size='small'
+            value={ currentLocale }
+            options={ locales.map(l => ({ value: l, label: l.toUpperCase() })) }
+            onChange={ setCurrentLocale }
+            style={{ marginRight: 8 }}
+          />
+          {leftExtras}
+        </>
+      ) }
+    />
+  )
+}
+
+const RenderWithLocale: React.FC<{ render: (ctx: { currentLocale: string, locales: string[] }) => React.ReactNode }> = ({ render }) => {
+  const { locales, currentLocale } = useLocalization()
+  return <>{render({ locales, currentLocale })}</>
+}

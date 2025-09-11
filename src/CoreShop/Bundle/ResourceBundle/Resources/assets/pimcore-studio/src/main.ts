@@ -10,18 +10,39 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { ResourceBundleIconModule } from './icon-library'
+import { ResourceBundleIconModule } from './modules/icon-library'
+import { IAbstractPlugin, container } from "@pimcore/studio-ui-bundle";
+import { entityFormExtensionsServiceId, EntityFormExtensionRegistry } from './entities/extensions'
+import { entitySaveDecoratorsServiceId, EntitySaveDecoratorRegistry } from './entities/save-decorators'
 
-const plugin: PluginDefinition = {
+const plugin: IAbstractPlugin = {
     name: 'coreshop-resource',
-    version: '1.0.0',
 
     onInit() {
+        // Bind generic registries used by bundle UIs
+        try {
+            // @ts-ignore
+            if (!(container as any).isBound?.(entityFormExtensionsServiceId)) {
+                container.bind(entityFormExtensionsServiceId).to(EntityFormExtensionRegistry).inSingletonScope()
+            }
+        } catch (e) {
+            // @ts-ignore
+            container.bind(entityFormExtensionsServiceId).to(EntityFormExtensionRegistry).inSingletonScope()
+        }
+
+        try {
+            // @ts-ignore
+            if (!(container as any).isBound?.(entitySaveDecoratorsServiceId)) {
+                container.bind(entitySaveDecoratorsServiceId).to(EntitySaveDecoratorRegistry).inSingletonScope()
+            }
+        } catch (e) {
+            // @ts-ignore
+            container.bind(entitySaveDecoratorsServiceId).to(EntitySaveDecoratorRegistry).inSingletonScope()
+        }
     },
 
     onStartup({ moduleSystem }) {
-        moduleSystem.registerModule(ResourceBundleIconModule);
+        moduleSystem.registerModule(ResourceBundleIconModule)
     }
 }
 

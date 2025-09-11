@@ -10,18 +10,36 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { AddressBundleIconModule } from './icon-library'
+import {container, IAbstractPlugin} from '@pimcore/studio-ui-bundle'
+import {AddressBundleIconModule} from './modules/icon-library'
+import {serviceIds} from '@pimcore/studio-ui-bundle/app'
+import type {WidgetRegistry} from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import {ZoneManager} from './modules/zones/ZoneManager'
+import { CountryManager } from './modules/countries/CountryManager'
+import { StateManager } from './modules/states/StateManager'
 
-const plugin: PluginDefinition = {
+const plugin: IAbstractPlugin = {
     name: 'coreshop-address-plugin',
-    version: '1.0.0',
 
-    onInit() {
-    },
+    onInit() {},
 
-    onStartup({ moduleSystem }) {
+    onStartup({moduleSystem}) {
         moduleSystem.registerModule(AddressBundleIconModule)
+
+        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+
+        widgets.registerWidget({
+            name:  'coreshop-address-zones',
+            component: ZoneManager
+        })
+        widgets.registerWidget({
+            name: 'coreshop-address-countries',
+            component: CountryManager
+        })
+        widgets.registerWidget({
+            name: 'coreshop-address-states',
+            component: StateManager
+        })
     }
 }
 

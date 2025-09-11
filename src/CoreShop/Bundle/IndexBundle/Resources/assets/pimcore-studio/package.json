@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/index-studio-plugin",
+  "name": "@coreshop/index",
   "version": "1.0.0",
   "description": "CoreShop IndexBundle - Pimcore Studio Plugin",
   "scripts": {

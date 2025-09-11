@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/messenger-studio-plugin",
+  "name": "@coreshop/messenger",
   "version": "1.0.0",
   "description": "CoreShop MessengerBundle - Pimcore Studio Plugin",
   "scripts": {

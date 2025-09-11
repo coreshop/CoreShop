@@ -8,10 +8,8 @@
 import { type IAbstractPlugin } from '@pimcore/studio-ui-bundle'
 import { CoreShopMenuExtension } from './modules/menu-extension'
 
-export { MenuButtonRegistry } from './services/button-registry';
-
 const CoreShopMenuPlugin: IAbstractPlugin = {
-  name: 'CoreShopMenuPlugin',
+  name: 'coreshop-menu',
   
   onStartup({moduleSystem}): void {
     moduleSystem.registerModule(CoreShopMenuExtension)

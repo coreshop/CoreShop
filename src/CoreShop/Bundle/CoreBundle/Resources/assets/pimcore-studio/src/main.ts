@@ -11,20 +11,21 @@
  */
 
 // @ts-ignore
-import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { CoreBundleIconModule } from './icon-library'
-import { CoreBundle } from './module'
+import {IAbstractPlugin} from '@pimcore/studio-ui-bundle'
+import { CoreBundleIconModule } from './modules/icon-library'
+import { CoreBundleMenuModule } from './modules/menu'
+import { CountryExtensionModule } from './modules/extension/country'
 
-const plugin: PluginDefinition = {
+const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
-    version: '1.0.0',
 
     onInit() {
     },
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(CoreBundleIconModule)
-        moduleSystem.registerModule(CoreBundle)
+        moduleSystem.registerModule(CoreBundleMenuModule)
+        moduleSystem.registerModule(CountryExtensionModule)
     }
 }
 

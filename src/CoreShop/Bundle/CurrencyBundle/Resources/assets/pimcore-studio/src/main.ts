@@ -10,20 +10,29 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { CurrencyBundleIconModule } from './icon-library'
+import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
+import { CurrencyBundleIconModule } from './modules/icon-library'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { CurrencyManager } from './modules/currencies/CurrencyManager'
 
-import { CurrencyBundleIconModule } from './icon-library'
-
-const plugin: PluginDefinition = {
+const plugin: IAbstractPlugin = {
     name: 'coreshop-currency',
-    version: '1.0.0',
 
     onInit() {
     },
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(CurrencyBundleIconModule)
+        // options provider removed; component fetches directly
+
+        // Register Currency entity widget (used by menu)
+        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+        const widgetId = 'coreshop-currency-currencies'
+        widgets.registerWidget({
+            name: widgetId,
+            component: CurrencyManager
+        })
     }
 }
 

@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/taxation-studio-plugin",
+  "name": "@coreshop/taxation",
   "version": "1.0.0",
   "description": "CoreShop TaxationBundle - Pimcore Studio Plugin",
   "scripts": {

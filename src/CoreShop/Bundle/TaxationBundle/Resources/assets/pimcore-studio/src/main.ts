@@ -10,12 +10,11 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { type PluginDefinition } from '@pimcore/studio-ui-bundle'
-import { TaxationBundleIconModule } from './icon-library'
+import { IAbstractPlugin } from '@pimcore/studio-ui-bundle'
+import { TaxationBundleIconModule } from './modules/icon-library'
 
-const plugin: PluginDefinition = {
+const plugin: IAbstractPlugin = {
     name: 'coreshop-taxation',
-    version: '1.0.0',
 
     onInit() {
     },

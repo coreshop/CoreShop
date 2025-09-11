@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/rule-studio-plugin",
+  "name": "@coreshop/rule",
   "version": "1.0.0",
   "description": "CoreShop RuleBundle - Pimcore Studio Plugin",
   "scripts": {

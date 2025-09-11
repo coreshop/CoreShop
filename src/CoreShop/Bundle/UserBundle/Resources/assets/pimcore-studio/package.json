@@ -1,5 +1,5 @@
 {
-  "name": "@coreshop/user-studio-plugin",
+  "name": "@coreshop/user",
   "version": "1.0.0",
   "description": "CoreShop UserBundle - Pimcore Studio Plugin",
   "scripts": {
