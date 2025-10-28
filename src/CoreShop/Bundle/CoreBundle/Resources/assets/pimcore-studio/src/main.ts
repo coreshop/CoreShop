@@ -15,6 +15,7 @@ import {IAbstractPlugin} from '@pimcore/studio-ui-bundle'
 import { CoreBundleIconModule } from './modules/icon-library'
 import { CoreBundleMenuModule } from './modules/menu'
 import { CountryExtensionModule } from './modules/extension/country'
+import { TaxRuleGroupExtensionModule } from './modules/extension/tax-rule-group'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -26,6 +27,7 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(CoreBundleIconModule)
         moduleSystem.registerModule(CoreBundleMenuModule)
         moduleSystem.registerModule(CountryExtensionModule)
+        moduleSystem.registerModule(TaxRuleGroupExtensionModule)
     }
 }
 

@@ -12,7 +12,7 @@
 
 import { ResourceBundleIconModule } from './modules/icon-library'
 import { IAbstractPlugin, container } from "@pimcore/studio-ui-bundle";
-import { entityFormExtensionsServiceId, EntityFormExtensionRegistry } from './entities/extensions'
+import { entityFormExtensionsServiceId, EntityFormExtensionRegistry, entityTableColumnExtensionsServiceId, EntityTableColumnExtensionRegistry } from './entities/extensions'
 import { entitySaveDecoratorsServiceId, EntitySaveDecoratorRegistry } from './entities/save-decorators'
 
 const plugin: IAbstractPlugin = {
@@ -28,6 +28,16 @@ const plugin: IAbstractPlugin = {
         } catch (e) {
             // @ts-ignore
             container.bind(entityFormExtensionsServiceId).to(EntityFormExtensionRegistry).inSingletonScope()
+        }
+
+        try {
+            // @ts-ignore
+            if (!(container as any).isBound?.(entityTableColumnExtensionsServiceId)) {
+                container.bind(entityTableColumnExtensionsServiceId).to(EntityTableColumnExtensionRegistry).inSingletonScope()
+            }
+        } catch (e) {
+            // @ts-ignore
+            container.bind(entityTableColumnExtensionsServiceId).to(EntityTableColumnExtensionRegistry).inSingletonScope()
         }
 
         try {

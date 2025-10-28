@@ -1,44 +1,55 @@
+/**
+ * CoreShop TaxationBundle Studio Plugin
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource/src/entities'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
-import { stateApi, type StateDetail } from './api'
-import { StateForm } from './StateForm'
+import { taxRateApi, type TaxRateDetail } from './api'
+import { TaxRateForm } from './TaxRateForm'
 
-export const StateManager: React.FC = () => {
+export const TaxRateManager: React.FC = () => {
   const modal = useFormModal()
 
   return (
-    <EntityTabbedManager<StateDetail>
-      api={ stateApi }
-      dragType='coreshop:state'
-      leftRootTitle='States'
+    <EntityTabbedManager<TaxRateDetail>
+      api={ taxRateApi }
+      dragType='coreshop:tax_rate'
+      leftRootTitle='Tax Rates'
       localizable
       getTitle={ (li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}` }
       buildSavePayload={ (data) => ({
         id: data.id,
         name: data.name,
+        rate: data.rate,
         active: data.active,
-        isoCode: data.isoCode,
-        country: data.country,
         translations: data.translations
       }) }
       onAdd={ async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add State',
+          title: 'Add Tax Rate',
           label: 'Name',
           onOk: async (value: string) => {
-            const res = await stateApi.add({ name: value })
+            const res = await taxRateApi.add({ name: value })
             resolve(res.data.id)
           }
         })
       }) }
       renderDetail={ (data, setData, ctx) => {
         if (!data) {
-          return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>Select a state to view details.</div>
+          return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>Select a tax rate to view details.</div>
         }
 
         return (
-          <StateForm
+          <TaxRateForm
             data={ data }
             currentLocale={ ctx?.currentLocale ?? 'en' }
             onChange={ (draft) => setData(draft) }

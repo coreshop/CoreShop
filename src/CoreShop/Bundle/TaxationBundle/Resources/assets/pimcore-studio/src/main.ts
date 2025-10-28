@@ -1,5 +1,5 @@
 /**
- * CoreShop PaymentBundle Studio Plugin
+ * CoreShop TaxationBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -10,8 +10,12 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { IAbstractPlugin } from '@pimcore/studio-ui-bundle'
+import { container, IAbstractPlugin } from '@pimcore/studio-ui-bundle'
 import { TaxationBundleIconModule } from './modules/icon-library'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { TaxRateManager } from './modules/tax-rates/TaxRateManager'
+import { TaxRuleGroupManager } from './modules/tax-rule-groups/TaxRuleGroupManager'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-taxation',
@@ -21,6 +25,17 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(TaxationBundleIconModule)
+
+        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+
+        widgets.registerWidget({
+            name: 'coreshop-taxation-tax-rates',
+            component: TaxRateManager
+        })
+        widgets.registerWidget({
+            name: 'coreshop-taxation-tax-rule-groups',
+            component: TaxRuleGroupManager
+        })
     }
 }
 

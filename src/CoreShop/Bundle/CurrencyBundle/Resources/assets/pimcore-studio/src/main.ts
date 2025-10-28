@@ -15,6 +15,7 @@ import { CurrencyBundleIconModule } from './modules/icon-library'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { CurrencyManager } from './modules/currencies/CurrencyManager'
+import { ExchangeRateManager } from './modules/exchange-rates/ExchangeRateManager'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-currency',
@@ -28,10 +29,15 @@ const plugin: IAbstractPlugin = {
 
         // Register Currency entity widget (used by menu)
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
-        const widgetId = 'coreshop-currency-currencies'
+
         widgets.registerWidget({
-            name: widgetId,
+            name: 'coreshop-currency-currencies',
             component: CurrencyManager
+        })
+
+        widgets.registerWidget({
+            name: 'coreshop-currency-exchange-rates',
+            component: ExchangeRateManager
         })
     }
 }

@@ -143,6 +143,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_exchange_rate')
             ->setAttribute('resource', 'coreshop.currency')
             ->setAttribute('function', 'exchange_rate')
+            ->setAttribute('widgetId', 'coreshop-currency-exchange-rates')
             ->setExtra('order', 40)
         ;
 
@@ -164,6 +165,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_taxes')
             ->setAttribute('resource', 'coreshop.taxation')
             ->setAttribute('function', 'tax_item')
+            ->setAttribute('widgetId', 'coreshop-taxation-tax-rates')
             ->setExtra('order', 60)
         ;
 
@@ -174,6 +176,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_tax_rule_groups')
             ->setAttribute('resource', 'coreshop.taxation')
             ->setAttribute('function', 'tax_rule_group')
+            ->setAttribute('widgetId', 'coreshop-taxation-tax-rule-groups')
             ->setExtra('order', 70)
         ;
 

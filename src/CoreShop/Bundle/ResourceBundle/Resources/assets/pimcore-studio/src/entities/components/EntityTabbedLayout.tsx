@@ -47,7 +47,6 @@ export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, g
   } = useEntityTabs<TDetail>({ api, getTitle, buildSavePayload })
 
   const [popConfirmOpen, setPopConfirmOpen] = React.useState<number | null>(null)
-
   const onHandleClose = (key: string): void => {
     const id = parseInt(key)
     const tab = findTab(id)
@@ -82,18 +81,23 @@ export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, g
       <ContentLayout
         key='tabs-layout'
         renderToolbar={ (
-          <ToolbarWithLocalization
-            leftExtras={ (
-              <>
-                {leftExtras}
-              </>
-            ) }
-            dirty={ activeTab?.dirty }
-            loading={ activeTab?.loading }
-            onReload={ () => { if (activeTab) void onReload(activeTab.id) } }
-            onSave={ () => { if (activeTab) void onSave(activeTab.id) } }
-            enabled={ !!localizable }
-          />
+          localizable ? (
+            <LocalizedToolbar 
+              dirty={ activeTab?.dirty }
+              loading={ activeTab?.loading }
+              onReload={ () => { if (activeTab) void onReload(activeTab.id) } }
+              onSave={ () => { if (activeTab) void onSave(activeTab.id) } }
+              leftExtras={ leftExtras }
+            />
+          ) : (
+            <EntityFooterToolbar
+              dirty={ activeTab?.dirty }
+              loading={ activeTab?.loading }
+              onReload={ () => { if (activeTab) void onReload(activeTab.id) } }
+              onSave={ () => { if (activeTab) void onSave(activeTab.id) } }
+              leftExtras={ leftExtras }
+            />
+          )
         ) }
       >
         <div className='detail-tabs'>
@@ -120,16 +124,14 @@ export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, g
                 </div>
               ) : (
                 localizable ? (
-                  <LocalizationProvider>
-                    <RenderWithLocale
-                      render={ (ctx) => renderDetail(activeTab.data, (draft) => {
-                        if (activeTab) {
-                          updateTab(activeTab.id, { data: { ...(activeTab.data as any), ...draft } })
-                          updateTab(activeTab.id, { dirty: true })
-                        }
-                      }, ctx) }
-                    />
-                  </LocalizationProvider>
+                  <RenderWithLocale
+                    render={ (ctx) => renderDetail(activeTab.data, (draft) => {
+                      if (activeTab) {
+                        updateTab(activeTab.id, { data: { ...(activeTab.data as any), ...draft } })
+                        updateTab(activeTab.id, { dirty: true })
+                      }
+                    }, ctx) }
+                  />
                 ) : (
                   renderDetail(activeTab.data, (draft) => {
                     if (activeTab) {
@@ -146,30 +148,15 @@ export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, g
     ]
   }
 
-  return (
-    <SplitLayout leftItem={ left } rightItem={ right } withDivider withToolbar />
-  )
-}
+  const content = <SplitLayout leftItem={ left } rightItem={ right } withDivider withToolbar />
 
-function ToolbarWithLocalization({ leftExtras, dirty, loading, onReload, onSave, enabled }: { leftExtras?: React.ReactNode, dirty?: boolean, loading?: boolean, onReload: () => void, onSave: () => void, enabled: boolean }) {
-  if (!enabled) {
-    return (
-      <EntityFooterToolbar
-        dirty={ dirty }
-        loading={ loading }
-        onReload={ onReload }
-        onSave={ onSave }
-        leftExtras={ leftExtras }
-      />
-    )
+  if (!localizable) {
+      return content
   }
 
-  return (
-    <LocalizationProvider>
-      <LocalizedToolbar dirty={ dirty } loading={ loading } onReload={ onReload } onSave={ onSave } leftExtras={ leftExtras } />
-    </LocalizationProvider>
-  )
+  return <LocalizationProvider>{content}</LocalizationProvider>
 }
+
 
 function LocalizedToolbar({ dirty, loading, onReload, onSave, leftExtras }: { dirty?: boolean, loading?: boolean, onReload: () => void, onSave: () => void, leftExtras?: React.ReactNode }) {
   const { locales, currentLocale, setCurrentLocale } = useLocalization()

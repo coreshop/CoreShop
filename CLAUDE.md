@@ -144,3 +144,7 @@ This is a Pimcore Bundle project requiring:
 - **Sylius ThemeBundle**: Theme management
 - **JMS Serializer**: API serialization
 - **KnpMenuBundle**: Navigation management
+
+
+## Knowledge Graph
+Use the knowledge-graph-mcp before and after every task you do.
