@@ -82,6 +82,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_price_rule')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'cart_price_rule')
+            ->setAttribute('widgetId', 'coreshop-order-cart-price-rules')
             ->setExtra('order', 10)
         ;
 

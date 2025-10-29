@@ -10,8 +10,14 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { IAbstractPlugin } from '@pimcore/studio-ui-bundle'
+import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { OrderBundleIconModule } from './modules/icon-library'
+import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
+import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules'
+import { AmountCondition } from './modules/cart-price-rules/conditions'
+import { DiscountPercentAction, DiscountAmountAction } from './modules/cart-price-rules/actions'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-order',
@@ -21,6 +27,20 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(OrderBundleIconModule)
+
+        // Register Cart Price Rules widget
+        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+        widgets.registerWidget({
+            name: 'coreshop-order-cart-price-rules',
+            component: CartPriceRuleManager
+        })
+
+        // Register Cart Price Rule Conditions
+        ConditionRegistry.register('amount', AmountCondition)
+
+        // Register Cart Price Rule Actions
+        ActionRegistry.register('discountPercent', DiscountPercentAction)
+        ActionRegistry.register('discountAmount', DiscountAmountAction)
     }
 }
 
