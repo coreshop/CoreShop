@@ -10,11 +10,13 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Card, Button, Space } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons'
+import { container } from '@pimcore/studio-ui-bundle'
 import type { RuleAction } from '../types'
-import { ActionRegistry } from '../registry'
+import type { ActionRegistry } from '../registry'
+import { coreshopRuleServiceIds } from '../registry'
 
 interface ActionItemProps {
   action: RuleAction
@@ -37,7 +39,12 @@ export const ActionItem: React.FC<ActionItemProps> = ({
     onChange({ ...action, configuration })
   }
 
-  const ActionComponent = ActionRegistry.get(action.type)
+  const actionRegistry = useMemo(
+    () => container.get<ActionRegistry>(coreshopRuleServiceIds.actionRegistry),
+    []
+  )
+
+  const ActionComponent = actionRegistry.get(action.type)
 
   const title = (
     <Space>

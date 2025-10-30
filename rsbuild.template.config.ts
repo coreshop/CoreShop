@@ -187,7 +187,11 @@ export default defineConfig({
         `
       },
       shared: {
-        ...Object.fromEntries(Object.entries(dependencies).filter(([name]) => name !== '@coreshop/resource-studio-plugin')),
+        ...Object.fromEntries(
+          Object.entries(dependencies).filter(
+            ([name]) => !name.startsWith('@coreshop/') && name !== '@coreshop/resource-studio-plugin'
+          )
+        ),
         react: {
           singleton: true,
           eager: true,

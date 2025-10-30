@@ -15,7 +15,7 @@ import type { ConditionComponentProps } from '../types'
 
 type ConditionComponent = React.ComponentType<ConditionComponentProps>
 
-class ConditionRegistryClass {
+export class ConditionRegistry {
   private conditions: Map<string, ConditionComponent> = new Map()
 
   register(type: string, component: ConditionComponent): void {
@@ -34,5 +34,3 @@ class ConditionRegistryClass {
     return this.conditions
   }
 }
-
-export const ConditionRegistry = new ConditionRegistryClass()

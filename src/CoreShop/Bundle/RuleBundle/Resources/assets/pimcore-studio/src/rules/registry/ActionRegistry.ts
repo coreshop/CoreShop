@@ -15,7 +15,7 @@ import type { ActionComponentProps } from '../types'
 
 type ActionComponent = React.ComponentType<ActionComponentProps>
 
-class ActionRegistryClass {
+export class ActionRegistry {
   private actions: Map<string, ActionComponent> = new Map()
 
   register(type: string, component: ActionComponent): void {
@@ -34,5 +34,3 @@ class ActionRegistryClass {
     return this.actions
   }
 }
-
-export const ActionRegistry = new ActionRegistryClass()

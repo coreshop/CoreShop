@@ -12,3 +12,6 @@
 
 export { DiscountPercentAction } from './DiscountPercentAction'
 export { DiscountAmountAction } from './DiscountAmountAction'
+export { SurchargePercentAction } from './SurchargePercentAction'
+export { SurchargeAmountAction } from './SurchargeAmountAction'
+export { CartItemAction } from './CartItemAction'

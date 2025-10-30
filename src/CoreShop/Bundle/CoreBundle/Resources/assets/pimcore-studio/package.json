@@ -17,6 +17,8 @@
     "@coreshop/menu": "file:../../../../MenuBundle/Resources/assets/pimcore-studio",
     "@coreshop/address": "file:../../../../AddressBundle/Resources/assets/pimcore-studio",
     "@coreshop/taxation": "file:../../../../TaxationBundle/Resources/assets/pimcore-studio",
+    "@coreshop/order": "file:../../../../OrderBundle/Resources/assets/pimcore-studio",
+    "@coreshop/rule": "file:../../../../RuleBundle/Resources/assets/pimcore-studio",
     "@pimcore/studio-ui-bundle": "1.0.0-canary.20250901-160146-095dd66",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",

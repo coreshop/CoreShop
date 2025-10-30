@@ -131,6 +131,27 @@ export class CartPriceRuleApi extends RuleApi<CartPriceRule> {
 
     return `${cfg.basePath}${cfg.resourcePath}/export-voucher-codes?${queryParams}`
   }
+
+  /**
+   * Get cart item configuration (available conditions and actions)
+   */
+  async getCartItemConfig(): Promise<{ conditions: string[]; actions: string[] }> {
+    const cfg = (this as any).cfg
+    const url = `${cfg.basePath}${cfg.resourcePath}/get-cart-item-config`
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to get cart item config: ${response.statusText}`)
+    }
+
+    return response.json()
+  }
 }
 
 export const cartPriceRuleApi = new CartPriceRuleApi({

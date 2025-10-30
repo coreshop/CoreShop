@@ -10,11 +10,13 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Card, Button, Space } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons'
+import { container } from '@pimcore/studio-ui-bundle'
 import type { RuleCondition } from '../types'
-import { ConditionRegistry } from '../registry'
+import type { ConditionRegistry } from '../registry/ConditionRegistry'
+import { coreshopRuleServiceIds } from '../registry'
 
 interface ConditionItemProps {
   condition: RuleCondition
@@ -37,7 +39,12 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
     onChange({ ...condition, configuration })
   }
 
-  const ConditionComponent = ConditionRegistry.get(condition.type)
+  const conditionRegistry = useMemo(
+    () => container.get<ConditionRegistry>(coreshopRuleServiceIds.conditionRegistry),
+    []
+  )
+
+  const ConditionComponent = conditionRegistry.get(condition.type)
 
   const title = (
     <Space>

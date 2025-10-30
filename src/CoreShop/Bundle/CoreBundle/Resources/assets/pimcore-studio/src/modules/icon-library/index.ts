@@ -232,7 +232,58 @@ export const CoreBundleIconModule: AbstractModule = {
       name: 'coreshop_rule_condition_guest',
       component: guestIcon
     })
-    
+
+    // Cart Price Rule specific condition icons
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_categories',
+      component: categoryIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_products',
+      component: productIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_customers',
+      component: customerIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_customerGroups',
+      component: customerGroupIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_guest',
+      component: guestIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_countries',
+      component: countriesIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_currencies',
+      component: currenciesIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_zones',
+      component: countriesIcon  // Zones can use countries icon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_stores',
+      component: storeValuesIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_condition_carriers',
+      component: shipmentIcon
+    })
+
     iconLibrary.register({
       name: 'coreshop_rule_condition_saleState',
       component: salesIcon
@@ -338,19 +389,35 @@ export const CoreBundleIconModule: AbstractModule = {
       component: ordersBackendIcon
     })
 
-    // Rule actions
+    // Rule actions (generic)
     iconLibrary.register({
       name: 'coreshop_rule_action_freeShipping',
       component: freeShippingIcon
     })
-    
+
     iconLibrary.register({
       name: 'coreshop_rule_action_voucherCredit',
       component: voucherIcon
     })
-    
+
     iconLibrary.register({
       name: 'coreshop_rule_action_giftProduct',
+      component: giftIcon
+    })
+
+    // Cart Price Rule specific action icons
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_action_freeShipping',
+      component: freeShippingIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_action_voucherCredit',
+      component: voucherIcon
+    })
+
+    iconLibrary.register({
+      name: 'coreshop_rule_icon_action_giftProduct',
       component: giftIcon
     })
     

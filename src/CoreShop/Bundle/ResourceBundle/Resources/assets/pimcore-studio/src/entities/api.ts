@@ -45,7 +45,15 @@ export class EntityApi<TDetail extends Record<string, any> = any> {
       body: JSON.stringify(payload)
     })
     if (!res.ok) throw new Error(`Add request failed: ${res.status}`)
-    return await res.json() as EntityGetResponse<TDetail>
+    const data = await res.json() as EntityGetResponse<TDetail>
+
+    // Check if response indicates failure
+    if ('success' in data && data.success === false) {
+      const message = (data as any).message || 'Add request failed'
+      throw new Error(message)
+    }
+
+    return data
   }
 
   async save(payload: Record<string, any>): Promise<EntityGetResponse<TDetail>> {
@@ -57,7 +65,15 @@ export class EntityApi<TDetail extends Record<string, any> = any> {
       body: JSON.stringify(payload)
     })
     if (!res.ok) throw new Error(`Save request failed: ${res.status}`)
-    return await res.json() as EntityGetResponse<TDetail>
+    const data = await res.json() as EntityGetResponse<TDetail>
+
+    // Check if response indicates failure
+    if ('success' in data && data.success === false) {
+      const message = (data as any).message || 'Save request failed'
+      throw new Error(message)
+    }
+
+    return data
   }
 
   async delete(id: Id): Promise<{ success: boolean }> {

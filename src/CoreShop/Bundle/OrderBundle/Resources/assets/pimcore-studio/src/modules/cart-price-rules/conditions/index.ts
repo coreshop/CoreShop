@@ -11,3 +11,7 @@
  */
 
 export { AmountCondition } from './AmountCondition'
+export { VoucherCondition } from './VoucherCondition'
+export { TimespanCondition } from './TimespanCondition'
+export { NestedCondition } from './NestedCondition'
+export { NotCombinableCondition } from './NotCombinableCondition'

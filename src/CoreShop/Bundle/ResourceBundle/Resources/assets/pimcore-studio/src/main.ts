@@ -14,6 +14,7 @@ import { ResourceBundleIconModule } from './modules/icon-library'
 import { IAbstractPlugin, container } from "@pimcore/studio-ui-bundle";
 import { entityFormExtensionsServiceId, EntityFormExtensionRegistry, entityTableColumnExtensionsServiceId, EntityTableColumnExtensionRegistry } from './entities/extensions'
 import { entitySaveDecoratorsServiceId, EntitySaveDecoratorRegistry } from './entities/save-decorators'
+import { ResourceConfigProvider, coreshopResourceServiceIds } from './config'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-resource',
@@ -48,6 +49,17 @@ const plugin: IAbstractPlugin = {
         } catch (e) {
             // @ts-ignore
             container.bind(entitySaveDecoratorsServiceId).to(EntitySaveDecoratorRegistry).inSingletonScope()
+        }
+
+        // Bind resource config provider
+        try {
+            // @ts-ignore
+            if (!(container as any).isBound?.(coreshopResourceServiceIds.configProvider)) {
+                container.bind(coreshopResourceServiceIds.configProvider).to(ResourceConfigProvider).inSingletonScope()
+            }
+        } catch (e) {
+            // @ts-ignore
+            container.bind(coreshopResourceServiceIds.configProvider).to(ResourceConfigProvider).inSingletonScope()
         }
     },
 

@@ -12,3 +12,4 @@
 
 export { ConditionRegistry } from './ConditionRegistry'
 export { ActionRegistry } from './ActionRegistry'
+export { coreshopRuleServiceIds } from './service-ids'

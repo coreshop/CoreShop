@@ -1,4 +1,5 @@
 import React from 'react'
+import { message } from 'antd'
 import type { EntityListItem } from '../types'
 import { EntityApi } from '../api'
 
@@ -37,6 +38,10 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
         const li = items.find(i => i.id === tab.id)
         return { ...tab, title: resolveTitle(li, tab.data) }
       }))
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load list'
+      message.error(errorMessage)
+      console.error('List error:', error)
     } finally {
       setLoadingList(false)
     }
@@ -82,7 +87,10 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
       const res = await api.get(id)
       const li = list.find(i => i.id === id)
       updateTab(id, { data: res.data, dirty: false, loading: false, title: resolveTitle(li, res.data) })
-    } catch (e) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load'
+      message.error(errorMessage)
+      console.error('Load error:', error)
       updateTab(id, { loading: false })
     }
   }
@@ -96,6 +104,11 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
       await api.save(payload)
       updateTab(id, { dirty: false })
       await loadList()
+      message.success('Saved successfully')
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save'
+      message.error(errorMessage)
+      console.error('Save error:', error)
     } finally {
       updateTab(id, { loading: false })
     }
@@ -106,9 +119,16 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
   }
 
   const onDelete = async (id: number): Promise<void> => {
-    await api.delete(id)
-    await loadList()
-    forceCloseTab(id)
+    try {
+      await api.delete(id)
+      await loadList()
+      forceCloseTab(id)
+      message.success('Deleted successfully')
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete'
+      message.error(errorMessage)
+      console.error('Delete error:', error)
+    }
   }
 
   const activeId = activeKey !== undefined ? parseInt(activeKey) : tabs[0]?.id
