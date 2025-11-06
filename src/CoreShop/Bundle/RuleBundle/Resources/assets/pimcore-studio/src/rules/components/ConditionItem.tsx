@@ -25,6 +25,7 @@ interface ConditionItemProps {
   onChange: (condition: RuleCondition) => void
   onMove: (from: number, to: number) => void
   onDelete: () => void
+  registryId: symbol | string
 }
 
 export const ConditionItem: React.FC<ConditionItemProps> = ({
@@ -33,15 +34,16 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
   total,
   onChange,
   onMove,
-  onDelete
+  onDelete,
+  registryId
 }) => {
   const handleDataChange = (configuration: Record<string, any>) => {
     onChange({ ...condition, configuration })
   }
 
   const conditionRegistry = useMemo(
-    () => container.get<ConditionRegistry>(coreshopRuleServiceIds.conditionRegistry),
-    []
+    () => container.get<ConditionRegistry>(registryId),
+    [registryId]
   )
 
   const ConditionComponent = conditionRegistry.get(condition.type)

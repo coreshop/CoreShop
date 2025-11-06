@@ -28,6 +28,8 @@ interface RuleFormProps {
   rule: Rule
   config: RuleConfig
   settingsComponent: React.ReactNode
+  conditionRegistryId: symbol | string
+  actionRegistryId: symbol | string
   additionalTabs?: RuleFormTab[]
   onSave?: (rule: Rule) => Promise<void>
   onChange: (rule: Rule) => void
@@ -41,7 +43,9 @@ export const RuleForm: React.FC<RuleFormProps> = ({
   additionalTabs = [],
   onSave,
   onChange,
-  hideToolbar = false
+  hideToolbar = false,
+  conditionRegistryId,
+  actionRegistryId
 }) => {
   const [saving, setSaving] = React.useState(false)
 
@@ -81,6 +85,7 @@ export const RuleForm: React.FC<RuleFormProps> = ({
           conditions={rule.conditions || []}
           availableTypes={config.conditions}
           onChange={handleConditionsChange}
+          registryId={conditionRegistryId}
         />
       )
     },
@@ -92,6 +97,7 @@ export const RuleForm: React.FC<RuleFormProps> = ({
           actions={rule.actions || []}
           availableTypes={config.actions}
           onChange={handleActionsChange}
+          registryId={actionRegistryId}
         />
       )
     }

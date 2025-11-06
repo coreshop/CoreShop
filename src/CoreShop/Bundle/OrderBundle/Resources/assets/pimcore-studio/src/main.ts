@@ -15,37 +15,38 @@ import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { OrderBundleIconModule } from './modules/icon-library'
 import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
-import { coreshopRuleServiceIds } from '@coreshop/rule/src/rules/registry'
-import type { ConditionRegistry } from '@coreshop/rule/src/rules/registry/ConditionRegistry'
-import type { ActionRegistry } from '@coreshop/rule/src/rules/registry/ActionRegistry'
-import { AmountCondition, VoucherCondition, TimespanCondition, NestedCondition, NotCombinableCondition } from './modules/cart-price-rules/conditions'
-import { DiscountPercentAction, DiscountAmountAction, SurchargePercentAction, SurchargeAmountAction, CartItemAction } from './modules/cart-price-rules/actions'
-import { CartItemConditionRegistry } from './modules/cart-price-rules/cart-item/CartItemConditionRegistry'
-import { CartItemActionRegistry } from './modules/cart-price-rules/cart-item/CartItemActionRegistry'
-import { coreshopOrderServiceIds } from './modules/cart-price-rules/cart-item/service-ids'
+import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
+import { AmountCondition, VoucherCondition, NotCombinableCondition } from './modules/cart-price-rules/conditions'
+import { SurchargePercentAction, SurchargeAmountAction, CartItemAction } from './modules/cart-price-rules/actions'
+import { DiscountAmountAction, DiscountPercentAction } from '@coreshop/core/src/modules/shared/rules/actions'
+import { coreshopOrderServiceIds } from './modules/cart-price-rules/service-ids'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-order',
 
     onInit() {
-        // Register CartItem registries as singleton services in the container
+        // Register CartPriceRule registries as singleton services in the container
         // This allows other bundles to access them via container.get()
-        container.bind(coreshopOrderServiceIds.cartItemActionRegistry).to(CartItemActionRegistry).inSingletonScope()
-        container.bind(coreshopOrderServiceIds.cartItemConditionRegistry).to(CartItemConditionRegistry).inSingletonScope()
+        // We use the generic ConditionRegistry and ActionRegistry from RuleBundle
+        container.bind(coreshopOrderServiceIds.cartPriceRuleConditionRegistry).to(ConditionRegistry).inSingletonScope()
+        container.bind(coreshopOrderServiceIds.cartPriceRuleActionRegistry).to(ActionRegistry).inSingletonScope()
 
-        // Get the main registries from the container (bound by RuleBundle)
-        const conditionRegistry = container.get<ConditionRegistry>(coreshopRuleServiceIds.conditionRegistry)
-        const actionRegistry = container.get<ActionRegistry>(coreshopRuleServiceIds.actionRegistry)
+        // Register CartItem registries as singleton services in the container
+        // Also use the generic ConditionRegistry and ActionRegistry from RuleBundle
+        container.bind(coreshopOrderServiceIds.cartItemActionRegistry).to(ActionRegistry).inSingletonScope()
+        container.bind(coreshopOrderServiceIds.cartItemConditionRegistry).to(ConditionRegistry).inSingletonScope()
+
+        // Get the CartPriceRule registries from the container (bound by OrderBundle)
+        const conditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartPriceRuleConditionRegistry)
+        const actionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartPriceRuleActionRegistry)
 
         // Get the CartItem registries from the container (bound by OrderBundle)
-        const cartItemConditionRegistry = container.get<CartItemConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry)
-        const cartItemActionRegistry = container.get<CartItemActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry)
+        const cartItemConditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry)
+        const cartItemActionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry)
 
         // Register Cart Price Rule Conditions (OrderBundle-specific)
         conditionRegistry.register('amount', AmountCondition)
         conditionRegistry.register('voucher', VoucherCondition)
-        conditionRegistry.register('timespan', TimespanCondition)
-        conditionRegistry.register('nested', NestedCondition)
         conditionRegistry.register('not_combinable', NotCombinableCondition)
 
         // Register Cart Price Rule Actions (OrderBundle-specific)

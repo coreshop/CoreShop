@@ -15,8 +15,8 @@ import { Card, Button, Space } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { RuleAction } from '@coreshop/rule/src/rules/types'
-import type { CartItemActionRegistry } from './CartItemActionRegistry'
-import { coreshopOrderServiceIds } from './service-ids'
+import type { ActionRegistry } from '@coreshop/rule/src/rules/registry'
+import { coreshopOrderServiceIds } from '../service-ids'
 
 interface CartItemActionItemProps {
   action: RuleAction
@@ -40,7 +40,7 @@ export const CartItemActionItem: React.FC<CartItemActionItemProps> = ({
   }
 
   const cartItemActionRegistry = useMemo(
-    () => container.get<CartItemActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry),
+    () => container.get<ActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry),
     []
   )
 

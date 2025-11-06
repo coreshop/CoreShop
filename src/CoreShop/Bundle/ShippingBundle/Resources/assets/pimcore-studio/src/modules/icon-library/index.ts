@@ -71,22 +71,22 @@ export const ShippingBundleIconModule: AbstractModule = {
       name: 'coreshop_shipping_condition',
       component: conditionsIcon
     })
-    
+
     iconLibrary.register({
       name: 'coreshop_shipping_conditions',
       component: conditionsIcon
     })
-    
+
     iconLibrary.register({
       name: 'coreshop_shipping_dimension',
       component: dimensionIcon
     })
-    
+
     iconLibrary.register({
       name: 'coreshop_shipping_weight',
       component: weightIcon
     })
-    
+
     iconLibrary.register({
       name: 'coreshop_shipping_postcode',
       component: postcodeIcon

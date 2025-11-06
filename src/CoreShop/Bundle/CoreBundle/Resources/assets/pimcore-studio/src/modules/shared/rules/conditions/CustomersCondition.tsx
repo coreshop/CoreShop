@@ -11,28 +11,27 @@
  */
 
 import React, { useMemo, useState, useEffect } from 'react'
-import { Form, Checkbox } from 'antd'
-import { ManyToManyRelation, type ManyToManyRelationValue } from '@pimcore/studio-ui-bundle/modules/element'
+import { Form } from 'antd'
+import { ManyToManyRelation } from '@pimcore/studio-ui-bundle/modules/element'
+import type { ManyToManyRelationValue } from '../../../../../../../../../ResourceBundle/Resources/assets/pimcore-studio/src/entities/types/relation'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { useRelationIds } from '@coreshop/resource'
 
-interface ProductsConditionData {
-  products?: string[] | ManyToManyRelationValue
-  includeVariants?: boolean
+interface CustomersConditionData {
+  customers?: string[] | ManyToManyRelationValue
 }
 
-export const ProductsCondition: React.FC<ConditionComponentProps> = ({
+export const CustomersCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
-  const conditionData = data as ProductsConditionData
-  const includeVariants = conditionData.includeVariants || false
+  const conditionData = data as CustomersConditionData
 
   const [allowedClasses, setAllowedClasses] = useState<string[]>([])
-  const [relationValue, handleRelationChange] = useRelationIds(conditionData.products, 'Product')
+  const [relationValue, handleRelationChange] = useRelationIds(conditionData.customers, 'Customer')
 
   const configProvider = useMemo(
     () => container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider),
@@ -41,30 +40,23 @@ export const ProductsCondition: React.FC<ConditionComponentProps> = ({
 
   useEffect(() => {
     const loadAllowedClasses = async () => {
-      const classes = await configProvider.getAllowedClasses('coreshop.product')
+      const classes = await configProvider.getAllowedClasses('coreshop.customer')
       setAllowedClasses(classes)
     }
     loadAllowedClasses()
   }, [configProvider])
 
-  const handleProductsChange = (value: ManyToManyRelationValue | null) => {
+  const handleCustomersChange = (value: ManyToManyRelationValue | null) => {
     const ids = handleRelationChange(value)
     onChange({
       ...conditionData,
-      products: ids
-    })
-  }
-
-  const handleIncludeVariantsChange = (checked: boolean) => {
-    onChange({
-      ...conditionData,
-      includeVariants: checked
+      customers: ids
     })
   }
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Products">
+      <Form.Item label="Customers">
         <ManyToManyRelation
           allowedClasses={allowedClasses}
           dataObjectsAllowed={true}
@@ -76,17 +68,8 @@ export const ProductsCondition: React.FC<ConditionComponentProps> = ({
           width={null}
           height={null}
           value={relationValue}
-          onChange={handleProductsChange}
+          onChange={handleCustomersChange}
         />
-      </Form.Item>
-
-      <Form.Item>
-        <Checkbox
-          checked={includeVariants}
-          onChange={(e) => handleIncludeVariantsChange(e.target.checked)}
-        >
-          Include Variants
-        </Checkbox>
       </Form.Item>
     </Form>
   )

@@ -19,6 +19,7 @@ import { cartPriceRuleApi } from './api'
 import type { CartPriceRule } from './types'
 import { SettingsForm } from './components/SettingsForm'
 import { VoucherCodesPanel } from './components/VoucherCodesPanel'
+import { coreshopOrderServiceIds } from './service-ids'
 
 export const CartPriceRuleManager: React.FC = () => {
   const modal = useFormModal()
@@ -38,18 +39,28 @@ export const CartPriceRuleManager: React.FC = () => {
       api={cartPriceRuleApi}
       dragType='coreshop:cart_price_rule'
       leftRootTitle='Cart Price Rules'
+      localizable
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
-      buildSavePayload={(data) => ({
-        id: data.id,
-        name: data.name,
-        description: data.description,
-        active: data.active,
-        priority: data.priority,
-        isVoucherRule: data.isVoucherRule,
-        conditions: data.conditions,
-        actions: data.actions,
-        translations: data.translations
-      })}
+      buildSavePayload={(data) => {
+        const translations: Record<string, { label: string }> = {}
+        const rawTranslations = (data.translations ?? {}) as Record<string, any>
+        Object.keys(rawTranslations).forEach((locale) => {
+          const entry = rawTranslations[locale] ?? {}
+          translations[locale] = { label: entry?.label ?? '' }
+        })
+
+        return {
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          active: data.active,
+          priority: data.priority,
+          isVoucherRule: data.isVoucherRule,
+          conditions: data.conditions,
+          actions: data.actions,
+          translations
+        }
+      }}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
           title: 'Add Cart Price Rule',
@@ -57,11 +68,11 @@ export const CartPriceRuleManager: React.FC = () => {
           rule: { required: true, message: 'Name is required' },
           onOk: async (nameValue: string) => {
             const res = await cartPriceRuleApi.add({ name: nameValue })
-            resolve(res.data.id)
+            resolve(res.data.id!)
           }
         })
       })}
-      renderDetail={(data, setData) => {
+      renderDetail={(data, setData, ctx) => {
         if (!data) {
           return <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
             Select a cart price rule to view details.
@@ -86,10 +97,13 @@ export const CartPriceRuleManager: React.FC = () => {
           <RuleForm
             rule={data}
             config={config}
+            conditionRegistryId={coreshopOrderServiceIds.cartPriceRuleConditionRegistry}
+            actionRegistryId={coreshopOrderServiceIds.cartPriceRuleActionRegistry}
             settingsComponent={
               <SettingsForm
                 rule={data}
                 onChange={setData}
+                currentLocale={ctx?.currentLocale ?? 'en'}
               />
             }
             additionalTabs={additionalTabs}

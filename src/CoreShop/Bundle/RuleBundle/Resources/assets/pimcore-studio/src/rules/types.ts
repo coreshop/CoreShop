@@ -43,9 +43,11 @@ export interface RuleConfig {
 export interface ConditionComponentProps {
   data: Record<string, any>
   onChange: (data: Record<string, any>) => void
+  registryId?: symbol | string  // Optional: required for nested conditions
 }
 
 export interface ActionComponentProps {
   data: Record<string, any>
   onChange: (data: Record<string, any>) => void
+  registryId?: symbol | string  // Optional: required for nested actions
 }

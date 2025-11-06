@@ -25,6 +25,7 @@ interface ActionItemProps {
   onChange: (action: RuleAction) => void
   onMove: (from: number, to: number) => void
   onDelete: () => void
+  registryId: symbol | string
 }
 
 export const ActionItem: React.FC<ActionItemProps> = ({
@@ -33,15 +34,16 @@ export const ActionItem: React.FC<ActionItemProps> = ({
   total,
   onChange,
   onMove,
-  onDelete
+  onDelete,
+  registryId
 }) => {
   const handleDataChange = (configuration: Record<string, any>) => {
     onChange({ ...action, configuration })
   }
 
   const actionRegistry = useMemo(
-    () => container.get<ActionRegistry>(coreshopRuleServiceIds.actionRegistry),
-    []
+    () => container.get<ActionRegistry>(registryId),
+    [registryId]
   )
 
   const ActionComponent = actionRegistry.get(action.type)

@@ -16,7 +16,7 @@ export const DroppableEntity: React.FC<DroppableEntityProps> = ({ accept, onDrop
     <Droppable
       className={ className }
       disabled={ disabled }
-      isValidContext={ function (info) {debugger; return accepts.includes(info.type);} }
+      isValidContext={ function (info) { return accepts.includes(info.type);} }
       isValidData={ (info) => isValidData ? isValidData(info) : true }
       onDrop={ onDrop }
     >

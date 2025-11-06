@@ -91,7 +91,7 @@ export const CoreShopMenuExtension = {
 
             if (item.widgetEvent) {
                 navItem.onClick = () => {
-                    const event = new CustomEvent(item.widgetEvent as string)
+                    const event = new CustomEvent(item.widgetEvent!)
                     window.dispatchEvent(event)
                 }
 
@@ -106,7 +106,7 @@ export const CoreShopMenuExtension = {
 
                 if (button) {
                     navItem.button = () => React.createElement(button.button, {
-                        icon: item.icon,
+                        icon: item.icon!,
                         label: item.label
                     })
 

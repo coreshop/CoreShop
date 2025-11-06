@@ -1,5 +1,5 @@
 /**
- * CoreShop OrderBundle Studio Plugin
+ * CoreShop IndexBundle Nested Filter Condition
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -11,54 +11,54 @@
  */
 
 import React, { useMemo } from 'react'
-import { Form, Select, Button, Dropdown, Space, Empty, Card } from 'antd'
+import { Form, Input, Button, Dropdown, Space, Empty, Card } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import { container } from '@pimcore/studio-ui-bundle'
-import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import type { RuleCondition } from '@coreshop/rule/src/rules/types'
-import { coreshopRuleServiceIds } from '@coreshop/rule/src/rules/registry'
-import type { ConditionRegistry } from '@coreshop/rule/src/rules/registry/ConditionRegistry'
-import { ConditionItem } from '@coreshop/rule/src/rules/components/ConditionItem'
+import type { ConditionProps, FilterCondition } from '../types'
+import type { ConditionRegistry } from './ConditionRegistry'
+import { ConditionItem } from '../components/ConditionItem'
 
-interface NestedConditionData {
-  operator?: 'and' | 'or' | 'not'
-  conditions?: RuleCondition[]
-}
-
-export const NestedCondition: React.FC<ConditionComponentProps> = ({
+/**
+ * Nested Condition - Contains other filter conditions (recursive)
+ */
+export const NestedCondition: React.FC<ConditionProps> = ({
   data,
-  onChange
+  onChange,
+  indexId,
+  registryId
 }) => {
-  const conditionData = data as NestedConditionData
-  const operator = conditionData.operator || 'and'
-  const conditions = conditionData.conditions || []
+  const conditions = (data.configuration?.conditions as FilterCondition[]) || []
 
   const conditionRegistry = useMemo(
-    () => container.get<ConditionRegistry>(coreshopRuleServiceIds.conditionRegistry),
-    []
+    () => {
+      if (!registryId) return null
+      try {
+        return container.get<ConditionRegistry>(registryId)
+      } catch {
+        // Fallback if registry not found
+        return null
+      }
+    },
+    [registryId]
   )
 
   const availableTypes = useMemo(() => {
-    return Array.from(conditionRegistry.getAll().keys())
+    if (!conditionRegistry) return []
+    return Array.from(conditionRegistry.getAll()).map(([type]) => type)
   }, [conditionRegistry])
 
-  const handleOperatorChange = (value: 'and' | 'or' | 'not') => {
+  const handleConditionsChange = (newConditions: FilterCondition[]) => {
     onChange({
-      ...conditionData,
-      operator: value
-    })
-  }
-
-  const handleConditionsChange = (newConditions: RuleCondition[]) => {
-    onChange({
-      ...conditionData,
-      conditions: newConditions
+      configuration: {
+        ...data.configuration,
+        conditions: newConditions
+      }
     })
   }
 
   const handleAdd = (type: string) => {
-    const newCondition: RuleCondition = {
+    const newCondition: FilterCondition = {
       type,
       configuration: {},
       sort: conditions.length
@@ -66,7 +66,7 @@ export const NestedCondition: React.FC<ConditionComponentProps> = ({
     handleConditionsChange([...conditions, newCondition])
   }
 
-  const handleChange = (index: number, condition: RuleCondition) => {
+  const handleChange = (index: number, condition: FilterCondition) => {
     const updated = [...conditions]
     updated[index] = condition
     handleConditionsChange(updated)
@@ -95,22 +95,17 @@ export const NestedCondition: React.FC<ConditionComponentProps> = ({
 
   const menuItems: MenuProps['items'] = availableTypes.map(type => ({
     key: type,
-    label: `Condition: ${type}`,
+    label: `Filter: ${type}`,
     onClick: () => handleAdd(type)
   }))
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Operator">
-        <Select
-          value={operator}
-          onChange={handleOperatorChange}
-          style={{ width: '100%' }}
-          options={[
-            { value: 'and', label: 'AND - All conditions must match' },
-            { value: 'or', label: 'OR - At least one condition must match' },
-            { value: 'not', label: 'NOT - None of the conditions must match' }
-          ]}
+      <Form.Item label="Label" help="Display label for the nested condition group">
+        <Input
+          value={data.label}
+          onChange={(e) => onChange({ label: e.target.value })}
+          placeholder="Nested condition label"
         />
       </Form.Item>
 
@@ -141,6 +136,8 @@ export const NestedCondition: React.FC<ConditionComponentProps> = ({
                     onChange={(c) => handleChange(index, c)}
                     onMove={handleMove}
                     onDelete={() => handleDelete(index)}
+                    registryId={registryId}
+                    indexId={indexId}
                   />
                 ))}
               </div>

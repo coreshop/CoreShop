@@ -21,12 +21,14 @@ interface ActionsPanelProps {
   actions: RuleAction[]
   availableTypes: string[]
   onChange: (actions: RuleAction[]) => void
+  registryId: symbol | string
 }
 
 export const ActionsPanel: React.FC<ActionsPanelProps> = ({
   actions,
   availableTypes,
-  onChange
+  onChange,
+  registryId
 }) => {
   const handleAdd = (type: string) => {
     const newAction: RuleAction = {
@@ -97,6 +99,7 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
                 onChange={(a) => handleChange(index, a)}
                 onMove={handleMove}
                 onDelete={() => handleDelete(index)}
+                registryId={registryId}
               />
             ))}
           </div>

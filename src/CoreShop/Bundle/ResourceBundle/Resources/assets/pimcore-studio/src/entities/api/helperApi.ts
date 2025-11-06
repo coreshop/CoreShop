@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import type { ManyToManyRelationValueItem } from '@pimcore/studio-ui-bundle/modules/element'
+import type { ManyToManyRelationValueItem } from '../types/relation'
 
 interface NicePathTarget {
   id: number

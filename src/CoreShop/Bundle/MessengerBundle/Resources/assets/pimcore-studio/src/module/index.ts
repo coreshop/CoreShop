@@ -10,8 +10,9 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { serviceIds, WidgetRegistry } from '@pimcore/studio-ui-bundle/app'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
+import { type WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { MessengerList } from '../components/MessengerList'
 
 export const MessengerModule: AbstractModule = {

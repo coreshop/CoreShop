@@ -12,7 +12,20 @@
 
 import { ResourceBundleIconModule } from './modules/icon-library'
 import { IAbstractPlugin, container } from "@pimcore/studio-ui-bundle";
-import { entityFormExtensionsServiceId, EntityFormExtensionRegistry, entityTableColumnExtensionsServiceId, EntityTableColumnExtensionRegistry } from './entities/extensions'
+import {
+  entityFormExtensionsServiceId,
+  EntityFormExtensionRegistry,
+  entityTableColumnExtensionsServiceId,
+  EntityTableColumnExtensionRegistry,
+  entityTabExtensionsServiceId,
+  EntityTabExtensionRegistry,
+  entityActionExtensionsServiceId,
+  EntityActionExtensionRegistry,
+  entityValidationExtensionsServiceId,
+  EntityValidationExtensionRegistry,
+  entityLifecycleHooksServiceId,
+  EntityLifecycleHookRegistry
+} from './entities/extensions'
 import { entitySaveDecoratorsServiceId, EntitySaveDecoratorRegistry } from './entities/save-decorators'
 import { ResourceConfigProvider, coreshopResourceServiceIds } from './config'
 
@@ -49,6 +62,50 @@ const plugin: IAbstractPlugin = {
         } catch (e) {
             // @ts-ignore
             container.bind(entitySaveDecoratorsServiceId).to(EntitySaveDecoratorRegistry).inSingletonScope()
+        }
+
+        // Tab Extensions
+        try {
+            // @ts-ignore
+            if (!(container as any).isBound?.(entityTabExtensionsServiceId)) {
+                container.bind(entityTabExtensionsServiceId).to(EntityTabExtensionRegistry).inSingletonScope()
+            }
+        } catch (e) {
+            // @ts-ignore
+            container.bind(entityTabExtensionsServiceId).to(EntityTabExtensionRegistry).inSingletonScope()
+        }
+
+        // Action Extensions
+        try {
+            // @ts-ignore
+            if (!(container as any).isBound?.(entityActionExtensionsServiceId)) {
+                container.bind(entityActionExtensionsServiceId).to(EntityActionExtensionRegistry).inSingletonScope()
+            }
+        } catch (e) {
+            // @ts-ignore
+            container.bind(entityActionExtensionsServiceId).to(EntityActionExtensionRegistry).inSingletonScope()
+        }
+
+        // Validation Extensions
+        try {
+            // @ts-ignore
+            if (!(container as any).isBound?.(entityValidationExtensionsServiceId)) {
+                container.bind(entityValidationExtensionsServiceId).to(EntityValidationExtensionRegistry).inSingletonScope()
+            }
+        } catch (e) {
+            // @ts-ignore
+            container.bind(entityValidationExtensionsServiceId).to(EntityValidationExtensionRegistry).inSingletonScope()
+        }
+
+        // Lifecycle Hooks
+        try {
+            // @ts-ignore
+            if (!(container as any).isBound?.(entityLifecycleHooksServiceId)) {
+                container.bind(entityLifecycleHooksServiceId).to(EntityLifecycleHookRegistry).inSingletonScope()
+            }
+        } catch (e) {
+            // @ts-ignore
+            container.bind(entityLifecycleHooksServiceId).to(EntityLifecycleHookRegistry).inSingletonScope()
         }
 
         // Bind resource config provider

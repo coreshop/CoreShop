@@ -115,3 +115,126 @@ core_shop_product:
     js:
       custom_action: '/coreshop/js/custom_action.js'
 ```
+
+## Pimcore Studio (React)
+
+For the new Pimcore Studio UI, you need to create a React component instead of ExtJS:
+
+```typescript
+// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/product-price-rules/actions/CustomAction.tsx
+
+import React from 'react'
+import { Form, InputNumber } from 'antd'
+import type { ActionComponentProps } from '@coreshop/rule/src/rules'
+
+interface CustomActionData {
+  some_value?: number
+}
+
+export const CustomAction: React.FC<ActionComponentProps> = ({
+  data,
+  onChange
+}) => {
+  const actionData = data as CustomActionData
+  const someValue = actionData.some_value || 0
+
+  const handleChange = (value: number | null) => {
+    onChange({
+      ...actionData,
+      some_value: value || 0
+    })
+  }
+
+  return (
+    <Form layout="vertical">
+      <Form.Item label="Custom Value">
+        <InputNumber
+          value={someValue}
+          onChange={handleChange}
+          precision={2}
+          style={{ width: '100%' }}
+        />
+      </Form.Item>
+    </Form>
+  )
+}
+```
+
+### Registering the React Action
+
+Register the action in your bundle's main plugin file:
+
+```typescript
+// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
+
+import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
+import type { ActionRegistry } from '@coreshop/rule/src/rules/registry'
+import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
+import { CustomAction } from './modules/product-price-rules/actions/CustomAction'
+
+const plugin: IAbstractPlugin = {
+    name: 'your-bundle',
+
+    onInit() {
+        // Get the ProductPriceRule action registry from the container
+        const actionRegistry = container.get<ActionRegistry>(
+            coreshopProductServiceIds.productPriceRuleActionRegistry
+        )
+
+        // Register the custom action
+        actionRegistry.register('custom', CustomAction)
+    }
+}
+
+export default plugin
+```
+
+### Action Without Configuration
+
+If your action doesn't need any configuration UI, you can use the built-in `EmptyAction`:
+
+```typescript
+import { EmptyAction } from '@coreshop/rule/src/rules'
+
+actionRegistry.register('customActionWithoutConfig', EmptyAction)
+```
+
+### Available Form Components
+
+The Studio UI uses Ant Design components. Commonly used form components:
+
+- `InputNumber` - Number input with precision
+- `Input` - Text input
+- `Select` - Dropdown selection
+- `Checkbox` - Boolean values
+- `DatePicker` - Date selection
+- `Switch` - Toggle switch
+
+### Using Entity Selects
+
+For selecting entities (e.g., products, categories), use the `useEntitySelect` hook:
+
+```typescript
+import { useEntitySelect } from '@coreshop/resource'
+import { productApi } from '@coreshop/product/src/modules/products/api'
+
+export const CustomAction: React.FC<ActionComponentProps> = ({ data, onChange }) => {
+  const productIds = data.products || []
+  const [options, value, handleSelectChange, loading] = useEntitySelect(productApi, productIds)
+
+  const handleChange = (selectedIds: number[]) => {
+    handleSelectChange(selectedIds)
+    onChange({ ...data, products: selectedIds })
+  }
+
+  return (
+    <Select
+      mode="multiple"
+      value={value}
+      onChange={handleChange}
+      options={options}
+      loading={loading}
+    />
+  )
+}
+```

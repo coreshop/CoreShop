@@ -21,12 +21,14 @@ interface ConditionsPanelProps {
   conditions: RuleCondition[]
   availableTypes: string[]
   onChange: (conditions: RuleCondition[]) => void
+  registryId: symbol | string
 }
 
 export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
   conditions,
   availableTypes,
-  onChange
+  onChange,
+  registryId
 }) => {
   const handleAdd = (type: string) => {
     const newCondition: RuleCondition = {
@@ -97,6 +99,7 @@ export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
                 onChange={(c) => handleChange(index, c)}
                 onMove={handleMove}
                 onDelete={() => handleDelete(index)}
+                registryId={registryId}
               />
             ))}
           </div>

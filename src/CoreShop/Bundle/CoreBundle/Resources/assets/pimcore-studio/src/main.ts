@@ -16,58 +16,93 @@ import { CoreBundleIconModule } from './modules/icon-library'
 import { CoreBundleMenuModule } from './modules/menu'
 import { CountryExtensionModule } from './modules/extension/country'
 import { TaxRuleGroupExtensionModule } from './modules/extension/tax-rule-group'
-import { coreshopRuleServiceIds } from '@coreshop/rule/src/rules/registry'
-import type { ConditionRegistry } from '@coreshop/rule/src/rules/registry/ConditionRegistry'
-import type { ActionRegistry } from '@coreshop/rule/src/rules/registry/ActionRegistry'
-import { CategoriesCondition, ProductsCondition, CustomersCondition, CustomerGroupsCondition, GuestCondition, CountriesCondition, ZonesCondition, StoresCondition, CurrenciesCondition, CarriersCondition } from './modules/cart-price-rules/conditions'
+import { CarrierExtensionModule } from './modules/extension/carrier'
+import { ComprehensiveExtensionExample } from './modules/extension/comprehensive-example'
+import { CategoriesCondition, ProductsCondition, CustomersCondition, CustomerGroupsCondition, GuestCondition, CountriesCondition, ZonesCondition, StoresCondition, CurrenciesCondition, CarriersCondition } from './modules/shared/rules/conditions'
 import { FreeShippingAction, GiftProductAction, VoucherCreditAction } from './modules/cart-price-rules/actions'
 import { CartItemDiscountAmountAction, CartItemDiscountPercentAction, CartItemProductsCondition, CartItemCategoriesCondition } from './modules/cart-price-rules/cart-item'
+import { DiscountAmountAction, DiscountPercentAction } from './modules/shared/rules/actions'
+import { NotCombinableWithCartPriceVoucherRuleCondition, QuantityCondition } from './modules/product-price-rules/conditions'
 
-// Import CartItem registry types and service IDs from OrderBundle
+// Import registry types from RuleBundle (generic registries)
+import type { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
+
+// Import service IDs from OrderBundle, ProductBundle, and ShippingBundle
 // @ts-ignore
-import { coreshopOrderServiceIds } from '@coreshop/order/src/modules/cart-price-rules/cart-item/service-ids'
+import { coreshopOrderServiceIds } from '@coreshop/order/src/modules/cart-price-rules/service-ids'
 // @ts-ignore
-import type { CartItemConditionRegistry } from '@coreshop/order/src/modules/cart-price-rules/cart-item/CartItemConditionRegistry'
+import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
 // @ts-ignore
-import type { CartItemActionRegistry } from '@coreshop/order/src/modules/cart-price-rules/cart-item/CartItemActionRegistry'
+import { coreshopShippingServiceIds } from '@coreshop/shipping/src/modules/shipping-rules/service-ids'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
 
     onInit() {
-        // Get the main registries from the container (bound by RuleBundle)
-        const conditionRegistry = container.get<ConditionRegistry>(coreshopRuleServiceIds.conditionRegistry)
-        const actionRegistry = container.get<ActionRegistry>(coreshopRuleServiceIds.actionRegistry)
+        // Get the CartPriceRule registries from the container (bound by OrderBundle)
+        const cartPriceRuleConditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartPriceRuleConditionRegistry)
+        const cartPriceRuleActionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartPriceRuleActionRegistry)
+
+        // Get the ProductPriceRule registries from the container (bound by ProductBundle)
+        const productPriceRuleConditionRegistry = container.get<ConditionRegistry>(coreshopProductServiceIds.productPriceRuleConditionRegistry)
+        const productPriceRuleActionRegistry = container.get<ActionRegistry>(coreshopProductServiceIds.productPriceRuleActionRegistry)
+
+        // Get the ShippingRule registries from the container (bound by ShippingBundle)
+        const shippingRuleConditionRegistry = container.get<ConditionRegistry>(coreshopShippingServiceIds.shippingRuleConditionRegistry)
+        const shippingRuleActionRegistry = container.get<ActionRegistry>(coreshopShippingServiceIds.shippingRuleActionRegistry)
 
         // Get the CartItem registries from the container (bound by OrderBundle)
-        const cartItemConditionRegistry = container.get<CartItemConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry)
-        const cartItemActionRegistry = container.get<CartItemActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry)
+        const cartItemConditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry)
+        const cartItemActionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry)
 
-        // Register Cart Price Rule Conditions (CoreBundle-specific)
-        // These conditions depend on Core component features
-        // Registered in onInit to ensure they're available before any UI renders
-        conditionRegistry.register('categories', CategoriesCondition)
-        conditionRegistry.register('products', ProductsCondition)
-        conditionRegistry.register('customers', CustomersCondition)
-        conditionRegistry.register('customerGroups', CustomerGroupsCondition)
-        conditionRegistry.register('guest', GuestCondition)
-        conditionRegistry.register('countries', CountriesCondition)
-        conditionRegistry.register('zones', ZonesCondition)
-        conditionRegistry.register('stores', StoresCondition)
-        conditionRegistry.register('currencies', CurrenciesCondition)
-        conditionRegistry.register('carriers', CarriersCondition)
+        // Register shared Conditions into CartPriceRule, ProductPriceRule, and ShippingRule registries
+        // These conditions are available for all rule types
+        const sharedConditions = [
+            { type: 'categories', component: CategoriesCondition },
+            { type: 'products', component: ProductsCondition },
+            { type: 'customers', component: CustomersCondition },
+            { type: 'customerGroups', component: CustomerGroupsCondition },
+            { type: 'guest', component: GuestCondition },
+            { type: 'countries', component: CountriesCondition },
+            { type: 'zones', component: ZonesCondition },
+            { type: 'stores', component: StoresCondition },
+            { type: 'currencies', component: CurrenciesCondition }
+        ]
 
-        // Register Cart Price Rule Actions (CoreBundle-specific)
-        // These actions depend on Core component features
-        actionRegistry.register('freeShipping', FreeShippingAction)
-        actionRegistry.register('giftProduct', GiftProductAction)
-        actionRegistry.register('voucherCredit', VoucherCreditAction)
+        sharedConditions.forEach(({ type, component }) => {
+            cartPriceRuleConditionRegistry.register(type, component)
+            productPriceRuleConditionRegistry.register(type, component)
+            shippingRuleConditionRegistry.register(type, component)
+        })
 
-        // Register Cart Item Actions (CoreBundle-specific)
+        // Register Carriers condition only for CartPriceRule (not for ShippingRule - carriers select shipping rules, not vice versa)
+        cartPriceRuleConditionRegistry.register('carriers', CarriersCondition)
+
+        // Register ProductPriceRule-specific Conditions (CoreBundle, needs OrderBundle for CartPriceRule API)
+        productPriceRuleConditionRegistry.register('not_combinable_with_cart_price_voucher_rule', NotCombinableWithCartPriceVoucherRuleCondition)
+        productPriceRuleConditionRegistry.register('quantity', QuantityCondition)
+
+        // Register shared Actions into BOTH CartPriceRule AND ProductPriceRule registries
+        // Note: ProductBundle has its own currency-aware versions, so these are the non-currency versions
+        const sharedActions = [
+            { type: 'discountAmount', component: DiscountAmountAction },
+            { type: 'discountPercent', component: DiscountPercentAction }
+        ]
+
+        sharedActions.forEach(({ type, component }) => {
+            cartPriceRuleActionRegistry.register(type, component)
+        })
+
+        // Register Cart-specific Actions (only in CartPriceRule registry)
+        cartPriceRuleActionRegistry.register('freeShipping', FreeShippingAction)
+        cartPriceRuleActionRegistry.register('giftProduct', GiftProductAction)
+        cartPriceRuleActionRegistry.register('voucherCredit', VoucherCreditAction)
+
+        // Register Cart Item Actions (CoreBundle-specific, only in CartItem registry)
         cartItemActionRegistry.register('discountAmount', CartItemDiscountAmountAction)
         cartItemActionRegistry.register('discountPercent', CartItemDiscountPercentAction)
 
-        // Register Cart Item Conditions (CoreBundle-specific)
+        // Register Cart Item Conditions (CoreBundle-specific, only in CartItem registry)
         cartItemConditionRegistry.register('products', CartItemProductsCondition)
         cartItemConditionRegistry.register('categories', CartItemCategoriesCondition)
     },
@@ -77,6 +112,8 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(CoreBundleMenuModule)
         moduleSystem.registerModule(CountryExtensionModule)
         moduleSystem.registerModule(TaxRuleGroupExtensionModule)
+        moduleSystem.registerModule(CarrierExtensionModule)
+        moduleSystem.registerModule(ComprehensiveExtensionExample)
     }
 }
 

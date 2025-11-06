@@ -11,7 +11,7 @@
  */
 
 import { useState, useEffect } from 'react'
-import type { ManyToManyRelationValue } from '@pimcore/studio-ui-bundle/modules/element'
+import type { ManyToManyRelationValue } from '../types/relation'
 import { loadElementDetails } from '../api/helperApi'
 
 /**
@@ -47,7 +47,7 @@ export function useRelationIds(
     // Convert string IDs to ManyToManyRelationValue format by loading details from API
     if (Array.isArray(ids) && ids.length > 0 && typeof ids[0] === 'string') {
       setLoading(true)
-      loadElementDetails(ids, elementType)
+      loadElementDetails(ids as string[], elementType)
         .then(details => {
           const converted = ids.map(id => {
             const detail = details[id]

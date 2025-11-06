@@ -42,6 +42,20 @@ bin/console pimcore:install
 
 ## Architecture
 
+### CRITICAL: Documentation Requirements
+**⚠️ EVERY CODE CHANGE MUST UPDATE DOCUMENTATION!**
+- When adding/modifying React components → Update Studio React docs in `docs/03_Development/14_Studio/`
+- When adding/modifying ExtJS components → Update ExtJS docs in `docs/03_Development/`
+- When adding Rules (Actions/Conditions) → Update both ExtJS and React docs
+- When creating new features → Document architecture, API, and usage
+- Documentation is NOT optional - it's part of the implementation
+
+### CRITICAL: Bundle Dependencies
+**⚠️ NO BUNDLE HAS A DEPENDENCY TO COREBUNDLE!**
+- Individual bundles (ProductBundle, OrderBundle, etc.) MUST NOT import from CoreBundle
+- Bundles are independent and habe cross-bundle dependencies. check the composer.json to see which bundle has which dependencies
+- CoreBundle acts as a glue layer, not as a shared dependency layer
+
 ### Bundle-Component Pattern
 CoreShop follows a strict Bundle-Component separation pattern:
 - **Components** (`src/CoreShop/Component/`): Domain logic, business rules, interfaces
@@ -145,6 +159,563 @@ This is a Pimcore Bundle project requiring:
 - **JMS Serializer**: API serialization
 - **KnpMenuBundle**: Navigation management
 
+## Pimcore Studio v2 Architecture (React/TypeScript)
+
+### Separation of Concerns - CRITICALLY IMPORTANT
+
+**Each Bundle creates and owns its own Registries:**
+
+Each Rule Engine (Cart Price Rules, Product Price Rules, Shipping Rules, etc.) has **separate ConditionRegistry and ActionRegistry instances**. This is fundamental to the architecture.
+
+#### Pattern: Bundle Registry Ownership
+
+**RuleBundle provides generic registries:**
+- `ConditionRegistry` - Generic class for condition registration
+- `ActionRegistry` - Generic class for action registration
+- Both classes are reusable with the same implementation (register, get, has, getAll)
+- Type-safe through TypeScript generics
+
+**Each bundle creates separate instances:**
+
+1. **ProductBundle** creates and binds:
+   - New instance of `ConditionRegistry` as ProductPriceRule condition registry
+   - New instance of `ActionRegistry` as ProductPriceRule action registry
+   - Registers ONLY what ProductBundle knows about (based on its composer.json dependencies)
+   - Example: nested, timespan, weight conditions + discount/price actions
+   - Does NOT know about Countries, Currencies, Customers (no dependency)
+
+2. **OrderBundle** creates and binds:
+   - New instance of `ConditionRegistry` as CartPriceRule condition registry
+   - New instance of `ActionRegistry` as CartPriceRule action registry
+   - Also creates CartItem registries (separate instances for nested rules)
+   - Registers ONLY what OrderBundle knows about
+   - Example: amount, voucher conditions + surcharge actions
+   - Does NOT know about Countries, Currencies, Customers (no dependency)
+
+3. **CoreBundle** acts as the "Glue":
+   - Has dependencies on ALL bundles (see composer.json)
+   - Retrieves registries via `container.get()` from other bundles
+   - Registers shared conditions/actions into EACH registry
+   - Example: CategoriesCondition, ProductsCondition, CustomersCondition, etc.
+   - Registers bundle-specific extensions (e.g., QuantityCondition for Product Price Rules)
+
+#### Key Principles
+
+- **Each Bundle is independent**: Only depends on what's in its composer.json
+- **No cross-bundle knowledge**: ProductBundle doesn't know CustomerBundle exists
+- **CoreBundle orchestrates**: Has all dependencies, connects everything
+- **Separate Registries**: Same action name (e.g., 'discountAmount') can exist in multiple registries with different implementations
+- **Future-proof**: New rule engines follow the same pattern (ShippingRuleRegistry, etc.)
+
+#### Checking Dependencies
+
+When uncertain about which bundle should register a component:
+```bash
+# Check bundle dependencies
+cat src/CoreShop/Bundle/{BundleName}/composer.json | grep require
+```
+
+If a condition/action needs CustomerBundle but ProductBundle doesn't depend on it → CoreBundle must register it.
+
+### Studio v2 Structure Pattern
+
+```
+BundleX/Resources/assets/pimcore-studio/src/
+├── modules/
+│   ├── rule-type/                    # e.g., product-price-rules/
+│   │   ├── actions/
+│   │   │   ├── SpecificAction.tsx   # Bundle-specific action
+│   │   │   └── index.ts
+│   │   └── conditions/
+│   │       ├── SpecificCondition.tsx
+│   │       └── index.ts
+│   └── icon-library/
+└── main.ts                           # Registry creation + registration
+```
+
+**main.ts pattern:**
+```typescript
+import { container } from '@pimcore/studio-ui-bundle'
+import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
+
+// 1. Create and bind own registries (using generic RuleBundle classes)
+container.bind(serviceIds.myConditionRegistry).to(ConditionRegistry).inSingletonScope()
+container.bind(serviceIds.myActionRegistry).to(ActionRegistry).inSingletonScope()
+
+// 2. Get own registries
+const conditionRegistry = container.get<ConditionRegistry>(serviceIds.myConditionRegistry)
+const actionRegistry = container.get<ActionRegistry>(serviceIds.myActionRegistry)
+
+// 3. Register ONLY what this bundle knows
+conditionRegistry.register('myCondition', MyCondition)
+actionRegistry.register('myAction', MyAction)
+```
+
+**CoreBundle extends all registries:**
+```typescript
+import type { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
+
+// Get registries from other bundles (they're all ConditionRegistry/ActionRegistry instances)
+const productConditionRegistry = container.get<ConditionRegistry>(productServiceIds.conditionRegistry)
+const cartConditionRegistry = container.get<ConditionRegistry>(cartServiceIds.conditionRegistry)
+
+// Register shared components into BOTH
+productConditionRegistry.register('categories', CategoriesCondition)
+cartConditionRegistry.register('categories', CategoriesCondition)
+```
+
+### Select Components with Module-Level Caching
+
+**IMPORTANT:** When creating Select components that load data from APIs (e.g., TaxRuleGroupSelect, ShippingRuleSelect, StoreSelect), ALWAYS implement module-level caching to prevent multiple API calls when multiple select instances are rendered.
+
+#### ❌ **WRONG** - No Caching (API called for each Select instance):
+
+```typescript
+export const ShippingRuleSelect: React.FC<SelectProps> = (props) => {
+  const [options, setOptions] = React.useState<Array<{ value: number, label: string }>>([])
+  const [loading, setLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    const load = async () => {
+      setLoading(true)
+      const rules = await shippingRuleApi.list()
+      setOptions(rules.map(r => ({ value: r.id!, label: r.name ?? `#${r.id}` })))
+      setLoading(false)
+    }
+    void load()
+  }, [])
+
+  return <Select {...props} loading={loading} options={options} />
+}
+```
+
+**Problem:** If 4 ShippingRuleSelects are rendered, API is called 4 times!
+
+#### ✅ **CORRECT** - With Module-Level Caching:
+
+```typescript
+import React from 'react'
+import { Select, type SelectProps } from 'antd'
+import { shippingRuleApi } from '../modules/shipping-rules/api'
+
+// Module-level cache to avoid multiple API calls
+let cachedOptions: Array<{ value: number, label: string }> | null = null
+let loadPromise: Promise<Array<{ value: number, label: string }>> | null = null
+
+const loadShippingRules = async (): Promise<Array<{ value: number, label: string }>> => {
+  // Return cached data if available
+  if (cachedOptions) {
+    return cachedOptions
+  }
+
+  // If already loading, return the existing promise (prevents race conditions)
+  if (loadPromise) {
+    return loadPromise
+  }
+
+  // Start new load
+  loadPromise = (async () => {
+    try {
+      const rules = await shippingRuleApi.list()
+      cachedOptions = rules.map(rule => ({
+        value: rule.id!,
+        label: rule.name ?? `#${rule.id}`
+      }))
+      return cachedOptions
+    } catch (err) {
+      console.error('Failed to load shipping rules:', err)
+      throw err
+    } finally {
+      loadPromise = null
+    }
+  })()
+
+  return loadPromise
+}
+
+// Export function to clear cache if needed (e.g., after creating new item)
+export const clearShippingRuleCache = () => {
+  cachedOptions = null
+  loadPromise = null
+}
+
+export const ShippingRuleSelect: React.FC<SelectProps> = (props) => {
+  const [options, setOptions] = React.useState<Array<{ value: number, label: string }>>(cachedOptions || [])
+  const [loading, setLoading] = React.useState(!cachedOptions)
+
+  React.useEffect(() => {
+    void (async () => {
+      if (!cachedOptions) {
+        setLoading(true)
+      }
+      try {
+        const opts = await loadShippingRules()
+        setOptions(opts)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [])
+
+  return (
+    <Select
+      {...props}
+      loading={loading}
+      options={options}
+      placeholder={props.placeholder ?? 'Select a shipping rule'}
+      showSearch
+      filterOption={(input, option) =>
+        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+      }
+    />
+  )
+}
+```
+
+**Benefits:**
+- ✅ API called only ONCE even with multiple Select instances
+- ✅ Loading state shows immediately for first render
+- ✅ Subsequent Selects instantly show cached data
+- ✅ Prevents race conditions with `loadPromise` check
+- ✅ Optional `clearCache()` function for invalidation
+- ✅ Uses EntityApi `.list()` method (not raw fetch)
+
+**Key Points:**
+1. **Use EntityApi**: Import and use the Api class (e.g., `shippingRuleApi.list()`), NOT raw `fetch()`
+2. **Module-level variables**: `cachedOptions` and `loadPromise` outside component
+3. **Promise sharing**: Return same promise if already loading (prevents duplicate calls)
+4. **Initial state from cache**: `useState(cachedOptions || [])` shows data immediately if cached
+5. **Conditional loading**: Only show spinner if cache is empty
+
+## Extension System
+
+CoreShop Studio v2 provides a comprehensive extension system that allows bundles and projects to customize and extend ANY entity in the system. This system enables full customization without modifying core code.
+
+### Available Extension Types
+
+#### 1. **Form Extensions** - Add fields to entity forms
+
+Add custom fields to any entity form (Country, TaxRate, Product, etc.).
+
+**Use Cases:**
+- Add custom fields from external bundles
+- Integrate third-party services
+- Add computed/derived fields
+
+**Example:**
+```typescript
+import { container } from '@pimcore/studio-ui-bundle'
+import { entityFormExtensionsServiceId, type EntityFormExtensionRegistry } from '@coreshop/resource/src/entities'
+import { Input, Form } from 'antd'
+
+const registry = container.get<EntityFormExtensionRegistry>(entityFormExtensionsServiceId)
+
+registry.add('coreshop.address.country.form', ({ data, onChange, form }) => {
+  return (
+    <Form.Item label="Custom Field" name="customField">
+      <Input onChange={(e) => onChange({ customField: e.target.value })} />
+    </Form.Item>
+  )
+})
+```
+
+**Slot Naming Convention:** `{bundle}.{resource}.{component}`
+- Example: `coreshop.address.country.form`
+- Example: `coreshop.taxation.tax_rate.form`
+
+#### 2. **Table Column Extensions** - Add columns to nested tables
+
+Add custom columns to inline tables (e.g., tax rules table in TaxRuleGroup).
+
+**Use Cases:**
+- Add relational data columns
+- Add computed columns
+- Integrate external data
+
+**Example:**
+```typescript
+import { entityTableColumnExtensionsServiceId, type EntityTableColumnExtensionRegistry } from '@coreshop/resource/src/entities'
+
+const registry = container.get<EntityTableColumnExtensionRegistry>(entityTableColumnExtensionsServiceId)
+
+registry.add('coreshop.taxation.tax_rule_group.tax_rules', ({ updateRecord }) => [
+  {
+    title: 'Country',
+    dataIndex: 'country',
+    width: 150,
+    render: (value, record, index) => (
+      <CountrySelect
+        value={value}
+        onChange={(newValue) => updateRecord(index, 'country', newValue)}
+      />
+    )
+  }
+])
+```
+
+#### 3. **Save Decorator Extensions** - Transform save payloads
+
+Modify entity data before it's sent to the backend.
+
+**Use Cases:**
+- Add computed fields
+- Transform data formats
+- Inject additional data
+- Clean up temporary fields
+
+**Example:**
+```typescript
+import { entitySaveDecoratorsServiceId, type EntitySaveDecoratorRegistry } from '@coreshop/resource/src/entities'
+
+const registry = container.get<EntitySaveDecoratorRegistry>(entitySaveDecoratorsServiceId)
+
+registry.add('coreshop.address.country', (payload, data) => {
+  return {
+    ...payload,
+    // Add timestamp
+    lastModified: new Date().toISOString(),
+    // Add computed field
+    displayName: `${data.name} (${data.isoCode})`
+  }
+})
+```
+
+#### 4. **Tab Extensions** - Add custom tabs to entity managers
+
+Add entire new tabs to entity detail views.
+
+**Use Cases:**
+- Add settings/configuration tabs
+- Add related data tabs
+- Add integration tabs
+
+**Example:**
+```typescript
+import { entityTabExtensionsServiceId, type EntityTabExtensionRegistry } from '@coreshop/resource/src/entities'
+
+const registry = container.get<EntityTabExtensionRegistry>(entityTabExtensionsServiceId)
+
+registry.add('coreshop.address.country', ({ data }) => ({
+  key: 'custom-tab',
+  label: 'Custom Settings',
+  icon: 'settings',
+  render: (tabData, onChange, ctx) => (
+    <div style={{ padding: 20 }}>
+      <h3>Custom Tab Content</h3>
+      <Form layout="vertical">
+        <Form.Item label="Custom Setting">
+          <Input
+            value={tabData?.customSetting}
+            onChange={(e) => onChange({ customSetting: e.target.value })}
+          />
+        </Form.Item>
+      </Form>
+    </div>
+  )
+}))
+```
+
+#### 5. **Action Extensions** - Add custom buttons/actions
+
+Add custom buttons to toolbars, context menus, or footers.
+
+**Use Cases:**
+- Export/Import functions
+- Duplicate/Clone operations
+- External integrations
+- Bulk operations
+
+**Example:**
+```typescript
+import { entityActionExtensionsServiceId, type EntityActionExtensionRegistry } from '@coreshop/resource/src/entities'
+
+const registry = container.get<EntityActionExtensionRegistry>(entityActionExtensionsServiceId)
+
+registry.add('coreshop.address.country', ({ data, position }) => {
+  if (position !== 'toolbar') return null
+
+  return {
+    key: 'export',
+    label: 'Export',
+    type: 'default',
+    onClick: async (entityData) => {
+      // Implement export logic
+      await exportToCSV(entityData)
+    }
+  }
+})
+```
+
+**Positions:**
+- `toolbar` - Top toolbar buttons
+- `context-menu` - Right-click context menu
+- `footer` - Bottom footer actions
+
+#### 6. **Validation Extensions** - Add custom validation
+
+Add custom validation logic that runs before save.
+
+**Use Cases:**
+- Business rule validation
+- Cross-field validation
+- Async validation (uniqueness checks, API validation)
+- Complex validation logic
+
+**Example:**
+```typescript
+import { entityValidationExtensionsServiceId, type EntityValidationExtensionRegistry } from '@coreshop/resource/src/entities'
+
+const registry = container.get<EntityValidationExtensionRegistry>(entityValidationExtensionsServiceId)
+
+registry.add('coreshop.address.country', async (data, context) => {
+  const errors: Record<string, string[]> = {}
+
+  // Validate ISO code format
+  if (data.isoCode && !/^[A-Z]{2}$/.test(data.isoCode)) {
+    errors.isoCode = ['ISO code must be 2 uppercase letters']
+  }
+
+  // Async validation - check uniqueness
+  if (data.name) {
+    const exists = await checkNameExists(data.name, data.id)
+    if (exists) {
+      errors.name = ['Country name already exists']
+    }
+  }
+
+  return {
+    valid: Object.keys(errors).length === 0,
+    errors: Object.keys(errors).length > 0 ? errors : undefined
+  }
+})
+```
+
+#### 7. **Lifecycle Hook Extensions** - Hook into entity lifecycle
+
+Execute code at specific lifecycle events.
+
+**Use Cases:**
+- Data enrichment
+- Logging/auditing
+- Cache invalidation
+- Triggering side effects
+- Data cleanup
+
+**Hook Types:**
+- `beforeLoad` - Before entity is loaded from API
+- `afterLoad` - After entity is loaded (enrich data)
+- `beforeSave` - Before save payload is sent (final cleanup)
+- `afterSave` - After successful save (side effects)
+- `beforeDelete` - Before deletion (validation)
+- `afterDelete` - After deletion (cleanup)
+
+**Example:**
+```typescript
+import { entityLifecycleHooksServiceId, type EntityLifecycleHookRegistry } from '@coreshop/resource/src/entities'
+
+const registry = container.get<EntityLifecycleHookRegistry>(entityLifecycleHooksServiceId)
+
+// Enrich data after loading
+registry.add('coreshop.address.country', 'afterLoad', (data, context) => {
+  return {
+    ...data,
+    _loadedAt: new Date().toISOString()
+  }
+})
+
+// Clean up before save
+registry.add('coreshop.address.country', 'beforeSave', (data, context) => {
+  return {
+    ...data,
+    // Remove temporary fields
+    _loadedAt: undefined
+  }
+})
+
+// Side effects after save
+registry.add('coreshop.address.country', 'afterSave', (data, context) => {
+  // Invalidate cache
+  invalidateCountryCache()
+
+  // Log audit event
+  logAuditEvent('country_saved', context?.id)
+
+  return data
+})
+```
+
+### Extension Module Pattern
+
+All extensions should be registered in a dedicated AbstractModule:
+
+```typescript
+import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
+import { entityFormExtensionsServiceId } from '@coreshop/resource/src/entities'
+
+export const MyExtensionModule: AbstractModule = {
+  onInit(): void {
+    const formRegistry = container.get(entityFormExtensionsServiceId)
+
+    formRegistry.add('coreshop.address.country.form', ({ data, onChange }) => {
+      // Your extension
+    })
+  }
+}
+```
+
+Then register the module in your bundle's `main.ts`:
+
+```typescript
+const plugin: IAbstractPlugin = {
+  name: 'my-bundle',
+
+  onInit() {
+    // Bundle initialization
+  },
+
+  onStartup({ moduleSystem }) {
+    moduleSystem.registerModule(MyExtensionModule)
+  }
+}
+```
+
+### Complete Example
+
+See `CoreBundle/Resources/assets/pimcore-studio/src/modules/extension/comprehensive-example/index.tsx` for a complete working example demonstrating all 7 extension types.
+
+### Extension Slot Reference
+
+**Common Slot Patterns:**
+
+Forms:
+- `coreshop.address.country.form`
+- `coreshop.address.state.form`
+- `coreshop.address.zone.form`
+- `coreshop.taxation.tax_rate.form`
+- `coreshop.taxation.tax_rule_group.form`
+- `coreshop.currency.currency.form`
+
+Tables:
+- `coreshop.taxation.tax_rule_group.tax_rules` (nested tax rules table)
+
+Entity Keys (for save, validation, lifecycle, tabs, actions):
+- `coreshop.address.country`
+- `coreshop.address.state`
+- `coreshop.address.zone`
+- `coreshop.taxation.tax_rate`
+- `coreshop.taxation.tax_rule_group`
+- `coreshop.currency.currency`
+
+### Best Practices
+
+1. **Always use descriptive slot names** following the convention
+2. **Keep extensions focused** - one extension per concern
+3. **Handle errors gracefully** - extensions should never break the UI
+4. **Use TypeScript** for type safety
+5. **Document your extensions** - others need to know what you added
+6. **Test extensions** - verify they work with the core system
+7. **Consider bundle dependencies** - only extend entities your bundle depends on
+8. **Use proper service IDs** - always import from `@coreshop/resource/src/entities`
 
 ## Knowledge Graph
 Use the knowledge-graph-mcp before and after every task you do.

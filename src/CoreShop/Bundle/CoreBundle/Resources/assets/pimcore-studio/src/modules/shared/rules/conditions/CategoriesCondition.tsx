@@ -11,26 +11,29 @@
  */
 
 import React, { useMemo, useState, useEffect } from 'react'
-import { Form } from 'antd'
-import { ManyToManyRelation, type ManyToManyRelationValue } from '@pimcore/studio-ui-bundle/modules/element'
+import { Form, Checkbox } from 'antd'
+import { ManyToManyRelation } from '@pimcore/studio-ui-bundle/modules/element'
+import type { ManyToManyRelationValue } from '../../../../../../../../../ResourceBundle/Resources/assets/pimcore-studio/src/entities/types/relation'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { useRelationIds } from '@coreshop/resource'
 
-interface CustomerGroupsConditionData {
-  customerGroups?: string[] | ManyToManyRelationValue
+interface CategoriesConditionData {
+  categories?: string[] | ManyToManyRelationValue
+  recursive?: boolean
 }
 
-export const CustomerGroupsCondition: React.FC<ConditionComponentProps> = ({
+export const CategoriesCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
-  const conditionData = data as CustomerGroupsConditionData
+  const conditionData = data as CategoriesConditionData
+  const recursive = conditionData.recursive || false
 
   const [allowedClasses, setAllowedClasses] = useState<string[]>([])
-  const [relationValue, handleRelationChange] = useRelationIds(conditionData.customerGroups, 'CustomerGroup')
+  const [relationValue, handleRelationChange] = useRelationIds(conditionData.categories, 'Category')
 
   const configProvider = useMemo(
     () => container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider),
@@ -39,23 +42,30 @@ export const CustomerGroupsCondition: React.FC<ConditionComponentProps> = ({
 
   useEffect(() => {
     const loadAllowedClasses = async () => {
-      const classes = await configProvider.getAllowedClasses('coreshop.customer_group')
+      const classes = await configProvider.getAllowedClasses('coreshop.category')
       setAllowedClasses(classes)
     }
     loadAllowedClasses()
   }, [configProvider])
 
-  const handleCustomerGroupsChange = (value: ManyToManyRelationValue | null) => {
+  const handleCategoriesChange = (value: ManyToManyRelationValue | null) => {
     const ids = handleRelationChange(value)
     onChange({
       ...conditionData,
-      customerGroups: ids
+      categories: ids
+    })
+  }
+
+  const handleRecursiveChange = (checked: boolean) => {
+    onChange({
+      ...conditionData,
+      recursive: checked
     })
   }
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Customer Groups">
+      <Form.Item label="Categories">
         <ManyToManyRelation
           allowedClasses={allowedClasses}
           dataObjectsAllowed={true}
@@ -67,8 +77,17 @@ export const CustomerGroupsCondition: React.FC<ConditionComponentProps> = ({
           width={null}
           height={null}
           value={relationValue}
-          onChange={handleCustomerGroupsChange}
+          onChange={handleCategoriesChange}
         />
+      </Form.Item>
+
+      <Form.Item>
+        <Checkbox
+          checked={recursive}
+          onChange={(e) => handleRecursiveChange(e.target.checked)}
+        >
+          Include Subcategories
+        </Checkbox>
       </Form.Item>
     </Form>
   )

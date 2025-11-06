@@ -1,5 +1,5 @@
 /**
- * CoreShop OrderBundle Studio Plugin
+ * CoreShop CoreBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -10,10 +10,9 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-/**
- * Service IDs for CoreShop Order CartItem registries
- */
-export const coreshopOrderServiceIds = {
-  cartItemActionRegistry: 'CoreShopOrderCartItemActionRegistry',
-  cartItemConditionRegistry: 'CoreShopOrderCartItemConditionRegistry'
-} as const
+export interface ProductPriceRule {
+  id: number
+  name: string
+  active?: boolean
+  priority?: number
+}

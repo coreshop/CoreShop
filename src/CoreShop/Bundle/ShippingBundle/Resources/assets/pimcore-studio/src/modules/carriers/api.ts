@@ -12,16 +12,58 @@
 
 import { EntityApi } from '@coreshop/resource/src/entities'
 
-export interface CarrierDetail {
-  id: number
-  identifier: string
+export interface CarrierTranslation {
+  locale: string
+  title: string
   description?: string
-  trackingUrl?: string
-  label?: string
-  taxCalculationStrategy?: string
 }
 
-export const carrierApi = new EntityApi<CarrierDetail>({
+export interface ShippingRuleAssignment {
+  id?: number
+  shippingRule: number
+  priority: number
+  stopPropagation: boolean
+}
+
+export interface CarrierDetail {
+  id?: number
+  identifier: string
+  name?: string // fallback name
+  trackingUrl?: string
+  logo?: number // asset ID
+  translations?: Record<string, CarrierTranslation>
+  taxCalculationStrategy?: string
+  hideFromCheckout?: boolean
+  shippingRules?: ShippingRuleAssignment[]
+  // Extensions from CoreBundle
+  stores?: number[]
+  taxRule?: number
+}
+
+export interface CarrierConfig {
+  taxCalculationStrategies: Array<{ value: string, label: string }>
+}
+
+export class CarrierApi extends EntityApi<CarrierDetail> {
+  async getConfig(): Promise<CarrierConfig> {
+    const cfg = (this as any).cfg
+    const response = await fetch(`${cfg.basePath}${cfg.resourcePath}/get-config`, {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch carrier config')
+    }
+
+    return response.json()
+  }
+}
+
+export const carrierApi = new CarrierApi({
   basePath: '/pimcore-studio/api',
   resourcePath: '/coreshop/carriers'
 })

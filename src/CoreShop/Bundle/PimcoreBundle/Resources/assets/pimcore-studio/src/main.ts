@@ -25,3 +25,6 @@ const plugin: IAbstractPlugin = {
 }
 
 export default plugin
+
+// Export components
+export * from './components'

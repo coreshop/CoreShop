@@ -11,105 +11,81 @@
  */
 
 import React from 'react'
-import { Form, Input, InputNumber, Checkbox, Tabs } from 'antd'
+import { Form, Input, InputNumber, Checkbox, Space, Typography } from 'antd'
+import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import type { CartPriceRule } from '../types'
 
 interface SettingsFormProps {
   rule: CartPriceRule
   onChange: (rule: CartPriceRule) => void
-  languages?: string[]
+  currentLocale: string
 }
 
 export const SettingsForm: React.FC<SettingsFormProps> = ({
   rule,
   onChange,
-  languages = ['en']
+  currentLocale
 }) => {
-  const handleFieldChange = (field: keyof CartPriceRule, value: any) => {
-    onChange({ ...rule, [field]: value })
-  }
+  const [form] = Form.useForm()
 
-  const handleTranslationChange = (lang: string, field: keyof CartPriceRule['translations'][string], value: any) => {
-    const translations = rule.translations || {}
-    onChange({
-      ...rule,
-      translations: {
-        ...translations,
-        [lang]: {
-          ...translations[lang],
-          [field]: value
-        }
-      }
-    })
-  }
+  React.useEffect(() => {
+    const initial: any = { ...(rule ?? {}) }
 
-  const translationTabs = languages.map(lang => ({
-    key: lang,
-    label: lang.toUpperCase(),
-    children: (
-      <Form layout="vertical" style={{ padding: '10px 0' }}>
-        <Form.Item label="Label">
-          <Input
-            value={rule.translations?.[lang]?.label || ''}
-            onChange={(e) => handleTranslationChange(lang, 'label', e.target.value)}
-            placeholder="Enter label"
-          />
-        </Form.Item>
-      </Form>
-    )
-  }))
+    // Ensure translations structure for current locale
+    initial.translations = initial.translations ?? {}
+    if (!initial.translations[currentLocale]) {
+      initial.translations[currentLocale] = { locale: currentLocale, label: '' }
+    }
+
+    form.setFieldsValue(initial)
+  }, [rule, currentLocale])
 
   return (
-    <div style={{ padding: 24 }}>
-      <Form layout="vertical">
-        <Form.Item label="Name" required>
-          <Input
-            value={rule.name}
-            onChange={(e) => handleFieldChange('name', e.target.value)}
-            placeholder="Enter name"
-          />
+    <div style={{ padding: 12 }}>
+      <Space align='baseline' style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+        <Typography.Text type='secondary'>Translations</Typography.Text>
+        <Typography.Text type='secondary'>{currentLocale.toUpperCase()}</Typography.Text>
+      </Space>
+
+      <Form
+        form={form}
+        layout="vertical"
+        onValuesChange={(_, allValues) => {
+          // Preserve existing translations and only merge the edited ones
+          const mergedTranslations = {
+            ...(rule?.translations ?? {}),
+            ...(allValues?.translations ?? {})
+          }
+          onChange({ ...allValues, translations: mergedTranslations })
+        }}
+      >
+        <LocalizedFieldsProvider locales={[currentLocale]}>
+          <Form.Item label={`Label (${currentLocale.toUpperCase()})`} name={['translations', currentLocale, 'label']}>
+            <Input placeholder="Rule label" />
+          </Form.Item>
+        </LocalizedFieldsProvider>
+
+        <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+          <Input placeholder="Rule name" />
         </Form.Item>
 
-        <Form.Item label="Description">
+        <Form.Item label="Description" name="description">
           <Input.TextArea
-            value={rule.description || ''}
-            onChange={(e) => handleFieldChange('description', e.target.value)}
             placeholder="Enter description"
             rows={4}
           />
         </Form.Item>
 
-        <Form.Item>
-          <Checkbox
-            checked={rule.active}
-            onChange={(e) => handleFieldChange('active', e.target.checked)}
-          >
-            Active
-          </Checkbox>
+        <Form.Item name="active" valuePropName="checked">
+          <Checkbox>Active</Checkbox>
         </Form.Item>
 
-        <Form.Item label="Priority">
-          <InputNumber
-            value={rule.priority || 0}
-            onChange={(value) => handleFieldChange('priority', value || 0)}
-            style={{ width: '100%' }}
-          />
+        <Form.Item label="Priority" name="priority">
+          <InputNumber style={{ width: '100%' }} />
         </Form.Item>
 
-        <Form.Item>
-          <Checkbox
-            checked={rule.isVoucherRule || false}
-            onChange={(e) => handleFieldChange('isVoucherRule', e.target.checked)}
-          >
-            Is Voucher Rule
-          </Checkbox>
-        </Form.Item>
-
-        <Form.Item label="Translations">
-          <Tabs
-            items={translationTabs}
-            size="small"
-          />
+        <Form.Item name="isVoucherRule" valuePropName="checked">
+          <Checkbox>Is Voucher Rule</Checkbox>
         </Form.Item>
       </Form>
     </div>

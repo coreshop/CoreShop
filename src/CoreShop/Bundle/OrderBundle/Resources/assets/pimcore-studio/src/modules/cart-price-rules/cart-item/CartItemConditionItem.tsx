@@ -15,8 +15,8 @@ import { Card, Button, Space } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { RuleCondition } from '@coreshop/rule/src/rules/types'
-import type { CartItemConditionRegistry } from './CartItemConditionRegistry'
-import { coreshopOrderServiceIds } from './service-ids'
+import type { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
+import { coreshopOrderServiceIds } from '../service-ids'
 
 interface CartItemConditionItemProps {
   condition: RuleCondition
@@ -40,7 +40,7 @@ export const CartItemConditionItem: React.FC<CartItemConditionItemProps> = ({
   }
 
   const cartItemConditionRegistry = useMemo(
-    () => container.get<CartItemConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry),
+    () => container.get<ConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry),
     []
   )
 

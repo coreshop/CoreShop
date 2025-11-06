@@ -35,8 +35,8 @@ export const NotCombinableCondition: React.FC<ConditionComponentProps> = ({
       setLoading(true)
       try {
         const response = await cartPriceRuleApi.list()
-        // list() returns an array directly, not an object with data property
-        setRules(Array.isArray(response) ? response : [])
+        // list() returns EntityListResponse which extends Array
+        setRules(response as CartPriceRule[])
       } catch (error) {
         console.error('Failed to load cart price rules:', error)
         setRules([])

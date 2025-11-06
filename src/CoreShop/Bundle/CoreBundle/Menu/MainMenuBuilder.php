@@ -93,6 +93,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_price_rule')
             ->setAttribute('resource', 'coreshop.product')
             ->setAttribute('function', 'product_price_rule')
+            ->setAttribute('widgetId', 'coreshop-product-product-price-rules')
             ->setExtra('order', 20)
         ;
 
@@ -264,6 +265,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_carriers')
             ->setAttribute('resource', 'coreshop.shipping')
             ->setAttribute('function', 'carrier')
+            ->setAttribute('widgetId', 'coreshop-shipping-carriers')
             ->setExtra('order', 10)
         ;
 
@@ -274,6 +276,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_carrier_shipping_rule')
             ->setAttribute('resource', 'coreshop.shipping')
             ->setAttribute('function', 'shipping_rules')
+            ->setAttribute('widgetId', 'coreshop-shipping-shipping-rules')
             ->setExtra('order', 20)
         ;
 
@@ -292,6 +295,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_indexes')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'index')
+            ->setAttribute('widgetId', 'coreshop-index-index')
             ->setExtra('order', 10)
         ;
 
@@ -312,6 +316,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_filters')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'filter')
+            ->setAttribute('widgetId', 'coreshop-index-filter')
             ->setExtra('order', 20)
         ;
 

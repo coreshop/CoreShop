@@ -3,8 +3,7 @@
     "module": "ESNext",
     "target": "es2017",
     "moduleResolution": "bundler",
-    "types": ["@types/webpack-env" ],
-    "baseUrl": "./js/",
+    "baseUrl": "./src/",
     "strictNullChecks": true,
     "jsx": "react",
     "esModuleInterop": true,
@@ -19,7 +18,7 @@
   },
 
   "include": [
-    "./js/**/*",
+    "./src/**/*",
     "./@mf-types/*",
     "../../../../../../../assets/js/custom.d.ts"
   ],

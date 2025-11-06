@@ -11,42 +11,67 @@
  */
 
 import React from 'react'
-import { Select, SelectProps } from 'antd'
+import { Select, type SelectProps } from 'antd'
 import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
+import { taxRuleGroupApi } from '@coreshop/taxation/src/modules/tax-rule-groups/api'
 
-interface TaxRuleGroup {
-  id: number
-  name: string
+// Module-level cache to avoid multiple API calls
+let cachedOptions: Array<{ value: number, label: string }> | null = null
+let loadPromise: Promise<Array<{ value: number, label: string }>> | null = null
+
+const loadTaxRuleGroups = async (): Promise<Array<{ value: number, label: string }>> => {
+  // Return cached data if available
+  if (cachedOptions) {
+    return cachedOptions
+  }
+
+  // If already loading, return the existing promise
+  if (loadPromise) {
+    return loadPromise
+  }
+
+  // Start new load
+  loadPromise = (async () => {
+    try {
+      const groups = await taxRuleGroupApi.list()
+      cachedOptions = groups.map(group => ({
+        value: group.id!,
+        label: group.name ?? `#${group.id}`
+      }))
+      return cachedOptions
+    } catch (err) {
+      console.error('Failed to load tax rule groups:', err)
+      throw err
+    } finally {
+      loadPromise = null
+    }
+  })()
+
+  return loadPromise
 }
 
-interface TaxRuleGroupSelectProps extends Omit<SelectProps, 'options'> {
-  value?: number
-  onChange?: (value: number | undefined) => void
+// Export function to clear cache if needed
+export const clearTaxRuleGroupCache = () => {
+  cachedOptions = null
+  loadPromise = null
 }
 
-export const TaxRuleGroupSelect: React.FC<TaxRuleGroupSelectProps> = ({ 
-  value, 
-  onChange,
-  ...selectProps 
-}) => {
-  const [taxRuleGroups, setTaxRuleGroups] = React.useState<TaxRuleGroup[]>([])
-  const [loading, setLoading] = React.useState(false)
+export const TaxRuleGroupSelect: React.FC<SelectProps> = (props) => {
+  const [options, setOptions] = React.useState<Array<{ value: number, label: string }>>(cachedOptions || [])
+  const [loading, setLoading] = React.useState(!cachedOptions)
 
   React.useEffect(() => {
-    const loadTaxRuleGroups = async () => {
-      setLoading(true)
+    void (async () => {
+      if (!cachedOptions) {
+        setLoading(true)
+      }
       try {
-        // This would need to be imported from TaxationBundle API
-        const response = await fetch('/pimcore-studio/api/coreshop/tax_rule_groups')
-        const data = await response.json()
-        setTaxRuleGroups(data.data || [])
-      } catch (error) {
-        console.error('Failed to load tax rule groups:', error)
+        const opts = await loadTaxRuleGroups()
+        setOptions(opts)
       } finally {
         setLoading(false)
       }
-    }
-    void loadTaxRuleGroups()
+    })()
   }, [])
 
   return (
@@ -54,23 +79,17 @@ export const TaxRuleGroupSelect: React.FC<TaxRuleGroupSelectProps> = ({
       accept='coreshop:tax_rule_group'
       isValidData={(info) => typeof info?.data?.id === 'number'}
       onDrop={(info) => {
-        const id = info?.data?.id
-        if (typeof id === 'number' && onChange) {
-          onChange(id)
+        if (props.onChange && info?.data?.id) {
+          const event = { target: { value: info.data.id } } as any
+          props.onChange(info.data.id, event)
         }
       }}
     >
       <Select
-        {...selectProps}
-        value={value}
-        onChange={onChange}
+        {...props}
         loading={loading}
-        options={taxRuleGroups.map(group => ({
-          value: group.id,
-          label: group.name
-        }))}
-        placeholder="Select or drop a tax rule group"
-        allowClear
+        options={options}
+        placeholder={props.placeholder ?? 'Select or drop a tax rule group'}
       />
     </DroppableEntity>
   )
