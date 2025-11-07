@@ -154,7 +154,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
     size: 75,
     minSize: 400,
     children: [
-      <div key='detail' style={{ height: '100%' }}>
+      <>
         {editingData ? (
           renderDetail(editingData, loadingDetail, handleSave, handleChange)
         ) : (
@@ -162,7 +162,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
             Select an item to edit or create a new one
           </div>
         )}
-      </div>
+      </>
     ]
   }
 

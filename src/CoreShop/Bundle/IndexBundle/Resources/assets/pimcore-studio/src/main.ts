@@ -31,17 +31,37 @@ import {
   NestedCondition
 } from './modules/filters/conditions'
 import { FilterManager } from './modules/filters/FilterManager'
+import { IndexManager } from './modules/indexes/IndexManager'
+import { GetterConfiguratorRegistry, InterpreterConfiguratorRegistry, WorkerConfiguratorRegistry } from './modules/indexes/registry'
+import { serviceIds as indexServiceIds } from './modules/indexes/service-ids'
+import {
+  MysqlWorkerConfigurator,
+  OpenSearchWorkerConfigurator,
+  BrickGetterConfigurator,
+  FieldcollectionGetterConfigurator,
+  ClassificationStoreGetterConfigurator,
+  ObjectPropertyGetterConfigurator,
+  ExpressionInterpreterConfigurator,
+  ObjectPropertyInterpreterConfigurator,
+  NestedInterpreterConfigurator,
+  IteratorInterpreterConfigurator
+} from './modules/indexes/configurators'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-index',
 
     onInit() {
-        // Register Filter widget (Indexes will come later)
+        // Register widgets
         const widgetManager = container.get<WidgetRegistry>(pimcoreServiceIds.widgetManager)
 
         widgetManager.registerWidget({
             name: 'coreshop-index-filter',
             component: FilterManager
+        })
+
+        widgetManager.registerWidget({
+            name: 'coreshop-index-index',
+            component: IndexManager
         })
 
         // Create and bind separate registries for pre-conditions and user-conditions
@@ -73,6 +93,37 @@ const plugin: IAbstractPlugin = {
           preConditionRegistry.register(type, component)
           userConditionRegistry.register(type, component)
         })
+
+        // Create and bind getter/interpreter/worker configurator registries for indices
+        container.bind(indexServiceIds.getterConfiguratorRegistry).to(GetterConfiguratorRegistry).inSingletonScope()
+        container.bind(indexServiceIds.interpreterConfiguratorRegistry).to(InterpreterConfiguratorRegistry).inSingletonScope()
+        container.bind(indexServiceIds.workerConfiguratorRegistry).to(WorkerConfiguratorRegistry).inSingletonScope()
+
+        // Get registries
+        const getterConfiguratorRegistry = container.get<GetterConfiguratorRegistry>(indexServiceIds.getterConfiguratorRegistry)
+        const interpreterConfiguratorRegistry = container.get<InterpreterConfiguratorRegistry>(indexServiceIds.interpreterConfiguratorRegistry)
+        const workerConfiguratorRegistry = container.get<WorkerConfiguratorRegistry>(indexServiceIds.workerConfiguratorRegistry)
+
+        // Register worker configurators
+        workerConfiguratorRegistry.register('mysql', MysqlWorkerConfigurator)
+        workerConfiguratorRegistry.register('opensearch', OpenSearchWorkerConfigurator)
+
+        // Register getter configurators (types must match backend service tags)
+        getterConfiguratorRegistry.register('brick', BrickGetterConfigurator)
+        getterConfiguratorRegistry.register('fieldcollection', FieldcollectionGetterConfigurator)
+        getterConfiguratorRegistry.register('classificationstore', ClassificationStoreGetterConfigurator)
+        getterConfiguratorRegistry.register('objectproperty', ObjectPropertyGetterConfigurator)
+
+        // Register interpreter configurators (types must match backend service tags)
+        interpreterConfiguratorRegistry.register('expression', ExpressionInterpreterConfigurator)
+        interpreterConfiguratorRegistry.register('objectProperty', ObjectPropertyInterpreterConfigurator)
+        interpreterConfiguratorRegistry.register('nested', NestedInterpreterConfigurator)
+        interpreterConfiguratorRegistry.register('nestedLocalized', NestedInterpreterConfigurator)
+        interpreterConfiguratorRegistry.register('nestedRelational', NestedInterpreterConfigurator)
+        interpreterConfiguratorRegistry.register('iterator', IteratorInterpreterConfigurator)
+
+        // Note: Default getter/interpreter configurators will be used automatically if no specific one is registered
+        // Specific configurators can be registered here or via extensions
     },
 
     onStartup({ moduleSystem }) {

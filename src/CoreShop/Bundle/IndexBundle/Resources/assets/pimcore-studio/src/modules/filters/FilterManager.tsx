@@ -26,7 +26,7 @@ export const FilterManager: React.FC = () => {
     filterApi.getConfig()
       .then(setConfig)
       .catch(err => {
-        console.error('Failed to load filter config:', err)
+
       })
   }, [])
 

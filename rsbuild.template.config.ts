@@ -93,7 +93,9 @@ export default defineConfig({
       host: 'localhost',
       port: devPort,
       protocol: 'ws'
-    }
+    },
+    hmr: false,
+    liveReload: true
   },
   source: {
     entry: {
@@ -188,19 +190,44 @@ export default defineConfig({
       },
       shared: {
         ...Object.fromEntries(
-          Object.entries(dependencies).filter(
-            ([name]) => !name.startsWith('@coreshop/') && name !== '@coreshop/resource-studio-plugin'
-          )
+          Object.entries(dependencies)
+            .filter(
+              ([name]) =>
+                !name.startsWith('@coreshop/') &&
+                name !== '@coreshop/resource-studio-plugin'
+            )
+            .map(([name, version]) => [
+              name,
+              {
+                singleton: true,
+                eager: false,
+                requiredVersion: false
+              }
+            ])
         ),
         react: {
           singleton: true,
-          eager: true,
-          requiredVersion: false
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
         },
         'react-dom': {
           singleton: true,
-          eager: true,
-          requiredVersion: false
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        'react/jsx-runtime': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        'react/jsx-dev-runtime': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
         }
       }
     })

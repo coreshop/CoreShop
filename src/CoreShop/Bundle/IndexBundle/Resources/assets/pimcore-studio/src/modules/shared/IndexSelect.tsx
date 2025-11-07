@@ -39,7 +39,6 @@ const loadIndexes = async (): Promise<Array<{ value: number, label: string }>> =
       }))
       return cachedOptions
     } catch (err) {
-      console.error('Failed to load indexes:', err)
       throw err
     } finally {
       loadPromise = null

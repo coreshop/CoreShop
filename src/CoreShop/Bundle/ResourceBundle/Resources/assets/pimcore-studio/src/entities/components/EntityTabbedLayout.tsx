@@ -100,7 +100,6 @@ export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, g
           )
         ) }
       >
-        <div className='detail-tabs'>
           <Tabs
             activeKey={ activeKey }
             items={ tabs.map(t => ({ key: String(t.id), label: (
@@ -143,7 +142,6 @@ export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, g
               )
             )}
           </Content>
-        </div>
       </ContentLayout>
     ]
   }
