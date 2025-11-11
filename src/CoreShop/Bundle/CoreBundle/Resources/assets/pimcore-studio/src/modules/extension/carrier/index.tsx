@@ -52,6 +52,5 @@ export const CarrierExtensionModule: AbstractModule = {
       )
     })
 
-    console.log('[CoreBundle] Carrier extensions registered')
   }
 }

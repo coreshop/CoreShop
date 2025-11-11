@@ -45,7 +45,6 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
   const WorkerConfiguratorComponent = React.useMemo(() => {
     if (!index.worker) return null
     const result = workerConfiguratorRegistry.get(index.worker)
-    console.log('WorkerConfigurator for', index.worker, ':', result, 'type:', typeof result)
 
     // Handle both direct component and wrapped {type, component} format
     if (result && typeof result === 'object' && 'component' in result) {

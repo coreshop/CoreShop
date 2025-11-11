@@ -94,8 +94,7 @@ export default defineConfig({
       port: devPort,
       protocol: 'ws'
     },
-    hmr: false,
-    liveReload: true
+    hmr: true,
   },
   source: {
     entry: {

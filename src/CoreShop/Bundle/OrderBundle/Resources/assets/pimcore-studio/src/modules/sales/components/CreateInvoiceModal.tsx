@@ -1,0 +1,351 @@
+/**
+ * CoreShop OrderBundle Create Invoice Modal (Base Version)
+ *
+ * This is the base version without payment provider selection.
+ * CoreBundle can extend this via ModalFieldExtensionRegistry.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+import React from 'react'
+import { Modal, Form, InputNumber, Table, message, Tabs } from 'antd'
+import { createStyles } from 'antd-style'
+import { container } from '@pimcore/studio-ui-bundle'
+import type { ColumnType } from 'antd/es/table'
+import { ModalFieldExtensionRegistry } from '../extensions'
+import { extensionServiceIds } from '../extensions/service-ids'
+
+interface InvoiceItem {
+  orderItemId: number
+  name: string
+  price: number
+  quantity: number
+  quantityInvoiced: number
+  maxToInvoice: number
+  toInvoice: number
+  tax: number
+  total: number
+}
+
+export interface CreateInvoiceModalProps {
+  open: boolean
+  orderId: number
+  currencyCode: string
+  onSuccess: () => void
+  onCancel: () => void
+}
+
+/**
+ * Create Invoice Modal (Base Version)
+ *
+ * Pattern from ExtJS: /order/invoice.js (OrderBundle)
+ * Note: CoreBundle can extend this by adding payment provider selection via ModalFieldExtensionRegistry
+ */
+export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
+  open,
+  orderId,
+  currencyCode,
+  onSuccess,
+  onCancel
+}) => {
+  const { styles } = useCreateInvoiceModalStyles()
+  const [form] = Form.useForm()
+  const [items, setItems] = React.useState<InvoiceItem[]>([])
+  const [loading, setLoading] = React.useState(false)
+  const [loadingItems, setLoadingItems] = React.useState(false)
+
+  // Get additional fields from extension registry
+  const extensionRegistry = React.useMemo(
+    () => container.get<ModalFieldExtensionRegistry>(extensionServiceIds.modalFieldExtensionRegistry),
+    []
+  )
+  const additionalFields = React.useMemo(
+    () => extensionRegistry.getFields('create-invoice', { form, orderId, currencyCode }),
+    [extensionRegistry, form, orderId, currencyCode]
+  )
+
+  // Load invoiceable items
+  React.useEffect(() => {
+    if (!open) return
+
+    const loadItems = async () => {
+      setLoadingItems(true)
+      try {
+        const response = await fetch(`/pimcore-studio/api/coreshop/order-invoice/get-invoice-able-items?id=${orderId}`)
+        const data = await response.json()
+
+        if (data.success && data.items && data.items.length > 0) {
+          setItems(data.items)
+        } else {
+          message.info('No items available to invoice')
+          onCancel()
+        }
+      } catch (error) {
+        console.error('Failed to load invoiceable items:', error)
+        message.error('Failed to load invoiceable items')
+        onCancel()
+      } finally {
+        setLoadingItems(false)
+      }
+    }
+
+    void loadItems()
+  }, [open, orderId, onCancel])
+
+  // Format currency
+  const formatCurrency = (amount?: number) => {
+    if (amount === undefined || amount === null) return '-'
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: currencyCode
+    }).format(amount / 100) // Amounts are in cents
+  }
+
+  // Handle quantity change
+  const handleQuantityChange = (index: number, value: number | null) => {
+    if (value === null) return
+
+    const newItems = [...items]
+    const item = newItems[index]
+
+    // Ensure quantity is within valid range
+    const clampedValue = Math.min(Math.max(0, value), item.maxToInvoice)
+    item.toInvoice = clampedValue
+
+    // Recalculate total
+    item.total = item.price * clampedValue + item.tax * clampedValue
+
+    setItems(newItems)
+  }
+
+  // Calculate totals
+  const calculateTotals = () => {
+    const subtotal = items.reduce((sum, item) => sum + (item.price * item.toInvoice), 0)
+    const tax = items.reduce((sum, item) => sum + (item.tax * item.toInvoice), 0)
+    const total = subtotal + tax
+
+    return { subtotal, tax, total }
+  }
+
+  const totals = calculateTotals()
+
+  // Handle save
+  const handleSave = async () => {
+    try {
+      await form.validateFields()
+      setLoading(true)
+
+      const formValues = form.getFieldsValue()
+
+      const payload = {
+        id: orderId,
+        items: items
+          .filter(item => item.toInvoice > 0)
+          .map(item => ({
+            orderItemId: item.orderItemId,
+            quantity: item.toInvoice
+          })),
+        ...formValues
+      }
+
+      const response = await fetch('/pimcore-studio/api/coreshop/order-invoice/create-invoice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        message.success('Invoice created successfully')
+        form.resetFields()
+        onSuccess()
+      } else {
+        message.error(result.message || 'Failed to create invoice')
+      }
+    } catch (error) {
+      console.error('Failed to create invoice:', error)
+      message.error('Failed to create invoice')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const columns: Array<ColumnType<InvoiceItem>> = [
+    {
+      title: 'Product',
+      dataIndex: 'name',
+      key: 'name',
+      width: 250
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      width: 120,
+      align: 'right',
+      render: (price) => formatCurrency(price)
+    },
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: 'Invoiced Quantity',
+      dataIndex: 'quantityInvoiced',
+      key: 'quantityInvoiced',
+      width: 150,
+      align: 'center'
+    },
+    {
+      title: 'To Invoice',
+      dataIndex: 'toInvoice',
+      key: 'toInvoice',
+      width: 120,
+      align: 'center',
+      render: (_, record, index) => (
+        <InputNumber
+          min={0}
+          max={record.maxToInvoice}
+          value={record.toInvoice}
+          onChange={(value) => handleQuantityChange(index, value)}
+          style={{ width: '100%' }}
+        />
+      )
+    },
+    {
+      title: 'Tax',
+      dataIndex: 'tax',
+      key: 'tax',
+      width: 100,
+      align: 'right',
+      render: (tax, record) => formatCurrency(tax * record.toInvoice)
+    },
+    {
+      title: 'Total',
+      dataIndex: 'total',
+      key: 'total',
+      width: 120,
+      align: 'right',
+      render: (_, record) => <strong>{formatCurrency(record.price * record.toInvoice + record.tax * record.toInvoice)}</strong>
+    }
+  ]
+
+  return (
+    <Modal
+      title={`Create Invoice for Order (${orderId})`}
+      open={open}
+      onCancel={onCancel}
+      onOk={handleSave}
+      okText="Save"
+      cancelText="Cancel"
+      width={1200}
+      confirmLoading={loading}
+      className={styles.modal}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        className={styles.form}
+      >
+        <Tabs
+          defaultActiveKey="invoice"
+          items={[
+            {
+              key: 'invoice',
+              label: 'Invoice',
+              children: (
+                <div className={styles.content}>
+                  {/* Extension slot: CoreBundle can inject payment provider field here */}
+                  {additionalFields}
+
+                  {/* Items Table */}
+                  <Table
+                    dataSource={items}
+                    columns={columns}
+                    rowKey="orderItemId"
+                    pagination={false}
+                    loading={loadingItems}
+                    className={styles.table}
+                    size="small"
+                    summary={() => (
+                      <Table.Summary fixed>
+                        <Table.Summary.Row>
+                          <Table.Summary.Cell index={0} colSpan={5} align="right">
+                            <strong>Subtotal:</strong>
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell index={1} align="right" />
+                          <Table.Summary.Cell index={2} align="right">
+                            <strong>{formatCurrency(totals.subtotal)}</strong>
+                          </Table.Summary.Cell>
+                        </Table.Summary.Row>
+                        <Table.Summary.Row>
+                          <Table.Summary.Cell index={0} colSpan={5} align="right">
+                            <strong>Tax:</strong>
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell index={1} align="right">
+                            <strong>{formatCurrency(totals.tax)}</strong>
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell index={2} align="right" />
+                        </Table.Summary.Row>
+                        <Table.Summary.Row>
+                          <Table.Summary.Cell index={0} colSpan={5} align="right">
+                            <strong>Total:</strong>
+                          </Table.Summary.Cell>
+                          <Table.Summary.Cell index={1} align="right" />
+                          <Table.Summary.Cell index={2} align="right">
+                            <strong style={{ fontSize: '16px' }}>{formatCurrency(totals.total)}</strong>
+                          </Table.Summary.Cell>
+                        </Table.Summary.Row>
+                      </Table.Summary>
+                    )}
+                  />
+                </div>
+              )
+            }
+          ]}
+        />
+      </Form>
+    </Modal>
+  )
+}
+
+const useCreateInvoiceModalStyles = createStyles(({ css, token }) => ({
+  modal: css`
+    .ant-modal-body {
+      padding: 0;
+    }
+  `,
+  form: css`
+    .ant-tabs {
+      margin: 0;
+    }
+    .ant-tabs-nav {
+      margin: 0;
+      padding: 0 24px;
+      background: ${token.colorBgContainer};
+    }
+  `,
+  content: css`
+    padding: 24px;
+  `,
+  table: css`
+    margin-top: 16px;
+
+    .ant-table-thead > tr > th {
+      background: ${token.colorBgContainer};
+      font-weight: 600;
+    }
+  `
+}))

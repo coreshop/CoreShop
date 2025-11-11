@@ -1,0 +1,289 @@
+/**
+ * CoreShop OrderBundle Create Shipment Modal (Base Version)
+ *
+ * This is the base version without carrier selection.
+ * CoreBundle extends this by registering an enhanced version with CarrierSelect.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+import React from 'react'
+import { Modal, Form, Input, InputNumber, Table, message } from 'antd'
+import { createStyles } from 'antd-style'
+import { container } from '@pimcore/studio-ui-bundle'
+import type { ColumnType } from 'antd/es/table'
+import { ModalFieldExtensionRegistry } from '../extensions'
+import { extensionServiceIds } from '../extensions/service-ids'
+
+interface ShipmentItem {
+  orderItemId: number
+  name: string
+  price: number
+  quantity: number
+  quantityShipped: number
+  maxToShip: number
+  toShip: number
+}
+
+export interface CreateShipmentModalProps {
+  open: boolean
+  orderId: number
+  currencyCode: string
+  carrierId?: number
+  onSuccess: () => void
+  onCancel: () => void
+}
+
+/**
+ * Create Shipment Modal (Base Version)
+ *
+ * Pattern from ExtJS: /order/shipment.js (OrderBundle)
+ * Note: CoreBundle extends this by adding carrier selection
+ */
+export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
+  open,
+  orderId,
+  currencyCode,
+  carrierId,
+  onSuccess,
+  onCancel
+}) => {
+  const { styles } = useCreateShipmentModalStyles()
+  const [form] = Form.useForm()
+  const [items, setItems] = React.useState<ShipmentItem[]>([])
+  const [loading, setLoading] = React.useState(false)
+  const [loadingItems, setLoadingItems] = React.useState(false)
+
+  // Get additional fields from extension registry
+  const extensionRegistry = React.useMemo(
+    () => container.get<ModalFieldExtensionRegistry>(extensionServiceIds.modalFieldExtensionRegistry),
+    []
+  )
+  const additionalFields = React.useMemo(
+    () => extensionRegistry.getFields('create-shipment', { form, orderId, currencyCode, carrierId }),
+    [extensionRegistry, form, orderId, currencyCode, carrierId]
+  )
+
+  // Load processable items
+  React.useEffect(() => {
+    if (!open) return
+
+    const loadItems = async () => {
+      setLoadingItems(true)
+      try {
+        const response = await fetch(`/pimcore-studio/api/coreshop/order-shipment/get-ship-able-items?id=${orderId}`)
+        const data = await response.json()
+
+        if (data.success && data.items && data.items.length > 0) {
+          setItems(data.items)
+        } else {
+          void message.warning('No items to ship')
+          onCancel()
+        }
+      } catch (error) {
+        console.error('Error loading items:', error)
+        void message.error('Failed to load items')
+        onCancel()
+      } finally {
+        setLoadingItems(false)
+      }
+    }
+
+    void loadItems()
+  }, [open, orderId, onCancel])
+
+  // Format currency
+  const formatCurrency = (amount?: number) => {
+    if (amount === undefined) return '-'
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: currencyCode
+    }).format(amount / 100)
+  }
+
+  // Handle quantity change
+  const handleQuantityChange = (orderItemId: number, value: number | null) => {
+    setItems(items.map(item =>
+      item.orderItemId === orderItemId
+        ? { ...item, toShip: Math.min(Math.max(value || 0, 0), item.maxToShip) }
+        : item
+    ))
+  }
+
+  // Handle save
+  const handleSave = async () => {
+    try {
+      const values = await form.validateFields()
+      const itemsToShip = items
+        .filter(item => item.toShip > 0)
+        .map(item => ({
+          orderItemId: item.orderItemId,
+          quantity: item.toShip
+        }))
+
+      if (itemsToShip.length === 0) {
+        void message.warning('Please select items to ship')
+        return
+      }
+
+      setLoading(true)
+
+      const payload = {
+        ...values,
+        id: orderId,
+        items: itemsToShip
+      }
+
+      const response = await fetch('/pimcore-studio/api/coreshop/order-shipment/create-shipment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        void message.success('Shipment created successfully')
+        onSuccess()
+      } else {
+        void message.error(data.message || 'Failed to create shipment')
+      }
+    } catch (error) {
+      console.error('Error creating shipment:', error)
+      void message.error('Failed to create shipment')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const columns: Array<ColumnType<ShipmentItem>> = [
+    {
+      title: 'Product',
+      dataIndex: 'name',
+      key: 'name',
+      width: '30%'
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      width: '15%',
+      align: 'right',
+      render: (price) => formatCurrency(price)
+    },
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      width: '12%',
+      align: 'right'
+    },
+    {
+      title: 'Shipped Quantity',
+      dataIndex: 'quantityShipped',
+      key: 'quantityShipped',
+      width: '15%',
+      align: 'right'
+    },
+    {
+      title: 'To Ship',
+      dataIndex: 'toShip',
+      key: 'toShip',
+      width: '18%',
+      align: 'right',
+      render: (value, record) => (
+        <InputNumber
+          value={value}
+          min={0}
+          max={record.maxToShip}
+          onChange={(val) => handleQuantityChange(record.orderItemId, val)}
+          style={{ width: '100%' }}
+        />
+      )
+    }
+  ]
+
+  return (
+    <Modal
+      open={open}
+      title={`Create Shipment for Order (${orderId})`}
+      onCancel={onCancel}
+      onOk={handleSave}
+      okText="Save"
+      cancelText="Cancel"
+      width={900}
+      confirmLoading={loading}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={{
+          carrier: carrierId,
+          trackingCode: ''
+        }}
+      >
+        <div className={styles.section}>
+          <div className={styles.sectionHeader}>Shipment</div>
+
+          {/* Extension slot: CoreBundle injects carrier field here */}
+          {additionalFields}
+
+          <Form.Item
+            label="Tracking-Number"
+            name="trackingCode"
+          >
+            <Input placeholder="Enter tracking number" />
+          </Form.Item>
+        </div>
+
+        <Table
+          dataSource={items}
+          columns={columns}
+          rowKey="orderItemId"
+          pagination={false}
+          loading={loadingItems}
+          size="small"
+          className={styles.table}
+        />
+      </Form>
+    </Modal>
+  )
+}
+
+const useCreateShipmentModalStyles = createStyles(({ css, token }) => ({
+  section: css`
+    margin-bottom: 24px;
+  `,
+  sectionHeader: css`
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: ${token.colorText};
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2352c41a"><path d="M3 13.5L2.25 12H7.5L6 9.5H17L15 12H22L20.5 10V19H22V21H2V19H3.5V13.5H3ZM5.5 19H18.5V12.5H14.5L16.5 10H7.5L9 12.5H5.5V19Z"/></svg>') no-repeat center;
+      background-size: contain;
+    }
+  `,
+  table: css`
+    .ant-table-thead > tr > th {
+      background: ${token.colorBgContainer};
+      font-weight: 600;
+    }
+  `
+}))

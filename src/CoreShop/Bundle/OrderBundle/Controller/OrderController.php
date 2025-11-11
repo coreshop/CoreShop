@@ -46,6 +46,7 @@ use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
@@ -336,7 +337,7 @@ class OrderController extends PimcoreController
             $orders = $list->getData();
 
             if (count($orders) > 0) {
-                return $this->viewHandler->handle(['success' => true, 'id' => $orders[0]->getId()]);
+                return $this->viewHandler->handle(['success' => true, 'id' => $orders[0]->getId(), 'saleNumber' => $orders[0]->getOrderNumber()]);
             }
         }
 
@@ -498,6 +499,24 @@ class OrderController extends PimcoreController
         $jsonSale['invoices'] = $invoices;
         $jsonSale['payments'] = $this->getPayments($order, $locale);
         $jsonSale['shipments'] = $this->getShipments($order, $locale);
+
+        // Calculate total unpaid amount (exclude failed, cancelled, refunded, unknown payments)
+        $totalPaid = 0;
+        $payments = $this->container->get('coreshop.repository.payment')->findForPayable($order);
+        foreach ($payments as $payment) {
+            $state = $payment->getState();
+            // Only count payments that are successful or in progress
+            if (!in_array($state, [
+                PaymentInterface::STATE_FAILED,
+                PaymentInterface::STATE_CANCELLED,
+                PaymentInterface::STATE_REFUNDED,
+                PaymentInterface::STATE_UNKNOWN,
+            ], true)) {
+                $totalPaid += $payment->getTotalAmount();
+            }
+        }
+        $jsonSale['totalUnpaid'] = max(0, $order->getTotal() - $totalPaid);
+
         $jsonSale['paymentCreationAllowed'] = !in_array(
             $order->getOrderState(),
             [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE],
@@ -689,7 +708,7 @@ class OrderController extends PimcoreController
             $statesHistory[] = [
                 'icon' => 'coreshop_icon_orderstates',
                 'type' => $note->getType(),
-                'date' => $date->isoFormat('DD.MM.YYYY h:mm'),
+                'date' => $date->isoFormat('DD.MM.YYYY hh:mm'),
                 'avatar' => $avatar,
                 'user' => $user ? $user->getName() : null,
                 'description' => $note->getDescription(),

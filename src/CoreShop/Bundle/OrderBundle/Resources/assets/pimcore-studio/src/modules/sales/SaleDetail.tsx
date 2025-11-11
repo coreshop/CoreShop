@@ -1,0 +1,199 @@
+/**
+ * CoreShop OrderBundle Sale Detail
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+import React from 'react'
+import { Button } from 'antd'
+import { ReloadOutlined } from '@ant-design/icons'
+import { createStyles } from 'antd-style'
+import { container } from '@pimcore/studio-ui-bundle'
+import type { Sale, SaleType } from './types'
+import type {SaleTabProps, SaleTabRegistry} from './registry'
+import { serviceIds } from './service-ids'
+
+interface SaleDetailProps {
+  sale: Sale | undefined
+  type: SaleType
+  onChange: (updates: Partial<Sale>) => void
+  onReload?: () => void
+}
+
+export const SaleDetail: React.FC<SaleDetailProps> = ({
+  sale,
+  type,
+  onChange,
+  onReload = () => {}
+}) => {
+  const { styles } = useSaleDetailStyles()
+
+  // Get tab registry - memoized to prevent re-fetching
+  const tabRegistry = React.useMemo(
+    () => container.get<SaleTabRegistry>(serviceIds.saleTabRegistry),
+    []
+  )
+
+  // Get all blocks for current sale type and group by position
+  const blocks = React.useMemo(() => {
+    const allBlocks = tabRegistry.getForType(type)
+
+    return {
+      all: allBlocks,
+      top: allBlocks.filter(b => b.position === 'top').sort((a, b) => a.priority - b.priority),
+      left: allBlocks.filter(b => b.position === 'left').sort((a, b) => a.priority - b.priority),
+      right: allBlocks.filter(b => b.position === 'right').sort((a, b) => a.priority - b.priority),
+      bottom: allBlocks.filter(b => b.position === 'bottom').sort((a, b) => a.priority - b.priority)
+    }
+  }, [type, tabRegistry])
+
+  // Collect toolbar buttons from all blocks
+  const toolbarButtons = React.useMemo(() => {
+    if (!sale) return []
+
+
+    const buttons: React.ReactNode[] = []
+    const tabProps: SaleTabProps = { sale, onChange, onReload, readonly: !sale.editable }
+
+    blocks.all.forEach((block) => {
+      if (block.getToolbarButtons) {
+        const blockButtons = block.getToolbarButtons(tabProps)
+        buttons.push(...blockButtons)
+      }
+    })
+
+    return buttons
+  }, [blocks.all, sale, onChange, onReload])
+
+  if (!sale) {
+    return (
+      <div className={styles.emptyState}>
+        <div className={styles.emptyStateText}>
+          Select a {type} to view details
+        </div>
+      </div>
+    )
+  }
+
+  const renderBlocks = (blockList: typeof blocks.top) => {
+    return blockList.map((block) => {
+      const BlockComponent = block.component
+      return (
+        <div key={block.key} className={styles.block}>
+          <BlockComponent
+            sale={sale}
+            onChange={onChange}
+            onReload={onReload}
+            readonly={!sale.editable}
+          />
+        </div>
+      )
+    })
+  }
+
+  return (
+    <div className={styles.container}>
+      {/* Toolbar */}
+      <div className={styles.toolbar}>
+        <Button
+          icon={<ReloadOutlined />}
+          onClick={onReload}
+          type="default"
+        >
+          Reload
+        </Button>
+        {toolbarButtons}
+      </div>
+
+      {/* Top Area */}
+      {blocks.top.length > 0 && (
+        <div className={styles.topArea}>
+          {renderBlocks(blocks.top)}
+        </div>
+      )}
+
+      {/* Two Column Area */}
+      <div className={styles.columnsArea}>
+        {/* Left Column (flex: 7) */}
+        <div className={styles.leftColumn}>
+          {renderBlocks(blocks.left)}
+        </div>
+
+        {/* Right Column (flex: 5) */}
+        <div className={styles.rightColumn}>
+          {renderBlocks(blocks.right)}
+        </div>
+      </div>
+
+      {/* Bottom Area */}
+      {blocks.bottom.length > 0 && (
+        <div className={styles.bottomArea}>
+          {renderBlocks(blocks.bottom)}
+        </div>
+      )}
+    </div>
+  )
+}
+
+const useSaleDetailStyles = createStyles(({ css, token }) => ({
+  container: css`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    padding: 24px;
+    background: ${token.colorBgElevated};
+  `,
+  toolbar: css`
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: ${token.colorBgContainer};
+    border: 1px solid ${token.colorBorderSecondary};
+    border-radius: ${token.borderRadius}px;
+  `,
+  topArea: css`
+    margin-bottom: 20px;
+  `,
+  columnsArea: css`
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  `,
+  leftColumn: css`
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  `,
+  rightColumn: css`
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  `,
+  bottomArea: css`
+    margin-bottom: 0;
+  `,
+  block: css`
+    /* Blocks are rendered with their own styling */
+  `,
+  emptyState: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 400px;
+  `,
+  emptyStateText: css`
+    color: ${token.colorTextTertiary};
+    font-size: 14px;
+  `
+}))

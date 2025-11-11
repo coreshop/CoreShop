@@ -68,7 +68,6 @@ function registerFormExtensions(): void {
     )
   })
 
-  console.log('[Extension Example] Form extensions registered')
 }
 
 // ==============================================
@@ -95,7 +94,6 @@ function registerTableColumnExtensions(): void {
     }
   ])
 
-  console.log('[Extension Example] Table column extensions registered')
 }
 
 // ==============================================
@@ -107,7 +105,6 @@ function registerSaveDecorators(): void {
 
   // Transform Country save payload
   registry.add('coreshop.address.country', (payload, data) => {
-    console.log('[Extension Example] Save decorator: transforming payload', payload)
 
     // Add computed fields or modify payload before save
     return {
@@ -119,7 +116,6 @@ function registerSaveDecorators(): void {
     }
   })
 
-  console.log('[Extension Example] Save decorators registered')
 }
 
 // ==============================================
@@ -161,7 +157,6 @@ function registerTabExtensions(): void {
     )
   }))
 
-  console.log('[Extension Example] Tab extensions registered')
 }
 
 // ==============================================
@@ -180,7 +175,6 @@ function registerActionExtensions(): void {
       label: 'Export',
       type: 'default',
       onClick: async (entityData) => {
-        console.log('[Extension Example] Exporting country:', entityData)
         await message.info(`Exporting ${entityData?.name || 'entity'}...`)
         // Implement actual export logic here
       }
@@ -195,14 +189,12 @@ function registerActionExtensions(): void {
       key: 'custom-duplicate',
       label: 'Duplicate',
       onClick: async (entityData) => {
-        console.log('[Extension Example] Duplicating country:', entityData)
         await message.info(`Duplicating ${entityData?.name || 'entity'}...`)
         // Implement actual duplicate logic here
       }
     }
   })
 
-  console.log('[Extension Example] Action extensions registered')
 }
 
 // ==============================================
@@ -239,13 +231,11 @@ function registerValidationExtensions(): void {
     const valid = Object.keys(errors).length === 0
 
     if (!valid) {
-      console.log('[Extension Example] Validation failed:', errors)
     }
 
     return { valid, errors: valid ? undefined : errors }
   })
 
-  console.log('[Extension Example] Validation extensions registered')
 }
 
 // ==============================================
@@ -257,13 +247,11 @@ function registerLifecycleHooks(): void {
 
   // Before load - can modify data before it's displayed
   registry.add('coreshop.address.country', 'beforeLoad', (data, context) => {
-    console.log('[Extension Example] beforeLoad hook:', context?.id)
     return data
   })
 
   // After load - can enrich data after loading
   registry.add('coreshop.address.country', 'afterLoad', (data, context) => {
-    console.log('[Extension Example] afterLoad hook:', data)
 
     // Example: Add computed properties
     return {
@@ -275,7 +263,6 @@ function registerLifecycleHooks(): void {
 
   // Before save - last chance to modify data before saving
   registry.add('coreshop.address.country', 'beforeSave', (data, context) => {
-    console.log('[Extension Example] beforeSave hook:', data)
 
     // Example: Clean up data
     return {
@@ -288,7 +275,6 @@ function registerLifecycleHooks(): void {
 
   // After save - react to successful save
   registry.add('coreshop.address.country', 'afterSave', (data, context) => {
-    console.log('[Extension Example] afterSave hook:', context?.id)
 
     // Example: Trigger side effects
     // notifyOtherSystems(data)
@@ -299,7 +285,6 @@ function registerLifecycleHooks(): void {
 
   // Before delete - can prevent deletion or clean up
   registry.add('coreshop.address.country', 'beforeDelete', (data, context) => {
-    console.log('[Extension Example] beforeDelete hook:', context?.id)
 
     // Example: Check if deletion is allowed
     // if (hasRelatedRecords(context?.id)) {
@@ -311,7 +296,6 @@ function registerLifecycleHooks(): void {
 
   // After delete - react to successful deletion
   registry.add('coreshop.address.country', 'afterDelete', (data, context) => {
-    console.log('[Extension Example] afterDelete hook:', context?.id)
 
     // Example: Clean up related data
     // deleteRelatedRecords(context?.id)
@@ -319,5 +303,4 @@ function registerLifecycleHooks(): void {
     return data
   })
 
-  console.log('[Extension Example] Lifecycle hooks registered')
 }

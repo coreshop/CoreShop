@@ -42,7 +42,6 @@ export const CoreShopMenuExtension = {
                         this.registerMenuItem(item, mainNavRegistry, widgetRegistry, key)
                     }
                 }
-                console.log(`[CoreShop Menu Extension] Successfully registered ${menuItems.length} navigation items from all menu types`)
             }
         } catch (error) {
             console.error('[CoreShop Menu Extension] Failed to load menu structures:', error)

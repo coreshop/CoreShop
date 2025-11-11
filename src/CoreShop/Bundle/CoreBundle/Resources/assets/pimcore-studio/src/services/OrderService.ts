@@ -13,7 +13,8 @@
 interface OrderFindResponse {
   success: boolean
   id?: number
-  message?: string
+  message?: string,
+  saleNumber: string
 }
 
 export class OrderService {

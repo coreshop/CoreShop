@@ -10,6 +10,9 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
+import React from 'react'
+import { Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
@@ -18,29 +21,50 @@ import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleMa
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { AmountCondition, VoucherCondition, NotCombinableCondition } from './modules/cart-price-rules/conditions'
 import { SurchargePercentAction, SurchargeAmountAction, CartItemAction } from './modules/cart-price-rules/actions'
-import { DiscountAmountAction, DiscountPercentAction } from '@coreshop/core/src/modules/shared/rules/actions'
+import { DiscountAmountAction, DiscountPercentAction } from './modules/shared/rules/actions'
 import { coreshopOrderServiceIds } from './modules/cart-price-rules/service-ids'
+import {
+  OrderList,
+  CartList,
+  QuoteList,
+  OrderDetailWidget,
+  CartDetailWidget,
+  QuoteDetailWidget
+} from './modules/sales'
+import { SaleTabRegistry } from './modules/sales/registry'
+import { serviceIds as saleServiceIds } from './modules/sales/service-ids'
+import { ModalFieldExtensionRegistry } from './modules/sales/extensions'
+import { extensionServiceIds } from './modules/sales/extensions/service-ids'
+import {
+  HeaderTab,
+  CustomerTab,
+  DetailTab,
+  PaymentTab,
+  ShipmentTab,
+  InvoiceTab,
+  CommentsTab,
+  InfoTab,
+  CorrespondenceTab
+} from './modules/sales/tabs'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-order',
 
     onInit() {
+        // ============================================
+        // Cart Price Rules Registry Setup
+        // ============================================
         // Register CartPriceRule registries as singleton services in the container
-        // This allows other bundles to access them via container.get()
-        // We use the generic ConditionRegistry and ActionRegistry from RuleBundle
         container.bind(coreshopOrderServiceIds.cartPriceRuleConditionRegistry).to(ConditionRegistry).inSingletonScope()
         container.bind(coreshopOrderServiceIds.cartPriceRuleActionRegistry).to(ActionRegistry).inSingletonScope()
 
         // Register CartItem registries as singleton services in the container
-        // Also use the generic ConditionRegistry and ActionRegistry from RuleBundle
         container.bind(coreshopOrderServiceIds.cartItemActionRegistry).to(ActionRegistry).inSingletonScope()
         container.bind(coreshopOrderServiceIds.cartItemConditionRegistry).to(ConditionRegistry).inSingletonScope()
 
-        // Get the CartPriceRule registries from the container (bound by OrderBundle)
+        // Get the registries
         const conditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartPriceRuleConditionRegistry)
         const actionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartPriceRuleActionRegistry)
-
-        // Get the CartItem registries from the container (bound by OrderBundle)
         const cartItemConditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry)
         const cartItemActionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry)
 
@@ -50,28 +74,215 @@ const plugin: IAbstractPlugin = {
         conditionRegistry.register('not_combinable', NotCombinableCondition)
 
         // Register Cart Price Rule Actions (OrderBundle-specific)
-        actionRegistry.register('discountPercent', DiscountPercentAction)
-        actionRegistry.register('discountAmount', DiscountAmountAction)
+        // Note: discountPercent and discountAmount are registered by CoreBundle (glue layer)
         actionRegistry.register('surchargePercent', SurchargePercentAction)
         actionRegistry.register('surchargeAmount', SurchargeAmountAction)
         actionRegistry.register('cartItemAction', CartItemAction)
 
-        // Register Cart Item Conditions (reuse existing components)
+        // Register Cart Item Conditions
         cartItemConditionRegistry.register('amount', AmountCondition)
 
-        // Register Cart Item Actions (reuse existing components)
-        cartItemActionRegistry.register('discountPercent', DiscountPercentAction)
-        cartItemActionRegistry.register('discountAmount', DiscountAmountAction)
+        // Cart Item Actions are registered by CoreBundle (glue layer)
+
+        // ============================================
+        // Sales (Order/Cart/Quote) Registry Setup
+        // ============================================
+        // Create and bind sale tab registry
+        container.bind(saleServiceIds.saleTabRegistry).to(SaleTabRegistry).inSingletonScope()
+
+        // Create and bind modal field extension registry
+        container.bind(extensionServiceIds.modalFieldExtensionRegistry).to(ModalFieldExtensionRegistry).inSingletonScope()
+
+        // Get registry
+        const tabRegistry = container.get<SaleTabRegistry>(saleServiceIds.saleTabRegistry)
+
+        // Register tabs with priority and type filtering
+        // Lower priority = displayed first
+
+        // TOP: Header Block
+        tabRegistry.register('header', {
+            key: 'header',
+            label: 'Header',
+            priority: 10,
+            position: 'top',
+            types: ['order', 'cart', 'quote'],
+            component: HeaderTab
+        })
+
+        // LEFT: Info Block
+        tabRegistry.register('info', {
+            key: 'info',
+            label: 'Order: Carrier/Payment Provider',
+            priority: 10,
+            position: 'left',
+            types: ['order', 'cart', 'quote'],
+            component: InfoTab
+        })
+
+        // LEFT: Payment Block
+        tabRegistry.register('payment', {
+            key: 'payment',
+            label: 'Payment(s)',
+            priority: 20,
+            position: 'left',
+            types: ['order'],
+            component: PaymentTab,
+            getToolbarButtons: (props: SaleTabProps) => {
+                const sale = props.sale as any
+
+                if (!sale.paymentCreationAllowed) return []
+
+                return [
+                    React.createElement(Button, {
+                        key: 'create-payment',
+                        icon: React.createElement(PlusOutlined),
+                        onClick: () => {
+                            const { paymentEvents, PAYMENT_EVENTS } = require('./modules/sales/events/PaymentEvents')
+                            paymentEvents.emit(PAYMENT_EVENTS.CREATE_PAYMENT)
+                        },
+                        type: 'default'
+                    }, 'Create Payment')
+                ]
+            }
+        })
+
+        // LEFT: Shipment Block
+        tabRegistry.register('shipment', {
+            key: 'shipment',
+            label: 'Shipments',
+            priority: 30,
+            position: 'left',
+            types: ['order'],
+            component: ShipmentTab,
+            getToolbarButtons: (props: SaleTabProps) => {
+                const sale = props.sale as any
+
+                if (!sale.shipmentCreationAllowed) return []
+
+                return [
+                    React.createElement(Button, {
+                        key: 'create-shipment',
+                        icon: React.createElement(PlusOutlined),
+                        onClick: () => {
+                            const { shipmentEvents, SHIPMENT_EVENTS } = require('./modules/sales/events/ShipmentEvents')
+                            shipmentEvents.emit(SHIPMENT_EVENTS.CREATE_SHIPMENT)
+                        },
+                        type: 'default'
+                    }, 'Create Shipment')
+                ]
+            }
+        })
+
+        // LEFT: Invoice Block
+        tabRegistry.register('invoice', {
+            key: 'invoice',
+            label: 'Invoices',
+            priority: 40,
+            position: 'left',
+            types: ['order'],
+            component: InvoiceTab,
+            getToolbarButtons: (props: SaleTabProps) => {
+                const sale = props.sale as any
+
+                if (!sale.invoiceCreationAllowed) return []
+
+                return [
+                    React.createElement(Button, {
+                        key: 'create-invoice',
+                        icon: React.createElement(PlusOutlined),
+                        onClick: () => {
+                            const { invoiceEvents, INVOICE_EVENTS } = require('./modules/sales/events/InvoiceEvents')
+                            invoiceEvents.emit(INVOICE_EVENTS.CREATE_INVOICE)
+                        },
+                        type: 'default'
+                    }, 'Create Invoice')
+                ]
+            }
+        })
+
+        // RIGHT: Customer Block
+        tabRegistry.register('customer', {
+            key: 'customer',
+            label: 'Customer',
+            priority: 10,
+            position: 'right',
+            types: ['order', 'cart', 'quote'],
+            component: CustomerTab
+        })
+
+        // RIGHT: Comments Block
+        tabRegistry.register('comments', {
+            key: 'comments',
+            label: 'Comments',
+            priority: 20,
+            position: 'right',
+            types: ['order', 'quote'],
+            component: CommentsTab
+        })
+
+        // RIGHT: Mail Correspondence Block
+        tabRegistry.register('correspondence', {
+            key: 'correspondence',
+            label: 'Mail Correspondence',
+            priority: 30,
+            position: 'right',
+            types: ['order'],
+            component: CorrespondenceTab
+        })
+
+        // BOTTOM: Detail/Products Block
+        tabRegistry.register('detail', {
+            key: 'detail',
+            label: 'Products',
+            priority: 10,
+            position: 'bottom',
+            types: ['order', 'cart', 'quote'],
+            component: DetailTab
+        })
     },
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(OrderBundleIconModule)
 
-        // Register Cart Price Rules widget
+        // Register widgets
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+
+        // Register Cart Price Rules widget
         widgets.registerWidget({
             name: 'coreshop-order-cart-price-rules',
             component: CartPriceRuleManager
+        })
+
+        // Register Sale List widgets
+        widgets.registerWidget({
+            name: 'coreshop-order-manager',
+            component: OrderList
+        })
+
+        widgets.registerWidget({
+            name: 'coreshop-cart-manager',
+            component: CartList
+        })
+
+        widgets.registerWidget({
+            name: 'coreshop-quote-manager',
+            component: QuoteList
+        })
+
+        // Register standalone detail widgets (not DataObject editor tabs)
+        widgets.registerWidget({
+            name: 'coreshop-order-detail',
+            component: OrderDetailWidget,
+        })
+
+        widgets.registerWidget({
+            name: 'coreshop-cart-detail',
+            component: CartDetailWidget,
+        })
+
+        widgets.registerWidget({
+            name: 'coreshop-quote-detail',
+            component: QuoteDetailWidget,
         })
     }
 }

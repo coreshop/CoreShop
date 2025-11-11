@@ -3,3 +3,4 @@
  */
 
 export { ShippingRuleSelect } from './ShippingRuleSelect'
+export { CarrierSelect } from './CarrierSelect'

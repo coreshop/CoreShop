@@ -1,6 +1,6 @@
 /**
  * CoreShop Order By Number Button Component
- * 
+ *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
@@ -13,15 +13,17 @@
 import React from 'react'
 import {Icon, useFormModal} from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
-import { useDataObjectHelper } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { orderService } from '../services/OrderService'
 import { message } from 'antd'
 import { type MenuButtonProps } from '@coreshop/menu/src'
+import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import {CartDetailWidget, OrderDetailWidget, QuoteDetailWidget} from "@coreshop/order/src/modules/sales";
+
 
 export const OrderByNumberButton = ({ icon, label }: MenuButtonProps): React.JSX.Element => {
   const { input } = useFormModal()
-  const { openDataObject } = useDataObjectHelper()
   const { t } = useTranslation()
+  const widgetManager = useWidgetManager()
 
   const handleClick = (): void => {
     input({
@@ -36,11 +38,14 @@ export const OrderByNumberButton = ({ icon, label }: MenuButtonProps): React.JSX
       onOk: async (value: string) => {
         try {
           const result = await orderService.findOrder(value.trim())
-          
+
           if (result.success && result.id) {
-            await openDataObject({
+            widgetManager.openMainWidget({
+              name: 'Order #' + result.saleNumber,
+              id: 'coreshop-order-detail' + result.id,
+              component: 'coreshop-order-detail',
               config: {
-                id: result.id
+                orderId: result.id,
               }
             })
           } else {
