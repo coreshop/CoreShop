@@ -13,17 +13,19 @@
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource/src/entities'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { taxRateApi, type TaxRateDetail } from './api'
 import { TaxRateForm } from './TaxRateForm'
 
 export const TaxRateManager: React.FC = () => {
+  const { t } = useTranslation()
   const modal = useFormModal()
 
   return (
     <EntityTabbedManager<TaxRateDetail>
       api={ taxRateApi }
       dragType='coreshop:tax_rate'
-      leftRootTitle='Tax Rates'
+      leftRootTitle={t('coreshop_tax_rate', { defaultValue: 'Tax Rates' })}
       localizable
       getTitle={ (li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}` }
       buildSavePayload={ (data) => ({
@@ -35,8 +37,8 @@ export const TaxRateManager: React.FC = () => {
       }) }
       onAdd={ async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add Tax Rate',
-          label: 'Name',
+          title: t('coreshop_tax_rate', { defaultValue: 'Add Tax Rate' }),
+          label: t('coreshop_name', { defaultValue: 'Name' }),
           onOk: async (value: string) => {
             const res = await taxRateApi.add({ name: value })
             resolve(res.data.id)
@@ -45,7 +47,7 @@ export const TaxRateManager: React.FC = () => {
       }) }
       renderDetail={ (data, setData, ctx) => {
         if (!data) {
-          return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>Select a tax rate to view details.</div>
+          return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>{t('coreshop_tax_rate_select', { defaultValue: 'Select a tax rate to view details.' })}</div>
         }
 
         return (

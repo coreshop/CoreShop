@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, Input, Select, Checkbox, Card } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { Index, IndexConfig } from '../api'
 import type { WorkerConfiguratorRegistry } from '../registry'
@@ -24,6 +25,7 @@ interface SettingsFormProps {
 }
 
 export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onChange }) => {
+  const { t } = useTranslation()
   // Get worker configurator registry - memoized to prevent re-fetching on every render
   const workerConfiguratorRegistry = React.useMemo(
     () => container.get<WorkerConfiguratorRegistry>(serviceIds.workerConfiguratorRegistry),
@@ -77,27 +79,23 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
   return (
     <Form layout="vertical">
       <Form.Item
-        label="Name"
+        label={t('coreshop_name', { defaultValue: 'Name' })}
         required
-        help="Alphanumeric characters only"
       >
         <Input
           value={index.name}
           onChange={(e) => handleFieldChange('name', e.target.value)}
-          placeholder="Enter index name"
         />
       </Form.Item>
 
       <Form.Item
-        label="Class"
+        label={t('coreshop_class', { defaultValue: 'Class' })}
         required
-        help="Pimcore class to index"
       >
         <Select
           value={index.class}
           onChange={(value) => handleFieldChange('class', value)}
           options={classOptions}
-          placeholder="Select a class"
           showSearch
           filterOption={(input, option) =>
             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -106,15 +104,13 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
       </Form.Item>
 
       <Form.Item
-        label="Worker"
+        label={t('coreshop_indexes_worker', { defaultValue: 'Worker' })}
         required
-        help="Backend storage type"
       >
         <Select
           value={index.worker}
           onChange={(value) => handleFieldChange('worker', value)}
           options={workerOptions}
-          placeholder="Select a worker"
         />
       </Form.Item>
 
@@ -123,14 +119,14 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
           checked={index.indexLastVersion ?? false}
           onChange={(e) => handleFieldChange('indexLastVersion', e.target.checked)}
         >
-          Index Last Version (unchecked = published version)
+          {t('coreshop_indexes_index_last_version', { defaultValue: 'Index Last Version (unchecked = published version)' })}
         </Checkbox>
       </Form.Item>
 
       {/* Worker-specific configuration */}
       {index.worker && WorkerConfiguratorComponent && (
         <Card
-          title={`${index.worker.toUpperCase()} Configuration`}
+          title={t('coreshop_indexes_worker_configuration', { defaultValue: `${index.worker.toUpperCase()} Configuration` })}
           style={{ marginTop: 16 }}
           size="small"
         >
@@ -149,7 +145,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
           borderRadius: 4,
           color: 'var(--ant-color-warning-text)'
         }}>
-          No configurator available for worker type "{index.worker}"
+          {t('coreshop_indexes_no_configurator', { defaultValue: `No configurator available for worker type "${index.worker}"` })}
         </div>
       )}
     </Form>

@@ -15,8 +15,10 @@ import { EntityTabbedManager } from '@coreshop/resource/src/entities'
 import { carrierApi, type CarrierDetail, type CarrierConfig } from './api'
 import { CarrierForm } from './CarrierForm'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 
 export const CarrierManager: React.FC = () => {
+  const { t } = useTranslation()
   const [config, setConfig] = React.useState<CarrierConfig | null>(null)
   const modal = useFormModal()
 
@@ -34,14 +36,14 @@ export const CarrierManager: React.FC = () => {
   }
 
   if (!config) {
-    return <div style={{ padding: 20 }}>Loading configuration...</div>
+    return <div style={{ padding: 20 }}>{t('coreshop_loading_configuration', { defaultValue: 'Loading configuration...' })}</div>
   }
 
   return (
     <EntityTabbedManager<CarrierDetail>
       api={carrierApi}
       dragType="coreshop:carrier"
-      leftRootTitle="Carriers"
+      leftRootTitle={t('coreshop_carriers', { defaultValue: 'Carriers' })}
       localizable
       getTitle={(li, data) => data?.identifier ?? li?.identifier ?? `#${li?.id ?? ''}`}
       buildSavePayload={(data) => {
@@ -74,9 +76,9 @@ export const CarrierManager: React.FC = () => {
       }}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add Carrier',
-          label: 'Identifier',
-          rule: { required: true, message: 'Identifier is required' },
+          title: t('coreshop_carrier', { defaultValue: 'Add Carrier' }),
+          label: t('coreshop_identifier', { defaultValue: 'Identifier' }),
+          rule: { required: true, message: t('coreshop_identifier_required', { defaultValue: 'Identifier is required' }) },
           onOk: async (value: string) => {
             const res = await carrierApi.add({
               identifier: value.toLowerCase().replace(/\s+/g, '-')
@@ -87,7 +89,7 @@ export const CarrierManager: React.FC = () => {
       })}
       renderDetail={(data, setData, ctx) => {
         if (!data) {
-          return <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>Select a carrier to view details.</div>
+          return <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>{t('coreshop_carrier_select', { defaultValue: 'Select a carrier to view details.' })}</div>
         }
 
         return (

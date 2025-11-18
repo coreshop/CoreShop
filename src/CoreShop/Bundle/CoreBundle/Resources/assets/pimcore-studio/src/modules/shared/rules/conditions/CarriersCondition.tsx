@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 import { useEntitySelect } from '@coreshop/resource'
 import { carrierApi } from '@coreshop/shipping/src/modules/carriers/api'
@@ -20,6 +21,7 @@ export const CarriersCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const carriers = data.carriers || []
   const [options, value, handleSelectChange, loading] = useEntitySelect(carrierApi, carriers, 'identifier')
 
@@ -30,12 +32,11 @@ export const CarriersCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Carriers">
+      <Form.Item label={t('coreshop_condition_carriers', { defaultValue: 'Carriers' })}>
         <Select
           mode="multiple"
           value={value}
           onChange={handleChange}
-          placeholder="Select carriers"
           style={{ width: '100%' }}
           loading={loading}
           options={options}

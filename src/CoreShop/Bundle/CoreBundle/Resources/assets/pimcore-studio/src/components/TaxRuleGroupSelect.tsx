@@ -89,7 +89,6 @@ export const TaxRuleGroupSelect: React.FC<SelectProps> = (props) => {
         {...props}
         loading={loading}
         options={options}
-        placeholder={props.placeholder ?? 'Select or drop a tax rule group'}
       />
     </DroppableEntity>
   )

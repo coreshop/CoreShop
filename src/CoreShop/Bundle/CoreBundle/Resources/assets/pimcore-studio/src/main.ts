@@ -17,7 +17,6 @@ import { CoreBundleMenuModule } from './modules/menu'
 import { CountryExtensionModule } from './modules/extension/country'
 import { TaxRuleGroupExtensionModule } from './modules/extension/tax-rule-group'
 import { CarrierExtensionModule } from './modules/extension/carrier'
-import { ComprehensiveExtensionExample } from './modules/extension/comprehensive-example'
 import { RuleRegistryExtensionModule } from './modules/extension/rule-registry'
 import { SaleTabExtensionModule } from './modules/extension/sale-tab'
 
@@ -42,7 +41,6 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(CountryExtensionModule)
         moduleSystem.registerModule(TaxRuleGroupExtensionModule)
         moduleSystem.registerModule(CarrierExtensionModule)
-        moduleSystem.registerModule(ComprehensiveExtensionExample)
     }
 }
 

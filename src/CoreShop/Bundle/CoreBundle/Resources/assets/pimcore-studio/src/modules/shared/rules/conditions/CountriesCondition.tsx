@@ -12,6 +12,7 @@
 
 import React, { useMemo } from 'react'
 import { Form, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 import { useEntitySelect } from '@coreshop/resource'
 import { countryApi } from '@coreshop/address/src/modules/countries/api'
@@ -20,6 +21,7 @@ export const CountriesCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const countries = data.countries || []
   const [options, value, handleSelectChange, loading] = useEntitySelect(countryApi, countries)
 
@@ -30,12 +32,11 @@ export const CountriesCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Countries">
+      <Form.Item label={t('coreshop_condition_countries', { defaultValue: 'Countries' })}>
         <Select
           mode="multiple"
           value={value}
           onChange={handleChange}
-          placeholder="Select countries"
           style={{ width: '100%' }}
           loading={loading}
           options={options}

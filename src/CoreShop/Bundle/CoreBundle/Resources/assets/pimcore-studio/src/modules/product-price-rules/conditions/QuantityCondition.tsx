@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, InputNumber } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 
 interface QuantityConditionData {
@@ -23,6 +24,7 @@ export const QuantityCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const conditionData = data as QuantityConditionData
   const minQuantity = conditionData.minQuantity || 0
   const maxQuantity = conditionData.maxQuantity || 0
@@ -43,7 +45,7 @@ export const QuantityCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Minimum Quantity">
+      <Form.Item label={t('coreshop_condition_quantity_minQuantity', { defaultValue: 'Min Quantity' })}>
         <InputNumber
           value={minQuantity}
           onChange={handleMinChange}
@@ -54,7 +56,7 @@ export const QuantityCondition: React.FC<ConditionComponentProps> = ({
         />
       </Form.Item>
 
-      <Form.Item label="Maximum Quantity">
+      <Form.Item label={t('coreshop_condition_quantity_maxQuantity', { defaultValue: 'Max Quantity' })}>
         <InputNumber
           value={maxQuantity}
           onChange={handleMaxChange}

@@ -1,6 +1,14 @@
 /**
  * MessengerFailedGrid Component
  *
+ * TODO: ALL HARDCODED STRINGS NEED TRANSLATIONS
+ * - Table column titles (ID, Class, Failed At, Error, Actions)
+ * - Tooltip texts
+ * - Modal titles
+ * - Placeholder texts
+ * - Button labels
+ * - Message texts
+ *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in

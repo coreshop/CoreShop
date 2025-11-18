@@ -13,6 +13,7 @@
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { createSaleApi } from './api'
 import type { Sale, SaleType } from './types'
 import { SaleDetail } from './SaleDetail'
@@ -22,13 +23,14 @@ interface SaleManagerProps {
 }
 
 export const SaleManager: React.FC<SaleManagerProps> = ({ type }) => {
+  const { t } = useTranslation()
   const modal = useFormModal()
   const api = React.useMemo(() => createSaleApi(type), [type])
 
   const titles = {
-    order: 'Orders',
-    cart: 'Carts',
-    quote: 'Quotes'
+    order: t('coreshop_order', { defaultValue: 'Orders' }),
+    cart: t('coreshop_carts', { defaultValue: 'Carts' }),
+    quote: t('coreshop_quote_manage', { defaultValue: 'Quotes' })
   }
 
   const getTitleForSale = React.useCallback((li: any, data?: Sale) => {
@@ -79,9 +81,14 @@ export const SaleManager: React.FC<SaleManagerProps> = ({ type }) => {
         return payload
       }}
       onAdd={async () => await new Promise<number>((resolve) => {
+        const addTitles = {
+          order: t('coreshop_order', { defaultValue: 'Add Order' }),
+          cart: t('coreshop_cart_create', { defaultValue: 'Create Cart' }),
+          quote: t('coreshop_quote_create', { defaultValue: 'Create Quote' })
+        }
         modal.input({
-          title: `Add ${type.charAt(0).toUpperCase() + type.slice(1)}`,
-          label: 'Customer ID (optional)',
+          title: addTitles[type],
+          label: t('coreshop_customer', { defaultValue: 'Customer ID (optional)' }),
           onOk: async (value: string) => {
             const customerId = value ? parseInt(value) : undefined
             const res = await api.add({ customer: customerId })
@@ -91,9 +98,14 @@ export const SaleManager: React.FC<SaleManagerProps> = ({ type }) => {
       })}
       renderDetail={(data, setData) => {
         if (!data) {
+          const selectMessages = {
+            order: t('coreshop_order_select', { defaultValue: 'Select an order to view details.' }),
+            cart: t('coreshop_cart_select', { defaultValue: 'Select a cart to view details.' }),
+            quote: t('coreshop_quote_select', { defaultValue: 'Select a quote to view details.' })
+          }
           return (
             <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
-              Select a {type} to view details.
+              {selectMessages[type]}
             </div>
           )
         }

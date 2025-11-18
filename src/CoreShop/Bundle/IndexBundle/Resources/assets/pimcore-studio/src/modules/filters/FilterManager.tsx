@@ -13,11 +13,13 @@
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { filterApi } from './api'
 import type { Filter, FilterConfig } from './types'
 import { FilterDetail } from './FilterDetail'
 
 export const FilterManager: React.FC = () => {
+  const { t } = useTranslation()
   const modal = useFormModal()
   const [config, setConfig] = React.useState<FilterConfig | null>(null)
 
@@ -34,7 +36,7 @@ export const FilterManager: React.FC = () => {
     <EntityTabbedManager<Filter>
       api={filterApi}
       dragType='coreshop:filter'
-      leftRootTitle='Filters'
+      leftRootTitle={t('coreshop_filters', { defaultValue: 'Filters' })}
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
       buildSavePayload={(data) => ({
         id: data.id,
@@ -48,9 +50,9 @@ export const FilterManager: React.FC = () => {
       })}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add Filter',
-          label: 'Name',
-          rule: { required: true, message: 'Name is required' },
+          title: t('coreshop_filters_add', { defaultValue: 'Add Filter' }),
+          label: t('coreshop_name', { defaultValue: 'Name' }),
+          rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (nameValue: string) => {
             const res = await filterApi.add({ name: nameValue })
             resolve(res.data.id!)
@@ -61,7 +63,7 @@ export const FilterManager: React.FC = () => {
         if (!data) {
           return (
             <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
-              Select a filter to view details.
+              {t('coreshop_filters_select', { defaultValue: 'Select a filter to view details.' })}
             </div>
           )
         }
@@ -69,7 +71,7 @@ export const FilterManager: React.FC = () => {
         if (!config) {
           return (
             <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
-              Loading configuration...
+              {t('coreshop_loading_configuration', { defaultValue: 'Loading configuration...' })}
             </div>
           )
         }

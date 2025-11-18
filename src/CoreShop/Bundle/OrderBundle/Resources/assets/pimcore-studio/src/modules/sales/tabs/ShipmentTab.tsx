@@ -14,11 +14,13 @@ import React from 'react'
 import { Table, Button, Card, Empty } from 'antd'
 import { createStyles } from 'antd-style'
 import { FolderOpenOutlined, PlusOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
 import type { SaleTabProps, SaleTab } from '../registry'
-import { StateChangeModal, ShipmentDetailModal, CreateShipmentModal as BaseCreateShipmentModal } from '../components'
+import { StateChangeModal, ShipmentDetailModal, CreateShipmentModal as BaseCreateShipmentModal, CreateShipmentButton } from '../components'
 import { getComponent } from '../registry'
-import { shipmentEvents, SHIPMENT_EVENTS } from '../events/ShipmentEvents'
+import { useSaleContext } from '../context/SaleActionsContext'
 
 interface StateInfo {
   label: string
@@ -49,60 +51,45 @@ interface Shipment {
   items: ShipmentItem[]
 }
 
-export const ShipmentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
+export const ShipmentTab: React.FC<SaleTabProps> = () => {
+  const { t } = useTranslation()
+  const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
   const { styles } = useShipmentTabStyles()
+
+  if (!sale) return null
   const [stateChangeShipment, setStateChangeShipment] = React.useState<Shipment | null>(null)
   const [detailShipment, setDetailShipment] = React.useState<Shipment | null>(null)
-  const [createShipmentOpen, setCreateShipmentOpen] = React.useState(false)
 
   // Get CreateShipmentModal from registry (CoreBundle may have registered an extended version)
   const CreateShipmentModal = getComponent('CreateShipmentModal', BaseCreateShipmentModal)
 
   const shipments = ((sale as any).shipments || []) as Shipment[]
 
-  // Listen for create shipment events from toolbar
+  // Register button in toolbar
   React.useEffect(() => {
-    const handleCreateShipment = () => {
-      setCreateShipmentOpen(true)
+    if ((sale as any)?.shipmentCreationAllowed) {
+      buttonRegistry.add('createShipment', CreateShipmentButton, 20)
+      return () => buttonRegistry.remove('createShipment')
     }
-
-    shipmentEvents.on(SHIPMENT_EVENTS.CREATE_SHIPMENT, handleCreateShipment)
-
-    return () => {
-      shipmentEvents.off(SHIPMENT_EVENTS.CREATE_SHIPMENT, handleCreateShipment)
-    }
-  }, [])
-
-  // Format date
-  const formatDate = (date?: number) => {
-    if (!date) return '-'
-    return new Date(date * 1000).toLocaleString('de-DE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    })
-  }
+  }, [buttonRegistry, sale])
 
   const columns: Array<ColumnType<Shipment>> = [
     {
-      title: 'Date',
+      title: t('coreshop_date', { defaultValue: 'Date' }),
       dataIndex: 'shipmentDate',
       key: 'shipmentDate',
       width: 180,
-      render: (date) => formatDate(date)
+      render: (date) => formatDateTime(date)
     },
     {
-      title: 'Carrier',
+      title: t('coreshop_carrier', { defaultValue: 'Carrier' }),
       dataIndex: 'carrierName',
       key: 'carrierName',
       width: 150,
       render: (carrier) => carrier || '-'
     },
     {
-      title: 'Tracking-Number',
+      title: t('coreshop_tracking_code', { defaultValue: 'Tracking-Number' }),
       dataIndex: 'trackingCode',
       key: 'trackingCode',
       width: 200,
@@ -145,7 +132,7 @@ export const ShipmentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
           type="text"
           icon={<FolderOpenOutlined />}
           size="small"
-          title="Open Shipment Details"
+          title={t('coreshop_open_shipment_details', { defaultValue: 'Open Shipment Details' })}
           onClick={() => setDetailShipment(record)}
         />
       )
@@ -155,21 +142,21 @@ export const ShipmentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
   return (
     <>
       <Card
-        title="Shipments"
+        title={t('coreshop_shipments', { defaultValue: 'Shipments' })}
         className={styles.card}
         extra={
           (sale as any).shipmentCreationAllowed && (
             <Button
               type="text"
               icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
-              title="Add Shipment"
-              onClick={() => setCreateShipmentOpen(true)}
+              title={t('coreshop_order_add_shipment', { defaultValue: 'Add Shipment' })}
+              onClick={() => openAction('createShipment')}
             />
           )
         }
       >
         {shipments.length === 0 ? (
-          <Empty description="No shipments recorded" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          <Empty description={t('coreshop_no_shipments', { defaultValue: 'No shipments recorded' })} image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
           <Table
             dataSource={shipments}
@@ -186,8 +173,8 @@ export const ShipmentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
       {stateChangeShipment && (
         <StateChangeModal
           open={true}
-          title="Change Shipment State"
-          description="Select a transition to apply to this shipment"
+          title={t('coreshop_change_shipment_state', { defaultValue: 'Change Shipment State' })}
+          description={t('coreshop_change_shipment_state_description', { defaultValue: 'Select a transition to apply to this shipment' })}
           transitions={stateChangeShipment.transitions}
           url="/pimcore-studio/api/coreshop/order-shipment/update-shipment-state"
           id={stateChangeShipment.id}
@@ -209,7 +196,7 @@ export const ShipmentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
       )}
 
       {/* Create Shipment Modal */}
-      {createShipmentOpen && (
+      {isActionOpen('createShipment') && (
         <CreateShipmentModal
           open={true}
           orderId={(sale as any).id}
@@ -222,10 +209,10 @@ export const ShipmentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
           }
           carrierId={(sale as any).carrier}
           onSuccess={() => {
-            setCreateShipmentOpen(false)
+            closeAction('createShipment')
             onReload()
           }}
-          onCancel={() => setCreateShipmentOpen(false)}
+          onCancel={() => closeAction('createShipment')}
         />
       )}
     </>

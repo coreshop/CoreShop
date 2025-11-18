@@ -4,9 +4,11 @@
 
 import React from 'react'
 import { Form, InputNumber } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules/types'
 
 export const WeightCondition: React.FC<ConditionComponentProps> = ({ data, onChange }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   React.useEffect(() => {
@@ -22,30 +24,26 @@ export const WeightCondition: React.FC<ConditionComponentProps> = ({ data, onCha
       }}
     >
       <Form.Item
-        label="Min Weight"
+        label={t('coreshop_condition_weight_minWeight', { defaultValue: 'Min Weight' })}
         name="minWeight"
-        help="Minimum weight in kg"
       >
         <InputNumber
           min={0}
           step={0.1}
           precision={5}
           style={{ width: '100%' }}
-          placeholder="Min weight"
         />
       </Form.Item>
 
       <Form.Item
-        label="Max Weight"
+        label={t('coreshop_condition_weight_maxWeight', { defaultValue: 'Max Weight' })}
         name="maxWeight"
-        help="Maximum weight in kg"
       >
         <InputNumber
           min={0}
           step={0.1}
           precision={5}
           style={{ width: '100%' }}
-          placeholder="Max weight"
         />
       </Form.Item>
     </Form>

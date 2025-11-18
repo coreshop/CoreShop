@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, InputNumber, Checkbox } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 
 export const VoucherCreditAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const credit = data.credit || 0
   const gross = data.gross || false
 
@@ -27,7 +29,7 @@ export const VoucherCreditAction: React.FC<ActionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Voucher Credit">
+      <Form.Item label={t('coreshop_action_voucherCredit', { defaultValue: 'Voucher Credit' })}>
         <InputNumber
           value={credit}
           onChange={(value) => handleChange('credit', value || 0)}
@@ -42,7 +44,7 @@ export const VoucherCreditAction: React.FC<ActionComponentProps> = ({
           checked={gross}
           onChange={(e) => handleChange('gross', e.target.checked)}
         >
-          Gross
+          {t('coreshop_prices_are_gross', { defaultValue: 'Prices are gross prices' })}
         </Checkbox>
       </Form.Item>
     </Form>

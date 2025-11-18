@@ -13,17 +13,19 @@
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource/src/entities'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { taxRuleGroupApi, type TaxRuleGroupDetail } from './api'
 import { TaxRuleGroupForm } from './TaxRuleGroupForm'
 
 export const TaxRuleGroupManager: React.FC = () => {
+  const { t } = useTranslation()
   const modal = useFormModal()
 
   return (
     <EntityTabbedManager<TaxRuleGroupDetail>
       api={taxRuleGroupApi}
       dragType='coreshop:tax_rule_group'
-      leftRootTitle='Tax Rule Groups'
+      leftRootTitle={t('coreshop_tax_rule_group', { defaultValue: 'Tax Rule Groups' })}
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
       buildSavePayload={(data) => ({
         id: data.id,
@@ -40,8 +42,8 @@ export const TaxRuleGroupManager: React.FC = () => {
       })}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add Tax Rule Group',
-          label: 'Name',
+          title: t('coreshop_tax_rule_group', { defaultValue: 'Add Tax Rule Group' }),
+          label: t('coreshop_name', { defaultValue: 'Name' }),
           onOk: async (value: string) => {
             const res = await taxRuleGroupApi.add({ name: value })
             resolve(res.data.id)
@@ -50,7 +52,7 @@ export const TaxRuleGroupManager: React.FC = () => {
       })}
       renderDetail={(data, setData, ctx) => {
         if (!data) {
-          return <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>Select a tax rule group to view details.</div>
+          return <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>{t('coreshop_tax_rule_group_select', { defaultValue: 'Select a tax rule group to view details.' })}</div>
         }
 
         return (

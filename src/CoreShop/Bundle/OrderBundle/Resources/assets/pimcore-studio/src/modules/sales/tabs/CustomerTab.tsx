@@ -14,8 +14,11 @@ import React from 'react'
 import { Card, Tabs, Button } from 'antd'
 import { createStyles } from 'antd-style'
 import { FolderOpenOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import { useDataObjectHelper } from '@pimcore/studio-ui-bundle/modules/data-object'
 import type { SaleTabProps } from '../registry'
+import { useSaleContext } from '../context/SaleActionsContext'
 
 interface Address {
   id?: number
@@ -30,20 +33,17 @@ interface Customer {
   creationDate?: number
 }
 
-export const CustomerTab: React.FC<SaleTabProps> = ({ sale }) => {
+export const CustomerTab: React.FC<SaleTabProps> = () => {
+  const { t } = useTranslation()
+  const { sale } = useSaleContext()
   const { styles } = useCustomerTabStyles()
   const { openDataObject } = useDataObjectHelper()
+
+  if (!sale) return null
 
   const customer = (sale as any).customer as Customer | undefined
   const shippingAddress = (sale as any).address?.shipping as Address | undefined
   const invoiceAddress = (sale as any).address?.billing as Address | undefined
-
-  // Format date
-  const formatDate = (date?: string | number) => {
-    if (!date) return '-'
-    const dateValue = typeof date === 'number' ? date * 1000 : date
-    return new Date(dateValue).toLocaleString('de-DE')
-  }
 
   // Open customer DataObject
   const handleOpenCustomer = () => {
@@ -91,12 +91,12 @@ export const CustomerTab: React.FC<SaleTabProps> = ({ sale }) => {
   const tabItems = [
     {
       key: 'shipping',
-      label: 'Shipping Address',
+      label: t('coreshop_shipping_address', { defaultValue: 'Shipping Address' }),
       children: renderAddress(shippingAddress)
     },
     {
       key: 'invoice',
-      label: 'Invoice Address',
+      label: t('coreshop_invoice_address', { defaultValue: 'Invoice Address' }),
       children: renderAddress(invoiceAddress)
     }
   ]
@@ -110,7 +110,7 @@ export const CustomerTab: React.FC<SaleTabProps> = ({ sale }) => {
           type="text"
           icon={<FolderOpenOutlined />}
           onClick={handleOpenCustomer}
-          title="Open Customer DataObject"
+          title={t('coreshop_open_customer_data_object', { defaultValue: 'Open Customer DataObject' })}
         />
       }
     >
@@ -123,7 +123,7 @@ export const CustomerTab: React.FC<SaleTabProps> = ({ sale }) => {
           </div>
           <div className={styles.infoItem}>
             <strong>Customer created at</strong>
-            <div>{formatDate(customer?.creationDate)}</div>
+            <div>{formatDateTime(customer?.creationDate)}</div>
           </div>
         </div>
 

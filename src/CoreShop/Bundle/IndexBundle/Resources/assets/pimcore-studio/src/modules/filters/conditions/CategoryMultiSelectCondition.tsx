@@ -12,6 +12,7 @@
 
 import React, { useMemo, useState, useEffect } from 'react'
 import { Form, Input, Checkbox, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionProps } from '../types'
 import { QuantityUnitSelect } from '../../shared/QuantityUnitSelect'
 import { ManyToManyRelation } from '@pimcore/studio-ui-bundle/modules/element'
@@ -21,18 +22,11 @@ import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { useRelationIds } from '@coreshop/resource'
 
-/**
- * Category MultiSelect Condition - Multiple categories filter
- *
- * Form fields (from FilterConditionCategoryMultiSelectType):
- * - preSelects: Array of default selected category IDs
- * - includeSubCategories: Include subcategories
- * - concatenator: OR/AND logic
- */
 export const CategoryMultiSelectCondition: React.FC<ConditionProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const [allowedClasses, setAllowedClasses] = useState<string[]>([])
   const [relationValue, handleRelationChange] = useRelationIds(data.configuration?.preSelects, 'Category')
 
@@ -58,22 +52,21 @@ export const CategoryMultiSelectCondition: React.FC<ConditionProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Label" help="Display label for the filter">
+      <Form.Item label={t('coreshop_label', { defaultValue: 'Label' })}>
         <Input
           value={data.label}
           onChange={(e) => onChange({ label: e.target.value })}
-          placeholder="Filter label"
         />
       </Form.Item>
 
-      <Form.Item label="Quantity Unit" help="Unit for quantity values">
+      <Form.Item label={t('coreshop_filters_quantityUnit', { defaultValue: 'Quantity Value' })}>
         <QuantityUnitSelect
           value={data.quantityUnit ?? "0"}
           onChange={(value) => onChange({ quantityUnit: value })}
         />
       </Form.Item>
 
-      <Form.Item label="Categories" help="Select multiple categories">
+      <Form.Item label={t('coreshop_filters_category_name', { defaultValue: 'Category' })}>
         <ManyToManyRelation
           allowedClasses={allowedClasses}
           dataObjectsAllowed={true}
@@ -89,18 +82,18 @@ export const CategoryMultiSelectCondition: React.FC<ConditionProps> = ({
         />
       </Form.Item>
 
-      <Form.Item help="Include all subcategories in filter">
+      <Form.Item>
         <Checkbox
           checked={data.configuration?.includeSubCategories ?? false}
           onChange={(e) => onChange({
             configuration: { ...data.configuration, includeSubCategories: e.target.checked }
           })}
         >
-          Include Subcategories
+          {t('coreshop_filters_include_subcategories', { defaultValue: 'Include Subcategories' })}
         </Checkbox>
       </Form.Item>
 
-      <Form.Item label="Concatenator" help="Logic operator for multiple categories">
+      <Form.Item label={t('coreshop_filters_search_patterns_concatenator', { defaultValue: 'Choose concatenator' })}>
         <Select
           value={data.configuration?.concatenator ?? 'OR'}
           onChange={(value) => onChange({

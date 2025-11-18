@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, InputNumber } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 
 export const CartItemDiscountPercentAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const percent = data.percent || 0
 
   const handleChange = (value: number | null) => {
@@ -26,7 +28,7 @@ export const CartItemDiscountPercentAction: React.FC<ActionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Discount Percent">
+      <Form.Item label={t('coreshop_action_discountPercent_percent', { defaultValue: 'Percent' })}>
         <InputNumber
           value={percent}
           onChange={handleChange}

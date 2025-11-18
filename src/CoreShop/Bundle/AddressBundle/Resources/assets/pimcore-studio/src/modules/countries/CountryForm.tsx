@@ -1,5 +1,6 @@
 import React from 'react'
 import { Form, Input, Select, Switch, Space, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
 import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import type { CountryDetail } from './api'
@@ -11,6 +12,7 @@ export const CountryForm: React.FC<{
   onChange: (draft: Partial<CountryDetail>) => void
   currentLocale: string
 }> = ({ data, zones, onChange, currentLocale }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
   // locales + currentLocale provided by parent toolbar
 
@@ -53,15 +55,15 @@ export const CountryForm: React.FC<{
       >
         <LocalizedFieldsProvider locales={ [currentLocale] }>
           <Form.Item label={`Name (${currentLocale.toUpperCase()})`} name={ ['translations', currentLocale, 'name'] } rules={ [{ required: true }] }>
-            <Input placeholder='Country name' />
+            <Input />
           </Form.Item>
         </LocalizedFieldsProvider>
 
-        <Form.Item label='ISO Code' name='isoCode'>
-          <Input placeholder='ISO code (optional)' />
+        <Form.Item label={t('coreshop_country_isoCode', { defaultValue: 'ISO Code' })} name='isoCode'>
+          <Input />
         </Form.Item>
 
-        <Form.Item label='Zone'>
+        <Form.Item label={t('coreshop_zone', { defaultValue: 'Zone' })}>
           <DroppableEntity
             accept='coreshop:zone'
             isValidData={ (info) => typeof info?.data?.id === 'number' }
@@ -76,18 +78,17 @@ export const CountryForm: React.FC<{
             <Form.Item name='zone' noStyle>
               <Select
                 options={ zones.map(z => ({ value: z.id, label: z.name })) }
-                placeholder='Select or drop a zone'
               />
             </Form.Item>
           </DroppableEntity>
         </Form.Item>
 
-        <Form.Item label='Address Format' name='addressFormat'>
-          <Input.TextArea autoSize={ { minRows: 6, maxRows: 16 } } placeholder='Address format template' />
+        <Form.Item label={t('coreshop_country_addressFormat', { defaultValue: 'Address Format' })} name='addressFormat'>
+          <Input.TextArea autoSize={ { minRows: 6, maxRows: 16 } } />
         </Form.Item>
 
-        <Form.Item label='Salutations' name='salutations'>
-          <Select mode='tags' placeholder='Add salutations (e.g., mr, mrs)' />
+        <Form.Item label={t('coreshop_country_salutations', { defaultValue: 'Salutations' })} name='salutations'>
+          <Select mode='tags' />
         </Form.Item>
 
         {/* Extension slot: CoreBundle and others can inject extra fields */}

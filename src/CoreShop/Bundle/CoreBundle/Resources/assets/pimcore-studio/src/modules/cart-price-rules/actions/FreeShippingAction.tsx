@@ -12,13 +12,15 @@
 
 import React from 'react'
 import { Alert } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 
 export const FreeShippingAction: React.FC<ActionComponentProps> = () => {
+  const { t } = useTranslation()
+
   return (
     <Alert
-      message="Free Shipping"
-      description="This action will provide free shipping for the cart."
+      message={t('coreshop_action_freeShipping', { defaultValue: 'Free Shipping' })}
       type="info"
       showIcon
     />

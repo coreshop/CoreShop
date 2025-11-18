@@ -14,10 +14,12 @@ import React from 'react'
 import { Table, Button, Card, Empty } from 'antd'
 import { createStyles } from 'antd-style'
 import { FolderOpenOutlined, PlusOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { formatDateTime, formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
 import type { SaleTabProps } from '../registry'
-import { StateChangeModal, InvoiceDetailModal, CreateInvoiceModal } from '../components'
-import { invoiceEvents, INVOICE_EVENTS } from '../events/InvoiceEvents'
+import { StateChangeModal, InvoiceDetailModal, CreateInvoiceModal, CreateInvoiceButton } from '../components'
+import { useSaleContext } from '../context/SaleActionsContext'
 
 interface StateInfo {
   label: string
@@ -47,74 +49,45 @@ interface Invoice {
   items: InvoiceItem[]
 }
 
-export const InvoiceTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
+export const InvoiceTab: React.FC<SaleTabProps> = () => {
+  const { t } = useTranslation()
+  const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
   const { styles } = useInvoiceTabStyles()
+
+  if (!sale) return null
   const [stateChangeInvoice, setStateChangeInvoice] = React.useState<Invoice | null>(null)
   const [detailInvoice, setDetailInvoice] = React.useState<Invoice | null>(null)
-  const [createInvoiceOpen, setCreateInvoiceOpen] = React.useState(false)
 
   const invoices = ((sale as any).invoices || []) as Invoice[]
 
-  // Listen for create invoice events from toolbar
+  // Register button in toolbar
   React.useEffect(() => {
-    const handleCreateInvoice = () => {
-      setCreateInvoiceOpen(true)
+    if ((sale as any)?.invoiceCreationAllowed) {
+      buttonRegistry.add('createInvoice', CreateInvoiceButton, 30)
+      return () => buttonRegistry.remove('createInvoice')
     }
+  }, [buttonRegistry, sale])
 
-    invoiceEvents.on(INVOICE_EVENTS.CREATE_INVOICE, handleCreateInvoice)
-
-    return () => {
-      invoiceEvents.off(INVOICE_EVENTS.CREATE_INVOICE, handleCreateInvoice)
-    }
-  }, [])
-
-  // Format currency
-  const formatCurrency = (amount?: number) => {
-    if (amount === undefined) return '-'
-
-    // Handle currency as object or string
-    const currencyCode = typeof sale.currency === 'object' && sale.currency?.isoCode
-      ? sale.currency.isoCode
-      : typeof sale.currency === 'string'
-        ? sale.currency
-        : 'EUR'
-
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: currencyCode
-    }).format(amount / 100) // Divide by 100 because amounts are in cents
-  }
-
-  // Format date
-  const formatDate = (date?: number) => {
-    if (!date) return '-'
-    return new Date(date * 1000).toLocaleString('de-DE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+  const currencyCode = getCurrencyCode(sale.currency)
 
   const columns: Array<ColumnType<Invoice>> = [
     {
-      title: 'Date',
+      title: t('coreshop_date', { defaultValue: 'Date' }),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
       width: 180,
-      render: (date) => formatDate(date)
+      render: (date) => formatDateTime(date)
     },
     {
-      title: 'Total (excl.)',
+      title: t('coreshop_total_without_tax', { defaultValue: 'Total (excl.)' }),
       dataIndex: 'totalNet',
       key: 'totalNet',
       width: 150,
       align: 'right',
-      render: (amount) => formatCurrency(amount)
+      render: (amount) => formatCurrency(amount, currencyCode)
     },
     {
-      title: 'Total',
+      title: t('coreshop_total', { defaultValue: 'Total' }),
       dataIndex: 'totalGross',
       key: 'totalGross',
       width: 150,
@@ -158,35 +131,31 @@ export const InvoiceTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
           type="text"
           icon={<FolderOpenOutlined />}
           size="small"
-          title="Open Invoice Details"
+          title={t('coreshop_open_order_invoice', { defaultValue: 'Open Invoice ({0})' }).replace('{0}', record.invoiceNumber)}
           onClick={() => setDetailInvoice(record)}
         />
       )
     }
   ]
 
-  // Calculate totals
-  const totalGross = invoices.reduce((sum, invoice) => sum + (invoice.totalGross || 0), 0)
-  const totalNet = invoices.reduce((sum, invoice) => sum + (invoice.totalNet || 0), 0)
-
   return (
     <>
       <Card
-        title="Invoices"
+        title={t('coreshop_invoices', { defaultValue: 'Invoices' })}
         className={styles.card}
         extra={
           (sale as any).invoiceCreationAllowed && (
             <Button
               type="text"
               icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
-              title="Add Invoice"
-              onClick={() => setCreateInvoiceOpen(true)}
+              title={t('coreshop_invoice_create_short', { defaultValue: 'Create Invoice' })}
+              onClick={() => openAction('createInvoice')}
             />
           )
         }
       >
         {invoices.length === 0 ? (
-          <Empty description="No invoices generated" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          <Empty description={t('coreshop_invoice_no_items', { defaultValue: 'No Invoice able Items found' })} image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
           <Table
             dataSource={invoices}
@@ -203,8 +172,8 @@ export const InvoiceTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
       {stateChangeInvoice && (
         <StateChangeModal
           open={true}
-          title="Change Invoice State"
-          description="Select a transition to apply to this invoice"
+          title={t('coreshop_change_state', { defaultValue: 'Change State' })}
+          description={t('coreshop_change_state_description', { defaultValue: 'Click on a Button below to change the current State' })}
           transitions={stateChangeInvoice.transitions}
           url="/pimcore-studio/api/coreshop/order-invoice/update-invoice-state"
           id={stateChangeInvoice.id}
@@ -231,22 +200,16 @@ export const InvoiceTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
       )}
 
       {/* Create Invoice Modal */}
-      {createInvoiceOpen && (
+      {isActionOpen('createInvoice') && (
         <CreateInvoiceModal
           open={true}
-          orderId={(sale as any).id}
-          currencyCode={
-            typeof sale.currency === 'object' && sale.currency?.isoCode
-              ? sale.currency.isoCode
-              : typeof sale.currency === 'string'
-                ? sale.currency
-                : 'EUR'
-          }
+          orderId={sale.id}
+          currencyCode={sale.currency?.isoCode}
           onSuccess={() => {
-            setCreateInvoiceOpen(false)
+            closeAction('createInvoice')
             onReload()
           }}
-          onCancel={() => setCreateInvoiceOpen(false)}
+          onCancel={() => closeAction('createInvoice')}
         />
       )}
     </>

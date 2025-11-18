@@ -16,6 +16,8 @@
 import React from 'react'
 import { Modal, Form, InputNumber, Table, message, Tabs } from 'antd'
 import { createStyles } from 'antd-style'
+import { useTranslation } from 'react-i18next'
+import { formatCurrency } from '@coreshop/pimcore/src/utils'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { ColumnType } from 'antd/es/table'
 import { ModalFieldExtensionRegistry } from '../extensions'
@@ -54,6 +56,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
   onSuccess,
   onCancel
 }) => {
+  const { t } = useTranslation()
   const { styles } = useCreateInvoiceModalStyles()
   const [form] = Form.useForm()
   const [items, setItems] = React.useState<InvoiceItem[]>([])
@@ -97,15 +100,6 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
 
     void loadItems()
   }, [open, orderId, onCancel])
-
-  // Format currency
-  const formatCurrency = (amount?: number) => {
-    if (amount === undefined || amount === null) return '-'
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: currencyCode
-    }).format(amount / 100) // Amounts are in cents
-  }
 
   // Handle quantity change
   const handleQuantityChange = (index: number, value: number | null) => {
@@ -181,35 +175,35 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
 
   const columns: Array<ColumnType<InvoiceItem>> = [
     {
-      title: 'Product',
+      title: t('coreshop_product', { defaultValue: 'Product' }),
       dataIndex: 'name',
       key: 'name',
       width: 250
     },
     {
-      title: 'Price',
+      title: t('coreshop_price', { defaultValue: 'Price' }),
       dataIndex: 'price',
       key: 'price',
       width: 120,
       align: 'right',
-      render: (price) => formatCurrency(price)
+      render: (price) => formatCurrency(price, currencyCode)
     },
     {
-      title: 'Quantity',
+      title: t('coreshop_quantity', { defaultValue: 'Quantity' }),
       dataIndex: 'quantity',
       key: 'quantity',
       width: 100,
       align: 'center'
     },
     {
-      title: 'Invoiced Quantity',
+      title: t('coreshop_invoiced_quantity', { defaultValue: 'Invoiced Quantity' }),
       dataIndex: 'quantityInvoiced',
       key: 'quantityInvoiced',
       width: 150,
       align: 'center'
     },
     {
-      title: 'To Invoice',
+      title: t('coreshop_to_invoice', { defaultValue: 'To Invoice' }),
       dataIndex: 'toInvoice',
       key: 'toInvoice',
       width: 120,
@@ -225,20 +219,20 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       )
     },
     {
-      title: 'Tax',
+      title: t('coreshop_tax', { defaultValue: 'Tax' }),
       dataIndex: 'tax',
       key: 'tax',
       width: 100,
       align: 'right',
-      render: (tax, record) => formatCurrency(tax * record.toInvoice)
+      render: (tax, record) => formatCurrency(tax * record.toInvoice, currencyCode)
     },
     {
-      title: 'Total',
+      title: t('coreshop_total', { defaultValue: 'Total' }),
       dataIndex: 'total',
       key: 'total',
       width: 120,
       align: 'right',
-      render: (_, record) => <strong>{formatCurrency(record.price * record.toInvoice + record.tax * record.toInvoice)}</strong>
+      render: (_, record) => <strong>{formatCurrency(record.price * record.toInvoice + record.tax * record.toInvoice, currencyCode)}</strong>
     }
   ]
 
@@ -287,7 +281,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
                           </Table.Summary.Cell>
                           <Table.Summary.Cell index={1} align="right" />
                           <Table.Summary.Cell index={2} align="right">
-                            <strong>{formatCurrency(totals.subtotal)}</strong>
+                            <strong>{formatCurrency(totals.subtotal, currencyCode)}</strong>
                           </Table.Summary.Cell>
                         </Table.Summary.Row>
                         <Table.Summary.Row>
@@ -295,7 +289,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
                             <strong>Tax:</strong>
                           </Table.Summary.Cell>
                           <Table.Summary.Cell index={1} align="right">
-                            <strong>{formatCurrency(totals.tax)}</strong>
+                            <strong>{formatCurrency(totals.tax, currencyCode)}</strong>
                           </Table.Summary.Cell>
                           <Table.Summary.Cell index={2} align="right" />
                         </Table.Summary.Row>
@@ -305,7 +299,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
                           </Table.Summary.Cell>
                           <Table.Summary.Cell index={1} align="right" />
                           <Table.Summary.Cell index={2} align="right">
-                            <strong style={{ fontSize: '16px' }}>{formatCurrency(totals.total)}</strong>
+                            <strong style={{ fontSize: '16px' }}>{formatCurrency(totals.total, currencyCode)}</strong>
                           </Table.Summary.Cell>
                         </Table.Summary.Row>
                       </Table.Summary>

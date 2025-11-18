@@ -16,12 +16,12 @@ import type { Sale, SaleType } from '../types'
 
 /**
  * Props passed to each tab component
+ * All props are now optional as they are provided via SaleContext
+ * @deprecated Use useSaleContext() hook instead of props
  */
 export interface SaleTabProps {
-  sale: Sale
-  onChange: (updates: Partial<Sale>) => void
-  onReload: () => void
-  readonly?: boolean
+  // These props are kept for backwards compatibility but are deprecated
+  // Use useSaleContext() hook to access sale data and actions
 }
 
 /**
@@ -40,7 +40,7 @@ export interface SaleTab {
   position: BlockPosition  // Where to render the block
   types: SaleType[]  // Which sale types should show this block
   component: React.ComponentType<SaleTabProps>
-  getToolbarButtons?: (props: SaleTabProps) => React.ReactNode[]  // Optional toolbar buttons
+  toolbarButtons?: React.ComponentType[]  // Optional toolbar button components
 }
 
 /**

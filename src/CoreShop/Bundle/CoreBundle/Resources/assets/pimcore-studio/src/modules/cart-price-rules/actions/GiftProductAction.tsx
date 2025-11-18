@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, InputNumber } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 
 export const GiftProductAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const product = data.product || null
   const quantity = data.quantity || 1
 
@@ -27,18 +29,17 @@ export const GiftProductAction: React.FC<ActionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Product ID">
+      <Form.Item label={t('coreshop_action_giftProduct', { defaultValue: 'Gift Product' })}>
         <InputNumber
           value={product}
           onChange={(value) => handleChange('product', value)}
           min={0}
           precision={0}
           style={{ width: '100%' }}
-          placeholder="Enter Product ID"
         />
       </Form.Item>
 
-      <Form.Item label="Quantity">
+      <Form.Item label={t('coreshop_condition_quantity', { defaultValue: 'Quantity' })}>
         <InputNumber
           value={quantity}
           onChange={(value) => handleChange('quantity', value || 1)}

@@ -16,8 +16,10 @@
 import React from 'react'
 import { Table, Card } from 'antd'
 import { createStyles } from 'antd-style'
+import { formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
 import type { SaleTabProps } from '../registry'
+import { useSaleContext } from '../context/SaleActionsContext'
 
 interface DetailItem {
   id: number
@@ -50,8 +52,11 @@ interface SummaryItem {
   factor?: number
 }
 
-export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
+export const DetailTab: React.FC<SaleTabProps> = () => {
+  const { sale } = useSaleContext()
   const { styles } = useDetailTabStyles()
+
+  if (!sale) return null
 
   const details = ((sale as any).details || []) as DetailItem[]
   const priceRules = ((sale as any).priceRule || []) as PriceRule[]
@@ -59,18 +64,8 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
 
   // Determine if we need converted currency columns
   const showConverted = sale.currency?.id !== (sale as any).baseCurrency?.id
-
-  // Format currency
-  const formatCurrency = (amount?: number, currencyCode?: string) => {
-    if (amount === undefined) return '-'
-
-    const code = currencyCode || sale.currency?.isoCode || 'EUR'
-
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: code
-    }).format(amount / 100)
-  }
+  const currencyCode = getCurrencyCode(sale.currency)
+  const baseCurrencyCode = getCurrencyCode((sale as any).baseCurrency)
 
   // Items table columns
   const itemColumns: Array<ColumnType<DetailItem>> = [
@@ -86,7 +81,7 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
       key: 'priceNet',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, (sale as any).baseCurrency?.isoCode)
+      render: (value) => formatCurrency(value, baseCurrencyCode)
     },
     {
       title: 'Price (incl.)',
@@ -94,7 +89,7 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
       key: 'price',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, (sale as any).baseCurrency?.isoCode)
+      render: (value) => formatCurrency(value, baseCurrencyCode)
     },
     {
       title: 'Quantity',
@@ -116,7 +111,7 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
       key: 'totalNet',
       width: 150,
       align: 'right',
-      render: (_, record) => formatCurrency(record.total - record.totalTax, (sale as any).baseCurrency?.isoCode)
+      render: (_, record) => formatCurrency(record.total - record.totalTax, baseCurrencyCode)
     },
     {
       title: 'Total (incl.)',
@@ -124,48 +119,48 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
       key: 'total',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, (sale as any).baseCurrency?.isoCode)
+      render: (value) => formatCurrency(value, baseCurrencyCode)
     }
   ]
 
   // Add converted columns if needed
   if (showConverted) {
     itemColumns.splice(2, 0, {
-      title: `Price (excl.) ${sale.currency?.isoCode || ''}`,
+      title: `Price (excl.) ${currencyCode || ''}`,
       dataIndex: 'convertedPriceNet',
       key: 'convertedPriceNet',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, sale.currency?.isoCode)
+      render: (value) => formatCurrency(value, currencyCode)
     })
 
     itemColumns.splice(4, 0, {
-      title: `Price (incl.) ${sale.currency?.isoCode || ''}`,
+      title: `Price (incl.) ${currencyCode || ''}`,
       dataIndex: 'convertedPrice',
       key: 'convertedPrice',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, sale.currency?.isoCode)
+      render: (value) => formatCurrency(value, currencyCode)
     })
 
     itemColumns.splice(8, 0, {
-      title: `Total (excl.) ${sale.currency?.isoCode || ''}`,
+      title: `Total (excl.) ${currencyCode || ''}`,
       key: 'convertedTotalNet',
       width: 150,
       align: 'right',
       render: (_, record) => formatCurrency(
         (record.convertedTotal || 0) - (record.convertedTotalTax || 0),
-        sale.currency?.isoCode
+        currencyCode
       )
     })
 
     itemColumns.splice(10, 0, {
-      title: `Total (incl.) ${sale.currency?.isoCode || ''}`,
+      title: `Total (incl.) ${currencyCode || ''}`,
       dataIndex: 'convertedTotal',
       key: 'convertedTotal',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, sale.currency?.isoCode)
+      render: (value) => formatCurrency(value, currencyCode)
     })
   }
 
@@ -192,7 +187,7 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
       align: 'right',
       render: (value) => (
         <span style={{ fontWeight: 'bold' }}>
-          {formatCurrency(value, (sale as any).baseCurrency?.isoCode)}
+          {formatCurrency(value, baseCurrencyCode)}
         </span>
       )
     }
@@ -206,7 +201,7 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
       align: 'right',
       render: (value) => (
         <span style={{ fontWeight: 'bold' }}>
-          {formatCurrency(value, sale.currency?.isoCode)}
+          {formatCurrency(value, currencyCode)}
         </span>
       )
     })
@@ -229,7 +224,7 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
       width: 150,
       align: 'right',
       render: (value, record) => {
-        const formatted = formatCurrency(value, (sale as any).baseCurrency?.isoCode)
+        const formatted = formatCurrency(value, baseCurrencyCode)
         return <span style={{ fontWeight: 'bold' }}>{formatted}</span>
       }
     }
@@ -242,7 +237,7 @@ export const DetailTab: React.FC<SaleTabProps> = ({ sale }) => {
       width: 150,
       align: 'right',
       render: (value) => {
-        const formatted = formatCurrency(value, sale.currency?.isoCode)
+        const formatted = formatCurrency(value, currencyCode)
         return <span style={{ fontWeight: 'bold' }}>{formatted}</span>
       }
     })

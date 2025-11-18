@@ -17,8 +17,10 @@ import React from 'react'
 import { Table, Button, Card, Empty, Modal } from 'antd'
 import { createStyles } from 'antd-style'
 import { MailOutlined, FileTextOutlined, MessageOutlined } from '@ant-design/icons'
+import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
 import type { SaleTabProps } from '../registry'
+import { useSaleContext } from '../context/SaleActionsContext'
 
 interface EmailCorrespondence {
   date: number
@@ -29,24 +31,15 @@ interface EmailCorrespondence {
   threadId?: number
 }
 
-export const CorrespondenceTab: React.FC<SaleTabProps> = ({ sale }) => {
+export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
+  const { sale } = useSaleContext()
   const { styles } = useCorrespondenceTabStyles()
+
+  if (!sale) return null
   const [emailLogModal, setEmailLogModal] = React.useState<number | null>(null)
   const [iframeKey, setIframeKey] = React.useState(0)
 
   const correspondence = ((sale as any).mailCorrespondence || []) as EmailCorrespondence[]
-
-  // Format date
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString('de-DE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    })
-  }
 
   // Open email log in modal
   const openEmailLog = (emailLogId: number) => {
@@ -77,7 +70,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = ({ sale }) => {
       dataIndex: 'date',
       key: 'date',
       width: 180,
-      render: (date) => formatDate(date)
+      render: (date) => formatDateTime(date)
     },
     {
       title: 'Subject',

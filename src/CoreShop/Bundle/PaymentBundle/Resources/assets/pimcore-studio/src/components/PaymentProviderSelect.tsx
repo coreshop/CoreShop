@@ -80,7 +80,6 @@ export const PaymentProviderSelect: React.FC<SelectProps> = (props) => {
       {...props}
       loading={loading}
       options={options}
-      placeholder={props.placeholder ?? 'Select a payment provider'}
       showSearch
       filterOption={(input, option) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())

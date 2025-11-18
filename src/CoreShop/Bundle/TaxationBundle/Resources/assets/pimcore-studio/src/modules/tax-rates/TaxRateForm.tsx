@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, Input, InputNumber, Switch, Space, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { TaxRateDetail } from './api'
 import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
@@ -21,6 +22,7 @@ export const TaxRateForm: React.FC<{
   onChange: (draft: Partial<TaxRateDetail>) => void
   currentLocale: string
 }> = ({ data, onChange, currentLocale }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   React.useEffect(() => {
@@ -55,16 +57,15 @@ export const TaxRateForm: React.FC<{
       >
         <LocalizedFieldsProvider locales={ [currentLocale] }>
           <Form.Item label={`Name (${currentLocale.toUpperCase()})`} name={ ['translations', currentLocale, 'name'] } rules={ [{ required: true }] }>
-            <Input placeholder='Tax rate name' />
+            <Input />
           </Form.Item>
         </LocalizedFieldsProvider>
 
-        <Form.Item label='Rate (%)' name='rate' rules={ [{ required: true }] }>
+        <Form.Item label={t('coreshop_tax_rate', { defaultValue: 'Tax Rate' })} name='rate' rules={ [{ required: true }] }>
           <InputNumber
             min={0}
             max={100}
             step={0.01}
-            placeholder='Tax rate percentage'
             style={{ width: '100%' }}
             addonAfter='%'
           />

@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, Input, InputNumber, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { Filter } from '../types'
 import { IndexSelect } from '../../shared/IndexSelect'
 
@@ -24,61 +25,54 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   filter,
   onChange
 }) => {
+  const { t } = useTranslation()
   return (
     <div style={{ padding: 24 }}>
       <Form layout="vertical">
         <Form.Item
-          label="Name"
+          label={t('coreshop_name', { defaultValue: 'Name' })}
           required
-          help="Unique identifier for the filter"
         >
           <Input
             value={filter.name}
             onChange={(e) => onChange({ ...filter, name: e.target.value })}
-            placeholder="Filter name"
           />
         </Form.Item>
 
         <Form.Item
-          label="Index"
+          label={t('coreshop_filters_index', { defaultValue: 'Index' })}
           required
-          help="Select the index to filter"
         >
           <IndexSelect
             value={filter.index ?? undefined}
             onChange={(value) => onChange({ ...filter, index: value ?? null })}
-            placeholder="Select an index"
           />
         </Form.Item>
 
         <Form.Item
-          label="Order Direction"
-          help="Sort direction for results"
+          label={t('coreshop_filters_order_direction', { defaultValue: 'Order Direction' })}
         >
           <Select
             value={filter.orderDirection ?? 'desc'}
             onChange={(value) => onChange({ ...filter, orderDirection: value })}
             options={[
-              { label: 'Descending', value: 'desc' },
-              { label: 'Ascending', value: 'asc' }
+              { label: t('coreshop_filters_order_desc', { defaultValue: 'Descending' }), value: 'desc' },
+              { label: t('coreshop_filters_order_asc', { defaultValue: 'Ascending' }), value: 'asc' }
             ]}
           />
         </Form.Item>
 
         <Form.Item
-          label="Order Key"
-          help="Field to sort by"
+          label={t('coreshop_filters_order_key', { defaultValue: 'Order Key' })}
         >
           <Input
             value={filter.orderKey ?? ''}
             onChange={(e) => onChange({ ...filter, orderKey: e.target.value })}
-            placeholder="e.g., name, price"
           />
         </Form.Item>
 
         <Form.Item
-          label="Results Per Page"
-          help="Number of results to show per page"
+          label={t('coreshop_filters_results_per_page', { defaultValue: 'Results Per Page' })}
         >
           <InputNumber
             value={filter.resultsPerPage ?? 10}

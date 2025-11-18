@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 import { useEntitySelect } from '@coreshop/resource'
 import { zoneApi } from '@coreshop/address/src/modules/zones/api'
@@ -20,6 +21,7 @@ export const ZonesCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const zones = data.zones || []
   const [options, value, handleSelectChange, loading] = useEntitySelect(zoneApi, zones)
 
@@ -30,12 +32,11 @@ export const ZonesCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Zones">
+      <Form.Item label={t('coreshop_condition_zones', { defaultValue: 'Zones' })}>
         <Select
           mode="multiple"
           value={value}
           onChange={handleChange}
-          placeholder="Select zones"
           style={{ width: '100%' }}
           loading={loading}
           options={options}

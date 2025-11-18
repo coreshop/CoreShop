@@ -15,6 +15,7 @@ import { EntityTabbedManager } from '@coreshop/resource'
 import { RuleForm, type RuleFormTab } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { cartPriceRuleApi } from './api'
 import type { CartPriceRule } from './types'
 import { SettingsForm } from './components/SettingsForm'
@@ -22,6 +23,7 @@ import { VoucherCodesPanel } from './components/VoucherCodesPanel'
 import { coreshopOrderServiceIds } from './service-ids'
 
 export const CartPriceRuleManager: React.FC = () => {
+  const { t } = useTranslation()
   const modal = useFormModal()
   const [config, setConfig] = React.useState<RuleConfig>({ conditions: [], actions: [] })
 
@@ -38,7 +40,7 @@ export const CartPriceRuleManager: React.FC = () => {
     <EntityTabbedManager<CartPriceRule>
       api={cartPriceRuleApi}
       dragType='coreshop:cart_price_rule'
-      leftRootTitle='Cart Price Rules'
+      leftRootTitle={t('coreshop_cart_pricerules', { defaultValue: 'Cart Price Rules' })}
       localizable
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
       buildSavePayload={(data) => {
@@ -63,9 +65,9 @@ export const CartPriceRuleManager: React.FC = () => {
       }}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add Cart Price Rule',
-          label: 'Name',
-          rule: { required: true, message: 'Name is required' },
+          title: t('coreshop_cart_pricerule_add', { defaultValue: 'Add Cart Price Rule' }),
+          label: t('coreshop_name', { defaultValue: 'Name' }),
+          rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (nameValue: string) => {
             const res = await cartPriceRuleApi.add({ name: nameValue })
             resolve(res.data.id!)
@@ -75,14 +77,14 @@ export const CartPriceRuleManager: React.FC = () => {
       renderDetail={(data, setData, ctx) => {
         if (!data) {
           return <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
-            Select a cart price rule to view details.
+            {t('coreshop_cart_pricerule_select', { defaultValue: 'Select a cart price rule to view details.' })}
           </div>
         }
 
         const additionalTabs: RuleFormTab[] = [
           {
             key: 'voucher-codes',
-            label: 'Voucher Codes',
+            label: t('coreshop_cart_pricerule_voucherCodes', { defaultValue: 'Voucher Codes' }),
             disabled: !data.isVoucherRule,
             component: (
               <VoucherCodesPanel

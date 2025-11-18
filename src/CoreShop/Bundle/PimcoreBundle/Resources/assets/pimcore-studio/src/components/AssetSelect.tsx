@@ -26,7 +26,7 @@ interface AssetSelectProps {
 export const AssetSelect: React.FC<AssetSelectProps> = ({
   value,
   onChange,
-  placeholder = 'Drop asset here or enter asset ID',
+  placeholder,
   accept = 'asset'
 }) => {
   const [displayValue, setDisplayValue] = React.useState<string>('')

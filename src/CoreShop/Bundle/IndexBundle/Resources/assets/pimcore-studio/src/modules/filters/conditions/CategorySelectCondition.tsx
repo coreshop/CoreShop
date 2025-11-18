@@ -12,6 +12,7 @@
 
 import React, { useMemo, useState, useEffect } from 'react'
 import { Form, Checkbox, Input } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionProps } from '../types'
 import { QuantityUnitSelect } from '../../shared/QuantityUnitSelect'
 import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
@@ -19,17 +20,11 @@ import { container } from '@pimcore/studio-ui-bundle'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 
-/**
- * Category Select Condition - Single category filter
- *
- * Form fields (from FilterConditionCategorySelectType):
- * - preSelect: Default selected category ID
- * - includeSubCategories: Include subcategories
- */
 export const CategorySelectCondition: React.FC<ConditionProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const [allowedClasses, setAllowedClasses] = useState<string[]>([])
 
   const configProvider = useMemo(
@@ -53,22 +48,21 @@ export const CategorySelectCondition: React.FC<ConditionProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Label" help="Display label for the filter">
+      <Form.Item label={t('coreshop_label', { defaultValue: 'Label' })}>
         <Input
           value={data.label}
           onChange={(e) => onChange({ label: e.target.value })}
-          placeholder="Filter label"
         />
       </Form.Item>
 
-      <Form.Item label="Quantity Unit" help="Unit for quantity values">
+      <Form.Item label={t('coreshop_filters_quantityUnit', { defaultValue: 'Quantity Value' })}>
         <QuantityUnitSelect
           value={data.quantityUnit ?? "0"}
           onChange={(value) => onChange({ quantityUnit: value })}
         />
       </Form.Item>
 
-      <Form.Item label="Category" help="Select a category">
+      <Form.Item label={t('coreshop_filters_category_name', { defaultValue: 'Category' })}>
         <DroppableEntity
           allowedClasses={allowedClasses}
           dataObjectsAllowed={true}
@@ -79,14 +73,14 @@ export const CategorySelectCondition: React.FC<ConditionProps> = ({
         />
       </Form.Item>
 
-      <Form.Item help="Include all subcategories in filter">
+      <Form.Item>
         <Checkbox
           checked={data.configuration?.includeSubCategories ?? false}
           onChange={(e) => onChange({
             configuration: { ...data.configuration, includeSubCategories: e.target.checked }
           })}
         >
-          Include Subcategories
+          {t('coreshop_filters_include_subcategories', { defaultValue: 'Include Subcategories' })}
         </Checkbox>
       </Form.Item>
     </Form>

@@ -16,6 +16,8 @@
 import React from 'react'
 import { Modal, Form, Input, InputNumber, Table, message } from 'antd'
 import { createStyles } from 'antd-style'
+import { useTranslation } from 'react-i18next'
+import { formatCurrency } from '@coreshop/pimcore/src/utils'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { ColumnType } from 'antd/es/table'
 import { ModalFieldExtensionRegistry } from '../extensions'
@@ -54,6 +56,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
   onSuccess,
   onCancel
 }) => {
+  const { t } = useTranslation()
   const { styles } = useCreateShipmentModalStyles()
   const [form] = Form.useForm()
   const [items, setItems] = React.useState<ShipmentItem[]>([])
@@ -97,15 +100,6 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
 
     void loadItems()
   }, [open, orderId, onCancel])
-
-  // Format currency
-  const formatCurrency = (amount?: number) => {
-    if (amount === undefined) return '-'
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: currencyCode
-    }).format(amount / 100)
-  }
 
   // Handle quantity change
   const handleQuantityChange = (orderItemId: number, value: number | null) => {
@@ -166,35 +160,35 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
 
   const columns: Array<ColumnType<ShipmentItem>> = [
     {
-      title: 'Product',
+      title: t('coreshop_product', { defaultValue: 'Product' }),
       dataIndex: 'name',
       key: 'name',
       width: '30%'
     },
     {
-      title: 'Price',
+      title: t('coreshop_price', { defaultValue: 'Price' }),
       dataIndex: 'price',
       key: 'price',
       width: '15%',
       align: 'right',
-      render: (price) => formatCurrency(price)
+      render: (price) => formatCurrency(price, currencyCode)
     },
     {
-      title: 'Quantity',
+      title: t('coreshop_quantity', { defaultValue: 'Quantity' }),
       dataIndex: 'quantity',
       key: 'quantity',
       width: '12%',
       align: 'right'
     },
     {
-      title: 'Shipped Quantity',
+      title: t('coreshop_shipped_quantity', { defaultValue: 'Shipped Quantity' }),
       dataIndex: 'quantityShipped',
       key: 'quantityShipped',
       width: '15%',
       align: 'right'
     },
     {
-      title: 'To Ship',
+      title: t('coreshop_to_ship', { defaultValue: 'To Ship' }),
       dataIndex: 'toShip',
       key: 'toShip',
       width: '18%',

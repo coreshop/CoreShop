@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, InputNumber, Checkbox } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 
 export const VoucherCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const maxUsagePerCode = data.maxUsagePerCode || 0
   const maxUsagePerUser = data.maxUsagePerUser || 0
   const onlyOnePerCart = data.onlyOnePerCart || false
@@ -28,7 +30,7 @@ export const VoucherCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Max Usage Per Code">
+      <Form.Item label={t('coreshop_action_voucher_max_usage_per_code', { defaultValue: 'Max. Usage per Code' })}>
         <InputNumber
           value={maxUsagePerCode}
           onChange={(value) => handleChange('maxUsagePerCode', value || 0)}
@@ -37,7 +39,7 @@ export const VoucherCondition: React.FC<ConditionComponentProps> = ({
         />
       </Form.Item>
 
-      <Form.Item label="Max Usage Per User">
+      <Form.Item label={t('coreshop_action_voucher_max_usage_per_user', { defaultValue: 'Max. Usage per User' })}>
         <InputNumber
           value={maxUsagePerUser}
           onChange={(value) => handleChange('maxUsagePerUser', value || 0)}
@@ -51,7 +53,7 @@ export const VoucherCondition: React.FC<ConditionComponentProps> = ({
           checked={onlyOnePerCart}
           onChange={(e) => handleChange('onlyOnePerCart', e.target.checked)}
         >
-          Only One Per Cart
+          {t('coreshop_action_voucher_only_one_per_cart', { defaultValue: 'Allow only one Voucher per Cart' })}
         </Checkbox>
       </Form.Item>
     </Form>

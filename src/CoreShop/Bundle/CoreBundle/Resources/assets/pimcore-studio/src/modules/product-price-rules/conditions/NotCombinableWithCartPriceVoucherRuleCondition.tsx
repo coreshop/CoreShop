@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 import { useEntitySelect } from '@coreshop/resource'
 import { cartPriceRuleApi } from '@coreshop/order/src/modules/cart-price-rules/api'
@@ -20,6 +21,7 @@ export const NotCombinableWithCartPriceVoucherRuleCondition: React.FC<ConditionC
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const priceRules = data.price_rules || []
   // Type cast needed because CartPriceRule has optional id, but useEntitySelect expects required id
   const [options, value, handleSelectChange, loading] = useEntitySelect(cartPriceRuleApi as any, priceRules)
@@ -31,12 +33,11 @@ export const NotCombinableWithCartPriceVoucherRuleCondition: React.FC<ConditionC
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Not combinable with Cart Price Rules">
+      <Form.Item label={t('coreshop_condition_not_combinable_with_cart_price_voucher_rule', { defaultValue: 'Not combinable with Cart Price Voucher Rules' })}>
         <Select
           mode="multiple"
           value={value}
           onChange={handleChange}
-          placeholder="Select cart price rules"
           style={{ width: '100%' }}
           loading={loading}
           showSearch

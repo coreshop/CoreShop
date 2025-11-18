@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Tabs } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { Index, IndexConfig } from './api'
 import { SettingsForm, ColumnsPanel } from './components'
 import { useIndexDetailStyles } from './index-detail.styles'
@@ -27,12 +28,13 @@ export const IndexDetail: React.FC<IndexDetailProps> = ({
   config,
   onChange
 }) => {
+  const { t } = useTranslation()
   const { styles } = useIndexDetailStyles()
 
   const tabs = [
     {
       key: 'settings',
-      label: 'Settings',
+      label: t('coreshop_settings', { defaultValue: 'Settings' }),
       children: (
         <div style={{ padding: 24 }}>
           <SettingsForm
@@ -45,7 +47,7 @@ export const IndexDetail: React.FC<IndexDetailProps> = ({
     },
     {
       key: 'fields',
-      label: 'Fields',
+      label: t('coreshop_indexes_fields', { defaultValue: 'Fields' }),
       children: (
         <ColumnsPanel
           index={index}

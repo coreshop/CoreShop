@@ -1,17 +1,19 @@
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource/src/entities'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { stateApi, type StateDetail } from './api'
 import { StateForm } from './StateForm'
 
 export const StateManager: React.FC = () => {
+  const { t } = useTranslation()
   const modal = useFormModal()
 
   return (
     <EntityTabbedManager<StateDetail>
       api={ stateApi }
       dragType='coreshop:state'
-      leftRootTitle='States'
+      leftRootTitle={t('coreshop_states', { defaultValue: 'States' })}
       localizable
       getTitle={ (li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}` }
       buildSavePayload={ (data) => ({
@@ -24,8 +26,8 @@ export const StateManager: React.FC = () => {
       }) }
       onAdd={ async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add State',
-          label: 'Name',
+          title: t('coreshop_state_add', { defaultValue: 'Add State' }),
+          label: t('coreshop_name', { defaultValue: 'Name' }),
           onOk: async (value: string) => {
             const res = await stateApi.add({ name: value })
             resolve(res.data.id)
@@ -34,7 +36,7 @@ export const StateManager: React.FC = () => {
       }) }
       renderDetail={ (data, setData, ctx) => {
         if (!data) {
-          return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>Select a state to view details.</div>
+          return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>{t('coreshop_state_select', { defaultValue: 'Select a state to view details.' })}</div>
         }
 
         return (

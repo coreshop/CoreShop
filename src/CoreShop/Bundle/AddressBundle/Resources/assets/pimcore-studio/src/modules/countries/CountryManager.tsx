@@ -1,5 +1,6 @@
 import React from 'react'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { type CountryDetail, countryApi } from './api'
 import { zoneApi } from '../zones/api'
 import { CountryForm } from './CountryForm'
@@ -9,6 +10,7 @@ import { GroupedEntityTabbedManager } from '@coreshop/resource/src/entities/comp
 // Tabs are managed via shared hook
 
 export const CountryManager: React.FC = () => {
+  const { t } = useTranslation()
   const modal = useFormModal()
   const buildSavePayload = React.useCallback((data: CountryDetail) => {
     const t: any = data
@@ -49,9 +51,9 @@ export const CountryManager: React.FC = () => {
       buildSavePayload={ buildSavePayload }
       onAdd={ async (groupId?: number) => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add Country',
-          label: 'Name',
-          rule: { required: true, message: 'Name is required' },
+          title: t('coreshop_country_add', { defaultValue: 'Add Country' }),
+          label: t('coreshop_name', { defaultValue: 'Name' }),
+          rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (value: string) => {
             const res = await countryApi.add({ name: value, ...(groupId ? { zone: groupId } : {}) })
             resolve(res.data.id)
@@ -59,7 +61,7 @@ export const CountryManager: React.FC = () => {
         })
       }) }
       renderDetail={ (data, setData, zones, ctx) => {
-        if (!data) return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>Select a country to view details.</div>
+        if (!data) return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>{t('coreshop_country_select', { defaultValue: 'Select a country to view details.' })}</div>
         return (
           <CountryForm
             data={ data }

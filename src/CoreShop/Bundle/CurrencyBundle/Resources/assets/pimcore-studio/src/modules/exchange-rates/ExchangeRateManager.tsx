@@ -13,6 +13,7 @@
 import React from 'react'
 import { Button, Table, InputNumber, Select, Popconfirm, Space, message } from 'antd'
 import { PlusOutlined, DeleteOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
 import { exchangeRateApi, type ExchangeRate } from './api'
 import { currencyApi } from '../currencies/api'
 
@@ -22,6 +23,7 @@ interface ExchangeRateRow extends ExchangeRate {
 }
 
 export const ExchangeRateManager: React.FC = () => {
+  const { t } = useTranslation()
   const [exchangeRates, setExchangeRates] = React.useState<ExchangeRateRow[]>([])
   const [currencies, setCurrencies] = React.useState<Array<{ id: number, name: string }>>([])
   const [loading, setLoading] = React.useState(false)
@@ -47,7 +49,7 @@ export const ExchangeRateManager: React.FC = () => {
         setExchangeRates(list)
       })
       .catch(() => {
-        message.error('Failed to load exchange rates')
+        message.error(t('coreshop_error_loading', { defaultValue: 'Failed to load exchange rates' }))
         setExchangeRates([])
       })
       .finally(() => setLoading(false))
@@ -94,21 +96,21 @@ export const ExchangeRateManager: React.FC = () => {
   // Save changes
   const handleSave = async () => {
     if (!editingData.fromCurrency || !editingData.toCurrency || !editingData.exchangeRate) {
-      message.error('Please fill all fields')
+      message.error(t('coreshop_fill_all_fields', { defaultValue: 'Please fill all fields' }))
       return
     }
 
     try {
       // Always use save endpoint (no separate add endpoint)
       await exchangeRateApi.save(editingData as ExchangeRate)
-      message.success(editingData.id ? 'Exchange rate updated' : 'Exchange rate created')
+      message.success(editingData.id ? t('coreshop_exchange_rate_updated', { defaultValue: 'Exchange rate updated' }) : t('coreshop_exchange_rate_created', { defaultValue: 'Exchange rate created' }))
 
       // Reload data
       setEditingKey(null)
       setEditingData({})
       loadExchangeRates()
     } catch (error) {
-      message.error('Failed to save exchange rate')
+      message.error(t('coreshop_error_saving', { defaultValue: 'Failed to save exchange rate' }))
     }
   }
 
@@ -121,10 +123,10 @@ export const ExchangeRateManager: React.FC = () => {
   const handleDelete = async (id: number) => {
     try {
       await exchangeRateApi.delete(id)
-      message.success('Exchange rate deleted')
+      message.success(t('coreshop_exchange_rate_deleted', { defaultValue: 'Exchange rate deleted' }))
       loadExchangeRates()
     } catch (error) {
-      message.error('Failed to delete exchange rate')
+      message.error(t('coreshop_error_deleting', { defaultValue: 'Failed to delete exchange rate' }))
     }
   }
 
@@ -135,7 +137,7 @@ export const ExchangeRateManager: React.FC = () => {
 
   const columns = [
     {
-      title: 'From Currency',
+      title: t('coreshop_from_currency', { defaultValue: 'From Currency' }),
       dataIndex: 'fromCurrency',
       key: 'fromCurrency',
       width: '35%',
@@ -149,7 +151,6 @@ export const ExchangeRateManager: React.FC = () => {
               style={{ width: '100%' }}
               showSearch
               optionFilterProp="label"
-              placeholder="Select from currency"
             />
           )
         }
@@ -158,7 +159,7 @@ export const ExchangeRateManager: React.FC = () => {
       }
     },
     {
-      title: 'To Currency',
+      title: t('coreshop_to_currency', { defaultValue: 'To Currency' }),
       dataIndex: 'toCurrency',
       key: 'toCurrency',
       width: '35%',
@@ -172,7 +173,6 @@ export const ExchangeRateManager: React.FC = () => {
               style={{ width: '100%' }}
               showSearch
               optionFilterProp="label"
-              placeholder="Select to currency"
             />
           )
         }
@@ -181,7 +181,7 @@ export const ExchangeRateManager: React.FC = () => {
       }
     },
     {
-      title: 'Exchange Rate',
+      title: t('coreshop_exchange_rate', { defaultValue: 'Exchange Rate' }),
       dataIndex: 'exchangeRate',
       key: 'exchangeRate',
       width: '20%',
@@ -231,14 +231,14 @@ export const ExchangeRateManager: React.FC = () => {
               type="text"
               onClick={() => handleEdit(record, index)}
             >
-              Edit
+              {t('coreshop_edit', { defaultValue: 'Edit' })}
             </Button>
             {record.id && (
               <Popconfirm
-                title="Delete exchange rate?"
+                title={t('coreshop_delete_exchange_rate_confirm', { defaultValue: 'Delete exchange rate?' })}
                 onConfirm={() => handleDelete(record.id!)}
-                okText="Yes"
-                cancelText="No"
+                okText={t('yes', { defaultValue: 'Yes' })}
+                cancelText={t('no', { defaultValue: 'No' })}
               >
                 <Button type="text" icon={<DeleteOutlined />} danger />
               </Popconfirm>
@@ -259,7 +259,7 @@ export const ExchangeRateManager: React.FC = () => {
             onClick={handleAdd}
             disabled={editingKey !== null}
           >
-            Add
+            {t('coreshop_add', { defaultValue: 'Add' })}
           </Button>
         </div>
 

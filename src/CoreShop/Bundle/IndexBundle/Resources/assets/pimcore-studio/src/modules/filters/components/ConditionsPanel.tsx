@@ -14,6 +14,7 @@ import React from 'react'
 import { Button, Dropdown, Space, Empty } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { FilterCondition } from '../types'
 import { ConditionItem } from './ConditionItem'
 
@@ -34,6 +35,7 @@ export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
   indexId,
   disabled = false
 }) => {
+  const { t } = useTranslation()
   const handleAdd = (type: string) => {
     const newCondition: FilterCondition = {
       type,
@@ -82,14 +84,14 @@ export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
         <div>
           <Dropdown menu={{ items: menuItems }} placement="bottomLeft" disabled={disabled}>
             <Button type="primary" icon={<PlusOutlined />} disabled={disabled}>
-              Add Condition
+              {t('coreshop_filters_add_condition', { defaultValue: 'Add Condition' })}
             </Button>
           </Dropdown>
         </div>
 
         {conditions.length === 0 ? (
           <Empty
-            description={disabled ? "Please select an index first" : "No conditions defined"}
+            description={disabled ? t('coreshop_filters_select_index_first', { defaultValue: 'Please select an index first' }) : t('coreshop_filters_no_conditions', { defaultValue: 'No conditions defined' })}
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         ) : (

@@ -14,7 +14,10 @@ import React from 'react'
 import { Card, Empty, Button, Modal, Input, message, Checkbox, Space } from 'antd'
 import { createStyles } from 'antd-style'
 import { PlusOutlined, CloseCircleOutlined, MessageOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { SaleTabProps } from '../registry'
+import { useSaleContext } from '../context/SaleActionsContext'
 
 const { TextArea } = Input
 
@@ -26,7 +29,9 @@ interface Comment {
   submitAsEmail: boolean
 }
 
-export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }) => {
+export const CommentsTab: React.FC<SaleTabProps> = () => {
+  const { t } = useTranslation()
+  const { sale, readonly } = useSaleContext()
   const { styles } = useCommentsTabStyles()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [newComment, setNewComment] = React.useState('')
@@ -36,10 +41,11 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
 
   // Load comments from API
   React.useEffect(() => {
+    if (!sale) return
+
     const loadComments = async () => {
       setLoading(true)
       try {
-        // TODO: Replace with actual API endpoint
         const response = await fetch(`/pimcore-studio/api/coreshop/order-comment/list?id=${sale.id}`)
         const data = await response.json()
         setComments(data.comments || [])
@@ -52,25 +58,14 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
     }
 
     void loadComments()
-  }, [sale.id])
-
-  // Format date
-  const formatDate = (date?: string | number) => {
-    if (!date) return '-'
-    const dateValue = typeof date === 'number' ? date * 1000 : date
-    return new Date(dateValue).toLocaleString('de-DE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+  }, [sale?.id])
 
   // Handle add comment
   const handleAddComment = async () => {
+    if (!sale) return
+
     if (!newComment.trim()) {
-      void message.warning('Please enter a comment')
+      void message.warning(t('coreshop_order_comment', { defaultValue: 'Comment' }))
       return
     }
 
@@ -91,7 +86,7 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
       const data = await response.json()
 
       if (data.success) {
-        void message.success('Comment added successfully')
+        void message.success(t('coreshop_order_comment_create', { defaultValue: 'Create Comment' }))
         setIsModalOpen(false)
         setNewComment('')
         setSubmitToCustomer(false)
@@ -101,21 +96,20 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
         const listData = await listResponse.json()
         setComments(listData.comments || [])
       } else {
-        void message.error('Failed to add comment')
+        void message.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
       }
     } catch (error) {
       console.error('Error adding comment:', error)
-      void message.error('Failed to add comment')
+      void message.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
     }
   }
 
   // Handle delete comment
   const handleDeleteComment = (commentId: number) => {
     Modal.confirm({
-      title: 'Delete Comment',
-      content: 'Are you sure you want to delete this comment?',
-      okText: 'Yes',
-      cancelText: 'No',
+      title: t('coreshop_delete_order_comment_confirm', { defaultValue: 'Do you really want to delete this Comment?' }),
+      okText: t('coreshop_yes', { defaultValue: 'Yes' }),
+      cancelText: t('coreshop_no', { defaultValue: 'No' }),
       onOk: async () => {
         try {
           const formData = new URLSearchParams()
@@ -132,18 +126,20 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
           const data = await response.json()
 
           if (data.success) {
-            void message.success('Comment deleted')
+            void message.success(t('coreshop_order_comment', { defaultValue: 'Comment' }))
 
             // Reload comments
-            const listResponse = await fetch(`/pimcore-studio/api/coreshop/order-comment/list?id=${sale.id}`)
-            const listData = await listResponse.json()
-            setComments(listData.comments || [])
+            if (sale) {
+              const listResponse = await fetch(`/pimcore-studio/api/coreshop/order-comment/list?id=${sale.id}`)
+              const listData = await listResponse.json()
+              setComments(listData.comments || [])
+            }
           } else {
-            void message.error('Failed to delete comment')
+            void message.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
           }
         } catch (error) {
           console.error('Error deleting comment:', error)
-          void message.error('Failed to delete comment')
+          void message.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
         }
       }
     })
@@ -152,15 +148,15 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
   return (
     <>
       <Card
-        title="Comments"
+        title={t('coreshop_order_comments', { defaultValue: 'Comments' })}
         className={styles.card}
         extra={
-          !readonly && (
+          (
             <Button
               type="text"
               icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
               onClick={() => setIsModalOpen(true)}
-              title="Add Comment"
+              title={t('coreshop_order_comment_create', { defaultValue: 'Create Comment' })}
             />
           )
         }
@@ -168,7 +164,7 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
         {comments.length === 0 ? (
           <div className={styles.emptyState}>
             <Empty
-              description="No Comments available"
+              description={t('coreshop_order_comments_nothing_found', { defaultValue: 'No Comments available' })}
               image={Empty.PRESENTED_IMAGE_SIMPLE}
             />
           </div>
@@ -179,7 +175,7 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
                 <div className={styles.commentHeader}>
                   <div className={styles.commentMeta}>
                     <span className={styles.commentDate}>
-                      {formatDate(comment.date)} - published by {comment.userName}
+                      {formatDateTime(comment.date)} - {t('coreshop_order_comments_published_by', { defaultValue: 'published by' })} {comment.userName}
                     </span>
                   </div>
                   {!readonly && (
@@ -196,7 +192,7 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
                 {comment.submitAsEmail && (
                   <div className={styles.commentBadge}>
                     <MessageOutlined style={{ fontSize: 12, marginRight: 4 }} />
-                    Comment has been submitted to Customer
+                    {t('coreshop_order_comments_notification_applied', { defaultValue: 'Comment has been submitted to Customer' })}
                   </div>
                 )}
               </div>
@@ -207,7 +203,7 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
 
       {/* Add Comment Modal */}
       <Modal
-        title="Add Comment"
+        title={t('coreshop_order_comment_create', { defaultValue: 'Create Comment' })}
         open={isModalOpen}
         onOk={handleAddComment}
         onCancel={() => {
@@ -215,14 +211,14 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
           setNewComment('')
           setSubmitToCustomer(false)
         }}
-        okText="Add"
-        cancelText="Cancel"
+        okText={t('coreshop_add', { defaultValue: 'Add' })}
+        cancelText={t('coreshop_cancel', { defaultValue: 'Cancel' })}
       >
         <Space direction="vertical" style={{ width: '100%' }} size="middle">
           <TextArea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Enter your comment..."
+            placeholder={t('coreshop_order_comment', { defaultValue: 'Comment' })}
             rows={6}
             autoFocus
           />
@@ -230,7 +226,7 @@ export const CommentsTab: React.FC<SaleTabProps> = ({ sale, onChange, readonly }
             checked={submitToCustomer}
             onChange={(e) => setSubmitToCustomer(e.target.checked)}
           >
-            Submit to Customer
+            {t('coreshop_order_comment_trigger_notifications', { defaultValue: 'Submit Comment to Customer' })}
           </Checkbox>
         </Space>
       </Modal>

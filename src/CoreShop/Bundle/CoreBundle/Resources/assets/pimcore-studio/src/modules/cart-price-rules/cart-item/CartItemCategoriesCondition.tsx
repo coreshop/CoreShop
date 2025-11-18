@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, Select, Checkbox } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 
 export const CartItemCategoriesCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const categories = data.categories || []
   const recursive = data.recursive || false
 
@@ -27,12 +29,11 @@ export const CartItemCategoriesCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Categories">
+      <Form.Item label={t('coreshop_condition_categories', { defaultValue: 'Categories' })}>
         <Select
           mode="multiple"
           value={categories}
           onChange={(value) => handleChange('categories', value)}
-          placeholder="Select categories"
           style={{ width: '100%' }}
         >
           {/* Categories will be loaded from API */}
@@ -44,7 +45,7 @@ export const CartItemCategoriesCondition: React.FC<ConditionComponentProps> = ({
           checked={recursive}
           onChange={(e) => handleChange('recursive', e.target.checked)}
         >
-          Include Subcategories
+          {t('coreshop_condition_recursive', { defaultValue: 'Include all Subcategories' })}
         </Checkbox>
       </Form.Item>
     </Form>

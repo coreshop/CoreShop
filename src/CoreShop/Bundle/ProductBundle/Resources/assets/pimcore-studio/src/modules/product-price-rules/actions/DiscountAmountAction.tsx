@@ -12,6 +12,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Form, InputNumber, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 import { currencyApi } from '@coreshop/currency/src/modules/currencies/api'
 
@@ -19,6 +20,7 @@ export const DiscountAmountAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const amount = data.amount || 0
   const currency = data.currency || null
   const [currencies, setCurrencies] = useState<Array<{ id: number, name: string }>>([])
@@ -43,7 +45,7 @@ export const DiscountAmountAction: React.FC<ActionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Discount Amount">
+      <Form.Item label={t('coreshop_action_discountAmount_amount', { defaultValue: 'Amount' })}>
         <InputNumber
           value={amount}
           onChange={handleAmountChange}
@@ -52,13 +54,12 @@ export const DiscountAmountAction: React.FC<ActionComponentProps> = ({
           style={{ width: '100%' }}
         />
       </Form.Item>
-      <Form.Item label="Currency">
+      <Form.Item label={t('coreshop_currency', { defaultValue: 'Currency' })}>
         <Select
           value={currency}
           onChange={handleCurrencyChange}
           options={currencies.map(c => ({ label: c.name, value: c.id }))}
           style={{ width: '100%' }}
-          placeholder="Select Currency"
         />
       </Form.Item>
     </Form>

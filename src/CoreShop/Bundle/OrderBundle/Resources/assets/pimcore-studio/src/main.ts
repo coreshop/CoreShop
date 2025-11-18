@@ -11,11 +11,10 @@
  */
 
 import React from 'react'
-import { Button } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import i18n from 'i18next'
 import { OrderBundleIconModule } from './modules/icon-library'
 import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
@@ -99,10 +98,12 @@ const plugin: IAbstractPlugin = {
         // Register tabs with priority and type filtering
         // Lower priority = displayed first
 
+        const t = i18n.t;
+
         // TOP: Header Block
         tabRegistry.register('header', {
             key: 'header',
-            label: 'Header',
+            label: t('coreshop_header', { defaultValue: 'Header' }),
             priority: 10,
             position: 'top',
             types: ['order', 'cart', 'quote'],
@@ -112,7 +113,7 @@ const plugin: IAbstractPlugin = {
         // LEFT: Info Block
         tabRegistry.register('info', {
             key: 'info',
-            label: 'Order: Carrier/Payment Provider',
+            label: t('coreshop_order_info', { defaultValue: 'Order: Carrier/Payment Provider' }),
             priority: 10,
             position: 'left',
             types: ['order', 'cart', 'quote'],
@@ -122,88 +123,40 @@ const plugin: IAbstractPlugin = {
         // LEFT: Payment Block
         tabRegistry.register('payment', {
             key: 'payment',
-            label: 'Payment(s)',
+            label: t('coreshop_payments', { defaultValue: 'Payment(s)' }),
             priority: 20,
             position: 'left',
             types: ['order'],
-            component: PaymentTab,
-            getToolbarButtons: (props: SaleTabProps) => {
-                const sale = props.sale as any
-
-                if (!sale.paymentCreationAllowed) return []
-
-                return [
-                    React.createElement(Button, {
-                        key: 'create-payment',
-                        icon: React.createElement(PlusOutlined),
-                        onClick: () => {
-                            const { paymentEvents, PAYMENT_EVENTS } = require('./modules/sales/events/PaymentEvents')
-                            paymentEvents.emit(PAYMENT_EVENTS.CREATE_PAYMENT)
-                        },
-                        type: 'default'
-                    }, 'Create Payment')
-                ]
-            }
+            component: PaymentTab
+            // Note: PaymentTab registers its own CreatePaymentButton dynamically
         })
 
         // LEFT: Shipment Block
         tabRegistry.register('shipment', {
             key: 'shipment',
-            label: 'Shipments',
+            label: t('coreshop_shipments', { defaultValue: 'Shipments' }),
             priority: 30,
             position: 'left',
             types: ['order'],
-            component: ShipmentTab,
-            getToolbarButtons: (props: SaleTabProps) => {
-                const sale = props.sale as any
-
-                if (!sale.shipmentCreationAllowed) return []
-
-                return [
-                    React.createElement(Button, {
-                        key: 'create-shipment',
-                        icon: React.createElement(PlusOutlined),
-                        onClick: () => {
-                            const { shipmentEvents, SHIPMENT_EVENTS } = require('./modules/sales/events/ShipmentEvents')
-                            shipmentEvents.emit(SHIPMENT_EVENTS.CREATE_SHIPMENT)
-                        },
-                        type: 'default'
-                    }, 'Create Shipment')
-                ]
-            }
+            component: ShipmentTab
+            // Note: ShipmentTab registers its own CreateShipmentButton dynamically
         })
 
         // LEFT: Invoice Block
         tabRegistry.register('invoice', {
             key: 'invoice',
-            label: 'Invoices',
+            label: t('coreshop_invoices', { defaultValue: 'Invoices' }),
             priority: 40,
             position: 'left',
             types: ['order'],
-            component: InvoiceTab,
-            getToolbarButtons: (props: SaleTabProps) => {
-                const sale = props.sale as any
-
-                if (!sale.invoiceCreationAllowed) return []
-
-                return [
-                    React.createElement(Button, {
-                        key: 'create-invoice',
-                        icon: React.createElement(PlusOutlined),
-                        onClick: () => {
-                            const { invoiceEvents, INVOICE_EVENTS } = require('./modules/sales/events/InvoiceEvents')
-                            invoiceEvents.emit(INVOICE_EVENTS.CREATE_INVOICE)
-                        },
-                        type: 'default'
-                    }, 'Create Invoice')
-                ]
-            }
+            component: InvoiceTab
+            // Note: InvoiceTab registers its own CreateInvoiceButton dynamically
         })
 
         // RIGHT: Customer Block
         tabRegistry.register('customer', {
             key: 'customer',
-            label: 'Customer',
+            label: t('coreshop_customer', { defaultValue: 'Customer' }),
             priority: 10,
             position: 'right',
             types: ['order', 'cart', 'quote'],
@@ -213,7 +166,7 @@ const plugin: IAbstractPlugin = {
         // RIGHT: Comments Block
         tabRegistry.register('comments', {
             key: 'comments',
-            label: 'Comments',
+            label: t('coreshop_order_comments', { defaultValue: 'Comments' }),
             priority: 20,
             position: 'right',
             types: ['order', 'quote'],
@@ -223,7 +176,7 @@ const plugin: IAbstractPlugin = {
         // RIGHT: Mail Correspondence Block
         tabRegistry.register('correspondence', {
             key: 'correspondence',
-            label: 'Mail Correspondence',
+            label: t('coreshop_mail_correspondence', { defaultValue: 'Mail Correspondence' }),
             priority: 30,
             position: 'right',
             types: ['order'],
@@ -233,7 +186,7 @@ const plugin: IAbstractPlugin = {
         // BOTTOM: Detail/Products Block
         tabRegistry.register('detail', {
             key: 'detail',
-            label: 'Products',
+            label: t('coreshop_products', { defaultValue: 'Products' }),
             priority: 10,
             position: 'bottom',
             types: ['order', 'cart', 'quote'],

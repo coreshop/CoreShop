@@ -13,6 +13,7 @@
 import React from 'react'
 import { Modal, Button, Table } from 'antd'
 import { createStyles } from 'antd-style'
+import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import { useDataObjectHelper } from '@pimcore/studio-ui-bundle/modules/data-object'
 
 interface ShipmentItem {
@@ -50,18 +51,6 @@ export const ShipmentDetailModal: React.FC<ShipmentDetailModalProps> = ({
   const { styles } = useShipmentDetailModalStyles()
   const { openDataObject } = useDataObjectHelper()
 
-  // Format date
-  const formatDate = (date?: number) => {
-    if (!date) return '-'
-    return new Date(date * 1000).toLocaleString('de-DE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
   // Open shipment DataObject
   const handleOpenShipment = () => {
     void openDataObject({ config: { id: shipment.id } })
@@ -83,7 +72,7 @@ export const ShipmentDetailModal: React.FC<ShipmentDetailModalProps> = ({
       <div className={styles.content}>
         <div className={styles.field}>
           <div className={styles.label}>Date:</div>
-          <div className={styles.value}>{formatDate(shipment.shipmentDate)}</div>
+          <div className={styles.value}>{formatDateTime(shipment.shipmentDate)}</div>
         </div>
 
         <div className={styles.field}>

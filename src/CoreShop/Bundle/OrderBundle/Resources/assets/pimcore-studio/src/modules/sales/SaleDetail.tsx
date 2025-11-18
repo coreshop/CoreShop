@@ -11,13 +11,13 @@
  */
 
 import React from 'react'
-import { Button } from 'antd'
-import { ReloadOutlined } from '@ant-design/icons'
 import { createStyles } from 'antd-style'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { Sale, SaleType } from './types'
 import type {SaleTabProps, SaleTabRegistry} from './registry'
 import { serviceIds } from './service-ids'
+import { SaleContextProvider } from './context/SaleActionsContext'
+import { SaleToolbar } from './components/SaleToolbar'
 
 interface SaleDetailProps {
   sale: Sale | undefined
@@ -53,24 +53,6 @@ export const SaleDetail: React.FC<SaleDetailProps> = ({
     }
   }, [type, tabRegistry])
 
-  // Collect toolbar buttons from all blocks
-  const toolbarButtons = React.useMemo(() => {
-    if (!sale) return []
-
-
-    const buttons: React.ReactNode[] = []
-    const tabProps: SaleTabProps = { sale, onChange, onReload, readonly: !sale.editable }
-
-    blocks.all.forEach((block) => {
-      if (block.getToolbarButtons) {
-        const blockButtons = block.getToolbarButtons(tabProps)
-        buttons.push(...blockButtons)
-      }
-    })
-
-    return buttons
-  }, [blocks.all, sale, onChange, onReload])
-
   if (!sale) {
     return (
       <div className={styles.emptyState}>
@@ -86,30 +68,21 @@ export const SaleDetail: React.FC<SaleDetailProps> = ({
       const BlockComponent = block.component
       return (
         <div key={block.key} className={styles.block}>
-          <BlockComponent
-            sale={sale}
-            onChange={onChange}
-            onReload={onReload}
-            readonly={!sale.editable}
-          />
+          <BlockComponent />
         </div>
       )
     })
   }
 
   return (
-    <div className={styles.container}>
-      {/* Toolbar */}
-      <div className={styles.toolbar}>
-        <Button
-          icon={<ReloadOutlined />}
-          onClick={onReload}
-          type="default"
-        >
-          Reload
-        </Button>
-        {toolbarButtons}
-      </div>
+    <SaleContextProvider
+      sale={sale ?? null}
+      onChange={onChange}
+      onReload={onReload}
+    >
+      <div className={styles.container}>
+        {/* Toolbar with dynamically registered buttons */}
+        <SaleToolbar />
 
       {/* Top Area */}
       {blocks.top.length > 0 && (
@@ -137,7 +110,8 @@ export const SaleDetail: React.FC<SaleDetailProps> = ({
           {renderBlocks(blocks.bottom)}
         </div>
       )}
-    </div>
+      </div>
+    </SaleContextProvider>
   )
 }
 
@@ -150,15 +124,6 @@ const useSaleDetailStyles = createStyles(({ css, token }) => ({
     padding: 24px;
     background: ${token.colorBgElevated};
   `,
-  toolbar: css`
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    padding: 12px;
-    background: ${token.colorBgContainer};
-    border: 1px solid ${token.colorBorderSecondary};
-    border-radius: ${token.borderRadius}px;
-  `,
   topArea: css`
     margin-bottom: 20px;
   `,
@@ -168,13 +133,15 @@ const useSaleDetailStyles = createStyles(({ css, token }) => ({
     margin-bottom: 20px;
   `,
   leftColumn: css`
-    flex: 7;
+    flex: 0 0 50%;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
   `,
   rightColumn: css`
-    flex: 5;
+    flex: 0 0 50%;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;

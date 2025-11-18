@@ -13,6 +13,7 @@
 import React from 'react'
 import { Modal, Button, Table } from 'antd'
 import { createStyles } from 'antd-style'
+import { formatDateTime, formatCurrency } from '@coreshop/pimcore/src/utils'
 import { useDataObjectHelper } from '@pimcore/studio-ui-bundle/modules/data-object'
 
 interface InvoiceItem {
@@ -51,27 +52,6 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
   const { styles } = useInvoiceDetailModalStyles()
   const { openDataObject } = useDataObjectHelper()
 
-  // Format date
-  const formatDate = (date?: number) => {
-    if (!date) return '-'
-    return new Date(date * 1000).toLocaleString('de-DE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
-  // Format currency
-  const formatCurrency = (amount?: number) => {
-    if (amount === undefined) return '-'
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: currencyCode
-    }).format(amount / 100) // Divide by 100 because amounts are in cents
-  }
-
   // Open invoice DataObject
   const handleOpenInvoice = () => {
     void openDataObject({ config: { id: invoice.id } })
@@ -93,7 +73,7 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
       <div className={styles.content}>
         <div className={styles.field}>
           <div className={styles.label}>Date:</div>
-          <div className={styles.value}>{formatDate(invoice.invoiceDate)}</div>
+          <div className={styles.value}>{formatDateTime(invoice.invoiceDate)}</div>
         </div>
 
         <div className={styles.field}>
@@ -103,12 +83,12 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
 
         <div className={styles.field}>
           <div className={styles.label}>Total (excl.):</div>
-          <div className={styles.value}>{formatCurrency(invoice.totalNet)}</div>
+          <div className={styles.value}>{formatCurrency(invoice.totalNet, currencyCode)}</div>
         </div>
 
         <div className={styles.field}>
           <div className={styles.label}>Total:</div>
-          <div className={styles.value}>{formatCurrency(invoice.totalGross)}</div>
+          <div className={styles.value}>{formatCurrency(invoice.totalGross, currencyCode)}</div>
         </div>
 
         <div className={styles.buttonContainer}>

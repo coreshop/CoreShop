@@ -12,6 +12,7 @@
 
 import React, { useMemo, useState, useEffect } from 'react'
 import { Form } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { ManyToManyRelation } from '@pimcore/studio-ui-bundle/modules/element'
 import type { ManyToManyRelationValue } from '../../../../../../../../../ResourceBundle/Resources/assets/pimcore-studio/src/entities/types/relation'
 import { container } from '@pimcore/studio-ui-bundle'
@@ -28,6 +29,7 @@ export const CustomerGroupsCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const conditionData = data as CustomerGroupsConditionData
 
   const [allowedClasses, setAllowedClasses] = useState<string[]>([])
@@ -56,7 +58,7 @@ export const CustomerGroupsCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Customer Groups">
+      <Form.Item label={t('coreshop_condition_customerGroups', { defaultValue: 'Customer Groups' })}>
         <ManyToManyRelation
           allowedClasses={allowedClasses}
           dataObjectsAllowed={true}

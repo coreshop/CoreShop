@@ -59,7 +59,6 @@ export const StateSelectInput: React.FC<StateSelectInputProps> = ({
             loading={loading}
             showSearch
             optionFilterProp="label"
-            placeholder="Select state"
         />
     )
 }

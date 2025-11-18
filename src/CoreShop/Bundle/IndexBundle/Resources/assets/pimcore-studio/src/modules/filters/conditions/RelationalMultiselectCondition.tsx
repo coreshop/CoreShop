@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, Input, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionProps } from '../types'
 import { filterApi } from '../api'
 import type { FieldValue } from '../types'
@@ -31,6 +32,7 @@ export const RelationalMultiselectCondition: React.FC<ConditionProps> = ({
   onChange,
   indexId
 }) => {
+  const { t } = useTranslation()
   const [fieldOptions, setFieldOptions] = React.useState<Array<{ label: string, value: string }>>([])
   const [valueOptions, setValueOptions] = React.useState<FieldValue[]>([])
   const [loading, setLoading] = React.useState(false)
@@ -59,22 +61,21 @@ export const RelationalMultiselectCondition: React.FC<ConditionProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Label" help="Display label for the filter">
+      <Form.Item label={t('coreshop_label', { defaultValue: 'Label' })}>
         <Input
           value={data.label}
           onChange={(e) => onChange({ label: e.target.value })}
-          placeholder="Filter label"
         />
       </Form.Item>
 
-      <Form.Item label="Quantity Unit" help="Unit for quantity values">
+      <Form.Item label={t('coreshop_filters_quantityUnit', { defaultValue: 'Quantity Value' })}>
         <QuantityUnitSelect
           value={data.quantityUnit ?? "0"}
           onChange={(value) => onChange({ quantityUnit: value })}
         />
       </Form.Item>
 
-      <Form.Item label="Field" required help="Index field to filter">
+      <Form.Item label={t('coreshop_filters_field', { defaultValue: 'Field' })} required>
         <Select
           value={data.configuration?.field}
           onChange={(value) => onChange({
@@ -82,12 +83,11 @@ export const RelationalMultiselectCondition: React.FC<ConditionProps> = ({
           })}
           options={fieldOptions}
           loading={loading}
-          placeholder="Select field"
           showSearch
         />
       </Form.Item>
 
-      <Form.Item label="Pre-Select Values" help="Default selected values">
+      <Form.Item label={t('coreshop_filters_values', { defaultValue: 'Values' })}>
         <Select
           mode="multiple"
           value={data.configuration?.preSelects ?? []}
@@ -95,7 +95,6 @@ export const RelationalMultiselectCondition: React.FC<ConditionProps> = ({
             configuration: { ...data.configuration, preSelects: values }
           })}
           options={valueOptions.map(v => ({ label: v.value, value: v.key }))}
-          placeholder="Select default values"
           allowClear
         />
       </Form.Item>

@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, Input } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 
 export const NotDiscountableCustomAttributesAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const attributes = data.attributes || ''
 
   const handleChange = (value: string) => {
@@ -26,14 +28,10 @@ export const NotDiscountableCustomAttributesAction: React.FC<ActionComponentProp
 
   return (
     <Form layout="vertical">
-      <Form.Item
-        label="Custom Attributes"
-        extra="Enter comma-separated attribute names that should not be discounted"
-      >
+      <Form.Item label={t('coreshop_custom_attributes', { defaultValue: 'Custom Attributes' })}>
         <Input.TextArea
           value={attributes}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="e.g. shipping,tax,fee"
           rows={3}
           style={{ width: '100%' }}
         />

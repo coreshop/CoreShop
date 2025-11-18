@@ -1,5 +1,6 @@
 import React from 'react'
 import { Form, Input, Switch, Space, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { StateDetail } from './api'
 import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
@@ -10,6 +11,7 @@ export const StateForm: React.FC<{
   onChange: (draft: Partial<StateDetail>) => void
   currentLocale: string
 }> = ({ data, onChange, currentLocale }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   React.useEffect(() => {
@@ -43,15 +45,15 @@ export const StateForm: React.FC<{
       >
         <LocalizedFieldsProvider locales={ [currentLocale] }>
           <Form.Item label={`Name (${currentLocale.toUpperCase()})`} name={ ['translations', currentLocale, 'name'] } rules={ [{ required: true }] }>
-            <Input placeholder='State name' />
+            <Input />
           </Form.Item>
         </LocalizedFieldsProvider>
 
-        <Form.Item label='ISO Code' name='isoCode'>
-          <Input placeholder='ISO code (optional)' />
+        <Form.Item label={t('coreshop_state_isoCode', { defaultValue: 'ISO Code' })} name='isoCode'>
+          <Input />
         </Form.Item>
 
-        <Form.Item label='Country' name='country'>
+        <Form.Item label={t('coreshop_state_country', { defaultValue: 'Country' })} name='country'>
           <CountrySelect />
         </Form.Item>
 

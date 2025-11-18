@@ -4,9 +4,11 @@
 
 import React from 'react'
 import { Form, InputNumber } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules/types'
 
 export const DimensionCondition: React.FC<ConditionComponentProps> = ({ data, onChange }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   React.useEffect(() => {
@@ -22,9 +24,8 @@ export const DimensionCondition: React.FC<ConditionComponentProps> = ({ data, on
       }}
     >
       <Form.Item
-        label="Width"
+        label={t('coreshop_condition_dimension_width', { defaultValue: 'Width' })}
         name="width"
-        help="Width in cm"
         rules={[{ required: true, message: 'Width is required' }]}
       >
         <InputNumber
@@ -32,15 +33,13 @@ export const DimensionCondition: React.FC<ConditionComponentProps> = ({ data, on
           step={0.1}
           precision={2}
           style={{ width: '100%' }}
-          placeholder="Width"
           addonAfter="cm"
         />
       </Form.Item>
 
       <Form.Item
-        label="Height"
+        label={t('coreshop_condition_dimension_height', { defaultValue: 'Height' })}
         name="height"
-        help="Height in cm"
         rules={[{ required: true, message: 'Height is required' }]}
       >
         <InputNumber
@@ -48,15 +47,13 @@ export const DimensionCondition: React.FC<ConditionComponentProps> = ({ data, on
           step={0.1}
           precision={2}
           style={{ width: '100%' }}
-          placeholder="Height"
           addonAfter="cm"
         />
       </Form.Item>
 
       <Form.Item
-        label="Depth"
+        label={t('coreshop_condition_dimension_depth', { defaultValue: 'Depth' })}
         name="depth"
-        help="Depth in cm"
         rules={[{ required: true, message: 'Depth is required' }]}
       >
         <InputNumber
@@ -64,7 +61,6 @@ export const DimensionCondition: React.FC<ConditionComponentProps> = ({ data, on
           step={0.1}
           precision={2}
           style={{ width: '100%' }}
-          placeholder="Depth"
           addonAfter="cm"
         />
       </Form.Item>

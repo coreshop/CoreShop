@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, DatePicker } from 'antd'
+import { useTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 
@@ -19,6 +20,7 @@ export const TimespanCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const dateFrom = data.dateFrom ? dayjs(data.dateFrom) : null
   const dateTo = data.dateTo ? dayjs(data.dateTo) : null
 
@@ -28,7 +30,7 @@ export const TimespanCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Date From">
+      <Form.Item label={t('coreshop_report_year_from', { defaultValue: 'From' })}>
         <DatePicker
           showTime
           value={dateFrom}
@@ -38,7 +40,7 @@ export const TimespanCondition: React.FC<ConditionComponentProps> = ({
         />
       </Form.Item>
 
-      <Form.Item label="Date To">
+      <Form.Item label={t('coreshop_report_year_to', { defaultValue: 'To' })}>
         <DatePicker
           showTime
           value={dateTo}

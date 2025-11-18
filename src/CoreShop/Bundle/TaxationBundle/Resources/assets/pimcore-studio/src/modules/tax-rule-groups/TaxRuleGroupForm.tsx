@@ -13,23 +13,26 @@
 import React from 'react'
 import { Form, Input, Switch, Table, Button, Select, Space, Popconfirm } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
 import type { TaxRuleGroupDetail, TaxRule } from './api'
 import { taxRateApi } from '../tax-rates/api'
 import { renderEntityFormExtensions, getEntityTableColumnExtensions } from '@coreshop/resource/src/entities'
-
-const BEHAVIORS = [
-  { value: 0, label: 'Disable' },
-  { value: 1, label: 'Combine' },
-  { value: 2, label: 'One After Another' }
-]
 
 export const TaxRuleGroupForm: React.FC<{
   data?: TaxRuleGroupDetail
   onChange: (draft: Partial<TaxRuleGroupDetail>) => void
   currentLocale: string
 }> = ({ data, onChange, currentLocale }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
   const [taxRates, setTaxRates] = React.useState<Array<{ id: number, name: string }>>([])
+
+  const BEHAVIORS = [
+    { value: 0, label: t('coreshop_tax_rule_behavior_disable', { defaultValue: 'This Tax only' }) },
+    { value: 1, label: t('coreshop_tax_rule_behavior_combine', { defaultValue: 'Combine' }) },
+    { value: 2, label: t('coreshop_tax_rule_behavior_on_after_another', { defaultValue: 'One after another' }) }
+  ]
+
   // Extension columns removed - will be handled differently
 
   // Load tax rates for the dropdown
@@ -99,7 +102,6 @@ export const TaxRuleGroupForm: React.FC<{
           value={value}
           onChange={(newValue) => updateTaxRule(index, 'taxRate', newValue)}
           options={taxRates.map(rate => ({ value: rate.id, label: rate.name }))}
-          placeholder="Select tax rate"
           style={{ width: '100%' }}
         />
       )
@@ -156,7 +158,7 @@ export const TaxRuleGroupForm: React.FC<{
         }}
       >
         <Form.Item label="Name" name="name" rules={[{ required: true }]}>
-          <Input placeholder="Tax rule group name" />
+          <Input />
         </Form.Item>
 
         <Form.Item label="Active" name="active" valuePropName="checked">

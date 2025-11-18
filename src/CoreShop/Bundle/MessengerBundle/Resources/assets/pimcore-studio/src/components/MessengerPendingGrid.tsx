@@ -1,4 +1,6 @@
 /**
+ * TODO: ALL HARDCODED STRINGS NEED TRANSLATIONS
+ *
  * MessengerPendingGrid Component
  *
  * This source file is available under the terms of the

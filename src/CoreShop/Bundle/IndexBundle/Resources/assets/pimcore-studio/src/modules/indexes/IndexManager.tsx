@@ -13,10 +13,12 @@
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { indexApi, type Index, type IndexConfig } from './api'
 import { IndexDetail } from './IndexDetail'
 
 export const IndexManager: React.FC = () => {
+  const { t } = useTranslation()
   const modal = useFormModal()
   const [config, setConfig] = React.useState<IndexConfig | null>(null)
 
@@ -33,7 +35,7 @@ export const IndexManager: React.FC = () => {
     <EntityTabbedManager<Index>
       api={indexApi}
       dragType='coreshop:index'
-      leftRootTitle='Indices'
+      leftRootTitle={t('coreshop_indexes', { defaultValue: 'Indices' })}
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
       buildSavePayload={(data) => {
         // Convert columns array to object keyed by objectKey (ExtJS format)
@@ -81,11 +83,11 @@ export const IndexManager: React.FC = () => {
       }}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add Index',
-          label: 'Name',
+          title: t('coreshop_indexes_add', { defaultValue: 'Add Index' }),
+          label: t('coreshop_name', { defaultValue: 'Name' }),
           rule: {
             required: true,
-            message: 'Name is required',
+            message: t('coreshop_name_required', { defaultValue: 'Name is required' }),
             pattern: /^[a-zA-Z0-9]+$/,
           },
           onOk: async (nameValue: string) => {
@@ -98,7 +100,7 @@ export const IndexManager: React.FC = () => {
         if (!data) {
           return (
             <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
-              Select an index to view details.
+              {t('coreshop_indexes_select', { defaultValue: 'Select an index to view details.' })}
             </div>
           )
         }
@@ -106,7 +108,7 @@ export const IndexManager: React.FC = () => {
         if (!config) {
           return (
             <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
-              Loading configuration...
+              {t('coreshop_loading_configuration', { defaultValue: 'Loading configuration...' })}
             </div>
           )
         }

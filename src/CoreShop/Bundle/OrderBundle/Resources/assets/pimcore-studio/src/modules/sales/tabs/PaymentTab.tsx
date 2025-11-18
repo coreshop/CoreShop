@@ -14,10 +14,12 @@ import React from 'react'
 import { Table, Button, Card, Empty, Modal } from 'antd'
 import { createStyles } from 'antd-style'
 import { PlusOutlined, FolderOpenOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { formatDate, formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
 import type { SaleTabProps } from '../registry'
-import { StateChangeModal, CreatePaymentModal } from '../components'
-import { paymentEvents, PAYMENT_EVENTS } from '../events/PaymentEvents'
+import { StateChangeModal, CreatePaymentModal, CreatePaymentButton } from '../components'
+import { useSaleContext } from '../context/SaleActionsContext'
 
 interface StateInfo {
   label: string
@@ -42,27 +44,26 @@ interface Payment {
   transitions: Transition[]
 }
 
-export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
+export const PaymentTab: React.FC<SaleTabProps> = () => {
+  const { t } = useTranslation()
+  const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
   const { styles } = usePaymentTabStyles()
   const [selectedPayment, setSelectedPayment] = React.useState<Payment | null>(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = React.useState(false)
+
+  if (!sale) return null
   const [stateChangePayment, setStateChangePayment] = React.useState<Payment | null>(null)
-  const [createPaymentOpen, setCreatePaymentOpen] = React.useState(false)
 
   const payments = ((sale as any).payments || []) as Payment[]
 
-  // Listen for create payment events from toolbar
+  // Register button in toolbar
   React.useEffect(() => {
-    const handleCreatePayment = () => {
-      setCreatePaymentOpen(true)
+    // Only add button if payment creation is allowed
+    if ((sale as any)?.paymentCreationAllowed) {
+      buttonRegistry.add('createPayment', CreatePaymentButton, 10)
+      return () => buttonRegistry.remove('createPayment')
     }
-
-    paymentEvents.on(PAYMENT_EVENTS.CREATE_PAYMENT, handleCreatePayment)
-
-    return () => {
-      paymentEvents.off(PAYMENT_EVENTS.CREATE_PAYMENT, handleCreatePayment)
-    }
-  }, [])
+  }, [buttonRegistry, sale])
 
   // Handle open payment detail
   const handleOpenPaymentDetail = (payment: Payment) => {
@@ -70,57 +71,36 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
     setIsDetailModalOpen(true)
   }
 
-  // Format currency
-  const formatCurrency = (amount?: number) => {
-    if (amount === undefined) return '-'
-
-    // Handle currency as object or string
-    const currencyCode = typeof sale.currency === 'object' && sale.currency?.isoCode
-      ? sale.currency.isoCode
-      : typeof sale.currency === 'string'
-        ? sale.currency
-        : 'EUR'
-
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: currencyCode
-    }).format(amount / 100) // Divide by 100 because amounts are in cents
-  }
-
-  // Format date
-  const formatDate = (date?: number) => {
-    if (!date) return '-'
-    return new Date(date * 1000).toLocaleDateString('de-DE')
-  }
+  const currencyCode = getCurrencyCode(sale.currency)
 
   const columns: Array<ColumnType<Payment>> = [
     {
-      title: 'Transaction Number',
+      title: t('coreshop_payment_number', { defaultValue: 'Transaction Number' }),
       dataIndex: 'paymentNumber',
       key: 'paymentNumber',
       width: 200
     },
     {
-      title: 'Date',
+      title: t('coreshop_date', { defaultValue: 'Date' }),
       dataIndex: 'datePayment',
       key: 'datePayment',
       width: 120,
       render: (date) => formatDate(date)
     },
     {
-      title: 'Payment Provider',
+      title: t('coreshop_paymentProvider', { defaultValue: 'Payment Provider' }),
       dataIndex: 'provider',
       key: 'provider',
       width: 150,
       render: (provider) => provider || '-'
     },
     {
-      title: 'Amount',
+      title: t('coreshop_amount', { defaultValue: 'Amount' }),
       dataIndex: 'amount',
       key: 'amount',
       width: 120,
       align: 'right',
-      render: (amount) => formatCurrency(amount)
+      render: (amount) => formatCurrency(amount, currencyCode)
     },
     {
       title: '',
@@ -158,7 +138,7 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
           type="text"
           icon={<FolderOpenOutlined />}
           size="small"
-          title="Open Payment Details"
+          title={t('coreshop_open_payment_details', { defaultValue: 'Open Payment Details' })}
           onClick={() => handleOpenPaymentDetail(record)}
         />
       )
@@ -168,18 +148,21 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
   return (
     <>
       <Card
-        title="Payment(s)"
+        title={t('coreshop_payments', { defaultValue: 'Payment(s)' })}
         className={styles.card}
         extra={
-          <Button
-            type="text"
-            icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
-            title="Add Payment"
-          />
+          (sale as any).paymentCreationAllowed && (
+            <Button
+              type="text"
+              icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
+              title={t('coreshop_order_add_payment', { defaultValue: 'Add Payment' })}
+              onClick={() => openAction('createPayment')}
+            />
+          )
         }
       >
         {payments.length === 0 ? (
-          <Empty description="No payments recorded" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          <Empty description={t('coreshop_no_payments', { defaultValue: 'No payments recorded' })} image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
           <Table
             dataSource={payments}
@@ -194,7 +177,7 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
 
       {/* Payment Detail Modal */}
       <Modal
-        title="Payment Details"
+        title={t('coreshop_payment_details', { defaultValue: 'Payment Details' })}
         open={isDetailModalOpen}
         onCancel={() => {
           setIsDetailModalOpen(false)
@@ -202,7 +185,7 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
         }}
         footer={[
           <Button key="ok" type="primary" onClick={() => setIsDetailModalOpen(false)}>
-            OK
+            {t('coreshop_ok', { defaultValue: 'OK' })}
           </Button>
         ]}
         width={600}
@@ -210,7 +193,7 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
         {selectedPayment && (
           <div className={styles.detailContent}>
             <div className={styles.detailRow}>
-              <div className={styles.detailLabel}>Date:</div>
+              <div className={styles.detailLabel}>{t('coreshop_date', { defaultValue: 'Date' })}:</div>
               <div className={styles.detailValue}>
                 {new Date(selectedPayment.datePayment * 1000).toLocaleString('de-DE', {
                   day: '2-digit',
@@ -223,35 +206,35 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
             </div>
 
             <div className={styles.detailRow}>
-              <div className={styles.detailLabel}>Transaction Number:</div>
+              <div className={styles.detailLabel}>{t('coreshop_payment_number', { defaultValue: 'Transaction Number' })}:</div>
               <div className={styles.detailValue}>{selectedPayment.paymentNumber}</div>
             </div>
 
             <div className={styles.detailRow}>
-              <div className={styles.detailLabel}>Payment Provider:</div>
+              <div className={styles.detailLabel}>{t('coreshop_paymentProvider', { defaultValue: 'Payment Provider' })}:</div>
               <div className={styles.detailValue}>{selectedPayment.provider}</div>
             </div>
 
             <div className={styles.detailRow}>
-              <div className={styles.detailLabel}>Amount:</div>
+              <div className={styles.detailLabel}>{t('coreshop_amount', { defaultValue: 'Amount' })}:</div>
               <div className={styles.detailValue}>{selectedPayment.amount / 100}</div>
             </div>
 
             {/* Details Table */}
             {selectedPayment.details && selectedPayment.details.length > 0 && (
               <>
-                <div className={styles.detailsHeader}>Details</div>
+                <div className={styles.detailsHeader}>{t('coreshop_details', { defaultValue: 'Details' })}</div>
                 <Table
                   dataSource={selectedPayment.details}
                   columns={[
                     {
-                      title: 'Name',
+                      title: t('coreshop_name', { defaultValue: 'Name' }),
                       dataIndex: 'name',
                       key: 'name',
                       width: '30%'
                     },
                     {
-                      title: 'Value',
+                      title: t('coreshop_value', { defaultValue: 'Value' }),
                       dataIndex: 'value',
                       key: 'value',
                       width: '70%',
@@ -284,8 +267,8 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
       {stateChangePayment && (
         <StateChangeModal
           open={true}
-          title="Change Payment State"
-          description="Select a transition to apply to this payment"
+          title={t('coreshop_change_payment_state', { defaultValue: 'Change Payment State' })}
+          description={t('coreshop_change_payment_state_description', { defaultValue: 'Select a transition to apply to this payment' })}
           transitions={stateChangePayment.transitions}
           url="/pimcore-studio/api/coreshop/order-payment/update-payment-state"
           id={stateChangePayment.id}
@@ -298,16 +281,16 @@ export const PaymentTab: React.FC<SaleTabProps> = ({ sale, onReload }) => {
       )}
 
       {/* Create Payment Modal */}
-      {createPaymentOpen && (
+      {isActionOpen('createPayment') && (
         <CreatePaymentModal
           open={true}
           orderId={(sale as any).id}
           unpaidAmount={(sale as any).totalUnpaid}
           onSuccess={() => {
-            setCreatePaymentOpen(false)
+            closeAction('createPayment')
             onReload()
           }}
-          onCancel={() => setCreatePaymentOpen(false)}
+          onCancel={() => closeAction('createPayment')}
         />
       )}
     </>

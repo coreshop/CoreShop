@@ -15,12 +15,14 @@ import { EntityTabbedManager } from '@coreshop/resource'
 import { RuleForm } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useTranslation } from 'react-i18next'
 import { productPriceRuleApi } from './api'
 import type { ProductPriceRule } from './types'
 import { SettingsForm } from './components/SettingsForm'
 import { coreshopProductServiceIds } from './service-ids'
 
 export const ProductPriceRuleManager: React.FC = () => {
+  const { t } = useTranslation()
   const modal = useFormModal()
   const [config, setConfig] = React.useState<RuleConfig>({ conditions: [], actions: [] })
 
@@ -37,7 +39,7 @@ export const ProductPriceRuleManager: React.FC = () => {
     <EntityTabbedManager<ProductPriceRule>
       api={productPriceRuleApi}
       dragType='coreshop:product_price_rule'
-      leftRootTitle='Product Price Rules'
+      leftRootTitle={t('coreshop.product.product_specific_price_rules', { defaultValue: 'Product Price Rules' })}
       localizable
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
       buildSavePayload={(data) => {
@@ -61,9 +63,9 @@ export const ProductPriceRuleManager: React.FC = () => {
       }}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
-          title: 'Add Product Price Rule',
-          label: 'Name',
-          rule: { required: true, message: 'Name is required' },
+          title: t('coreshop.product.product_specific_price_rules', { defaultValue: 'Add Product Price Rule' }),
+          label: t('coreshop_name', { defaultValue: 'Name' }),
+          rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (nameValue: string) => {
             const res = await productPriceRuleApi.add({ name: nameValue })
             resolve(res.data.id!)
@@ -73,7 +75,7 @@ export const ProductPriceRuleManager: React.FC = () => {
       renderDetail={(data, setData, ctx) => {
         if (!data) {
           return <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
-            Select a product price rule to view details.
+            {t('coreshop_product_price_rule_select', { defaultValue: 'Select a product price rule to view details.' })}
           </div>
         }
 

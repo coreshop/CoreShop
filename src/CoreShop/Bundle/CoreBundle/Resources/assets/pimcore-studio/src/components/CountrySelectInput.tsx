@@ -51,7 +51,6 @@ export const CountrySelectInput: React.FC<CountrySelectInputProps> = ({
       loading={loading}
       showSearch
       optionFilterProp="label"
-      placeholder="Select country"
     />
   )
 }

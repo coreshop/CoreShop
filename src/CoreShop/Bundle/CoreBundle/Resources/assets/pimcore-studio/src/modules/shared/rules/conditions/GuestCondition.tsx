@@ -12,13 +12,15 @@
 
 import React from 'react'
 import { Alert } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 
 export const GuestCondition: React.FC<ConditionComponentProps> = () => {
+  const { t } = useTranslation()
+
   return (
     <Alert
-      message="Guest Customers Only"
-      description="This condition applies only to guest customers (not logged in)."
+      message={t('coreshop_condition_guest', { defaultValue: 'Guest' })}
       type="info"
       showIcon
     />

@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, InputNumber } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 
 export const DiscountAmountAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const amount = data.amount || 0
 
   const handleChange = (value: number | null) => {
@@ -26,7 +28,7 @@ export const DiscountAmountAction: React.FC<ActionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Discount Amount">
+      <Form.Item label={t('coreshop_action_discount_amount_amount', { defaultValue: 'Amount' })}>
         <InputNumber
           value={amount}
           onChange={handleChange}

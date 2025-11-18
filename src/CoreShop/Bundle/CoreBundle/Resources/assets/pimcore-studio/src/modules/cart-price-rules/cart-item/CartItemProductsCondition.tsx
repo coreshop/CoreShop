@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, Select, Checkbox } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 
 export const CartItemProductsCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const products = data.products || []
   const includeVariants = data.includeVariants || false
 
@@ -27,12 +29,11 @@ export const CartItemProductsCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Products">
+      <Form.Item label={t('coreshop_report_products', { defaultValue: 'Products' })}>
         <Select
           mode="multiple"
           value={products}
           onChange={(value) => handleChange('products', value)}
-          placeholder="Select products"
           style={{ width: '100%' }}
         >
           {/* Products will be loaded from API */}
@@ -44,7 +45,7 @@ export const CartItemProductsCondition: React.FC<ConditionComponentProps> = ({
           checked={includeVariants}
           onChange={(e) => handleChange('includeVariants', e.target.checked)}
         >
-          Include Variants
+          {t('coreshop_condition_include_variants', { defaultValue: 'Include Variants' })}
         </Checkbox>
       </Form.Item>
     </Form>

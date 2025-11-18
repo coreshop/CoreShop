@@ -13,6 +13,7 @@
 import React from 'react'
 import { Tabs, Button, Space, message } from 'antd'
 import { SaveOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
 import type { Rule, RuleConfig } from '../types'
 import { ConditionsPanel } from './ConditionsPanel'
 import { ActionsPanel } from './ActionsPanel'
@@ -47,6 +48,7 @@ export const RuleForm: React.FC<RuleFormProps> = ({
   conditionRegistryId,
   actionRegistryId
 }) => {
+  const { t } = useTranslation()
   const [saving, setSaving] = React.useState(false)
 
   const handleSave = async () => {
@@ -74,12 +76,12 @@ export const RuleForm: React.FC<RuleFormProps> = ({
   const baseTabs = [
     {
       key: 'settings',
-      label: 'Settings',
+      label: t('coreshop_settings', { defaultValue: 'Settings' }),
       children: settingsComponent
     },
     {
       key: 'conditions',
-      label: 'Conditions',
+      label: t('coreshop_conditions', { defaultValue: 'Conditions' }),
       children: (
         <ConditionsPanel
           conditions={rule.conditions || []}
@@ -91,7 +93,7 @@ export const RuleForm: React.FC<RuleFormProps> = ({
     },
     {
       key: 'actions',
-      label: 'Actions',
+      label: t('coreshop_actions', { defaultValue: 'Actions' }),
       children: (
         <ActionsPanel
           actions={rule.actions || []}
@@ -123,7 +125,7 @@ export const RuleForm: React.FC<RuleFormProps> = ({
               onClick={handleSave}
               loading={saving}
             >
-              Save
+              {t('coreshop_save', { defaultValue: 'Save' })}
             </Button>
           </Space>
         </div>

@@ -16,9 +16,8 @@ import { createStyles } from 'antd-style'
 import { FolderOpenOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import type { SaleTabProps } from '../registry'
 import type { ColumnsType } from 'antd/es/table'
-import {
-    useDataObjectHelper
-} from "@pimcore/studio-ui-bundle/modules/data-object";
+import { useDataObjectHelper } from "@pimcore/studio-ui-bundle/modules/data-object"
+import { useSaleContext } from '../context/SaleActionsContext'
 
 interface StateHistoryItem {
   title: string
@@ -26,9 +25,12 @@ interface StateHistoryItem {
   date: string | number
 }
 
-export const InfoTab: React.FC<SaleTabProps> = ({ sale }) => {
+export const InfoTab: React.FC<SaleTabProps> = () => {
+  const { sale } = useSaleContext()
   const { styles } = useInfoTabStyles()
   const { openDataObject } = useDataObjectHelper()
+
+  if (!sale) return null
 
   // Get states history from sale
   const statesHistory: StateHistoryItem[] = (sale as any).statesHistory || []

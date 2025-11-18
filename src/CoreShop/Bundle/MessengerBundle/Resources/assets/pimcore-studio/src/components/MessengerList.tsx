@@ -1,4 +1,6 @@
 /**
+ * TODO: ALL HARDCODED STRINGS NEED TRANSLATIONS
+ *
  * MessengerList Component - Main component for messenger management
  *
  * This source file is available under the terms of the

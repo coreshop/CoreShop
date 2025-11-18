@@ -12,6 +12,7 @@
 
 import React, { useMemo, useState, useEffect } from 'react'
 import { Form, Checkbox } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { ManyToManyRelation } from '@pimcore/studio-ui-bundle/modules/element'
 import type { ManyToManyRelationValue } from '../../../../../../../../../ResourceBundle/Resources/assets/pimcore-studio/src/entities/types/relation'
 import { container } from '@pimcore/studio-ui-bundle'
@@ -29,6 +30,7 @@ export const CategoriesCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const conditionData = data as CategoriesConditionData
   const recursive = conditionData.recursive || false
 
@@ -65,7 +67,7 @@ export const CategoriesCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Categories">
+      <Form.Item label={t('coreshop_condition_categories', { defaultValue: 'Categories' })}>
         <ManyToManyRelation
           allowedClasses={allowedClasses}
           dataObjectsAllowed={true}
@@ -86,7 +88,7 @@ export const CategoriesCondition: React.FC<ConditionComponentProps> = ({
           checked={recursive}
           onChange={(e) => handleRecursiveChange(e.target.checked)}
         >
-          Include Subcategories
+          {t('coreshop_condition_recursive', { defaultValue: 'Include all Subcategories' })}
         </Checkbox>
       </Form.Item>
     </Form>

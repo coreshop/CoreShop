@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, InputNumber } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 
 export const AmountCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const minAmount = data.minAmount || 0
   const maxAmount = data.maxAmount || 0
 
@@ -27,7 +29,7 @@ export const AmountCondition: React.FC<ConditionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Minimum Amount">
+      <Form.Item label={t('coreshop_condition_amount_minAmount', { defaultValue: 'Min Amount' })}>
         <InputNumber
           value={minAmount}
           onChange={(value) => handleChange('minAmount', value)}
@@ -37,7 +39,7 @@ export const AmountCondition: React.FC<ConditionComponentProps> = ({
         />
       </Form.Item>
 
-      <Form.Item label="Maximum Amount">
+      <Form.Item label={t('coreshop_condition_amount_maxAmount', { defaultValue: 'Max Amount' })}>
         <InputNumber
           value={maxAmount}
           onChange={(value) => handleChange('maxAmount', value)}

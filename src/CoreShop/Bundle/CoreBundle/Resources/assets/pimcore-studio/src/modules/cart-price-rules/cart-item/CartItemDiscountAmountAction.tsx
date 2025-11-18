@@ -12,12 +12,14 @@
 
 import React from 'react'
 import { Form, InputNumber, Checkbox } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 
 export const CartItemDiscountAmountAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
+  const { t } = useTranslation()
   const amount = data.amount || 0
   const gross = data.gross || false
 
@@ -27,7 +29,7 @@ export const CartItemDiscountAmountAction: React.FC<ActionComponentProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Discount Amount">
+      <Form.Item label={t('coreshop_action_discountAmount_amount', { defaultValue: 'Amount' })}>
         <InputNumber
           value={amount}
           onChange={(value) => handleChange('amount', value || 0)}
@@ -42,7 +44,7 @@ export const CartItemDiscountAmountAction: React.FC<ActionComponentProps> = ({
           checked={gross}
           onChange={(e) => handleChange('gross', e.target.checked)}
         >
-          Gross
+          {t('coreshop_prices_are_gross', { defaultValue: 'Prices are gross prices' })}
         </Checkbox>
       </Form.Item>
     </Form>

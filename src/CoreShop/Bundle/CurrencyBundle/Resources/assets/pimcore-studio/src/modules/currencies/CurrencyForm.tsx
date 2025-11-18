@@ -1,11 +1,13 @@
 import React from 'react'
 import { Form, Input, InputNumber } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { CurrencyDetail } from './api'
 
 export const CurrencyForm: React.FC<{
   data?: CurrencyDetail
   onChange: (draft: Partial<CurrencyDetail>) => void
 }> = ({ data, onChange }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   React.useEffect(() => {
@@ -24,17 +26,17 @@ export const CurrencyForm: React.FC<{
         layout='vertical'
         onValuesChange={ (_, all) => onChange(all) }
       >
-        <Form.Item label='Name' name='name' rules={[{ required: true }]}>
-          <Input placeholder='Currency name' />
+        <Form.Item label={t('coreshop_currency', { defaultValue: 'Currency' })} name='name' rules={[{ required: true }]}>
+          <Input />
         </Form.Item>
-        <Form.Item label='ISO Code' name='isoCode'>
-          <Input placeholder='ISO 4217 code (e.g., EUR)' />
+        <Form.Item label={t('coreshop_currency_isoCode', { defaultValue: 'ISO Code' })} name='isoCode'>
+          <Input />
         </Form.Item>
-        <Form.Item label='Numeric ISO Code' name='numericIsoCode'>
-          <InputNumber style={{ width: '100%' }} placeholder='Numeric ISO (e.g., 978)' />
+        <Form.Item label={t('coreshop_currency_numericIsoCode', { defaultValue: 'Numeric ISO Code' })} name='numericIsoCode'>
+          <InputNumber style={{ width: '100%' }} />
         </Form.Item>
-        <Form.Item label='Symbol' name='symbol'>
-          <Input placeholder='Symbol (e.g., €)' />
+        <Form.Item label={t('coreshop_currency_symbol', { defaultValue: 'Symbol' })} name='symbol'>
+          <Input />
         </Form.Item>
       </Form>
     </div>

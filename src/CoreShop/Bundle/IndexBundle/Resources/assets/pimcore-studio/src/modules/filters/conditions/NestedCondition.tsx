@@ -14,6 +14,7 @@ import React, { useMemo } from 'react'
 import { Form, Input, Button, Dropdown, Space, Empty, Card } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { ConditionProps, FilterCondition } from '../types'
 import type { ConditionRegistry } from './ConditionRegistry'
@@ -28,6 +29,7 @@ export const NestedCondition: React.FC<ConditionProps> = ({
   indexId,
   registryId
 }) => {
+  const { t } = useTranslation()
   const conditions = (data.configuration?.conditions as FilterCondition[]) || []
 
   const conditionRegistry = useMemo(
@@ -101,28 +103,27 @@ export const NestedCondition: React.FC<ConditionProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Label" help="Display label for the nested condition group">
+      <Form.Item label={t('coreshop_label', { defaultValue: 'Label' })}>
         <Input
           value={data.label}
           onChange={(e) => onChange({ label: e.target.value })}
-          placeholder="Nested condition label"
         />
       </Form.Item>
 
-      <Form.Item label="Nested Conditions">
+      <Form.Item label={t('coreshop_filters_conditions', { defaultValue: 'Nested Conditions' })}>
         <Card size="small" style={{ backgroundColor: '#fafafa' }}>
           <Space direction="vertical" size="middle" style={{ width: '100%' }}>
             <div>
               <Dropdown menu={{ items: menuItems }} placement="bottomLeft">
                 <Button type="dashed" icon={<PlusOutlined />} size="small">
-                  Add Condition
+                  {t('coreshop_filters_add_condition', { defaultValue: 'Add Condition' })}
                 </Button>
               </Dropdown>
             </div>
 
             {conditions.length === 0 ? (
               <Empty
-                description="No nested conditions"
+                description={t('coreshop_filters_no_conditions', { defaultValue: 'No nested conditions' })}
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
               />
             ) : (

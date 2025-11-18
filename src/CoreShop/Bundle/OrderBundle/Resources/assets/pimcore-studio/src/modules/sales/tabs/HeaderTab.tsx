@@ -12,35 +12,18 @@
 
 import React from 'react'
 import { createStyles } from 'antd-style'
+import { formatDateTime, formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { SaleTabProps } from '../registry'
 import type { State } from '../types'
+import { useSaleContext } from '../context/SaleActionsContext'
 
-export const HeaderTab: React.FC<SaleTabProps> = ({ sale }) => {
+export const HeaderTab: React.FC<SaleTabProps> = () => {
+  const { sale } = useSaleContext()
   const { styles } = useHeaderTabStyles()
 
-  // Format currency
-  const formatCurrency = (amount?: number) => {
-    if (amount === undefined) return '-'
+  if (!sale) return null
 
-    // Handle currency as object or string
-    const currencyCode = typeof sale.currency === 'object' && sale.currency?.isoCode
-      ? sale.currency.isoCode
-      : typeof sale.currency === 'string'
-        ? sale.currency
-        : 'EUR'
-
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: currencyCode
-    }).format(amount / 100) // Divide by 100 because amounts are in cents
-  }
-
-  // Format date
-  const formatDate = (date?: string | number) => {
-    if (!date) return '-'
-    const dateValue = typeof date === 'number' ? date * 1000 : date
-    return new Date(dateValue).toLocaleString('de-DE')
-  }
+  const currencyCode = getCurrencyCode(sale.currency)
 
   // Render state info with color dot
   const renderStateInfo = (label: string, state?: string | State) => {
@@ -88,11 +71,11 @@ export const HeaderTab: React.FC<SaleTabProps> = ({ sale }) => {
       <div className={styles.row}>
         <div className={styles.cell}>
           <div className={styles.infoLabel}>Date</div>
-          <div className={styles.infoValueBig}>{formatDate(sale.saleDate)}</div>
+          <div className={styles.infoValueBig}>{formatDateTime(sale.saleDate)}</div>
         </div>
         <div className={styles.cell}>
           <div className={styles.infoLabel}>Total</div>
-          <div className={styles.infoValueBig}>{formatCurrency(sale.totalGross)}</div>
+          <div className={styles.infoValueBig}>{formatCurrency(sale.totalGross, currencyCode)}</div>
         </div>
         <div className={styles.cell}>
           <div className={styles.infoLabel}>Product(s)</div>

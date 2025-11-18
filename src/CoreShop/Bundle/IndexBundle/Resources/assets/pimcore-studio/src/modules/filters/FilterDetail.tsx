@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Tabs } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { Filter, FilterConfig } from './types'
 import { SettingsForm } from './components/SettingsForm'
 import { ConditionsPanel } from './components/ConditionsPanel'
@@ -28,12 +29,13 @@ export const FilterDetail: React.FC<FilterDetailProps> = ({
   config,
   onChange
 }) => {
+  const { t } = useTranslation()
   const hasIndex = filter.index !== null && filter.index !== undefined
 
   const tabs = [
     {
       key: 'settings',
-      label: 'Settings',
+      label: t('coreshop_settings', { defaultValue: 'Settings' }),
       children: (
         <SettingsForm
           filter={filter}
@@ -43,7 +45,7 @@ export const FilterDetail: React.FC<FilterDetailProps> = ({
     },
     {
       key: 'pre-conditions',
-      label: 'Pre-Conditions',
+      label: t('coreshop_filters_pre_conditions', { defaultValue: 'Pre-Conditions' }),
       children: (
         <ConditionsPanel
           conditions={filter.preConditions ?? []}
@@ -57,7 +59,7 @@ export const FilterDetail: React.FC<FilterDetailProps> = ({
     },
     {
       key: 'conditions',
-      label: 'User Conditions',
+      label: t('coreshop_filters_user_conditions', { defaultValue: 'User Conditions' }),
       children: (
         <ConditionsPanel
           conditions={filter.conditions ?? []}

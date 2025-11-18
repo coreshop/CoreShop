@@ -12,6 +12,7 @@
 
 import React from 'react'
 import { Form, Input, InputNumber, Checkbox, Space, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import type { ProductPriceRule } from '../types'
 
@@ -26,6 +27,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   onChange,
   currentLocale
 }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   React.useEffect(() => {
@@ -61,17 +63,16 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
       >
         <LocalizedFieldsProvider locales={[currentLocale]}>
           <Form.Item label={`Label (${currentLocale.toUpperCase()})`} name={['translations', currentLocale, 'label']}>
-            <Input placeholder="Rule label" />
+            <Input />
           </Form.Item>
         </LocalizedFieldsProvider>
 
         <Form.Item label="Name" name="name" rules={[{ required: true }]}>
-          <Input placeholder="Rule name" />
+          <Input />
         </Form.Item>
 
         <Form.Item label="Description" name="description">
           <Input.TextArea
-            placeholder="Enter description"
             rows={4}
           />
         </Form.Item>
@@ -80,7 +81,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
           <Checkbox>Active</Checkbox>
         </Form.Item>
 
-        <Form.Item label="Priority" name="priority">
+        <Form.Item label={t('coreshop_priority', { defaultValue: 'Priority' })} name="priority">
           <InputNumber style={{ width: '100%' }} />
         </Form.Item>
       </Form>

@@ -12,29 +12,20 @@
 
 import React from 'react'
 import { Form, Input, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionProps } from '../types'
 import { filterApi } from '../api'
 import { QuantityUnitSelect } from '../../shared/QuantityUnitSelect'
 
-/**
- * Search Condition - Full-text search filter
- *
- * Form fields (from FilterConditionSearchType):
- * - name: Input name attribute
- * - fields: Array of fields to search
- * - searchTerm: Search term field
- * - concatenator: Field concatenation method
- * - pattern: Search pattern
- */
 export const SearchCondition: React.FC<ConditionProps> = ({
   data,
   onChange,
   indexId
 }) => {
+  const { t } = useTranslation()
   const [fieldOptions, setFieldOptions] = React.useState<Array<{ label: string, value: string }>>([])
   const [loading, setLoading] = React.useState(false)
 
-  // Load available fields when indexId changes
   React.useEffect(() => {
     if (!indexId) return
 
@@ -49,32 +40,30 @@ export const SearchCondition: React.FC<ConditionProps> = ({
 
   return (
     <Form layout="vertical">
-      <Form.Item label="Label" help="Display label for the filter">
+      <Form.Item label={t('coreshop_label', { defaultValue: 'Label' })}>
         <Input
           value={data.label}
           onChange={(e) => onChange({ label: e.target.value })}
-          placeholder="Search label"
         />
       </Form.Item>
 
-      <Form.Item label="Quantity Unit" help="Unit for quantity values">
+      <Form.Item label={t('coreshop_filters_quantityUnit', { defaultValue: 'Quantity Value' })}>
         <QuantityUnitSelect
           value={data.quantityUnit ?? "0"}
           onChange={(value) => onChange({ quantityUnit: value })}
         />
       </Form.Item>
 
-      <Form.Item label="Name" help="Input name attribute">
+      <Form.Item label={t('coreshop_filters_search_condition_name', { defaultValue: 'Search name' })}>
         <Input
           value={data.configuration?.name}
           onChange={(e) => onChange({
             configuration: { ...data.configuration, name: e.target.value }
           })}
-          placeholder="search_query"
         />
       </Form.Item>
 
-      <Form.Item label="Fields" required help="Index fields to search">
+      <Form.Item label={t('coreshop_filters_fields', { defaultValue: 'Fields' })} required>
         <Select
           mode="multiple"
           value={data.configuration?.fields ?? []}
@@ -83,21 +72,19 @@ export const SearchCondition: React.FC<ConditionProps> = ({
           })}
           options={fieldOptions}
           loading={loading}
-          placeholder="Select fields to search"
         />
       </Form.Item>
 
-      <Form.Item label="Search Term" help="Search term field name">
+      <Form.Item label={t('coreshop_filters_search_term', { defaultValue: 'Search term' })}>
         <Input
           value={data.configuration?.searchTerm}
           onChange={(e) => onChange({
             configuration: { ...data.configuration, searchTerm: e.target.value }
           })}
-          placeholder="Search term"
         />
       </Form.Item>
 
-      <Form.Item label="Concatenator" help="Field concatenation method">
+      <Form.Item label={t('coreshop_filters_search_patterns_concatenator', { defaultValue: 'Choose concatenator' })}>
         <Select
           value={data.configuration?.concatenator ?? 'OR'}
           onChange={(value) => onChange({
@@ -110,16 +97,16 @@ export const SearchCondition: React.FC<ConditionProps> = ({
         />
       </Form.Item>
 
-      <Form.Item label="Pattern" help="Search pattern - how to match the search term">
+      <Form.Item label={t('coreshop_filters_search_patterns_label', { defaultValue: 'Choose pattern' })}>
         <Select
           value={data.configuration?.pattern ?? 'both'}
           onChange={(value) => onChange({
             configuration: { ...data.configuration, pattern: value }
           })}
           options={[
-            { label: 'Contains', value: 'both' },
-            { label: 'Begins with', value: 'left' },
-            { label: 'Ends with', value: 'right' }
+            { label: t('coreshop_filters_search_patterns_both', { defaultValue: 'Contains' }), value: 'both' },
+            { label: t('coreshop_filters_search_patterns_right', { defaultValue: 'Begins with' }), value: 'left' },
+            { label: t('coreshop_filters_search_patterns_left', { defaultValue: 'Ends with' }), value: 'right' }
           ]}
         />
       </Form.Item>
