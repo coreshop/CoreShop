@@ -23,7 +23,7 @@ interface QuoteDetailWidgetProps {
 
 const loadQuoteFromBackend = async (id: number): Promise<Sale | null> => {
   try {
-    const response = await fetch(`/admin/coreshop/order/detail?id=${id}&saleType=quote`, {
+    const response = await fetch(`/pimcore-studio/api/coreshop/order/detail?id=${id}&saleType=quote`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -86,7 +86,7 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = ({ config }) 
     try {
       setQuote({ ...quote, ...updates })
 
-      const response = await fetch(`/admin/coreshop/order/update/${quoteId}`, {
+      const response = await fetch(`/pimcore-studio/api/coreshop/order/update/${quoteId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

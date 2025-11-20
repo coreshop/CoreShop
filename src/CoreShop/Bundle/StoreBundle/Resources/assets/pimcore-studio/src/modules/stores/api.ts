@@ -13,15 +13,35 @@
 import { EntityApi } from '@coreshop/resource/src/entities'
 
 export interface StoreDetail {
+  id?: number
+  name: string
+  siteId?: number | null
+  template?: string
+  currency?: number | null
+  active?: boolean
+}
+
+export interface Site {
   id: number
   name: string
-  isDefault?: boolean
-  currency?: number
-  baseCountry?: number
-  countries?: number[]
 }
 
 export const storeApi = new EntityApi<StoreDetail>({
-  basePath: '/pimcore-studio/api',
-  resourcePath: '/coreshop/stores'
+    basePath: '/pimcore-studio/api',
+    resourcePath: '/coreshop/stores'
 })
+
+/**
+ * Get list of available Pimcore Sites
+ */
+export const listSites = async (): Promise<Site[]> => {
+  const response = await fetch('/pimcore-studio/api/coreshop/stores/list-sites', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  const data = await response.json()
+  return data.data || []
+}

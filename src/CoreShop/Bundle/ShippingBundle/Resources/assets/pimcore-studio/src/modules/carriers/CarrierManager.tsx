@@ -46,34 +46,7 @@ export const CarrierManager: React.FC = () => {
       leftRootTitle={t('coreshop_carriers', { defaultValue: 'Carriers' })}
       localizable
       getTitle={(li, data) => data?.identifier ?? li?.identifier ?? `#${li?.id ?? ''}`}
-      buildSavePayload={(data) => {
-        // Ensure stores is number[] (Ant Design Select can return string[])
-        const stores = Array.isArray(data.stores)
-          ? data.stores.map(s => typeof s === 'string' ? parseInt(s, 10) : s)
-          : undefined
-
-        // Remove 'id' from shipping rules (only include shippingRule, priority, stopPropagation, carrier)
-        const shippingRules = data.shippingRules?.map(rule => ({
-          shippingRule: rule.shippingRule,
-          priority: rule.priority,
-          stopPropagation: rule.stopPropagation,
-          carrier: data.id
-        }))
-
-        return {
-          id: data.id,
-          identifier: data.identifier,
-          name: data.name,
-          trackingUrl: data.trackingUrl,
-          logo: data.logo,
-          translations: data.translations,
-          taxCalculationStrategy: data.taxCalculationStrategy,
-          hideFromCheckout: data.hideFromCheckout,
-          shippingRules,
-          stores,
-          taxRule: data.taxRule
-        }
-      }}
+      buildSavePayload={(data) => data}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_carrier', { defaultValue: 'Add Carrier' }),
@@ -98,6 +71,7 @@ export const CarrierManager: React.FC = () => {
             config={config}
             onChange={(draft) => setData(draft)}
             currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
           />
         )
       }}

@@ -1,0 +1,24 @@
+/**
+ * CoreShop CoreBundle - Store Extension Types
+ *
+ * Extended Store types with CoreBundle-specific fields.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+import type { StoreDetail } from '@coreshop/store/src/modules/stores/api'
+
+/**
+ * Extended Store interface with CoreBundle fields
+ */
+export interface ExtendedStoreDetail extends StoreDetail {
+  baseCountry?: number | null
+  useGrossPrice?: boolean
+  countries?: number[]
+}

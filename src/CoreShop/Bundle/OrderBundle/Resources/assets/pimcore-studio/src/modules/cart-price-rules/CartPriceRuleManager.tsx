@@ -43,26 +43,7 @@ export const CartPriceRuleManager: React.FC = () => {
       leftRootTitle={t('coreshop_cart_pricerules', { defaultValue: 'Cart Price Rules' })}
       localizable
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
-      buildSavePayload={(data) => {
-        const translations: Record<string, { label: string }> = {}
-        const rawTranslations = (data.translations ?? {}) as Record<string, any>
-        Object.keys(rawTranslations).forEach((locale) => {
-          const entry = rawTranslations[locale] ?? {}
-          translations[locale] = { label: entry?.label ?? '' }
-        })
-
-        return {
-          id: data.id,
-          name: data.name,
-          description: data.description,
-          active: data.active,
-          priority: data.priority,
-          isVoucherRule: data.isVoucherRule,
-          conditions: data.conditions,
-          actions: data.actions,
-          translations
-        }
-      }}
+      buildSavePayload={(data) => data}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_cart_pricerule_add', { defaultValue: 'Add Cart Price Rule' }),
@@ -106,6 +87,7 @@ export const CartPriceRuleManager: React.FC = () => {
                 rule={data}
                 onChange={setData}
                 currentLocale={ctx?.currentLocale ?? 'en'}
+                locales={ctx?.locales}
               />
             }
             additionalTabs={additionalTabs}

@@ -17,11 +17,19 @@ import type { TaxRateDetail } from './api'
 import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
 
-export const TaxRateForm: React.FC<{
+export interface TaxRateFormProps {
   data?: TaxRateDetail
   onChange: (draft: Partial<TaxRateDetail>) => void
-  currentLocale: string
-}> = ({ data, onChange, currentLocale }) => {
+  currentLocale?: string
+  locales?: string[]
+}
+
+export const TaxRateForm: React.FC<TaxRateFormProps> = ({
+  data,
+  onChange,
+  currentLocale = 'en',
+  locales
+}) => {
   const { t } = useTranslation()
   const [form] = Form.useForm()
 
@@ -29,12 +37,21 @@ export const TaxRateForm: React.FC<{
     const initial: any = { ...(data ?? {}) }
     if (typeof initial.active === 'undefined') initial.active = false
     if (typeof initial.rate === 'undefined') initial.rate = 0
+
+    // Always ensure translations object exists
     initial.translations = initial.translations ?? {}
+
+    // Ensure current locale exists in translations (even if empty)
+    // This is important: when switching locales, we want to show the value for that locale
+    // If it doesn't exist, show an empty string (not the previous locale's value)
     if (!initial.translations[currentLocale]) {
-      initial.translations[currentLocale] = { locale: currentLocale, name: data?.name ?? '' }
+      initial.translations[currentLocale] = { locale: currentLocale, name: '' }
     }
+
+    // Always set field values when locale or data changes
+    // This ensures the form updates when switching locales
     form.setFieldsValue(initial)
-  }, [data, currentLocale])
+  }, [data, currentLocale, form])
 
   return (
     <div style={{ padding: 12 }}>

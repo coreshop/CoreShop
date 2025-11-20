@@ -19,6 +19,7 @@ import { coreshopProductServiceIds } from './modules/product-price-rules/service
 import { NestedCondition, TimespanCondition, WeightCondition } from './modules/product-price-rules/conditions'
 import { DiscountAmountAction, DiscountPercentAction, PriceAction, DiscountPriceAction, EmptyAction } from './modules/product-price-rules/actions'
 import { ProductPriceRuleManager } from './modules/product-price-rules/ProductPriceRuleManager'
+import { ProductPriceRuleFormBuilderModule } from './modules/product-price-rules/form-builder-module'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-product',
@@ -49,6 +50,7 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(ProductBundleIconModule)
+        moduleSystem.registerModule(ProductPriceRuleFormBuilderModule)
 
         // Register Product Price Rules widget
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)

@@ -104,6 +104,16 @@ CoreShop follows a strict Bundle-Component separation pattern:
 - `ecs.php`: Coding standards configuration
 - `behat.yml.dist`: BDD testing configuration
 
+## Localization
+
+### Translation Resources
+- **CoreBundle**: `src/CoreShop/Bundle/CoreBundle/Resources/translations/studio.*.yaml`
+- **StoreBundle**: `src/CoreShop/Bundle/StoreBundle/Resources/translations/studio.*.yaml`
+- **CurrencyBundle**: `src/CoreShop/Bundle/CurrencyBundle/Resources/translations/studio.*.yaml`
+- **Other Bundles**: Follow the pattern `src/CoreShop/Bundle/{BundleName}/Resources/translations/studio.*.yaml`
+
+You can also add new keys, but double check existing ones first. Use `studio.en.yml` as the source of truth for English keys.
+
 ## Testing Strategy
 
 ### Test Types
@@ -716,6 +726,211 @@ Entity Keys (for save, validation, lifecycle, tabs, actions):
 6. **Test extensions** - verify they work with the core system
 7. **Consider bundle dependencies** - only extend entities your bundle depends on
 8. **Use proper service IDs** - always import from `@coreshop/resource/src/entities`
+
+## Form Builder Pattern (Decorator-Based)
+
+CoreShop Studio v2 implements a **Decorator Pattern** for building flexible, extensible entity forms. This pattern allows bundles to define base forms and other bundles to extend them without creating tight coupling.
+
+### Architecture
+
+**FormBuilder** uses decorators to compose form configurations:
+- Base bundle creates a FormBuilder with core fields
+- Extension bundles add decorators to extend functionality
+- Decorators can add fields, sections, validation, or modify existing configuration
+- Similar to Pimcore Studio's ListingBuilder pattern
+
+### Key Concepts
+
+#### 1. **FormBuilder Class**
+
+```typescript
+export class FormBuilder<T> {
+  private decorators: Array<{ name: string, decorator: FormDecorator<T> }> = []
+  private baseConfig: FormBuilderConfig<T>
+
+  constructor(baseConfig: FormBuilderConfig<T>) {
+    this.baseConfig = baseConfig
+  }
+
+  addDecorator(name: string, decorator: FormDecorator<T>): this
+  overrideDecorator(name: string, decorator: FormDecorator<T>): this
+  removeDecorator(name: string): this
+  build(data?: T): FormBuilderConfig<T>
+  copy(): FormBuilder<T>
+}
+```
+
+#### 2. **FormDecorator Type**
+
+```typescript
+export interface FormDecorator<T> {
+  (config: FormBuilderConfig<T>, data?: T): FormBuilderConfig<T>
+}
+```
+
+Decorators are pure functions that transform form configuration.
+
+### Bundle Architecture
+
+**AddressBundle** (Base):
+```typescript
+// CountryFormBuilder.ts
+export const createCountryFormBuilder = (): FormBuilder<CountryDetail> => {
+  const builder = new FormBuilder<CountryDetail>({
+    fields: [
+      { name: 'name', label: 'Name', component: Input },
+      { name: 'isoCode', label: 'ISO Code', component: Input },
+      { name: 'active', label: 'Active', component: Switch },
+      { name: 'zone', label: 'Zone', component: ZoneSelect }  // ✅ AddressBundle dependency
+    ]
+  })
+
+  builder.addDecorator('section-general', addSectionDecorator({
+    key: 'general',
+    title: 'General Settings',
+    order: 10
+  }))
+
+  return builder
+}
+
+// main.ts
+export const CountryFormBuilderModule: AbstractModule = {
+  onInit(): void {
+    const builder = createCountryFormBuilder()
+    container.bind('CoreShop/Address/Country/FormBuilder').toConstantValue(builder)
+  }
+}
+```
+
+**CoreBundle** (Extension):
+```typescript
+// country-form-extension.ts
+export const CountryFormExtensionModule: AbstractModule = {
+  onInit(): void {
+    const builder = container.get<FormBuilder<CountryDetail>>(
+      'CoreShop/Address/Country/FormBuilder'
+    )
+
+    // CoreBundle has dependency on CurrencyBundle
+    builder.addDecorator('currency-section', addSectionDecorator({
+      key: 'currency',
+      title: 'Currency Settings',
+      order: 30
+    }))
+
+    builder.addDecorator('currency-field', addFieldDecorator({
+      name: 'currency',
+      label: 'Default Currency',
+      component: CurrencySelect,  // ✅ CoreBundle knows CurrencyBundle
+      section: 'currency'
+    }))
+  }
+}
+```
+
+### Common Decorator Patterns
+
+#### Add Fields
+```typescript
+const addFieldDecorator = (field: FieldDefinition): FormDecorator<T> => {
+  return (config) => ({
+    ...config,
+    fields: [...config.fields, field]
+  })
+}
+```
+
+#### Add Sections
+```typescript
+const addSectionDecorator = (section: SectionDefinition): FormDecorator<T> => {
+  return (config) => ({
+    ...config,
+    sections: [...(config.sections ?? []), section]
+  })
+}
+```
+
+#### Conditional Fields
+```typescript
+const conditionalDecorator: FormDecorator<CountryDetail> = (config, data) => {
+  if (!data?.active) return config
+
+  return {
+    ...config,
+    fields: [...config.fields, { name: 'activeOnlyField', ... }]
+  }
+}
+```
+
+#### Add Validation
+```typescript
+const validationDecorator: FormDecorator<T> = (config) => ({
+  ...config,
+  validationRules: [
+    ...(config.validationRules ?? []),
+    { field: 'isoCode', rules: [{ pattern: /^[A-Z]{2}$/ }] }
+  ]
+})
+```
+
+### Usage in Components
+
+```typescript
+export const CountryForm: React.FC<CountryFormProps> = ({ data, onChange }) => {
+  const builder = container.get<FormBuilder<CountryDetail>>(
+    'CoreShop/Address/Country/FormBuilder'
+  )
+
+  const config = React.useMemo(() => builder.build(data), [data])
+
+  return <DynamicForm config={config} data={data} onChange={onChange} />
+}
+```
+
+### Key Principles
+
+1. ✅ **Bundle Independence**: Base bundle doesn't know about extensions
+2. ✅ **Decorator Composition**: Multiple decorators can be combined
+3. ✅ **Type Safety**: TypeScript ensures type-safe transformations
+4. ✅ **Testability**: Decorators are pure functions
+5. ✅ **Order Control**: Decorators execute in registration order
+6. ✅ **Override Support**: `overrideDecorator()` for replacing decorators
+
+### Dependency Chain
+
+```
+AddressBundle
+  ↓ Creates base FormBuilder
+  ↓ Registers AddressBundle-specific fields (zone, addressFormat)
+  ↓ Binds to container: 'CoreShop/Address/Country/FormBuilder'
+
+CoreBundle
+  ↓ Has dependency on AddressBundle
+  ↓ Has dependency on CurrencyBundle
+  ↓ Gets FormBuilder from container
+  ↓ Adds decorators for cross-bundle fields (currency)
+```
+
+### Benefits
+
+- **Flexible**: Decorators can add, remove, or modify any part of form config
+- **Composable**: Multiple bundles can extend the same form
+- **Conditional**: Decorators can use data to make decisions
+- **Testable**: Pure functions are easy to unit test
+- **Similar to Pimcore**: Follows same pattern as Pimcore Studio's ListingBuilder
+
+### Example: Complete Form Structure
+
+After all decorators are applied:
+
+**Sections:**
+1. **General Settings** (order: 10) - AddressBundle
+   - name, isoCode, active, zone
+2. **Address Configuration** (order: 20) - AddressBundle
+   - addressFormat, salutations
+3. **Currency Settings** (order: 30) - CoreBundle
+   - currency (cross-bundle extension)
 
 ## Knowledge Graph
 Use the knowledge-graph-mcp before and after every task you do.

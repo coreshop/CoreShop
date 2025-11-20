@@ -1,2 +1,6 @@
 export { CountrySelect } from './components/CountrySelect'
 export { StateSelect } from './components/StateSelect'
+export { CountrySelectField } from './components/CountrySelectField'
+export { CountryMultiSelectField } from './components/CountryMultiSelectField'
+export { StateSelectField } from './components/StateSelectField'
+export { ZoneMultiSelectField } from './components/ZoneMultiSelectField'

@@ -10,38 +10,35 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { Form, Select } from 'antd'
+import React, { useEffect } from 'react'
+import { Form } from 'antd'
 import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import { useEntitySelect } from '@coreshop/resource'
-import { zoneApi } from '@coreshop/address/src/modules/zones/api'
+import { ZoneMultiSelect } from '@coreshop/address/src/components/ZoneMultiSelect'
 
 export const ZonesCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
   const { t } = useTranslation()
-  const zones = data.zones || []
-  const [options, value, handleSelectChange, loading] = useEntitySelect(zoneApi, zones)
+  const [form] = Form.useForm()
 
-  const handleChange = (selectedIds: number[]) => {
-    handleSelectChange(selectedIds)
-    onChange({ ...data, zones: selectedIds })
-  }
+  useEffect(() => {
+    form.setFieldsValue({ zones: data.zones })
+  }, [data.zones, form])
 
   return (
-    <Form layout="vertical">
-      <Form.Item label={t('coreshop_condition_zones', { defaultValue: 'Zones' })}>
-        <Select
-          mode="multiple"
-          value={value}
-          onChange={handleChange}
-          style={{ width: '100%' }}
-          loading={loading}
-          options={options}
-        />
-      </Form.Item>
+    <Form
+      form={form}
+      layout="vertical"
+      onValuesChange={(_, allValues) => {
+        onChange({ ...data, ...allValues })
+      }}
+    >
+      <ZoneMultiSelect
+        name="zones"
+        label={t('coreshop_condition_zones', { defaultValue: 'Zones' })}
+      />
     </Form>
   )
 }

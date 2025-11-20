@@ -10,69 +10,37 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Form } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { ManyToManyRelation } from '@pimcore/studio-ui-bundle/modules/element'
-import type { ManyToManyRelationValue } from '../../../../../../../../../ResourceBundle/Resources/assets/pimcore-studio/src/entities/types/relation'
-import { container } from '@pimcore/studio-ui-bundle'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
-import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
-import { useRelationIds } from '@coreshop/resource'
-
-interface CustomersConditionData {
-  customers?: string[] | ManyToManyRelationValue
-}
+import { CustomerMultiSelect } from '@coreshop/customer/src/components/CustomerMultiSelect'
 
 export const CustomersCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
   const { t } = useTranslation()
-  const conditionData = data as CustomersConditionData
-
-  const [allowedClasses, setAllowedClasses] = useState<string[]>([])
-  const [relationValue, handleRelationChange] = useRelationIds(conditionData.customers, 'Customer')
-
-  const configProvider = useMemo(
-    () => container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider),
-    []
-  )
+  const [form] = Form.useForm()
 
   useEffect(() => {
-    const loadAllowedClasses = async () => {
-      const classes = await configProvider.getAllowedClasses('coreshop.customer')
-      setAllowedClasses(classes)
-    }
-    loadAllowedClasses()
-  }, [configProvider])
-
-  const handleCustomersChange = (value: ManyToManyRelationValue | null) => {
-    const ids = handleRelationChange(value)
-    onChange({
-      ...conditionData,
-      customers: ids
-    })
-  }
+    form.setFieldsValue({ customers: data.customers })
+  }, [data.customers, form])
 
   return (
-    <Form layout="vertical">
-      <Form.Item label={t('coreshop_condition_customers', { defaultValue: 'Customers' })}>
-        <ManyToManyRelation
-          allowedClasses={allowedClasses}
-          dataObjectsAllowed={true}
-          assetsAllowed={false}
-          documentsAllowed={false}
-          allowToClearRelation={false}
-          maxItems={null}
-          pathFormatterClass={null}
-          width={null}
-          height={null}
-          value={relationValue}
-          onChange={handleCustomersChange}
-        />
-      </Form.Item>
+    <Form
+      form={form}
+      layout="vertical"
+      onValuesChange={(_, allValues) => {
+        onChange({ ...data, ...allValues })
+      }}
+    >
+      <CustomerMultiSelect
+        name="customers"
+        label={t('coreshop_condition_customers', { defaultValue: 'Customers' })}
+        value={data.customers}
+        onChange={(ids) => onChange({ ...data, customers: ids })}
+      />
     </Form>
   )
 }

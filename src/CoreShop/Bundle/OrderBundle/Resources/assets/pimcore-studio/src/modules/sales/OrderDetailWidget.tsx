@@ -24,7 +24,7 @@ interface OrderDetailWidgetProps {
  */
 const loadOrderFromBackend = async (id: number): Promise<Sale | null> => {
   try {
-    const response = await fetch(`/admin/coreshop/order/detail?id=${id}`, {
+    const response = await fetch(`/pimcore-studio/api/coreshop/order/detail?id=${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -97,7 +97,7 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
       setOrder({ ...order, ...updates })
 
       // Save to backend
-      const response = await fetch(`/admin/coreshop/order/update/${orderId}`, {
+      const response = await fetch(`/pimcore-studio/api/coreshop/order/update/${orderId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

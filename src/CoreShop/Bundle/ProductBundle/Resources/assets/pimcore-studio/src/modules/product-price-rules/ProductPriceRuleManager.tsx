@@ -42,25 +42,7 @@ export const ProductPriceRuleManager: React.FC = () => {
       leftRootTitle={t('coreshop.product.product_specific_price_rules', { defaultValue: 'Product Price Rules' })}
       localizable
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
-      buildSavePayload={(data) => {
-        const translations: Record<string, { label: string }> = {}
-        const rawTranslations = (data.translations ?? {}) as Record<string, any>
-        Object.keys(rawTranslations).forEach((locale) => {
-          const entry = rawTranslations[locale] ?? {}
-          translations[locale] = { label: entry?.label ?? '' }
-        })
-
-        return {
-          id: data.id,
-          name: data.name,
-          description: data.description,
-          active: data.active,
-          priority: data.priority,
-          conditions: data.conditions,
-          actions: data.actions,
-          translations
-        }
-      }}
+      buildSavePayload={(data) => data}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop.product.product_specific_price_rules', { defaultValue: 'Add Product Price Rule' }),
@@ -90,6 +72,7 @@ export const ProductPriceRuleManager: React.FC = () => {
                 rule={data}
                 onChange={setData}
                 currentLocale={ctx?.currentLocale ?? 'en'}
+                locales={ctx?.locales}
               />
             }
             onChange={setData}

@@ -24,15 +24,8 @@ export { OrderDetailWidget } from './OrderDetailWidget'
 export { CartDetailWidget } from './CartDetailWidget'
 export { QuoteDetailWidget } from './QuoteDetailWidget'
 
-// Legacy manager components (kept for compatibility if needed)
-export { OrderManager } from './OrderManager'
-export { CartManager } from './CartManager'
-export { QuoteManager } from './QuoteManager'
-export { SaleManager } from './SaleManager'
-
 // Types and API
 export * from './types'
-export * from './api'
 
 // Extensions
 export * from './extensions'

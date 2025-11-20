@@ -33,15 +33,7 @@ export const ShippingRuleManager: React.FC = () => {
       dragType='coreshop:shipping_rule'
       leftRootTitle={t('coreshop_carriers_shipping_rule', { defaultValue: 'Shipping Rules' })}
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
-      buildSavePayload={(data) => {
-        return {
-          id: data.id,
-          name: data.name,
-          active: data.active,
-          conditions: data.conditions,
-          actions: data.actions
-        }
-      }}
+      buildSavePayload={(data) => data}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_carriers_shipping_rule', { defaultValue: 'Add Shipping Rule' }),
@@ -71,6 +63,7 @@ export const ShippingRuleManager: React.FC = () => {
                 rule={data}
                 onChange={setData}
                 currentLocale={ctx?.currentLocale ?? 'en'}
+                locales={ctx?.locales}
               />
             }
             onChange={setData}

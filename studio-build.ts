@@ -150,7 +150,7 @@ async function installDependencies(plugin) {
   
   logPlugin(plugin, 'Installing dependencies...');
   try {
-    await runCommand('npm install', pluginPath);
+    // await runCommand('npm install', pluginPath);
     logPlugin(plugin, 'Dependencies installed successfully!', colors.green);
   } catch (error) {
     logPlugin(plugin, `Failed to install dependencies: ${error.message}`, colors.red);

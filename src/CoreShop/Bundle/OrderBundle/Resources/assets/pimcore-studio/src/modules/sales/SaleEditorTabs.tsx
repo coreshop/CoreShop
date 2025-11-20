@@ -25,7 +25,7 @@ interface SaleEditorTabsProps {
  */
 const loadSaleFromBackend = async (id: number, type: SaleType): Promise<Sale | null> => {
   try {
-    const response = await fetch(`/admin/coreshop/order/detail?id=${id}&saleType=${type}`, {
+    const response = await fetch(`/pimcore-studio/api/coreshop/order/detail?id=${id}&saleType=${type}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

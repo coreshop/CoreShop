@@ -1,5 +1,5 @@
 /**
- * CoreShop PaymentBundle Studio Plugin
+ * CoreShop StoreBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -10,8 +10,12 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { IAbstractPlugin } from '@pimcore/studio-ui-bundle'
+import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { StoreBundleIconModule } from './modules/icon-library'
+import { StoreManager } from './modules/stores/StoreManager'
+import { StoreFormBuilderModule } from './modules/stores/form-builder-module'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-store',
@@ -21,6 +25,14 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(StoreBundleIconModule)
+        moduleSystem.registerModule(StoreFormBuilderModule)
+
+        // Register Store Manager widget
+        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+        widgets.registerWidget({
+            name: 'coreshop-store-store',
+            component: StoreManager
+        })
     }
 }
 

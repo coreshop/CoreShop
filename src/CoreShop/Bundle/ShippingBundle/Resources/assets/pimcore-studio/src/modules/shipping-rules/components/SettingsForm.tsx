@@ -3,43 +3,29 @@
  */
 
 import React from 'react'
-import { Form, Input, Checkbox } from 'antd'
+import { container } from '@pimcore/studio-ui-bundle'
+import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
 import type { ShippingRuleDetail } from '../api'
 
 interface SettingsFormProps {
   rule: ShippingRuleDetail
   onChange: (rule: ShippingRuleDetail) => void
   currentLocale: string
+  locales?: string[]
 }
 
 export const SettingsForm: React.FC<SettingsFormProps> = ({
   rule,
-  onChange
+  onChange,
+  currentLocale,
+  locales
 }) => {
-  const [form] = Form.useForm()
-
-  React.useEffect(() => {
-    const initial: any = { ...(rule ?? {}) }
-    form.setFieldsValue(initial)
-  }, [rule])
+  const builder = container.get<FormBuilder<ShippingRuleDetail>>('CoreShop/Shipping/ShippingRule/FormBuilder')
+  const config = React.useMemo(() => builder.build({ data: rule, locale: currentLocale, locales }), [builder, rule, currentLocale, locales])
 
   return (
     <div style={{ padding: 12 }}>
-      <Form
-        form={form}
-        layout="vertical"
-        onValuesChange={(_, allValues) => {
-          onChange(allValues)
-        }}
-      >
-        <Form.Item label="Name" name="name" rules={[{ required: true }]}>
-          <Input placeholder="Rule name" />
-        </Form.Item>
-
-        <Form.Item name="active" valuePropName="checked">
-          <Checkbox>Active</Checkbox>
-        </Form.Item>
-      </Form>
+      <DynamicForm config={config} data={rule} onChange={onChange} currentLocale={currentLocale} />
     </div>
   )
 }

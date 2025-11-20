@@ -1,68 +1,83 @@
-import React from 'react'
-import { Form, Input, Switch, Space, Typography } from 'antd'
-import { useTranslation } from 'react-i18next'
-import type { StateDetail } from './api'
-import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
-import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
-import {CountrySelect} from "../../components/CountrySelect";
+/**
+ * CoreShop AddressBundle - State Form (Form Builder Version)
+ *
+ * Form component using the new FormBuilder pattern.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
 
-export const StateForm: React.FC<{
+import React from 'react'
+import { container } from '@pimcore/studio-ui-bundle'
+import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import type { StateDetail } from './api'
+import { Space, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
+
+export interface StateFormProps {
   data?: StateDetail
   onChange: (draft: Partial<StateDetail>) => void
   currentLocale: string
-}> = ({ data, onChange, currentLocale }) => {
-  const { t } = useTranslation()
-  const [form] = Form.useForm()
+  locales?: string[]
+}
 
-  React.useEffect(() => {
-    const initial: any = { ...(data ?? {}) }
-    if (typeof initial.active === 'undefined') initial.active = false
-    initial.translations = initial.translations ?? {}
-    if (!initial.translations[currentLocale]) {
-      initial.translations[currentLocale] = { locale: currentLocale, name: data?.name ?? '' }
-    }
-    form.setFieldsValue(initial)
-  }, [data, currentLocale])
+/**
+ * State Form Component
+ *
+ * Uses FormBuilder pattern for composable, extensible form configuration.
+ * Base form is defined in AddressBundle, extensions can be added by other bundles.
+ */
+export const StateForm: React.FC<StateFormProps> = ({
+  data,
+  onChange,
+  currentLocale,
+  locales
+}) => {
+  const { t } = useTranslation()
+
+  // Get the form builder from container
+  const builder = container.get<FormBuilder<StateDetail>>(
+    'CoreShop/Address/State/FormBuilder'
+  )
+
+  // Build final config with all decorators applied
+  const config = React.useMemo(() => {
+    return builder.build({
+      data,
+      locale: currentLocale,
+      locales
+    })
+  }, [builder, data, currentLocale, locales])
 
   return (
     <div style={{ padding: 12 }}>
-      <Space align='baseline' style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-        <Typography.Text type='secondary'>Translations</Typography.Text>
-        <Typography.Text type='secondary'>{ currentLocale.toUpperCase() }</Typography.Text>
+      <Space
+        align="baseline"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 16
+        }}
+      >
+        <Typography.Title level={5} style={{ margin: 0 }}>
+          {t('coreshop_state_configuration', { defaultValue: 'State Configuration' })}
+        </Typography.Title>
+        <Typography.Text type="secondary">
+          {currentLocale.toUpperCase()}
+        </Typography.Text>
       </Space>
 
-      <Form
-        form={ form }
-        layout='vertical'
-        onValuesChange={ (_, allValues) => {
-          const mergedTranslations = {
-            ...(data?.translations ?? {}),
-            ...(allValues?.translations ?? {})
-          }
-          const topName = mergedTranslations?.[currentLocale]?.name
-          onChange({ ...allValues, translations: mergedTranslations, name: topName })
-        } }
-      >
-        <LocalizedFieldsProvider locales={ [currentLocale] }>
-          <Form.Item label={`Name (${currentLocale.toUpperCase()})`} name={ ['translations', currentLocale, 'name'] } rules={ [{ required: true }] }>
-            <Input />
-          </Form.Item>
-        </LocalizedFieldsProvider>
-
-        <Form.Item label={t('coreshop_state_isoCode', { defaultValue: 'ISO Code' })} name='isoCode'>
-          <Input />
-        </Form.Item>
-
-        <Form.Item label={t('coreshop_state_country', { defaultValue: 'Country' })} name='country'>
-          <CountrySelect />
-        </Form.Item>
-
-        {renderEntityFormExtensions('coreshop.address.state.form', { data, onChange, currentLocale, form })}
-
-        <Form.Item label='Active' name='active' valuePropName='checked'>
-          <Switch />
-        </Form.Item>
-      </Form>
+      <DynamicForm
+        config={config}
+        data={data}
+        onChange={onChange}
+        currentLocale={currentLocale}
+      />
     </div>
   )
 }

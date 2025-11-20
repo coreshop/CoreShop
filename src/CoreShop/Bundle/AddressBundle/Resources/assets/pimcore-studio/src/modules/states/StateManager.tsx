@@ -1,3 +1,17 @@
+/**
+ * CoreShop AddressBundle - State Manager
+ *
+ * Entity manager for State resources with localization support.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource/src/entities'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
@@ -11,20 +25,20 @@ export const StateManager: React.FC = () => {
 
   return (
     <EntityTabbedManager<StateDetail>
-      api={ stateApi }
-      dragType='coreshop:state'
+      api={stateApi}
+      dragType="coreshop:state"
       leftRootTitle={t('coreshop_states', { defaultValue: 'States' })}
       localizable
-      getTitle={ (li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}` }
-      buildSavePayload={ (data) => ({
+      getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
+      buildSavePayload={(data) => ({
         id: data.id,
         name: data.name,
         active: data.active,
         isoCode: data.isoCode,
         country: data.country,
         translations: data.translations
-      }) }
-      onAdd={ async () => await new Promise<number>((resolve) => {
+      })}
+      onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_state_add', { defaultValue: 'Add State' }),
           label: t('coreshop_name', { defaultValue: 'Name' }),
@@ -33,20 +47,25 @@ export const StateManager: React.FC = () => {
             resolve(res.data.id)
           }
         })
-      }) }
-      renderDetail={ (data, setData, ctx) => {
+      })}
+      renderDetail={(data, setData, ctx) => {
         if (!data) {
-          return <div style={ { padding: 12, color: 'var(--ant-color-text-tertiary)' } }>{t('coreshop_state_select', { defaultValue: 'Select a state to view details.' })}</div>
+          return (
+            <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
+              {t('coreshop_state_select', { defaultValue: 'Select a state to view details.' })}
+            </div>
+          )
         }
 
         return (
           <StateForm
-            data={ data }
-            currentLocale={ ctx?.currentLocale ?? 'en' }
-            onChange={ (draft) => setData(draft) }
+            data={data}
+            currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
+            onChange={(draft) => setData(draft)}
           />
         )
-      } }
+      }}
     />
   )
 }

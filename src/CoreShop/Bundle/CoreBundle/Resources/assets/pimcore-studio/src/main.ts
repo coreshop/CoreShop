@@ -11,14 +11,15 @@
  */
 
 // @ts-ignore
-import {IAbstractPlugin, container} from '@pimcore/studio-ui-bundle'
+import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { CoreBundleIconModule } from './modules/icon-library'
 import { CoreBundleMenuModule } from './modules/menu'
-import { CountryExtensionModule } from './modules/extension/country'
 import { TaxRuleGroupExtensionModule } from './modules/extension/tax-rule-group'
 import { CarrierExtensionModule } from './modules/extension/carrier'
 import { RuleRegistryExtensionModule } from './modules/extension/rule-registry'
 import { SaleTabExtensionModule } from './modules/extension/sale-tab'
+import { StoreExtensionModule } from './modules/extension/store'
+import { CountryFormExtensionModule } from './modules/extension/country/country-form-extension'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -38,9 +39,10 @@ const plugin: IAbstractPlugin = {
         // Register other extension modules
         moduleSystem.registerModule(CoreBundleIconModule)
         moduleSystem.registerModule(CoreBundleMenuModule)
-        moduleSystem.registerModule(CountryExtensionModule)
+        moduleSystem.registerModule(CountryFormExtensionModule)
         moduleSystem.registerModule(TaxRuleGroupExtensionModule)
         moduleSystem.registerModule(CarrierExtensionModule)
+        moduleSystem.registerModule(StoreExtensionModule)
     }
 }
 

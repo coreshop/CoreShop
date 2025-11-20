@@ -16,7 +16,9 @@ import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import i18n from 'i18next'
 import { OrderBundleIconModule } from './modules/icon-library'
+import { SalesListingBuildersModule } from './modules/sales/listing-builders'
 import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
+import { CartPriceRuleFormBuilderModule } from './modules/cart-price-rules/form-builder-module'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { AmountCondition, VoucherCondition, NotCombinableCondition } from './modules/cart-price-rules/conditions'
 import { SurchargePercentAction, SurchargeAmountAction, CartItemAction } from './modules/cart-price-rules/actions'
@@ -196,6 +198,8 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(OrderBundleIconModule)
+        moduleSystem.registerModule(SalesListingBuildersModule)
+        moduleSystem.registerModule(CartPriceRuleFormBuilderModule)
 
         // Register widgets
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)

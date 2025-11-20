@@ -16,6 +16,7 @@ import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { CurrencyManager } from './modules/currencies/CurrencyManager'
 import { ExchangeRateManager } from './modules/exchange-rates/ExchangeRateManager'
+import { CurrencyFormBuilderModule } from './modules/currencies/form-builder-module'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-currency',
@@ -25,6 +26,7 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(CurrencyBundleIconModule)
+        moduleSystem.registerModule(CurrencyFormBuilderModule)
         // options provider removed; component fetches directly
 
         // Register Currency entity widget (used by menu)

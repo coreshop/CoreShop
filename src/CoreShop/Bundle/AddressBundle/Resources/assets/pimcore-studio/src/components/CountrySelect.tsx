@@ -5,6 +5,47 @@ import { countryApi } from '../modules/countries/api'
 
 type Option = { value: number, label: string }
 
+// Module-level cache to avoid multiple API calls
+let cachedOptions: Option[] | null = null
+let loadPromise: Promise<Option[]> | null = null
+
+const loadCountries = async (): Promise<Option[]> => {
+  // Return cached data if available
+  if (cachedOptions) {
+    return cachedOptions
+  }
+
+  // If already loading, return the existing promise
+  if (loadPromise) {
+    return loadPromise
+  }
+
+  // Start new load
+  loadPromise = (async () => {
+    try {
+      const rows = await countryApi.list()
+      const list = Array.isArray(rows) ? rows : []
+      cachedOptions = list
+        .map((r: any) => ({ value: r.id, label: r.name ?? r.isoCode ?? String(r.id) }))
+        .filter((o: any) => o.value != null && o.label)
+      return cachedOptions
+    } catch (err) {
+      console.error('Failed to load countries:', err)
+      return []
+    } finally {
+      loadPromise = null
+    }
+  })()
+
+  return loadPromise
+}
+
+// Export function to clear cache if needed
+export const clearCountryCache = () => {
+  cachedOptions = null
+  loadPromise = null
+}
+
 export interface CountrySelectProps {
   name?: string
   label?: string
@@ -28,19 +69,22 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
   className,
   style,
 }) => {
-  const [options, setOptions] = React.useState<Option[]>([])
+  const [options, setOptions] = React.useState<Option[]>(cachedOptions || [])
+  const [loading, setLoading] = React.useState(!cachedOptions)
   const { t } = useTranslation()
 
   React.useEffect(() => {
-    countryApi.list()
-      .then((rows: any) => {
-        const list = Array.isArray(rows) ? rows : []
-        const opts = list
-          .map((r: any) => ({ value: r.id, label: r.name ?? r.isoCode ?? String(r.id) }))
-          .filter((o: any) => o.value != null && o.label)
+    void (async () => {
+      if (!cachedOptions) {
+        setLoading(true)
+      }
+      try {
+        const opts = await loadCountries()
         setOptions(opts)
-      })
-      .catch(() => setOptions([]))
+      } finally {
+        setLoading(false)
+      }
+    })()
   }, [])
 
   const computedLabel = label ?? (labelKey ? t(labelKey) : t('coreshop_country', { defaultValue: 'Country' }))
@@ -49,6 +93,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
   return (
     <Form.Item label={ computedLabel } name={ name }>
       <Select
+        loading={ loading }
         options={ options }
         placeholder={ computedPlaceholder }
         disabled={ disabled }

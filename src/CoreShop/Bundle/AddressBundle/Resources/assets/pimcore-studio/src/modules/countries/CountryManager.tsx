@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { type CountryDetail, countryApi } from './api'
 import { zoneApi } from '../zones/api'
 import { CountryForm } from './CountryForm'
-import { getEntitySaveDecoratorRegistry } from '@coreshop/resource/src/entities/save-decorators'
 import { GroupedEntityTabbedManager } from '@coreshop/resource/src/entities/components/GroupedEntityTabbedManager'
 
 // Tabs are managed via shared hook
@@ -12,28 +11,6 @@ import { GroupedEntityTabbedManager } from '@coreshop/resource/src/entities/comp
 export const CountryManager: React.FC = () => {
   const { t } = useTranslation()
   const modal = useFormModal()
-  const buildSavePayload = React.useCallback((data: CountryDetail) => {
-    const t: any = data
-    const translations: Record<string, { name: string }> = {}
-    const rawTranslations = (t.translations ?? {}) as Record<string, any>
-    Object.keys(rawTranslations).forEach((locale) => {
-      const entry = rawTranslations[locale] ?? {}
-      translations[locale] = { name: entry?.name ?? '' }
-    })
-    const base = {
-      id: t.id,
-      name: t.name,
-      translations,
-      isoCode: t.isoCode,
-      active: !!t.active,
-      zone: t.zone,
-      addressFormat: t.addressFormat,
-      salutations: Array.isArray(t.salutations) ? t.salutations : [],
-      currency: t.currency
-    }
-    const registry = getEntitySaveDecoratorRegistry()
-    return registry?.apply('/coreshop/countries', base, data) ?? base
-  }, [])
 
   return (
     <GroupedEntityTabbedManager<CountryDetail>
@@ -48,7 +25,7 @@ export const CountryManager: React.FC = () => {
         return null
       } }
       applyGroup={ (data, groupId) => ({ ...data, zone: groupId ?? undefined } as CountryDetail) }
-      buildSavePayload={ buildSavePayload }
+      buildSavePayload={ (data) => data }
       onAdd={ async (groupId?: number) => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_country_add', { defaultValue: 'Add Country' }),
@@ -65,9 +42,9 @@ export const CountryManager: React.FC = () => {
         return (
           <CountryForm
             data={ data }
-            zones={ zones }
             onChange={ (draft) => setData(draft) }
             currentLocale={ ctx?.currentLocale ?? 'en' }
+            locales={ ctx?.locales }
           />
         )
       } }

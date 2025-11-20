@@ -10,38 +10,39 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { Form, Select } from 'antd'
+import React, { useEffect } from 'react'
+import { Form } from 'antd'
 import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import { useEntitySelect } from '@coreshop/resource'
-import { storeApi } from '@coreshop/store/src/modules/stores/api'
+import { StoreMultiSelect } from '@coreshop/store/src/components/StoreMultiSelect'
 
 export const StoresCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
   const { t } = useTranslation()
-  const stores = data.stores || []
-  const [options, value, handleSelectChange, loading] = useEntitySelect(storeApi, stores)
+  const [form] = Form.useForm()
 
-  const handleChange = (selectedIds: number[]) => {
-    handleSelectChange(selectedIds)
-    onChange({ ...data, stores: selectedIds })
-  }
+  useEffect(() => {
+    // Convert string IDs to numbers if needed (backend returns strings)
+    const stores = Array.isArray(data.stores)
+      ? data.stores.map(id => typeof id === 'string' ? parseInt(id, 10) : id)
+      : []
+    form.setFieldsValue({ stores })
+  }, [data.stores, form])
 
   return (
-    <Form layout="vertical">
-      <Form.Item label={t('coreshop_condition_stores', { defaultValue: 'Stores' })}>
-        <Select
-          mode="multiple"
-          value={value}
-          onChange={handleChange}
-          style={{ width: '100%' }}
-          loading={loading}
-          options={options}
-        />
-      </Form.Item>
+    <Form
+      form={form}
+      layout="vertical"
+      onValuesChange={(_, allValues) => {
+        onChange({ ...data, ...allValues })
+      }}
+    >
+      <StoreMultiSelect
+        name="stores"
+        label={t('coreshop_condition_stores', { defaultValue: 'Stores' })}
+      />
     </Form>
   )
 }

@@ -1,38 +1,35 @@
 import React from 'react'
-import { Form, Input, Switch } from 'antd'
-import { useTranslation } from 'react-i18next'
+import { container } from '@pimcore/studio-ui-bundle'
+import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
 import type { ZoneDetail } from './api'
+import { Space, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 
-export const ZoneForm: React.FC<{ data?: ZoneDetail, onChange: (draft: Partial<ZoneDetail>) => void }>
-  = ({ data, onChange }) => {
-    const { t } = useTranslation()
-    const [form] = Form.useForm()
+export interface ZoneFormProps {
+  data?: ZoneDetail
+  onChange: (draft: Partial<ZoneDetail>) => void
+  currentLocale?: string
+  locales?: string[]
+}
 
-    React.useEffect(() => {
-      form.setFieldsValue({
-        name: data?.name,
-        active: data?.active ?? false
-      })
-    }, [data])
+export const ZoneForm: React.FC<ZoneFormProps> = ({
+  data,
+  onChange,
+  currentLocale,
+  locales
+}) => {
+  const { t } = useTranslation()
+  const builder = container.get<FormBuilder<ZoneDetail>>('CoreShop/Address/Zone/FormBuilder')
+  const config = React.useMemo(() => builder.build({ data, locale: currentLocale, locales }), [builder, data, currentLocale, locales])
 
-    return (
-      <div style={ { padding: 12 } }>
-        <Form
-          form={ form }
-          layout='vertical'
-          onValuesChange={ (_, allValues) => onChange(allValues) }
-        >
-          <Form.Item label={t('coreshop_zone', { defaultValue: 'Zone' })} name='name' rules={ [{ required: true }] }>
-            <Input />
-          </Form.Item>
-
-          <Form.Item label='Active' name='active' valuePropName='checked'>
-            <Switch />
-          </Form.Item>
-
-          {/* Countries selection could be added later using a proper source */}
-        </Form>
-      </div>
-    )
-  }
-
+  return (
+    <div style={{ padding: 12 }}>
+      <Space align="baseline" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+        <Typography.Title level={5} style={{ margin: 0 }}>
+          {t('coreshop_zone_configuration', { defaultValue: 'Zone Configuration' })}
+        </Typography.Title>
+      </Space>
+      <DynamicForm config={config} data={data} onChange={onChange} currentLocale={currentLocale} />
+    </div>
+  )
+}

@@ -16,6 +16,8 @@ import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { TaxRateManager } from './modules/tax-rates/TaxRateManager'
 import { TaxRuleGroupManager } from './modules/tax-rule-groups/TaxRuleGroupManager'
+import { TaxRateFormBuilderModule } from './modules/tax-rates/form-builder-module'
+import { TaxRuleGroupFormBuilderModule } from './modules/tax-rule-groups/form-builder-module'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-taxation',
@@ -25,6 +27,8 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(TaxationBundleIconModule)
+        moduleSystem.registerModule(TaxRateFormBuilderModule)
+        moduleSystem.registerModule(TaxRuleGroupFormBuilderModule)
 
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
 

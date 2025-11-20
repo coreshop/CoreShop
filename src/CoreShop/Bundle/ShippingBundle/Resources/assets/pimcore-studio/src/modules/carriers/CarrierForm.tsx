@@ -11,43 +11,33 @@
  */
 
 import React from 'react'
-import { Form, Input, Select, Switch, Tabs, Space, Typography, Table, Button, InputNumber, Popconfirm } from 'antd'
+import { container } from '@pimcore/studio-ui-bundle'
+import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { Tabs, Table, Button, InputNumber, Switch, Popconfirm } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
-import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import type { CarrierDetail, CarrierConfig, ShippingRuleAssignment } from './api'
-import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
 import { ShippingRuleSelect } from '../../components/ShippingRuleSelect'
-import { AssetSelect } from '@coreshop/pimcore/src/components/AssetSelect'
 
-export const CarrierForm: React.FC<{
+export interface CarrierFormProps {
   data?: CarrierDetail
   config: CarrierConfig
   onChange: (draft: Partial<CarrierDetail>) => void
   currentLocale: string
-}> = ({ data, config, onChange, currentLocale }) => {
-  const [form] = Form.useForm()
+  locales?: string[]
+}
+
+export const CarrierForm: React.FC<CarrierFormProps> = ({
+  data,
+  config,
+  onChange,
+  currentLocale,
+  locales
+}) => {
+  const builder = container.get<FormBuilder<CarrierDetail>>('CoreShop/Shipping/Carrier/FormBuilder')
+  const formConfig = React.useMemo(() => builder.build({ data, locale: currentLocale, locales }), [builder, data, currentLocale, locales])
   const [shippingRules, setShippingRules] = React.useState<ShippingRuleAssignment[]>(
     data?.shippingRules ?? []
   )
-
-  React.useEffect(() => {
-    const initial: any = { ...(data ?? {}) }
-
-    // Defaults
-    if (typeof initial.hideFromCheckout === 'undefined') initial.hideFromCheckout = false
-
-    // Ensure translations structure
-    initial.translations = initial.translations ?? {}
-    if (!initial.translations[currentLocale]) {
-      initial.translations[currentLocale] = {
-        locale: currentLocale,
-        title: data?.name ?? '',
-        description: ''
-      }
-    }
-
-    form.setFieldsValue(initial)
-  }, [data, currentLocale])
 
   React.useEffect(() => {
     setShippingRules(data?.shippingRules ?? [])
@@ -146,76 +136,7 @@ export const CarrierForm: React.FC<{
 
   const settingsTab = (
     <div style={{ padding: 24 }}>
-      <Space align='baseline' style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-        <Typography.Text type='secondary'>Translations</Typography.Text>
-        <Typography.Text type='secondary'>{currentLocale.toUpperCase()}</Typography.Text>
-      </Space>
-
-      <Form
-        form={form}
-        layout='vertical'
-        onValuesChange={(_, allValues) => {
-          const mergedTranslations = {
-            ...(data?.translations ?? {}),
-            ...(allValues?.translations ?? {})
-          }
-          const topTitle = mergedTranslations?.[currentLocale]?.title
-          onChange({
-            ...allValues,
-            translations: mergedTranslations,
-            name: topTitle
-          })
-        }}
-      >
-        {/* Basic Fields */}
-        <Form.Item label='Identifier' name='identifier' rules={[{ required: true }]}>
-          <Input placeholder='Carrier identifier' />
-        </Form.Item>
-
-        <Form.Item label='Tracking URL' name='trackingUrl'>
-          <Input placeholder='e.g., https://tracking.example.com/{tracking_code}' />
-        </Form.Item>
-
-        <Form.Item label='Logo' name='logo'>
-          <AssetSelect accept={['asset', 'asset:image']} placeholder='Drop image asset here or enter ID' />
-        </Form.Item>
-
-        {/* Translations */}
-        <LocalizedFieldsProvider locales={[currentLocale]}>
-          <Form.Item
-            label={`Title (${currentLocale.toUpperCase()})`}
-            name={['translations', currentLocale, 'title']}
-            rules={[{ required: true }]}
-          >
-            <Input placeholder='Carrier title' />
-          </Form.Item>
-
-          <Form.Item
-            label={`Description (${currentLocale.toUpperCase()})`}
-            name={['translations', currentLocale, 'description']}
-          >
-            <Input.TextArea rows={3} placeholder='Carrier description' />
-          </Form.Item>
-        </LocalizedFieldsProvider>
-
-        {/* Tax Calculation Strategy */}
-        <Form.Item label='Tax Calculation Strategy' name='taxCalculationStrategy'>
-          <Select
-            placeholder='Select strategy'
-            options={config.taxCalculationStrategies.map(s => ({
-              value: s.value,
-              label: s.label
-            }))}
-          />
-        </Form.Item>
-
-        <Form.Item label='Hide From Checkout' name='hideFromCheckout' valuePropName='checked'>
-          <Switch />
-        </Form.Item>
-
-        {/* Extension slot for CoreBundle (stores, taxRule) */}
-        {renderEntityFormExtensions('coreshop.shipping.carrier.form', { data, onChange, currentLocale, form })}
-      </Form>
+      <DynamicForm config={formConfig} data={data} onChange={onChange} currentLocale={currentLocale} />
     </div>
   )
 

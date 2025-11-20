@@ -59,6 +59,7 @@ export const TaxRuleGroupManager: React.FC = () => {
           <TaxRuleGroupForm
             data={data}
             currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
             onChange={(draft) => setData(draft)}
           />
         )

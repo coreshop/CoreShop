@@ -1,105 +1,80 @@
-import React from 'react'
-import { Form, Input, Select, Switch, Space, Typography } from 'antd'
-import { useTranslation } from 'react-i18next'
-import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
-import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
-import type { CountryDetail } from './api'
-import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
+/**
+ * CoreShop AddressBundle - Country Form (Form Builder Version)
+ *
+ * Form component using the new FormBuilder pattern.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
 
-export const CountryForm: React.FC<{
+import React from 'react'
+import { container } from '@pimcore/studio-ui-bundle'
+import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import type { CountryDetail } from './api'
+import { Space, Typography } from 'antd'
+
+export interface CountryFormProps {
   data?: CountryDetail
-  zones: Array<{ id: number, name: string }>
   onChange: (draft: Partial<CountryDetail>) => void
   currentLocale: string
-}> = ({ data, zones, onChange, currentLocale }) => {
-  const { t } = useTranslation()
-  const [form] = Form.useForm()
-  // locales + currentLocale provided by parent toolbar
+  locales?: string[]
+}
 
-  React.useEffect(() => {
-    // Seed all known data so extensions get their initial values as well
-    const initial: any = { ...(data ?? {}) }
+/**
+ * Country Form Component
+ *
+ * Uses FormBuilder pattern for composable, extensible form configuration.
+ * Base form is defined in AddressBundle, extensions added by CoreBundle and others.
+ */
+export const CountryForm: React.FC<CountryFormProps> = ({
+  data,
+  onChange,
+  currentLocale,
+  locales
+}) => {
+  // Get the form builder from container
+  const builder = container.get<FormBuilder<CountryDetail>>(
+    'CoreShop/Address/Country/FormBuilder'
+  )
 
-    // sensible defaults without overwriting existing values
-    if (typeof initial.active === 'undefined') initial.active = false
-    if (!Array.isArray(initial.salutations)) initial.salutations = Array.isArray(data?.salutations) ? data?.salutations : []
-
-    // ensure translations structure for current locale
-    initial.translations = initial.translations ?? {}
-    if (!initial.translations[currentLocale]) {
-      initial.translations[currentLocale] = { locale: currentLocale, name: data?.name ?? '' }
-    }
-
-    form.setFieldsValue(initial)
-  }, [data, currentLocale])
+  // Build final config with all decorators applied
+  const config = React.useMemo(() => {
+    return builder.build({
+      data,
+      locale: currentLocale,
+      locales
+    })
+  }, [builder, data, currentLocale, locales])
 
   return (
-    <div style={ { padding: 12 } }>
-      <Space align='baseline' style={ { display: 'flex', justifyContent: 'space-between', marginBottom: 8 } }>
-        <Typography.Text type='secondary'>Translations</Typography.Text>
-        <Typography.Text type='secondary'>{ currentLocale.toUpperCase() }</Typography.Text>
+    <div style={{ padding: 12 }}>
+      <Space
+        align="baseline"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: 16
+        }}
+      >
+        <Typography.Title level={5} style={{ margin: 0 }}>
+          Country Configuration
+        </Typography.Title>
+        <Typography.Text type="secondary">
+          {currentLocale.toUpperCase()}
+        </Typography.Text>
       </Space>
 
-      <Form
-        form={ form }
-        layout='vertical'
-        onValuesChange={ (_, allValues) => {
-          // Preserve existing translations and only merge the edited ones
-          const mergedTranslations = {
-            ...(data?.translations ?? {}),
-            ...(allValues?.translations ?? {})
-          }
-          const topName = mergedTranslations?.[currentLocale]?.name
-          onChange({ ...allValues, translations: mergedTranslations, name: topName })
-        } }
-      >
-        <LocalizedFieldsProvider locales={ [currentLocale] }>
-          <Form.Item label={`Name (${currentLocale.toUpperCase()})`} name={ ['translations', currentLocale, 'name'] } rules={ [{ required: true }] }>
-            <Input />
-          </Form.Item>
-        </LocalizedFieldsProvider>
-
-        <Form.Item label={t('coreshop_country_isoCode', { defaultValue: 'ISO Code' })} name='isoCode'>
-          <Input />
-        </Form.Item>
-
-        <Form.Item label={t('coreshop_zone', { defaultValue: 'Zone' })}>
-          <DroppableEntity
-            accept='coreshop:zone'
-            isValidData={ (info) => typeof info?.data?.id === 'number' }
-            onDrop={ (info) => {
-              const id = info?.data?.id
-              if (typeof id === 'number') {
-                form.setFieldsValue({ zone: id })
-                onChange({ zone: id })
-              }
-            } }
-          >
-            <Form.Item name='zone' noStyle>
-              <Select
-                options={ zones.map(z => ({ value: z.id, label: z.name })) }
-              />
-            </Form.Item>
-          </DroppableEntity>
-        </Form.Item>
-
-        <Form.Item label={t('coreshop_country_addressFormat', { defaultValue: 'Address Format' })} name='addressFormat'>
-          <Input.TextArea autoSize={ { minRows: 6, maxRows: 16 } } />
-        </Form.Item>
-
-        <Form.Item label={t('coreshop_country_salutations', { defaultValue: 'Salutations' })} name='salutations'>
-          <Select mode='tags' />
-        </Form.Item>
-
-        {/* Extension slot: CoreBundle and others can inject extra fields */}
-        {renderEntityFormExtensions('coreshop.address.country.form', { data, onChange, currentLocale, form })}
-
-        {/* Additional locale names can be added later via add-locale UI */}
-
-        <Form.Item label='Active' name='active' valuePropName='checked'>
-          <Switch />
-        </Form.Item>
-      </Form>
+      <DynamicForm
+        config={config}
+        data={data}
+        onChange={onChange}
+        currentLocale={currentLocale}
+      />
     </div>
   )
 }

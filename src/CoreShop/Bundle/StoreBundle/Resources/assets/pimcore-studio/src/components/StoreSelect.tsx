@@ -12,31 +12,67 @@
 
 import React from 'react'
 import { Select, type SelectProps } from 'antd'
-import { storeApi, type StoreDetail } from '../modules/stores/api'
+import { storeApi } from '../modules/stores/api'
 import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
 
-export const StoreSelect: React.FC<SelectProps> = (props) => {
-  const [options, setOptions] = React.useState<Array<{ value: number, label: string }>>([])
-  const [loading, setLoading] = React.useState(false)
+// Module-level cache to avoid multiple API calls
+let cachedOptions: Array<{ value: number, label: string }> | null = null
+let loadPromise: Promise<Array<{ value: number, label: string }>> | null = null
 
-  React.useEffect(() => {
-    void loadStores()
-  }, [])
+const loadStores = async (): Promise<Array<{ value: number, label: string }>> => {
+  // Return cached data if available
+  if (cachedOptions) {
+    return cachedOptions
+  }
 
-  const loadStores = async (): Promise<void> => {
-    setLoading(true)
+  // If already loading, return the existing promise
+  if (loadPromise) {
+    return loadPromise
+  }
+
+  // Start new load
+  loadPromise = (async () => {
     try {
       const stores = await storeApi.list()
-      setOptions(stores.map(store => ({
-        value: store.id,
+      cachedOptions = stores.map(store => ({
+        value: store.id!,
         label: store.name
-      })))
+      }))
+      return cachedOptions
     } catch (err) {
       console.error('Failed to load stores:', err)
+      throw err
     } finally {
-      setLoading(false)
+      loadPromise = null
     }
-  }
+  })()
+
+  return loadPromise
+}
+
+// Export function to clear cache if needed
+export const clearStoreCache = () => {
+  cachedOptions = null
+  loadPromise = null
+}
+
+export const StoreSelect: React.FC<SelectProps> = (props) => {
+  const [options, setOptions] = React.useState<Array<{ value: number, label: string }>>(cachedOptions || [])
+  const [loading, setLoading] = React.useState(!cachedOptions)
+
+  React.useEffect(() => {
+    void (async () => {
+      if (!cachedOptions) {
+        setLoading(true)
+      }
+      try {
+        const opts = await loadStores()
+        setOptions(opts)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [])
 
   return (
     <DroppableEntity

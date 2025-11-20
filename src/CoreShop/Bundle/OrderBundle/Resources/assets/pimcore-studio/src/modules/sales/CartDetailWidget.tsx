@@ -23,7 +23,7 @@ interface CartDetailWidgetProps {
 
 const loadCartFromBackend = async (id: number): Promise<Sale | null> => {
   try {
-    const response = await fetch(`/admin/coreshop/order/detail?id=${id}&saleType=cart`, {
+    const response = await fetch(`/pimcore-studio/api/coreshop/order/detail?id=${id}&saleType=cart`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -86,7 +86,7 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = ({ config }) =>
     try {
       setCart({ ...cart, ...updates })
 
-      const response = await fetch(`/admin/coreshop/order/update/${cartId}`, {
+      const response = await fetch(`/pimcore-studio/api/coreshop/order/update/${cartId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

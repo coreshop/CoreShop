@@ -40,11 +40,14 @@ export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>(
     await loadList()
   }
 
-  // Ensure groups are loaded on mount so the left tree isn't empty
+  // Load groups only on mount (entity list is loaded by useEntityTabs)
   React.useEffect(() => {
     void (async () => {
-      const gs = await loadGroups()
-      setGroups(gs)
+      if (!didInitialLoad.current) {
+        didInitialLoad.current = true
+        const gs = await loadGroups()
+        setGroups(gs)
+      }
     })()
   }, [loadGroups])
 
@@ -57,7 +60,6 @@ export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>(
       leftExtras={ leftExtras }
       renderLeft={ ({ items, loading, loadList, openTab, onDelete }) => (
         <>
-        <InitialLoader run={ () => { if (!didInitialLoad.current) { didInitialLoad.current = true; void loadAll(loadList) } } } />
         <EntityList
           groups={ groups }
           items={ items }
@@ -88,9 +90,4 @@ export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>(
       renderDetail={ (data, setData, ctx) => renderDetail(data, setData, groups, ctx) }
     />
   )
-}
-
-const InitialLoader: React.FC<{ run: () => void }> = ({ run }) => {
-  React.useEffect(() => { run() }, [run])
-  return null
 }

@@ -16,12 +16,16 @@ import { coreshopOrderServiceIds } from '@coreshop/order/src/modules/cart-price-
 import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
 import {
   CategoriesCondition,
+  CarriersCondition,
   CountriesCondition,
   CurrenciesCondition,
   CustomerGroupsCondition,
   CustomersCondition,
+  GuestCondition,
+  NestedCondition,
   ProductsCondition,
   StoresCondition,
+  TimespanCondition,
   ZonesCondition
 } from '../../shared/rules/conditions'
 import {
@@ -50,13 +54,17 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
     serviceId: coreshopOrderServiceIds.cartPriceRuleConditionRegistry,
     type: 'condition',
     registrations: {
+      carriers: CarriersCondition,
       categories: CategoriesCondition,
       countries: CountriesCondition,
       currencies: CurrenciesCondition,
-      customer_groups: CustomerGroupsCondition,
+      customerGroups: CustomerGroupsCondition,
       customers: CustomersCondition,
+      guest: GuestCondition,
+      nested: NestedCondition,
       products: ProductsCondition,
       stores: StoresCondition,
+      timespan: TimespanCondition,
       zones: ZonesCondition
     }
   },
@@ -79,10 +87,13 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
       categories: CategoriesCondition,
       countries: CountriesCondition,
       currencies: CurrenciesCondition,
-      customer_groups: CustomerGroupsCondition,
+      customerGroups: CustomerGroupsCondition,
       customers: CustomersCondition,
+      guest: GuestCondition,
+      nested: NestedCondition,
       products: ProductsCondition,
       stores: StoresCondition,
+      timespan: TimespanCondition,
       zones: ZonesCondition
     }
   },

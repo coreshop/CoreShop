@@ -204,6 +204,13 @@ export default defineConfig({
               }
             ])
         ),
+        // Share CoreShop ResourceBundle between all bundles (for DynamicForm, etc.)
+        '@coreshop/resource': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
         react: {
           singleton: true,
           eager: false,
@@ -223,6 +230,30 @@ export default defineConfig({
           strictVersion: false
         },
         'react/jsx-dev-runtime': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        'react-i18next': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        'i18next': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@emotion/react': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@emotion/styled': {
           singleton: true,
           eager: false,
           requiredVersion: false,

@@ -10,84 +10,46 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Form, Checkbox } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { ManyToManyRelation } from '@pimcore/studio-ui-bundle/modules/element'
-import type { ManyToManyRelationValue } from '../../../../../../../../../ResourceBundle/Resources/assets/pimcore-studio/src/entities/types/relation'
-import { container } from '@pimcore/studio-ui-bundle'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
-import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
-import { useRelationIds } from '@coreshop/resource'
-
-interface CategoriesConditionData {
-  categories?: string[] | ManyToManyRelationValue
-  recursive?: boolean
-}
+import { CategoryMultiSelect } from '@coreshop/product/src/components/CategoryMultiSelect'
 
 export const CategoriesCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
   const { t } = useTranslation()
-  const conditionData = data as CategoriesConditionData
-  const recursive = conditionData.recursive || false
-
-  const [allowedClasses, setAllowedClasses] = useState<string[]>([])
-  const [relationValue, handleRelationChange] = useRelationIds(conditionData.categories, 'Category')
-
-  const configProvider = useMemo(
-    () => container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider),
-    []
-  )
+  const [form] = Form.useForm()
 
   useEffect(() => {
-    const loadAllowedClasses = async () => {
-      const classes = await configProvider.getAllowedClasses('coreshop.category')
-      setAllowedClasses(classes)
-    }
-    loadAllowedClasses()
-  }, [configProvider])
-
-  const handleCategoriesChange = (value: ManyToManyRelationValue | null) => {
-    const ids = handleRelationChange(value)
-    onChange({
-      ...conditionData,
-      categories: ids
+    form.setFieldsValue({
+      categories: data.categories,
+      recursive: data.recursive
     })
-  }
-
-  const handleRecursiveChange = (checked: boolean) => {
-    onChange({
-      ...conditionData,
-      recursive: checked
-    })
-  }
+  }, [data.categories, data.recursive, form])
 
   return (
-    <Form layout="vertical">
-      <Form.Item label={t('coreshop_condition_categories', { defaultValue: 'Categories' })}>
-        <ManyToManyRelation
-          allowedClasses={allowedClasses}
-          dataObjectsAllowed={true}
-          assetsAllowed={false}
-          documentsAllowed={false}
-          allowToClearRelation={false}
-          maxItems={null}
-          pathFormatterClass={null}
-          width={null}
-          height={null}
-          value={relationValue}
-          onChange={handleCategoriesChange}
-        />
-      </Form.Item>
+    <Form
+      form={form}
+      layout="vertical"
+      onValuesChange={(_, allValues) => {
+        onChange({ ...data, ...allValues })
+      }}
+    >
+      <CategoryMultiSelect
+        name="categories"
+        label={t('coreshop_condition_categories', { defaultValue: 'Categories' })}
+        value={data.categories}
+        onChange={(ids) => onChange({ ...data, categories: ids })}
+      />
 
-      <Form.Item>
-        <Checkbox
-          checked={recursive}
-          onChange={(e) => handleRecursiveChange(e.target.checked)}
-        >
+      <Form.Item
+        name="recursive"
+        valuePropName="checked"
+      >
+        <Checkbox>
           {t('coreshop_condition_recursive', { defaultValue: 'Include all Subcategories' })}
         </Checkbox>
       </Form.Item>

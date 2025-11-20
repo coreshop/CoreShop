@@ -18,28 +18,30 @@
     "check-types": "npm run check-types --workspaces --if-present"
   },
   "private": true,
-  "workspaces": [
-    "src/CoreShop/Bundle/AddressBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/CustomerBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/IndexBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/MenuBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/MessengerBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/MoneyBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/NotificationBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/OrderBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/PaymentBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/ProductBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/ProductQuantityPriceRulesBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/ResourceBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/ShippingBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/TaxationBundle/Resources/assets/pimcore-studio",
-    "src/CoreShop/Bundle/UserBundle/Resources/assets/pimcore-studio"
-  ],
+  "workspaces": {
+    "packages": [
+      "src/CoreShop/Bundle/AddressBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/CustomerBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/IndexBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/MenuBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/MessengerBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/MoneyBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/NotificationBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/OrderBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/PaymentBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/ProductBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/ProductQuantityPriceRulesBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/ResourceBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/ShippingBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/TaxationBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/UserBundle/Resources/assets/pimcore-studio"
+    ]
+  },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
     "@module-federation/rsbuild-plugin": "^0.13.1",
@@ -64,7 +66,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@pimcore/studio-ui-bundle": "1.0.0-canary.20250901-160146-095dd66",
+    "@pimcore/studio-ui-bundle": "1.0.0-canary.20251119-143005-1b35b01",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",
     "immer": "^10.1.1",

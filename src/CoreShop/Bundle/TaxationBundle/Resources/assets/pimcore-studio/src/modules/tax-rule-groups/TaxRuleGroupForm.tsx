@@ -11,20 +11,31 @@
  */
 
 import React from 'react'
-import { Form, Input, Switch, Table, Button, Select, Space, Popconfirm } from 'antd'
+import { container } from '@pimcore/studio-ui-bundle'
+import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import type { TaxRuleGroupDetail, TaxRule } from './api'
+import { Space, Typography, Table, Button, Select, Popconfirm } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
-import type { TaxRuleGroupDetail, TaxRule } from './api'
 import { taxRateApi } from '../tax-rates/api'
-import { renderEntityFormExtensions, getEntityTableColumnExtensions } from '@coreshop/resource/src/entities'
+import { getEntityTableColumnExtensions } from '@coreshop/resource/src/entities'
 
-export const TaxRuleGroupForm: React.FC<{
+export interface TaxRuleGroupFormProps {
   data?: TaxRuleGroupDetail
   onChange: (draft: Partial<TaxRuleGroupDetail>) => void
-  currentLocale: string
-}> = ({ data, onChange, currentLocale }) => {
+  currentLocale?: string
+  locales?: string[]
+}
+
+export const TaxRuleGroupForm: React.FC<TaxRuleGroupFormProps> = ({
+  data,
+  onChange,
+  currentLocale,
+  locales
+}) => {
   const { t } = useTranslation()
-  const [form] = Form.useForm()
+  const builder = container.get<FormBuilder<TaxRuleGroupDetail>>('CoreShop/Taxation/TaxRuleGroup/FormBuilder')
+  const config = React.useMemo(() => builder.build({ data, locale: currentLocale, locales }), [builder, data, currentLocale, locales])
   const [taxRates, setTaxRates] = React.useState<Array<{ id: number, name: string }>>([])
 
   const BEHAVIORS = [
@@ -33,14 +44,11 @@ export const TaxRuleGroupForm: React.FC<{
     { value: 2, label: t('coreshop_tax_rule_behavior_on_after_another', { defaultValue: 'One after another' }) }
   ]
 
-  // Extension columns removed - will be handled differently
-
   // Load tax rates for the dropdown
   React.useEffect(() => {
     const loadTaxRates = async () => {
       try {
         const response = await taxRateApi.list()
-        // API returns array directly: [{"name":"20AT","id":1},{"name":"10AT","id":2}]
         setTaxRates(response || [])
       } catch (error) {
         console.error('Failed to load tax rates:', error)
@@ -50,20 +58,8 @@ export const TaxRuleGroupForm: React.FC<{
     void loadTaxRates()
   }, [])
 
-  // Extension columns will be added via renderEntityFormExtensions registry
-  // No direct dependency on CoreBundle
-
-  React.useEffect(() => {
-    const initial: any = { ...(data ?? {}) }
-    if (typeof initial.active === 'undefined') initial.active = false
-    if (!Array.isArray(initial.taxRules)) initial.taxRules = []
-    
-    form.setFieldsValue(initial)
-  }, [data, form])
-
   const handleTaxRulesChange = (newTaxRules: TaxRule[]) => {
-    const updatedData = { ...data, taxRules: newTaxRules }
-    onChange(updatedData)
+    onChange({ ...data, taxRules: newTaxRules })
   }
 
   const addTaxRule = () => {
@@ -150,30 +146,20 @@ export const TaxRuleGroupForm: React.FC<{
 
   return (
     <div style={{ padding: 12 }}>
-      <Form
-        form={form}
-        layout="vertical"
-        onValuesChange={(_, allValues) => {
-          onChange({ ...allValues, taxRules: data?.taxRules || [] })
-        }}
-      >
-        <Form.Item label="Name" name="name" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
+      <Space align="baseline" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+        <Typography.Title level={5} style={{ margin: 0 }}>
+          {t('coreshop_tax_rule_group', { defaultValue: 'Tax Rule Group' })}
+        </Typography.Title>
+      </Space>
 
-        <Form.Item label="Active" name="active" valuePropName="checked">
-          <Switch />
-        </Form.Item>
-
-        {renderEntityFormExtensions('coreshop.taxation.tax_rule_group.form', { data, onChange, currentLocale, form })}
-      </Form>
+      <DynamicForm config={config} data={data} onChange={onChange} currentLocale={currentLocale} />
 
       <div style={{ marginTop: 24 }}>
         <Space style={{ marginBottom: 16 }}>
-          <h3>Tax Rules</h3>
-          <Button 
-            type="primary" 
-            icon={<PlusOutlined />} 
+          <Typography.Title level={5} style={{ margin: 0 }}>Tax Rules</Typography.Title>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
             onClick={addTaxRule}
           >
             Add Tax Rule

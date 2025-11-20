@@ -16,7 +16,7 @@ export const CurrencyManager: React.FC = () => {
       dragType='coreshop:currency'
       leftRootTitle={t('coreshop_currencies', { defaultValue: 'Currencies' })}
       getTitle={ (li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}` }
-      buildSavePayload={ (data) => ({ id: data.id, name: data.name, isoCode: data.isoCode, numericIsoCode: data.numericIsoCode, symbol: data.symbol }) }
+      buildSavePayload={ (data) => data }
       onAdd={ async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_currency_add', { defaultValue: 'Add Currency' }),
@@ -28,8 +28,13 @@ export const CurrencyManager: React.FC = () => {
           }
         })
       }) }
-      renderDetail={ (data, setData) => (
-        <CurrencyForm data={ data } onChange={ setData } />
+      renderDetail={ (data, setData, ctx) => (
+        <CurrencyForm
+          data={data}
+          onChange={setData}
+          currentLocale={ctx?.currentLocale ?? 'en'}
+          locales={ctx?.locales}
+        />
       ) }
     />
   )

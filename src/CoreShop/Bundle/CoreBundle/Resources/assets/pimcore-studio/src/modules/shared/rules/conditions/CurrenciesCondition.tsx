@@ -10,38 +10,35 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { Form, Select } from 'antd'
+import React, { useEffect } from 'react'
+import { Form } from 'antd'
 import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import { useEntitySelect } from '@coreshop/resource'
-import { currencyApi } from '@coreshop/currency/src/modules/currencies/api'
+import { CurrencyMultiSelect } from '@coreshop/currency/src/components/CurrencyMultiSelect'
 
 export const CurrenciesCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
   const { t } = useTranslation()
-  const currencies = data.currencies || []
-  const [options, value, handleSelectChange, loading] = useEntitySelect(currencyApi, currencies)
+  const [form] = Form.useForm()
 
-  const handleChange = (selectedIds: number[]) => {
-    handleSelectChange(selectedIds)
-    onChange({ ...data, currencies: selectedIds })
-  }
+  useEffect(() => {
+    form.setFieldsValue({ currencies: data.currencies })
+  }, [data.currencies, form])
 
   return (
-    <Form layout="vertical">
-      <Form.Item label={t('coreshop_condition_currencies', { defaultValue: 'Currencies' })}>
-        <Select
-          mode="multiple"
-          value={value}
-          onChange={handleChange}
-          style={{ width: '100%' }}
-          loading={loading}
-          options={options}
-        />
-      </Form.Item>
+    <Form
+      form={form}
+      layout="vertical"
+      onValuesChange={(_, allValues) => {
+        onChange({ ...data, ...allValues })
+      }}
+    >
+      <CurrencyMultiSelect
+        name="currencies"
+        label={t('coreshop_condition_currencies', { defaultValue: 'Currencies' })}
+      />
     </Form>
   )
 }

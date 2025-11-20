@@ -28,13 +28,7 @@ export const TaxRateManager: React.FC = () => {
       leftRootTitle={t('coreshop_tax_rate', { defaultValue: 'Tax Rates' })}
       localizable
       getTitle={ (li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}` }
-      buildSavePayload={ (data) => ({
-        id: data.id,
-        name: data.name,
-        rate: data.rate,
-        active: data.active,
-        translations: data.translations
-      }) }
+      buildSavePayload={ (data) => data }
       onAdd={ async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_tax_rate', { defaultValue: 'Add Tax Rate' }),
@@ -54,6 +48,7 @@ export const TaxRateManager: React.FC = () => {
           <TaxRateForm
             data={ data }
             currentLocale={ ctx?.currentLocale ?? 'en' }
+            locales={ ctx?.locales }
             onChange={ (draft) => setData(draft) }
           />
         )

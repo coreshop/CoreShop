@@ -208,6 +208,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_order_create')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'create_order')
+            ->setAttribute('widgetId', 'coreshop-order-creation')
             ->setExtra('order', 20)
         ;
 
@@ -414,6 +415,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_store')
             ->setAttribute('resource', 'coreshop.store')
             ->setAttribute('function', 'store')
+            ->setAttribute('widgetId', 'coreshop-store-store')
             ->setExtra('order', 100)
         ;
 

@@ -1,5 +1,7 @@
 /**
- * CoreShop OrderBundle Quote Manager
+ * CoreShop Form Builder
+ *
+ * Exports for the Form Builder system.
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -10,9 +12,12 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { SaleManager } from './SaleManager'
+// Core
+export { FormBuilder } from './FormBuilder'
+export * from './types'
 
-export const QuoteManager: React.FC = () => {
-  return <SaleManager type="quote" />
-}
+// Components
+export { DynamicForm } from './components/DynamicForm'
+
+// Standard Decorators
+export * from './decorators'

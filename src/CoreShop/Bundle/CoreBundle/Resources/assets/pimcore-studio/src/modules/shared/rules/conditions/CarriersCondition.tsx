@@ -10,38 +10,39 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { Form, Select } from 'antd'
+import React, { useEffect } from 'react'
+import { Form } from 'antd'
 import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import { useEntitySelect } from '@coreshop/resource'
-import { carrierApi } from '@coreshop/shipping/src/modules/carriers/api'
+import { CarrierMultiSelect } from '@coreshop/shipping/src/components/CarrierMultiSelect'
 
 export const CarriersCondition: React.FC<ConditionComponentProps> = ({
   data,
   onChange
 }) => {
   const { t } = useTranslation()
-  const carriers = data.carriers || []
-  const [options, value, handleSelectChange, loading] = useEntitySelect(carrierApi, carriers, 'identifier')
+  const [form] = Form.useForm()
 
-  const handleChange = (selectedIds: number[]) => {
-    handleSelectChange(selectedIds)
-    onChange({ ...data, carriers: selectedIds })
-  }
+  useEffect(() => {
+    // Convert string IDs to numbers if needed (backend returns strings)
+    const carriers = Array.isArray(data.carriers)
+      ? data.carriers.map(id => typeof id === 'string' ? parseInt(id, 10) : id)
+      : []
+    form.setFieldsValue({ carriers })
+  }, [data.carriers, form])
 
   return (
-    <Form layout="vertical">
-      <Form.Item label={t('coreshop_condition_carriers', { defaultValue: 'Carriers' })}>
-        <Select
-          mode="multiple"
-          value={value}
-          onChange={handleChange}
-          style={{ width: '100%' }}
-          loading={loading}
-          options={options}
-        />
-      </Form.Item>
+    <Form
+      form={form}
+      layout="vertical"
+      onValuesChange={(_, allValues) => {
+        onChange({ ...data, ...allValues })
+      }}
+    >
+      <CarrierMultiSelect
+        name="carriers"
+        label={t('coreshop_condition_carriers', { defaultValue: 'Carriers' })}
+      />
     </Form>
   )
 }

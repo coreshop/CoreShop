@@ -1,0 +1,6 @@
+coreshop_store: 'Store'
+coreshop_store_multiselect: 'Store Multiselect'
+coreshop_store_site: 'Site'
+coreshop_store_template: 'Template'
+coreshop_permission_store: 'CoreShop: Store'
+coreshop_stores: 'Stores'
