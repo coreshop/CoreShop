@@ -7,12 +7,14 @@
 import {container} from '@pimcore/studio-ui-bundle'
 import {serviceIds} from '@pimcore/studio-ui-bundle/app'
 import {IMainNavItem, type MainNavRegistry} from '@pimcore/studio-ui-bundle/modules/app'
-import { type WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import {type WidgetRegistry} from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import {type IconLibrary} from '@pimcore/studio-ui-bundle/modules/icon-library'
 import {menuService} from '../services/MenuService'
 import {CoreShopMenuItem} from '../types'
 import {CoreShopWidget} from '../components/CoreShopWidget'
 import {MenuButtonRegistry} from "../services/button-registry";
 import React from "react";
+import { createStyles } from 'antd-style'
 
 export const CoreShopMenuExtension = {
     onInit(): void {
@@ -35,12 +37,8 @@ export const CoreShopMenuExtension = {
 
             if (menuItems) {
                 // Register each top-level menu item
-                for (const key in menuItems) {
-                    const items = menuItems[key];
-
-                    for (const item of items) {
-                        this.registerMenuItem(item, mainNavRegistry, widgetRegistry, key)
-                    }
+                for (const item of menuItems) {
+                    this.registerMenuItem(item, mainNavRegistry, widgetRegistry)
                 }
             }
         } catch (error) {
@@ -61,7 +59,27 @@ export const CoreShopMenuExtension = {
             path: fullPath
         }
 
-        if (item.icon) {
+        // If content is available (SVG logo), dynamically create and register icon
+        if (item.content) {
+            const iconName = `coreshop_dynamic_${item.id}`
+            const iconLibrary = container.get<IconLibrary>(serviceIds.iconLibrary)
+
+            const icon = ()=>{
+                return (
+                    <div style={{
+                        width: '100%'
+                    }} dangerouslySetInnerHTML={{__html: item.content ?? ''}} />
+                )
+            }
+
+            // Register in icon library
+            iconLibrary.register({
+                name: iconName,
+                component: icon
+            })
+
+            navItem.icon = iconName;
+        } else if (item.icon) {
             navItem.icon = item.icon
         }
 
@@ -106,7 +124,7 @@ export const CoreShopMenuExtension = {
                 if (button) {
                     navItem.button = () => React.createElement(button.button, {
                         icon: item.icon!,
-                        label: item.label
+                        label: item.label,
                     })
 
                     mainNavRegistry.registerMainNavItem(navItem)

@@ -8,6 +8,7 @@ export interface CoreShopMenuItem {
   id: string
   label: string
   icon?: string
+  content?: string
   path?: string
   children?: CoreShopMenuItem[]
   onClick?: () => void

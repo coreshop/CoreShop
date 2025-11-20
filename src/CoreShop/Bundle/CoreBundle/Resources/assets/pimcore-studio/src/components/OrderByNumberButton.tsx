@@ -17,7 +17,6 @@ import { orderService } from '../services/OrderService'
 import { message } from 'antd'
 import { type MenuButtonProps } from '@coreshop/menu/src'
 import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager'
-import {CartDetailWidget, OrderDetailWidget, QuoteDetailWidget} from "@coreshop/order/src/modules/sales";
 
 
 export const OrderByNumberButton = ({ icon, label }: MenuButtonProps): React.JSX.Element => {

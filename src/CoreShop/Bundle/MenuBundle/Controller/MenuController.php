@@ -67,15 +67,9 @@ class MenuController
             }
         }
 
-        // Restructure to have coreshop.main as top level
-        $restructuredItems = [];
-        if (!empty($allItems)) {
-            $restructuredItems['coreshop.main'] = $allItems;
-        }
-
         return new JsonResponse([
             'success' => true,
-            'items' => $restructuredItems,
+            'items' => $allItems,
         ]);
     }
 
@@ -89,7 +83,14 @@ class MenuController
             }
         }
 
-        return $items;
+        return [
+            $menuData['name'] = [
+                'id' => $menuData['name'],
+                'label' => $menuData['label'],
+                'content' => $menuData['attributes']['content'] ?? null,
+                'children' => $items,
+            ]
+        ];
     }
 
     private function transformMenuItem(array $item): array
@@ -102,6 +103,7 @@ class MenuController
             'label' => $item['label'] ?? $item['name'] ?? 'Unnamed',
             'path' => $item['uri'] ?? null,
             'icon' => $item['attributes']['iconCls'] ?? null,
+            'content' => $item['attributes']['content'] ?? null,
             'disabled' => !($item['display'] ?? true),
         ];
 
