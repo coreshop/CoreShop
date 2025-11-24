@@ -310,6 +310,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_product_units')
             ->setAttribute('resource', 'coreshop.product')
             ->setAttribute('function', 'product_unit')
+            ->setAttribute('widgetId', 'coreshop-product-product-units')
             ->setExtra('order', 30)
         ;
 

@@ -20,6 +20,7 @@ import { NestedCondition, TimespanCondition, WeightCondition } from './modules/p
 import { DiscountAmountAction, DiscountPercentAction, PriceAction, DiscountPriceAction, EmptyAction } from './modules/product-price-rules/actions'
 import { ProductPriceRuleManager } from './modules/product-price-rules/ProductPriceRuleManager'
 import { ProductPriceRuleFormBuilderModule } from './modules/product-price-rules/form-builder-module'
+import { ProductUnitManager } from './modules/product-units/ProductUnitManager'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-product',
@@ -57,6 +58,12 @@ const plugin: IAbstractPlugin = {
         widgets.registerWidget({
             name: 'coreshop-product-product-price-rules',
             component: ProductPriceRuleManager
+        })
+
+        // Register Product Units widget
+        widgets.registerWidget({
+            name: 'coreshop-product-product-units',
+            component: ProductUnitManager
         })
     }
 }
