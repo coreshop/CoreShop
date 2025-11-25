@@ -28,7 +28,7 @@
     "coreshop/registry": "^5.0",
     "coreshop/resource-bundle": "^5.0",
     "coreshop/menu-bundle": "^5.0",
-    "pimcore/pimcore": "^12.0",
+    "pimcore/pimcore": "^12.2",
     "doctrine/migrations": "^3.9"
   },
   "suggest": {
