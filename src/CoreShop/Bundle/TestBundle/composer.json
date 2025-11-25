@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "pimcore/pimcore": "^12.0",
+    "pimcore/pimcore": "^12.2",
     "pimcore/newsletter-bundle": "^2.0",
     "coreshop/pimcore": "^5.0",
     "behat/behat": "^3.8",

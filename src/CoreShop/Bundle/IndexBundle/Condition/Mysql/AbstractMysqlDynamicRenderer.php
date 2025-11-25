@@ -29,7 +29,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicRendererInterface
 
     protected function quoteIdentifier(string $identifier): string
     {
-        return $this->connection->quoteSingleIdentifier($identifier);
+        return $this->connection->quoteIdentifier($identifier);
     }
 
     protected function quote(string $identifier): string

@@ -173,12 +173,7 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         $table->addColumn('o_className', 'string')->setLength(255);
         $table->addColumn('o_type', 'string')->setLength(255);
         $table->addColumn('active', 'boolean');
-        /**
-         * @psalm-suppress InternalMethod
-         */
-        $table->addPrimaryKeyConstraint(
-            new PrimaryKeyConstraint(null, [new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('o_id'))], true),
-        );
+        $table->setPrimaryKey(['o_id']);
 
         foreach ($index->getColumns() as $column) {
             if ($column instanceof IndexColumnInterface) {
@@ -219,9 +214,9 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
              */
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
                 if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
-                    $table->addUniqueIndex(array_values($tableIndex->getColumns()));
+                    $table->addUniqueIndex($tableIndex->getColumns());
                 } else {
-                    $table->addIndex(array_values($tableIndex->getColumns()));
+                    $table->addIndex($tableIndex->getColumns());
                 }
             }
         }
@@ -237,22 +232,9 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         $table->addColumn('oo_id', 'integer');
         $table->addColumn('language', 'string')->setLength(255);
         $table->addColumn('name', 'string', ['notnull' => false])->setLength(255);
+        $table->setPrimaryKey(['oo_id', 'language']);
         $table->addIndex(['oo_id']);
         $table->addIndex(['language']);
-
-        /**
-         * @psalm-suppress InternalMethod
-         */
-        $table->addPrimaryKeyConstraint(
-            new PrimaryKeyConstraint(
-                null,
-                [
-                    new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('oo_id')),
-                    new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('language')),
-                ],
-                true,
-            ),
-        );
 
         foreach ($index->getColumns() as $column) {
             $type = $column->getObjectType();
@@ -294,9 +276,9 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
              */
             foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
                 if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
-                    $table->addUniqueIndex(array_values($tableIndex->getColumns()));
+                    $table->addUniqueIndex($tableIndex->getColumns());
                 } else {
-                    $table->addIndex(array_values($tableIndex->getColumns()));
+                    $table->addIndex($tableIndex->getColumns());
                 }
             }
         }
@@ -314,22 +296,7 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         $table->addColumn('dest', 'integer');
         $table->addColumn('fieldname', 'string')->setLength(255);
         $table->addColumn('type', 'string')->setLength(255);
-
-        /**
-         * @psalm-suppress InternalMethod
-         */
-        $table->addPrimaryKeyConstraint(
-            new PrimaryKeyConstraint(
-                null,
-                [
-                    new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('src')),
-                    new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('dest')),
-                    new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('fieldname')),
-                    new UnqualifiedName(\Doctrine\DBAL\Schema\Name\Identifier::unquoted('type')),
-                ],
-                true,
-            ),
-        );
+        $table->setPrimaryKey(['src', 'dest', 'fieldname', 'type']);
 
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexRelationalColumnsExtensionInterface) {
@@ -525,9 +492,9 @@ QUERY;
                 continue;
             }
 
-            $dataKeys[$this->database->quoteSingleIdentifier($key)] = '?';
+            $dataKeys[$this->database->quoteIdentifier($key)] = '?';
             $updateData[] = $value;
-            $insertStatement[] = $this->database->quoteSingleIdentifier($key) . ' = ?';
+            $insertStatement[] = $this->database->quoteIdentifier($key) . ' = ?';
             $insertData[] = $value;
         }
 
@@ -538,11 +505,11 @@ QUERY;
 
             $value = $data[$column->getName()];
 
-            $dataKeys[$this->database->quoteSingleIdentifier($column->getName())] = $this->typeCastValueSQLDecleration(
+            $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration(
                 $column,
             );
             $updateData[] = $value;
-            $insertStatement[] = $this->database->quoteSingleIdentifier(
+            $insertStatement[] = $this->database->quoteIdentifier(
                 $column->getName(),
             ) . ' = ' . $this->typeCastValueSQLDecleration($column);
             $insertData[] = $value;
@@ -594,9 +561,9 @@ QUERY;
                     continue;
                 }
 
-                $dataKeys[$this->database->quoteSingleIdentifier($key)] = '?';
+                $dataKeys[$this->database->quoteIdentifier($key)] = '?';
                 $updateData[] = $value;
-                $insertStatement[] = $this->database->quoteSingleIdentifier($key) . ' = ?';
+                $insertStatement[] = $this->database->quoteIdentifier($key) . ' = ?';
                 $insertData[] = $value;
             }
 
@@ -607,12 +574,12 @@ QUERY;
 
                 $value = $values[$column->getName()];
 
-                $dataKeys[$this->database->quoteSingleIdentifier(
+                $dataKeys[$this->database->quoteIdentifier(
                     $column->getName(),
                 )] = $this->typeCastValueSQLDecleration($column);
                 $updateData[] = $value;
 
-                $insertStatement[] = $this->database->quoteSingleIdentifier(
+                $insertStatement[] = $this->database->quoteIdentifier(
                     $column->getName(),
                 ) . ' = ' . $this->typeCastValueSQLDecleration($column);
                 $insertData[] = $value;
