@@ -55,10 +55,10 @@ class Setup
 
         $databases = $schemaManager->listDatabases();
         if (in_array($dbName, $databases)) {
-            $schemaManager->dropDatabase($connection->quoteSingleIdentifier($dbName));
+            $schemaManager->dropDatabase($connection->quoteIdentifier($dbName));
         }
 
-        $schemaManager->createDatabase($connection->quoteSingleIdentifier($dbName));
+        $schemaManager->createDatabase($connection->quoteIdentifier($dbName));
 
         $installer = new \Pimcore\Bundle\InstallBundle\Installer(
             \Pimcore::getContainer()->get('monolog.logger.pimcore'),
