@@ -63,5 +63,10 @@
         "CoreShop\\Bundle\\IndexBundle\\CoreShopIndexBundle"
       ]
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": false
+    }
   }
 }
