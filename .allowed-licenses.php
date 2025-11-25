@@ -13,11 +13,6 @@ return (new LicenseConfigurationBuilder())
         'OSL-3.0',
         'Artistic-1.0',
         'ISC',
-
     )
-    ->addAllowedPackage('pimcore/admin-ui-classic-bundle')
-    ->addAllowedPackage('pimcore/google-marketing-bundle')
-    ->addAllowedPackage('pimcore/newsletter-bundle')
-    ->addAllowedPackage('pimcore/opensearch-client')
-    ->addAllowedPackage('pimcore/pimcore')
+    ->addAllowedVendor('pimcore')
     ->build();
