@@ -60,7 +60,7 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
      *
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         /** @var Password $field */
         $field = $this->getClass()->getFieldDefinition('password');

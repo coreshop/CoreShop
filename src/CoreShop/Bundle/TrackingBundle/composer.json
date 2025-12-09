@@ -27,7 +27,7 @@
     "coreshop/registry": "^5.0",
     "coreshop/tracking": "^5.0",
     "coreshop/pimcore-bundle": "^5.0",
-    "pimcore/pimcore": "^12.2",
+    "pimcore/pimcore": "^12.3",
     "pimcore/google-marketing-bundle": "^2.0"
   },
   "require-dev": {
