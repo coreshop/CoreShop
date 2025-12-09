@@ -27,7 +27,7 @@
     "coreshop/registry": "^5.0",
     "coreshop/pimcore-bundle": "^5.0",
     "knplabs/knp-menu-bundle": "^3.1",
-    "pimcore/pimcore": "^12.2",
+    "pimcore/pimcore": "^12.3",
     "pimcore/admin-ui-classic-bundle": "^2.0"
   },
   "require-dev": {

@@ -103,7 +103,7 @@
     "pimcore/admin-ui-classic-bundle": "^2.0",
     "pimcore/google-marketing-bundle": "^2.0",
     "pimcore/newsletter-bundle": "^2.0",
-    "pimcore/pimcore": "^12.2",
+    "pimcore/pimcore": "^12.3",
     "rinvex/countries": "^9.0",
     "sebastian/diff": "^4.0 | ^5.0 | ^6.0",
     "stof/doctrine-extensions-bundle": "^1.6",

@@ -43,7 +43,7 @@
     "symfony/validator": "^6.3 || ^7.0",
     "symfony/yaml": "^6.3 || ^7.0",
     "gedmo/doctrine-extensions": "^3.11.0",
-    "pimcore/pimcore": "^12.2",
+    "pimcore/pimcore": "^12.3",
     "pimcore/admin-ui-classic-bundle": "^2.0"
   },
   "require-dev": {

@@ -5,7 +5,7 @@ on:
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
-  pull_request_target:
+  pull_request:
     branches: [ '4.0', '4.1', '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Component/**'
@@ -27,6 +27,7 @@ permissions:
 
 jobs:
   list:
+    if: github.repository == 'coreshop/CoreShop'
     runs-on: ubuntu-latest
     name: "Create a list of packages"
 
@@ -51,13 +52,14 @@ jobs:
 
   test-packages:
     needs: list
+    if: github.repository == 'coreshop/CoreShop'
     runs-on: ubuntu-latest
     name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}"
     strategy:
       fail-fast: false
       matrix:
         php: [ 8.3, 8.4 ]
-        pimcore: [ ^12.2 ]
+        pimcore: [ ^12.3 ]
         dependencies: [ highest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
 
@@ -87,7 +89,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-pimcore-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
           restore-keys: |
             ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-
             ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-

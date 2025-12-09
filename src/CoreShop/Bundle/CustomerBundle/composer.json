@@ -26,7 +26,7 @@
   "require": {
     "coreshop/customer": "^5.0",
     "coreshop/resource-bundle": "^5.0",
-    "pimcore/pimcore": "^12.2",
+    "pimcore/pimcore": "^12.3",
     "pimcore/newsletter-bundle": "^2.0"
   },
   "require-dev": {
