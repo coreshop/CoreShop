@@ -174,7 +174,6 @@
     "symfony-tests-dir": "tests",
     "symfony-assets-install": "relative"
   },
-  "minimum-stability": "dev",
   "prefer-stable": true,
   "config": {
     "sort-packages": true,

@@ -31,11 +31,6 @@ class ObjectUserProvider implements UserProviderInterface
     ) {
     }
 
-    public function loadUserByUsername(string $username): ?UserInterface
-    {
-        return $this->loadUserByIdentifier($username);
-    }
-
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $user = $this->userRepository->findByLoginIdentifier($identifier);
@@ -47,7 +42,7 @@ class ObjectUserProvider implements UserProviderInterface
         throw new UserNotFoundException(sprintf('User with email address or username "%s" was not found', $identifier));
     }
 
-    public function refreshUser(UserInterface $user): ?UserInterface
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof \CoreShop\Component\Core\Model\UserInterface) {
             throw new UnsupportedUserException();
