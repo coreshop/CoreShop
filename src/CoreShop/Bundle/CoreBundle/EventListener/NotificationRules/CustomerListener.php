@@ -91,7 +91,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $customer->setNewsletterToken(hash('md5', $customer->getId() . $customer->getEmail() . mt_rand() . time()));
 
         VersionHelper::useVersioning(
-            function () use ($customer) {
+            function () use ($customer): void {
                 $customer->save();
             },
             false,

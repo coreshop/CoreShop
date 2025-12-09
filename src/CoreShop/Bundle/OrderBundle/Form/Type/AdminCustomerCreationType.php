@@ -32,12 +32,12 @@ class AdminCustomerCreationType extends AbstractType
             ->add('customer', CustomerType::class, [
                 'allow_email' => true,
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(groups: ['coreshop']),
                 ],
             ])
             ->add('address', AddressType::class, [
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(groups: ['coreshop']),
                 ],
             ])
         ;

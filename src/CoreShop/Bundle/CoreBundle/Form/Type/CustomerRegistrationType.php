@@ -58,7 +58,7 @@ class CustomerRegistrationType extends AbstractResourceType
         $builder
             ->add('user', UserRegistrationType::class, [
                 'label' => false,
-                'constraints' => [new Valid(['groups' => $this->validationGroups])],
+                'constraints' => [new Valid(groups: $this->validationGroups)],
                 'allow_username' => $this->loginIdentifier === 'username',
             ])
             ->add('salutation', SalutationChoiceType::class, [
@@ -93,7 +93,7 @@ class CustomerRegistrationType extends AbstractResourceType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => $this->validationGroups]),
+                    new Valid(groups: $this->validationGroups),
                 ],
                 'mapped' => false,
             ])
@@ -101,13 +101,13 @@ class CustomerRegistrationType extends AbstractResourceType
                 'label' => 'coreshop.form.customer.terms',
                 'mapped' => false,
                 'validation_groups' => $this->validationGroups,
-                'constraints' => new IsTrue(['groups' => $this->validationGroups]),
+                'constraints' => new IsTrue(groups: $this->validationGroups),
             ])
             ->add('submit', SubmitType::class)
         ;
 
         if ($this->loginIdentifier !== 'username') {
-            $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) {
+            $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event): void {
                 $data = $event->getData();
 
                 if (!$data instanceof CustomerInterface) {

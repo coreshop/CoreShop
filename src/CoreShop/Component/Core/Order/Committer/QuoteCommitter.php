@@ -91,7 +91,7 @@ class QuoteCommitter implements QuoteCommitterInterface
             false,
         );
 
-        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress) {
+        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress): void {
             $shippingAddress->save();
             $invoiceAddress->save();
         }, false);

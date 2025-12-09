@@ -50,7 +50,7 @@ final class CustomerContext implements Context
      */
     public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer): void
     {
-        Assert::throws(function () use ($customer) {
+        Assert::throws(function () use ($customer): void {
             $customer->delete();
         });
     }

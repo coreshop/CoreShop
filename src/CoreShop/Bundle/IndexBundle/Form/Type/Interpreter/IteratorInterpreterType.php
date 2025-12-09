@@ -36,7 +36,7 @@ final class IteratorInterpreterType extends AbstractType
         $builder
             ->add('interpreter', InterpreterType::class, [
                 'constraints' => [
-                    new Valid(['groups' => $this->validationGroups]),
+                    new Valid(groups: $this->validationGroups),
                 ],
             ])
         ;

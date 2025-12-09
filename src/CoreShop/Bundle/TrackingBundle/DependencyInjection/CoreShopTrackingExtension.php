@@ -27,8 +27,8 @@ use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class CoreShopTrackingExtension extends Extension
 {
@@ -36,7 +36,7 @@ final class CoreShopTrackingExtension extends Extension
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
         $this->configureTrackers($configs, $container);
@@ -64,16 +64,16 @@ final class CoreShopTrackingExtension extends Extension
             foreach ($attributes as $tag) {
                 $definition = $container->findDefinition($id);
 
-                $type = $tag['type'] ?? Container::underscore(substr((string) strrchr($definition->getClass(), '\\'), 1));
+                $type = $tag['type'] ?? Container::underscore(
+                    substr((string)strrchr($definition->getClass(), '\\'), 1)
+                );
 
                 if (!array_key_exists($type, $configs['trackers'])) {
                     $container->getDefinition($id)
-                        ->addMethodCall('setEnabled', [false])
-                    ;
+                        ->addMethodCall('setEnabled', [false]);
                 } else {
                     $container->getDefinition($id)
-                        ->addMethodCall('setEnabled', [$configs['trackers'][$type]['enabled']])
-                    ;
+                        ->addMethodCall('setEnabled', [$configs['trackers'][$type]['enabled']]);
                 }
             }
         }

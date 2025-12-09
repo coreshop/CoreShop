@@ -57,7 +57,7 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
             $params = func_get_arg(1) ?? [];
         }
 
-        VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
+        VersionHelper::useVersioning(function () use ($cart, $cartsFolder): void {
             if (!$cart->getId()) {
                 $tempItems = $cart->getItems();
                 $cart->setItems([]);

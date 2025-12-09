@@ -67,7 +67,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         $documentItem->setConvertedTotal($orderItem->getConvertedItemPrice(true) * $quantity, true);
         $documentItem->setConvertedTotal($orderItem->getConvertedItemPrice(false) * $quantity, false);
 
-        VersionHelper::useVersioning(function () use ($documentItem) {
+        VersionHelper::useVersioning(function () use ($documentItem): void {
             $documentItem->save();
         }, false);
 

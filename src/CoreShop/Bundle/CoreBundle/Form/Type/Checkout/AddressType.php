@@ -64,7 +64,7 @@ final class AddressType extends AbstractResourceType
 
         $builder
             ->add('shippingAddress', AddressChoiceType::class, [
-                'constraints' => [new NotBlank(['groups' => $this->validationGroups])],
+                'constraints' => [new NotBlank(groups: $this->validationGroups)],
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.shipping',
                 'allowed_address_identifier' => [null, 'shipping'],
@@ -77,7 +77,7 @@ final class AddressType extends AbstractResourceType
                 'empty_data' => $defaultShippingAddress,
             ])
             ->add('invoiceAddress', AddressChoiceType::class, [
-                'constraints' => [new NotBlank(['groups' => $this->validationGroups])],
+                'constraints' => [new NotBlank(groups: $this->validationGroups)],
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.invoice',
                 'allowed_address_identifier' => [null, 'invoice'],
@@ -89,7 +89,7 @@ final class AddressType extends AbstractResourceType
                 },
                 'empty_data' => $defaultInvoiceAddress,
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event): void {
                 /** @var OrderInterface $cart */
                 $cart = $event->getData();
                 $checkboxData = true;
@@ -121,7 +121,7 @@ final class AddressType extends AbstractResourceType
                     'data' => $checkboxData,
                 ]);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $formData = $event->getData();
 
                 if (isset($formData['invoiceAddress'], $formData['useInvoiceAsShipping']) && '1' === $formData['useInvoiceAsShipping']) {

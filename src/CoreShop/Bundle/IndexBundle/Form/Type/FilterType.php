@@ -38,7 +38,7 @@ class FilterType extends AbstractResourceType
                 ],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
                 ],
             ])
             ->add('preConditions', FilterPreConditionCollectionType::class)

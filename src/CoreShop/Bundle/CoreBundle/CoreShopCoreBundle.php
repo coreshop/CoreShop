@@ -98,6 +98,9 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
         $collection->addBundle(new PimcoreCustomReportsBundle(), 20000);
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $collection->addBundle(new PimcoreNewsletterBundle(), 20000);
     }
 

@@ -62,7 +62,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
             if ($mailDocument instanceof Document\Email) {
                 $params['object'] = $subject;
 
-                InheritanceHelper::useInheritedValues(function () use ($mailDocument, $subject, $recipient, $params) {
+                InheritanceHelper::useInheritedValues(function () use ($mailDocument, $subject, $recipient, $params): void {
                     $this->mailProcessor->sendMail($mailDocument, $subject, $recipient, [], $params);
                 });
             }
