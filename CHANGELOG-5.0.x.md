@@ -20,3 +20,4 @@ Methods for a MySQL Worker need to return a array of `Doctrine\DBAL\Schema\Colum
 * [CoreBundle] fix store values version preview with null values by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2912
 * [GraphQL] enable all translations for graphql by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2914
 * [Pimcore] downgrade doctrine/dbal by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2922
+*  [CoreBundle] fix deprecation and issue in ObjectUserProvider and use stable Pimcore 12 in https://github.com/coreshop/CoreShop/pull/2926
