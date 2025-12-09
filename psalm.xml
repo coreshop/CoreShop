@@ -222,6 +222,13 @@
             </errorLevel>
         </AmbiguousConstantInheritance>
 
+        <RedundantCastGivenDocblockType>
+            <errorLevel type="info">
+                <file name="src/CoreShop/Bundle/PimcoreBundle/Controller/Admin/DynamicDropdownController.php" />
+                <file name="src/CoreShop/Bundle/CoreBundle/Controller/CustomerTransformerController.php" />
+            </errorLevel>
+        </RedundantCastGivenDocblockType>
+
         <!-- level 5 issues - should be avoided at mosts costs... -->
 
 
