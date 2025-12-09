@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "symfony/dependency-injection": "^7.0"
+    "symfony/dependency-injection": "^6.3 || ^7.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",
