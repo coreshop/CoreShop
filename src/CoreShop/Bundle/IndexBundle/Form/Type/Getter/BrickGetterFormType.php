@@ -37,7 +37,7 @@ final class BrickGetterFormType extends AbstractType
         $builder
             ->add('brickField', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
                 ],
             ])
         ;

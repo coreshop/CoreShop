@@ -55,7 +55,7 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
 
             $this->themeHelper->useTheme(
                 $store->getTemplate(),
-                function () use ($subject, $rule, $subConfiguration, $params) {
+                function () use ($subject, $rule, $subConfiguration, $params): void {
                     $this->mailActionProcessor->apply($subject, $rule, $subConfiguration, $params);
                 },
             );

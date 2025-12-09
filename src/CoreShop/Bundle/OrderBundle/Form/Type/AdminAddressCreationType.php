@@ -32,12 +32,12 @@ class AdminAddressCreationType extends AbstractType
         $builder
             ->add('customer', CustomerSelectionType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
             ])
             ->add('address', AddressType::class, [
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(groups: ['coreshop']),
                 ],
             ])
         ;

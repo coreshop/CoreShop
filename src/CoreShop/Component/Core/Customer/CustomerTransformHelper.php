@@ -241,7 +241,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
 
         if ($element instanceof ElementInterface) {
-            VersionHelper::useVersioning(function () use ($element) {
+            VersionHelper::useVersioning(function () use ($element): void {
                 $element->save();
             }, $useVersioning);
         }

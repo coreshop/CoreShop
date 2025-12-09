@@ -38,20 +38,20 @@ final class DimensionConfigurationType extends AbstractType
         $builder
             ->add('height', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('width', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('depth', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
         ;

@@ -37,7 +37,7 @@ final class FieldCollectionGetterFormType extends AbstractType
         $builder
             ->add('collectionField', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
                 ],
             ])
         ;

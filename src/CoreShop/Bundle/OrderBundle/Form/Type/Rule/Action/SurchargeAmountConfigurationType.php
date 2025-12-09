@@ -43,16 +43,16 @@ final class SurchargeAmountConfigurationType extends AbstractType
         $builder
             ->add('amount', MoneyType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
-                    new GreaterThan(['value' => 0, 'groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
+                    new GreaterThan(value: 0, groups: $this->validationGroups),
                 ],
             ])
             ->add('gross', CheckboxType::class, [
             ])
             ->add('currency', CurrencyChoiceType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
                 ],
             ])
         ;

@@ -29,12 +29,12 @@ final class IndexColumnTypeObjectBrickType extends AbstractType
         $builder
             ->add('key', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
             ])
             ->add('className', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
             ])
         ;

@@ -39,17 +39,17 @@ final class FilterConditionRangeType extends AbstractType
             ->add('field', TextType::class)
             ->add('preSelectMin', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('preSelectMax', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('stepCount', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
         ;

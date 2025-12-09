@@ -38,6 +38,9 @@ final class CoreShopCustomerBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $collection->addBundle(new PimcoreNewsletterBundle(), 10);
     }
 

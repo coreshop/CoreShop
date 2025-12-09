@@ -90,7 +90,7 @@ class OrderCreationController extends PimcoreController
 
             $cart = $handledForm->getData();
 
-            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart) {
+            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart): void {
                 $cartProcessor->process($cart);
             });
 
@@ -152,7 +152,7 @@ class OrderCreationController extends PimcoreController
                 throw new HttpException(500);
             }
 
-            InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager, $orderWorkflow) {
+            InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager, $orderWorkflow): void {
                 $workflow->apply($cart, $type);
 
                 if ($type === OrderSaleTransitions::TRANSITION_ORDER) {

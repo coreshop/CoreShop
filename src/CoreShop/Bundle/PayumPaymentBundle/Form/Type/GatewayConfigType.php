@@ -39,7 +39,7 @@ final class GatewayConfigType extends AbstractResourceType
     {
         $builder
             ->add('factoryName', TextType::class)
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $gatewayConfig = $event->getData();
 
                 if (!$gatewayConfig instanceof GatewayConfigInterface) {

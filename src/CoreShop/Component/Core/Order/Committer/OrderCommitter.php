@@ -97,7 +97,7 @@ class OrderCommitter implements OrderCommitterInterface
             false,
         );
 
-        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress) {
+        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress): void {
             $shippingAddress->save();
             $invoiceAddress->save();
         }, false);

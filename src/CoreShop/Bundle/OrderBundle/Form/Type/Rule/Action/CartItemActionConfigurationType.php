@@ -37,18 +37,18 @@ final class CartItemActionConfigurationType extends AbstractType
     {
         $builder
             ->add('conditions', CartItemPriceRuleConditionCollectionType::class, [
-                'constraints' => new Valid(['groups' => $this->conditionsValidationGroups]),
+                'constraints' => new Valid(groups: $this->conditionsValidationGroups),
                 'nested' => true,
             ])
         ;
         $builder
             ->add('actions', CartItemPriceRuleActionCollectionType::class, [
-                'constraints' => new Valid(['groups' => $this->actionsValidationGroups]),
+                'constraints' => new Valid(groups: $this->actionsValidationGroups),
                 'nested' => true,
             ])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
 
             if (is_array($data)) {

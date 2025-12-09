@@ -68,6 +68,9 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         $container->setParameter('coreshop.all.dependant.bundles', []);
 
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $this->registerDependantBundles('coreshop', [PimcoreSimpleBackendSearchBundle::class, PimcoreCustomReportsBundle::class], $container);
 
         if (array_key_exists('pimcore_admin', $configs)) {

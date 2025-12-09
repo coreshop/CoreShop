@@ -39,7 +39,7 @@ final class PaymentProviderRuleConfigurationType extends AbstractType
         $builder
             ->add('paymentProviderRule', PaymentProviderRuleChoiceType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
                 ],
             ])
         ;

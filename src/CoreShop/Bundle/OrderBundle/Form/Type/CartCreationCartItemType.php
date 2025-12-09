@@ -63,7 +63,7 @@ final class CartCreationCartItemType extends AbstractResourceType
                 ])
             ;
 
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $e) {
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $e): void {
                 $data = $e->getData();
 
                 if (!isset($data['customItemPrice'])) {

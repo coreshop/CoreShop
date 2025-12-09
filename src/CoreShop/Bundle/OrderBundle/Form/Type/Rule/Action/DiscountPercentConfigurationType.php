@@ -39,9 +39,9 @@ final class DiscountPercentConfigurationType extends AbstractType
         $builder
             ->add('percent', NumberType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
-                    new Range(['min' => 0, 'max' => 100, 'groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
+                    new Range(min: 0, max: 100, groups: $this->validationGroups),
                 ],
             ])
         ;

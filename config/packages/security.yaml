@@ -7,8 +7,6 @@ pimcore:
             Pimcore\Model\DataObject\CoreShopUser: coreshop.security.user.password_hasher_factories
 
 security:
-    enable_authenticator_manager: true
-
     providers:
         pimcore_admin:
             id: Pimcore\Security\User\UserProvider

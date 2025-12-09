@@ -48,11 +48,11 @@ final class PaymentType extends AbstractResourceType
     {
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
-                'constraints' => [new Valid(), new NotBlank(['groups' => $this->validationGroups])],
+                'constraints' => [new Valid(), new NotBlank(groups: $this->validationGroups)],
                 'label' => 'coreshop.ui.payment_provider',
                 'subject' => $options['payment_subject'],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -64,7 +64,7 @@ final class PaymentType extends AbstractResourceType
                     $this->removeConfigurationFields($event->getForm());
                 }
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 if (!isset($data['paymentProvider'])) {
