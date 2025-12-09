@@ -108,6 +108,7 @@
     "sebastian/diff": "^4.0 | ^5.0 | ^6.0",
     "stof/doctrine-extensions-bundle": "^1.6",
     "sylius/theme-bundle": "^2.2",
+    "symfony/config": "^7.4",
     "symfony/dotenv": "^6.3 || ^7.0",
     "symfony/form": "^6.3 || ^7.0",
     "symfony/http-client": "^6.3 || ^7.0",
@@ -116,7 +117,7 @@
     "symfony/scheduler": "^6.4 || ^7.0",
     "symfony/serializer": "^6.3 || ^7.0",
     "symfony/twig-bundle": "^6.3 || ^7.0",
-    "symfony/webpack-encore-bundle": "^1.17",
+    "symfony/webpack-encore-bundle": "^2.4",
     "webmozart/assert": "^1.10"
   },
   "suggest": {
