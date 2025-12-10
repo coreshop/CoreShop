@@ -49,7 +49,7 @@ final class ProductListener implements EventSubscriberInterface
     public function preUpdate(DataObjectEvent $dataObjectEvent): void
     {
         /**
-         * @var ProductVariantAwareInterface|null $object
+         * @var ProductVariantAwareInterface&AbstractObject|null $object
          *
          * @psalm-var ProductVariantAwareInterface|null $object
          */

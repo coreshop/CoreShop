@@ -10,16 +10,18 @@ parameters:
         - '**/ProcessManager/IndexProcess.php'
         - '**/DataHub/*.php'
         - 'vendor/***'
-        - Core/EventListener/*.php (?)
-        - Core/Context/CustomerAndStoreBasedStorageListContext.php (?)
-        - Core/Context/SessionAndStoreBasedStorageListContext.php (?)
-        - Core/Context/StoreBasedStorageListContext.php (?)
-        - Core/Provider/CoreContextProvider.php (?)
-        - Core/Storage/SessionStorageListStorage.php (?)
-        - Core/Repository/CustomerAndStoreAwareRepositoryInterface.php (?)
-        - DependencyInjection/CoreShopStorageListExtension.php (?)
-        - SplPriorityQueue.php (?)
-        - PriorityQueue.php (?)
+        - 'Core/EventListener/SessionStoreStorageListSubscriber.php?'
+        - 'Core/EventListener/SessionStoreStorageListLogoutSubscriber.php?'
+        - 'Core/EventListener/StorageListBlamerListener.php?'
+        - 'Core/Context/CustomerAndStoreBasedStorageListContext.php?'
+        - 'Core/Context/SessionAndStoreBasedStorageListContext.php?'
+        - 'Core/Context/StoreBasedStorageListContext.php?'
+        - 'Core/Provider/CoreContextProvider.php?'
+        - 'Core/Storage/SessionStorageListStorage.php?'
+        - 'Core/Repository/CustomerAndStoreAwareRepositoryInterface.php?'
+        - 'DependencyInjection/CoreShopStorageListExtension.php?'
+        - SplPriorityQueue.php?
+        - PriorityQueue.php?
 
     ignoreErrors:
         # Magic calls

@@ -50,5 +50,10 @@
       "dev-main": "5.0-dev",
       "dev-master": "5.0-dev"
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
   }
 }

@@ -55,7 +55,7 @@ final class DocumentContext implements Context
         };
 
         /**
-         * @var Document $document
+         * @var Document\Email|Document\Folder|Document\Hardlink|Document\Link|Document\Page|Document\Snippet $document
          */
         $document = new $classForType();
         $document->setParent(Document\Service::createFolderByPath($path));
