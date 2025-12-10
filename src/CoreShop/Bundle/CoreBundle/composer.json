@@ -52,7 +52,7 @@
     "coreshop/messenger-bundle": "^5.0",
     "coreshop/class-definition-patch-bundle": "^5.0",
     "coreshop/core": "^5.0",
-    "doctrine/data-fixtures": "^1.5",
+    "doctrine/data-fixtures": "^1.8",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
     "fakerphp/faker": "^1.16",
     "rinvex/countries": "^9.0",
