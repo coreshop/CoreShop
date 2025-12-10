@@ -50,8 +50,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
 
         $previousStack = $context->getPrevious();
         /**
-         * @var int
-         *
+         * @var int<0, max> $previousStackSize
          * @psalm-type int
          */
         $previousStackSize = count($previousStack);

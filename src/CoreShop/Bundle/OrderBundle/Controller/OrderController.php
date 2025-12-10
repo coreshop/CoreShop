@@ -517,7 +517,7 @@ class OrderController extends PimcoreController
         $list = [];
 
         /**
-         * @var DataObject\Concrete $order
+         * @var DataObject\Concrete&OrderInterface $order
          */
         $notes = $this->container->get(NoteServiceInterface::class)->getObjectNotes($order, Notes::NOTE_EMAIL);
 
@@ -676,7 +676,7 @@ class OrderController extends PimcoreController
     protected function getStatesHistory(OrderInterface $order): array
     {
         /**
-         * @var DataObject\Concrete $order
+         * @var DataObject\Concrete&OrderInterface $order
          */
         $history = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateHistory($order);
 

@@ -64,7 +64,7 @@ class VariantGeneratorService implements VariantGeneratorServiceInterface
         }
 
         /**
-         * @var ProductVariantAwareInterface $variant
+         * @var ProductVariantAwareInterface&DataObject\Concrete $variant
          */
         $variant = new ($product::class)();
 

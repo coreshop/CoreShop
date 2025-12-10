@@ -22,6 +22,7 @@ use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
 use Pimcore\Event\DataObjectEvents;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\Element\ValidationException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -45,10 +46,13 @@ final class AttributeListener implements EventSubscriberInterface
 
     public function preUpdate(DataObjectEvent $dataObjectEvent): void
     {
+        /**
+         * @var AttributeInterface&AbstractObject $object
+         */
         $object = $dataObjectEvent->getObject();
 
         /**
-         * @var AttributeInterface|null $object
+         * @psalm-suppress DocblockTypeContradiction
          */
         if (!$object instanceof AttributeInterface) {
             return;
