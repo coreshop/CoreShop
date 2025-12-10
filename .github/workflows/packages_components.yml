@@ -60,7 +60,7 @@ jobs:
       matrix:
         php: [ 8.3, 8.4 ]
         pimcore: [ ^12.3 ]
-        dependencies: [ highest ]
+        dependencies: [ highest, lowest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
 
     steps:
