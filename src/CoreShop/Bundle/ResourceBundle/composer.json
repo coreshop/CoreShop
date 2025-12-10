@@ -26,7 +26,7 @@
   "require": {
     "doctrine/orm": "^3.0",
     "doctrine/doctrine-bundle": "^2.4",
-    "jms/serializer-bundle": "^5.0",
+    "jms/serializer-bundle": "^5.5",
     "stof/doctrine-extensions-bundle": "^1.6",
     "coreshop/pimcore-bundle": "^5.0",
     "coreshop/locale-bundle": "^5.0",
