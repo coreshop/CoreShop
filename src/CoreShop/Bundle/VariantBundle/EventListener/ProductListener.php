@@ -53,6 +53,9 @@ final class ProductListener implements EventSubscriberInterface
          */
         $object = $dataObjectEvent->getObject();
 
+        /**
+         * @psalm-suppress DocblockTypeContradiction
+         */
         if (!$object instanceof ProductVariantAwareInterface) {
             return;
         }

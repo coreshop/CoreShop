@@ -46,10 +46,13 @@ final class AttributeListener implements EventSubscriberInterface
 
     public function preUpdate(DataObjectEvent $dataObjectEvent): void
     {
+        /**
+         * @var AttributeInterface&AbstractObject $object
+         */
         $object = $dataObjectEvent->getObject();
 
         /**
-         * @var AttributeInterface&AbstractObject $object
+         * @psalm-suppress DocblockTypeContradiction
          */
         if (!$object instanceof AttributeInterface) {
             return;
