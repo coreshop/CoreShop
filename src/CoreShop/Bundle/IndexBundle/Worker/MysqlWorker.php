@@ -35,8 +35,6 @@ use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Name\UnqualifiedName;
-use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Migrations\DependencyFactory;
