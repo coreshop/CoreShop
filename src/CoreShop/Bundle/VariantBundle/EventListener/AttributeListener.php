@@ -49,7 +49,7 @@ final class AttributeListener implements EventSubscriberInterface
         $object = $dataObjectEvent->getObject();
 
         /**
-         * @var AttributeInterface&AbstractObject|null $object
+         * @var AttributeInterface&AbstractObject $object
          */
         if (!$object instanceof AttributeInterface) {
             return;

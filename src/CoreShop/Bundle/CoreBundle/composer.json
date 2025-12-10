@@ -39,7 +39,6 @@
     "coreshop/seo-bundle": "^5.0",
     "coreshop/shipping-bundle": "^5.0",
     "coreshop/tracking-bundle": "^5.0",
-    "coreshop/frontend-bundle": "^5.0",
     "coreshop/sequence-bundle": "^5.0",
     "coreshop/payum-bundle": "^5.0",
     "coreshop/payum-payment-bundle": "^5.0",
@@ -85,6 +84,9 @@
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "php-http/discovery": false
+    }
   }
 }
