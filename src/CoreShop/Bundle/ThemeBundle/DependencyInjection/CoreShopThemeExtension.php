@@ -34,7 +34,7 @@ class CoreShopThemeExtension extends Extension
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         if (false === $configs['default_resolvers']['pimcore_site']) {

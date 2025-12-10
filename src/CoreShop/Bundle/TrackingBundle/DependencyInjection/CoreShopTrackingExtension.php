@@ -36,7 +36,7 @@ final class CoreShopTrackingExtension extends Extension
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         $this->configureTrackers($configs, $container);
@@ -65,15 +65,17 @@ final class CoreShopTrackingExtension extends Extension
                 $definition = $container->findDefinition($id);
 
                 $type = $tag['type'] ?? Container::underscore(
-                    substr((string)strrchr($definition->getClass(), '\\'), 1)
+                    substr((string) strrchr($definition->getClass(), '\\'), 1),
                 );
 
                 if (!array_key_exists($type, $configs['trackers'])) {
                     $container->getDefinition($id)
-                        ->addMethodCall('setEnabled', [false]);
+                        ->addMethodCall('setEnabled', [false])
+                    ;
                 } else {
                     $container->getDefinition($id)
-                        ->addMethodCall('setEnabled', [$configs['trackers'][$type]['enabled']]);
+                        ->addMethodCall('setEnabled', [$configs['trackers'][$type]['enabled']])
+                    ;
                 }
             }
         }
