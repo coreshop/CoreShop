@@ -46,16 +46,14 @@ final class FailedMessageRepository implements FailedMessageRepositoryInterface
 
         $rows = [];
         foreach ($envelopes as $envelope) {
-            /** @var RedeliveryStamp|null $lastRedeliveryStamp */
             $lastRedeliveryStamp = $envelope->last(RedeliveryStamp::class);
-            /** @var ErrorDetailsStamp|null $lastErrorDetailsStamp */
             $lastErrorDetailsStamp = $envelope->last(ErrorDetailsStamp::class);
 
             $failedMessageDetails = new FailedMessageDetails(
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
-                $lastRedeliveryStamp?->getRedeliveredAt()->format('Y-m-d H:i:s') ?? '',
-                $lastErrorDetailsStamp?->getExceptionMessage() ?? '',
+                ($lastRedeliveryStamp?->getRedeliveredAt()->format('Y-m-d H:i:s')) ?? '',
+                $lastErrorDetailsStamp?->getExceptionMessage(),
                 '<pre>' . print_r($envelope->getMessage(), true) . '</pre>',
             );
 
