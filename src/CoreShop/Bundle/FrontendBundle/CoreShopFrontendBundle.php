@@ -19,7 +19,6 @@ namespace CoreShop\Bundle\FrontendBundle;
 
 use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
-use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\BundlePathPass;
 use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\FrontendInstallerPass;
 use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\RegisterFrontendControllerPass;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
@@ -41,7 +40,6 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
 
         $container->addCompilerPass(new RegisterFrontendControllerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
         $container->addCompilerPass(new FrontendInstallerPass());
-        $container->addCompilerPass(new BundlePathPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
     }
 
     public function getNiceName(): string

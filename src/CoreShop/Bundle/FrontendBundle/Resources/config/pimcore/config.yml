@@ -1,5 +1,5 @@
 parameters:
-  coreshop.frontend_dir: ''
+  coreshop.frontend_dir: '%kernel.project_dir%/public/bundles/coreshopfrontend/build'
 
 twig:
     form_themes:
@@ -7,10 +7,10 @@ twig:
 
 webpack_encore:
     builds:
-        coreshop_frontend: '%coreshop.frontend_dir%/Resources/public/build'
+        coreshop_frontend: '%coreshop.frontend_dir%'
 
 framework:
     assets:
         packages:
             coreshop_frontend:
-                json_manifest_path: '%coreshop.frontend_dir%/Resources/public/build/manifest.json'
+                json_manifest_path: '%coreshop.frontend_dir%/manifest.json'
