@@ -41,7 +41,7 @@ class AdditionAmountActionConfigurationType extends AbstractType
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
-                    new GreaterThan(value: 0,groups: $this->validationGroups),
+                    new GreaterThan(value: 0, groups: $this->validationGroups),
                 ],
             ])
             ->add('currency', CurrencyChoiceType::class, [
