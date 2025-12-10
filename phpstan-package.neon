@@ -6,23 +6,22 @@ parameters:
         - '**/DependencyInjection/Configuration.php'
         - '**/Migrations/Version*.php'
         # Ignore cause the file uses external dependencies and will only be used if those dependencies are met
-        - 'CoreShop/Component/SEO/Extractor/LuceneSearchExtractor.php'
         - '**/ProcessManager/IndexListener.php'
         - '**/ProcessManager/IndexProcess.php'
         - '**/DataHub/*.php'
         - 'vendor/***'
-        - 'Core/EventListener/SessionStoreStorageListSubscriber.php'
-        - 'Core/EventListener/SessionStoreStorageListLogoutSubscriber.php'
-        - 'Core/EventListener/StorageListBlamerListener.php'
-        - 'Core/Context/CustomerAndStoreBasedStorageListContext.php'
-        - 'Core/Context/SessionAndStoreBasedStorageListContext.php'
-        - 'Core/Context/StoreBasedStorageListContext.php'
-        - 'Core/Provider/CoreContextProvider.php'
-        - 'Core/Storage/SessionStorageListStorage.php'
-        - 'Core/Repository/CustomerAndStoreAwareRepositoryInterface.php'
-        - 'DependencyInjection/CoreShopStorageListExtension.php'
-        - SplPriorityQueue.php
-        - PriorityQueue.php
+        - 'Core/EventListener/SessionStoreStorageListSubscriber.php?'
+        - 'Core/EventListener/SessionStoreStorageListLogoutSubscriber.php?'
+        - 'Core/EventListener/StorageListBlamerListener.php?'
+        - 'Core/Context/CustomerAndStoreBasedStorageListContext.php?'
+        - 'Core/Context/SessionAndStoreBasedStorageListContext.php?'
+        - 'Core/Context/StoreBasedStorageListContext.php?'
+        - 'Core/Provider/CoreContextProvider.php?'
+        - 'Core/Storage/SessionStorageListStorage.php?'
+        - 'Core/Repository/CustomerAndStoreAwareRepositoryInterface.php?'
+        - 'DependencyInjection/CoreShopStorageListExtension.php?'
+        - SplPriorityQueue.php?
+        - PriorityQueue.php?
 
     ignoreErrors:
         # Magic calls

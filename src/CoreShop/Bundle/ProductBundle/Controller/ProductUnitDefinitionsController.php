@@ -79,13 +79,18 @@ class ProductUnitDefinitionsController extends ResourceController
             }
         }
 
-        return $definitions->filter(function ($unitDefinition) {
+        /**
+         * @var Collection $result
+         */
+        $result = $definitions->filter(function (object $unitDefinition) {
             if (!$unitDefinition instanceof ProductUnitDefinitionInterface) {
                 return false;
             }
 
             return null !== $unitDefinition->getId();
         });
+
+        return $result;
     }
 
     protected function getLatestVersion(Concrete $object): Concrete
