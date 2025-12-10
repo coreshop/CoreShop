@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -21,7 +20,7 @@ namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController;
+use Pimcore\Controller\UserAwareController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +28,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * @psalm-suppress InternalClass
  */
-class GridController extends AdminAbstractController
+class GridController extends UserAwareController
 {
     public function getGridFiltersAction(
         string $listType,
@@ -42,7 +41,7 @@ class GridController extends AdminAbstractController
          *
          * @psalm-suppress InternalMethod
          */
-        $user = $this->getAdminUser();
+        $user = $this->getPimcoreUser();
         /** @var GridFilterInterface $service */
         foreach ($gridFilterServiceRegistry->all() as $id => $service) {
             if ($service->supports($listType) !== true) {
@@ -69,7 +68,7 @@ class GridController extends AdminAbstractController
          *
          * @psalm-suppress InternalMethod
          */
-        $user = $this->getAdminUser();
+        $user = $this->getPimcoreUser();
         /** @var GridActionInterface $service */
         foreach ($gridActionServiceRegistry->all() as $id => $service) {
             if ($service->supports($listType) !== true) {

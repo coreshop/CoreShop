@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    public: true
+
+  CoreShop\Bundle\MoneyBundle\EventListener\IndexActionSettingsSubscriber:
+    arguments:
+      - '%coreshop.currency.decimal_precision%'
+      - '%coreshop.currency.decimal_factor%'
+    tags:
+      - { name: kernel.event_subscriber }

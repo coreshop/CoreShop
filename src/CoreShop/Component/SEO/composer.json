@@ -8,7 +8,7 @@
     "ecommerce"
   ],
   "homepage": "https://www.coreshop.com",
-  "license": "GPL-3.0-or-later",
+  "license": "proprietary",
   "authors": [
     {
       "name": "CoreShop Team",
@@ -24,8 +24,8 @@
     }
   ],
   "require": {
-    "coreshop/registry": "^4.0",
-    "pimcore/pimcore": "^11.0",
+    "coreshop/registry": "^5.0",
+    "pimcore/pimcore": "^12.3",
     "webmozart/assert": "^1.10"
   },
   "require-dev": {
@@ -48,7 +48,8 @@
   "prefer-stable": true,
    "extra": {
     "branch-alias": {
-      "dev-master": "4.1-dev"
+      "dev-main": "5.0-dev",
+      "dev-master": "5.0-dev"
     }
   },
   "config": {

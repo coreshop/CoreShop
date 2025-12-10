@@ -1,14 +1,4 @@
-﻿<!--
-  ~ CoreShop.
-  ~
-  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
-  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
-  ~ files that are distributed with this source code.
-  ~
-  ~ @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
-  ~ @license    https://www.coreshop.com/license     GPLv3 and CCL
-  ~
-  -->
+﻿
 
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
 <path fill="#CFD8DC" d="M40,10H8c-2.209,0-4,1.791-4,4v20c0,2.209,1.791,4,4,4h32c2.209,0,4-1.791,4-4V14C44,11.791,42.209,10,40,10&#10;&#9;z"/>

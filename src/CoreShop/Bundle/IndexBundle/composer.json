@@ -8,7 +8,7 @@
     "ecommerce"
   ],
   "homepage": "https://www.coreshop.com",
-  "license": "GPL-3.0-or-later",
+  "license": "proprietary",
   "authors": [
     {
       "name": "CoreShop Team",
@@ -24,11 +24,11 @@
     }
   ],
   "require": {
-    "coreshop/index": "^4.0",
-    "coreshop/registry": "^4.1",
-    "coreshop/resource-bundle": "^4.0",
-    "coreshop/menu-bundle": "^4.0",
-    "pimcore/pimcore": "^11.0",
+    "coreshop/index": "^5.0",
+    "coreshop/registry": "^5.0",
+    "coreshop/resource-bundle": "^5.0",
+    "coreshop/menu-bundle": "^5.0",
+    "pimcore/pimcore": "^12.3",
     "doctrine/migrations": "^3.9"
   },
   "suggest": {
@@ -38,7 +38,7 @@
     "phpstan/phpstan": "^1.10",
     "phpstan/phpstan-doctrine": "^1.3.40",
     "phpstan/phpstan-webmozart-assert": "^1.2.4",
-    "pimcore/opensearch-client": "^1.0"
+    "pimcore/opensearch-client": "^2.0"
   },
   "autoload": {
     "psr-4": {
@@ -55,12 +55,18 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "4.1-dev"
+      "dev-main": "5.0-dev",
+      "dev-master": "5.0-dev"
     },
     "pimcore": {
       "bundles": [
         "CoreShop\\Bundle\\IndexBundle\\CoreShopIndexBundle"
       ]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": false
     }
   }
 }

@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -21,20 +20,22 @@ namespace CoreShop\Bundle\ResourceBundle\Routing;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Yaml\Yaml;
 
-final class ResourceLoader implements LoaderInterface
+final class ResourceLoader extends Loader
 {
     public function __construct(
         private RegistryInterface $modelRegistry,
         private RouteFactoryInterface $routeFactory,
+        ?string $env = null,
     ) {
+        parent::__construct($env);
     }
 
-    public function load($resource, $type = null)
+    public function load($resource, $type = null): RouteCollection
     {
         $processor = new Processor();
         $configurationDefinition = new Configuration();
@@ -103,19 +104,6 @@ final class ResourceLoader implements LoaderInterface
     public function supports($resource, $type = null): bool
     {
         return 'coreshop.resources' === $type;
-    }
-
-    /**
-     * @psalm-suppress InvalidReturnType Symfony docblocks are messing with us
-     */
-    public function getResolver()
-    {
-        // Intentionally left blank.
-    }
-
-    public function setResolver(LoaderResolverInterface $resolver): void
-    {
-        // Intentionally left blank.
     }
 
     private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods, array $options): Route

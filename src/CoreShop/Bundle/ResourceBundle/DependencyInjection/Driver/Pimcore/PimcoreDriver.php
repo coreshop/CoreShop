@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -75,9 +74,9 @@ final class PimcoreDriver extends AbstractDriver
         $this->addPimcoreController($container, $metadata, $metadata->getClass('pimcore_controller'));
     }
 
-    protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, string $classValue, string $suffix = null): void
+    protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, string $classValue, ?string $suffix = null): void
     {
-        $parents = array_values(class_parents($classValue));
+        $parents = array_values(class_parents($classValue) ?: []);
 
         if (in_array(AdminController::class, $parents, true)) {
             $definition = new ChildDefinition(AdminController::class);
@@ -167,7 +166,7 @@ final class PimcoreDriver extends AbstractDriver
 
         $container->setDefinition($metadata->getServiceId('repository'), $definition);
 
-        foreach (class_implements($repositoryClass) as $typehintClass) {
+        foreach (class_implements($repositoryClass) ?: [] as $typehintClass) {
             $container->registerAliasForArgument(
                 $metadata->getServiceId('repository'),
                 $typehintClass,
@@ -202,7 +201,7 @@ final class PimcoreDriver extends AbstractDriver
 
         $container->setDefinition($metadata->getServiceId('repository.factory'), $definition);
 
-        foreach (class_implements($repositoryClass) as $typehintClass) {
+        foreach (class_implements($repositoryClass) ?: [] as $typehintClass) {
             $container->registerAliasForArgument(
                 $metadata->getServiceId('repository.factory'),
                 $typehintClass,

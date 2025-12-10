@@ -8,7 +8,7 @@
     "ecommerce"
   ],
   "homepage": "https://www.coreshop.com",
-  "license": "GPL-3.0-or-later",
+  "license": "proprietary",
   "authors": [
     {
       "name": "CoreShop Team",
@@ -24,10 +24,11 @@
     }
   ],
   "require": {
-    "coreshop/registry": "^4.1",
-    "coreshop/pimcore-bundle": "^4.0",
+    "coreshop/registry": "^5.0",
+    "coreshop/pimcore-bundle": "^5.0",
     "knplabs/knp-menu-bundle": "^3.1",
-    "pimcore/pimcore": "^11.0"
+    "pimcore/pimcore": "^12.3",
+    "pimcore/admin-ui-classic-bundle": "^2.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",
@@ -49,10 +50,14 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "4.1-dev"
+      "dev-main": "5.0-dev",
+      "dev-master": "5.0-dev"
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "php-http/discovery": false
+    }
   }
 }

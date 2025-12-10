@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -91,7 +90,7 @@ class OrderCreationController extends PimcoreController
 
             $cart = $handledForm->getData();
 
-            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart) {
+            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart): void {
                 $cartProcessor->process($cart);
             });
 
@@ -153,7 +152,7 @@ class OrderCreationController extends PimcoreController
                 throw new HttpException(500);
             }
 
-            InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager, $orderWorkflow) {
+            InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager, $orderWorkflow): void {
                 $workflow->apply($cart, $type);
 
                 if ($type === OrderSaleTransitions::TRANSITION_ORDER) {

@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -35,6 +34,9 @@ use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Name\UnqualifiedName;
+use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Migrations\DependencyFactory;
@@ -89,11 +91,13 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         $this->createLocalizedTableSchema($index, $newSchema);
         $this->createRelationalTableSchema($index, $newSchema);
 
-        /** @psalm-suppress DeprecatedMethod */
-        $upQueries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
+        $comparator = $this->database->createSchemaManager()->createComparator();
 
-        /** @psalm-suppress DeprecatedMethod */
-        $downQueries = $oldSchema->getMigrateFromSql($newSchema, $this->database->getDatabasePlatform());
+        $upDiff = $comparator->compareSchemas($oldSchema, $newSchema);
+        $upQueries = $this->database->getDatabasePlatform()->getAlterSchemaSQL($upDiff);
+
+        $downDiff = $comparator->compareSchemas($newSchema, $oldSchema);
+        $downQueries = $this->database->getDatabasePlatform()->getAlterSchemaSQL($downDiff);
 
         //Show run in an Transaction, but doctrine transactional does not work with PDO for some odd reason....
         foreach ($upQueries as $qry) {
@@ -162,12 +166,12 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('o_id', 'integer');
-        $table->addColumn('o_key', 'string');
+        $table->addColumn('o_key', 'string')->setLength(255);
         $table->addColumn('o_virtualObjectId', 'integer');
         $table->addColumn('o_virtualObjectActive', 'boolean');
         $table->addColumn('o_classId', 'string')->setLength(50);
-        $table->addColumn('o_className', 'string');
-        $table->addColumn('o_type', 'string');
+        $table->addColumn('o_className', 'string')->setLength(255);
+        $table->addColumn('o_type', 'string')->setLength(255);
         $table->addColumn('active', 'boolean');
         $table->setPrimaryKey(['o_id']);
 
@@ -176,15 +180,30 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
                 $type = $column->getObjectType();
                 $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
                 if ($type !== 'localizedfields' && !$interpreterClass instanceof LocalizedInterpreterInterface) {
-                    $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), $this->getFieldTypeConfig($column));
+                    $table->addColumn(
+                        $column->getName(),
+                        $this->renderFieldType($column->getColumnType()),
+                        $this->getFieldTypeConfig($column),
+                    );
                 }
             }
         }
 
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexColumnsExtensionInterface) {
-                foreach ($extension->getSystemColumns() as $name => $type) {
-                    $table->addColumn($name, $this->renderFieldType($type), $this->getSystemFieldTypeConfig($index, $name, $type));
+                foreach ($extension->getSystemColumns() as $column) {
+                    if (!$column instanceof Column) {
+                        continue;
+                    }
+
+                    $options = $column->toArray();
+
+                    unset($options['name']);
+
+                    /**
+                     * @psalm-suppress InternalMethod
+                     */
+                    $table->addColumn($column->getName(), Type::lookupName($column->getType()), $options);
                 }
             }
         }
@@ -211,8 +230,8 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('oo_id', 'integer');
-        $table->addColumn('language', 'string');
-        $table->addColumn('name', 'string', ['notnull' => false]);
+        $table->addColumn('language', 'string')->setLength(255);
+        $table->addColumn('name', 'string', ['notnull' => false])->setLength(255);
         $table->setPrimaryKey(['oo_id', 'language']);
         $table->addIndex(['oo_id']);
         $table->addIndex(['language']);
@@ -221,20 +240,32 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
             $type = $column->getObjectType();
             $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
             if ($type === 'localizedfields' || $interpreterClass instanceof LocalizedInterpreterInterface) {
-                $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), $this->getFieldTypeConfig($column));
+                /**
+                 * @psalm-suppress InternalMethod
+                 */
+                $table->addColumn(
+                    $column->getName(),
+                    $this->renderFieldType($column->getColumnType()),
+                    $this->getFieldTypeConfig($column),
+                );
             }
         }
 
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexColumnsExtensionInterface) {
-                foreach ($extension->getLocalizedSystemColumns() as $name => $type) {
-                    $config = ['notnull' => false];
-
-                    if ($extension instanceof IndexSystemColumnTypeConfigExtension) {
-                        $config = array_merge($config, $extension->getSystemColumnConfig($name, $type));
+                foreach ($extension->getLocalizedSystemColumns() as $column) {
+                    if (!$column instanceof Column) {
+                        continue;
                     }
 
-                    $table->addColumn($name, $this->renderFieldType($type), $config);
+                    $options = $column->toArray();
+
+                    unset($options['name']);
+
+                    /**
+                     * @psalm-suppress InternalMethod
+                     */
+                    $table->addColumn($column->getName(), Type::lookupName($column->getType()), $options);
                 }
             }
         }
@@ -263,20 +294,25 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         $table->addColumn('src', 'integer');
         $table->addColumn('src_virtualObjectId', 'integer');
         $table->addColumn('dest', 'integer');
-        $table->addColumn('fieldname', 'string');
-        $table->addColumn('type', 'string');
+        $table->addColumn('fieldname', 'string')->setLength(255);
+        $table->addColumn('type', 'string')->setLength(255);
         $table->setPrimaryKey(['src', 'dest', 'fieldname', 'type']);
 
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexRelationalColumnsExtensionInterface) {
-                foreach ($extension->getRelationalColumns() as $name => $type) {
-                    $config = ['notnull' => false];
-
-                    if ($extension instanceof IndexSystemColumnTypeConfigExtension) {
-                        $config = array_merge($config, $extension->getSystemColumnConfig($name, $type));
+                foreach ($extension->getRelationalColumns() as $column) {
+                    if (!$column instanceof Column) {
+                        continue;
                     }
 
-                    $table->addColumn($name, $this->renderFieldType($type), $config);
+                    $options = $column->toArray();
+
+                    unset($options['name']);
+
+                    /**
+                     * @psalm-suppress InternalMethod
+                     */
+                    $table->addColumn($column->getName(), Type::lookupName($column->getType()), $options);
                 }
             }
         }
@@ -342,7 +378,9 @@ QUERY;
             $languages = Tool::getValidLanguages();
 
             foreach ($languages as $language) {
-                $this->database->executeQuery('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index->getName(), $language) . '`');
+                $this->database->executeQuery(
+                    'DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index->getName(), $language) . '`',
+                );
             }
 
             $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getTablename($index->getName()) . '`');
@@ -365,11 +403,16 @@ QUERY;
             $allViews = $this->database->createSchemaManager()->listViews();
 
             foreach ($languages as $language) {
-                $potentialTables[$this->getLocalizedViewName($oldName, $language)] = $this->getLocalizedViewName($newName, $language);
+                $potentialTables[$this->getLocalizedViewName($oldName, $language)] = $this->getLocalizedViewName(
+                    $newName,
+                    $language,
+                );
             }
 
             foreach ($potentialTables as $oldTable => $newTable) {
-                if (array_key_exists($oldTable, $allViews) || $this->database->createSchemaManager()->tablesExist($oldTable)) {
+                if (array_key_exists($oldTable, $allViews) || $this->database->createSchemaManager()->tablesExist(
+                    [$oldTable],
+                )) {
                     $this->database->executeQuery(
                         sprintf(
                             'RENAME TABLE `%s` TO `%s`',
@@ -440,7 +483,9 @@ QUERY;
         $insertStatement = [];
 
         $columns = $index->getColumns()->toArray();
-        $columnNames = array_map(function (IndexColumnInterface $column) { return $column->getName(); }, $columns);
+        $columnNames = array_map(function (IndexColumnInterface $column) {
+            return $column->getName();
+        }, $columns);
 
         foreach ($data as $key => $value) {
             if (in_array($key, $columnNames)) {
@@ -460,13 +505,20 @@ QUERY;
 
             $value = $data[$column->getName()];
 
-            $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration($column);
+            $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration(
+                $column,
+            );
             $updateData[] = $value;
-            $insertStatement[] = $this->database->quoteIdentifier($column->getName()) . ' = ' . $this->typeCastValueSQLDecleration($column);
+            $insertStatement[] = $this->database->quoteIdentifier(
+                $column->getName(),
+            ) . ' = ' . $this->typeCastValueSQLDecleration($column);
             $insertData[] = $value;
         }
 
-        $insert = 'INSERT INTO ' . $this->getTablename($index->getName()) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
+        $insert = 'INSERT INTO ' . $this->getTablename($index->getName()) . ' (' . implode(
+            ',',
+            array_keys($dataKeys),
+        ) . ') VALUES (' . implode(',', $dataKeys) . ')'
             . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
         $this->database->executeQuery($insert, array_merge($updateData, $insertData));
@@ -482,7 +534,9 @@ QUERY;
     protected function doInsertLocalizedData(IndexInterface $index, array $data): void
     {
         $columns = $index->getColumns()->toArray();
-        $columnNames = array_map(function (IndexColumnInterface $column) { return $column->getName(); }, $columns);
+        $columnNames = array_map(function (IndexColumnInterface $column) {
+            return $column->getName();
+        }, $columns);
 
         foreach ($data['values'] as $language => $values) {
             $dataKeys = [
@@ -520,14 +574,21 @@ QUERY;
 
                 $value = $values[$column->getName()];
 
-                $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration($column);
+                $dataKeys[$this->database->quoteIdentifier(
+                    $column->getName(),
+                )] = $this->typeCastValueSQLDecleration($column);
                 $updateData[] = $value;
 
-                $insertStatement[] = $this->database->quoteIdentifier($column->getName()) . ' = ' . $this->typeCastValueSQLDecleration($column);
+                $insertStatement[] = $this->database->quoteIdentifier(
+                    $column->getName(),
+                ) . ' = ' . $this->typeCastValueSQLDecleration($column);
                 $insertData[] = $value;
             }
 
-            $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index->getName()) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
+            $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index->getName()) . ' (' . implode(
+                ',',
+                array_keys($dataKeys),
+            ) . ') VALUES (' . implode(',', $dataKeys) . ')'
                 . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
             $this->database->executeQuery($insert, array_merge($updateData, $insertData));
@@ -551,8 +612,7 @@ QUERY;
         }
 
         if (Type::hasType($doctrineType)) {
-            /** @psalm-suppress DeprecatedMethod */
-            return Type::getType($doctrineType)->getName();
+            return Type::lookupName(Type::getType($doctrineType));
         }
 
         throw new \Exception($type . ' is not supported by MySQL Index');

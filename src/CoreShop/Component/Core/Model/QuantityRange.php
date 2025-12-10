@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -26,25 +25,13 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange as BaseQuan
  */
 class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
 {
-    /**
-     * @var int
-     */
-    protected $amount = 0;
+    protected int $amount = 0;
 
-    /**
-     * @var CurrencyInterface|null
-     */
-    protected $currency;
+    protected ?CurrencyInterface $currency = null;
 
-    /**
-     * @var ProductUnitDefinitionInterface|null
-     */
-    protected $unitDefinition;
+    protected ?ProductUnitDefinitionInterface $unitDefinition = null;
 
-    /**
-     * @var int|null
-     */
-    protected $pseudoPrice = 0;
+    protected int $pseudoPrice = 0;
 
     public function getAmount()
     {
@@ -61,7 +48,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
         return $this->currency;
     }
 
-    public function setCurrency(CurrencyInterface $currency = null)
+    public function setCurrency(?CurrencyInterface $currency)
     {
         $this->currency = $currency;
     }
@@ -71,7 +58,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
         return $this->unitDefinition;
     }
 
-    public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition = null)
+    public function setUnitDefinition(?ProductUnitDefinitionInterface $unitDefinition)
     {
         $this->unitDefinition = $unitDefinition;
     }

@@ -5,21 +5,20 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
 namespace CoreShop\Bundle\PayumBundle\Action;
 
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
-use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use Payum\Core\Action\ActionInterface;
@@ -27,7 +26,7 @@ use Payum\Core\Action\ActionInterface;
 final class ConfirmOrderAction implements ActionInterface
 {
     public function __construct(
-        private StateMachineApplier $stateMachineApplier,
+        private StateMachineApplierInterface $stateMachineApplier,
     ) {
     }
 
