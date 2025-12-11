@@ -45,6 +45,9 @@ trait ProposalPriceRuleTrait
      */
     public function getPriceRules(): array
     {
+        /**
+         * @var PriceRuleItemInterface[] $rules
+         */
         $rules = [];
 
         if ($this->getPriceRuleItems() instanceof Fieldcollection) {
