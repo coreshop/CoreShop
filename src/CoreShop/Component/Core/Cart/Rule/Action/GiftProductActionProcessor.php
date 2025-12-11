@@ -28,12 +28,13 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 
 final class GiftProductActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     public function __construct(
-        private StackRepositoryInterface $productRepository,
+        private PimcoreRepositoryInterface $productRepository,
         private OrderItemFactoryInterface $cartItemFactory,
         private AdjustmentFactoryInterface $adjustmentFactory,
     ) {

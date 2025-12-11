@@ -55,9 +55,6 @@ trait ProposalPriceRuleTrait
             }
         }
 
-        /**
-         * @var PriceRuleItemInterface[] $rules
-         */
         return $rules;
     }
 
