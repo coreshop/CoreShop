@@ -40,7 +40,6 @@
     "coreshop/payum-payment": "^5.0",
     "coreshop/taxation": "^5.0",
     "coreshop/notification": "^5.0",
-    "coreshop/payum-bundle": "^5.0",
     "coreshop/variant": "^5.0",
     "coreshop/seo": "^5.0",
     "coreshop/user": "^5.0",
