@@ -28,7 +28,7 @@
     "coreshop/payment-bundle": "^5.0",
     "coreshop/payum-payment-bundle": "^5.0",
     "coreshop/core": "^5.0",
-    "payum/payum-bundle": "^2.5",
+    "payum/payum-bundle": "^2.6.2",
     "payum/payum": "^1.7",
     "php-http/message-factory": "^1.0",
     "symfony/notifier": "^6.3 || ^7.0",
@@ -61,6 +61,9 @@
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "php-http/discovery": false
+    }
   }
 }

@@ -190,7 +190,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
             }
         }
 
-        /** @var AddressesAwareInterface $dependenciesObject */
+        /** @var AddressesAwareInterface&DataObject $dependenciesObject */
         foreach ($dependenciesObjects as $dependenciesObject) {
             $save = false;
             if ($dependenciesObject->hasAddress($address)) {

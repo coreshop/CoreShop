@@ -75,10 +75,6 @@ final class CoreShopIndexExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
-        if (array_key_exists('ProcessManagerBundle', $bundles)) {
-            $loader->load('services/process_manager.yml');
-        }
-
         if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
             $loader->load('services/menu.yml');
             $loader->load('services/installer.yml');
