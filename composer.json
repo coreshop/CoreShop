@@ -97,7 +97,7 @@
     "jms/serializer-bundle": "^5.5",
     "knplabs/knp-menu-bundle": "^3.7",
     "payum/payum": "1.7.x-dev",
-    "payum/payum-bundle": "^2.6",
+    "payum/payum-bundle": "^2.6.2",
     "php-http/guzzle7-adapter": "^1.0",
     "php-http/message-factory": "^1.1",
     "pimcore/admin-ui-classic-bundle": "^2.0",
