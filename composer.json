@@ -123,6 +123,9 @@
   "suggest": {
     "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine."
   },
+  "conflict": {
+    "ezimuel/ringphp": "<1.4"
+  },
   "require-dev": {
     "behat/behat": "^3.27",
     "behat/mink": "^1.13",
@@ -140,7 +143,6 @@
     "phpstan/phpstan-webmozart-assert": "^2.0",
     "phpunit/phpunit": "^10.0",
     "pimcore/opensearch-client": "^2.1",
-    "opensearch-project/opensearch-php": "^2.3",
     "robertfausk/behat-panther-extension": "^1.2",
     "symfony/panther": "^2.3",
     "php-webdriver/webdriver": "^1.15",
