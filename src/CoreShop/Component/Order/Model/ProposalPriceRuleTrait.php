@@ -42,6 +42,7 @@ trait ProposalPriceRuleTrait
 
     /**
      * @psalm-suppress InvalidReturnType
+     *
      * @return PriceRuleItemInterface[]
      */
     public function getPriceRules(): array
