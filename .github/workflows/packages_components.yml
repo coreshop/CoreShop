@@ -1,12 +1,12 @@
 name: Packages Components
 on:
   push:
-    branches: [ '4.0', '4.1', '5.0', 'next' ]
+    branches: [ '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
   pull_request_target:
-    branches: [ '4.0', '4.1', '5.0', 'next' ]
+    branches: [ '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'

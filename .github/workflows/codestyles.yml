@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branches: [ '4.0', '4.1', '5.0', 'next' ]
+        branches: [ '5.0', 'next' ]
 
     steps:
       - uses: actions/checkout@v4
