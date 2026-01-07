@@ -11,4 +11,13 @@ old, not copied yet, Frontend Files to your implementation.
 ### Index Bundle
 
 The IndexBundle Extensions (`IndexColumnsExtensionInterface`, `IndexRelationalColumnsExtensionInterface`) get*Columns
-Methods for a MySQL Worker need to return a array of `Doctrine\DBAL\Schema\Column` now 
+Methods for a MySQL Worker need to return a array of `Doctrine\DBAL\Schema\Column` now
+
+## What's Changed
+* [FrontendBundle] Design v2 and Pimcore 12 compatibility by @codingioanniskrikos in https://github.com/coreshop/CoreShop/pull/2744
+* [IndexBundle] Optimize 404 Exception Handling on Index Item Deletion by @aarongerig in https://github.com/coreshop/CoreShop/pull/2894
+* [IndexBundle] Ignore missing 404 error when deleting non-existent document by @aarongerig in https://github.com/coreshop/CoreShop/pull/2896
+* [CoreBundle] fix store values version preview with null values by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2912
+* [GraphQL] enable all translations for graphql by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2914
+* [Pimcore] downgrade doctrine/dbal by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2922
+*  [CoreBundle] fix deprecation and issue in ObjectUserProvider and use stable Pimcore 12 in https://github.com/coreshop/CoreShop/pull/2926
