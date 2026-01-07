@@ -27,7 +27,7 @@ final class AddToCartType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('cartItem', CartItemType::class, [
-            'constraints' => [new Valid(['groups' => $this->validationGroups])],
+            'constraints' => [new Valid(groups: $this->validationGroups)],
         ]);
     }
 

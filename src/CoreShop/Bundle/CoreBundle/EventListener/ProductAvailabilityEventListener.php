@@ -122,7 +122,7 @@ final class ProductAvailabilityEventListener
             $cartItem->delete();
 
             VersionHelper::useVersioning(
-                function () use ($cart) {
+                function () use ($cart): void {
                     $cart->setNeedsRecalculation(true);
                     $cart->save();
                 },

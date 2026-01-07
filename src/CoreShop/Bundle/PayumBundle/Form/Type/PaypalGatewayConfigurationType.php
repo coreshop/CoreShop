@@ -33,28 +33,22 @@ final class PaypalGatewayConfigurationType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'constraints' => [
-                    new NotBlank([
-                        'groups' => 'coreshop',
-                    ]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
-                    new NotBlank([
-                        'groups' => 'coreshop',
-                    ]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
             ])
             ->add('signature', TextType::class, [
                 'constraints' => [
-                    new NotBlank([
-                        'groups' => 'coreshop',
-                    ]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
             ])
             ->add('sandbox', CheckboxType::class, [
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 $data['payum.http_client'] = '@coreshop.payum.http_client';

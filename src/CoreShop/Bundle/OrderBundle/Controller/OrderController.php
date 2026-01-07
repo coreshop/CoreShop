@@ -56,7 +56,7 @@ use JMS\Serializer\SerializerInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -256,7 +256,7 @@ class OrderController extends PimcoreController
             $changedOrderItems = [];
 
             InheritanceHelper::useInheritedValues(
-                function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository, &$changedOrderItems) {
+                function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository, &$changedOrderItems): void {
                     if ($previewOnly) {
                         $cartProcessor->process($order);
                     } else {
@@ -536,7 +536,7 @@ class OrderController extends PimcoreController
         $list = [];
 
         /**
-         * @var DataObject\Concrete $order
+         * @var DataObject\Concrete&OrderInterface $order
          */
         $notes = $this->container->get(NoteServiceInterface::class)->getObjectNotes($order, Notes::NOTE_EMAIL);
 
@@ -695,7 +695,7 @@ class OrderController extends PimcoreController
     protected function getStatesHistory(OrderInterface $order): array
     {
         /**
-         * @var DataObject\Concrete $order
+         * @var DataObject\Concrete&OrderInterface $order
          */
         $history = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateHistory($order);
 
@@ -865,7 +865,7 @@ class OrderController extends PimcoreController
                 new SubscribedService(
                     'workflows',
                     'iterable',
-                    attributes: new TaggedIterator('workflow.state_machine'),
+                    attributes: new AutowireIterator('workflow.state_machine'),
                 ),
                 new SubscribedService('jms_serializer', SerializerInterface::class),
                 AddressFormatterInterface::class,

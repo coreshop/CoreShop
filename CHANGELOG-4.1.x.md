@@ -1,3 +1,13 @@
+## 4.1.8
+* [Messenger] dispatch `FailedMessageDetailsEvent` to allow customization of failed message details generation by @jdreesen in https://github.com/coreshop/CoreShop/pull/2911
+* [Messenger] wrap failed message details info modal data in `<pre>` tags by @jdreesen in https://github.com/coreshop/CoreShop/pull/2910
+* [Pimcore] require Pimcore 11.5 only and test for PHP 8.3 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2937
+* [CoreBundle] fix reports injection by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2936
+
+## 4.1.7
+* [CoreBundle] fix store values version preview with null values by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2912
+* [GraphQL] enable all translations for graphql by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2914
+
 ## 4.1.6
 * [IndexBundle] Ignore missing 404 error when deleting non-existent document by @aarongerig in https://github.com/coreshop/CoreShop/pull/2896
 * [PimcoreBundle] replace outdated translation ts with t by @philippmunz in https://github.com/coreshop/CoreShop/pull/2905

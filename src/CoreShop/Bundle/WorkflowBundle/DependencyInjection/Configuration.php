@@ -19,6 +19,7 @@ namespace CoreShop\Bundle\WorkflowBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Symfony\Component\Config\Definition\Builder\NodeParentInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -38,8 +39,19 @@ final class Configuration implements ConfigurationInterface
                         ->children()
         ;
 
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         $this->addStateMachineSection($smNode);
+
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         $this->addColorSection($smNode);
+
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         $this->addCallBackSection($smNode);
 
         $smNode->end()->end()->end()->end();
@@ -47,7 +59,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addStateMachineSection(NodeBuilder $node): void
+    private function addStateMachineSection(NodeParentInterface $node): void
     {
         $node
             ->arrayNode('places')
@@ -146,8 +158,19 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('callbacks')
         ;
 
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         $this->addSubCallbackSection($callbacks, 'guard');
+
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         $this->addSubCallbackSection($callbacks, 'before');
+
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         $this->addSubCallbackSection($callbacks, 'after');
 
         $callbacks->end()->end();

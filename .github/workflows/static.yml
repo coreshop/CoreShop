@@ -1,7 +1,7 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ '4.0', '4.1', '5.0', 'next' ]
+    branches: [ '5.0', 'next' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'
@@ -12,7 +12,7 @@ on:
       - 'composer.json'
       - '.github/workflows/static.yml'
   pull_request_target:
-    branches: [ '4.0', '4.1', '5.0', 'next' ]
+    branches: [ '5.0', 'next' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'
@@ -46,8 +46,8 @@ jobs:
     strategy:
       matrix:
         php: [ 8.3, 8.4 ]
-        pimcore: [ ^12.0 ]
-        dependencies: [ highest ]
+        pimcore: [ ^12.3 ]
+        dependencies: [ highest, lowest ]
     services:
       database:
         image: "mysql:8"

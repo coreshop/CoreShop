@@ -29,6 +29,9 @@ final class CoreShopTrackingBundle extends Bundle implements DependentBundleInte
 {
     public static function registerDependentBundles(BundleCollection $collection): void
     {
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $collection->addBundle(new PimcoreGoogleMarketingBundle(), 1000);
     }
 

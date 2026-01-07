@@ -221,7 +221,11 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
             $simpleStorage = new Definition(SimpleStorageListStorage::class);
             $container->setDefinition('coreshop.storage_list.storage.' . $name, $simpleStorage);
 
-            if (interface_exists(CustomerAwareInterface::class) && interface_exists(StoreAwareInterface::class)) {
+            if (interface_exists(CustomerAwareInterface::class) &&
+                interface_exists(StoreAwareInterface::class) &&
+                interface_exists(ShopperContextInterface::class) &&
+                interface_exists(StoreContextInterface::class) &&
+                interface_exists(CustomerContextInterface::class)) {
                 $implements = \class_implements($list['resource']['interface']);
 
                 if (isset($implements[StoreAwareInterface::class], $implements[CustomerAwareInterface::class])) {

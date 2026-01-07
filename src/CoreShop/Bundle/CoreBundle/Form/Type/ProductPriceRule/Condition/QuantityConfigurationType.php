@@ -38,14 +38,14 @@ final class QuantityConfigurationType extends AbstractType
         $builder
             ->add('minQuantity', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('maxQuantity', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
+                    new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
         ;

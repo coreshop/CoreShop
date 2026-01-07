@@ -37,7 +37,7 @@ final class ObjectPropertyInterpreterFormType extends AbstractType
         $builder
             ->add('property', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
                 ],
             ])
         ;

@@ -47,7 +47,7 @@ final class CartCreationType extends AbstractResourceType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             })
         ;
     }

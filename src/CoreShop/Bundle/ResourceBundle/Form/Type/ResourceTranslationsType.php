@@ -40,7 +40,7 @@ final class ResourceTranslationsType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event): void {
             /** @var TranslationInterface[]|null[] $translations */
             $translations = $event->getData();
             $translatable = $event->getForm()->getParent()->getData();

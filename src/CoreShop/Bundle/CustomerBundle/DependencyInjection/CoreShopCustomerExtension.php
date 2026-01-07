@@ -40,6 +40,10 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
         $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
         $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         $this->registerStack('coreshop', $configs['stack'], $container);
+
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $this->registerDependantBundles('coreshop', [PimcoreNewsletterBundle::class], $container);
 
         $container->setParameter('coreshop.customer.security.login_identifier', $configs['login_identifier']);

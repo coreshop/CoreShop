@@ -30,6 +30,9 @@ final class CoreShopPayumExtension extends AbstractModelExtension
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $xmlLoader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');

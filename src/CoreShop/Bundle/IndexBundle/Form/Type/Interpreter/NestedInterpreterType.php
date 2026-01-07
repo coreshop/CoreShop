@@ -36,7 +36,7 @@ final class NestedInterpreterType extends AbstractType
         $builder
             ->add('interpreters', InterpreterCollectionType::class, [
                 'constraints' => [
-                    new Valid(['groups' => $this->validationGroups]),
+                    new Valid(groups: $this->validationGroups),
                 ],
             ])
         ;

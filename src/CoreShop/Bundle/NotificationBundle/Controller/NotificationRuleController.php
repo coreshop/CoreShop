@@ -19,6 +19,7 @@ namespace CoreShop\Bundle\NotificationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +87,7 @@ class NotificationRuleController extends ResourceController
     public function sortAction(Request $request): Response
     {
         /**
-         * @var EntityRepository $repository
+         * @var EntityRepository&RepositoryInterface $repository
          */
         $repository = $this->repository;
         $rule = $this->getParameterFromRequest($request, 'rule');

@@ -47,7 +47,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             DriverProvider::get($metadata)->load($container, $metadata);
 
             if ($metadata->hasParameter('translation')) {
-                $alias = $alias . '_translation';
+                $alias .= '_translation';
                 $resourceConfig = array_merge(['driver' => $driver], $resourceConfig['translation']);
 
                 $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];

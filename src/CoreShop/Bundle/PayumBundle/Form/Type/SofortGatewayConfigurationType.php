@@ -31,12 +31,10 @@ final class SofortGatewayConfigurationType extends AbstractType
         $builder
             ->add('config_key', TextType::class, [
                 'constraints' => [
-                    new NotBlank([
-                        'groups' => 'coreshop',
-                    ]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 $data['payum.http_client'] = '@coreshop.payum.http_client';

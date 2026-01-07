@@ -31,11 +31,6 @@ class ObjectUserProvider implements UserProviderInterface
     ) {
     }
 
-    public function loadUserByUsername(string $username): ?UserInterface
-    {
-        return $this->loadUserByIdentifier($username);
-    }
-
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $user = $this->userRepository->findByLoginIdentifier($identifier);
