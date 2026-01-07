@@ -58,7 +58,7 @@ abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multise
      * Checks if data is empty. Returns true only for null, not for empty arrays.
      * This allows differentiating between "not set" (null) and "explicitly empty" ([]).
      *
-     * @param mixed $data
+     * @param array|null $data
      *
      * @return bool
      */
