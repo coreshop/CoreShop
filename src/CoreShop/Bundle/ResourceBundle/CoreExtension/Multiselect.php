@@ -48,10 +48,24 @@ abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multise
 
         $data = $object->getObjectVar($this->getName());
 
-        if (null === $data) {
-            $data = [];
-        }
-
+        // Don't convert null to empty array to allow Pimcore's inheritance to work
+        // null means "not set" and will inherit from parent
+        // empty array means "explicitly set to no values" and won't inherit
         return $data;
+    }
+
+    /**
+     * Checks if data is empty. Returns true only for null, not for empty arrays.
+     * This allows differentiating between "not set" (null) and "explicitly empty" ([]).
+     *
+     * @param mixed $data
+     *
+     * @return bool
+     */
+    public function isEmpty($data): bool
+    {
+        // Only null is considered empty (will inherit from parent)
+        // Empty array [] is NOT empty (explicitly set to no values, won't inherit)
+        return null === $data;
     }
 }

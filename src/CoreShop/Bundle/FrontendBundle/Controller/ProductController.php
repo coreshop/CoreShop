@@ -82,7 +82,7 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        if (!in_array($this->container->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {
+        if (!in_array($this->container->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores() ?? [])) {
             throw new NotFoundHttpException('product not found');
         }
     }

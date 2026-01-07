@@ -118,7 +118,7 @@ final class ProductContext implements Context
      */
     public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store): void
     {
-        $product->setStores(array_merge($product->getStores(), [$store->getId()]));
+        $product->setStores(array_merge($product->getStores() ?? [], [$store->getId()]));
         $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
