@@ -93,6 +93,9 @@ final class PaymentType extends AbstractResourceType
                 continue;
             }
 
+            /**
+             * @psalm-suppress ArgumentTypeCoercion
+             */
             $formBuilder = $builder->create(
                 'paymentSettings',
                 $this->formTypeRegistry->get($type, 'default'),
