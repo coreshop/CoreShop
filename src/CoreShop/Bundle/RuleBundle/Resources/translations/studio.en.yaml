@@ -1,3 +1,6 @@
+---
+coreshop_conditions: 'Conditions'
+coreshop_actions: 'Actions'
 coreshop_condition_no_configuration: 'No Configuration available'
 coreshop_condition_conditions_operator_and: 'And'
 coreshop_condition_conditions_operator_or: 'Or'

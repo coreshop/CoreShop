@@ -21,17 +21,16 @@ import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import type { ListingBuilder } from '@pimcore/studio-ui-bundle/modules/element'
 import type { ClassDefinitionSelectionDecoratorConfig } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { ResourceConfigProvider } from '@coreshop/resource/src/config/ConfigProvider'
-import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { type AbstractDecorator, type AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element/listing/decorators/abstract-decorator'
+import { openSaleWidget } from '../hooks'
+import type { SaleType } from '../types'
 
 /**
  * Creates a custom decorator that adds onRowDoubleClick functionality
+ * Uses centralized openSaleWidget utility for opening sale details
  */
-const createRowDoubleClickDecorator = (
-  widgetComponent: string,
-  widgetNamePrefix: string
-): AbstractDecorator => {
+const createRowDoubleClickDecorator = (saleType: SaleType): AbstractDecorator => {
   return (props: AbstractDecoratorProps): AbstractDecoratorProps => {
     const { useGridOptions, ...defaultProps } = props
 
@@ -47,14 +46,7 @@ const createRowDoubleClickDecorator = (
           return {
             ...baseGridProps,
             onRowDoubleClick: (row: any) => {
-              widgetManager.openMainWidget({
-                name: `${widgetNamePrefix} #${row.id}`,
-                id: `${widgetComponent}-${row.id}`,
-                component: widgetComponent,
-                config: {
-                  orderId: row.id
-                }
-              })
+              openSaleWidget(widgetManager, { id: row.id, type: saleType })
             }
           }
         }
@@ -105,10 +97,7 @@ export const SalesListingBuildersModule: AbstractModule = {
       // Override actionColumn decorator to add onRowDoubleClick for opening Order detail widget
       orderListingBuilder.overrideDecorator({
         name: 'actionColumn',
-        decorator: createRowDoubleClickDecorator(
-          'coreshop-order-detail',
-          'Order'
-        )
+        decorator: createRowDoubleClickDecorator('order')
       })
 
       // ===========================
@@ -139,10 +128,7 @@ export const SalesListingBuildersModule: AbstractModule = {
       // Override actionColumn decorator to add onRowDoubleClick for opening Cart detail widget
       cartListingBuilder.overrideDecorator({
         name: 'actionColumn',
-        decorator: createRowDoubleClickDecorator(
-          'coreshop-cart-detail',
-          'Cart'
-        )
+        decorator: createRowDoubleClickDecorator('cart')
       })
 
       // ===========================
@@ -173,10 +159,7 @@ export const SalesListingBuildersModule: AbstractModule = {
       // Override actionColumn decorator to add onRowDoubleClick for opening Quote detail widget
       quoteListingBuilder.overrideDecorator({
         name: 'actionColumn',
-        decorator: createRowDoubleClickDecorator(
-          'coreshop-quote-detail',
-          'Quote'
-        )
+        decorator: createRowDoubleClickDecorator('quote')
       })
     } catch (err) {
       console.error('[CoreShop] Failed to initialize sales listing builders:', err)

@@ -11,8 +11,35 @@
  */
 
 import React from 'react'
+import { Spin } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
 import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListingBuilder } from '@pimcore/studio-ui-bundle/modules/data-object'
+import { createStyles } from 'antd-style'
+
+const useStyles = createStyles(({ css }) => ({
+  container: css`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  `,
+  listing: css`
+    flex: 1;
+    overflow: hidden;
+  `,
+  loading: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  `
+}))
+
+interface FolderConfig {
+  success: boolean
+  className: string
+  folderId: number
+}
 
 /**
  * Quote List Component
@@ -20,18 +47,61 @@ import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListin
  * Displays CoreShopQuote DataObjects using Pimcore's DataObject listing
  */
 export const QuoteList: React.FC = () => {
+  const { t } = useTranslation()
+  const { styles } = useStyles()
+  const [folderId, setFolderId] = React.useState<number | null>(null)
+  const [loading, setLoading] = React.useState(true)
   const listingBuilder = container.get<ObjectListingBuilder>('CoreShop/Quote/Listing/Builder')
 
+  React.useEffect(() => {
+    const fetchFolderConfig = async (): Promise<void> => {
+      try {
+        const response = await fetch('/pimcore-studio/api/coreshop/order/get-folder-configuration?saleType=quote')
+        const data: FolderConfig = await response.json()
+
+        if (data.success && data.folderId) {
+          setFolderId(data.folderId)
+        }
+      } catch (error) {
+        console.error('Failed to fetch quote folder configuration:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    void fetchFolderConfig()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <Spin size="large" />
+      </div>
+    )
+  }
+
+  if (folderId === null) {
+    return (
+      <div className={styles.loading}>
+        <span>{t('coreshop_no_folder_configured', { defaultValue: 'No folder configured for quotes' })}</span>
+      </div>
+    )
+  }
+
   return (
-    <DataObjectProvider id={1}>
-      <BaseListing
-        {...listingBuilder.build({
-          props: {
-            ...listingDefaultProps
-          },
-          config: {}
-        })}
-      />
-    </DataObjectProvider>
+    <div className={styles.container}>
+      <div className={styles.listing}>
+        <DataObjectProvider id={folderId}>
+          <BaseListing
+            {...listingBuilder.build({
+              props: {
+                ...listingDefaultProps
+              },
+              config: {}
+            })}
+          />
+        </DataObjectProvider>
+      </div>
+    </div>
   )
 }

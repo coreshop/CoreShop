@@ -47,6 +47,10 @@ import {
   InfoTab,
   CorrespondenceTab
 } from './modules/sales/tabs'
+import { OrderCreationStepRegistry } from './modules/order-creation/registry'
+import { orderCreationServiceIds } from './modules/order-creation/service-ids'
+import { OrderCreationPanel } from './modules/order-creation/components'
+import { BaseStepConfig, ProductsStepConfig, TotalsStepConfig } from './modules/order-creation/steps'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-order',
@@ -194,6 +198,20 @@ const plugin: IAbstractPlugin = {
             types: ['order', 'cart', 'quote'],
             component: DetailTab
         })
+
+        // ============================================
+        // Order Creation Registry Setup
+        // ============================================
+        // Create and bind order creation step registry
+        container.bind(orderCreationServiceIds.stepRegistry).to(OrderCreationStepRegistry).inSingletonScope()
+
+        // Get registry and register base steps
+        const orderCreationStepRegistry = container.get<OrderCreationStepRegistry>(orderCreationServiceIds.stepRegistry)
+
+        // Register OrderBundle steps (base implementation)
+        orderCreationStepRegistry.register('base', BaseStepConfig)
+        orderCreationStepRegistry.register('products', ProductsStepConfig)
+        orderCreationStepRegistry.register('totals', TotalsStepConfig)
     },
 
     onStartup({ moduleSystem }) {
@@ -240,6 +258,12 @@ const plugin: IAbstractPlugin = {
         widgets.registerWidget({
             name: 'coreshop-quote-detail',
             component: QuoteDetailWidget,
+        })
+
+        // Register Order Creation widget
+        widgets.registerWidget({
+            name: 'coreshop-order-creation',
+            component: OrderCreationPanel
         })
     }
 }

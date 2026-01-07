@@ -16,9 +16,7 @@ import { SaleDetail } from './SaleDetail'
 import type { Sale } from './types'
 
 interface QuoteDetailWidgetProps {
-  config: {
-    id: number
-  }
+  orderId: number
 }
 
 const loadQuoteFromBackend = async (id: number): Promise<Sale | null> => {
@@ -47,11 +45,11 @@ const loadQuoteFromBackend = async (id: number): Promise<Sale | null> => {
   }
 }
 
-export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = ({ config }) => {
+export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
   const [quote, setQuote] = React.useState<Sale | undefined>()
   const [loading, setLoading] = React.useState(true)
 
-  const quoteId = config?.id
+  const quoteId = props?.orderId
 
   const loadQuote = React.useCallback(async () => {
     if (!quoteId) {

@@ -16,9 +16,7 @@ import { SaleDetail } from './SaleDetail'
 import type { Sale } from './types'
 
 interface CartDetailWidgetProps {
-  config: {
-    id: number
-  }
+  orderId: number
 }
 
 const loadCartFromBackend = async (id: number): Promise<Sale | null> => {
@@ -47,11 +45,11 @@ const loadCartFromBackend = async (id: number): Promise<Sale | null> => {
   }
 }
 
-export const CartDetailWidget: React.FC<CartDetailWidgetProps> = ({ config }) => {
+export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
   const [cart, setCart] = React.useState<Sale | undefined>()
   const [loading, setLoading] = React.useState(true)
 
-  const cartId = config?.id
+  const cartId = props?.orderId
 
   const loadCart = React.useCallback(async () => {
     if (!cartId) {

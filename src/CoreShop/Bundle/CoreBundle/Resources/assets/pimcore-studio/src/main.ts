@@ -20,6 +20,7 @@ import { RuleRegistryExtensionModule } from './modules/extension/rule-registry'
 import { SaleTabExtensionModule } from './modules/extension/sale-tab'
 import { StoreExtensionModule } from './modules/extension/store'
 import { CountryFormExtensionModule } from './modules/extension/country/country-form-extension'
+import { OrderCreationExtensionModule } from './modules/extension/order-creation'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -35,6 +36,7 @@ const plugin: IAbstractPlugin = {
         // These use lazy initialization to wait for registries to be available
         moduleSystem.registerModule(RuleRegistryExtensionModule)
         moduleSystem.registerModule(SaleTabExtensionModule)
+        moduleSystem.registerModule(OrderCreationExtensionModule)
 
         // Register other extension modules
         moduleSystem.registerModule(CoreBundleIconModule)
