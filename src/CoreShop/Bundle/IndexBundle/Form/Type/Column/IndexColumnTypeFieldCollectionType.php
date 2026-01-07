@@ -29,7 +29,7 @@ final class IndexColumnTypeFieldCollectionType extends AbstractType
         $builder
             ->add('className', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
             ])
         ;

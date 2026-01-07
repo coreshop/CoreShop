@@ -27,8 +27,8 @@ use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class CoreShopTrackingExtension extends Extension
 {
@@ -64,7 +64,9 @@ final class CoreShopTrackingExtension extends Extension
             foreach ($attributes as $tag) {
                 $definition = $container->findDefinition($id);
 
-                $type = $tag['type'] ?? Container::underscore(substr((string) strrchr($definition->getClass(), '\\'), 1));
+                $type = $tag['type'] ?? Container::underscore(
+                    substr((string) strrchr($definition->getClass(), '\\'), 1),
+                );
 
                 if (!array_key_exists($type, $configs['trackers'])) {
                     $container->getDefinition($id)

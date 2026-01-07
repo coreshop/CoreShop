@@ -70,7 +70,7 @@ class IndexMessageHandler
 
     private function processIndexable(IndexableInterface $indexable, IndexMessage $indexMessage)
     {
-        InheritanceHelper::useInheritedValues(function () use ($indexable, $indexMessage) {
+        InheritanceHelper::useInheritedValues(function () use ($indexable, $indexMessage): void {
             $this->indexUpdaterService->updateIndices($indexable, $indexMessage->isSaveVersionOnly());
         });
     }

@@ -190,7 +190,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
             }
         }
 
-        /** @var AddressesAwareInterface $dependenciesObject */
+        /** @var AddressesAwareInterface&DataObject $dependenciesObject */
         foreach ($dependenciesObjects as $dependenciesObject) {
             $save = false;
             if ($dependenciesObject->hasAddress($address)) {
@@ -241,7 +241,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
 
         if ($element instanceof ElementInterface) {
-            VersionHelper::useVersioning(function () use ($element) {
+            VersionHelper::useVersioning(function () use ($element): void {
                 $element->save();
             }, $useVersioning);
         }

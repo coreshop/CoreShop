@@ -29,6 +29,7 @@ use CoreShop\Component\Order\QuoteTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
@@ -69,7 +70,7 @@ class QuoteCommitter implements QuoteCommitterInterface
         $originalShippingAddress = $order->hasShippableItems() === false ? $order->getInvoiceAddress() : $order->getShippingAddress();
 
         /**
-         * @var AddressInterface $shippingAddress
+         * @var AddressInterface&Concrete $shippingAddress
          *
          * @psalm-suppress InvalidArgument
          */
@@ -80,7 +81,7 @@ class QuoteCommitter implements QuoteCommitterInterface
             false,
         );
         /**
-         * @var AddressInterface $invoiceAddress
+         * @var AddressInterface&Concrete $invoiceAddress
          *
          * @psalm-suppress InvalidArgument
          */
@@ -91,7 +92,7 @@ class QuoteCommitter implements QuoteCommitterInterface
             false,
         );
 
-        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress) {
+        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress): void {
             $shippingAddress->save();
             $invoiceAddress->save();
         }, false);

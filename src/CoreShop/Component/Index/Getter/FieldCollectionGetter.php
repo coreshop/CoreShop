@@ -71,7 +71,7 @@ class FieldCollectionGetter implements GetterInterface
             }
 
             if ($localizedFd) {
-                LocaleFallbackHelper::useFallbackValues(function () use ($item, $fieldGetter, &$fieldValues) {
+                LocaleFallbackHelper::useFallbackValues(function () use ($item, $fieldGetter, &$fieldValues): void {
                     foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
                         $fieldValues[$locale][] = $item->$fieldGetter($locale);
                     }

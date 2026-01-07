@@ -39,7 +39,7 @@ final class ShippingRuleConfigurationType extends AbstractType
         $builder
             ->add('shippingRule', ShippingRuleChoiceType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
                 ],
             ])
         ;

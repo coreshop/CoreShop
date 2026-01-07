@@ -33,7 +33,7 @@ final class ProductQuantityPriceRuleNestedConfigurationType extends AbstractNest
             ->add('conditions', ProductQuantityPriceRuleConditionCollectionType::class, ['nested' => true])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
 
             if (is_array($data)) {

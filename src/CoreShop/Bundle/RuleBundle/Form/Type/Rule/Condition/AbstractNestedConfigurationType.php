@@ -29,7 +29,7 @@ abstract class AbstractNestedConfigurationType extends AbstractType
         $builder
             ->add('operator', ChoiceType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(groups: ['coreshop']),
                 ],
                 'choices' => ['and' => 'and', 'or' => 'or', 'not' => 'not'],
             ])

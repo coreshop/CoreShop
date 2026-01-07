@@ -88,7 +88,7 @@ class WorkflowListener implements EventSubscriberInterface
                 continue;
             }
 
-            InheritanceHelper::useInheritedValues(function () use ($event, $callback) {
+            InheritanceHelper::useInheritedValues(function () use ($event, $callback): void {
                 $this->call($event, $callback['do'], $callback['args']);
             });
         }

@@ -28,16 +28,16 @@
     "coreshop/registry": "^5.0",
     "coreshop/resource-bundle": "^5.0",
     "coreshop/menu-bundle": "^5.0",
-    "pimcore/pimcore": "^12.0",
+    "pimcore/pimcore": "^12.3",
     "doctrine/migrations": "^3.9"
   },
   "suggest": {
     "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine."
   },
   "require-dev": {
-    "phpstan/phpstan": "^1.10",
-    "phpstan/phpstan-doctrine": "^1.3.40",
-    "phpstan/phpstan-webmozart-assert": "^1.2.4",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-doctrine": "^2.0",
+    "phpstan/phpstan-webmozart-assert": "^2.0",
     "pimcore/opensearch-client": "^2.0"
   },
   "autoload": {
@@ -62,6 +62,11 @@
       "bundles": [
         "CoreShop\\Bundle\\IndexBundle\\CoreShopIndexBundle"
       ]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": false
     }
   }
 }

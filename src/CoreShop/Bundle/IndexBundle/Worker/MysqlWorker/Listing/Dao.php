@@ -226,7 +226,7 @@ class Dao
      */
     public function quoteIdentifier($value)
     {
-        return $this->database->quoteSingleIdentifier($value);
+        return $this->database->quoteIdentifier($value);
     }
 
     /**
@@ -248,8 +248,8 @@ class Dao
                     }
 
 
-                    $fieldString .= $this->db->quoteSingleIdentifier($field->getField());
-                    $maxFieldString .= 'MAX('.$this->db->quoteSingleIdentifier($field->getField()).') as '.$this->db->quoteSingleIdentifier($field->getField());
+                    $fieldString .= $this->db->quoteIdentifier($field->getField());
+                    $maxFieldString .= 'MAX('.$this->db->quoteIdentifier($field->getField()).') as '.$this->db->quoteIdentifier($field->getField());
                 }
             }
 

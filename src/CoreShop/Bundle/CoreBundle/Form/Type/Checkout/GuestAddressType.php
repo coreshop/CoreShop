@@ -40,7 +40,7 @@ final class GuestAddressType extends AbstractType
                 ],
             )
             ->add('invoiceAddress', AddressType::class)
-            ->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event): void {
                 /** @var OrderInterface $cart */
                 $cart = $event->getData();
 

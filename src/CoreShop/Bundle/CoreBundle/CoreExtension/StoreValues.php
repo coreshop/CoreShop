@@ -702,6 +702,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
     public function getVersionPreview($data, $object = null, $params = []): string
     {
+        if (null === $data) {
+            return '';
+        }
+
         if (!is_array($data)) {
             return $data;
         }

@@ -41,23 +41,27 @@ trait ProposalPriceRuleTrait
     }
 
     /**
+     * @psalm-suppress InvalidReturnType
+     *
      * @return PriceRuleItemInterface[]
      */
     public function getPriceRules(): array
     {
+        /**
+         * @var PriceRuleItemInterface[] $rules
+         */
         $rules = [];
 
         if ($this->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($this->getPriceRuleItems() as $ruleItem) {
-                if ($ruleItem instanceof PriceRuleItemInterface) {
-                    $rules[] = $ruleItem->getCartPriceRule();
+                if (!$ruleItem instanceof PriceRuleItemInterface) {
+                    continue;
                 }
+
+                $rules[] = $ruleItem->getCartPriceRule();
             }
         }
 
-        /**
-         * @var PriceRuleItemInterface[] $rules
-         */
         return $rules;
     }
 

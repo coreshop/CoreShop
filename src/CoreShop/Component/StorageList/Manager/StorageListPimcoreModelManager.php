@@ -41,7 +41,7 @@ final class StorageListPimcoreModelManager implements StorageListManagerInterfac
             'path' => 'storage-list',
         ]);
 
-        VersionHelper::useVersioning(function () use ($storageList, $folder) {
+        VersionHelper::useVersioning(function () use ($storageList, $folder): void {
             $tempItems = $storageList->getItems();
 
             if (!$storageList->getId()) {

@@ -27,7 +27,7 @@ final class AddToStorageListType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('wishlistItem', StorageListItemType::class, [
-            'constraints' => [new Valid(['groups' => $this->validationGroups])],
+            'constraints' => [new Valid(groups: $this->validationGroups)],
         ]);
     }
 

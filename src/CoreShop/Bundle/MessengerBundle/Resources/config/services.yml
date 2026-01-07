@@ -33,6 +33,7 @@ services:
   CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRepository:
     arguments:
       - '@CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository'
+      - '@event_dispatcher'
 
   CoreShop\Bundle\MessengerBundle\Messenger\MessageRepositoryInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\MessageRepository'
   CoreShop\Bundle\MessengerBundle\Messenger\MessageRepository:

@@ -31,7 +31,7 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
     {
         $builder
             ->add('gatewayConfig', GatewayConfigType::class)
-            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event): void {
                 $paymentMethod = $event->getData();
 
                 if (!$paymentMethod instanceof PaymentProviderInterface) {
