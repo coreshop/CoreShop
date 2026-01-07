@@ -87,7 +87,17 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             return [];
         }
 
-        $queryParameters = [];
+        $orderStateInClause = '';
+        $orderStateParams = [];
+        $orderStatePlaceholders = [];
+        if ($orderStateFilter !== null) {
+            foreach ($orderStateFilter as $i => $state) {
+                $orderStatePlaceholders[] = ':orderState' . $i;
+                $orderStateParams['orderState' . $i] = $state;
+            }
+            $orderStateInClause = ' AND `order`.orderState IN (' . implode(', ', $orderStatePlaceholders) . ')';
+        }
+
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
@@ -100,7 +110,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
               SELECT SQL_CALC_FOUND_ROWS
                 products.id as productId,
                 products.`name` as productName,
-                SUM(orderItems.totalGross) AS sales, 
+                SUM(orderItems.totalGross) AS sales,
                 AVG(orderItems.totalGross) AS salesPrice,
                 SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
                 SUM(orderItems.quantity) AS `quantityCount`,
@@ -109,10 +119,10 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON products.id = orderItems.mainObjectId
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
-                WHERE products.o_type = 'object' AND `order`.store = $storeId" . (($orderStateFilter !== null) ? ' AND `order`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `order`.orderDate > ? AND `order`.orderDate < ? AND saleState='" . OrderSaleStates::STATE_ORDER . "'
+                WHERE products.o_type = 'object' AND `order`.store = :storeId" . $orderStateInClause . " AND `order`.orderDate > :fromTimestamp AND `order`.orderDate < :toTimestamp AND saleState='" . OrderSaleStates::STATE_ORDER . "'
                 GROUP BY products.o_id
 
-            LIMIT $offset,$limit";
+            LIMIT " . (int) $offset . ', ' . (int) $limit;
         } else {
             $productTypeCondition = '1=1';
             if ($objectTypeFilter === 'object') {
@@ -121,31 +131,37 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 $productTypeCondition = 'orderItems.mainObjectId IS NOT NULL';
             }
 
+            $orderStateInClauseOrders = '';
+            if ($orderStateFilter !== null) {
+                $orderStateInClauseOrders = ' AND `orders`.orderState IN (' . implode(', ', $orderStatePlaceholders) . ')';
+            }
+
             $query = "
                 SELECT SQL_CALC_FOUND_ROWS
                   orderItems.objectId as productId,
                   orderItemsTranslated.name AS `productName`,
-                  
-                  SUM(orderItems.totalGross) AS sales, 
+
+                  SUM(orderItems.totalGross) AS sales,
                   AVG(orderItems.totalGross) AS salesPrice,
                   SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
-                  
+
                   SUM(orderItems.quantity) AS `quantityCount`,
                   COUNT(orderItems.objectId) AS `orderCount`
                 FROM object_query_$orderClassId AS orders
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
                 INNER JOIN object_localized_query_" . $orderItemClassId . '_' . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
-                WHERE `orders`.store = $storeId AND $productTypeCondition" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `orders`.orderDate > ? AND `orders`.orderDate < ?
+                WHERE `orders`.store = :storeId AND $productTypeCondition" . $orderStateInClauseOrders . " AND `orders`.orderDate > :fromTimestamp AND `orders`.orderDate < :toTimestamp
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
-                LIMIT $offset,$limit";
+                LIMIT " . (int) $offset . ', ' . (int) $limit;
         }
-        if ($orderStateFilter !== null) {
-            array_push($queryParameters, ...$orderStateFilter);
-        }
-        $queryParameters[] = $from->getTimestamp();
-        $queryParameters[] = $to->getTimestamp();
+
+        $queryParameters = array_merge([
+            'storeId' => $storeId,
+            'fromTimestamp' => $from->getTimestamp(),
+            'toTimestamp' => $to->getTimestamp(),
+        ], $orderStateParams);
 
         $productSales = $this->db->fetchAllAssociative($query, $queryParameters);
 

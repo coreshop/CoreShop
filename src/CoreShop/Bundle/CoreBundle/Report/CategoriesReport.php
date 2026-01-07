@@ -78,6 +78,17 @@ class CategoriesReport implements ReportInterface
             return [];
         }
 
+        $orderStateInClause = '';
+        $orderStateParams = [];
+        if ($orderStateFilter !== null) {
+            $orderStatePlaceholders = [];
+            foreach ($orderStateFilter as $i => $state) {
+                $orderStatePlaceholders[] = ':orderState' . $i;
+                $orderStateParams['orderState' . $i] = $state;
+            }
+            $orderStateInClause = ' AND `orders`.orderState IN (' . implode(', ', $orderStatePlaceholders) . ')';
+        }
+
         $query = "
             SELECT SQL_CALC_FOUND_ROWS
               `categories`.oo_id as categoryId,
@@ -89,23 +100,22 @@ class CategoriesReport implements ReportInterface
               SUM(orderItems.quantity) AS `quantityCount`,
               COUNT(orderItems.product__id) AS `orderCount`
             FROM object_$categoryClassId AS categories
-            INNER JOIN object_localized_query_" . $categoryClassId . '_' . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
-            INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.targetId = categories.oo_id AND catProductDependencies.targettype = \"object\" 
+            INNER JOIN object_localized_query_" . $categoryClassId . '_' . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id
+            INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.targetId = categories.oo_id AND catProductDependencies.targettype = \"object\"
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.sourceId
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
-            WHERE orders.store = $storeId" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL AND saleState='" . OrderSaleStates::STATE_ORDER . "'
+            WHERE orders.store = :storeId" . $orderStateInClause . " AND orders.orderDate > :fromTimestamp AND orders.orderDate < :toTimestamp AND orderItems.product__id IS NOT NULL AND saleState='" . OrderSaleStates::STATE_ORDER . "'
             GROUP BY categories.oo_id
             ORDER BY quantityCount DESC
-            LIMIT $offset,$limit";
+            LIMIT " . (int) $offset . ', ' . (int) $limit;
 
-        $queryParameters = [];
+        $queryParameters = array_merge([
+            'storeId' => $storeId,
+            'fromTimestamp' => $from->getTimestamp(),
+            'toTimestamp' => $to->getTimestamp(),
+        ], $orderStateParams);
 
-        if ($orderStateFilter !== null) {
-            array_push($queryParameters, ...$orderStateFilter);
-        }
-        $queryParameters[] = $from->getTimestamp();
-        $queryParameters[] = $to->getTimestamp();
         $results = $this->db->fetchAllAssociative($query, $queryParameters);
 
         if (count($results) === 0) {
@@ -121,15 +131,15 @@ class CategoriesReport implements ReportInterface
               SUM(orderItems.quantity) AS `quantityCount`,
               COUNT(orderItems.product__id) AS `orderCount`
             FROM object_$categoryClassId AS categories
-            INNER JOIN object_localized_query_" . $categoryClassId . '_' . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
-            INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.sourceId = categories.oo_id AND catProductDependencies.sourcetype = \"object\" 
+            INNER JOIN object_localized_query_" . $categoryClassId . '_' . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id
+            INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.sourceId = categories.oo_id AND catProductDependencies.sourcetype = \"object\"
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.targetId
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
-            WHERE orders.store = $storeId" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = :storeId" . $orderStateInClause . " AND orders.orderDate > :fromTimestamp AND orders.orderDate < :toTimestamp AND orderItems.product__id IS NOT NULL
             GROUP BY categories.oo_id
             ORDER BY quantityCount DESC
-            LIMIT $offset,$limit";
+            LIMIT " . (int) $offset . ', ' . (int) $limit;
             $results = $this->db->fetchAllAssociative($query, $queryParameters);
         }
 

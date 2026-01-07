@@ -80,11 +80,11 @@ class CartsReport implements ReportInterface, PortletInterface
                     CASE WHEN orderCount IS NULL THEN 0 ELSE orderCount END as orders,
                     CASE WHEN cartCount IS NULL THEN 0 ELSE cartCount END as carts
                 FROM (
-                  SELECT 
+                  SELECT
                     COUNT(*) as orderCount,
                     DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
                   FROM object_query_$orderClassId AS orders
-                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp and orders.saleState = '" . OrderSaleStates::STATE_ORDER . "'
+                  WHERE store = :storeId AND orderDate > :fromTimestamp AND orderDate < :toTimestamp and orders.saleState = '" . OrderSaleStates::STATE_ORDER . "'
                   GROUP BY DATE(FROM_UNIXTIME(orderDate))
                 ) as ordersQuery
                 $join OUTER JOIN (
@@ -92,13 +92,19 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as cartCount,
                     DATE(FROM_UNIXTIME(creationDate)) as cartDateTimestamp
                   FROM object_$orderClassId AS carts
-                  WHERE store = $storeId AND creationDate > $fromTimestamp AND creationDate < $toTimestamp and carts.saleState = '" . OrderSaleStates::STATE_CART . "'
+                  WHERE store = :storeId AND creationDate > :fromTimestamp AND creationDate < :toTimestamp and carts.saleState = '" . OrderSaleStates::STATE_CART . "'
                   GROUP BY DATE(FROM_UNIXTIME(creationDate))
                 ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
             ";
         }
 
-        $data = $this->db->fetchAllAssociative(implode(\PHP_EOL . 'UNION ALL' . \PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
+        $queryParams = [
+            'storeId' => $storeId,
+            'fromTimestamp' => $fromTimestamp,
+            'toTimestamp' => $toTimestamp,
+        ];
+
+        $data = $this->db->fetchAllAssociative(implode(\PHP_EOL . 'UNION ALL' . \PHP_EOL, $queries) . '  ORDER BY timestamp ASC', $queryParams);
 
         foreach ($data as &$day) {
             $date = Carbon::createFromTimestamp((string) strtotime($day['timestamp']));
