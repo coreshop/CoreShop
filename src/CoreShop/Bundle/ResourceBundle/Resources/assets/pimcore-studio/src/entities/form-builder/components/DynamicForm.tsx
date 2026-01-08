@@ -13,7 +13,8 @@
  */
 
 import React from 'react'
-import { Form, Collapse, Row, Col } from 'antd'
+import { Form, Collapse, Row, Col, Tag } from 'antd'
+import { GlobalOutlined } from '@ant-design/icons'
 import type { FormInstance } from 'antd/es/form'
 import type { FormBuilderConfig, FieldDefinition, SectionDefinition } from '../types'
 import { useTranslation } from 'react-i18next'
@@ -58,13 +59,43 @@ export const DynamicForm = <T extends Record<string, any> = any>({
   const form = externalForm ?? internalForm
   const { t } = useTranslation()
 
+  // Track entity ID and locale to only reset form when they change
+  const lastLoadedIdRef = React.useRef<number | undefined>(undefined)
+  const lastLoadedLocaleRef = React.useRef<string | undefined>(undefined)
+
+  // Check if config has localized fields
+  const hasLocalizedFields = React.useMemo(() =>
+    config.fields.some(f => f.localized),
+    [config.fields]
+  )
+
   // Update form values when data or locale changes
   // This is critical for localized fields to work correctly
   React.useEffect(() => {
-    if (data) {
-      form.setFieldsValue(data)
+    const entityId = (data as any)?.id
+    const entityChanged = lastLoadedIdRef.current !== entityId
+    const localeChanged = lastLoadedLocaleRef.current !== currentLocale
+
+    // Only reset form when switching entities or locales
+    if (!entityChanged && !localeChanged) {
+      return
     }
-  }, [data, currentLocale, form])
+
+    lastLoadedIdRef.current = entityId
+    lastLoadedLocaleRef.current = currentLocale
+
+    if (data) {
+      // Ensure translations structure exists for current locale
+      const formData: any = { ...data }
+      if (hasLocalizedFields && currentLocale) {
+        formData.translations = formData.translations ?? {}
+        if (!formData.translations[currentLocale]) {
+          formData.translations[currentLocale] = {}
+        }
+      }
+      form.setFieldsValue(formData)
+    }
+  }, [(data as any)?.id, currentLocale, form, hasLocalizedFields])
 
   // Group fields by section
   const fieldsBySection = React.useMemo(() => {
@@ -97,19 +128,33 @@ export const DynamicForm = <T extends Record<string, any> = any>({
     // Translate label if it's a translation key
     let label = field.label ? t(field.label, { defaultValue: field.label }) : undefined
 
-    // If field is localized, append current locale to label
-    if (field.localized && currentLocale && label) {
-      label = `${label} (${currentLocale.toUpperCase()})`
+    // For localized fields, show a visual indicator and the locale
+    let localizedLabel: React.ReactNode = label
+    if (field.localized && currentLocale) {
+      localizedLabel = (
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <GlobalOutlined style={{ color: 'var(--ant-color-primary)', fontSize: 12 }} />
+          {label}
+          <Tag color="blue" style={{ marginLeft: 4, fontSize: 10, lineHeight: '16px', padding: '0 4px' }}>
+            {currentLocale.toUpperCase()}
+          </Tag>
+        </span>
+      )
     }
 
     // Translate tooltip if provided
     const tooltip = field.tooltip ? t(field.tooltip, { defaultValue: field.tooltip }) : undefined
 
+    // For localized fields, use translations[currentLocale][fieldName] path
+    const fieldName = field.localized && currentLocale
+      ? ['translations', currentLocale, field.name]
+      : field.name
+
     const formItem = (
       <Form.Item
-        key={field.name}
-        label={label}
-        name={field.name}
+        key={String(fieldName)}
+        label={localizedLabel}
+        name={fieldName}
         rules={field.rules}
         required={field.required}
         tooltip={tooltip}
@@ -130,7 +175,7 @@ export const DynamicForm = <T extends Record<string, any> = any>({
     // Apply grid span if provided
     if (field.span) {
       return (
-        <Col key={field.name} span={field.span}>
+        <Col key={String(fieldName)} span={field.span}>
           {formItem}
         </Col>
       )

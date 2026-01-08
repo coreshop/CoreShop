@@ -25,8 +25,9 @@ export const PaymentProviderManager: React.FC = () => {
         <EntityTabbedManager<PaymentProvider>
             api={paymentProviderApi}
             dragType="coreshop:payment_provider"
+            localizable
             leftRootTitle={t('coreshop_payment_providers', { defaultValue: 'Payment Providers' })}
-            getTitle={(li, data) => data?.identifier ?? li?.identifier ?? `Provider #${data?.id ?? li?.id ?? ''}`}
+            getTitle={(li, data) => data?.identifier ?? (li as any)?.identifier ?? li?.name ?? `Provider #${data?.id ?? li?.id ?? ''}`}
             buildSavePayload={(data) => data}
             onAdd={async () => await new Promise<number>((resolve) => {
                 modal.input({
@@ -34,16 +35,25 @@ export const PaymentProviderManager: React.FC = () => {
                     label: t('coreshop_identifier', { defaultValue: 'Identifier' }),
                     rule: { required: true, message: t('coreshop_identifier_required', { defaultValue: 'Identifier is required' }) },
                     onOk: async (value: string) => {
-                        const res = await paymentProviderApi.add({ identifier: value })
+                        // Backend expects 'name' for validation, but PaymentProvider uses 'identifier'
+                        const res = await paymentProviderApi.add({ name: value, identifier: value })
                         if (res.data.id !== undefined) {
                             resolve(res.data.id)
                         }
                     }
                 })
             })}
-            renderDetail={(data, setData, locale) => (
-                <PaymentProviderForm data={data} onChange={setData} currentLocale={locale} />
-            )}
+            renderDetail={(data, setData, ctx) => {
+                if (!data) {
+                    return <div style={{ padding: 12, color: 'var(--ant-color-text-tertiary)' }}>
+                        {t('coreshop_payment_provider_select', { defaultValue: 'Select a payment provider to view details.' })}
+                    </div>
+                }
+
+                return (
+                    <PaymentProviderForm data={data} onChange={setData} currentLocale={ctx?.currentLocale ?? 'en'} />
+                )
+            }}
         />
     )
 }

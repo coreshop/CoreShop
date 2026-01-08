@@ -6,3 +6,6 @@ coreshop_condition_conditions_operator_and: 'Und'
 coreshop_condition_conditions_operator_or: 'Oder'
 coreshop_condition_conditions_operator_not: 'Nicht'
 coreshop_condition_conditions_operator: 'Vergleich'
+
+# Studio v2
+coreshop_save: 'Speichern'

@@ -35,3 +35,9 @@ coreshop_condition_amount_use_total: 'Nutze Gesamtbetrag'
 coreshop_shipping_tax_calc_strategy: 'Steuerberechnung'
 coreshop_shipping_tax_strategy_taxRule: 'Basierend auf Steuerregel'
 coreshop_shipping_tax_strategy_cartItems: 'Basierend auf Warenkorb-Artikeln'
+
+# Studio v2
+coreshop_carrier_select: 'Versanddienst auswählen'
+coreshop_identifier_required: 'Identifier ist erforderlich'
+coreshop_loading_configuration: 'Konfiguration wird geladen...'
+coreshop_shipping_rule_select: 'Versandregel auswählen'

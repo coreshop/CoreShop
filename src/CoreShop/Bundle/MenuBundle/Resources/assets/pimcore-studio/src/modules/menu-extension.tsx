@@ -35,7 +35,7 @@ export const CoreShopMenuExtension = {
             // Load ALL CoreShop menu structures from backend
             const menuItems = await menuService.getAllMenuStructures()
 
-            if (menuItems) {
+            if (menuItems && menuItems.length > 0) {
                 // Register each top-level menu item
                 for (const item of menuItems) {
                     this.registerMenuItem(item, mainNavRegistry, widgetRegistry)

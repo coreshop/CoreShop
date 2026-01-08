@@ -34,3 +34,9 @@ coreshop_condition_amount_use_total: 'Use Total Value'
 coreshop_shipping_tax_calc_strategy: 'Tax Calculation'
 coreshop_shipping_tax_strategy_taxRule: 'based on tax rule'
 coreshop_shipping_tax_strategy_cartItems: 'based on cart items'
+
+# Studio v2
+coreshop_carrier_select: 'Select carrier'
+coreshop_identifier_required: 'Identifier is required'
+coreshop_loading_configuration: 'Loading configuration...'
+coreshop_shipping_rule_select: 'Select shipping rule'

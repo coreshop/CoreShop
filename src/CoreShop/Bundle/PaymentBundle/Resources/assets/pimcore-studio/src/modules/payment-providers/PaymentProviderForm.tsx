@@ -11,11 +11,39 @@
  */
 
 import React from 'react'
-import { Form, Input, InputNumber, Checkbox, Tabs, Space, Typography } from 'antd'
+import { Input, InputNumber, Checkbox, Tabs, Typography, Divider, Tag } from 'antd'
+import { GlobalOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
-import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import { AssetSelect } from '@coreshop/pimcore/src/components/AssetSelect'
-import type { PaymentProvider } from './api'
+import type { PaymentProvider, GatewayConfig, PaymentProviderRuleGroup } from './api'
+import { GatewayConfigPanel } from './gateways'
+import { PaymentProviderRuleGroupPanel } from './PaymentProviderRuleGroupPanel'
+
+// Helper to render localized field labels with visual indicator
+const LocalizedLabel: React.FC<{ label: string, locale: string }> = ({ label, locale }) => (
+    <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <GlobalOutlined style={{ color: 'var(--ant-color-primary)', fontSize: 12 }} />
+        {label}
+        <Tag color="blue" style={{ marginLeft: 4, fontSize: 10, lineHeight: '16px', padding: '0 4px' }}>
+            {locale.toUpperCase()}
+        </Tag>
+    </span>
+)
+
+// Simple form field wrapper
+const FormField: React.FC<{
+    label: React.ReactNode
+    required?: boolean
+    children: React.ReactNode
+}> = ({ label, required, children }) => (
+    <div style={{ marginBottom: 16 }}>
+        <label style={{ display: 'block', marginBottom: 4, fontWeight: 500 }}>
+            {label}
+            {required && <span style={{ color: 'var(--ant-color-error)', marginLeft: 4 }}>*</span>}
+        </label>
+        {children}
+    </div>
+)
 
 export const PaymentProviderForm: React.FC<{
     data?: PaymentProvider
@@ -23,115 +51,121 @@ export const PaymentProviderForm: React.FC<{
     currentLocale: string
 }> = ({ data, onChange, currentLocale }) => {
     const { t } = useTranslation()
-    const [form] = Form.useForm()
 
-    React.useEffect(() => {
-        const initial: any = { ...(data ?? {}) }
+    // Helper to get translation value
+    const getTranslation = (field: 'title' | 'description' | 'instructions'): string => {
+        return data?.translations?.[currentLocale]?.[field] ?? ''
+    }
 
-        // Ensure translations structure
-        initial.translations = initial.translations ?? {}
-        if (!initial.translations[currentLocale]) {
-            initial.translations[currentLocale] = {
-                title: '',
-                description: '',
-                instructions: ''
+    // Helper to set translation value
+    const setTranslation = (field: 'title' | 'description' | 'instructions', value: string) => {
+        const currentTranslations = data?.translations ?? {}
+        const currentLocaleTranslations = currentTranslations[currentLocale] ?? {}
+
+        onChange({
+            translations: {
+                ...currentTranslations,
+                [currentLocale]: {
+                    ...currentLocaleTranslations,
+                    [field]: value
+                }
             }
-        }
+        })
+    }
 
-        form.setFieldsValue(initial)
-    }, [data, currentLocale, form])
+    // Helper to update a simple field
+    const updateField = <K extends keyof PaymentProvider>(field: K, value: PaymentProvider[K]) => {
+        onChange({ [field]: value } as Partial<PaymentProvider>)
+    }
 
     const settingsTab = (
         <div style={{ padding: 24 }}>
-            <Space align='baseline' style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <Typography.Text type='secondary'>{t('coreshop_translations', { defaultValue: 'Translations' })}</Typography.Text>
-                <Typography.Text type='secondary'>{currentLocale.toUpperCase()}</Typography.Text>
-            </Space>
+            <FormField label={t('coreshop_identifier', { defaultValue: 'Identifier' })} required>
+                <Input
+                    value={data?.identifier ?? ''}
+                    onChange={(e) => updateField('identifier', e.target.value)}
+                />
+            </FormField>
 
-            <Form
-                form={form}
-                layout='vertical'
-                onValuesChange={(_, allValues) => {
-                    const mergedTranslations = {
-                        ...(data?.translations ?? {}),
-                        ...(allValues?.translations ?? {})
-                    }
-                    onChange({
-                        ...allValues,
-                        translations: mergedTranslations
-                    })
+            <FormField label={t('coreshop_position', { defaultValue: 'Position' })}>
+                <InputNumber
+                    style={{ width: '100%' }}
+                    value={data?.position}
+                    onChange={(value) => updateField('position', value ?? undefined)}
+                />
+            </FormField>
+
+            <FormField label="">
+                <Checkbox
+                    checked={data?.active ?? false}
+                    onChange={(e) => updateField('active', e.target.checked)}
+                >
+                    {t('coreshop_active', { defaultValue: 'Active' })}
+                </Checkbox>
+            </FormField>
+
+            <FormField label={t('coreshop_logo', { defaultValue: 'Logo' })}>
+                <AssetSelect
+                    accept={['asset', 'asset:image']}
+                    value={data?.logo}
+                    onChange={(value) => updateField('logo', value)}
+                />
+            </FormField>
+
+            {/* Translations */}
+            <FormField label={<LocalizedLabel label={t('coreshop_title', { defaultValue: 'Title' })} locale={currentLocale} />}>
+                <Input
+                    value={getTranslation('title')}
+                    onChange={(e) => setTranslation('title', e.target.value)}
+                />
+            </FormField>
+
+            <FormField label={<LocalizedLabel label={t('coreshop_description', { defaultValue: 'Description' })} locale={currentLocale} />}>
+                <Input.TextArea
+                    rows={3}
+                    value={getTranslation('description')}
+                    onChange={(e) => setTranslation('description', e.target.value)}
+                />
+            </FormField>
+
+            <FormField label={<LocalizedLabel label={t('coreshop_instructions', { defaultValue: 'Instructions' })} locale={currentLocale} />}>
+                <Input.TextArea
+                    rows={3}
+                    value={getTranslation('instructions')}
+                    onChange={(e) => setTranslation('instructions', e.target.value)}
+                />
+            </FormField>
+
+            {/* Gateway Configuration */}
+            <Divider orientation="left">
+                {t('coreshop_gateway_configuration', { defaultValue: 'Gateway Configuration' })}
+            </Divider>
+
+            <GatewayConfigPanel
+                gatewayConfig={data?.gatewayConfig}
+                onChange={(gatewayConfig: GatewayConfig) => {
+                    onChange({ gatewayConfig })
                 }}
-            >
-                <Form.Item
-                    label={t('coreshop_identifier', { defaultValue: 'Identifier' })}
-                    name='identifier'
-                    rules={[{ required: true }]}
-                >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item
-                    label={t('coreshop_position', { defaultValue: 'Position' })}
-                    name='position'
-                >
-                    <InputNumber style={{ width: '100%' }} />
-                </Form.Item>
-
-                <Form.Item
-                    name='active'
-                    valuePropName='checked'
-                >
-                    <Checkbox>
-                        {t('coreshop_active', { defaultValue: 'Active' })}
-                    </Checkbox>
-                </Form.Item>
-
-                <Form.Item
-                    label={t('coreshop_logo', { defaultValue: 'Logo' })}
-                    name='logo'
-                >
-                    <AssetSelect accept={['asset', 'asset:image']} />
-                </Form.Item>
-
-                {/* Translations */}
-                <LocalizedFieldsProvider locales={[currentLocale]}>
-                    <Form.Item
-                        label={`${t('coreshop_title', { defaultValue: 'Title' })} (${currentLocale.toUpperCase()})`}
-                        name={['translations', currentLocale, 'title']}
-                    >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                        label={`${t('coreshop_description', { defaultValue: 'Description' })} (${currentLocale.toUpperCase()})`}
-                        name={['translations', currentLocale, 'description']}
-                    >
-                        <Input.TextArea rows={3} />
-                    </Form.Item>
-
-                    <Form.Item
-                        label={`${t('coreshop_instructions', { defaultValue: 'Instructions' })} (${currentLocale.toUpperCase()})`}
-                        name={['translations', currentLocale, 'instructions']}
-                    >
-                        <Input.TextArea rows={3} />
-                    </Form.Item>
-                </LocalizedFieldsProvider>
-
-                {/* TODO: Gateway Configuration */}
-                <div style={{ marginTop: 24, padding: 16, background: '#f5f5f5', borderRadius: 4 }}>
-                    <Typography.Text type="secondary">
-                        Gateway Configuration (Not implemented yet)
-                    </Typography.Text>
-                </div>
-            </Form>
+            />
         </div>
     )
 
     const rulesTab = (
         <div style={{ padding: 24 }}>
-            <Typography.Text type="secondary">
-                Payment Provider Rules (Not implemented yet)
+            <Typography.Title level={5} style={{ marginBottom: 16 }}>
+                {t('coreshop_payment_provider_rules', { defaultValue: 'Payment Provider Rules' })}
+            </Typography.Title>
+            <Typography.Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+                {t('coreshop_payment_provider_rules_description', {
+                    defaultValue: 'Assign payment provider rules to control pricing and availability. Rules are evaluated in priority order.'
+                })}
             </Typography.Text>
+            <PaymentProviderRuleGroupPanel
+                ruleGroups={data?.paymentProviderRules ?? []}
+                onChange={(ruleGroups: PaymentProviderRuleGroup[]) => {
+                    onChange({ paymentProviderRules: ruleGroups })
+                }}
+            />
         </div>
     )
 

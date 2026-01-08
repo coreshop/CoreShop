@@ -379,6 +379,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_notification_rule')
             ->setAttribute('resource', 'coreshop.notification')
             ->setAttribute('function', 'notification_rule')
+            ->setAttribute('widgetId', 'coreshop_notification_rules')
             ->setExtra('order', 80)
         ;
 
@@ -397,6 +398,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider')
             ->setAttribute('resource', 'coreshop.payment')
             ->setAttribute('function', 'payment_provider')
+            ->setAttribute('widgetId', 'coreshop_payment_providers')
             ->setExtra('order', 10)
         ;
 
@@ -407,6 +409,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider_rule')
             ->setAttribute('resource', 'coreshop.payment')
             ->setAttribute('function', 'payment_provider_rule')
+            ->setAttribute('widgetId', 'coreshop_payment_provider_rules')
             ->setExtra('order', 20)
         ;
 

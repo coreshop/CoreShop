@@ -16,7 +16,6 @@ import React from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
 import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
 import type { CountryDetail } from './api'
-import { Space, Typography } from 'antd'
 
 export interface CountryFormProps {
   data?: CountryDetail
@@ -53,22 +52,6 @@ export const CountryForm: React.FC<CountryFormProps> = ({
 
   return (
     <div style={{ padding: 12 }}>
-      <Space
-        align="baseline"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: 16
-        }}
-      >
-        <Typography.Title level={5} style={{ margin: 0 }}>
-          Country Configuration
-        </Typography.Title>
-        <Typography.Text type="secondary">
-          {currentLocale.toUpperCase()}
-        </Typography.Text>
-      </Space>
-
       <DynamicForm
         config={config}
         data={data}

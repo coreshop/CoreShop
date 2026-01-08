@@ -6,3 +6,6 @@ coreshop_condition_conditions_operator_and: 'And'
 coreshop_condition_conditions_operator_or: 'Or'
 coreshop_condition_conditions_operator_not: 'Not'
 coreshop_condition_conditions_operator: 'Operator'
+
+# Studio v2
+coreshop_save: 'Save'

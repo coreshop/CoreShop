@@ -35,6 +35,7 @@ export const createCountryFormBuilder = (): FormBuilder<CountryDetail> => {
         label: 'coreshop_country',
         component: Input,
         required: true,
+        localized: true,
         rules: [
           { required: true, message: 'Name is required' }
         ]

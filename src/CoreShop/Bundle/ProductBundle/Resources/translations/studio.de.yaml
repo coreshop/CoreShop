@@ -102,3 +102,9 @@ coreshop.product.width: 'Breite'
 coreshop.product.depth: 'Tiefe'
 coreshop.product.slug: 'Slug'
 coreshop.category.slug: 'Slug'
+
+# Studio v2
+coreshop_categories: 'Kategorien'
+coreshop_product_price_rule_select: 'Produktpreisregel auswählen'
+coreshop_product_unit_select: 'Produkteinheit auswählen'
+coreshop_translations: 'Übersetzungen'

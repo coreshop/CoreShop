@@ -11,10 +11,10 @@
  */
 
 import React from 'react'
-import { Form, Input, InputNumber, Switch, Space, Typography } from 'antd'
+import { Input, InputNumber, Switch, Tag } from 'antd'
+import { GlobalOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import type { TaxRateDetail } from './api'
-import { LocalizedFieldsProvider } from '@coreshop/resource/src/components/localization/localized-fields'
 import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
 
 export interface TaxRateFormProps {
@@ -24,6 +24,32 @@ export interface TaxRateFormProps {
   locales?: string[]
 }
 
+// Helper to render localized field labels with visual indicator
+const LocalizedLabel: React.FC<{ label: string, locale: string }> = ({ label, locale }) => (
+    <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <GlobalOutlined style={{ color: 'var(--ant-color-primary)', fontSize: 12 }} />
+        {label}
+        <Tag color="blue" style={{ marginLeft: 4, fontSize: 10, lineHeight: '16px', padding: '0 4px' }}>
+            {locale.toUpperCase()}
+        </Tag>
+    </span>
+)
+
+// Simple form field wrapper
+const FormField: React.FC<{
+    label: React.ReactNode
+    required?: boolean
+    children: React.ReactNode
+}> = ({ label, required, children }) => (
+    <div style={{ marginBottom: 16 }}>
+        <label style={{ display: 'block', marginBottom: 4, fontWeight: 500 }}>
+            {label}
+            {required && <span style={{ color: 'var(--ant-color-error)', marginLeft: 4 }}>*</span>}
+        </label>
+        {children}
+    </div>
+)
+
 export const TaxRateForm: React.FC<TaxRateFormProps> = ({
   data,
   onChange,
@@ -31,69 +57,69 @@ export const TaxRateForm: React.FC<TaxRateFormProps> = ({
   locales
 }) => {
   const { t } = useTranslation()
-  const [form] = Form.useForm()
 
-  React.useEffect(() => {
-    const initial: any = { ...(data ?? {}) }
-    if (typeof initial.active === 'undefined') initial.active = false
-    if (typeof initial.rate === 'undefined') initial.rate = 0
+  // Helper to get translation value
+  const getTranslation = (field: 'name'): string => {
+    return data?.translations?.[currentLocale]?.[field] ?? ''
+  }
 
-    // Always ensure translations object exists
-    initial.translations = initial.translations ?? {}
+  // Helper to set translation value
+  const setTranslation = (field: 'name', value: string) => {
+    const currentTranslations = data?.translations ?? {}
+    const currentLocaleTranslations = currentTranslations[currentLocale] ?? { locale: currentLocale }
 
-    // Ensure current locale exists in translations (even if empty)
-    // This is important: when switching locales, we want to show the value for that locale
-    // If it doesn't exist, show an empty string (not the previous locale's value)
-    if (!initial.translations[currentLocale]) {
-      initial.translations[currentLocale] = { locale: currentLocale, name: '' }
+    const updatedTranslations = {
+      ...currentTranslations,
+      [currentLocale]: {
+        ...currentLocaleTranslations,
+        [field]: value
+      }
     }
 
-    // Always set field values when locale or data changes
-    // This ensures the form updates when switching locales
-    form.setFieldsValue(initial)
-  }, [data, currentLocale, form])
+    // Also update top-level name for backwards compatibility
+    onChange({
+      translations: updatedTranslations,
+      name: value
+    })
+  }
+
+  // Helper to update a simple field
+  const updateField = <K extends keyof TaxRateDetail>(field: K, value: TaxRateDetail[K]) => {
+    onChange({ [field]: value } as Partial<TaxRateDetail>)
+  }
 
   return (
     <div style={{ padding: 12 }}>
-      <Space align='baseline' style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-        <Typography.Text type='secondary'>Translations</Typography.Text>
-        <Typography.Text type='secondary'>{ currentLocale.toUpperCase() }</Typography.Text>
-      </Space>
-
-      <Form
-        form={ form }
-        layout='vertical'
-        onValuesChange={ (_, allValues) => {
-          const mergedTranslations = {
-            ...(data?.translations ?? {}),
-            ...(allValues?.translations ?? {})
-          }
-          const topName = mergedTranslations?.[currentLocale]?.name
-          onChange({ ...allValues, translations: mergedTranslations, name: topName })
-        } }
+      <FormField
+        label={<LocalizedLabel label={t('coreshop_name', { defaultValue: 'Name' })} locale={currentLocale} />}
+        required
       >
-        <LocalizedFieldsProvider locales={ [currentLocale] }>
-          <Form.Item label={`Name (${currentLocale.toUpperCase()})`} name={ ['translations', currentLocale, 'name'] } rules={ [{ required: true }] }>
-            <Input />
-          </Form.Item>
-        </LocalizedFieldsProvider>
+        <Input
+          value={getTranslation('name')}
+          onChange={(e) => setTranslation('name', e.target.value)}
+        />
+      </FormField>
 
-        <Form.Item label={t('coreshop_tax_rate', { defaultValue: 'Tax Rate' })} name='rate' rules={ [{ required: true }] }>
-          <InputNumber
-            min={0}
-            max={100}
-            step={0.01}
-            style={{ width: '100%' }}
-            addonAfter='%'
-          />
-        </Form.Item>
+      <FormField label={t('coreshop_tax_rate', { defaultValue: 'Tax Rate' })} required>
+        <InputNumber
+          min={0}
+          max={100}
+          step={0.01}
+          style={{ width: '100%' }}
+          addonAfter='%'
+          value={data?.rate ?? 0}
+          onChange={(value) => updateField('rate', value ?? 0)}
+        />
+      </FormField>
 
-        {renderEntityFormExtensions('coreshop.taxation.tax_rate.form', { data, onChange, currentLocale, form })}
+      {renderEntityFormExtensions('coreshop.taxation.tax_rate.form', { data, onChange, currentLocale })}
 
-        <Form.Item label='Active' name='active' valuePropName='checked'>
-          <Switch />
-        </Form.Item>
-      </Form>
+      <FormField label={t('coreshop_active', { defaultValue: 'Active' })}>
+        <Switch
+          checked={data?.active ?? false}
+          onChange={(checked) => updateField('active', checked)}
+        />
+      </FormField>
     </div>
   )
 }

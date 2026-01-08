@@ -14,6 +14,8 @@ import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import type { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { coreshopOrderServiceIds } from '@coreshop/order/src/modules/cart-price-rules/service-ids'
 import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
+import { coreshopPaymentServiceIds } from '@coreshop/payment/src/modules/payment-provider-rules/service-ids'
+import { coreshopQuantityPriceRulesServiceIds } from '@coreshop/productquantitypricerules/src/modules/quantity-price-rules/service-ids'
 import {
   CategoriesCondition,
   CarriersCondition,
@@ -104,6 +106,59 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
       discountAmount: DiscountAmountAction,
       discountPercent: DiscountPercentAction,
       price: PriceAction
+    }
+  },
+
+  // ============================================
+  // Payment Provider Rule Extensions (PaymentBundle)
+  // ============================================
+  {
+    serviceId: coreshopPaymentServiceIds.paymentProviderRuleConditionRegistry,
+    type: 'condition',
+    registrations: {
+      carriers: CarriersCondition,
+      categories: CategoriesCondition,
+      countries: CountriesCondition,
+      currencies: CurrenciesCondition,
+      customerGroups: CustomerGroupsCondition,
+      customers: CustomersCondition,
+      guest: GuestCondition,
+      nested: NestedCondition,
+      products: ProductsCondition,
+      stores: StoresCondition,
+      timespan: TimespanCondition,
+      zones: ZonesCondition
+    }
+  },
+  {
+    serviceId: coreshopPaymentServiceIds.paymentProviderRuleActionRegistry,
+    type: 'action',
+    registrations: {
+      discountAmount: DiscountAmountAction,
+      discountPercent: DiscountPercentAction,
+      // Note: additionAmount and price are registered in PaymentBundle main.ts
+      // They are PaymentBundle-specific but could be moved here as shared actions
+    }
+  },
+
+  // ============================================
+  // Quantity Price Rule Extensions (ProductQuantityPriceRulesBundle)
+  // ============================================
+  {
+    serviceId: coreshopQuantityPriceRulesServiceIds.conditionRegistry,
+    type: 'condition',
+    registrations: {
+      categories: CategoriesCondition,
+      countries: CountriesCondition,
+      currencies: CurrenciesCondition,
+      customerGroups: CustomerGroupsCondition,
+      customers: CustomersCondition,
+      guest: GuestCondition,
+      nested: NestedCondition,
+      products: ProductsCondition,
+      stores: StoresCondition,
+      timespan: TimespanCondition,
+      zones: ZonesCondition
     }
   }
 ]

@@ -578,3 +578,7 @@ coreshop_header: 'Header'
 coreshop_name_required: 'Name is required'
 coreshop_order_info: 'Order Information'
 coreshop_prices_are_gross: 'Prices include tax'
+
+# Studio v2
+coreshop_no_folder_configured: 'No folder configured'
+coreshop_save: 'Save'

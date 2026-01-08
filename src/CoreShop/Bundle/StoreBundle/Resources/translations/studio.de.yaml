@@ -5,3 +5,6 @@ coreshop_store_site: 'Seite'
 coreshop_store_template: 'Template'
 coreshop_permission_store: 'CoreShop: Store'
 coreshop_stores: 'Stores'
+
+# Studio v2
+coreshop_store_add: 'Store hinzufügen'

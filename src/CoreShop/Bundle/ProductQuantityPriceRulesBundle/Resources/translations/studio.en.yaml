@@ -17,3 +17,9 @@ coreshop_product_quantity_price_rules_amount: 'Amount'
 coreshop_product_quantity_price_rules_percentage: 'Percentage'
 coreshop_product_quantity_price_rules_pseudo_price: 'Pseudo Price'
 coreshop_product_quantity_price_rules_calculator_volume: 'Volume'
+
+# Studio v2
+coreshop_conditions_registry_not_available: 'Conditions registry not available'
+coreshop_enter_name: 'Enter name'
+coreshop_new_rule: 'New Rule'
+coreshop_product_quantity_price_rules_no_ranges: 'No ranges configured'

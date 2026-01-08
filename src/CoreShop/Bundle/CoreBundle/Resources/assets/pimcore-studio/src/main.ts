@@ -21,6 +21,8 @@ import { SaleTabExtensionModule } from './modules/extension/sale-tab'
 import { StoreExtensionModule } from './modules/extension/store'
 import { CountryFormExtensionModule } from './modules/extension/country/country-form-extension'
 import { OrderCreationExtensionModule } from './modules/extension/order-creation'
+import { NotificationRulesExtensionModule } from './modules/extension/notification-rules'
+import { ReportsModule } from './modules/reports'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -37,6 +39,7 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(RuleRegistryExtensionModule)
         moduleSystem.registerModule(SaleTabExtensionModule)
         moduleSystem.registerModule(OrderCreationExtensionModule)
+        moduleSystem.registerModule(NotificationRulesExtensionModule)
 
         // Register other extension modules
         moduleSystem.registerModule(CoreBundleIconModule)
@@ -45,6 +48,7 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(TaxRuleGroupExtensionModule)
         moduleSystem.registerModule(CarrierExtensionModule)
         moduleSystem.registerModule(StoreExtensionModule)
+        moduleSystem.registerModule(ReportsModule)
     }
 }
 

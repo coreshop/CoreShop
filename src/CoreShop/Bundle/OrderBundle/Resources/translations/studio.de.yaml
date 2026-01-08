@@ -576,3 +576,7 @@ coreshop_header: 'Kopfzeile'
 coreshop_name_required: 'Name ist erforderlich'
 coreshop_order_info: 'Bestellinformationen'
 coreshop_prices_are_gross: 'Preise inkl. MwSt.'
+
+# Studio v2
+coreshop_no_folder_configured: 'Kein Ordner konfiguriert'
+coreshop_save: 'Speichern'
