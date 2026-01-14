@@ -12,11 +12,13 @@
 
 import React from 'react'
 import { Spin } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { ListingBuilder } from '@pimcore/studio-ui-bundle/modules/element'
 import { BaseListing, DataObjectProvider, listingDefaultProps } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
@@ -50,6 +52,7 @@ interface FolderConfig {
 export const CustomerList: React.FC = () => {
   const { t } = useTranslation()
   const { styles } = useStyles()
+  const messageApi = useMessage()
   const [folderId, setFolderId] = React.useState<number | null>(null)
   const [loading, setLoading] = React.useState(true)
   const listingBuilder = container.get<ListingBuilder>('CoreShop/Customer/Listing/Builder')
@@ -64,7 +67,7 @@ export const CustomerList: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        console.error('Failed to fetch customer folder configuration:', error)
+        void messageApi.error(getErrorMessage(error, 'Failed to fetch customer folder configuration'))
       } finally {
         setLoading(false)
       }

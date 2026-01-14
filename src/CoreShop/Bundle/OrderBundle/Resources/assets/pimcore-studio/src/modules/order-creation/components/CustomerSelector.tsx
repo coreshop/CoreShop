@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
 import { useElementSelector, SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
 import { container } from '@pimcore/studio-ui-bundle'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { useOrderCreation } from '../context'
@@ -35,6 +37,7 @@ const useStyles = createStyles(({ css }) => ({
 export const CustomerSelector: React.FC = () => {
   const { t } = useTranslation()
   const { styles } = useStyles()
+  const messageApi = useMessage()
   const { loadCustomer } = useOrderCreation()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -52,13 +55,13 @@ export const CustomerSelector: React.FC = () => {
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedClasses(classes)
       } catch (err) {
-        console.error('Failed to load allowed customer classes:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load allowed customer classes'))
         // Fallback to default
         setAllowedClasses(['CoreShopCustomer'])
       }
     }
     void loadAllowedClasses()
-  }, [configProvider])
+  }, [configProvider, messageApi])
 
   const handleCustomerSelected = useCallback(async (customerId: number) => {
     setLoading(true)

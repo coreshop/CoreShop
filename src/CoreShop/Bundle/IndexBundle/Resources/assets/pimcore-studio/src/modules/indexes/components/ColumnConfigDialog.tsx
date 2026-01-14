@@ -13,10 +13,12 @@
 import React from 'react'
 import { Modal, Form, Input, Select, Tabs, Collapse } from 'antd'
 import { container } from '@pimcore/studio-ui-bundle'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import type { IndexColumn, IndexConfig } from '../api'
 import type { GetterConfiguratorRegistry, InterpreterConfiguratorRegistry } from '../registry'
 import { serviceIds } from '../service-ids'
 import { DefaultGetterConfigurator, DefaultInterpreterConfigurator } from '../configurators'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 interface ColumnConfigDialogProps {
   column: IndexColumn | null
@@ -36,6 +38,7 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
   onCancel
 }) => {
   const [form] = Form.useForm()
+  const messageApi = useMessage()
   const [selectedGetter, setSelectedGetter] = React.useState<string | undefined>(undefined)
   const [selectedInterpreter, setSelectedInterpreter] = React.useState<string | undefined>(undefined)
   const [getterConfig, setGetterConfig] = React.useState<Record<string, any>>({})
@@ -78,7 +81,7 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
         interpreterConfig: selectedInterpreter ? interpreterConfig : undefined
       } as IndexColumn)
     } catch (error) {
-      console.error('Validation failed:', error)
+      void messageApi.error(getErrorMessage(error, 'Validation failed'))
     }
   }
 

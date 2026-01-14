@@ -12,12 +12,15 @@
 
 import React from 'react'
 import { Form, InputNumber, Select } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules/types'
 import { currencyApi } from '@coreshop/currency/src/modules/currencies/api'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 export const AdditionAmountAction: React.FC<ActionComponentProps> = ({ data, onChange }) => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const [form] = Form.useForm()
   const [currencies, setCurrencies] = React.useState<Array<{ value: number, label: string }>>([])
 
@@ -37,7 +40,7 @@ export const AdditionAmountAction: React.FC<ActionComponentProps> = ({ data, onC
         label: c.name ?? `#${c.id}`
       })))
     } catch (err) {
-      console.error('Failed to load currencies:', err)
+      void messageApi.error(getErrorMessage(err, 'Failed to load currencies'))
     }
   }
 

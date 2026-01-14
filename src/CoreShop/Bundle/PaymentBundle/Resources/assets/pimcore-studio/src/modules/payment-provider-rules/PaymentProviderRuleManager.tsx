@@ -14,16 +14,18 @@ import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource'
 import { RuleForm } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
-import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { paymentProviderRuleApi } from './api'
 import type { PaymentProviderRule } from './types'
 import { SettingsForm } from './components/SettingsForm'
 import { coreshopPaymentServiceIds } from './service-ids'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 export const PaymentProviderRuleManager: React.FC = () => {
   const { t } = useTranslation()
   const modal = useFormModal()
+  const messageApi = useMessage()
   const [config, setConfig] = React.useState<RuleConfig>({ conditions: [], actions: [] })
 
   // Load config on mount
@@ -31,7 +33,7 @@ export const PaymentProviderRuleManager: React.FC = () => {
     paymentProviderRuleApi.getConfig()
       .then(setConfig)
       .catch(err => {
-        console.error('Failed to load config:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load config'))
       })
   }, [])
 

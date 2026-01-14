@@ -6,8 +6,9 @@
  */
 
 import React from 'react'
-import { Modal, Button, Form, message, Spin, Result } from 'antd'
+import { Modal, Button, Form, Spin, Result } from 'antd'
 import { CheckOutlined, UserOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
 import { container } from '@pimcore/studio-ui-bundle'
@@ -16,6 +17,7 @@ import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { AssignmentForm } from './AssignmentForm'
 import { customerCompanyApi, type EntityDetails, type ValidationData, type DuplicateCompany } from './api'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   content: css`
@@ -46,6 +48,7 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
 }) => {
   const { t } = useTranslation()
   const { styles } = useStyles()
+  const messageApi = useMessage()
   const [form] = Form.useForm()
 
   const [step, setStep] = React.useState<Step>(initialCustomerId ? 'form' : 'select-customer')
@@ -73,7 +76,7 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedCustomerClasses(classes)
       } catch (err) {
-        console.error('Failed to load allowed customer classes:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load allowed customer classes'))
         setAllowedCustomerClasses(['CoreShopCustomer'])
       }
     }
@@ -124,12 +127,10 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
         console.log('[AssignToNewCompanyModal] Calling validateAssignment...')
         await validateAssignment(id)
       } else {
-        console.error('[AssignToNewCompanyModal] getEntityDetails failed:', response.message)
-        message.error(response.message ?? 'Failed to load customer details')
+        void messageApi.error(response.message ?? 'Failed to load customer details')
       }
     } catch (error) {
-      console.error('[AssignToNewCompanyModal] Error in handleCustomerSelected:', error)
-      message.error('Failed to load customer details')
+      void messageApi.error(getErrorMessage(error, 'Failed to load customer details'))
     } finally {
       setLoading(false)
     }
@@ -170,13 +171,11 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
         console.log('[AssignToNewCompanyModal] Setting step to form')
         setStep('form')
       } else {
-        console.error('[AssignToNewCompanyModal] validateAssignment failed:', response.message)
-        message.error(response.message ?? 'Customer cannot be assigned to a company')
+        void messageApi.error(response.message ?? 'Customer cannot be assigned to a company')
         resetState()
       }
     } catch (error) {
-      console.error('[AssignToNewCompanyModal] Error in validateAssignment:', error)
-      message.error('Failed to validate assignment')
+      void messageApi.error(getErrorMessage(error, 'Failed to validate assignment'))
       resetState()
     } finally {
       setLoading(false)
@@ -208,7 +207,7 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
           setShowDuplicates(false)
         }
       } catch (error) {
-        console.error('Failed to check duplicates:', error)
+        void messageApi.error(getErrorMessage(error, 'Failed to check duplicates'))
       } finally {
         setCheckingDuplicates(false)
       }
@@ -229,7 +228,7 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
       })
 
       if (response.success) {
-        message.success(
+        void messageApi.success(
           t('coreshop_customer_transformer_assignment_form_success', {
             defaultValue: 'Customer successfully assigned to company',
           })
@@ -250,13 +249,13 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
 
         onSuccess?.()
       } else {
-        message.error(response.message ?? 'Failed to assign customer to company')
+        void messageApi.error(response.message ?? 'Failed to assign customer to company')
       }
     } catch (error) {
       if ((error as any)?.errorFields) {
         return
       }
-      message.error('Failed to submit assignment')
+      void messageApi.error('Failed to submit assignment')
     } finally {
       setSubmitting(false)
     }

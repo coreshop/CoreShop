@@ -6,8 +6,9 @@
  */
 
 import React from 'react'
-import { Button, Form, message, Spin, Result } from 'antd'
+import { Button, Form, Spin, Result } from 'antd'
 import { CheckOutlined, UserOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
 import { container } from '@pimcore/studio-ui-bundle'
@@ -16,6 +17,7 @@ import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { AssignmentForm } from './AssignmentForm'
 import { customerCompanyApi, type EntityDetails, type ValidationData, type DuplicateCompany } from './api'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
@@ -47,6 +49,7 @@ type Step = 'select-customer' | 'form' | 'success'
 export const AssignToNewCompanyPanel: React.FC = () => {
   const { t } = useTranslation()
   const { styles } = useStyles()
+  const messageApi = useMessage()
   const [form] = Form.useForm()
 
   const [step, setStep] = React.useState<Step>('select-customer')
@@ -74,7 +77,7 @@ export const AssignToNewCompanyPanel: React.FC = () => {
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedCustomerClasses(classes)
       } catch (err) {
-        console.error('Failed to load allowed customer classes:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load allowed customer classes'))
         setAllowedCustomerClasses(['CoreShopCustomer'])
       }
     }
@@ -90,10 +93,10 @@ export const AssignToNewCompanyPanel: React.FC = () => {
         setCustomerData(response.data)
         await validateAssignment(id)
       } else {
-        message.error(response.message ?? 'Failed to load customer details')
+        void messageApi.error(response.message ?? 'Failed to load customer details')
       }
     } catch (error) {
-      message.error('Failed to load customer details')
+      void messageApi.error('Failed to load customer details')
     } finally {
       setLoading(false)
     }
@@ -128,11 +131,11 @@ export const AssignToNewCompanyPanel: React.FC = () => {
         setValidationData(response.data)
         setStep('form')
       } else {
-        message.error(response.message ?? 'Customer cannot be assigned to a company')
+        void messageApi.error(response.message ?? 'Customer cannot be assigned to a company')
         resetState()
       }
     } catch (error) {
-      message.error('Failed to validate assignment')
+      void messageApi.error('Failed to validate assignment')
       resetState()
     } finally {
       setLoading(false)
@@ -164,7 +167,7 @@ export const AssignToNewCompanyPanel: React.FC = () => {
           setShowDuplicates(false)
         }
       } catch (error) {
-        console.error('Failed to check duplicates:', error)
+        void messageApi.error(getErrorMessage(error, 'Failed to check duplicates'))
       } finally {
         setCheckingDuplicates(false)
       }
@@ -185,7 +188,7 @@ export const AssignToNewCompanyPanel: React.FC = () => {
       })
 
       if (response.success) {
-        message.success(
+        void messageApi.success(
           t('coreshop_customer_transformer_assignment_form_success', {
             defaultValue: 'Customer successfully assigned to company',
           })
@@ -204,14 +207,14 @@ export const AssignToNewCompanyPanel: React.FC = () => {
           }
         }
       } else {
-        message.error(response.message ?? 'Failed to assign customer to company')
+        void messageApi.error(response.message ?? 'Failed to assign customer to company')
       }
     } catch (error) {
       if ((error as any)?.errorFields) {
         // Form validation error, ignore
         return
       }
-      message.error('Failed to submit assignment')
+      void messageApi.error('Failed to submit assignment')
     } finally {
       setSubmitting(false)
     }

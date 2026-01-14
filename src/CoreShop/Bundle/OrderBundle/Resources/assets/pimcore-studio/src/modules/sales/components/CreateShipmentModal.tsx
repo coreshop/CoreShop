@@ -14,14 +14,16 @@
  */
 
 import React from 'react'
-import { Modal, Form, Input, InputNumber, Table, message } from 'antd'
+import { Modal, Form, Input, InputNumber, Table } from 'antd'
 import { createStyles } from 'antd-style'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { formatCurrency } from '@coreshop/pimcore/src/utils'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { ColumnType } from 'antd/es/table'
 import { ModalFieldExtensionRegistry } from '../extensions'
 import { extensionServiceIds } from '../extensions/service-ids'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 interface ShipmentItem {
   orderItemId: number
@@ -57,6 +59,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
   onCancel
 }) => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const { styles } = useCreateShipmentModalStyles()
   const [form] = Form.useForm()
   const [items, setItems] = React.useState<ShipmentItem[]>([])
@@ -86,12 +89,11 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
         if (data.success && data.items && data.items.length > 0) {
           setItems(data.items)
         } else {
-          void message.warning('No items to ship')
+          void messageApi.warning('No items to ship')
           onCancel()
         }
       } catch (error) {
-        console.error('Error loading items:', error)
-        void message.error('Failed to load items')
+        void messageApi.error(getErrorMessage(error, 'Failed to load items'))
         onCancel()
       } finally {
         setLoadingItems(false)
@@ -122,7 +124,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
         }))
 
       if (itemsToShip.length === 0) {
-        void message.warning('Please select items to ship')
+        void messageApi.warning('Please select items to ship')
         return
       }
 
@@ -145,14 +147,13 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
       const data = await response.json()
 
       if (data.success) {
-        void message.success('Shipment created successfully')
+        void messageApi.success('Shipment created successfully')
         onSuccess()
       } else {
-        void message.error(data.message || 'Failed to create shipment')
+        void messageApi.error(data.message || 'Failed to create shipment')
       }
     } catch (error) {
-      console.error('Error creating shipment:', error)
-      void message.error('Failed to create shipment')
+      void messageApi.error(getErrorMessage(error, 'Failed to create shipment'))
     } finally {
       setLoading(false)
     }

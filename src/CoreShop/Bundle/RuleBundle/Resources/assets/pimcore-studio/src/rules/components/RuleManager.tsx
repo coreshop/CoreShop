@@ -11,8 +11,8 @@
  */
 
 import React from 'react'
-import { message } from 'antd'
-import { EntitySplitManager } from '@coreshop/resource'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { EntitySplitManager, getErrorMessage } from '@coreshop/resource'
 import type { Rule, RuleConfig } from '../types'
 import type { RuleApi } from '../api'
 
@@ -27,6 +27,7 @@ export function RuleManager<T extends Rule>({
   renderForm,
   createEmptyRule
 }: RuleManagerProps<T>) {
+  const messageApi = useMessage()
   const [config, setConfig] = React.useState<RuleConfig>({ conditions: [], actions: [] })
 
   // Load config
@@ -34,8 +35,7 @@ export function RuleManager<T extends Rule>({
     api.getConfig()
       .then(setConfig)
       .catch(err => {
-        console.error('Failed to load config:', err)
-        message.error('Failed to load configuration')
+        void messageApi.error(getErrorMessage(err, 'Failed to load configuration'))
       })
   }, [api])
 

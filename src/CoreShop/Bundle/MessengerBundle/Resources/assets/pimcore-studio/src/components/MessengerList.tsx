@@ -21,12 +21,12 @@ import MessengerPendingGrid from './MessengerPendingGrid'
 import { useMessengerChart } from '../hooks/useMessenger'
 
 export const MessengerList: React.FC = () => {
-  const { reload: reloadChart } = useMessengerChart()
+  const { data, loading, error, reload } = useMessengerChart()
   const { styles } = useMessengerListStyles()
   const { t } = useTranslation()
 
   const handleGlobalReload = () => {
-    reloadChart()
+    reload()
   }
 
   const tabItems = [
@@ -76,7 +76,7 @@ export const MessengerList: React.FC = () => {
       </div>
 
       <div className={styles.chartSection}>
-        <MessengerChart />
+        <MessengerChart data={data} loading={loading} error={error} />
       </div>
 
       <div className={styles.tabsSection}>

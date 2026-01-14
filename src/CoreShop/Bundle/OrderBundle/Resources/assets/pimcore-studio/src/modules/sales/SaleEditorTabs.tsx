@@ -11,9 +11,11 @@
  */
 
 import React from 'react'
-import { message, Spin } from 'antd'
+import { Spin } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { SaleDetail } from './SaleDetail'
 import type { SaleType, Sale } from './types'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 interface SaleEditorTabsProps {
   element: any // Pimcore DataObject element
@@ -50,6 +52,7 @@ const loadSaleFromBackend = async (id: number, type: SaleType): Promise<Sale | n
 }
 
 export const SaleEditorTabs: React.FC<SaleEditorTabsProps> = ({ element, type }) => {
+  const messageApi = useMessage()
   const [sale, setSale] = React.useState<Sale | undefined>()
   const [loading, setLoading] = React.useState(true)
 
@@ -67,11 +70,10 @@ export const SaleEditorTabs: React.FC<SaleEditorTabsProps> = ({ element, type })
       if (data) {
         setSale(data)
       } else {
-        void message.error('Failed to load sale data')
+        void messageApi.error('Failed to load sale data')
       }
     } catch (error) {
-      void message.error('Error loading sale')
-      console.error('Failed to load sale:', error)
+      void messageApi.error(getErrorMessage(error, 'Error loading sale'))
     } finally {
       setLoading(false)
     }
@@ -95,7 +97,7 @@ export const SaleEditorTabs: React.FC<SaleEditorTabsProps> = ({ element, type })
       // Optionally reload from backend to get fresh data
       // await loadSale()
     } catch (error) {
-      void message.error('Failed to save changes')
+      void messageApi.error('Failed to save changes')
       // Revert on error
       await loadSale()
     }

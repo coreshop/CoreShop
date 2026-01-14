@@ -12,13 +12,14 @@
 
 import React from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
 import type { TaxRuleGroupDetail, TaxRule } from './api'
 import { Space, Typography, Table, Button, Select, Popconfirm } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { taxRateApi } from '../tax-rates/api'
-import { getEntityTableColumnExtensions } from '@coreshop/resource/src/entities'
+import { getEntityTableColumnExtensions, getErrorMessage } from '@coreshop/resource/src/entities'
 
 export interface TaxRuleGroupFormProps {
   data?: TaxRuleGroupDetail
@@ -34,6 +35,7 @@ export const TaxRuleGroupForm: React.FC<TaxRuleGroupFormProps> = ({
   locales
 }) => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const builder = container.get<FormBuilder<TaxRuleGroupDetail>>('CoreShop/Taxation/TaxRuleGroup/FormBuilder')
   const config = React.useMemo(() => builder.build({ data, locale: currentLocale, locales }), [builder, data, currentLocale, locales])
   const [taxRates, setTaxRates] = React.useState<Array<{ id: number, name: string }>>([])
@@ -51,7 +53,7 @@ export const TaxRuleGroupForm: React.FC<TaxRuleGroupFormProps> = ({
         const response = await taxRateApi.list()
         setTaxRates(response || [])
       } catch (error) {
-        console.error('Failed to load tax rates:', error)
+        void messageApi.error(getErrorMessage(error, 'Failed to load tax rates'))
         setTaxRates([])
       }
     }

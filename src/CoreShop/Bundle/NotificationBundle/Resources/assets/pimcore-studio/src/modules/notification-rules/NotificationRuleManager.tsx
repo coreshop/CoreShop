@@ -14,16 +14,18 @@ import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource'
 import { RuleForm } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
-import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { notificationRuleApi } from './api'
 import type { NotificationRule, NotificationRuleConfig, NotificationRuleType } from './types'
 import { SettingsForm } from './components/SettingsForm'
 import { coreshopNotificationServiceIds } from './service-ids'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 export const NotificationRuleManager: React.FC = () => {
   const { t } = useTranslation()
   const modal = useFormModal()
+  const messageApi = useMessage()
   const [config, setConfig] = React.useState<NotificationRuleConfig | null>(null)
   const [selectedType, setSelectedType] = React.useState<NotificationRuleType | null>(null)
 
@@ -32,7 +34,7 @@ export const NotificationRuleManager: React.FC = () => {
     notificationRuleApi.getConfig()
       .then(setConfig)
       .catch(err => {
-        console.error('Failed to load notification config:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load notification config'))
       })
   }, [])
 

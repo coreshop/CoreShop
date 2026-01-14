@@ -12,11 +12,13 @@
 
 import React from 'react'
 import { Tabs, Spin } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
 import type { RuleCondition, RuleAction } from '@coreshop/rule/src/rules/types'
 import { CartItemConditionsPanel } from '../cart-item/CartItemConditionsPanel'
 import { CartItemActionsPanel } from '../cart-item/CartItemActionsPanel'
 import { cartPriceRuleApi } from '../api'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 interface CartItemConfig {
   conditions: string[]
@@ -27,6 +29,7 @@ export const CartItemAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
+  const messageApi = useMessage()
   const [config, setConfig] = React.useState<CartItemConfig | null>(null)
   const [loading, setLoading] = React.useState(true)
 
@@ -41,7 +44,7 @@ export const CartItemAction: React.FC<ActionComponentProps> = ({
         setLoading(false)
       })
       .catch(err => {
-        console.error('Failed to load cart item config:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load cart item config'))
         setLoading(false)
       })
   }, [])

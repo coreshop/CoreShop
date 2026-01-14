@@ -11,7 +11,8 @@
  */
 
 import React from 'react'
-import { message, Spin } from 'antd'
+import { Spin } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { SaleDetail } from './SaleDetail'
 import type { Sale } from './types'
 
@@ -57,6 +58,7 @@ const loadOrderFromBackend = async (id: number): Promise<Sale | null> => {
 export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
   const [order, setOrder] = React.useState<Sale | undefined>()
   const [loading, setLoading] = React.useState(true)
+  const messageApi = useMessage()
 
   const orderId = config?.orderId
 
@@ -74,15 +76,14 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
       if (data) {
         setOrder(data)
       } else {
-        void message.error('Failed to load order data')
+        void messageApi.error('Failed to load order data')
       }
     } catch (error) {
-      void message.error('Error loading order')
-      console.error('Failed to load order:', error)
+      void messageApi.error('Error loading order')
     } finally {
       setLoading(false)
     }
-  }, [orderId])
+  }, [orderId, messageApi])
 
   // Load on mount and when orderId changes
   React.useEffect(() => {
@@ -109,12 +110,12 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
         throw new Error('Failed to save')
       }
 
-      void message.success('Order updated successfully')
+      void messageApi.success('Order updated successfully')
 
       // Reload to get fresh data
       await loadOrder()
     } catch (error) {
-      void message.error('Failed to save changes')
+      void messageApi.error('Failed to save changes')
       // Revert on error
       await loadOrder()
     }

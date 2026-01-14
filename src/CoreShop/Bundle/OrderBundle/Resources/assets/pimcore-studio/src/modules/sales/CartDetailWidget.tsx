@@ -11,7 +11,8 @@
  */
 
 import React from 'react'
-import { message, Spin } from 'antd'
+import { Spin } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { SaleDetail } from './SaleDetail'
 import type { Sale } from './types'
 
@@ -48,6 +49,7 @@ const loadCartFromBackend = async (id: number): Promise<Sale | null> => {
 export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
   const [cart, setCart] = React.useState<Sale | undefined>()
   const [loading, setLoading] = React.useState(true)
+  const messageApi = useMessage()
 
   const cartId = props?.orderId
 
@@ -64,15 +66,14 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
       if (data) {
         setCart(data)
       } else {
-        void message.error('Failed to load cart data')
+        void messageApi.error('Failed to load cart data')
       }
     } catch (error) {
-      void message.error('Error loading cart')
-      console.error('Failed to load cart:', error)
+      void messageApi.error('Error loading cart')
     } finally {
       setLoading(false)
     }
-  }, [cartId])
+  }, [cartId, messageApi])
 
   React.useEffect(() => {
     void loadCart()
@@ -96,10 +97,10 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
         throw new Error('Failed to save')
       }
 
-      void message.success('Cart updated successfully')
+      void messageApi.success('Cart updated successfully')
       await loadCart()
     } catch (error) {
-      void message.error('Failed to save changes')
+      void messageApi.error('Failed to save changes')
       await loadCart()
     }
   }

@@ -11,12 +11,14 @@
  */
 
 import React from 'react'
-import { Tabs, Button, Space, message } from 'antd'
+import { Tabs, Button, Space } from 'antd'
 import { SaveOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import type { Rule, RuleConfig } from '../types'
 import { ConditionsPanel } from './ConditionsPanel'
 import { ActionsPanel } from './ActionsPanel'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 export interface RuleFormTab {
   key: string
@@ -49,6 +51,7 @@ export const RuleForm: React.FC<RuleFormProps> = ({
   actionRegistryId
 }) => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const [saving, setSaving] = React.useState(false)
 
   const handleSave = async () => {
@@ -56,10 +59,9 @@ export const RuleForm: React.FC<RuleFormProps> = ({
     setSaving(true)
     try {
       await onSave(rule)
-      message.success('Rule saved successfully')
+      void messageApi.success('Rule saved successfully')
     } catch (error) {
-      message.error('Failed to save rule')
-      console.error(error)
+      void messageApi.error(getErrorMessage(error, 'Failed to save rule'))
     } finally {
       setSaving(false)
     }

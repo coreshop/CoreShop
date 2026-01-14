@@ -20,6 +20,8 @@ import React, {
   useMemo
 } from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 import type {
   OrderCreationState,
   OrderCreationAction,
@@ -154,6 +156,7 @@ export const OrderCreationProvider: React.FC<OrderCreationProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(orderCreationReducer, initialState)
   const previewTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const messageApi = useMessage()
   // Use ref to always access current state in async callbacks
   const stateRef = useRef(state)
   stateRef.current = state
@@ -172,9 +175,9 @@ export const OrderCreationProvider: React.FC<OrderCreationProviderProps> = ({
       const details = await orderCreationApi.getCustomerDetails(customerId)
       dispatch({ type: 'SET_CUSTOMER', payload: { id: customerId, details } })
     } catch (error) {
-      console.error('Failed to load customer:', error)
+      void messageApi.error(getErrorMessage(error, 'Failed to load customer'))
     }
-  }, [])
+  }, [messageApi])
 
   // Load initial customer if provided
   useEffect(() => {

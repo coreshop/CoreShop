@@ -1,7 +1,8 @@
 import React from 'react'
-import { message } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import type { EntityListItem } from '../types'
 import { EntityApi } from '../api'
+import { getErrorMessage } from '../../utils/error-handling'
 
 export interface EntityTab<T> {
   id: number
@@ -18,6 +19,7 @@ export interface UseEntityTabsOptions<TDetail extends Record<string, any>> {
 }
 
 export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTitle, buildSavePayload }: UseEntityTabsOptions<TDetail>) {
+  const messageApi = useMessage()
   const [list, setList] = React.useState<EntityListItem[]>([])
   const [tabs, setTabs] = React.useState<Array<EntityTab<TDetail>>>([])
   const [activeKey, setActiveKey] = React.useState<string | undefined>(undefined)
@@ -39,9 +41,7 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
         return { ...tab, title: resolveTitle(li, tab.data) }
       }))
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load list'
-      message.error(errorMessage)
-      console.error('List error:', error)
+      void messageApi.error(getErrorMessage(error, 'Failed to load list'))
     } finally {
       setLoadingList(false)
     }
@@ -88,9 +88,7 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
       const li = list.find(i => i.id === id)
       updateTab(id, { data: res.data, dirty: false, loading: false, title: resolveTitle(li, res.data) })
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load'
-      message.error(errorMessage)
-      console.error('Load error:', error)
+      void messageApi.error(getErrorMessage(error, 'Failed to load'))
       updateTab(id, { loading: false })
     }
   }
@@ -103,11 +101,9 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
     try {
       await api.save(payload)
       updateTab(id, { dirty: false })
-      message.success('Saved successfully')
+      void messageApi.success('Saved successfully')
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to save'
-      message.error(errorMessage)
-      console.error('Save error:', error)
+      void messageApi.error(getErrorMessage(error, 'Failed to save'))
     } finally {
       updateTab(id, { loading: false })
     }
@@ -122,11 +118,9 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
       await api.delete(id)
       await loadList()
       forceCloseTab(id)
-      message.success('Deleted successfully')
+      void messageApi.success('Deleted successfully')
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to delete'
-      message.error(errorMessage)
-      console.error('Delete error:', error)
+      void messageApi.error(getErrorMessage(error, 'Failed to delete'))
     }
   }
 

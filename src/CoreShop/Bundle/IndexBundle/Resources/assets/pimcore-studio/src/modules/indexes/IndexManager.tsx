@@ -12,14 +12,16 @@
 
 import React from 'react'
 import { EntityTabbedManager } from '@coreshop/resource'
-import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { indexApi, type Index, type IndexConfig } from './api'
 import { IndexDetail } from './IndexDetail'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 export const IndexManager: React.FC = () => {
   const { t } = useTranslation()
   const modal = useFormModal()
+  const messageApi = useMessage()
   const [config, setConfig] = React.useState<IndexConfig | null>(null)
 
   // Load config on mount
@@ -27,7 +29,7 @@ export const IndexManager: React.FC = () => {
     indexApi.getConfig()
       .then(setConfig)
       .catch(err => {
-        console.error('Failed to load index config:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load index config'))
       })
   }, [])
 

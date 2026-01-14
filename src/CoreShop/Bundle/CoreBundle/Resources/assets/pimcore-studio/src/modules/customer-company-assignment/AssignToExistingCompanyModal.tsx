@@ -6,8 +6,9 @@
  */
 
 import React from 'react'
-import { Modal, Button, Form, message, Spin, Result, Alert } from 'antd'
+import { Modal, Button, Form, Spin, Result, Alert } from 'antd'
 import { CheckOutlined, UserOutlined, BankOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
 import { container } from '@pimcore/studio-ui-bundle'
@@ -16,6 +17,7 @@ import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { AssignmentForm } from './AssignmentForm'
 import { customerCompanyApi, type EntityDetails, type ValidationData } from './api'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   content: css`
@@ -46,6 +48,7 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
 }) => {
   const { t } = useTranslation()
   const { styles } = useStyles()
+  const messageApi = useMessage()
   const [form] = Form.useForm()
 
   const [step, setStep] = React.useState<Step>(initialCustomerId ? 'select-company' : 'select-customer')
@@ -77,7 +80,7 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
         setAllowedCustomerClasses(customerClasses)
         setAllowedCompanyClasses(companyClasses)
       } catch (err) {
-        console.error('Failed to load allowed classes:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load allowed classes'))
         setAllowedCustomerClasses(['CoreShopCustomer'])
         setAllowedCompanyClasses(['CoreShopCompany'])
       }
@@ -119,10 +122,10 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
         setCustomerData(response.data)
         setStep('select-company')
       } else {
-        message.error(response.message ?? 'Failed to load customer details')
+        void messageApi.error(response.message ?? 'Failed to load customer details')
       }
     } catch (error) {
-      message.error('Failed to load customer details')
+      void messageApi.error('Failed to load customer details')
     } finally {
       setLoading(false)
     }
@@ -140,15 +143,15 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
           id: id,
           defaultValue: `Selected customer: <strong>${response.data.name}</strong>. Id: ${id}. Click "OK" to now select a company.`,
         })
-        message.success(
+        void messageApi.success(
           <span dangerouslySetInnerHTML={{ __html: translatedMessage }} />
         )
         setStep('select-company')
       } else {
-        message.error(response.message ?? 'Failed to load customer details')
+        void messageApi.error(response.message ?? 'Failed to load customer details')
       }
     } catch (error) {
-      message.error('Failed to load customer details')
+      void messageApi.error('Failed to load customer details')
     } finally {
       setLoading(false)
     }
@@ -166,10 +169,10 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
           await validateAssignment(custId, id)
         }
       } else {
-        message.error(response.message ?? 'Failed to load company details')
+        void messageApi.error(response.message ?? 'Failed to load company details')
       }
     } catch (error) {
-      message.error('Failed to load company details')
+      void messageApi.error('Failed to load company details')
     } finally {
       setLoading(false)
     }
@@ -225,11 +228,11 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
         setValidationData(response.data)
         setStep('form')
       } else {
-        message.error(response.message ?? 'Customer cannot be assigned to this company')
+        void messageApi.error(response.message ?? 'Customer cannot be assigned to this company')
         resetState()
       }
     } catch (error) {
-      message.error('Failed to validate assignment')
+      void messageApi.error('Failed to validate assignment')
       resetState()
     } finally {
       setLoading(false)
@@ -249,7 +252,7 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
       })
 
       if (response.success) {
-        message.success(
+        void messageApi.success(
           t('coreshop_customer_transformer_assignment_form_success', {
             defaultValue: 'Customer successfully assigned to company',
           })
@@ -270,13 +273,13 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
 
         onSuccess?.()
       } else {
-        message.error(response.message ?? 'Failed to assign customer to company')
+        void messageApi.error(response.message ?? 'Failed to assign customer to company')
       }
     } catch (error) {
       if ((error as any)?.errorFields) {
         return
       }
-      message.error('Failed to submit assignment')
+      void messageApi.error('Failed to submit assignment')
     } finally {
       setSubmitting(false)
     }

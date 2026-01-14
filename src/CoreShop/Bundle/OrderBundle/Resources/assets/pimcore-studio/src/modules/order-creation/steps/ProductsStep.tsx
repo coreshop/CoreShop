@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
 import { useElementSelector, SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
 import { container } from '@pimcore/studio-ui-bundle'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import type {
@@ -60,6 +62,7 @@ const formatCurrency = (value: number, isoCode?: string): string => {
 const ProductsStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatch, triggerPreview }) => {
   const { t } = useTranslation()
   const { styles } = useStyles()
+  const messageApi = useMessage()
   const [allowedClasses, setAllowedClasses] = useState<string[]>([])
 
   const configProvider = useMemo(
@@ -74,13 +77,13 @@ const ProductsStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispat
         const classes = await configProvider.getAllowedClasses('coreshop.purchasable')
         setAllowedClasses(classes)
       } catch (err) {
-        console.error('Failed to load allowed purchasable classes:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load allowed purchasable classes'))
         // Fallback to default
         setAllowedClasses(['CoreShopProduct'])
       }
     }
     void loadAllowedClasses()
-  }, [configProvider])
+  }, [configProvider, messageApi])
 
   const handleAddProducts = useCallback((productIds: number[]): void => {
     if (productIds.length === 0) return

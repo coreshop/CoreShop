@@ -12,13 +12,16 @@
 
 import React from 'react'
 import { Form, Select, InputNumber } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import type { WorkerConfiguratorProps } from '../../registry'
 import { indexApi } from '../../api'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 export const OpenSearchWorkerConfigurator: React.FC<WorkerConfiguratorProps> = ({
   configuration,
   onChange
 }) => {
+  const messageApi = useMessage()
   const [openSearchClients, setOpenSearchClients] = React.useState<Array<{ name: string }>>([])
 
   // Load OpenSearch clients on mount
@@ -26,7 +29,7 @@ export const OpenSearchWorkerConfigurator: React.FC<WorkerConfiguratorProps> = (
     indexApi.getOpenSearchClients()
       .then(setOpenSearchClients)
       .catch(err => {
-        console.error('Failed to load OpenSearch clients:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load OpenSearch clients'))
       })
   }, [])
 

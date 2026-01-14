@@ -3,10 +3,10 @@
  */
 
 import React from 'react'
-import { EntityTabbedManager } from '@coreshop/resource'
+import { EntityTabbedManager, getErrorMessage } from '@coreshop/resource'
 import { RuleForm } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
-import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { shippingRuleApi } from './api'
 import type { ShippingRuleDetail } from './api'
@@ -15,6 +15,7 @@ import { coreshopShippingServiceIds } from './service-ids'
 
 export const ShippingRuleManager: React.FC = () => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const modal = useFormModal()
   const [config, setConfig] = React.useState<RuleConfig>({ conditions: [], actions: [] })
 
@@ -23,7 +24,7 @@ export const ShippingRuleManager: React.FC = () => {
     shippingRuleApi.getConfig()
       .then(setConfig)
       .catch(err => {
-        console.error('Failed to load config:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load config'))
       })
   }, [])
 

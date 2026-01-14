@@ -12,11 +12,13 @@
 
 import React from 'react'
 import { Form, Input, Select } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import type { ConditionProps } from '../types'
 import { filterApi } from '../api'
 import type { FieldValue } from '../types'
 import { QuantityUnitSelect } from '../../shared/QuantityUnitSelect'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 export const MultiselectCondition: React.FC<ConditionProps> = ({
   data,
@@ -24,6 +26,7 @@ export const MultiselectCondition: React.FC<ConditionProps> = ({
   indexId
 }) => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const [fieldOptions, setFieldOptions] = React.useState<Array<{ label: string, value: string }>>([])
   const [valueOptions, setValueOptions] = React.useState<FieldValue[]>([])
   const [loading, setLoading] = React.useState(false)
@@ -36,7 +39,7 @@ export const MultiselectCondition: React.FC<ConditionProps> = ({
       .then(fields => {
         setFieldOptions(fields.map(f => ({ label: f.name, value: f.name })))
       })
-      .catch(err => console.error('Failed to load fields:', err))
+      .catch(err => void messageApi.error(getErrorMessage(err, 'Failed to load fields')))
       .finally(() => setLoading(false))
   }, [indexId])
 
@@ -45,7 +48,7 @@ export const MultiselectCondition: React.FC<ConditionProps> = ({
 
     filterApi.getValuesForFilterField(indexId, data.configuration.field)
       .then(setValueOptions)
-      .catch(err => console.error('Failed to load field values:', err))
+      .catch(err => void messageApi.error(getErrorMessage(err, 'Failed to load field values')))
   }, [indexId, data.configuration?.field])
 
   return (

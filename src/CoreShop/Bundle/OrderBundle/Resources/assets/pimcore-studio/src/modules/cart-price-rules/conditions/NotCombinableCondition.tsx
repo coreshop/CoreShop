@@ -12,6 +12,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { Form, Select, Spin } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
 import { cartPriceRuleApi } from '../api'
 import type { CartPriceRule } from '../types'
@@ -26,6 +28,7 @@ export const NotCombinableCondition: React.FC<ConditionComponentProps> = ({
 }) => {
   const conditionData = data as NotCombinableConditionData
   const priceRules = conditionData.price_rules || []
+  const messageApi = useMessage()
 
   const [loading, setLoading] = useState(false)
   const [rules, setRules] = useState<CartPriceRule[]>([])
@@ -38,7 +41,7 @@ export const NotCombinableCondition: React.FC<ConditionComponentProps> = ({
         // list() returns EntityListResponse which extends Array
         setRules(response as CartPriceRule[])
       } catch (error) {
-        console.error('Failed to load cart price rules:', error)
+        void messageApi.error(getErrorMessage(error, 'Failed to load cart price rules'))
         setRules([])
       } finally {
         setLoading(false)
@@ -46,7 +49,7 @@ export const NotCombinableCondition: React.FC<ConditionComponentProps> = ({
     }
 
     loadRules()
-  }, [])
+  }, [messageApi])
 
   const handleChange = (value: number[]) => {
     onChange({

@@ -12,10 +12,12 @@
 
 import React from 'react'
 import { Spin } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
 import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListingBuilder } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
@@ -48,6 +50,7 @@ interface FolderConfig {
  */
 export const QuoteList: React.FC = () => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const { styles } = useStyles()
   const [folderId, setFolderId] = React.useState<number | null>(null)
   const [loading, setLoading] = React.useState(true)
@@ -63,7 +66,7 @@ export const QuoteList: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        console.error('Failed to fetch quote folder configuration:', error)
+        void messageApi.error(getErrorMessage(error, 'Failed to fetch quote folder configuration'))
       } finally {
         setLoading(false)
       }

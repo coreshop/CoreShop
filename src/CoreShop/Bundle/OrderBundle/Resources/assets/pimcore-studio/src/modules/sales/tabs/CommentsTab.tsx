@@ -11,13 +11,15 @@
  */
 
 import React from 'react'
-import { Card, Empty, Button, Modal, Input, message, Checkbox, Space } from 'antd'
+import { Card, Empty, Button, Modal, Input, Checkbox, Space } from 'antd'
 import { createStyles } from 'antd-style'
 import { PlusOutlined, CloseCircleOutlined, MessageOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { SaleTabProps } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 const { TextArea } = Input
 
@@ -31,6 +33,7 @@ interface Comment {
 
 export const CommentsTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const { sale, readonly } = useSaleContext()
   const { styles } = useCommentsTabStyles()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
@@ -50,7 +53,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
         const data = await response.json()
         setComments(data.comments || [])
       } catch (error) {
-        console.error('Failed to load comments:', error)
+        void messageApi.error(getErrorMessage(error, 'Failed to load comments'))
         setComments([])
       } finally {
         setLoading(false)
@@ -65,7 +68,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
     if (!sale) return
 
     if (!newComment.trim()) {
-      void message.warning(t('coreshop_order_comment', { defaultValue: 'Comment' }))
+      void messageApi.warning(t('coreshop_order_comment', { defaultValue: 'Comment' }))
       return
     }
 
@@ -86,7 +89,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
       const data = await response.json()
 
       if (data.success) {
-        void message.success(t('coreshop_order_comment_create', { defaultValue: 'Create Comment' }))
+        void messageApi.success(t('coreshop_order_comment_create', { defaultValue: 'Create Comment' }))
         setIsModalOpen(false)
         setNewComment('')
         setSubmitToCustomer(false)
@@ -96,11 +99,10 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
         const listData = await listResponse.json()
         setComments(listData.comments || [])
       } else {
-        void message.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
+        void messageApi.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
       }
     } catch (error) {
-      console.error('Error adding comment:', error)
-      void message.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
+      void messageApi.error(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' })))
     }
   }
 
@@ -126,7 +128,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
           const data = await response.json()
 
           if (data.success) {
-            void message.success(t('coreshop_order_comment', { defaultValue: 'Comment' }))
+            void messageApi.success(t('coreshop_order_comment', { defaultValue: 'Comment' }))
 
             // Reload comments
             if (sale) {
@@ -135,11 +137,10 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
               setComments(listData.comments || [])
             }
           } else {
-            void message.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
+            void messageApi.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
           }
         } catch (error) {
-          console.error('Error deleting comment:', error)
-          void message.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
+          void messageApi.error(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' })))
         }
       }
     })

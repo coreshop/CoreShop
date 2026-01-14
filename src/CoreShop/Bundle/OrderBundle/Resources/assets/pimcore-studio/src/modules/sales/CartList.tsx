@@ -13,12 +13,14 @@
 import React from 'react'
 import { Button, Space, Spin } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListingBuilder } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
@@ -56,6 +58,7 @@ interface FolderConfig {
  */
 export const CartList: React.FC = () => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const { styles } = useStyles()
   const [folderId, setFolderId] = React.useState<number | null>(null)
   const [loading, setLoading] = React.useState(true)
@@ -71,7 +74,7 @@ export const CartList: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        console.error('Failed to fetch cart folder configuration:', error)
+        void messageApi.error(getErrorMessage(error, 'Failed to fetch cart folder configuration'))
       } finally {
         setLoading(false)
       }

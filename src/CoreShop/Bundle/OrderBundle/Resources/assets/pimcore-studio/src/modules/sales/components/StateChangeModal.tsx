@@ -11,8 +11,10 @@
  */
 
 import React from 'react'
-import { Modal, Button, Space, message } from 'antd'
+import { Modal, Button, Space } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { createStyles } from 'antd-style'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 interface Transition {
   transition: string
@@ -52,6 +54,7 @@ export const StateChangeModal: React.FC<StateChangeModalProps> = ({
   onCancel
 }) => {
   const { styles } = useStateChangeModalStyles()
+  const messageApi = useMessage()
   const [loading, setLoading] = React.useState<string | null>(null)
 
   const handleTransition = async (transition: string) => {
@@ -73,14 +76,13 @@ export const StateChangeModal: React.FC<StateChangeModalProps> = ({
       const data = await response.json()
 
       if (data.success) {
-        void message.success('State changed successfully')
+        void messageApi.success('State changed successfully')
         onSuccess()
       } else {
-        void message.error(data.message || 'Failed to change state')
+        void messageApi.error(data.message || 'Failed to change state')
       }
     } catch (error) {
-      console.error('Error changing state:', error)
-      void message.error('Failed to change state')
+      void messageApi.error(getErrorMessage(error, 'Failed to change state'))
     } finally {
       setLoading(null)
     }

@@ -11,14 +11,15 @@
  */
 
 import React from 'react'
-import { EntityTabbedManager } from '@coreshop/resource/src/entities'
+import { EntityTabbedManager, getErrorMessage } from '@coreshop/resource/src/entities'
 import { carrierApi, type CarrierDetail, type CarrierConfig } from './api'
 import { CarrierForm } from './CarrierForm'
-import { useFormModal } from '@pimcore/studio-ui-bundle/components'
+import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 
 export const CarrierManager: React.FC = () => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const [config, setConfig] = React.useState<CarrierConfig | null>(null)
   const modal = useFormModal()
 
@@ -31,7 +32,7 @@ export const CarrierManager: React.FC = () => {
       const cfg = await carrierApi.getConfig()
       setConfig(cfg)
     } catch (err) {
-      console.error('Failed to load carrier config:', err)
+      void messageApi.error(getErrorMessage(err, 'Failed to load carrier config'))
     }
   }
 

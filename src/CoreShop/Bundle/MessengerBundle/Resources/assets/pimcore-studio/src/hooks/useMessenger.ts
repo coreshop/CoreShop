@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { messengerService } from '../services/messenger'
 import {
   MessengerChartData,
@@ -18,6 +18,26 @@ import {
   MessengerFailedMessage,
   MessengerReceiver
 } from '../types'
+import { messengerEventEmitter, type MessengerUpdateEvent } from '../modules/mercure/messenger-event-emitter'
+
+// Debounce helper to prevent excessive reloads
+function useDebouncedCallback<T extends (...args: any[]) => void>(
+  callback: T,
+  delay: number
+): T {
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const callbackRef = useRef(callback)
+  callbackRef.current = callback
+
+  return useCallback((...args: Parameters<T>) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    timeoutRef.current = setTimeout(() => {
+      callbackRef.current(...args)
+    }, delay)
+  }, [delay]) as T
+}
 
 export interface UseMessengerChartResult {
   data: MessengerChartData[]
@@ -44,9 +64,20 @@ export function useMessengerChart(): UseMessengerChartResult {
     }
   }, [])
 
+  // Debounced reload to prevent excessive API calls
+  const debouncedReload = useDebouncedCallback(loadData, 500)
+
   useEffect(() => {
     loadData()
   }, [loadData])
+
+  // Subscribe to Mercure updates via Pimcore's GlobalMessageBus - reload chart on any messenger event
+  useEffect(() => {
+    return messengerEventEmitter.subscribe((_event: MessengerUpdateEvent) => {
+      console.debug('useMessengerChart: Received Mercure event, triggering reload')
+      debouncedReload()
+    })
+  }, [debouncedReload])
 
   return {
     data,
@@ -130,9 +161,23 @@ export function useMessengerMessages(receiverName: string | null): UseMessengerM
     }
   }, [receiverName])
 
+  // Debounced reload to prevent excessive API calls
+  const debouncedReload = useDebouncedCallback(loadData, 500)
+
   useEffect(() => {
     loadData()
   }, [loadData])
+
+  // Subscribe to Mercure updates via Pimcore's GlobalMessageBus - reload when relevant events occur
+  useEffect(() => {
+    return messengerEventEmitter.subscribe((event: MessengerUpdateEvent) => {
+      if (!receiverName) return
+      // Reload on message handled (removed from pending) for this receiver
+      if (event.type === 'message_handled' && event.receiverName === receiverName) {
+        debouncedReload()
+      }
+    })
+  }, [receiverName, debouncedReload])
 
   return {
     messages,
@@ -174,12 +219,17 @@ export function useMessengerFailedMessages(receiverName: string | null): UseMess
     }
   }, [receiverName])
 
+  // Debounced reload to prevent excessive API calls
+  const debouncedReload = useDebouncedCallback(loadData, 500)
+
   const deleteMessage = useCallback(async (messageId: string) => {
     if (!receiverName) return
 
     try {
       await messengerService.deleteFailedMessage(receiverName, messageId)
-      await loadData() // Reload data after deletion
+      // Note: Mercure will trigger reload automatically, but we also reload here
+      // for immediate feedback in case Mercure is slow or unavailable
+      await loadData()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete message')
       throw err
@@ -191,7 +241,9 @@ export function useMessengerFailedMessages(receiverName: string | null): UseMess
 
     try {
       await messengerService.retryFailedMessage(receiverName, messageId)
-      await loadData() // Reload data after retry
+      // Note: Mercure will trigger reload automatically, but we also reload here
+      // for immediate feedback in case Mercure is slow or unavailable
+      await loadData()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to retry message')
       throw err
@@ -201,6 +253,22 @@ export function useMessengerFailedMessages(receiverName: string | null): UseMess
   useEffect(() => {
     loadData()
   }, [loadData])
+
+  // Subscribe to Mercure updates via Pimcore's GlobalMessageBus - reload when relevant events occur
+  useEffect(() => {
+    return messengerEventEmitter.subscribe((event: MessengerUpdateEvent) => {
+      if (!receiverName) return
+      // Reload on failed messages for this receiver
+      if (event.type === 'message_failed' && event.receiverName === receiverName) {
+        debouncedReload()
+      }
+      // Also reload on retry/reject as these come from other users or tabs
+      if ((event.type === 'message_retried' || event.type === 'message_rejected') &&
+          event.receiverName === receiverName) {
+        debouncedReload()
+      }
+    })
+  }, [receiverName, debouncedReload])
 
   return {
     messages,

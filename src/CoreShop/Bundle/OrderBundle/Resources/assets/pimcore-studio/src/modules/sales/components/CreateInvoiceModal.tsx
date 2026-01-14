@@ -14,14 +14,16 @@
  */
 
 import React from 'react'
-import { Modal, Form, InputNumber, Table, message, Tabs } from 'antd'
+import { Modal, Form, InputNumber, Table, Tabs } from 'antd'
 import { createStyles } from 'antd-style'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { formatCurrency } from '@coreshop/pimcore/src/utils'
 import { container } from '@pimcore/studio-ui-bundle'
 import type { ColumnType } from 'antd/es/table'
 import { ModalFieldExtensionRegistry } from '../extensions'
 import { extensionServiceIds } from '../extensions/service-ids'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 interface InvoiceItem {
   orderItemId: number
@@ -57,6 +59,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
   onCancel
 }) => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const { styles } = useCreateInvoiceModalStyles()
   const [form] = Form.useForm()
   const [items, setItems] = React.useState<InvoiceItem[]>([])
@@ -86,12 +89,11 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
         if (data.success && data.items && data.items.length > 0) {
           setItems(data.items)
         } else {
-          message.info('No items available to invoice')
+          void messageApi.info('No items available to invoice')
           onCancel()
         }
       } catch (error) {
-        console.error('Failed to load invoiceable items:', error)
-        message.error('Failed to load invoiceable items')
+        void messageApi.error(getErrorMessage(error, 'Failed to load invoiceable items'))
         onCancel()
       } finally {
         setLoadingItems(false)
@@ -159,15 +161,14 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       const result = await response.json()
 
       if (result.success) {
-        message.success('Invoice created successfully')
+        void messageApi.success('Invoice created successfully')
         form.resetFields()
         onSuccess()
       } else {
-        message.error(result.message || 'Failed to create invoice')
+        void messageApi.error(result.message || 'Failed to create invoice')
       }
     } catch (error) {
-      console.error('Failed to create invoice:', error)
-      message.error('Failed to create invoice')
+      void messageApi.error(getErrorMessage(error, 'Failed to create invoice'))
     } finally {
       setLoading(false)
     }

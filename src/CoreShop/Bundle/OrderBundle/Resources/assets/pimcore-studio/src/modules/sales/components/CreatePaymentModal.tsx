@@ -13,10 +13,12 @@
  */
 
 import React from 'react'
-import { Modal, Form, DatePicker, InputNumber, message } from 'antd'
+import { Modal, Form, DatePicker, InputNumber } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { createStyles } from 'antd-style'
 import dayjs, { type Dayjs } from 'dayjs'
 import { PaymentProviderSelect } from '@coreshop/payment/src/components'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 export interface CreatePaymentModalProps {
   open: boolean
@@ -39,6 +41,7 @@ export const CreatePaymentModal: React.FC<CreatePaymentModalProps> = ({
   onCancel
 }) => {
   const { styles } = useCreatePaymentModalStyles()
+  const messageApi = useMessage()
   const [form] = Form.useForm()
   const [loading, setLoading] = React.useState(false)
 
@@ -81,16 +84,15 @@ export const CreatePaymentModal: React.FC<CreatePaymentModalProps> = ({
       const result = await response.json()
 
       if (result.success) {
-        message.success('Payment created successfully')
+        void messageApi.success('Payment created successfully')
         form.resetFields()
         onSuccess()
       } else {
-        message.error(result.message || 'Failed to create payment')
+        void messageApi.error(result.message || 'Failed to create payment')
       }
     } catch (error) {
       if (error instanceof Error && error.message !== 'Validation failed') {
-        console.error('Failed to create payment:', error)
-        message.error('Failed to create payment')
+        void messageApi.error(getErrorMessage(error, 'Failed to create payment'))
       }
     } finally {
       setLoading(false)

@@ -11,12 +11,13 @@
  */
 
 import React from 'react'
-import { SplitLayout, type DragAndDropInfo } from '@pimcore/studio-ui-bundle/components'
+import { SplitLayout, useMessage, type DragAndDropInfo } from '@pimcore/studio-ui-bundle/components'
 import type { Index, IndexConfig, IndexColumn, ClassDefinitionResponse } from '../api'
 import { indexApi } from '../api'
 import { ClassDefinitionTree } from './ClassDefinitionTree'
 import { SelectedFieldsTree } from './SelectedFieldsTree'
 import { FieldEditModal } from './FieldEditModal'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 interface ColumnsPanelProps {
   index: Index
@@ -29,6 +30,7 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
   config,
   onChange
 }) => {
+  const messageApi = useMessage()
   const [classDefinition, setClassDefinition] = React.useState<ClassDefinitionResponse | null>(null)
   const [loading, setLoading] = React.useState(false)
   const [dialogVisible, setDialogVisible] = React.useState(false)
@@ -48,7 +50,7 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
     indexApi.getClassDefinition(index.class)
       .then(setClassDefinition)
       .catch(err => {
-        console.error('Failed to load class definition:', err)
+        void messageApi.error(getErrorMessage(err, 'Failed to load class definition'))
       })
       .finally(() => {
         setLoading(false)
@@ -63,7 +65,7 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
     )
 
     if (exists) {
-      console.warn('Field already added:', field.objectKey)
+      void messageApi.warning(`Field "${field.objectKey}" already added`)
       return
     }
 

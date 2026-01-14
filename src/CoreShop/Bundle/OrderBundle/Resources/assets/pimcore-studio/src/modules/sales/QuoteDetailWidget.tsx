@@ -11,7 +11,8 @@
  */
 
 import React from 'react'
-import { message, Spin } from 'antd'
+import { Spin } from 'antd'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { SaleDetail } from './SaleDetail'
 import type { Sale } from './types'
 
@@ -48,6 +49,7 @@ const loadQuoteFromBackend = async (id: number): Promise<Sale | null> => {
 export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
   const [quote, setQuote] = React.useState<Sale | undefined>()
   const [loading, setLoading] = React.useState(true)
+  const messageApi = useMessage()
 
   const quoteId = props?.orderId
 
@@ -64,15 +66,14 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
       if (data) {
         setQuote(data)
       } else {
-        void message.error('Failed to load quote data')
+        void messageApi.error('Failed to load quote data')
       }
     } catch (error) {
-      void message.error('Error loading quote')
-      console.error('Failed to load quote:', error)
+      void messageApi.error('Error loading quote')
     } finally {
       setLoading(false)
     }
-  }, [quoteId])
+  }, [quoteId, messageApi])
 
   React.useEffect(() => {
     void loadQuote()
@@ -96,10 +97,10 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
         throw new Error('Failed to save')
       }
 
-      void message.success('Quote updated successfully')
+      void messageApi.success('Quote updated successfully')
       await loadQuote()
     } catch (error) {
-      void message.error('Failed to save changes')
+      void messageApi.error('Failed to save changes')
       await loadQuote()
     }
   }

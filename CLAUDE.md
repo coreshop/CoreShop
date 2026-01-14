@@ -934,3 +934,6 @@ After all decorators are applied:
 
 ## Knowledge Graph
 Use the knowledge-graph-mcp before and after every task you do.
+
+## TODO
+Dynamic DataObject Types

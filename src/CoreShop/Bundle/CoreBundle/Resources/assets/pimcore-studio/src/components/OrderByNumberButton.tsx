@@ -11,17 +11,18 @@
  */
 
 import React from 'react'
-import {Icon, useFormModal} from '@pimcore/studio-ui-bundle/components'
+import { Icon, useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { orderService } from '../services/OrderService'
-import { message } from 'antd'
 import { type MenuButtonProps } from '@coreshop/menu/src'
 import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 
 export const OrderByNumberButton = ({ icon, label }: MenuButtonProps): React.JSX.Element => {
   const { input } = useFormModal()
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const widgetManager = useWidgetManager()
 
   const handleClick = (): void => {
@@ -48,11 +49,10 @@ export const OrderByNumberButton = ({ icon, label }: MenuButtonProps): React.JSX
               }
             })
           } else {
-            message.error(t('element_not_found'))
+            void messageApi.error(t('element_not_found'))
           }
         } catch (error) {
-          console.error('Error searching for order:', error)
-          message.error(t('error'))
+          void messageApi.error(getErrorMessage(error, t('error')))
         }
       }
     })
