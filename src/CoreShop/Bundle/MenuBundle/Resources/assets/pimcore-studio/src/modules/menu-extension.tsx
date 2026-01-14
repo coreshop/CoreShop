@@ -14,7 +14,6 @@ import {CoreShopMenuItem} from '../types'
 import {CoreShopWidget} from '../components/CoreShopWidget'
 import {MenuButtonRegistry} from "../services/button-registry";
 import React from "react";
-import { createStyles } from 'antd-style'
 
 export const CoreShopMenuExtension = {
     onInit(): void {
@@ -119,12 +118,12 @@ export const CoreShopMenuExtension = {
 
             if (item.widgetButton) {
                 const buttonRegistry = container.get<MenuButtonRegistry>('CoreShopMenuButtons');
-                const button = buttonRegistry.get(item.widgetButton);
+                const buttonConfig = buttonRegistry.get(item.widgetButton);
 
-                if (button) {
-                    navItem.button = () => React.createElement(button.button, {
+                if (buttonConfig) {
+                    navItem.button = ({ closeMainNav }: { closeMainNav?: () => void }) => React.createElement(buttonConfig.button, {
                         icon: item.icon!,
-                        label: item.label,
+                        closeMainNav,
                     })
 
                     mainNavRegistry.registerMainNavItem(navItem)

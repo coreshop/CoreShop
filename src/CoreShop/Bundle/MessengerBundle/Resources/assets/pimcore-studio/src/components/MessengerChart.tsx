@@ -1,6 +1,4 @@
 /**
- * TODO: ALL HARDCODED STRINGS NEED TRANSLATIONS
- *
  * MessengerChart Component
  *
  * This source file is available under the terms of the
@@ -13,93 +11,187 @@
  */
 
 import * as React from 'react'
-import { Card, Spin, Alert, Typography } from 'antd'
+import { Row, Col, Spin, Alert, Statistic, Progress, Empty, Tooltip as AntTooltip } from 'antd'
+import { MessageOutlined, ClockCircleOutlined } from '@ant-design/icons'
+import { createStyles } from 'antd-style'
+import { useTranslation } from 'react-i18next'
 import { useMessengerChart } from '../hooks/useMessenger'
-
-const { Text } = Typography
 
 export const MessengerChart: React.FC = () => {
   const { data, loading, error } = useMessengerChart()
+  const { styles, theme } = useMessengerChartStyles()
+  const { t } = useTranslation()
 
   if (error) {
     return (
       <Alert
-        message="Error loading chart data"
+        message={t('coreshop_messenger_error_loading', { defaultValue: 'Error loading chart data' })}
         description={error}
         type="error"
-        style={{ margin: '16px 0' }}
       />
     )
   }
 
   if (loading) {
     return (
-      <Card style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className={styles.loadingContainer}>
         <Spin size="large" />
-      </Card>
+      </div>
     )
   }
 
-  // Simple fallback chart implementation without external dependencies
+  const totalMessages = data.reduce((sum, item) => sum + item.count, 0)
   const maxCount = Math.max(...data.map(item => item.count), 1)
 
+  // Generate colors for bars
+  const getBarColor = (index: number): string => {
+    const colors = [
+      theme.colorPrimary,
+      theme.colorSuccess,
+      theme.colorWarning,
+      theme.colorInfo,
+      '#722ed1', // purple
+      '#13c2c2', // cyan
+      '#eb2f96', // magenta
+    ]
+    return colors[index % colors.length]
+  }
+
   return (
-    <Card style={{ height: 200 }}>
-      <div style={{ display: 'flex', alignItems: 'end', height: '120px', gap: '8px', padding: '16px 0' }}>
-        {data.length === 0 ? (
-          <div style={{ width: '100%', textAlign: 'center', paddingTop: '40px' }}>
-            <Text type="secondary">No data available</Text>
+    <div className={styles.container}>
+      <Row gutter={16}>
+        <Col span={6}>
+          <div className={styles.statisticCard}>
+            <Statistic
+              title={t('coreshop_messenger_total_messages', { defaultValue: 'Total Messages' })}
+              value={totalMessages}
+              prefix={<MessageOutlined />}
+              valueStyle={{ color: theme.colorPrimary }}
+            />
           </div>
-        ) : (
-          data.map((item, index) => {
-            const height = (item.count / maxCount) * 100
-            return (
-              <div 
-                key={index}
-                style={{ 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  alignItems: 'center',
-                  flex: 1,
-                  minWidth: '60px'
-                }}
-              >
-                <div 
-                  style={{ 
-                    width: '100%',
-                    height: `${height}px`,
-                    backgroundColor: '#1890ff',
-                    marginBottom: '4px',
-                    borderRadius: '2px 2px 0 0',
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    paddingTop: '2px'
-                  }}
-                >
-                  <Text style={{ fontSize: '11px', color: 'white', fontWeight: 'bold' }}>
-                    {item.count}
-                  </Text>
-                </div>
-                <Text 
-                  style={{ 
-                    fontSize: '10px', 
-                    textAlign: 'center',
-                    wordBreak: 'break-all',
-                    lineHeight: '12px',
-                    maxWidth: '100%'
-                  }}
-                  ellipsis={{ tooltip: item.receiver }}
-                >
-                  {item.receiver}
-                </Text>
+        </Col>
+        <Col span={6}>
+          <div className={styles.statisticCard}>
+            <Statistic
+              title={t('coreshop_messenger_receivers', { defaultValue: 'Receivers' })}
+              value={data.length}
+              prefix={<ClockCircleOutlined />}
+              valueStyle={{ color: theme.colorSuccess }}
+            />
+          </div>
+        </Col>
+        <Col span={12}>
+          <div className={styles.chartCard}>
+            {data.length === 0 ? (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={t('coreshop_messenger_no_data', { defaultValue: 'No pending messages' })}
+              />
+            ) : (
+              <div className={styles.chartContainer}>
+                {data.map((item, index) => {
+                  const percentage = Math.round((item.count / maxCount) * 100)
+                  const color = getBarColor(index)
+                  const shortName = item.receiver.split('\\').pop() || item.receiver
+
+                  return (
+                    <AntTooltip
+                      key={index}
+                      title={`${item.receiver}: ${item.count}`}
+                      placement="top"
+                    >
+                      <div className={styles.barItem}>
+                        <div className={styles.barLabel}>{shortName}</div>
+                        <Progress
+                          percent={percentage}
+                          showInfo={false}
+                          strokeColor={color}
+                          trailColor={theme.colorBgLayout}
+                          size="small"
+                        />
+                        <div className={styles.barCount}>{item.count}</div>
+                      </div>
+                    </AntTooltip>
+                  )
+                })}
               </div>
-            )
-          })
-        )}
-      </div>
-    </Card>
+            )}
+          </div>
+        </Col>
+      </Row>
+    </div>
   )
 }
+
+const useMessengerChartStyles = createStyles(({ css, token }) => ({
+  container: css`
+    margin-bottom: 16px;
+  `,
+  loadingContainer: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    background: ${token.colorBgContainer};
+    border-radius: ${token.borderRadius}px;
+    border: 1px solid ${token.colorBorderSecondary};
+  `,
+  statisticCard: css`
+    background: ${token.colorBgContainer};
+    border-radius: ${token.borderRadius}px;
+    padding: 16px;
+    border: 1px solid ${token.colorBorderSecondary};
+    height: 100%;
+
+    .ant-statistic-title {
+      color: ${token.colorTextSecondary};
+      font-size: 13px;
+    }
+  `,
+  chartCard: css`
+    background: ${token.colorBgContainer};
+    border-radius: ${token.borderRadius}px;
+    padding: 12px 16px;
+    border: 1px solid ${token.colorBorderSecondary};
+    height: 100%;
+    min-height: 88px;
+  `,
+  chartContainer: css`
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 100px;
+    overflow-y: auto;
+  `,
+  barItem: css`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: ${token.colorBgLayout};
+      margin: -2px -4px;
+      padding: 2px 4px;
+      border-radius: ${token.borderRadiusSM}px;
+    }
+  `,
+  barLabel: css`
+    width: 120px;
+    font-size: 12px;
+    color: ${token.colorTextSecondary};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 0;
+  `,
+  barCount: css`
+    min-width: 32px;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 600;
+    color: ${token.colorText};
+  `
+}))
 
 export default MessengerChart

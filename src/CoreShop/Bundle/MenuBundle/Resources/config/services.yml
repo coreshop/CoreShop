@@ -41,6 +41,8 @@ services:
             - { name: knp_menu.provider }
 
     CoreShop\Bundle\MenuBundle\Controller\MenuController:
+        arguments:
+            - '@translator'
         tags:
             - { name: controller.service_arguments }
 

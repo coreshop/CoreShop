@@ -1,5 +1,5 @@
 /**
- * CoreShop PaymentBundle Studio Plugin
+ * CoreShop CoreBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -12,6 +12,8 @@
 
 // @ts-ignore
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { CoreBundleIconModule } from './modules/icon-library'
 import { CoreBundleMenuModule } from './modules/menu'
 import { TaxRuleGroupExtensionModule } from './modules/extension/tax-rule-group'
@@ -23,6 +25,7 @@ import { CountryFormExtensionModule } from './modules/extension/country/country-
 import { OrderCreationExtensionModule } from './modules/extension/order-creation'
 import { NotificationRulesExtensionModule } from './modules/extension/notification-rules'
 import { ReportsModule } from './modules/reports'
+import { AssignToNewCompanyPanel, AssignToExistingCompanyPanel } from './modules/customer-company-assignment'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -31,6 +34,19 @@ const plugin: IAbstractPlugin = {
     },
 
     onStartup({ moduleSystem }) {
+        // Register Customer-to-Company Assignment widgets
+        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+
+        widgets.registerWidget({
+            name: 'coreshop-customer-to-company-assign-to-new',
+            component: AssignToNewCompanyPanel,
+        })
+
+        widgets.registerWidget({
+            name: 'coreshop-customer-to-company-assign-to-existing',
+            component: AssignToExistingCompanyPanel,
+        })
+
         // ============================================
         // Module Registration
         // ============================================

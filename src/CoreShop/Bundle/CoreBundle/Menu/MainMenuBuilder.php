@@ -340,6 +340,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_customers')
             ->setAttribute('resource', 'coreshop.customer')
             ->setAttribute('function', 'customers')
+            ->setAttribute('widgetId', 'coreshop-customer-customers')
             ->setExtra('order', 10)
         ;
 
@@ -350,6 +351,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_customer_groups')
             ->setAttribute('resource', 'coreshop.customer')
             ->setAttribute('function', 'customer_groups')
+            ->setAttribute('widgetId', 'coreshop-customer-customer-groups')
             ->setExtra('order', 20)
         ;
 
@@ -360,6 +362,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_new')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'customer_to_company_assign_to_new')
+            ->setAttribute('widgetId', 'coreshop-customer-to-company-assign-to-new')
             ->setExtra('order', 30)
         ;
 
@@ -370,6 +373,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_existing')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'customer_to_company_assign_to_existing')
+            ->setAttribute('widgetId', 'coreshop-customer-to-company-assign-to-existing')
             ->setExtra('order', 40)
         ;
 
@@ -437,8 +441,7 @@ class MainMenuBuilder implements MenuBuilderInterface
         $menuItem->addChild('coreshop_about')
             ->setLabel('coreshop_about')
             ->setAttribute('iconCls', 'coreshop_nav_icon_logo')
-            ->setAttribute('resource', 'coreshop.core')
-            ->setAttribute('function', 'about')
+            ->setAttribute('widgetButton', 'coreShopAbout')
             ->setExtra('order', 1000)
         ;
     }

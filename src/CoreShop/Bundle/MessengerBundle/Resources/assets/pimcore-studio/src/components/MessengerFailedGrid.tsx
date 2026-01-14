@@ -1,14 +1,6 @@
 /**
  * MessengerFailedGrid Component
  *
- * TODO: ALL HARDCODED STRINGS NEED TRANSLATIONS
- * - Table column titles (ID, Class, Failed At, Error, Actions)
- * - Tooltip texts
- * - Modal titles
- * - Placeholder texts
- * - Button labels
- * - Message texts
- *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
@@ -19,30 +11,34 @@
  */
 
 import React, { useState } from 'react'
-import { 
-  Table, 
-  Select, 
-  Button, 
-  Space, 
-  Modal, 
-  Alert, 
+import {
+  Table,
+  Select,
+  Button,
+  Space,
+  Modal,
+  Alert,
   Popconfirm,
   message,
   Typography,
-  Tooltip
+  Tooltip,
+  Tag,
+  Empty
 } from 'antd'
-import { 
-  InfoCircleOutlined, 
-  ExclamationCircleOutlined, 
-  DeleteOutlined, 
+import {
+  InfoCircleOutlined,
+  ExclamationCircleOutlined,
+  DeleteOutlined,
   RedoOutlined,
-  ReloadOutlined
+  ReloadOutlined,
+  WarningOutlined
 } from '@ant-design/icons'
+import { createStyles } from 'antd-style'
+import { useTranslation } from 'react-i18next'
 import { ColumnsType } from 'antd/es/table'
 import { useMessengerReceivers, useMessengerFailedMessages } from '../hooks/useMessenger'
 import { MessengerFailedMessage } from '../types'
 
-const { Option } = Select
 const { Text, Paragraph } = Typography
 
 export const MessengerFailedGrid: React.FC = () => {
@@ -52,11 +48,13 @@ export const MessengerFailedGrid: React.FC = () => {
   const [errorModalOpen, setErrorModalOpen] = useState(false)
   const [selectedMessage, setSelectedMessage] = useState<MessengerFailedMessage | null>(null)
   const [processingActions, setProcessingActions] = useState<Set<string>>(new Set())
+  const { styles } = useFailedGridStyles()
+  const { t } = useTranslation()
 
-  const { 
-    messages, 
-    loading: messagesLoading, 
-    error, 
+  const {
+    messages,
+    loading: messagesLoading,
+    error,
     reload,
     deleteMessage,
     retryMessage
@@ -82,9 +80,9 @@ export const MessengerFailedGrid: React.FC = () => {
 
     try {
       await deleteMessage(messageId)
-      message.success('Message deleted successfully')
-    } catch (error) {
-      message.error('Failed to delete message')
+      message.success(t('coreshop_messenger_delete_success', { defaultValue: 'Message deleted successfully' }))
+    } catch (err) {
+      message.error(t('coreshop_messenger_delete_error', { defaultValue: 'Failed to delete message' }))
     } finally {
       setProcessingActions(prev => {
         const newSet = new Set(prev)
@@ -100,9 +98,9 @@ export const MessengerFailedGrid: React.FC = () => {
 
     try {
       await retryMessage(messageId)
-      message.success('Message retry initiated successfully')
-    } catch (error) {
-      message.error('Failed to retry message')
+      message.success(t('coreshop_messenger_retry_success', { defaultValue: 'Message retry initiated successfully' }))
+    } catch (err) {
+      message.error(t('coreshop_messenger_retry_error', { defaultValue: 'Failed to retry message' }))
     } finally {
       setProcessingActions(prev => {
         const newSet = new Set(prev)
@@ -112,55 +110,74 @@ export const MessengerFailedGrid: React.FC = () => {
     }
   }
 
+  // Extract short class name from full namespace
+  const getShortClassName = (fullClass: string): string => {
+    return fullClass.split('\\').pop() || fullClass
+  }
+
   const columns: ColumnsType<MessengerFailedMessage> = [
     {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
-      width: 100,
+      width: 80,
+      render: (id: string) => (
+        <Tag>{id}</Tag>
+      )
     },
     {
-      title: 'Class',
+      title: t('coreshop_messenger_class', { defaultValue: 'Class' }),
       dataIndex: 'class',
       key: 'class',
-      width: 400,
       ellipsis: true,
+      render: (className: string) => (
+        <Tooltip title={className}>
+          <span className={styles.className}>{getShortClassName(className)}</span>
+        </Tooltip>
+      )
     },
     {
-      title: 'Failed At',
+      title: t('coreshop_messenger_failed_at', { defaultValue: 'Failed At' }),
       dataIndex: 'failed_at',
       key: 'failed_at',
-      width: 150,
+      width: 160,
       render: (date: string) => {
         if (!date) return '-'
-        return new Date(date).toLocaleDateString()
+        const d = new Date(date)
+        return (
+          <span className={styles.dateCell}>
+            {d.toLocaleDateString()} {d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </span>
+        )
       },
     },
     {
-      title: 'Error',
+      title: t('coreshop_messenger_error', { defaultValue: 'Error' }),
       dataIndex: 'error',
       key: 'error',
       ellipsis: true,
-      render: (error: string) => (
-        <Text type="danger" ellipsis={{ tooltip: error }}>
-          {error}
+      render: (errorText: string) => (
+        <Text type="danger" ellipsis={{ tooltip: errorText }}>
+          <WarningOutlined style={{ marginRight: 4 }} />
+          {errorText}
         </Text>
       ),
     },
     {
-      title: 'Actions',
+      title: t('coreshop_messenger_actions', { defaultValue: 'Actions' }),
       key: 'actions',
-      width: 150,
+      width: 160,
+      fixed: 'right',
       render: (_, record) => (
         <Space size="small">
-          <Tooltip title="Show message info">
+          <Tooltip title={t('coreshop_messenger_info', { defaultValue: 'Details' })}>
             <Button
               size="small"
               icon={<InfoCircleOutlined />}
               onClick={() => handleInfoClick(record)}
             />
           </Tooltip>
-          <Tooltip title="Show error details">
+          <Tooltip title={t('coreshop_messenger_show_error', { defaultValue: 'Show error' })}>
             <Button
               size="small"
               danger
@@ -169,32 +186,36 @@ export const MessengerFailedGrid: React.FC = () => {
             />
           </Tooltip>
           <Popconfirm
-            title="Delete message"
-            description="Are you sure you want to delete this failed message?"
+            title={t('coreshop_messenger_delete_failed_message', { defaultValue: 'Delete failed Message' })}
+            description={t('coreshop_messenger_delete_confirm', { defaultValue: 'Are you sure you want to delete this message?' })}
             onConfirm={() => handleDeleteClick(record)}
-            okText="Delete"
-            cancelText="Cancel"
+            okText={t('coreshop_messenger_delete', { defaultValue: 'Delete' })}
+            cancelText={t('coreshop_messenger_cancel', { defaultValue: 'Cancel' })}
           >
-            <Button
-              size="small"
-              danger
-              icon={<DeleteOutlined />}
-              loading={processingActions.has(`delete-${record.id}`)}
-            />
+            <Tooltip title={t('coreshop_messenger_delete', { defaultValue: 'Delete' })}>
+              <Button
+                size="small"
+                danger
+                icon={<DeleteOutlined />}
+                loading={processingActions.has(`delete-${record.id}`)}
+              />
+            </Tooltip>
           </Popconfirm>
           <Popconfirm
-            title="Retry message"
-            description="Are you sure you want to retry this failed message?"
+            title={t('coreshop_messenger_retry_failed_message', { defaultValue: 'Retry failed Message' })}
+            description={t('coreshop_messenger_retry_confirm', { defaultValue: 'Are you sure you want to retry this message?' })}
             onConfirm={() => handleRetryClick(record)}
-            okText="Retry"
-            cancelText="Cancel"
+            okText={t('coreshop_messenger_retry', { defaultValue: 'Retry' })}
+            cancelText={t('coreshop_messenger_cancel', { defaultValue: 'Cancel' })}
           >
-            <Button
-              size="small"
-              type="primary"
-              icon={<RedoOutlined />}
-              loading={processingActions.has(`retry-${record.id}`)}
-            />
+            <Tooltip title={t('coreshop_messenger_retry', { defaultValue: 'Retry' })}>
+              <Button
+                size="small"
+                type="primary"
+                icon={<RedoOutlined />}
+                loading={processingActions.has(`retry-${record.id}`)}
+              />
+            </Tooltip>
           </Popconfirm>
         </Space>
       ),
@@ -202,69 +223,85 @@ export const MessengerFailedGrid: React.FC = () => {
   ]
 
   return (
-    <div>
-      <div style={{ marginBottom: 16, display: 'flex', gap: 16, alignItems: 'center' }}>
+    <div className={styles.container}>
+      <div className={styles.toolbar}>
         <Select
-          style={{ width: 400 }}
-          placeholder="Select failure receiver"
+          className={styles.receiverSelect}
+          placeholder={t('coreshop_messenger_failure_receivers', { defaultValue: 'Select failure receiver' })}
           value={selectedReceiver}
           onChange={handleReceiverChange}
           loading={receiversLoading}
           allowClear
+          showSearch
+          filterOption={(input, option) =>
+            (option?.children as unknown as string)?.toLowerCase().includes(input.toLowerCase())
+          }
         >
           {failureReceivers.map(receiver => (
-            <Option key={receiver.receiver} value={receiver.receiver}>
+            <Select.Option key={receiver.receiver} value={receiver.receiver}>
               {receiver.receiver}
-            </Option>
+            </Select.Option>
           ))}
         </Select>
-        
-        <Button 
-          icon={<ReloadOutlined />} 
+
+        <Button
+          icon={<ReloadOutlined />}
           onClick={reload}
           disabled={!selectedReceiver}
         >
-          Reload
+          {t('coreshop_messenger_reload', { defaultValue: 'Reload' })}
         </Button>
       </div>
 
       {error && (
         <Alert
-          message="Error loading failed messages"
+          message={t('coreshop_messenger_error_loading', { defaultValue: 'Error loading messages' })}
           description={error}
           type="error"
-          style={{ marginBottom: 16 }}
+          className={styles.errorAlert}
           closable
         />
       )}
 
-      <Table
-        columns={columns}
-        dataSource={messages}
-        rowKey="id"
-        loading={messagesLoading}
-        // disabled={!selectedReceiver}
-        scroll={{ y: 'calc(100vh - 450px)' }}
-        pagination={false}
-      />
+      {!selectedReceiver ? (
+        <Empty
+          className={styles.emptyState}
+          description={t('coreshop_messenger_select_receiver', { defaultValue: 'Please select a receiver to view failed messages' })}
+        />
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={messages}
+          rowKey="id"
+          loading={messagesLoading}
+          scroll={{ y: 'calc(100vh - 520px)' }}
+          pagination={false}
+          size="small"
+          className={styles.table}
+        />
+      )}
 
       {/* Info Modal */}
       <Modal
-        title="Message Information"
+        title={t('coreshop_messenger_message_info', { defaultValue: 'Message Information' })}
         open={infoModalOpen}
         onCancel={() => setInfoModalOpen(false)}
         footer={[
           <Button key="close" onClick={() => setInfoModalOpen(false)}>
-            Close
+            {t('coreshop_messenger_close', { defaultValue: 'Close' })}
           </Button>,
         ]}
-        width={600}
+        width={700}
       >
         {selectedMessage && (
-          <div style={{ maxHeight: 400, overflow: 'auto' }}>
-            <Paragraph>
-              <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-                {selectedMessage.serialized || 'No serialized data available'}
+          <div className={styles.modalContent}>
+            <div className={styles.modalMeta}>
+              <Tag>ID: {selectedMessage.id}</Tag>
+              <Tag color="blue">{getShortClassName(selectedMessage.class)}</Tag>
+            </div>
+            <Paragraph className={styles.codeBlock}>
+              <pre>
+                {selectedMessage.serialized || t('coreshop_messenger_no_data', { defaultValue: 'No data available' })}
               </pre>
             </Paragraph>
           </div>
@@ -273,23 +310,23 @@ export const MessengerFailedGrid: React.FC = () => {
 
       {/* Error Modal */}
       <Modal
-        title="Error Details"
+        title={t('coreshop_messenger_error_details', { defaultValue: 'Error Details' })}
         open={errorModalOpen}
         onCancel={() => setErrorModalOpen(false)}
         footer={[
           <Button key="close" onClick={() => setErrorModalOpen(false)}>
-            Close
+            {t('coreshop_messenger_close', { defaultValue: 'Close' })}
           </Button>,
         ]}
-        width={600}
+        width={700}
       >
         {selectedMessage && (
-          <div style={{ maxHeight: 400, overflow: 'auto' }}>
+          <div className={styles.modalContent}>
             <Alert
-              message="Error Information"
+              message={t('coreshop_messenger_error', { defaultValue: 'Error' })}
               description={
-                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-                  {selectedMessage.error || 'No error information available'}
+                <pre className={styles.errorPre}>
+                  {selectedMessage.error || t('coreshop_messenger_no_error', { defaultValue: 'No error information available' })}
                 </pre>
               }
               type="error"
@@ -301,5 +338,75 @@ export const MessengerFailedGrid: React.FC = () => {
     </div>
   )
 }
+
+const useFailedGridStyles = createStyles(({ css, token }) => ({
+  container: css`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  `,
+  toolbar: css`
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  `,
+  receiverSelect: css`
+    width: 400px;
+  `,
+  errorAlert: css`
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  `,
+  emptyState: css`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  `,
+  table: css`
+    flex: 1;
+
+    .ant-table-thead > tr > th {
+      background: ${token.colorBgLayout};
+      font-weight: 600;
+    }
+  `,
+  className: css`
+    font-family: monospace;
+    font-size: 12px;
+    color: ${token.colorTextSecondary};
+  `,
+  dateCell: css`
+    font-size: 12px;
+    color: ${token.colorTextSecondary};
+  `,
+  modalContent: css`
+    max-height: 500px;
+    overflow: auto;
+  `,
+  modalMeta: css`
+    margin-bottom: 12px;
+  `,
+  codeBlock: css`
+    pre {
+      background: ${token.colorBgLayout};
+      padding: 12px;
+      border-radius: ${token.borderRadius}px;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 400px;
+      overflow: auto;
+    }
+  `,
+  errorPre: css`
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 12px;
+    margin: 0;
+  `
+}))
 
 export default MessengerFailedGrid

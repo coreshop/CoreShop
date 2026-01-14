@@ -31,7 +31,6 @@ class MenuController
         private readonly TranslatorInterface $translator,
     ) {
     }
-
     public function menuAction(string $type, Environment $twig): Response
     {
         $result = $twig->render('@CoreShopMenu/menu.js.twig', [
@@ -90,12 +89,11 @@ class MenuController
         }
 
         $labelKey = $menuData['label'] ?? $menuData['name'];
-        $translatedLabel = $this->translator->trans($labelKey, [], 'studio');
 
         return [
             $menuData['name'] = [
                 'id' => $menuData['name'],
-                'label' => $translatedLabel,
+                'label' => $this->translator->trans($labelKey, [], 'studio'),
                 'content' => $menuData['attributes']['content'] ?? null,
                 'children' => $items,
             ]
@@ -105,14 +103,13 @@ class MenuController
     private function transformMenuItem(array $item): array
     {
         $labelKey = $item['label'] ?? $item['name'] ?? 'Unnamed';
-        $translatedLabel = $this->translator->trans($labelKey, [], 'studio');
 
         $transformed = [
             'id' => $item['name'] ?? 'unnamed',
             'widgetId' => $item['attributes']['widgetId'] ?? null,
             'widgetEvent' => $item['attributes']['widgetEvent'] ?? null,
             'widgetButton' => $item['attributes']['widgetButton'] ?? null,
-            'label' => $translatedLabel,
+            'label' => $this->translator->trans($labelKey, [], 'studio'),
             'path' => $item['uri'] ?? null,
             'icon' => $item['attributes']['iconCls'] ?? null,
             'content' => $item['attributes']['content'] ?? null,

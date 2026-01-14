@@ -1,5 +1,5 @@
 /**
- * CoreShop CoreBundle Icon Library
+ * CoreShop CoreBundle Menu Module
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -12,6 +12,7 @@
 
 import {container, AbstractModule} from '@pimcore/studio-ui-bundle'
 import {OrderByNumberButton} from "../../components/OrderByNumberButton";
+import {AboutButton} from "../about";
 
 // @ts-ignore
 import MenuButtonRegistry from '@coreshop/menu';
@@ -26,6 +27,11 @@ export const CoreBundleMenuModule: AbstractModule = {
         buttonRegistry.add({
             button: OrderByNumberButton,
             name: 'coreShopOpenOrderByNumberModal',
+        })
+
+        buttonRegistry.add({
+            button: AboutButton,
+            name: 'coreShopAbout',
         })
     }
 }

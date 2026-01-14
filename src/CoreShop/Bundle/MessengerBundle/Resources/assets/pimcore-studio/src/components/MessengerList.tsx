@@ -1,6 +1,4 @@
 /**
- * TODO: ALL HARDCODED STRINGS NEED TRANSLATIONS
- *
  * MessengerList Component - Main component for messenger management
  *
  * This source file is available under the terms of the
@@ -13,89 +11,158 @@
  */
 
 import * as React from 'react'
-import { Tabs, Button } from 'antd'
-import { ReloadOutlined } from '@ant-design/icons'
+import { Tabs, Button, Space, Badge } from 'antd'
+import { ReloadOutlined, WarningOutlined, ClockCircleOutlined } from '@ant-design/icons'
+import { createStyles } from 'antd-style'
+import { useTranslation } from 'react-i18next'
 import MessengerChart from './MessengerChart'
 import MessengerFailedGrid from './MessengerFailedGrid'
 import MessengerPendingGrid from './MessengerPendingGrid'
 import { useMessengerChart } from '../hooks/useMessenger'
 
-const { TabPane } = Tabs
-
 export const MessengerList: React.FC = () => {
   const { reload: reloadChart } = useMessengerChart()
+  const { styles } = useMessengerListStyles()
+  const { t } = useTranslation()
 
   const handleGlobalReload = () => {
     reloadChart()
-    // Note: Individual grid reloads are handled by their respective components
-    // when receivers are selected
   }
 
+  const tabItems = [
+    {
+      key: 'failed',
+      label: (
+        <Space size={4}>
+          <WarningOutlined />
+          {t('coreshop_messenger_failed_messages', { defaultValue: 'Failed Messages' })}
+        </Space>
+      ),
+      children: (
+        <div className={styles.tabContent}>
+          <MessengerFailedGrid />
+        </div>
+      ),
+    },
+    {
+      key: 'pending',
+      label: (
+        <Space size={4}>
+          <ClockCircleOutlined />
+          {t('coreshop_messenger_pending_messages', { defaultValue: 'Pending Messages' })}
+        </Space>
+      ),
+      children: (
+        <div className={styles.tabContent}>
+          <MessengerPendingGrid />
+        </div>
+      ),
+    },
+  ]
+
   return (
-    <div style={{ 
-      height: '100%', 
-      display: 'flex', 
-      flexDirection: 'column',
-      padding: '16px',
-      overflow: 'hidden' // Prevent outer scrollbar
-    }}>
-      {/* Fixed height header with reload button */}
-      <div style={{ 
-        marginBottom: '16px',
-        display: 'flex',
-        justifyContent: 'flex-end',
-        flexShrink: 0
-      }}>
-        <Button 
-          type="primary" 
-          icon={<ReloadOutlined />} 
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div className={styles.title}>
+          {t('coreshop_messenger', { defaultValue: 'Messenger' })}
+        </div>
+        <Button
+          type="primary"
+          icon={<ReloadOutlined />}
           onClick={handleGlobalReload}
         >
-          Reload All
+          {t('coreshop_messenger_reload_all', { defaultValue: 'Reload' })}
         </Button>
       </div>
 
-      {/* Fixed height chart */}
-      <div style={{ marginBottom: '16px', flexShrink: 0 }}>
+      <div className={styles.chartSection}>
         <MessengerChart />
       </div>
-      
-      {/* Flexible tabs that take remaining space */}
-      <div style={{ 
-        flex: 1, 
-        minHeight: 0,
-        overflow: 'hidden'
-      }}>
-        <Tabs 
-          defaultActiveKey="failed" 
+
+      <div className={styles.tabsSection}>
+        <Tabs
+          defaultActiveKey="failed"
           type="card"
-          style={{ 
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column'
-          }}
-          tabBarStyle={{ flexShrink: 0 }}
-        >
-          <TabPane tab="Failed Messages" key="failed" style={{ height: '100%', overflow: 'hidden' }}>
-            <div style={{ 
-              height: '100%',
-              overflow: 'hidden'
-            }}>
-              <MessengerFailedGrid />
-            </div>
-          </TabPane>
-          <TabPane tab="Pending Messages" key="pending" style={{ height: '100%', overflow: 'hidden' }}>
-            <div style={{ 
-              height: '100%',
-              overflow: 'hidden'
-            }}>
-              <MessengerPendingGrid />
-            </div>
-          </TabPane>
-        </Tabs>
+          items={tabItems}
+          className={styles.tabs}
+        />
       </div>
     </div>
   )
 }
+
+const useMessengerListStyles = createStyles(({ css, token }) => ({
+  container: css`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    overflow: hidden;
+    background: ${token.colorBgLayout};
+  `,
+  header: css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  `,
+  title: css`
+    font-size: 18px;
+    font-weight: 600;
+    color: ${token.colorText};
+  `,
+  chartSection: css`
+    flex-shrink: 0;
+  `,
+  tabsSection: css`
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  `,
+  tabs: css`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .ant-tabs-nav {
+      margin-bottom: 0;
+      flex-shrink: 0;
+
+      .ant-tabs-tab {
+        padding: 8px 16px;
+
+        &.ant-tabs-tab-active {
+          background: ${token.colorBgContainer};
+        }
+      }
+    }
+
+    .ant-tabs-content-holder {
+      flex: 1;
+      overflow: hidden;
+      background: ${token.colorBgContainer};
+      border: 1px solid ${token.colorBorderSecondary};
+      border-top: none;
+      border-radius: 0 0 ${token.borderRadius}px ${token.borderRadius}px;
+    }
+
+    .ant-tabs-content {
+      height: 100%;
+    }
+
+    .ant-tabs-tabpane {
+      height: 100%;
+      overflow: hidden;
+    }
+  `,
+  tabContent: css`
+    height: 100%;
+    overflow: hidden;
+    padding: 16px;
+  `
+}))
 
 export default MessengerList

@@ -18,6 +18,7 @@ export interface ButtonConfig {
 }
 
 export interface MenuButtonProps {
-  icon: string
-  label: string
+  icon?: string
+  label?: string
+  closeMainNav?: () => void
 }
