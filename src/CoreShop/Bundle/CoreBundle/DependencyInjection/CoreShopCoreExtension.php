@@ -139,6 +139,18 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
                 ]);
             }
         }
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
+            $container->prependExtensionConfig('pimcore_studio_backend', [
+                'data_object_data_adapter_mapping' => [
+                    'CoreShop\\Bundle\\CoreBundle\\StudioBackend\\DataAdapter\\StoreValuesAdapter' => [
+                        'coreShopStoreValues',
+                    ],
+                ],
+            ]);
+        }
     }
 
     private function registerCheckout(ContainerBuilder $container, array $configs): void

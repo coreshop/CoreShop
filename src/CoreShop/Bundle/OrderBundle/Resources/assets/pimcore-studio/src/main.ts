@@ -14,8 +14,11 @@ import React from 'react'
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import type { WidgetRestorerRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager/services/widget-restorer-registry'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import i18n from 'i18next'
 import { OrderBundleIconModule } from './modules/icon-library'
+import { DynamicTypeObjectDataCoreShopCartPriceRule } from './dynamic-types'
 import { SalesListingBuildersModule } from './modules/sales/listing-builders'
 import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
 import { CartPriceRuleFormBuilderModule } from './modules/cart-price-rules/form-builder-module'
@@ -32,6 +35,7 @@ import {
   CartDetailWidget,
   QuoteDetailWidget
 } from './modules/sales'
+import { saleWidgetRestorer } from './modules/sales/SaleWidgetRestorer'
 import { SaleTabRegistry } from './modules/sales/registry'
 import { serviceIds as saleServiceIds } from './modules/sales/service-ids'
 import { ModalFieldExtensionRegistry } from './modules/sales/extensions'
@@ -56,6 +60,22 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-order',
 
     onInit() {
+        // ============================================
+        // Dynamic Types Registration
+        // ============================================
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+            serviceIds['DynamicTypes/ObjectDataRegistry']
+        )
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCartPriceRule())
+
+        // ============================================
+        // Widget Restorer Registration
+        // ============================================
+        // Register restorer for Order/Cart/Quote detail widgets
+        // This enables widget persistence across browser refreshes
+        const widgetRestorerRegistry = container.get<WidgetRestorerRegistry>(serviceIds.widgetRestorerRegistry)
+        widgetRestorerRegistry.register(saleWidgetRestorer)
+
         // ============================================
         // Cart Price Rules Registry Setup
         // ============================================

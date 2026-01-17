@@ -53,6 +53,7 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
 
   const quoteId = props?.orderId
 
+  // Note: messageApi is intentionally excluded from deps to prevent infinite loops
   const loadQuote = React.useCallback(async () => {
     if (!quoteId) {
       setLoading(false)
@@ -73,18 +74,17 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
     } finally {
       setLoading(false)
     }
-  }, [quoteId, messageApi])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quoteId])
 
   React.useEffect(() => {
     void loadQuote()
   }, [loadQuote])
 
-  const handleChange = async (updates: Partial<Sale>) => {
-    if (!quote) return
+  const handleChange = React.useCallback(async (updates: Partial<Sale>) => {
+    setQuote(prev => prev ? { ...prev, ...updates } : prev)
 
     try {
-      setQuote({ ...quote, ...updates })
-
       const response = await fetch(`/pimcore-studio/api/coreshop/order/update/${quoteId}`, {
         method: 'POST',
         headers: {
@@ -103,7 +103,8 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
       void messageApi.error('Failed to save changes')
       await loadQuote()
     }
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quoteId, loadQuote])
 
   if (loading) {
     return (

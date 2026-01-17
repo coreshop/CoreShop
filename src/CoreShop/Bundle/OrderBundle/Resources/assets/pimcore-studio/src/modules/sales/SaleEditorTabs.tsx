@@ -84,24 +84,15 @@ export const SaleEditorTabs: React.FC<SaleEditorTabsProps> = ({ element, type })
     void loadSale()
   }, [loadSale])
 
-  const handleChange = async (updates: Partial<Sale>) => {
-    if (!sale) return
+  const handleChange = React.useCallback(async (updates: Partial<Sale>) => {
+    // Optimistic update using functional updater to avoid stale closure
+    setSale(prev => prev ? { ...prev, ...updates } : prev)
 
-    try {
-      // Optimistic update
-      setSale({ ...sale, ...updates })
+    // TODO: Implement save logic through Pimcore API
+    // For now just log
 
-      // TODO: Implement save logic through Pimcore API
-      // For now just log
-
-      // Optionally reload from backend to get fresh data
-      // await loadSale()
-    } catch (error) {
-      void messageApi.error('Failed to save changes')
-      // Revert on error
-      await loadSale()
-    }
-  }
+    // Note: If save fails, loadSale() should be called to revert
+  }, [])
 
   if (loading) {
     return (

@@ -1,5 +1,5 @@
 /**
- * CoreShop PaymentBundle Studio Plugin
+ * CoreShop PimcoreBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -26,5 +26,14 @@ const plugin: IAbstractPlugin = {
 
 export default plugin
 
-// Export components
-export * from './components'
+// Note: React components, hooks, and contexts are NOT exported from main.ts
+// to avoid Module Federation issues with React instance sharing.
+//
+// Import from sub-paths instead:
+//   import { GridFilterDropdown } from '@coreshop/pimcore/src/modules/grid/components/GridFilterDropdown'
+//   import { PresetFilterProvider, usePresetFilter } from '@coreshop/pimcore/src/modules/grid/context/PresetFilterContext'
+//   import { createPresetFilterDecorator } from '@coreshop/pimcore/src/modules/grid/decorators'
+//   import { fetchGridFilters } from '@coreshop/pimcore/src/modules/grid/api'
+//   import { GRID_EVENTS } from '@coreshop/pimcore/src/modules/grid/events'
+//   import { gridServiceIds } from '@coreshop/pimcore/src/modules/grid/service-ids'
+//   import { coreshopBroker } from '@coreshop/pimcore/src/modules/broker'

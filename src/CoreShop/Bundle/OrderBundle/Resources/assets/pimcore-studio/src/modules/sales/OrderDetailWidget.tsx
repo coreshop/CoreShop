@@ -63,6 +63,8 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
   const orderId = config?.orderId
 
   // Load order data from backend
+  // Note: messageApi is intentionally excluded from deps - it should be stable but
+  // some implementations return a new reference on each render, causing infinite loops
   const loadOrder = React.useCallback(async () => {
     if (!orderId) {
       setLoading(false)
@@ -83,20 +85,19 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
     } finally {
       setLoading(false)
     }
-  }, [orderId, messageApi])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderId])
 
   // Load on mount and when orderId changes
   React.useEffect(() => {
     void loadOrder()
   }, [loadOrder])
 
-  const handleChange = async (updates: Partial<Sale>) => {
-    if (!order) return
+  const handleChange = React.useCallback(async (updates: Partial<Sale>) => {
+    // Optimistic update using functional updater
+    setOrder(prev => prev ? { ...prev, ...updates } : prev)
 
     try {
-      // Optimistic update
-      setOrder({ ...order, ...updates })
-
       // Save to backend
       const response = await fetch(`/pimcore-studio/api/coreshop/order/update/${orderId}`, {
         method: 'POST',
@@ -119,7 +120,8 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
       // Revert on error
       await loadOrder()
     }
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderId, loadOrder])
 
   if (loading) {
     return (

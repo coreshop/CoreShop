@@ -1,4 +1,47 @@
 services:
+  _defaults:
+    autowire: false
+    autoconfigure: false
+    public: false
+
   CoreShop\Bundle\CoreBundle\Studio\WebpackEntryPointProvider:
     tags:
       - { name: pimcore_studio_ui.webpack_entry_point_provider }
+
+  # StudioBackend Data Adapters
+  CoreShop\Bundle\CoreBundle\StudioBackend\DataAdapter\StoreValuesAdapter:
+    arguments:
+      - '@jms_serializer'
+      - '@coreshop.repository.store'
+      - '%coreshop.currency.decimal_factor%'
+    tags:
+      - { name: pimcore.studio_backend.data_adapter }
+
+  # Studio v2 Grid Filters
+  # Each filter registers with both:
+  # - pimcore.studio_backend.search_index.data_object.filter (for applying the filter)
+  # - coreshop.studio.grid.filter (for listing available filters in the API)
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedTodayFilter:
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_today }
+
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisWeekFilter:
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_this_week }
+
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisMonthFilter:
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_this_month }
+
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisYearFilter:
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_this_year }
+
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedLastYearFilter:
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_last_year }

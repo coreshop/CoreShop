@@ -33,14 +33,24 @@ export function useRelationIds(
 
   // Convert backend format (string IDs) to ManyToManyRelationValue format
   useEffect(() => {
+    // Debug logging to help trace element type issues
+    console.log('[useRelationIds] Called with:', { ids, entityName, elementType, idsType: typeof ids, isArray: Array.isArray(ids), firstItemType: Array.isArray(ids) && ids.length > 0 ? typeof ids[0] : 'N/A' })
+
     if (!ids) {
       setRelationValue(null)
       return
     }
 
-    // If already in ManyToManyRelationValue format, use as-is
+    // If already in ManyToManyRelationValue format, filter out invalid items and use
     if (Array.isArray(ids) && ids.length > 0 && typeof ids[0] === 'object') {
-      setRelationValue(ids as ManyToManyRelationValue)
+      // Filter out items with undefined or invalid type to prevent Pimcore Studio errors
+      const items = ids as ManyToManyRelationValue
+      console.log('[useRelationIds] Object array detected, items:', items.map(i => ({ id: i?.id, type: i?.type })))
+      const validItems = items.filter(
+        item => item && typeof item.type === 'string' && item.type.length > 0
+      )
+      console.log('[useRelationIds] After filtering:', validItems.length, 'valid items')
+      setRelationValue(validItems.length > 0 ? validItems : null)
       return
     }
 

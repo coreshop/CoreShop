@@ -107,7 +107,19 @@ export default defineConfig({
   resolve: {
     alias: {
       [`@CoreShop${capitalizedBundle}`]: './src',
-      [`@CoreShop${capitalizedBundle}/assets`]: './src/assets'
+      [`@CoreShop${capitalizedBundle}/assets`]: './src/assets',
+      // Shared CoreShop bundle aliases for cross-bundle imports
+      // Sub-path aliases (must come before main aliases for proper resolution)
+      '@coreshop/pimcore/src': path.resolve(__dirname, 'src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/resource/src': path.resolve(__dirname, 'src/CoreShop/Bundle/ResourceBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/currency/src': path.resolve(__dirname, 'src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/rule/src': path.resolve(__dirname, 'src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src'),
+      // Main entry aliases - use index.ts for library exports (matches package.json "main")
+      // main.ts is for Pimcore plugin entry, index.ts is for library exports
+      '@coreshop/pimcore': path.resolve(__dirname, 'src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio/src/main.ts'),
+      '@coreshop/resource': path.resolve(__dirname, 'src/CoreShop/Bundle/ResourceBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/currency': path.resolve(__dirname, 'src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio/src/main.ts'),
+      '@coreshop/rule': path.resolve(__dirname, 'src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/main.ts')
     }
   },
   output: {
@@ -206,6 +218,20 @@ export default defineConfig({
         ),
         // Share CoreShop ResourceBundle between all bundles (for DynamicForm, etc.)
         '@coreshop/resource': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        // Share CoreShop PimcoreBundle between all bundles (for broker event communication)
+        '@coreshop/pimcore': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        // Share CoreShop CurrencyBundle between all bundles (for price formatting config)
+        '@coreshop/currency': {
           singleton: true,
           eager: false,
           requiredVersion: false,

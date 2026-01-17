@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React, { createContext, useContext, useState, useMemo, type ReactNode } from 'react'
+import React, { createContext, useContext, useState, useMemo, useCallback, type ReactNode } from 'react'
 import type { Sale } from '../types'
 import { ButtonRegistry } from './ButtonRegistry'
 
@@ -60,33 +60,33 @@ export const SaleContextProvider: React.FC<SaleContextProviderProps> = ({
   const buttonRegistry = useMemo(() => new ButtonRegistry(), [])
 
   // Generic action system - works for any action key
-  const isActionOpen = (actionKey: string): boolean => {
+  // Memoize to prevent unnecessary re-renders
+  const isActionOpen = useCallback((actionKey: string): boolean => {
     return actionStates[actionKey] ?? false
-  }
+  }, [actionStates])
 
-  const openAction = (actionKey: string): void => {
+  const openAction = useCallback((actionKey: string): void => {
     setActionStates(prev => ({ ...prev, [actionKey]: true }))
-  }
+  }, [])
 
-  const closeAction = (actionKey: string): void => {
+  const closeAction = useCallback((actionKey: string): void => {
     setActionStates(prev => ({ ...prev, [actionKey]: false }))
-  }
+  }, [])
+
+  // Memoize context value to prevent unnecessary re-renders of consumers
+  const contextValue = useMemo<SaleContextType>(() => ({
+    sale,
+    readonly,
+    onChange,
+    onReload,
+    isActionOpen,
+    openAction,
+    closeAction,
+    buttonRegistry
+  }), [sale, readonly, onChange, onReload, isActionOpen, openAction, closeAction, buttonRegistry])
 
   return (
-    <SaleContext.Provider
-      value={{
-        sale,
-        readonly,
-        onChange,
-        onReload,
-        // Generic action system - no hardcoded actions
-        isActionOpen,
-        openAction,
-        closeAction,
-        // Button registry - tabs can add buttons dynamically
-        buttonRegistry
-      }}
-    >
+    <SaleContext.Provider value={contextValue}>
       {children}
     </SaleContext.Provider>
   )

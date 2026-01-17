@@ -55,10 +55,10 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
   const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
   const { styles } = useShipmentTabStyles()
-
-  if (!sale) return null
   const [stateChangeShipment, setStateChangeShipment] = React.useState<Shipment | null>(null)
   const [detailShipment, setDetailShipment] = React.useState<Shipment | null>(null)
+
+  if (!sale) return null
 
   // Get CreateShipmentModal from registry (CoreBundle may have registered an extended version)
   const CreateShipmentModal = getComponent('CreateShipmentModal', BaseCreateShipmentModal)
@@ -78,27 +78,28 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
       title: t('coreshop_date', { defaultValue: 'Date' }),
       dataIndex: 'shipmentDate',
       key: 'shipmentDate',
-      width: 180,
+      width: 160,
       render: (date) => formatDateTime(date)
     },
     {
       title: t('coreshop_carrier', { defaultValue: 'Carrier' }),
       dataIndex: 'carrierName',
       key: 'carrierName',
-      width: 150,
-      render: (carrier) => carrier || '-'
+      width: 140,
+      render: (carrier) => carrier || '–'
     },
     {
-      title: t('coreshop_tracking_code', { defaultValue: 'Tracking-Number' }),
+      title: t('coreshop_tracking_code', { defaultValue: 'Tracking' }),
       dataIndex: 'trackingCode',
       key: 'trackingCode',
-      width: 200,
-      render: (code) => code || '-'
+      ellipsis: true,
+      render: (code) => code || '–'
     },
     {
-      title: '',
+      title: t('coreshop_status', { defaultValue: 'Status' }),
       key: 'state',
-      width: 150,
+      width: 120,
+      align: 'center',
       render: (_, record) => {
         const hasTransitions = record.transitions && record.transitions.length > 0
         return (
@@ -107,10 +108,10 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
               backgroundColor: record.stateInfo.color,
               borderColor: record.stateInfo.color,
               color: '#fff',
-              cursor: hasTransitions ? 'pointer' : 'default'
+              cursor: hasTransitions ? 'pointer' : 'default',
+              minWidth: 90
             }}
             size="small"
-            icon={hasTransitions ? <PlusOutlined style={{ fontSize: 10 }} /> : undefined}
             onClick={() => {
               if (hasTransitions) {
                 setStateChangeShipment(record)
@@ -126,7 +127,8 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
     {
       title: '',
       key: 'actions',
-      width: 80,
+      width: 50,
+      align: 'center',
       render: (_, record) => (
         <Button
           type="text"

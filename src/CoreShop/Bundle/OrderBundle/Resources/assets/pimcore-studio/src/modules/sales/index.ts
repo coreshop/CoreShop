@@ -24,6 +24,9 @@ export { OrderDetailWidget } from './OrderDetailWidget'
 export { CartDetailWidget } from './CartDetailWidget'
 export { QuoteDetailWidget } from './QuoteDetailWidget'
 
+// Widget persistence
+export { SaleWidgetRestorer, saleWidgetRestorer } from './SaleWidgetRestorer'
+
 // Types and API
 export * from './types'
 

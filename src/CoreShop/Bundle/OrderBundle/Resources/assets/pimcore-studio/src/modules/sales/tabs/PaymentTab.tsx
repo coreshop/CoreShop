@@ -50,9 +50,9 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
   const { styles } = usePaymentTabStyles()
   const [selectedPayment, setSelectedPayment] = React.useState<Payment | null>(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = React.useState(false)
+  const [stateChangePayment, setStateChangePayment] = React.useState<Payment | null>(null)
 
   if (!sale) return null
-  const [stateChangePayment, setStateChangePayment] = React.useState<Payment | null>(null)
 
   const payments = ((sale as any).payments || []) as Payment[]
 
@@ -75,37 +75,38 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
 
   const columns: Array<ColumnType<Payment>> = [
     {
-      title: t('coreshop_payment_number', { defaultValue: 'Transaction Number' }),
+      title: t('coreshop_payment_number', { defaultValue: 'Transaction' }),
       dataIndex: 'paymentNumber',
       key: 'paymentNumber',
-      width: 200
+      ellipsis: true
     },
     {
       title: t('coreshop_date', { defaultValue: 'Date' }),
       dataIndex: 'datePayment',
       key: 'datePayment',
-      width: 120,
+      width: 100,
       render: (date) => formatDate(date)
     },
     {
-      title: t('coreshop_paymentProvider', { defaultValue: 'Payment Provider' }),
+      title: t('coreshop_paymentProvider', { defaultValue: 'Provider' }),
       dataIndex: 'provider',
       key: 'provider',
-      width: 150,
-      render: (provider) => provider || '-'
+      width: 120,
+      render: (provider) => provider || '–'
     },
     {
       title: t('coreshop_amount', { defaultValue: 'Amount' }),
       dataIndex: 'amount',
       key: 'amount',
-      width: 120,
+      width: 110,
       align: 'right',
-      render: (amount) => formatCurrency(amount, currencyCode)
+      render: (amount) => <strong>{formatCurrency(amount, currencyCode)}</strong>
     },
     {
-      title: '',
+      title: t('coreshop_status', { defaultValue: 'Status' }),
       key: 'state',
-      width: 100,
+      width: 110,
+      align: 'center',
       render: (_, record) => {
         const hasTransitions = record.transitions && record.transitions.length > 0
         return (
@@ -114,7 +115,8 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
               backgroundColor: record.stateInfo.color,
               borderColor: record.stateInfo.color,
               color: '#fff',
-              cursor: hasTransitions ? 'pointer' : 'default'
+              cursor: hasTransitions ? 'pointer' : 'default',
+              minWidth: 80
             }}
             size="small"
             onClick={() => {
@@ -132,7 +134,8 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
     {
       title: '',
       key: 'actions',
-      width: 80,
+      width: 50,
+      align: 'center',
       render: (_, record) => (
         <Button
           type="text"

@@ -9,7 +9,7 @@ type Option = { value: number, label: string }
 let cachedOptions: Option[] | null = null
 let loadPromise: Promise<Option[]> | null = null
 
-const loadCountries = async (): Promise<Option[]> => {
+export const loadCountries = async (): Promise<Option[]> => {
   // Return cached data if available
   if (cachedOptions) {
     return cachedOptions

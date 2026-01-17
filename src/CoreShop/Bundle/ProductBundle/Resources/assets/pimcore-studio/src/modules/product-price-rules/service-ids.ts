@@ -12,5 +12,7 @@
 
 export const coreshopProductServiceIds = {
   productPriceRuleConditionRegistry: Symbol.for('coreshop.product.product_price_rule.condition_registry'),
-  productPriceRuleActionRegistry: Symbol.for('coreshop.product.product_price_rule.action_registry')
+  productPriceRuleActionRegistry: Symbol.for('coreshop.product.product_price_rule.action_registry'),
+  productSpecificPriceRuleConditionRegistry: Symbol.for('coreshop.product.product_specific_price_rule.condition_registry'),
+  productSpecificPriceRuleActionRegistry: Symbol.for('coreshop.product.product_specific_price_rule.action_registry')
 }

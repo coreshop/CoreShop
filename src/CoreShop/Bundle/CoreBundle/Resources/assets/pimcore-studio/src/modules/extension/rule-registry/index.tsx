@@ -35,6 +35,10 @@ import {
   DiscountPercentAction
 } from '../../shared/rules/actions'
 import { PriceAction } from '@coreshop/product/src/modules/product-price-rules/actions'
+import {
+  NotCombinableWithCartPriceVoucherRuleCondition,
+  QuantityCondition
+} from '../../product-price-rules/conditions'
 
 /**
  * Registry extension configuration
@@ -93,7 +97,9 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
       customers: CustomersCondition,
       guest: GuestCondition,
       nested: NestedCondition,
+      not_combinable_with_cart_price_voucher_rule: NotCombinableWithCartPriceVoucherRuleCondition,
       products: ProductsCondition,
+      quantity: QuantityCondition,
       stores: StoresCondition,
       timespan: TimespanCondition,
       zones: ZonesCondition
@@ -101,6 +107,37 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
   },
   {
     serviceId: coreshopProductServiceIds.productPriceRuleActionRegistry,
+    type: 'action',
+    registrations: {
+      discountAmount: DiscountAmountAction,
+      discountPercent: DiscountPercentAction,
+      price: PriceAction
+    }
+  },
+
+  // ============================================
+  // Product Specific Price Rule Extensions (ProductBundle)
+  // ============================================
+  {
+    serviceId: coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry,
+    type: 'condition',
+    registrations: {
+      categories: CategoriesCondition,
+      countries: CountriesCondition,
+      currencies: CurrenciesCondition,
+      customerGroups: CustomerGroupsCondition,
+      customers: CustomersCondition,
+      guest: GuestCondition,
+      nested: NestedCondition,
+      not_combinable_with_cart_price_voucher_rule: NotCombinableWithCartPriceVoucherRuleCondition,
+      products: ProductsCondition,
+      stores: StoresCondition,
+      timespan: TimespanCondition,
+      zones: ZonesCondition
+    }
+  },
+  {
+    serviceId: coreshopProductServiceIds.productSpecificPriceRuleActionRegistry,
     type: 'action',
     registrations: {
       discountAmount: DiscountAmountAction,
@@ -173,7 +210,7 @@ const CART_ITEM_REGISTRIES = {
  * Apply registry extensions
  * Registers shared conditions/actions into each registry
  */
-function applyRegistryExtensions(): void {
+function applyRegistryExtensionsInternal(): void {
   // Handle Symbol-based registries
   for (const extension of REGISTRY_EXTENSIONS) {
     // Check if registry is bound in container
@@ -272,12 +309,10 @@ async function waitForRegistries(maxAttempts: number = 50, interval: number = 10
  */
 export const RuleRegistryExtensionModule: AbstractModule = {
   async onInit(): Promise<void> {
-
     // Wait for all registries to be available
     await waitForRegistries()
 
     // Apply all extensions
-    applyRegistryExtensions()
-
+    applyRegistryExtensionsInternal()
   }
 }

@@ -36,11 +36,23 @@ import {
 import { NestedCondition, TimespanCondition } from '@coreshop/core/src/modules/shared/rules/conditions'
 import type {WidgetRegistry} from "@pimcore/studio-ui-bundle/modules/widget-manager";
 import {serviceIds} from "@pimcore/studio-ui-bundle/app";
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import {
+    DynamicTypeObjectDataCoreShopCarrier,
+    DynamicTypeObjectDataCoreShopCarrierMultiselect
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-shipping',
 
     onInit() {
+        // Register Dynamic Types
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+            serviceIds['DynamicTypes/ObjectDataRegistry']
+        )
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCarrier())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCarrierMultiselect())
+
         // Register Carrier widget
         const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)
         widgetManager.registerWidget({

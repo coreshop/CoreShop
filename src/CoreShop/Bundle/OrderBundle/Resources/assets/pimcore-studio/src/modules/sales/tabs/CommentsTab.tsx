@@ -89,7 +89,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
       const data = await response.json()
 
       if (data.success) {
-        void messageApi.success(t('coreshop_order_comment_create', { defaultValue: 'Create Comment' }))
+        void messageApi.success(t('coreshop_order_comment_added', { defaultValue: 'Comment added successfully' }))
         setIsModalOpen(false)
         setNewComment('')
         setSubmitToCustomer(false)

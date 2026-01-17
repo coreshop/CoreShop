@@ -9,6 +9,17 @@ coreshop_pimcore_grid_get_filters:
     options:
         expose: true
 
+coreshop_pimcore_grid_get_studio_filters:
+    path: /%coreshop.admin.route.base%/grid/studio-filters/{listType}
+    requirements:
+        backend: '%coreshop.admin.route.backend_requirement%'
+    methods: [GET]
+    defaults:
+        backend: admin
+        _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController::getStudioGridFiltersAction
+    options:
+        expose: true
+
 coreshop_pimcore_grid_get_actions:
     path: /%coreshop.admin.route.base%/grid/actions/{listType}
     requirements:

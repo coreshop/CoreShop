@@ -31,9 +31,10 @@ use CoreShop\Component\ProductQuantityPriceRules\Rule\Condition\QuantityRuleCond
 use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 
-class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension
+class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -80,5 +81,22 @@ class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension
             AsProductQuantityPriceRuleCalculator::class,
             $configs['autoconfigure_with_attributes'],
         );
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (!array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
+            return;
+        }
+
+        $container->prependExtensionConfig('pimcore_studio_backend', [
+            'data_object_data_adapter_mapping' => [
+                'CoreShop\\Bundle\\ProductQuantityPriceRulesBundle\\StudioBackend\\DataAdapter\\ProductQuantityPriceRulesAdapter' => [
+                    'coreShopProductQuantityPriceRules',
+                ],
+            ],
+        ]);
     }
 }

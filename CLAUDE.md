@@ -932,8 +932,119 @@ After all decorators are applied:
 3. **Currency Settings** (order: 30) - CoreBundle
    - currency (cross-bundle extension)
 
+## Dynamic Types for Pimcore Data Objects
+
+CoreShop extends Pimcore's Data Object field types with custom dynamic types for eCommerce-specific data. These types allow selection of CoreShop entities (Countries, Currencies, Stores, etc.) directly in Pimcore Data Object class definitions.
+
+### Architecture
+
+**Pimcore Studio v2** uses a `DynamicTypeObjectDataRegistry` to manage custom field types:
+
+```typescript
+import { container } from '@pimcore/studio-ui-bundle'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+
+const registry = container.get<DynamicTypeObjectDataRegistry>(
+  serviceIds['DynamicTypes/ObjectDataRegistry']
+)
+
+registry.registerDynamicType(new MyCustomType())
+```
+
+### Available Abstract Classes
+
+From `@pimcore/studio-ui-bundle/modules/element`:
+
+- **`DynamicTypeObjectDataAbstract`** - Base class for all field types
+- **`DynamicTypeObjectDataAbstractSelect`** - For single-select fields (extends Abstract)
+- **`DynamicTypeObjectDataAbstractMultiSelect`** - For multi-select fields (extends Abstract)
+
+### Implementation Pattern
+
+**1. Create the Dynamic Type Class:**
+
+```typescript
+// dynamic-types/DynamicTypeObjectDataCoreShopCountry.tsx
+import {
+  DynamicTypeObjectDataAbstractSelect,
+  DynamicTypeFieldFilterMultiselect
+} from '@pimcore/studio-ui-bundle/modules/element'
+
+export class DynamicTypeObjectDataCoreShopCountry extends DynamicTypeObjectDataAbstractSelect {
+  // The id MUST match the PHP CoreExtension type name
+  readonly id = 'coreShopCountry'
+  readonly dynamicTypeFieldFilterType = new DynamicTypeFieldFilterMultiselect()
+}
+```
+
+**2. Register in main.ts (onInit lifecycle):**
+
+```typescript
+import { container, IAbstractPlugin } from '@pimcore/studio-ui-bundle'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { DynamicTypeObjectDataCoreShopCountry } from './dynamic-types'
+
+const plugin: IAbstractPlugin = {
+  name: 'my-plugin',
+
+  onInit() {
+    const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+      serviceIds['DynamicTypes/ObjectDataRegistry']
+    )
+
+    objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountry())
+  },
+
+  onStartup({ moduleSystem }) {
+    // Widget registration etc.
+  }
+}
+```
+
+### Key Points
+
+1. **ID must match PHP type**: The `id` property must exactly match the PHP CoreExtension field type name (e.g., `coreShopCountry`)
+2. **Options from backend**: The select options are provided by the PHP backend - the frontend just renders them
+3. **Registration in onInit**: Dynamic types MUST be registered in `onInit()`, not `onStartup()`
+4. **Abstract classes handle rendering**: `DynamicTypeObjectDataAbstractSelect` provides grid support, batch edit, and version handling
+
+### CoreShop Dynamic Types List
+
+| Type | Bundle | Base Class |
+|------|--------|------------|
+| `coreShopCountry` | AddressBundle | AbstractSelect |
+| `coreShopCountryMultiselect` | AddressBundle | AbstractMultiSelect |
+| `coreShopState` | AddressBundle | AbstractSelect |
+| `coreShopAddressIdentifier` | AddressBundle | AbstractSelect |
+| `coreShopCurrency` | CurrencyBundle | AbstractSelect |
+| `coreShopCurrencyMultiselect` | CurrencyBundle | AbstractMultiSelect |
+| `coreShopStore` | StoreBundle | AbstractSelect |
+| `coreShopStoreMultiselect` | StoreBundle | AbstractMultiSelect |
+| `coreShopCarrier` | ShippingBundle | AbstractSelect |
+| `coreShopCarrierMultiselect` | ShippingBundle | AbstractMultiSelect |
+| `coreShopPaymentProvider` | PaymentBundle | AbstractSelect |
+| `coreShopPaymentProviderMultiselect` | PaymentBundle | AbstractMultiSelect |
+| `coreShopTaxRate` | TaxationBundle | AbstractSelect |
+| `coreShopTaxRuleGroup` | TaxationBundle | AbstractSelect |
+| `coreShopFilter` | IndexBundle | AbstractSelect |
+| `coreShopCartPriceRule` | OrderBundle | AbstractSelect |
+| `coreShopProductUnit` | ProductBundle | AbstractSelect |
+
+### File Structure
+
+```
+BundleX/Resources/assets/pimcore-studio/src/
+├── dynamic-types/
+│   ├── DynamicTypeObjectDataCoreShopXxx.tsx
+│   ├── DynamicTypeObjectDataCoreShopXxxMultiselect.tsx
+│   └── index.ts
+└── main.ts  # Registration in onInit()
+```
+
 ## Knowledge Graph
 Use the knowledge-graph-mcp before and after every task you do.
 
 ## TODO
-Dynamic DataObject Types
+- Complex Dynamic Types: StoreValues, Money, DynamicDropdown, ProductUnitDefinitions, ProductSpecificPriceRules

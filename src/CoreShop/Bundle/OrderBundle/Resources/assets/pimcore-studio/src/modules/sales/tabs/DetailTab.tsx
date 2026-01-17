@@ -73,13 +73,13 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       title: 'Product',
       dataIndex: 'productName',
       key: 'productName',
-      width: '30%'
+      ellipsis: true
     },
     {
       title: 'Price (excl.)',
       dataIndex: 'priceNet',
       key: 'priceNet',
-      width: 150,
+      width: 110,
       align: 'right',
       render: (value) => formatCurrency(value, baseCurrencyCode)
     },
@@ -87,29 +87,29 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       title: 'Price (incl.)',
       dataIndex: 'price',
       key: 'price',
-      width: 150,
+      width: 110,
       align: 'right',
       render: (value) => formatCurrency(value, baseCurrencyCode)
     },
     {
-      title: 'Quantity',
+      title: 'Qty',
       dataIndex: 'quantity',
       key: 'quantity',
-      width: 100,
-      align: 'right'
+      width: 60,
+      align: 'center'
     },
     {
       title: 'Unit',
       dataIndex: 'unit',
       key: 'unit',
-      width: 100,
-      align: 'right',
-      render: (value) => value || '--'
+      width: 70,
+      align: 'center',
+      render: (value) => value || '–'
     },
     {
       title: 'Total (excl.)',
       key: 'totalNet',
-      width: 150,
+      width: 110,
       align: 'right',
       render: (_, record) => formatCurrency(record.total - record.totalTax, baseCurrencyCode)
     },
@@ -117,9 +117,9 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       title: 'Total (incl.)',
       dataIndex: 'total',
       key: 'total',
-      width: 150,
+      width: 110,
       align: 'right',
-      render: (value) => formatCurrency(value, baseCurrencyCode)
+      render: (value) => <strong>{formatCurrency(value, baseCurrencyCode)}</strong>
     }
   ]
 
@@ -207,6 +207,16 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
     })
   }
 
+  // Format summary key to readable label
+  const formatSummaryKey = (key: string, text?: string): string => {
+    if (text) return text
+    // Convert snake_case to Title Case
+    return key
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  }
+
   // Summary table columns
   const summaryColumns: Array<ColumnType<SummaryItem>> = [
     {
@@ -214,18 +224,34 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'key',
       align: 'right',
       render: (value, record) => {
-        const text = record.text || value
-        return <span style={{ fontWeight: 'bold' }}>{text}</span>
+        const label = formatSummaryKey(value, record.text)
+        const isTotal = value === 'total' || value === 'payment_total'
+        return (
+          <span style={{
+            color: isTotal ? undefined : '#666',
+            fontWeight: isTotal ? 600 : 400
+          }}>
+            {label}
+          </span>
+        )
       }
     },
     {
       dataIndex: 'value',
       key: 'value',
-      width: 150,
+      width: 120,
       align: 'right',
       render: (value, record) => {
         const formatted = formatCurrency(value, baseCurrencyCode)
-        return <span style={{ fontWeight: 'bold' }}>{formatted}</span>
+        const isTotal = record.key === 'total' || record.key === 'payment_total'
+        return (
+          <span style={{
+            fontWeight: isTotal ? 700 : 500,
+            fontSize: isTotal ? 15 : 14
+          }}>
+            {formatted}
+          </span>
+        )
       }
     }
   ]
@@ -234,11 +260,19 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
     summaryColumns.push({
       dataIndex: 'convertedValue',
       key: 'convertedValue',
-      width: 150,
+      width: 120,
       align: 'right',
-      render: (value) => {
+      render: (value, record) => {
         const formatted = formatCurrency(value, currencyCode)
-        return <span style={{ fontWeight: 'bold' }}>{formatted}</span>
+        const isTotal = record.key === 'total' || record.key === 'payment_total'
+        return (
+          <span style={{
+            fontWeight: isTotal ? 700 : 500,
+            fontSize: isTotal ? 15 : 14
+          }}>
+            {formatted}
+          </span>
+        )
       }
     })
   }
@@ -272,14 +306,17 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
 
         {/* Summary Section */}
         <div className={styles.summarySection}>
-          <Table
-            dataSource={summary}
-            columns={summaryColumns}
-            pagination={false}
-            className={styles.summaryTable}
-            size="small"
-            showHeader={false}
-          />
+          <div className={styles.summaryWrapper}>
+            <Table
+              dataSource={summary}
+              columns={summaryColumns}
+              pagination={false}
+              className={styles.summaryTable}
+              size="small"
+              showHeader={false}
+              rowKey="key"
+            />
+          </div>
         </div>
       </Card>
     </div>
@@ -288,7 +325,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
 
 const useDetailTabStyles = createStyles(({ css, token }) => ({
   container: css`
-    padding: 20px;
+    /* No extra padding needed - Card handles it */
   `,
   card: css`
     .ant-card-head {
@@ -322,14 +359,34 @@ const useDetailTabStyles = createStyles(({ css, token }) => ({
     }
   `,
   summarySection: css`
-    margin-top: 16px;
-    padding-top: 16px;
+    margin-top: 24px;
+    padding: 20px;
+    background: ${token.colorBgLayout};
     border-top: 1px solid ${token.colorBorderSecondary};
+    display: flex;
+    justify-content: flex-end;
+  `,
+  summaryWrapper: css`
+    min-width: 320px;
+    max-width: 400px;
   `,
   summaryTable: css`
+    background: transparent;
+
+    .ant-table {
+      background: transparent;
+    }
+
     .ant-table-tbody > tr > td {
+      border-bottom: 1px dashed ${token.colorBorderSecondary};
+      padding: 10px 0;
+      background: transparent;
+    }
+
+    .ant-table-tbody > tr:last-child > td {
       border-bottom: none;
-      padding: 8px 16px;
+      padding-top: 14px;
+      border-top: 2px solid ${token.colorBorder};
     }
   `
 }))

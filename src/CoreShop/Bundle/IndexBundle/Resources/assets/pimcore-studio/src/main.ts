@@ -13,7 +13,9 @@
 import { type IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds as pimcoreServiceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { IndexBundleIconModule } from './modules/icon-library'
+import { DynamicTypeObjectDataCoreShopFilter } from './dynamic-types'
 import { ConditionRegistry } from './modules/filters/conditions'
 import { serviceIds } from './modules/filters/service-ids'
 import {
@@ -51,6 +53,12 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-index',
 
     onInit() {
+        // Register Dynamic Types
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+            pimcoreServiceIds['DynamicTypes/ObjectDataRegistry']
+        )
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopFilter())
+
         // Register widgets
         const widgetManager = container.get<WidgetRegistry>(pimcoreServiceIds.widgetManager)
 

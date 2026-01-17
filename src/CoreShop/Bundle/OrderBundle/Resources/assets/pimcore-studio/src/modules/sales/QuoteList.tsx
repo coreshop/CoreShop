@@ -18,12 +18,19 @@ import { container } from '@pimcore/studio-ui-bundle'
 import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListingBuilder } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
 import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { GridToolbar } from '@coreshop/pimcore/src/modules/grid/components/GridToolbar'
+import { PresetFilterProvider, usePresetFilter } from '@coreshop/pimcore/src/modules/grid/context/PresetFilterContext'
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
     display: flex;
     flex-direction: column;
     height: 100%;
+  `,
+  toolbar: css`
+    padding: 8px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    flex-shrink: 0;
   `,
   listing: css`
     flex: 1;
@@ -43,18 +50,22 @@ interface FolderConfig {
   folderId: number
 }
 
+const LIST_TYPE = 'coreshop_quote'
+
 /**
- * Quote List Component
- *
- * Displays CoreShopQuote DataObjects using Pimcore's DataObject listing
+ * Inner component that uses the preset filter context
  */
-export const QuoteList: React.FC = () => {
+const QuoteListInner: React.FC = () => {
   const { t } = useTranslation()
   const messageApi = useMessage()
   const { styles } = useStyles()
   const [folderId, setFolderId] = React.useState<number | null>(null)
   const [loading, setLoading] = React.useState(true)
+  const [listingKey, setListingKey] = React.useState(0)
   const listingBuilder = container.get<ObjectListingBuilder>('CoreShop/Quote/Listing/Builder')
+
+  // Use the preset filter context
+  const { selectedFilter, setSelectedFilter } = usePresetFilter()
 
   React.useEffect(() => {
     const fetchFolderConfig = async (): Promise<void> => {
@@ -75,6 +86,15 @@ export const QuoteList: React.FC = () => {
     void fetchFolderConfig()
   }, [])
 
+  const handleFilterChange = (filterId: string | null): void => {
+    setSelectedFilter(filterId)
+    setListingKey(prev => prev + 1)
+  }
+
+  const handleRefresh = (): void => {
+    setListingKey(prev => prev + 1)
+  }
+
   if (loading) {
     return (
       <div className={styles.loading}>
@@ -93,9 +113,18 @@ export const QuoteList: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.toolbar}>
+        <GridToolbar
+          listType={LIST_TYPE}
+          selectedFilter={selectedFilter}
+          onFilterChange={handleFilterChange}
+          onRefresh={handleRefresh}
+        />
+      </div>
       <div className={styles.listing}>
         <DataObjectProvider id={folderId}>
           <BaseListing
+            key={listingKey}
             {...listingBuilder.build({
               props: {
                 ...listingDefaultProps
@@ -106,5 +135,19 @@ export const QuoteList: React.FC = () => {
         </DataObjectProvider>
       </div>
     </div>
+  )
+}
+
+/**
+ * Quote List Component
+ *
+ * Displays CoreShopQuote DataObjects using Pimcore's DataObject listing.
+ * Wrapped in PresetFilterProvider to enable filter state sharing.
+ */
+export const QuoteList: React.FC = () => {
+  return (
+    <PresetFilterProvider initialListType={LIST_TYPE}>
+      <QuoteListInner />
+    </PresetFilterProvider>
   )
 }

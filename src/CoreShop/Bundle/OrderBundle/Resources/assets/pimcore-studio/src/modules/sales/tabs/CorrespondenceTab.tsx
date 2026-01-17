@@ -34,10 +34,10 @@ interface EmailCorrespondence {
 export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
   const { sale } = useSaleContext()
   const { styles } = useCorrespondenceTabStyles()
-
-  if (!sale) return null
   const [emailLogModal, setEmailLogModal] = React.useState<number | null>(null)
   const [iframeKey, setIframeKey] = React.useState(0)
+
+  if (!sale) return null
 
   const correspondence = ((sale as any).mailCorrespondence || []) as EmailCorrespondence[]
 

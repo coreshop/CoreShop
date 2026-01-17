@@ -13,6 +13,7 @@
 import { type IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { type WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { PaymentBundleIconModule } from './modules/icon-library'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { coreshopPaymentServiceIds } from './modules/payment-provider-rules/service-ids'
@@ -22,11 +23,24 @@ import { PaymentProviderManager } from './modules/payment-providers/PaymentProvi
 import { PaymentProviderRuleManager } from './modules/payment-provider-rules/PaymentProviderRuleManager'
 import { PaymentProviderRuleFormBuilderModule } from './modules/payment-provider-rules/form-builder-module'
 import { GatewayRegistry, PayPalExpressCheckoutConfigurator, SofortConfigurator } from './modules/payment-providers/gateways'
+import {
+    DynamicTypeObjectDataCoreShopPaymentProvider,
+    DynamicTypeObjectDataCoreShopPaymentProviderMultiselect
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
   name: 'coreshop-payment',
 
   onInit() {
+    // ============================================
+    // Dynamic Types Registration
+    // ============================================
+    const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+      serviceIds['DynamicTypes/ObjectDataRegistry']
+    )
+    objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopPaymentProvider())
+    objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopPaymentProviderMultiselect())
+
     // ============================================
     // Payment Provider Rules Registry Setup
     // ============================================

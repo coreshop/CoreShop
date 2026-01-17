@@ -13,14 +13,25 @@
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { StoreBundleIconModule } from './modules/icon-library'
 import { StoreManager } from './modules/stores/StoreManager'
 import { StoreFormBuilderModule } from './modules/stores/form-builder-module'
+import {
+    DynamicTypeObjectDataCoreShopStore,
+    DynamicTypeObjectDataCoreShopStoreMultiselect
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-store',
 
     onInit() {
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+            serviceIds['DynamicTypes/ObjectDataRegistry']
+        )
+
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStore())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStoreMultiselect())
     },
 
     onStartup({ moduleSystem }) {

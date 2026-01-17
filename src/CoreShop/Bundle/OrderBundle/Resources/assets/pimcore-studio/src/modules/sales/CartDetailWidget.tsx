@@ -53,6 +53,7 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
 
   const cartId = props?.orderId
 
+  // Note: messageApi is intentionally excluded from deps to prevent infinite loops
   const loadCart = React.useCallback(async () => {
     if (!cartId) {
       setLoading(false)
@@ -73,18 +74,17 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
     } finally {
       setLoading(false)
     }
-  }, [cartId, messageApi])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartId])
 
   React.useEffect(() => {
     void loadCart()
   }, [loadCart])
 
-  const handleChange = async (updates: Partial<Sale>) => {
-    if (!cart) return
+  const handleChange = React.useCallback(async (updates: Partial<Sale>) => {
+    setCart(prev => prev ? { ...prev, ...updates } : prev)
 
     try {
-      setCart({ ...cart, ...updates })
-
       const response = await fetch(`/pimcore-studio/api/coreshop/order/update/${cartId}`, {
         method: 'POST',
         headers: {
@@ -103,7 +103,8 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
       void messageApi.error('Failed to save changes')
       await loadCart()
     }
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartId, loadCart])
 
   if (loading) {
     return (

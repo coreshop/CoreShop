@@ -11,7 +11,7 @@
  */
 
 import React from 'react'
-import { Button, Space, Spin } from 'antd'
+import { Button, Spin } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +21,8 @@ import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-ma
 import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListingBuilder } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
 import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { GridToolbar } from '@coreshop/pimcore/src/modules/grid/components/GridToolbar'
+import { PresetFilterProvider, usePresetFilter } from '@coreshop/pimcore/src/modules/grid/context/PresetFilterContext'
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
@@ -51,18 +53,22 @@ interface FolderConfig {
   folderId: number
 }
 
+const LIST_TYPE = 'coreshop_cart'
+
 /**
- * Cart List Component
- *
- * Displays CoreShopCart DataObjects using Pimcore's DataObject listing
+ * Inner component that uses the preset filter context
  */
-export const CartList: React.FC = () => {
+const CartListInner: React.FC = () => {
   const { t } = useTranslation()
   const messageApi = useMessage()
   const { styles } = useStyles()
   const [folderId, setFolderId] = React.useState<number | null>(null)
   const [loading, setLoading] = React.useState(true)
+  const [listingKey, setListingKey] = React.useState(0)
   const listingBuilder = container.get<ObjectListingBuilder>('CoreShop/Cart/Listing/Builder')
+
+  // Use the preset filter context
+  const { selectedFilter, setSelectedFilter } = usePresetFilter()
 
   React.useEffect(() => {
     const fetchFolderConfig = async (): Promise<void> => {
@@ -91,6 +97,15 @@ export const CartList: React.FC = () => {
     })
   }
 
+  const handleFilterChange = (filterId: string | null): void => {
+    setSelectedFilter(filterId)
+    setListingKey(prev => prev + 1)
+  }
+
+  const handleRefresh = (): void => {
+    setListingKey(prev => prev + 1)
+  }
+
   if (loading) {
     return (
       <div className={styles.loading}>
@@ -110,7 +125,12 @@ export const CartList: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
-        <Space>
+        <GridToolbar
+          listType={LIST_TYPE}
+          selectedFilter={selectedFilter}
+          onFilterChange={handleFilterChange}
+          onRefresh={handleRefresh}
+        >
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -118,11 +138,12 @@ export const CartList: React.FC = () => {
           >
             {t('coreshop_create_cart', { defaultValue: 'Create Cart' })}
           </Button>
-        </Space>
+        </GridToolbar>
       </div>
       <div className={styles.listing}>
         <DataObjectProvider id={folderId}>
           <BaseListing
+            key={listingKey}
             {...listingBuilder.build({
               props: {
                 ...listingDefaultProps
@@ -133,5 +154,19 @@ export const CartList: React.FC = () => {
         </DataObjectProvider>
       </div>
     </div>
+  )
+}
+
+/**
+ * Cart List Component
+ *
+ * Displays CoreShopCart DataObjects using Pimcore's DataObject listing.
+ * Wrapped in PresetFilterProvider to enable filter state sharing.
+ */
+export const CartList: React.FC = () => {
+  return (
+    <PresetFilterProvider initialListType={LIST_TYPE}>
+      <CartListInner />
+    </PresetFilterProvider>
   )
 }

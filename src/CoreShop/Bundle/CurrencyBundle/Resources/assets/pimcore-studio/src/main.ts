@@ -14,14 +14,31 @@ import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { CurrencyBundleIconModule } from './modules/icon-library'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { CurrencyManager } from './modules/currencies/CurrencyManager'
 import { ExchangeRateManager } from './modules/exchange-rates/ExchangeRateManager'
 import { CurrencyFormBuilderModule } from './modules/currencies/form-builder-module'
+import {
+    DynamicTypeObjectDataCoreShopCurrency,
+    DynamicTypeObjectDataCoreShopCurrencyMultiselect,
+    DynamicTypeObjectDataCoreShopMoneyCurrency
+} from './dynamic-types'
+import { initCurrencyConfig } from './modules/currency-config'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-currency',
 
     onInit() {
+        // Load currency config (decimal_factor, decimal_precision) for price formatting
+        void initCurrencyConfig()
+
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+            serviceIds['DynamicTypes/ObjectDataRegistry']
+        )
+
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrency())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrencyMultiselect())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopMoneyCurrency())
     },
 
     onStartup({ moduleSystem }) {

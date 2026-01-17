@@ -23,6 +23,7 @@ import type { ClassDefinitionSelectionDecoratorConfig } from '@pimcore/studio-ui
 import { ResourceConfigProvider } from '@coreshop/resource/src/config/ConfigProvider'
 import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { type AbstractDecorator, type AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element/listing/decorators/abstract-decorator'
+import { createPresetFilterDecorator } from '@coreshop/pimcore/src/modules/grid/decorators/PresetFilterDecorator'
 import { openSaleWidget } from '../hooks'
 import type { SaleType } from '../types'
 
@@ -100,6 +101,12 @@ export const SalesListingBuildersModule: AbstractModule = {
         decorator: createRowDoubleClickDecorator('order')
       })
 
+      // Add preset filter decorator for Studio v2 filter support
+      orderListingBuilder.addDecorator({
+        name: 'presetFilter',
+        decorator: createPresetFilterDecorator({ listType: 'coreshop_order' })
+      })
+
       // ===========================
       // Cart Listing Builder
       // ===========================
@@ -131,6 +138,12 @@ export const SalesListingBuildersModule: AbstractModule = {
         decorator: createRowDoubleClickDecorator('cart')
       })
 
+      // Add preset filter decorator for Studio v2 filter support
+      cartListingBuilder.addDecorator({
+        name: 'presetFilter',
+        decorator: createPresetFilterDecorator({ listType: 'coreshop_cart' })
+      })
+
       // ===========================
       // Quote Listing Builder
       // ===========================
@@ -160,6 +173,12 @@ export const SalesListingBuildersModule: AbstractModule = {
       quoteListingBuilder.overrideDecorator({
         name: 'actionColumn',
         decorator: createRowDoubleClickDecorator('quote')
+      })
+
+      // Add preset filter decorator for Studio v2 filter support
+      quoteListingBuilder.addDecorator({
+        name: 'presetFilter',
+        decorator: createPresetFilterDecorator({ listType: 'coreshop_quote' })
       })
     } catch (err) {
       console.error('[CoreShop] Failed to initialize sales listing builders:', err)

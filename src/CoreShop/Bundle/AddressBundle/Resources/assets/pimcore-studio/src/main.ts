@@ -14,17 +14,33 @@ import {container, IAbstractPlugin} from '@pimcore/studio-ui-bundle'
 import {AddressBundleIconModule} from './modules/icon-library'
 import {serviceIds} from '@pimcore/studio-ui-bundle/app'
 import type {WidgetRegistry} from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import {ZoneManager} from './modules/zones/ZoneManager'
 import { CountryManager } from './modules/countries/CountryManager'
 import { StateManager } from './modules/states/StateManager'
 import { CountryFormBuilderModule } from './modules/countries/form-builder-module'
 import { ZoneFormBuilderModule } from './modules/zones/form-builder-module'
 import { StateFormBuilderModule } from './modules/states/form-builder-module'
+import {
+    DynamicTypeObjectDataCoreShopCountry,
+    DynamicTypeObjectDataCoreShopCountryMultiselect,
+    DynamicTypeObjectDataCoreShopState,
+    DynamicTypeObjectDataCoreShopAddressIdentifier
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-address-plugin',
 
-    onInit() {},
+    onInit() {
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+            serviceIds['DynamicTypes/ObjectDataRegistry']
+        )
+
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountry())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountryMultiselect())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopState())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopAddressIdentifier())
+    },
 
     onStartup({moduleSystem}) {
         moduleSystem.registerModule(AddressBundleIconModule)

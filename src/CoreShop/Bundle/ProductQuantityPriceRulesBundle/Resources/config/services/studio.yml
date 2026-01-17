@@ -1,4 +1,14 @@
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
   CoreShop\Bundle\ProductQuantityPriceRulesBundle\Studio\WebpackEntryPointProvider:
     tags:
       - { name: pimcore_studio_ui.webpack_entry_point_provider }
+
+  # StudioBackend Data Adapters
+  CoreShop\Bundle\ProductQuantityPriceRulesBundle\StudioBackend\DataAdapter\ProductQuantityPriceRulesAdapter:
+    tags:
+      - { name: pimcore.studio_backend.data_adapter }

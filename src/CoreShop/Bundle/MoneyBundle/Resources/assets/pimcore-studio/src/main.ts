@@ -1,5 +1,5 @@
 /**
- * CoreShop PaymentBundle Studio Plugin
+ * CoreShop MoneyBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -10,13 +10,22 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import {IAbstractPlugin} from '@pimcore/studio-ui-bundle'
+import { type IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
+import {
+  DynamicTypeObjectDataRegistry
+} from '@pimcore/studio-ui-bundle/modules/element'
 import { MoneyBundleIconModule } from './modules/icon-library'
+import { DynamicTypeObjectDataCoreShopMoney } from './dynamic-types/DynamicTypeObjectDataCoreShopMoney'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-money',
 
     onInit() {
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+          'DynamicTypes/ObjectDataRegistry'
+        )
+
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopMoney())
     },
 
     onStartup({ moduleSystem }) {

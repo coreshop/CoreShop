@@ -53,10 +53,10 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
   const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
   const { styles } = useInvoiceTabStyles()
-
-  if (!sale) return null
   const [stateChangeInvoice, setStateChangeInvoice] = React.useState<Invoice | null>(null)
   const [detailInvoice, setDetailInvoice] = React.useState<Invoice | null>(null)
+
+  if (!sale) return null
 
   const invoices = ((sale as any).invoices || []) as Invoice[]
 
@@ -75,14 +75,14 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
       title: t('coreshop_date', { defaultValue: 'Date' }),
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
-      width: 180,
+      width: 160,
       render: (date) => formatDateTime(date)
     },
     {
       title: t('coreshop_total_without_tax', { defaultValue: 'Total (excl.)' }),
       dataIndex: 'totalNet',
       key: 'totalNet',
-      width: 150,
+      width: 130,
       align: 'right',
       render: (amount) => formatCurrency(amount, currencyCode)
     },
@@ -90,14 +90,15 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
       title: t('coreshop_total', { defaultValue: 'Total' }),
       dataIndex: 'totalGross',
       key: 'totalGross',
-      width: 150,
+      width: 130,
       align: 'right',
-      render: (amount) => <strong>{formatCurrency(amount)}</strong>
+      render: (amount) => <strong>{formatCurrency(amount, currencyCode)}</strong>
     },
     {
-      title: '',
+      title: t('coreshop_status', { defaultValue: 'Status' }),
       key: 'state',
-      width: 150,
+      width: 120,
+      align: 'center',
       render: (_, record) => {
         const hasTransitions = record.transitions && record.transitions.length > 0
         return (
@@ -106,10 +107,10 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
               backgroundColor: record.stateInfo.color,
               borderColor: record.stateInfo.color,
               color: '#fff',
-              cursor: hasTransitions ? 'pointer' : 'default'
+              cursor: hasTransitions ? 'pointer' : 'default',
+              minWidth: 90
             }}
             size="small"
-            icon={hasTransitions ? <PlusOutlined style={{ fontSize: 10 }} /> : undefined}
             onClick={() => {
               if (hasTransitions) {
                 setStateChangeInvoice(record)
@@ -125,7 +126,8 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
     {
       title: '',
       key: 'actions',
-      width: 80,
+      width: 50,
+      align: 'center',
       render: (_, record) => (
         <Button
           type="text"
