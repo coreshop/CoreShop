@@ -40,7 +40,7 @@ class CustomerTransformerController extends AdminController
 
         if ($value !== null) {
             $list = $this->getCompanyRepository()->getList();
-            $list->addConditionParam(sprintf('name LIKE "%%%s%%"', (string) $value));
+            $list->addConditionParam('name LIKE ?', '%' . $value . '%');
             $foundObjects = $list->getData();
         }
 
