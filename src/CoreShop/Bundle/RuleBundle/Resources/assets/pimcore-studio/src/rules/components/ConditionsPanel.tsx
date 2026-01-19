@@ -31,10 +31,7 @@ export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
   registryId
 }) => {
   // Debug logging
-  console.log('[ConditionsPanel] Render with conditions:', conditions.map(c => ({ type: c.type, configKeys: Object.keys(c.configuration || {}) })))
-
   const handleAdd = (type: string) => {
-    console.log('[ConditionsPanel] handleAdd:', type)
     const newCondition: RuleCondition = {
       type,
       configuration: {},
@@ -44,14 +41,12 @@ export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
   }
 
   const handleChange = (index: number, condition: RuleCondition) => {
-    console.log('[ConditionsPanel] handleChange:', index, condition.type)
     const updated = [...conditions]
     updated[index] = condition
     onChange(updated)
   }
 
   const handleMove = (from: number, to: number) => {
-    console.log('[ConditionsPanel] handleMove:', from, '->', to)
     if (to < 0 || to >= conditions.length) return
     const updated = [...conditions]
     const [moved] = updated.splice(from, 1)
@@ -64,13 +59,11 @@ export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
   }
 
   const handleDelete = (index: number) => {
-    console.log('[ConditionsPanel] handleDelete:', index, 'type:', conditions[index]?.type)
     const updated = conditions.filter((_, i) => i !== index)
     // Update sort order
     updated.forEach((c, i) => {
       c.sort = i
     })
-    console.log('[ConditionsPanel] After delete, remaining:', updated.map(c => c.type))
     onChange(updated)
   }
 

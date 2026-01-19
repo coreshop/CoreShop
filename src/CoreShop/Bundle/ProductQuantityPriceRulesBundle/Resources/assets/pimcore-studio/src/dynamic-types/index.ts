@@ -10,8 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export * from './types'
-export * from './service-ids'
-export { RangesPanel } from './components/RangesPanel'
-export { QuantityPriceRulePanel } from './components/QuantityPriceRulePanel'
-export { ProductQuantityPriceRulesPanel } from './components/ProductQuantityPriceRulesPanel'
+export { DynamicTypeObjectDataCoreShopProductQuantityPriceRules } from './DynamicTypeObjectDataCoreShopProductQuantityPriceRules'

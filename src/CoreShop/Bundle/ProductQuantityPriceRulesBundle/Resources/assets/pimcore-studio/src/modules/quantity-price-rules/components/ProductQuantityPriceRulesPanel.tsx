@@ -1,5 +1,5 @@
 /**
- * CoreShop ProductBundle Studio Plugin
+ * CoreShop ProductQuantityPriceRulesBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -11,29 +11,38 @@
  */
 
 import React from 'react'
-import { Tabs, Modal, Input, Form, Button, Typography, Space } from 'antd'
-import { PlusOutlined, SettingOutlined, SearchOutlined, ThunderboltOutlined, TagOutlined } from '@ant-design/icons'
+import { Tabs, Modal, Input, Form, Switch, Select, InputNumber, Button, Typography, Space } from 'antd'
+import { PlusOutlined, SettingOutlined, SearchOutlined, TagOutlined, CloseOutlined } from '@ant-design/icons'
 import { container } from '@pimcore/studio-ui-bundle'
+import { useGlobalDataObjectContext } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { ConditionsPanel } from '@coreshop/rule/src/rules/components/ConditionsPanel'
-import { ActionsPanel } from '@coreshop/rule/src/rules/components/ActionsPanel'
-import type { RuleCondition, RuleAction } from '@coreshop/rule/src/rules/types'
+import type { RuleCondition } from '@coreshop/rule/src/rules/types'
 import { useTranslation } from 'react-i18next'
-import type { ProductSpecificPriceRule, ProductSpecificPriceRulesData } from '../types'
-import { coreshopProductServiceIds } from '../../product-price-rules/service-ids'
-import { SettingsForm } from './SettingsForm'
+import type { QuantityPriceRule, QuantityPriceRulesFieldData, CalculationBehaviour, QuantityRange } from '../types'
+import { coreshopQuantityPriceRulesServiceIds } from '../service-ids'
+import { RangesPanel } from './RangesPanel'
 
 interface Props {
-  value: ProductSpecificPriceRulesData
-  onChange: (value: ProductSpecificPriceRulesData) => void
+  value: QuantityPriceRulesFieldData
+  onChange: (value: QuantityPriceRulesFieldData) => void
   disabled?: boolean
   currentLocale?: string
   locales?: string[]
 }
 
 /**
+ * Default calculation behaviour types
+ */
+const DEFAULT_CALCULATION_BEHAVIOURS: Array<[string, string]> = [
+  ['by_quantity', 'coreshop_product_quantity_price_rules_calculation_behaviour_by_quantity'],
+  ['by_percentage', 'coreshop_product_quantity_price_rules_calculation_behaviour_by_percentage'],
+  ['by_price', 'coreshop_product_quantity_price_rules_calculation_behaviour_by_price']
+]
+
+/**
  * Generate tab label with name, priority, and active status
  */
-const generateTabLabel = (rule: ProductSpecificPriceRule, t: (key: string, opts?: any) => string): React.ReactNode => {
+const generateTabLabel = (rule: QuantityPriceRule, t: (key: string, opts?: any) => string): React.ReactNode => {
   return (
     <Space size={4}>
       <TagOutlined style={{ color: '#ff6600' }} />
@@ -57,55 +66,52 @@ const generateTabLabel = (rule: ProductSpecificPriceRule, t: (key: string, opts?
   )
 }
 
-export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
+export const ProductQuantityPriceRulesPanel: React.FC<Props> = ({
   value,
   onChange,
-  disabled = false,
-  currentLocale = 'en',
-  locales = ['en', 'de']
+  disabled = false
 }) => {
   const { t } = useTranslation()
+
+  // Get objectId from Pimcore's global data object context
+  const { context } = useGlobalDataObjectContext()
+  const objectId = context?.config?.id
+
   const [activeRuleKey, setActiveRuleKey] = React.useState<string | undefined>(
     value.rules.length > 0 ? '0' : undefined
   )
   const [addModalVisible, setAddModalVisible] = React.useState(false)
   const [newRuleName, setNewRuleName] = React.useState('')
 
-  // Check if registries are available
+  // Check if condition registry is available
   const hasConditionRegistry = React.useMemo(() => {
     try {
-      return container.isBound(coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry)
+      return container.isBound(coreshopQuantityPriceRulesServiceIds.conditionRegistry)
     } catch (e) {
-      console.warn('Product specific price rules condition registry not available:', e)
+      console.warn('Quantity price rules condition registry not available:', e)
       return false
     }
   }, [])
 
-  const hasActionRegistry = React.useMemo(() => {
-    try {
-      return container.isBound(coreshopProductServiceIds.productSpecificPriceRuleActionRegistry)
-    } catch (e) {
-      console.warn('Product specific price rules action registry not available:', e)
-      return false
-    }
-  }, [])
-
-  // Get available types from backend
+  // Get available condition types from backend (value.conditions)
   const availableConditionTypes = React.useMemo(() => {
     return value.conditions || []
   }, [value.conditions])
 
-  const availableActionTypes = React.useMemo(() => {
-    return value.actions || []
-  }, [value.actions])
+  // Get calculation behaviour options
+  const calculationBehaviourOptions = (value.stores?.calculationBehaviourTypes ?? DEFAULT_CALCULATION_BEHAVIOURS)
+    .map(([val, labelKey]) => ({
+      value: val,
+      label: t(labelKey, { defaultValue: labelKey.replace(/coreshop_product_quantity_price_rules_calculation_behaviour_/g, '') })
+    }))
 
-  const handleRuleChange = (index: number, updatedRule: ProductSpecificPriceRule) => {
+  const handleRuleChange = (index: number, updatedRule: QuantityPriceRule) => {
     const newRules = [...value.rules]
     newRules[index] = updatedRule
     onChange({ ...value, rules: newRules })
   }
 
-  const handleFieldChange = (index: number, field: keyof ProductSpecificPriceRule, fieldValue: any) => {
+  const handleFieldChange = (index: number, field: keyof QuantityPriceRule, fieldValue: any) => {
     const rule = value.rules[index]
     if (!rule) return
     handleRuleChange(index, { ...rule, [field]: fieldValue })
@@ -113,13 +119,26 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
 
   const handleAddRule = () => {
     if (!newRuleName.trim()) return
-    const newRule: ProductSpecificPriceRule = {
+    // Create a default range to satisfy backend validation (min: 1 range required)
+    // Use 'percentage_decrease' as default since 'fixed' requires a currency
+    const defaultRange: QuantityRange = {
+      id: null,
+      rangeStartingFrom: 0,
+      pricingBehaviour: 'percentage_decrease',
+      amount: 0,
+      percentage: 0,
+      pseudoPrice: 0,
+      currency: null,
+      highlighted: false
+    }
+    const newRule: QuantityPriceRule = {
       name: newRuleName,
-      active: true,
+      // Use 'volume' - the only registered calculator type in the backend
+      calculationBehaviour: 'volume',
       priority: 0,
-      inherit: false,
+      active: true,
       conditions: [],
-      actions: []
+      ranges: [defaultRange]
     }
     const newRules = [...value.rules, newRule]
     onChange({ ...value, rules: newRules })
@@ -150,7 +169,7 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
   }
 
   // Build sub-tabs for a single rule
-  const buildRuleSubTabs = (rule: ProductSpecificPriceRule, ruleIndex: number) => {
+  const buildRuleSubTabs = (rule: QuantityPriceRule, ruleIndex: number) => {
     return [
       {
         key: 'settings',
@@ -161,12 +180,64 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
           </Space>
         ),
         children: (
-          <SettingsForm
-            rule={rule}
-            onChange={(updatedRule) => handleRuleChange(ruleIndex, updatedRule)}
-            currentLocale={currentLocale}
-            locales={locales}
-          />
+          <div style={{ padding: 16 }}>
+            <table style={{ borderCollapse: 'separate', borderSpacing: '8px 12px' }}>
+              <tbody>
+                <tr>
+                  <td style={{ textAlign: 'right', paddingRight: 8, whiteSpace: 'nowrap' }}>
+                    {t('name', { defaultValue: 'Name' })}:
+                  </td>
+                  <td>
+                    <Input
+                      value={rule.name}
+                      onChange={(e) => handleFieldChange(ruleIndex, 'name', e.target.value)}
+                      style={{ width: 200 }}
+                      disabled={disabled}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ textAlign: 'right', paddingRight: 8, whiteSpace: 'nowrap' }}>
+                    {t('coreshop_product_quantity_price_rules_calculation_behaviour', { defaultValue: 'Calculation Behaviour' })}:
+                  </td>
+                  <td>
+                    <Select
+                      value={rule.calculationBehaviour}
+                      options={calculationBehaviourOptions}
+                      onChange={(val: CalculationBehaviour) => handleFieldChange(ruleIndex, 'calculationBehaviour', val)}
+                      style={{ width: 200 }}
+                      disabled={disabled}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ textAlign: 'right', paddingRight: 8, whiteSpace: 'nowrap' }}>
+                    {t('coreshop_priority', { defaultValue: 'Priority' })}:
+                  </td>
+                  <td>
+                    <InputNumber
+                      value={rule.priority}
+                      onChange={(val) => handleFieldChange(ruleIndex, 'priority', val ?? 0)}
+                      style={{ width: 200 }}
+                      disabled={disabled}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ textAlign: 'right', paddingRight: 8, whiteSpace: 'nowrap' }}>
+                    {t('active', { defaultValue: 'Active' })}:
+                  </td>
+                  <td>
+                    <Switch
+                      checked={rule.active}
+                      onChange={(checked) => handleFieldChange(ruleIndex, 'active', checked)}
+                      disabled={disabled}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         )
       },
       {
@@ -180,10 +251,10 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
         children: hasConditionRegistry ? (
           <div style={{ padding: 16 }}>
             <ConditionsPanel
-              conditions={rule.conditions as RuleCondition[]}
+              conditions={rule.conditions}
               availableTypes={availableConditionTypes}
               onChange={(conditions: RuleCondition[]) => handleFieldChange(ruleIndex, 'conditions', conditions)}
-              registryId={coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry}
+              registryId={coreshopQuantityPriceRulesServiceIds.conditionRegistry}
             />
           </div>
         ) : (
@@ -195,27 +266,22 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
         )
       },
       {
-        key: 'actions',
+        key: 'ranges',
         label: (
           <Space size={4}>
-            <ThunderboltOutlined />
-            {t('coreshop_actions', { defaultValue: 'Actions' })}
+            <TagOutlined />
+            {t('coreshop_product_quantity_price_rules_ranges', { defaultValue: 'Quantity Price Ranges' })}
           </Space>
         ),
-        children: hasActionRegistry ? (
+        children: (
           <div style={{ padding: 16 }}>
-            <ActionsPanel
-              actions={rule.actions as RuleAction[]}
-              availableTypes={availableActionTypes}
-              onChange={(actions: RuleAction[]) => handleFieldChange(ruleIndex, 'actions', actions)}
-              registryId={coreshopProductServiceIds.productSpecificPriceRuleActionRegistry}
+            <RangesPanel
+              ranges={rule.ranges}
+              onChange={(ranges: QuantityRange[]) => handleFieldChange(ruleIndex, 'ranges', ranges)}
+              pricingBehaviourTypes={value.stores?.pricingBehaviourTypes}
+              disabled={disabled}
+              objectId={objectId}
             />
-          </div>
-        ) : (
-          <div style={{ padding: 16 }}>
-            <Typography.Text type="secondary">
-              {t('coreshop_actions_not_available', { defaultValue: 'Actions not available' })}
-            </Typography.Text>
           </div>
         )
       }
@@ -254,7 +320,7 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
         padding: '8px 0'
       }}>
         <Typography.Text strong>
-          {t('coreshop_product_specific_price_rules', { defaultValue: 'Product Specific Price Rules' })}
+          {t('coreshop_product_quantity_price_rules', { defaultValue: 'Quantity Price Rules' })}
         </Typography.Text>
         {!disabled && (
           <Button
@@ -286,7 +352,7 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
           borderRadius: 4
         }}>
           <Typography.Text type="secondary">
-            {t('coreshop_no_specific_price_rules', { defaultValue: 'No price rules defined' })}
+            {t('coreshop_no_quantity_price_rules', { defaultValue: 'No quantity price rules defined' })}
           </Typography.Text>
           {!disabled && (
             <div style={{ marginTop: 16 }}>
@@ -295,7 +361,7 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
                 icon={<PlusOutlined />}
                 onClick={() => setAddModalVisible(true)}
               >
-                {t('coreshop_add_price_rule', { defaultValue: 'Add Price Rule' })}
+                {t('coreshop_add_quantity_price_rule', { defaultValue: 'Add Quantity Price Rule' })}
               </Button>
             </div>
           )}
@@ -304,7 +370,7 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
 
       {/* Add rule modal */}
       <Modal
-        title={t('coreshop_add_price_rule', { defaultValue: 'Add Price Rule' })}
+        title={t('coreshop_add_quantity_price_rule', { defaultValue: 'Add Quantity Price Rule' })}
         open={addModalVisible}
         onOk={handleAddRule}
         onCancel={() => {

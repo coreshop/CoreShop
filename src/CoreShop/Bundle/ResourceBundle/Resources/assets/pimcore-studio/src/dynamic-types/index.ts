@@ -1,5 +1,5 @@
 /**
- * CoreShop ProductQuantityPriceRulesBundle Studio Plugin
+ * CoreShop ResourceBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -10,8 +10,5 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export * from './types'
-export * from './service-ids'
-export { RangesPanel } from './components/RangesPanel'
-export { QuantityPriceRulePanel } from './components/QuantityPriceRulePanel'
-export { ProductQuantityPriceRulesPanel } from './components/ProductQuantityPriceRulesPanel'
+export { DynamicTypeObjectDataCoreShopRelation } from './DynamicTypeObjectDataCoreShopRelation'
+export { DynamicTypeObjectDataCoreShopRelations } from './DynamicTypeObjectDataCoreShopRelations'

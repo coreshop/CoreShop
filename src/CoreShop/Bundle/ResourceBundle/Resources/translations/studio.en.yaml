@@ -1,4 +1,6 @@
 coreshop: 'CoreShop'
+coreshop_coreshop_relation: 'CoreShop Relation'
+coreshop_coreshop_relations: 'CoreShop Relations'
 coreshop_save_success: 'Item has been successfully saved'
 coreshop_enter_the_name: 'Enter the name'
 coreshop_save_error: 'Error saving item'

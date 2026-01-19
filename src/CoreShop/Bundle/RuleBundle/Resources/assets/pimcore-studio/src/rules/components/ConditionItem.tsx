@@ -37,11 +37,7 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
   onDelete,
   registryId
 }) => {
-  // Debug logging
-  console.log('[ConditionItem] Render:', { index, type: condition.type, configKeys: Object.keys(condition.configuration || {}) })
-
   const handleDataChange = (configuration: Record<string, any>) => {
-    console.log('[ConditionItem] handleDataChange:', condition.type, Object.keys(configuration))
     onChange({ ...condition, configuration })
   }
 
@@ -51,7 +47,6 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
   )
 
   const ConditionComponent = conditionRegistry.get(condition.type)
-  console.log('[ConditionItem] Component found:', condition.type, !!ConditionComponent)
 
   const title = (
     <Space>

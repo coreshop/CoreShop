@@ -11,14 +11,14 @@
  */
 
 import React from 'react'
-import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
+import { type AbstractModule } from '@pimcore/studio-ui-bundle'
 import { CountrySelectInput } from '../../../components/CountrySelectInput'
 import { StateSelectInput } from '../../../components/StateSelectInput'
-import { entityTableColumnExtensionsServiceId } from '@coreshop/resource/src/entities'
+import { getEntityTableColumnExtensionRegistry } from '@coreshop/resource/src/entities'
 
 export const TaxRuleGroupExtensionModule: AbstractModule = {
   onInit(): void {
-    const tableColumnRegistry = container.get<any>(entityTableColumnExtensionsServiceId)
+    const tableColumnRegistry = getEntityTableColumnExtensionRegistry()
     
     // Register table column extensions for TaxRuleGroup tax rules
     tableColumnRegistry?.add?.('coreshop.taxation.tax_rule_group.tax_rules', ({ updateRecord }: any) => [

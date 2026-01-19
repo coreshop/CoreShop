@@ -14,23 +14,16 @@
  */
 
 import React from 'react'
-import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
-import { Form, Input, Button, message } from 'antd'
+import { type AbstractModule } from '@pimcore/studio-ui-bundle'
+import { Form, Input, message } from 'antd'
 import {
-  entityFormExtensionsServiceId,
-  entityTableColumnExtensionsServiceId,
-  entitySaveDecoratorsServiceId,
-  entityTabExtensionsServiceId,
-  entityActionExtensionsServiceId,
-  entityValidationExtensionsServiceId,
-  entityLifecycleHooksServiceId,
-  type EntityFormExtensionRegistry,
-  type EntityTableColumnExtensionRegistry,
-  type EntitySaveDecoratorRegistry,
-  type EntityTabExtensionRegistry,
-  type EntityActionExtensionRegistry,
-  type EntityValidationExtensionRegistry,
-  type EntityLifecycleHookRegistry
+  getEntityFormExtensionRegistry,
+  getEntityTableColumnExtensionRegistry,
+  getEntitySaveDecoratorRegistry,
+  getEntityTabExtensionRegistry,
+  getEntityActionExtensionRegistry,
+  getEntityValidationExtensionRegistry,
+  getEntityLifecycleHookRegistry
 } from '@coreshop/resource/src/entities'
 
 export const ComprehensiveExtensionExample: AbstractModule = {
@@ -50,7 +43,8 @@ export const ComprehensiveExtensionExample: AbstractModule = {
 // ==============================================
 
 function registerFormExtensions(): void {
-  const registry = container.get<EntityFormExtensionRegistry>(entityFormExtensionsServiceId)
+  const registry = getEntityFormExtensionRegistry()
+  if (!registry) return
 
   // Add custom field to Country form
   registry.add('coreshop.address.country.form', ({ data, onChange, form }) => {
@@ -75,7 +69,8 @@ function registerFormExtensions(): void {
 // ==============================================
 
 function registerTableColumnExtensions(): void {
-  const registry = container.get<EntityTableColumnExtensionRegistry>(entityTableColumnExtensionsServiceId)
+  const registry = getEntityTableColumnExtensionRegistry()
+  if (!registry) return
 
   // Add custom column to a nested table (example: could be used in any table)
   registry.add('coreshop.taxation.tax_rule_group.tax_rules', ({ updateRecord }) => [
@@ -101,7 +96,8 @@ function registerTableColumnExtensions(): void {
 // ==============================================
 
 function registerSaveDecorators(): void {
-  const registry = container.get<EntitySaveDecoratorRegistry>(entitySaveDecoratorsServiceId)
+  const registry = getEntitySaveDecoratorRegistry()
+  if (!registry) return
 
   // Transform Country save payload
   registry.add('coreshop.address.country', (payload, data) => {
@@ -123,7 +119,8 @@ function registerSaveDecorators(): void {
 // ==============================================
 
 function registerTabExtensions(): void {
-  const registry = container.get<EntityTabExtensionRegistry>(entityTabExtensionsServiceId)
+  const registry = getEntityTabExtensionRegistry()
+  if (!registry) return
 
   // Add custom tab to Country manager
   registry.add('coreshop.address.country', ({ data }) => ({
@@ -164,7 +161,8 @@ function registerTabExtensions(): void {
 // ==============================================
 
 function registerActionExtensions(): void {
-  const registry = container.get<EntityActionExtensionRegistry>(entityActionExtensionsServiceId)
+  const registry = getEntityActionExtensionRegistry()
+  if (!registry) return
 
   // Add toolbar action
   registry.add('coreshop.address.country', ({ data, position }) => {
@@ -202,7 +200,8 @@ function registerActionExtensions(): void {
 // ==============================================
 
 function registerValidationExtensions(): void {
-  const registry = container.get<EntityValidationExtensionRegistry>(entityValidationExtensionsServiceId)
+  const registry = getEntityValidationExtensionRegistry()
+  if (!registry) return
 
   // Add custom validation for Country
   registry.add('coreshop.address.country', async (data, context) => {
@@ -243,7 +242,8 @@ function registerValidationExtensions(): void {
 // ==============================================
 
 function registerLifecycleHooks(): void {
-  const registry = container.get<EntityLifecycleHookRegistry>(entityLifecycleHooksServiceId)
+  const registry = getEntityLifecycleHookRegistry()
+  if (!registry) return
 
   // Before load - can modify data before it's displayed
   registry.add('coreshop.address.country', 'beforeLoad', (data, context) => {

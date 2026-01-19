@@ -12,3 +12,4 @@
 
 export { RangesPanel } from './RangesPanel'
 export { QuantityPriceRulePanel } from './QuantityPriceRulePanel'
+export { ProductQuantityPriceRulesPanel } from './ProductQuantityPriceRulesPanel'

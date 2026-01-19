@@ -12,6 +12,12 @@
 
 import { ResourceBundleIconModule } from './modules/icon-library'
 import { IAbstractPlugin, container } from "@pimcore/studio-ui-bundle";
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import {
+    DynamicTypeObjectDataCoreShopRelation,
+    DynamicTypeObjectDataCoreShopRelations
+} from './dynamic-types'
 import {
   entityFormExtensionsServiceId,
   EntityFormExtensionRegistry,
@@ -33,6 +39,13 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-resource',
 
     onInit() {
+        // Register CoreShop Dynamic Types for Data Objects
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+            serviceIds['DynamicTypes/ObjectDataRegistry']
+        )
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopRelation())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopRelations())
+
         // Bind generic registries used by bundle UIs
         try {
             // @ts-ignore

@@ -215,7 +215,6 @@ function applyRegistryExtensionsInternal(): void {
   for (const extension of REGISTRY_EXTENSIONS) {
     // Check if registry is bound in container
     if (!container.isBound(extension.serviceId)) {
-      console.warn(`[CoreShop Core] Registry not yet available: ${extension.serviceId.toString()}`)
       continue
     }
 

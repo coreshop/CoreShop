@@ -101,7 +101,6 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
   React.useEffect(() => {
     // Only reset when transitioning from open to closed (not on initial mount or re-renders)
     if (previousOpenRef.current === true && open === false) {
-      console.log('[AssignToExistingCompanyModal] Modal closed, resetting state')
       setStep(initialCustomerId ? 'select-company' : 'select-customer')
       setCustomerId(initialCustomerId ?? null)
       setCustomerData(null)

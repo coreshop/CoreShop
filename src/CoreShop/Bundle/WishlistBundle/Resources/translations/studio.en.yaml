@@ -1,0 +1,5 @@
+CoreShopWishlist: 'Wishlist'
+CoreShopWishlistItem: 'Wishlist Item'
+coreshop.wishlist.name: 'Name'
+coreshop.wishlist_item.quantity: 'Quantity'
+coreshop.wishlist_item.wishlist: 'Wishlist'

@@ -97,7 +97,6 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
   React.useEffect(() => {
     // Only reset when transitioning from open to closed (not on initial mount or re-renders)
     if (previousOpenRef.current === true && open === false) {
-      console.log('[AssignToNewCompanyModal] Modal closed, resetting state')
       setStep(initialCustomerId ? 'form' : 'select-customer')
       setCustomerId(initialCustomerId ?? null)
       setCustomerData(null)
@@ -115,16 +114,12 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
   }, [open, initialCustomerId, form])
 
   const handleCustomerSelected = React.useCallback(async (id: number) => {
-    console.log('[AssignToNewCompanyModal] handleCustomerSelected called with id:', id)
     setLoading(true)
     try {
-      console.log('[AssignToNewCompanyModal] Calling getEntityDetails API...')
       const response = await customerCompanyApi.getEntityDetails('customer', id)
-      console.log('[AssignToNewCompanyModal] getEntityDetails response:', response)
       if (response.success && response.data) {
         setCustomerId(id)
         setCustomerData(response.data)
-        console.log('[AssignToNewCompanyModal] Calling validateAssignment...')
         await validateAssignment(id)
       } else {
         void messageApi.error(response.message ?? 'Failed to load customer details')
@@ -150,25 +145,19 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
       }
     },
     onFinish: (event) => {
-      console.log('[AssignToNewCompanyModal] onFinish called with event:', event)
       if (event.items.length > 0) {
         const selected = event.items[0]
-        console.log('[AssignToNewCompanyModal] Selected customer:', selected)
         void handleCustomerSelected(selected.data.id)
       }
     }
   })
 
   const validateAssignment = async (custId: number): Promise<void> => {
-    console.log('[AssignToNewCompanyModal] validateAssignment called with custId:', custId)
     setLoading(true)
     try {
-      console.log('[AssignToNewCompanyModal] Calling validateAssignment API...')
       const response = await customerCompanyApi.validateAssignment(custId)
-      console.log('[AssignToNewCompanyModal] validateAssignment response:', response)
       if (response.success && response.data) {
         setValidationData(response.data)
-        console.log('[AssignToNewCompanyModal] Setting step to form')
         setStep('form')
       } else {
         void messageApi.error(response.message ?? 'Customer cannot be assigned to a company')

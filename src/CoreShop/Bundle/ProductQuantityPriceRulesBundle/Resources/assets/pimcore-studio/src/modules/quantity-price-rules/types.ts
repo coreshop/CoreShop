@@ -19,8 +19,10 @@ export type PricingBehaviour = 'fixed' | 'percentage_decrease' | 'percentage_inc
 
 /**
  * Calculation behaviour types
+ * Note: 'volume' is the registered backend calculator type
+ * The others are legacy/fallback values from DEFAULT_CALCULATION_BEHAVIOURS
  */
-export type CalculationBehaviour = 'by_quantity' | 'by_percentage' | 'by_price'
+export type CalculationBehaviour = 'volume' | 'by_quantity' | 'by_percentage' | 'by_price'
 
 /**
  * A single quantity range
@@ -29,8 +31,10 @@ export interface QuantityRange {
   id?: number | null
   rangeStartingFrom: number
   pricingBehaviour: PricingBehaviour
+  unitDefinition?: number | null
   amount?: number
   percentage?: number
+  pseudoPrice?: number
   currency?: number | null
   highlighted?: boolean
 }
@@ -62,6 +66,8 @@ export interface QuantityPriceRuleStoreData {
 export interface QuantityPriceRulesFieldData {
   rules: QuantityPriceRule[]
   stores: QuantityPriceRuleStoreData
-  conditions: Array<{ type: string }>
-  actions: Array<{ type: string }>
+  /** Available condition types from backend (e.g., ['nested', 'timespan', 'customers', ...]) */
+  conditions: string[]
+  /** Available action types from backend (currently not used for QuantityPriceRules) */
+  actions: string[]
 }

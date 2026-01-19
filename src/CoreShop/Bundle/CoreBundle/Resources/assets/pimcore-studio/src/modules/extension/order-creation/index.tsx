@@ -58,7 +58,5 @@ export const OrderCreationExtensionModule: AbstractModule = {
     // Register CoreBundle steps (extensions)
     registry.register('address', AddressStepConfig)
     registry.register('shipping', ShippingStepConfig)
-
-    console.log('[CoreShop Core] Registered order creation steps: address, shipping')
   }
 }

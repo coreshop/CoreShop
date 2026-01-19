@@ -62,9 +62,6 @@ export const ProductMultiSelect: React.FC<ProductMultiSelectProps> = ({
     const [allowedClasses, setAllowedClasses] = useState<string[]>([])
     const [relationValue, handleRelationChange, loading] = useRelationIds(value, 'Product')
 
-    // Debug logging
-    console.log('[ProductMultiSelect] Render:', { value, relationValue: relationValue?.map(r => ({ id: r.id, type: r.type })), loading, allowedClasses })
-
     const configProvider = useMemo(
         () => container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider),
         []

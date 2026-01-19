@@ -23,9 +23,6 @@ export const ProductsCondition: React.FC<ConditionComponentProps> = ({
   const { t } = useTranslation()
   const [form] = Form.useForm()
 
-  // Debug logging
-  console.log('[ProductsCondition] Render with data:', { products: data.products, productsType: typeof data.products, isArray: Array.isArray(data.products), firstItem: Array.isArray(data.products) && data.products.length > 0 ? data.products[0] : null })
-
   useEffect(() => {
     form.setFieldsValue({
       products: data.products,
