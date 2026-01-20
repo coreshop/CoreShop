@@ -2,6 +2,14 @@
   "name": "@coreshop/address",
   "version": "1.0.0",
   "description": "CoreShop Address Bundle - Pimcore Studio Plugin",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./components": "./src/components/index.ts",
+    "./zones": "./src/modules/zones/index.ts",
+    "./countries": "./src/modules/countries/index.ts",
+    "./states": "./src/modules/states/index.ts"
+  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

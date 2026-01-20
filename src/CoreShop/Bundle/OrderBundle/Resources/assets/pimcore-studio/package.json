@@ -2,6 +2,17 @@
   "name": "@coreshop/order",
   "version": "1.0.0",
   "description": "CoreShop OrderBundle - Pimcore Studio Plugin",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./cart-price-rules": "./src/modules/cart-price-rules/index.ts",
+    "./cart-price-rules/conditions": "./src/modules/cart-price-rules/conditions/index.ts",
+    "./cart-price-rules/actions": "./src/modules/cart-price-rules/actions/index.ts",
+    "./sales": "./src/modules/sales/index.ts",
+    "./sales/components": "./src/modules/sales/components/index.ts",
+    "./sales/hooks": "./src/modules/sales/hooks/index.ts",
+    "./order-creation": "./src/modules/order-creation/index.ts"
+  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

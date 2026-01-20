@@ -114,12 +114,30 @@ export default defineConfig({
       '@coreshop/resource/src': path.resolve(__dirname, 'src/CoreShop/Bundle/ResourceBundle/Resources/assets/pimcore-studio/src'),
       '@coreshop/currency/src': path.resolve(__dirname, 'src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio/src'),
       '@coreshop/rule/src': path.resolve(__dirname, 'src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/order/src': path.resolve(__dirname, 'src/CoreShop/Bundle/OrderBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/product/src': path.resolve(__dirname, 'src/CoreShop/Bundle/ProductBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/shipping/src': path.resolve(__dirname, 'src/CoreShop/Bundle/ShippingBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/payment/src': path.resolve(__dirname, 'src/CoreShop/Bundle/PaymentBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/address/src': path.resolve(__dirname, 'src/CoreShop/Bundle/AddressBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/taxation/src': path.resolve(__dirname, 'src/CoreShop/Bundle/TaxationBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/store/src': path.resolve(__dirname, 'src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/customer/src': path.resolve(__dirname, 'src/CoreShop/Bundle/CustomerBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/core/src': path.resolve(__dirname, 'src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src'),
       // Main entry aliases - use index.ts for library exports (matches package.json "main")
       // main.ts is for Pimcore plugin entry, index.ts is for library exports
       '@coreshop/pimcore': path.resolve(__dirname, 'src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio/src/main.ts'),
       '@coreshop/resource': path.resolve(__dirname, 'src/CoreShop/Bundle/ResourceBundle/Resources/assets/pimcore-studio/src/index.ts'),
-      '@coreshop/currency': path.resolve(__dirname, 'src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio/src/main.ts'),
-      '@coreshop/rule': path.resolve(__dirname, 'src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/main.ts')
+      '@coreshop/currency': path.resolve(__dirname, 'src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/rule': path.resolve(__dirname, 'src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/order': path.resolve(__dirname, 'src/CoreShop/Bundle/OrderBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/product': path.resolve(__dirname, 'src/CoreShop/Bundle/ProductBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/shipping': path.resolve(__dirname, 'src/CoreShop/Bundle/ShippingBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/payment': path.resolve(__dirname, 'src/CoreShop/Bundle/PaymentBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/address': path.resolve(__dirname, 'src/CoreShop/Bundle/AddressBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/taxation': path.resolve(__dirname, 'src/CoreShop/Bundle/TaxationBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/store': path.resolve(__dirname, 'src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/customer': path.resolve(__dirname, 'src/CoreShop/Bundle/CustomerBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/core': path.resolve(__dirname, 'src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src/index.ts')
     }
   },
   output: {
@@ -216,22 +234,81 @@ export default defineConfig({
               }
             ])
         ),
-        // Share CoreShop ResourceBundle between all bundles (for DynamicForm, etc.)
+        // Share CoreShop bundles between all plugins (both internal and external)
+        // This ensures registries and other singletons are shared properly
         '@coreshop/resource': {
           singleton: true,
           eager: false,
           requiredVersion: false,
           strictVersion: false
         },
-        // Share CoreShop PimcoreBundle between all bundles (for broker event communication)
         '@coreshop/pimcore': {
           singleton: true,
           eager: false,
           requiredVersion: false,
           strictVersion: false
         },
-        // Share CoreShop CurrencyBundle between all bundles (for price formatting config)
         '@coreshop/currency': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/rule': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/order': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/product': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/shipping': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/payment': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/address': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/taxation': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/store': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/customer': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/core': {
           singleton: true,
           eager: false,
           requiredVersion: false,

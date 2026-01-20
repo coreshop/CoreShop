@@ -2,6 +2,15 @@
   "name": "@coreshop/product",
   "version": "1.0.0",
   "description": "CoreShop ProductBundle - Pimcore Studio Plugin",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./product-price-rules": "./src/modules/product-price-rules/index.ts",
+    "./product-price-rules/conditions": "./src/modules/product-price-rules/conditions/index.ts",
+    "./product-price-rules/actions": "./src/modules/product-price-rules/actions/index.ts",
+    "./product-specific-price-rules": "./src/modules/product-specific-price-rules/index.ts",
+    "./components": "./src/components/index.ts"
+  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",
