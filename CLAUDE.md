@@ -1012,6 +1012,8 @@ const plugin: IAbstractPlugin = {
 
 ### CoreShop Dynamic Types List
 
+#### Simple Select Types
+
 | Type | Bundle | Base Class |
 |------|--------|------------|
 | `coreShopCountry` | AddressBundle | AbstractSelect |
@@ -1031,6 +1033,22 @@ const plugin: IAbstractPlugin = {
 | `coreShopFilter` | IndexBundle | AbstractSelect |
 | `coreShopCartPriceRule` | OrderBundle | AbstractSelect |
 | `coreShopProductUnit` | ProductBundle | AbstractSelect |
+| `coreShopProductUnitDefinition` | ProductBundle | AbstractSelect |
+| `coreShopProductUnitDefinitions` | ProductBundle | AbstractMultiSelect |
+
+#### Complex Dynamic Types
+
+These types have custom rendering and editing logic beyond simple select fields:
+
+| Type | Bundle | Description |
+|------|--------|-------------|
+| `coreShopMoney` | MoneyBundle | Currency-aware money input with amount and currency |
+| `coreShopMoneyCurrency` | CurrencyBundle | Money field with currency selection |
+| `coreShopStoreValues` | CoreBundle | Store-specific values (prices per store) |
+| `coreShopRelation` | ResourceBundle | Single CoreShop entity relation |
+| `coreShopRelations` | ResourceBundle | Multiple CoreShop entity relations |
+| `coreShopProductSpecificPriceRules` | ProductBundle | Inline product-specific price rules editor |
+| `coreShopProductQuantityPriceRules` | ProductQuantityPriceRulesBundle | Inline quantity/volume price rules editor |
 
 ### File Structure
 
@@ -1045,6 +1063,3 @@ BundleX/Resources/assets/pimcore-studio/src/
 
 ## Knowledge Graph
 Use the knowledge-graph-mcp before and after every task you do.
-
-## TODO
-- Complex Dynamic Types: StoreValues, Money, DynamicDropdown, ProductUnitDefinitions, ProductSpecificPriceRules

@@ -11,12 +11,11 @@
  */
 
 import React from 'react'
-import { Tree, Empty, Space, Typography } from 'antd'
+import { Tree, Empty, Space, Typography, Dropdown } from 'antd'
 import { createStyles } from 'antd-style'
 import type { DataNode } from 'antd/es/tree'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import {
-  Dropdown,
   Icon,
   Droppable,
   type DragAndDropInfo
