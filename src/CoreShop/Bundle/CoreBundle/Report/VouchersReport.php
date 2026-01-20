@@ -72,18 +72,22 @@ class VouchersReport implements ReportInterface, ExportReportInterface
 
         $sqlQuery = "
               SELECT SQL_CALC_FOUND_ROWS
-              orderVouchers.voucherCode AS code, 
+              orderVouchers.voucherCode AS code,
               priceRule.name AS rule,
               orderVouchers.discountGross AS discount,
               orders.orderDate
               FROM object_collection_CoreShopProposalCartPriceRuleItem_$classId as orderVouchers
-              INNER JOIN object_query_$classId as orders ON orders.oo_id = orderVouchers.id 
-              LEFT JOIN coreshop_cart_price_rule AS priceRule ON orderVouchers.cartPriceRule = priceRule.id 
-              WHERE orderVouchers.voucherCode <> '' AND orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND saleState='" . OrderSaleStates::STATE_ORDER . "'
+              INNER JOIN object_query_$classId as orders ON orders.oo_id = orderVouchers.id
+              LEFT JOIN coreshop_cart_price_rule AS priceRule ON orderVouchers.cartPriceRule = priceRule.id
+              WHERE orderVouchers.voucherCode <> '' AND orders.store = :storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > :fromTimestamp AND orders.orderDate < :toTimestamp AND saleState='" . OrderSaleStates::STATE_ORDER . "'
               ORDER BY orders.orderDate DESC
-              LIMIT $offset,$limit";
+              LIMIT " . (int) $offset . ', ' . (int) $limit;
 
-        $results = $this->db->fetchAllAssociative($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAllAssociative($sqlQuery, [
+            'storeId' => $storeId,
+            'fromTimestamp' => $from->getTimestamp(),
+            'toTimestamp' => $to->getTimestamp(),
+        ]);
         $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as $result) {

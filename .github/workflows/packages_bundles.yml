@@ -1,12 +1,12 @@
 name: Packages Bundles
 on:
   push:
-    branches: [ '4.0', '4.1', '5.0', 'next' ]
+    branches: [ '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Bundle/**'
       - '.github/workflows/packages_bundles.yml'
   pull_request_target:
-    branches: [ '4.0', '4.1', '5.0', 'next' ]
+    branches: [ '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Bundle/**'
       - '.github/workflows/packages_bundles.yml'

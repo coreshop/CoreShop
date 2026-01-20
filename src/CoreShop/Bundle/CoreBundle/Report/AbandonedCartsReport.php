@@ -96,15 +96,19 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
                         LEFT JOIN object_$userClassId AS `user` ON `user`.oo_id = cart.customer__id
                         LEFT JOIN coreshop_payment_provider AS `pg` ON `pg`.id = cart.paymentProvider
                         WHERE cart.items <> ''
-                          AND cart.store = $storeId
-                          AND cart.creationDate > ?
-                          AND cart.creationDate < ?
+                          AND cart.store = :storeId
+                          AND cart.creationDate > :fromTimestamp
+                          AND cart.creationDate < :toTimestamp
                           AND cart.saleState = '" . OrderSaleStates::STATE_CART . "'
                      GROUP BY cart.oo_id
                      ORDER BY cart.creationDate DESC
-                     LIMIT $offset,$limit";
+                     LIMIT " . (int) $offset . ', ' . (int) $limit;
 
-        $data = $this->db->fetchAllAssociative($sqlQuery, [$fromTimestamp, $toTimestamp]);
+        $data = $this->db->fetchAllAssociative($sqlQuery, [
+            'storeId' => $storeId,
+            'fromTimestamp' => $fromTimestamp,
+            'toTimestamp' => $toTimestamp,
+        ]);
         $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($data as &$entry) {

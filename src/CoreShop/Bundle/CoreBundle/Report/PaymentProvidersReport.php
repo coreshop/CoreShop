@@ -61,24 +61,28 @@ class PaymentProvidersReport implements ReportInterface
 
         $tableName = 'object_query_' . $this->orderRepository->getClassId();
         $sql = "
-            SELECT  paymentProvider, 
-                    COUNT(1) as total, 
-                    COUNT(1) / t.cnt * 100 as `percentage` 
-            FROM $tableName as `order` 
-            INNER JOIN objects as o 
-              ON o.id = `order`.oo_id 
-            CROSS JOIN 
+            SELECT  paymentProvider,
+                    COUNT(1) as total,
+                    COUNT(1) / t.cnt * 100 as `percentage`
+            FROM $tableName as `order`
+            INNER JOIN objects as o
+              ON o.id = `order`.oo_id
+            CROSS JOIN
             (
-              SELECT COUNT(1) as cnt 
-              FROM $tableName as `order` 
-              INNER JOIN objects as o 
-                ON o.id = `order`.oo_id  
-              WHERE store = $storeId AND creationDate > $fromTimestamp AND creationDate < $toTimestamp
-            ) t 
-          WHERE store = $storeId AND creationDate > $fromTimestamp AND creationDate < $toTimestamp AND saleState='" . OrderSaleStates::STATE_ORDER . "' 
+              SELECT COUNT(1) as cnt
+              FROM $tableName as `order`
+              INNER JOIN objects as o
+                ON o.id = `order`.oo_id
+              WHERE store = :storeId AND creationDate > :fromTimestamp AND creationDate < :toTimestamp
+            ) t
+          WHERE store = :storeId AND creationDate > :fromTimestamp AND creationDate < :toTimestamp AND saleState='" . OrderSaleStates::STATE_ORDER . "'
           GROUP BY paymentProvider";
 
-        $results = $this->db->fetchAllAssociative($sql);
+        $results = $this->db->fetchAllAssociative($sql, [
+            'storeId' => $storeId,
+            'fromTimestamp' => $fromTimestamp,
+            'toTimestamp' => $toTimestamp,
+        ]);
         $data = [];
 
         foreach ($results as $result) {

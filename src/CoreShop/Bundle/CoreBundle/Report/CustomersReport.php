@@ -59,16 +59,19 @@ class CustomersReport implements ReportInterface
             SELECT SQL_CALC_FOUND_ROWS
               customer.oo_id,
               customer.email as `emailAddress`,
-              SUM(orders.totalNet) as sales, 
+              SUM(orders.totalNet) as sales,
               COUNT(customer.oo_id) as `orderCount`
             FROM object_query_$orderClassId AS orders
             INNER JOIN object_query_$customerClassId AS customer ON orders.customer__id = customer.oo_id
-            WHERE  orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL AND saleState='" . OrderSaleStates::STATE_ORDER . "'
+            WHERE  orders.orderState = '$orderCompleteState' AND orders.orderDate > :fromTimestamp AND orders.orderDate < :toTimestamp AND customer.oo_id IS NOT NULL AND saleState='" . OrderSaleStates::STATE_ORDER . "'
             GROUP BY customer.oo_id
             ORDER BY COUNT(customer.oo_id) DESC
-            LIMIT $offset,$limit";
+            LIMIT " . (int) $offset . ', ' . (int) $limit;
 
-        $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAllAssociative($query, [
+            'fromTimestamp' => $from->getTimestamp(),
+            'toTimestamp' => $to->getTimestamp(),
+        ]);
         $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as &$result) {
