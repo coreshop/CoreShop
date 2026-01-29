@@ -24,6 +24,7 @@ final class MessageDetails implements \JsonSerializable
         private mixed $id,
         private string $class,
         private string $serialized,
+        private ?string $availableAt = null,
     ) {
     }
 
@@ -47,12 +48,18 @@ final class MessageDetails implements \JsonSerializable
         $this->serialized = $serialized;
     }
 
+    public function getAvailableAt(): ?string
+    {
+        return $this->availableAt;
+    }
+
     public function jsonSerialize(): mixed
     {
         return [
             'id' => $this->id,
             'class' => $this->class,
             'serialized' => $this->serialized,
+            'availableAt' => $this->availableAt,
         ];
     }
 }

@@ -22,6 +22,7 @@ use CoreShop\Bundle\MessengerBundle\Event\MessageDetailsEvent;
 use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
@@ -52,6 +53,7 @@ final class MessageRepository implements MessageRepositoryInterface
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
                 '<pre>' . print_r($envelope->getMessage(), true) . '</pre>',
+                $this->getAvailableAt($envelope),
             );
 
             /** @var MessageDetailsEvent $event */
@@ -72,5 +74,32 @@ final class MessageRepository implements MessageRepositoryInterface
         $stamp = $envelope->last(TransportMessageIdStamp::class);
 
         return $stamp?->getId();
+    }
+
+    private function getAvailableAt(Envelope $envelope): ?string
+    {
+        /** @var DelayStamp|null $delayStamp */
+        $delayStamp = $envelope->last(DelayStamp::class);
+
+        if (null === $delayStamp) {
+            return null;
+        }
+
+        $delayMs = $delayStamp->getDelay();
+        $delaySeconds = (int) ($delayMs / 1000);
+
+        if ($delaySeconds < 60) {
+            return sprintf('%d seconds delay', $delaySeconds);
+        }
+
+        if ($delaySeconds < 3600) {
+            return sprintf('%d minutes delay', (int) ($delaySeconds / 60));
+        }
+
+        if ($delaySeconds < 86400) {
+            return sprintf('%d hours delay', (int) ($delaySeconds / 3600));
+        }
+
+        return sprintf('%d days delay', (int) ($delaySeconds / 86400));
     }
 }

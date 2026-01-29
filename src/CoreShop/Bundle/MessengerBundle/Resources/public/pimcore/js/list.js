@@ -363,7 +363,7 @@ coreshop.messenger.list = Class.create({
                     rootProperty: 'data'
                 }
             },
-            fields: ['id', 'class']
+            fields: ['id', 'class', 'availableAt']
         });
 
         var grid = new Ext.grid.Panel({
@@ -384,6 +384,10 @@ coreshop.messenger.list = Class.create({
                 text: t('coreshop_messenger_class'),
                 flex: 1,
                 dataIndex: 'class'
+            }, {
+                text: t('coreshop_messenger_delay'),
+                width: 150,
+                dataIndex: 'availableAt'
             }, {
                 xtype: 'actioncolumn',
                 width: 80,
