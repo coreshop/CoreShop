@@ -153,20 +153,19 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.manyToManyObj
                         return this.component.getEl().dom;
                     }.bind(this),
                     onNodeOver: function (overHtmlNode, ddSource, e, data) {
-                        var record = data.records[0];
-                        var data = record.data;
                         var fromTree = this.isFromTree(ddSource);
 
-                        if (data.elementType == 'object' && this.dndAllowed(data, fromTree)) {
-                            return Ext.dd.DropZone.prototype.dropAllowed;
-                        } else {
-                            return Ext.dd.DropZone.prototype.dropNotAllowed;
+                        // Check if any of the records can be dropped
+                        for (var record of data.records) {
+                            var recordData = record.data;
+                            if (recordData.elementType === 'object' && this.dndAllowed(recordData, fromTree)) {
+                                return Ext.dd.DropZone.prototype.dropAllowed;
+                            }
                         }
 
+                        return Ext.dd.DropZone.prototype.dropNotAllowed;
                     }.bind(this),
                     onNodeDrop: function (target, ddSource, e, data) {
-                        var record = data.records[0];
-                        var data = record.data;
                         var fromTree = this.isFromTree(ddSource);
 
                         // check if data is a treenode, if not allow drop because of the reordering
@@ -174,24 +173,31 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.manyToManyObj
                             return true;
                         }
 
-                        if (data.elementType != 'object') {
-                            return false;
-                        }
+                        var addedAny = false;
 
-                        if (this.dndAllowed(data, fromTree)) {
-                            var initData = {
-                                id: data.id,
-                                path: data.path,
-                                type: data.className
-                            };
+                        // Process all records in the drag selection
+                        for (var record of data.records) {
+                            var recordData = record.data;
 
-                            if (!this.objectAlreadyExists(initData.id)) {
-                                this.store.add(initData);
-                                return true;
+                            if (recordData.elementType !== 'object') {
+                                continue;
+                            }
+
+                            if (this.dndAllowed(recordData, fromTree)) {
+                                var initData = {
+                                    id: recordData.id,
+                                    path: recordData.path,
+                                    type: recordData.className
+                                };
+
+                                if (!this.objectAlreadyExists(initData.id)) {
+                                    this.store.add(initData);
+                                    addedAny = true;
+                                }
                             }
                         }
 
-                        return false;
+                        return addedAny;
                     }.bind(this)
                 });
             }.bind(this));
