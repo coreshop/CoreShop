@@ -25,6 +25,6 @@ jobs:
           path-to-signatures: 'signatures/version1/cla.json'
           path-to-document: 'https://github.com/coreshop/coreshop/blob/4.0/CLA.md'
           branch: "main"
-          allowlist: user1,bot*
+          allowlist: user1,bot*,Copilot
           remote-organization-name: "coreshop"
           remote-repository-name: "cla"
