@@ -85,7 +85,12 @@ class StorageListController extends AbstractController
         $this->denyAccessUnlessGranted($privilege);
         $this->denyAccessUnlessGranted($privilegeAdd);
 
-        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->summaryRoute));
+        $defaultRedirect = $this->generateUrl($this->summaryRoute);
+        $redirect = $this->validateRedirectUrl(
+            $request,
+            (string) $this->getParameterFromRequest($request, '_redirect', $defaultRedirect),
+            $defaultRedirect,
+        );
         $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
         $storageList = $this->context->getStorageList();
 
@@ -285,6 +290,52 @@ class StorageListController extends AbstractController
 
         if ($request->request->has($key)) {
             return $request->request->all()[$key];
+        }
+
+        return $default;
+    }
+
+    /**
+     * Validates a redirect URL to prevent open redirects.
+     *
+     * Only allows:
+     * - Relative URLs (starting with "/" but not "//")
+     * - URLs on the same host as the current request
+     *
+     * @param Request $request The current request to validate against
+     * @param string  $url     The URL to validate
+     * @param string  $default The default URL to return if validation fails
+     *
+     * @return string The validated URL or the default if invalid
+     */
+    protected function validateRedirectUrl(Request $request, string $url, string $default): string
+    {
+        // Empty URL, use default
+        if ('' === $url) {
+            return $default;
+        }
+
+        // Check for protocol-relative URLs (//example.com) which could be used for open redirects
+        if (str_starts_with($url, '//')) {
+            return $default;
+        }
+
+        // Relative URLs (starting with /) are safe
+        if (str_starts_with($url, '/')) {
+            return $url;
+        }
+
+        // For absolute URLs, verify the host matches the current request
+        $parsedUrl = parse_url($url);
+
+        // If parsing failed or no host is present, use default
+        if (false === $parsedUrl || !isset($parsedUrl['host'])) {
+            return $default;
+        }
+
+        // Check if the host matches the current request host
+        if (strtolower($parsedUrl['host']) === strtolower($request->getHost())) {
+            return $url;
         }
 
         return $default;
