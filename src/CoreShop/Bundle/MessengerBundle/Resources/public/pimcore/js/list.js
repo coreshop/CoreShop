@@ -156,7 +156,7 @@ coreshop.messenger.list = Class.create({
                     rootProperty: 'data'
                 }
             },
-            fields: ['name', 'count'],
+            fields: ['receiver', 'count'],
             listeners: {
                 load: this.updateLastRefreshLabel.bind(this)
             }
@@ -180,8 +180,11 @@ coreshop.messenger.list = Class.create({
                 grid: true,
                 fields: ['receiver'],
                 label: {
-                    rotate: {
-                        degrees: -45
+                    renderer: function (value) {
+                        if (value && value.length > 15) {
+                            return Ext.String.ellipsis(value, 15);
+                        }
+                        return value;
                     }
                 }
             }],
@@ -193,6 +196,12 @@ coreshop.messenger.list = Class.create({
                 label: {
                     field: 'count',
                     display: 'insideEnd'
+                },
+                tooltip: {
+                    trackMouse: true,
+                    renderer: function (tooltip, record) {
+                        tooltip.setHtml(record.get('receiver') + ': ' + record.get('count') + ' ' + t('coreshop_messenger_messages'));
+                    }
                 }
             }]
         };
