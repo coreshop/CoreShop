@@ -36,7 +36,6 @@ use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -184,18 +183,7 @@ class OrderShipmentController extends PimcoreController
                     'Content-Disposition' => 'inline; filename="shipment-' . $shipment->getId() . '.pdf"',
                 ];
             } catch (\Exception $e) {
-                $this->container->get(LoggerInterface::class)->error(
-                    'Failed to render shipment PDF',
-                    [
-                        'shipmentId' => $shipment->getId(),
-                        'exception' => $e->getMessage(),
-                        'trace' => $e->getTraceAsString(),
-                    ],
-                );
-                $responseData = 'An error occurred while rendering the shipment. Please try again later.';
-                $header = ['Content-Type' => 'text/html'];
-
-                return new Response($responseData, 500, $header);
+                return new Response('An error occurred while rendering the shipment.', 500, ['Content-Type' => 'text/html']);
             }
 
             return new Response($responseData, 200, $header);
@@ -251,7 +239,6 @@ class OrderShipmentController extends PimcoreController
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService(OrderToShipmentTransformer::class, OrderToShipmentTransformer::class),
                 new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
-                new SubscribedService(LoggerInterface::class, LoggerInterface::class),
             ]);
     }
 }

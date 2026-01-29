@@ -36,7 +36,6 @@ use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -188,18 +187,7 @@ class OrderInvoiceController extends PimcoreController
                     'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
                 ];
             } catch (\Exception $e) {
-                $this->container->get(LoggerInterface::class)->error(
-                    'Failed to render invoice PDF',
-                    [
-                        'invoiceId' => $invoice->getId(),
-                        'exception' => $e->getMessage(),
-                        'trace' => $e->getTraceAsString(),
-                    ],
-                );
-                $responseData = 'An error occurred while rendering the invoice. Please try again later.';
-                $header = ['Content-Type' => 'text/html'];
-
-                return new Response($responseData, 500, $header);
+                return new Response('An error occurred while rendering the invoice.', 500, ['Content-Type' => 'text/html']);
             }
 
             return new Response($responseData, 200, $header);
@@ -255,7 +243,6 @@ class OrderInvoiceController extends PimcoreController
                 new SubscribedService('coreshop.order.transformer.order_to_invoice', OrderDocumentTransformerInterface::class, attributes: new Autowire('@CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer')),
                 new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_invoice')),
                 new SubscribedService(StateMachineManagerInterface::class, StateMachineManagerInterface::class),
-                new SubscribedService(LoggerInterface::class, LoggerInterface::class),
             ]);
     }
 }
