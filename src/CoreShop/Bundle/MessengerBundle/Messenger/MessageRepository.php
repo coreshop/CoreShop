@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use CoreShop\Bundle\MessengerBundle\Event\MessageDetailsEvent;
 use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,12 +30,6 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class MessageRepository implements MessageRepositoryInterface
 {
-    private const SECONDS_PER_MINUTE = 60;
-
-    private const SECONDS_PER_HOUR = 3600;
-
-    private const SECONDS_PER_DAY = 86400;
-
     public function __construct(
         private ReceiversRepositoryInterface $receivers,
         private EventDispatcherInterface $eventDispatcher,
@@ -92,26 +88,8 @@ final class MessageRepository implements MessageRepositoryInterface
         }
 
         $delayMs = $delayStamp->getDelay();
-        $delaySeconds = (int) ($delayMs / 1000);
+        $diff = Carbon::now()->subMilliseconds($delayMs);
 
-        if ($delaySeconds < self::SECONDS_PER_MINUTE) {
-            return sprintf('%d %s delay', $delaySeconds, $delaySeconds === 1 ? 'second' : 'seconds');
-        }
-
-        if ($delaySeconds < self::SECONDS_PER_HOUR) {
-            $minutes = (int) ($delaySeconds / self::SECONDS_PER_MINUTE);
-
-            return sprintf('%d %s delay', $minutes, $minutes === 1 ? 'minute' : 'minutes');
-        }
-
-        if ($delaySeconds < self::SECONDS_PER_DAY) {
-            $hours = (int) ($delaySeconds / self::SECONDS_PER_HOUR);
-
-            return sprintf('%d %s delay', $hours, $hours === 1 ? 'hour' : 'hours');
-        }
-
-        $days = (int) ($delaySeconds / self::SECONDS_PER_DAY);
-
-        return sprintf('%d %s delay', $days, $days === 1 ? 'day' : 'days');
+        return Carbon::now()->diffForHumans(other: $diff, syntax: CarbonInterface::DIFF_ABSOLUTE, parts: 2);
     }
 }
