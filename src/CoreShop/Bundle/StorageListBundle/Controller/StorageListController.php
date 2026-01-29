@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StorageListBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Controller\RedirectUrlValidationTrait;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
@@ -45,6 +46,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StorageListController extends AbstractController
 {
+    use RedirectUrlValidationTrait;
+
     public function __construct(
         ContainerInterface $container,
         protected string $identifier,
@@ -290,67 +293,6 @@ class StorageListController extends AbstractController
 
         if ($request->request->has($key)) {
             return $request->request->all()[$key];
-        }
-
-        return $default;
-    }
-
-    /**
-     * Validates a redirect URL to prevent open redirects.
-     *
-     * Only allows:
-     * - Relative URLs (starting with "/" but not "//")
-     * - URLs on the same host as the current request with http/https scheme
-     *
-     * @param Request $request The current request to validate against
-     * @param string  $url     The URL to validate
-     * @param string  $default The default URL to return if validation fails
-     *
-     * @return string The validated URL or the default if invalid
-     */
-    protected function validateRedirectUrl(Request $request, string $url, string $default): string
-    {
-        // Empty URL, use default
-        if ('' === $url) {
-            return $default;
-        }
-
-        // Check for protocol-relative URLs (//example.com) which could be used for open redirects
-        if (str_starts_with($url, '//')) {
-            return $default;
-        }
-
-        // Relative URLs (starting with /) are safe if they don't contain dangerous characters
-        if (str_starts_with($url, '/')) {
-            // Reject URLs with backslashes, control characters, or whitespace that could be misinterpreted
-            if (preg_match('/[\\\\\\x00-\\x1f\\x7f]/', $url)) {
-                return $default;
-            }
-
-            return $url;
-        }
-
-        // For absolute URLs, verify the host matches the current request
-        $parsedUrl = parse_url($url);
-
-        // If parsing failed or no host is present, use default
-        if (false === $parsedUrl || !isset($parsedUrl['host'])) {
-            return $default;
-        }
-
-        // Only allow http and https schemes
-        if (isset($parsedUrl['scheme']) && !in_array(strtolower($parsedUrl['scheme']), ['http', 'https'], true)) {
-            return $default;
-        }
-
-        // Reject URLs with @ in the authority component (user:pass@host manipulation)
-        if (isset($parsedUrl['user']) || str_contains($url, '@')) {
-            return $default;
-        }
-
-        // Check if the host matches the current request host
-        if (strtolower($parsedUrl['host']) === strtolower($request->getHost())) {
-            return $url;
         }
 
         return $default;
