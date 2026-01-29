@@ -194,6 +194,8 @@ class OrderShipmentController extends PimcoreController
                 );
                 $responseData = 'An error occurred while rendering the shipment. Please try again later.';
                 $header = ['Content-Type' => 'text/html'];
+
+                return new Response($responseData, 500, $header);
             }
 
             return new Response($responseData, 200, $header);
