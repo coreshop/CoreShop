@@ -105,7 +105,7 @@ EOT
             try {
                 $rinvexCountry = CountryLoader::country($countryCode);
             } catch (\Exception $e) {
-                $io->warning(sprintf('Country data not found for code "%s" in Rinvex data.', $countryCode));
+                $io->warning(sprintf('Country data not found for code "%s" in Rinvex data: %s', $countryCode, $e->getMessage()));
 
                 continue;
             }
@@ -129,7 +129,7 @@ EOT
             }
 
             foreach ($divisions as $isoCode => $division) {
-                if (empty($division['name'])) {
+                if (!$division['name']) {
                     continue;
                 }
 
