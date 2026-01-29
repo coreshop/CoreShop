@@ -42,6 +42,16 @@ class UserRepository extends PimcoreRepository implements UserRepositoryInterfac
 
     public function findByResetTokenSecure(string $resetToken, int $ttlSeconds = 3600): ?UserInterface
     {
+        // Validate TTL is positive
+        if ($ttlSeconds <= 0) {
+            throw new \InvalidArgumentException('TTL must be a positive integer');
+        }
+
+        // Validate token format (expected: 64 hexadecimal characters from bin2hex(random_bytes(32)))
+        if (strlen($resetToken) !== 64 || !ctype_xdigit($resetToken)) {
+            return null;
+        }
+
         // Hash the provided token to compare against stored hash
         $tokenHash = hash('sha256', $resetToken);
 
@@ -61,8 +71,11 @@ class UserRepository extends PimcoreRepository implements UserRepositoryInterfac
             return null;
         }
 
+        // Convert to immutable to prevent side effects when calling modify()
+        $createdAtImmutable = \DateTimeImmutable::createFromInterface($createdAt);
+
         $now = new \DateTimeImmutable();
-        $expiresAt = $createdAt->modify('+' . $ttlSeconds . ' seconds');
+        $expiresAt = $createdAtImmutable->modify('+' . $ttlSeconds . ' seconds');
 
         if ($now > $expiresAt) {
             // Token has expired

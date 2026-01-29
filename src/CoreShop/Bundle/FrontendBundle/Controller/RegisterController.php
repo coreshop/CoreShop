@@ -204,12 +204,18 @@ class RegisterController extends FrontendController
     }
 
     /**
-     * @deprecated Use generateSecureResetToken() instead
+     * @deprecated Use generateSecureResetToken() instead. This method is insecure and will be removed.
+     *
+     * @throws \RuntimeException Always throws to prevent accidental insecure usage
      */
     protected function generateResetPasswordHash(UserInterface $customer): string
     {
-        $this->getParameter('coreshop.customer.security.login_identifier');
+        trigger_error(
+            'generateResetPasswordHash() is deprecated and insecure. Use generateSecureResetToken() instead.',
+            \E_USER_DEPRECATED,
+        );
 
-        return hash('md5', $customer->getId() . $customer->getLoginIdentifier() . mt_rand() . time());
+        // Redirect to secure implementation to prevent accidental insecure token generation
+        return $this->generateSecureResetToken();
     }
 }
