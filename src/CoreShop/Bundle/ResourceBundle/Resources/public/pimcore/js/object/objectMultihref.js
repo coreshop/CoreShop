@@ -156,8 +156,8 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.manyToManyObj
                         var fromTree = this.isFromTree(ddSource);
 
                         // Check if any of the records can be dropped
-                        for (var i = 0; i < data.records.length; i++) {
-                            var recordData = data.records[i].data;
+                        for (var record of data.records) {
+                            var recordData = record.data;
                             if (recordData.elementType === 'object' && this.dndAllowed(recordData, fromTree)) {
                                 return Ext.dd.DropZone.prototype.dropAllowed;
                             }
@@ -176,8 +176,8 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.manyToManyObj
                         var addedAny = false;
 
                         // Process all records in the drag selection
-                        for (var i = 0; i < data.records.length; i++) {
-                            var recordData = data.records[i].data;
+                        for (var record of data.records) {
+                            var recordData = record.data;
 
                             if (recordData.elementType !== 'object') {
                                 continue;
