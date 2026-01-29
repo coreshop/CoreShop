@@ -34,7 +34,7 @@ class OrderFactory implements StorageListFactoryInterface
     public function __construct(
         private FactoryInterface $cartFactory,
         private UniqueTokenGenerator $tokenGenerator,
-        private int $tokenLength = 10,
+        private int $tokenLength = 32,
     ) {
     }
 

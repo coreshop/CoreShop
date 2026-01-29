@@ -49,33 +49,13 @@ final class UniqueTokenGenerator
     public function generate(int $length): string
     {
         $token = '';
+        $maxIndex = $this->keyLength - 1;
 
         for ($i = 0; $i < $length; ++$i) {
-            $randomKey = $this->getRandomInteger($this->keyLength);
+            $randomKey = random_int(0, $maxIndex);
             $token .= $this->keys[$randomKey];
         }
 
         return $token;
-    }
-
-    private function getRandomInteger(int $max): int
-    {
-        $range = ($max - 0);
-
-        if ($range < 0) {
-            return 0;
-        }
-
-        $log = log($range, 2);
-        $bytes = (int) ($log / 8) + 1;
-        $bits = (int) $log + 1;
-        $filter = (1 << $bits) - 1;
-
-        do {
-            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-            $rnd = $rnd & $filter;
-        } while ($rnd >= $range);
-
-        return 0 + $rnd;
     }
 }
