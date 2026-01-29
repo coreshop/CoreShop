@@ -140,32 +140,41 @@ EOT
             $statesCreated = 0;
             $statesSkipped = 0;
 
-            foreach ($divisions as $isoCode => $division) {
-                if (empty($division['name'])) {
-                    continue;
+            try {
+                foreach ($divisions as $isoCode => $division) {
+                    if (!isset($division['name']) || '' === trim((string) $division['name'])) {
+                        continue;
+                    }
+
+                    // Check if state already exists
+                    $existingState = $this->stateRepository->findOneBy(['isoCode' => $isoCode]);
+                    if (null !== $existingState) {
+                        $statesSkipped++;
+
+                        continue;
+                    }
+
+                    /** @var StateInterface $state */
+                    $state = $this->stateFactory->createNew();
+
+                    foreach ($languages as $lang) {
+                        $state->setName($division['name'], $lang);
+                    }
+
+                    $state->setIsoCode($isoCode);
+                    $state->setCountry($country);
+                    $state->setActive(true);
+
+                    $this->entityManager->persist($state);
+                    $statesCreated++;
                 }
 
-                // Check if state already exists
-                $existingState = $this->stateRepository->findOneBy(['isoCode' => $isoCode]);
-                if (null !== $existingState) {
-                    $statesSkipped++;
+                // Flush after each country to prevent memory issues and allow partial progress
+                $this->entityManager->flush();
+            } catch (\Exception $e) {
+                $io->error(sprintf('Error processing country %s: %s', $countryCode, $e->getMessage()));
 
-                    continue;
-                }
-
-                /** @var StateInterface $state */
-                $state = $this->stateFactory->createNew();
-
-                foreach ($languages as $lang) {
-                    $state->setName($division['name'], $lang);
-                }
-
-                $state->setIsoCode($isoCode);
-                $state->setCountry($country);
-                $state->setActive(true);
-
-                $this->entityManager->persist($state);
-                $statesCreated++;
+                continue;
             }
 
             if ($statesCreated > 0 || $statesSkipped > 0) {
@@ -175,8 +184,6 @@ EOT
             $totalStatesCreated += $statesCreated;
             $totalStatesSkipped += $statesSkipped;
         }
-
-        $this->entityManager->flush();
 
         $io->newLine();
         $io->success(sprintf(
