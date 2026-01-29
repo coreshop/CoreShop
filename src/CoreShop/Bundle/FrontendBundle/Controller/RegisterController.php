@@ -28,7 +28,7 @@ use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,20 +81,32 @@ class RegisterController extends FrontendController
             if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $passwordResetData = $handledForm->getData();
 
-                $user = $this->container->get('coreshop.repository.user')->findByLoginIdentifier($passwordResetData['email']);
+                /** @var UserRepositoryInterface $userRepository */
+                $userRepository = $this->container->get('coreshop.repository.user');
+                $user = $userRepository->findByLoginIdentifier($passwordResetData['email']);
 
-                if (!$user instanceof UserInterface) {
-                    return $this->redirectToRoute('coreshop_index');
+                // Process the request only if user exists, but always show the same response
+                // to prevent user enumeration (CWE-204)
+                if ($user instanceof UserInterface) {
+                    // Generate cryptographically secure token (CWE-330, CWE-338, CWE-640)
+                    $rawToken = $this->generateSecureResetToken();
+
+                    // Store only the hash of the token (CWE-640)
+                    $tokenHash = hash('sha256', $rawToken);
+                    $user->setPasswordResetHash($tokenHash);
+
+                    // Set token creation time for TTL enforcement (CWE-613)
+                    $user->setPasswordResetHashCreatedAt(new \DateTimeImmutable());
+                    $user->save();
+
+                    // Use the raw token in the reset link (not the hash)
+                    $resetLink = $this->generateUrl('coreshop_customer_password_reset', ['token' => $rawToken], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                    $dispatcher = $this->container->get('event_dispatcher');
+                    $dispatcher->dispatch(new RequestPasswordChangeEvent($user, $resetLink), 'coreshop.user.request_password_reset');
                 }
 
-                $user->setPasswordResetHash($this->generateResetPasswordHash($user));
-                $user->save();
-
-                $resetLink = $this->generateUrl('coreshop_customer_password_reset', ['token' => $user->getPasswordResetHash()], UrlGeneratorInterface::ABSOLUTE_URL);
-
-                $dispatcher = $this->container->get('event_dispatcher');
-                $dispatcher->dispatch(new RequestPasswordChangeEvent($user, $resetLink), 'coreshop.user.request_password_reset');
-
+                // Always show success message regardless of user existence (CWE-204)
                 $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.password_reset_request_success'));
 
                 return $this->redirectToRoute('coreshop_login');
@@ -111,10 +123,12 @@ class RegisterController extends FrontendController
         $resetToken = $this->getParameterFromRequest($request, 'token');
 
         if ($resetToken) {
-            /**
-             * @var UserInterface $user
-             */
-            $user = $this->container->get('coreshop.repository.user')->findByResetToken($resetToken);
+            /** @var UserRepositoryInterface $userRepository */
+            $userRepository = $this->container->get('coreshop.repository.user');
+
+            // Use secure token validation with TTL (default 1 hour)
+            // This validates the hashed token and checks expiration (CWE-613, CWE-640)
+            $user = $userRepository->findByResetTokenSecure($resetToken);
 
             if (!$user) {
                 throw new NotFoundHttpException();
@@ -128,7 +142,9 @@ class RegisterController extends FrontendController
                 if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                     $resetPassword = $handledForm->getData();
 
+                    // Clear the reset token and timestamp (single-use token)
                     $user->setPasswordResetHash(null);
+                    $user->setPasswordResetHashCreatedAt(null);
                     $user->setPassword($resetPassword['password']);
                     $user->save();
 
@@ -155,7 +171,7 @@ class RegisterController extends FrontendController
             parent::getSubscribedServices(),
             [
                 new SubscribedService('coreshop.factory.customer', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.customer')),
-                new SubscribedService('coreshop.repository.user', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.user')),
+                new SubscribedService('coreshop.repository.user', UserRepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.user')),
                 new SubscribedService('coreshop.context.locale', LocaleContextInterface::class),
                 new SubscribedService(CustomerManagerInterface::class, CustomerManagerInterface::class),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
@@ -178,6 +194,18 @@ class RegisterController extends FrontendController
         return null;
     }
 
+    /**
+     * Generate a cryptographically secure reset token using random_bytes().
+     * This replaces the insecure MD5+mt_rand approach (CWE-330, CWE-338, CWE-640).
+     */
+    protected function generateSecureResetToken(): string
+    {
+        return bin2hex(random_bytes(32));
+    }
+
+    /**
+     * @deprecated Use generateSecureResetToken() instead
+     */
     protected function generateResetPasswordHash(UserInterface $customer): string
     {
         $this->getParameter('coreshop.customer.security.login_identifier');

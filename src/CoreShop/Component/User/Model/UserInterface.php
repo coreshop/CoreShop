@@ -43,4 +43,8 @@ interface UserInterface extends ResourceInterface, PimcoreModelInterface, Symfon
     public function getPasswordResetHash(): ?string;
 
     public function setPasswordResetHash(?string $passwordResetHash);
+
+    public function getPasswordResetHashCreatedAt(): ?\DateTimeInterface;
+
+    public function setPasswordResetHashCreatedAt(?\DateTimeInterface $passwordResetHashCreatedAt);
 }
