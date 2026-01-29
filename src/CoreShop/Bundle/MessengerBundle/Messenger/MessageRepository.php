@@ -28,6 +28,12 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class MessageRepository implements MessageRepositoryInterface
 {
+    private const SECONDS_PER_MINUTE = 60;
+
+    private const SECONDS_PER_HOUR = 3600;
+
+    private const SECONDS_PER_DAY = 86400;
+
     public function __construct(
         private ReceiversRepositoryInterface $receivers,
         private EventDispatcherInterface $eventDispatcher,
@@ -53,7 +59,7 @@ final class MessageRepository implements MessageRepositoryInterface
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
                 '<pre>' . print_r($envelope->getMessage(), true) . '</pre>',
-                $this->getAvailableAt($envelope),
+                $this->getDelayInfo($envelope),
             );
 
             /** @var MessageDetailsEvent $event */
@@ -76,7 +82,7 @@ final class MessageRepository implements MessageRepositoryInterface
         return $stamp?->getId();
     }
 
-    private function getAvailableAt(Envelope $envelope): ?string
+    private function getDelayInfo(Envelope $envelope): ?string
     {
         /** @var DelayStamp|null $delayStamp */
         $delayStamp = $envelope->last(DelayStamp::class);
@@ -88,18 +94,24 @@ final class MessageRepository implements MessageRepositoryInterface
         $delayMs = $delayStamp->getDelay();
         $delaySeconds = (int) ($delayMs / 1000);
 
-        if ($delaySeconds < 60) {
-            return sprintf('%d seconds delay', $delaySeconds);
+        if ($delaySeconds < self::SECONDS_PER_MINUTE) {
+            return sprintf('%d %s delay', $delaySeconds, $delaySeconds === 1 ? 'second' : 'seconds');
         }
 
-        if ($delaySeconds < 3600) {
-            return sprintf('%d minutes delay', (int) ($delaySeconds / 60));
+        if ($delaySeconds < self::SECONDS_PER_HOUR) {
+            $minutes = (int) ($delaySeconds / self::SECONDS_PER_MINUTE);
+
+            return sprintf('%d %s delay', $minutes, $minutes === 1 ? 'minute' : 'minutes');
         }
 
-        if ($delaySeconds < 86400) {
-            return sprintf('%d hours delay', (int) ($delaySeconds / 3600));
+        if ($delaySeconds < self::SECONDS_PER_DAY) {
+            $hours = (int) ($delaySeconds / self::SECONDS_PER_HOUR);
+
+            return sprintf('%d %s delay', $hours, $hours === 1 ? 'hour' : 'hours');
         }
 
-        return sprintf('%d days delay', (int) ($delaySeconds / 86400));
+        $days = (int) ($delaySeconds / self::SECONDS_PER_DAY);
+
+        return sprintf('%d %s delay', $days, $days === 1 ? 'day' : 'days');
     }
 }

@@ -24,7 +24,7 @@ final class MessageDetails implements \JsonSerializable
         private mixed $id,
         private string $class,
         private string $serialized,
-        private ?string $availableAt = null,
+        private ?string $delay = null,
     ) {
     }
 
@@ -48,9 +48,9 @@ final class MessageDetails implements \JsonSerializable
         $this->serialized = $serialized;
     }
 
-    public function getAvailableAt(): ?string
+    public function getDelay(): ?string
     {
-        return $this->availableAt;
+        return $this->delay;
     }
 
     public function jsonSerialize(): mixed
@@ -59,7 +59,7 @@ final class MessageDetails implements \JsonSerializable
             'id' => $this->id,
             'class' => $this->class,
             'serialized' => $this->serialized,
-            'availableAt' => $this->availableAt,
+            'delay' => $this->delay,
         ];
     }
 }
