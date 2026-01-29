@@ -167,6 +167,7 @@ coreshop.messenger.list = Class.create({
             xtype: 'cartesian',
             store: this.chartStore,
             height: 200,
+            innerPadding: {top: 20, bottom: 0, left: 0, right: 0},
             axes: [{
                 type: 'numeric',
                 position: 'left',
@@ -179,13 +180,8 @@ coreshop.messenger.list = Class.create({
                 position: 'bottom',
                 grid: true,
                 fields: ['receiver'],
-                label: {
-                    renderer: function (value) {
-                        if (value && value.length > 15) {
-                            return Ext.String.ellipsis(value, 15);
-                        }
-                        return value;
-                    }
+                renderer: function (axis, label) {
+                    return Ext.String.ellipsis(label, 20);
                 }
             }],
             series: [{
@@ -193,9 +189,18 @@ coreshop.messenger.list = Class.create({
                 title: 'Messages',
                 xField: 'receiver',
                 yField: 'count',
+                highlight: true,
                 label: {
-                    field: 'count',
-                    display: 'insideEnd'
+                    field: 'receiver',
+                    display: 'outside',
+                    orientation: 'horizontal',
+                    renderer: function (value, sprite, config, data) {
+                        var count = data.store.getAt(data.index).get('count');
+                        if (count === 0) {
+                            return Ext.String.ellipsis(value, 20) + ' (0)';
+                        }
+                        return count;
+                    }
                 },
                 tooltip: {
                     trackMouse: true,
