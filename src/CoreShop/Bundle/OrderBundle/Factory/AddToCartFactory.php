@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -35,8 +34,9 @@ class AddToCartFactory implements AddToCartFactoryInterface
     public function createWithCartAndCartItem(OrderInterface $cart, OrderItemInterface $cartItem): AddToCartInterface
     {
         $class = new $this->addToCartClass($cart, $cartItem);
+        $implements = class_implements($class) ?: [];
 
-        if (!in_array(AddToCartInterface::class, class_implements($class), true)) {
+        if (!in_array(AddToCartInterface::class, $implements, true)) {
             throw new \InvalidArgumentException(
                 sprintf('%s needs to implement "%s".', $class::class, AddToCartInterface::class),
             );

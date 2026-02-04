@@ -12,6 +12,13 @@ jms_serializer:
                 namespace_prefix: "CoreShop\\Component\\Core"
                 path: "@CoreShopCoreBundle/Resources/config/serializer"
 
+core_shop_resource:
+    orm_cascade_merge_associations:
+        CoreShop\Component\Core\Model\Country:
+            associations:
+                - currency
+                - countries
+
 twig:
     globals:
         coreshop: '@CoreShop\Component\Core\Context\ShopperContextInterface'

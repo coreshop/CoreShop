@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -27,15 +26,9 @@ use CoreShop\Component\Taxation\Model\TaxRule as BaseTaxRule;
  */
 class TaxRule extends BaseTaxRule implements TaxRuleInterface, \Stringable
 {
-    /**
-     * @var CountryInterface
-     */
-    protected $country;
+    protected ?CountryInterface $country = null;
 
-    /**
-     * @var StateInterface
-     */
-    protected $state;
+    protected ?StateInterface $state = null;
 
     public function __toString(): string
     {
@@ -54,7 +47,7 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface, \Stringable
         return $this->country;
     }
 
-    public function setCountry(CountryInterface $country = null)
+    public function setCountry(?CountryInterface $country)
     {
         $this->country = $country;
 
@@ -66,7 +59,7 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface, \Stringable
         return $this->state;
     }
 
-    public function setState(StateInterface $state = null)
+    public function setState(?StateInterface $state)
     {
         $this->state = $state;
 

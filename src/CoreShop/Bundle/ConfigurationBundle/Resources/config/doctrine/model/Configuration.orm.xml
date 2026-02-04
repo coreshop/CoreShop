@@ -9,7 +9,7 @@
         </id>
 
         <field name="key" column="configKey" length="100" type="string"/>
-        <field name="data" column="data" type="object"/>
+        <field name="data" column="data" type="json"/>
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

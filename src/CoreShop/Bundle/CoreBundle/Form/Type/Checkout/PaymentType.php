@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -49,11 +48,11 @@ final class PaymentType extends AbstractResourceType
     {
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
-                'constraints' => [new Valid(), new NotBlank(['groups' => $this->validationGroups])],
+                'constraints' => [new Valid(), new NotBlank(groups: $this->validationGroups)],
                 'label' => 'coreshop.ui.payment_provider',
                 'subject' => $options['payment_subject'],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -65,7 +64,7 @@ final class PaymentType extends AbstractResourceType
                     $this->removeConfigurationFields($event->getForm());
                 }
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 if (!isset($data['paymentProvider'])) {
@@ -94,6 +93,9 @@ final class PaymentType extends AbstractResourceType
                 continue;
             }
 
+            /**
+             * @psalm-suppress ArgumentTypeCoercion
+             */
             $formBuilder = $builder->create(
                 'paymentSettings',
                 $this->formTypeRegistry->get($type, 'default'),

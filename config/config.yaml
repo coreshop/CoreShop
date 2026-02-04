@@ -2,6 +2,12 @@ imports:
     - { resource: services.yml }
     - { resource: 'local/' }
 
+pimcore:
+    encryption:
+        secret: "%env(PIMCORE_SECRET)%"
+    product_registration:
+        instance_identifier: "%env(PIMCORE_INSTANCE_IDENTIFIER)%"
+        product_key: "%env(PIMCORE_PRODUCT_KEY)%"
 #payum:
 #    dynamic_gateways:
 #        encryption:

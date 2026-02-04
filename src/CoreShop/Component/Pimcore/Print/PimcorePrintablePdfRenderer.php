@@ -5,20 +5,18 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
 namespace CoreShop\Component\Pimcore\Print;
 
-use Pimcore\Bundle\WebToPrintBundle\Processor;
 use Pimcore\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
@@ -27,6 +25,7 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 class PimcorePrintablePdfRenderer implements PrintablePdfRendererInterface
 {
     public function __construct(
+        private ProcessorInterface $processor,
         private FragmentRendererInterface $fragmentRenderer,
     ) {
     }
@@ -66,9 +65,10 @@ class PimcorePrintablePdfRenderer implements PrintablePdfRendererInterface
             'headerTemplate' => $contentHeaderFile,
             'footerTemplate' => $contentFooterFile,
             'marginTop' => 1,
+            'document' => $printable,
         ]);
 
-        return Processor::getInstance()->getPdfFromString(
+        return $this->processor->createPdfFromString(
             $content ?: '',
             $params,
         );

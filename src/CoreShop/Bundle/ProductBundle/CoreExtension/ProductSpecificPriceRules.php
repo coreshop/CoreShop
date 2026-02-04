@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -188,12 +187,12 @@ class ProductSpecificPriceRules extends Data implements
         return false;
     }
 
-    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
+    public function getDiffDataForEditMode(mixed $data, ?Concrete $object = null, array $params = []): ?array
     {
         return [];
     }
 
-    public function getDataFromResource(mixed $data, Concrete $object = null, array $params = [])
+    public function getDataFromResource(mixed $data, ?Concrete $object = null, array $params = [])
     {
         return [];
     }
@@ -263,7 +262,7 @@ class ProductSpecificPriceRules extends Data implements
         return $this->unmarshalVersion($concrete, $data);
     }
 
-    public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
+    public function getVersionPreview(mixed $data, ?Concrete $object = null, array $params = []): string
     {
         if (!is_array($data)) {
             return 'empty';
@@ -272,7 +271,7 @@ class ProductSpecificPriceRules extends Data implements
         return sprintf('Rules: %s', count($data));
     }
 
-    public function getDataForEditmode(mixed $data, Concrete $object = null, array $params = []): array
+    public function getDataForEditmode(mixed $data, ?Concrete $object = null, array $params = []): array
     {
         $result = [
             'actions' => array_keys($this->getConfigActions()),
@@ -295,7 +294,7 @@ class ProductSpecificPriceRules extends Data implements
         return $result;
     }
 
-    public function getDataFromEditmode(mixed $data, Concrete $object = null, array $params = []): array
+    public function getDataFromEditmode(mixed $data, ?Concrete $object = null, array $params = []): array
     {
         $prices = [];
         $errors = [];

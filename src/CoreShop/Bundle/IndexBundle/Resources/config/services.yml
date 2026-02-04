@@ -342,3 +342,7 @@ services:
     CoreShop\Component\Index\Extension\DecimalIndexColumnTypeConfigExtension:
         tags:
             - { name: coreshop.index.extension }
+
+    CoreShop\Component\Index\Extension\StringIndexColumnTypeConfigExtension:
+        tags:
+            - { name: coreshop.index.extension }

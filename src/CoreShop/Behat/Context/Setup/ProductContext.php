@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -106,7 +105,7 @@ final class ProductContext implements Context
      * @Given /^the site has a product "([^"]+)" priced at (\d+)$/
      * @Given /^the site has a product "([^"]+)" priced at (\d+) for (store "[^"]+")$/
      */
-    public function theSiteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null): void
+    public function theSiteHasAProductPricedAt(string $productName, int $price = 100, ?StoreInterface $store = null): void
     {
         $product = $this->createProduct($productName, $price, $store);
 
@@ -134,7 +133,7 @@ final class ProductContext implements Context
         ProductInterface $product,
         string $productName,
         int $price = 100,
-        StoreInterface $store = null,
+        ?StoreInterface $store = null,
     ): void {
         $variant = $this->createVariant($product, $productName, $price, $store);
 
@@ -310,7 +309,7 @@ final class ProductContext implements Context
      * @Given /^the (product) is active and published and available for (store "[^"]+")$/
      * @Given /^the (product) is active and published and available$/
      */
-    public function theProductIsActivePublishedAndAvailableForStore(ProductInterface $product, StoreInterface $store = null): void
+    public function theProductIsActivePublishedAndAvailableForStore(ProductInterface $product, ?StoreInterface $store = null): void
     {
         $product->setActive(true);
         $product->setPublished(true);
@@ -522,7 +521,7 @@ final class ProductContext implements Context
         ProductInterface $product,
         ProductUnitInterface $unit,
         $conversionRate,
-        int $price = null,
+        ?int $price = null,
         int $precison = 0,
     ): void {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
@@ -596,7 +595,7 @@ final class ProductContext implements Context
         }
     }
 
-    private function getOrCreateUnitDefinitions(ProductUnitDefinitionsInterface $definitions = null)
+    private function getOrCreateUnitDefinitions(?ProductUnitDefinitionsInterface $definitions = null)
     {
         if (null === $definitions) {
             $definitions = $this->productUnitDefinitions->createNew();
@@ -619,7 +618,7 @@ final class ProductContext implements Context
         return $product;
     }
 
-    private function createProduct(string $productName, int $price = 100, StoreInterface $store = null): ProductInterface
+    private function createProduct(string $productName, int $price = 100, ?StoreInterface $store = null): ProductInterface
     {
         /** @var ProductInterface $product */
         $product = $this->createSimpleProduct($productName);
@@ -654,7 +653,7 @@ final class ProductContext implements Context
         ProductInterface $product,
         string $productName,
         int $price = 100,
-        StoreInterface $store = null,
+        ?StoreInterface $store = null,
     ): ProductInterface {
         $variant = $this->createSimpleVariant($product, $productName);
 

@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -312,7 +311,7 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleHasAProductCondition(
         ProductPriceRuleInterface $rule,
         ProductInterface $product,
-        ProductInterface $product2 = null,
+        ?ProductInterface $product2 = null,
     ): void {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
@@ -338,7 +337,7 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleHasAProductConditionWhichIncludesVariants(
         ProductPriceRuleInterface $rule,
         ProductInterface $product,
-        ProductInterface $product2 = null,
+        ?ProductInterface $product2 = null,
     ): void {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
@@ -474,7 +473,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
      * @Given /^the (price rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
      */
-    public function theCartPriceRuleHasANotCombinableCondition(ProductPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, CartPriceRuleInterface $notCombinable2 = null): void
+    public function theCartPriceRuleHasANotCombinableCondition(ProductPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, ?CartPriceRuleInterface $notCombinable2 = null): void
     {
         $this->assertConditionForm(NotCombinableConfigurationType::class, 'not_combinable_with_cart_price_voucher_rule');
 
