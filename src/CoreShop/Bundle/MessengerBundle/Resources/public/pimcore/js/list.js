@@ -21,6 +21,10 @@ coreshop.messenger.list = Class.create({
     messagesStore: null,
     failedMessagesStore: null,
 
+    autoRefreshInterval: null,
+    autoRefreshTimer: null,
+    lastRefreshLabel: null,
+
     initialize: function () {
         this.getPanel();
     },
@@ -37,8 +41,47 @@ coreshop.messenger.list = Class.create({
         }
     },
 
+    updateLastRefreshLabel: function () {
+        if (this.lastRefreshLabel) {
+            var now = new Date();
+            var timeString = Ext.Date.format(now, 'Y-m-d H:i:s');
+            this.lastRefreshLabel.setText(t('coreshop_messenger_last_refresh') + ': ' + timeString);
+        }
+    },
+
+    startAutoRefresh: function (interval) {
+        this.stopAutoRefresh();
+
+        if (interval > 0) {
+            this.autoRefreshInterval = interval;
+            this.autoRefreshTimer = setInterval(this.reload.bind(this), interval * 1000);
+        }
+    },
+
+    stopAutoRefresh: function () {
+        if (this.autoRefreshTimer) {
+            clearInterval(this.autoRefreshTimer);
+            this.autoRefreshTimer = null;
+        }
+        this.autoRefreshInterval = null;
+    },
+
     getPanel: function () {
         if (!this.panel) {
+            this.lastRefreshLabel = Ext.create('Ext.toolbar.TextItem', {
+                text: ''
+            });
+
+            var autoRefreshStore = Ext.create('Ext.data.Store', {
+                fields: ['value', 'text'],
+                data: [
+                    {value: 0, text: t('coreshop_messenger_auto_refresh_disabled')},
+                    {value: 5, text: t('coreshop_messenger_auto_refresh_5s')},
+                    {value: 10, text: t('coreshop_messenger_auto_refresh_10s')},
+                    {value: 30, text: t('coreshop_messenger_auto_refresh_30s')}
+                ]
+            });
+
             this.panel = Ext.create('Ext.panel.Panel', {
                 id: 'coreshop_messenger_list',
                 title: t('coreshop_messenger_list'),
@@ -50,7 +93,21 @@ coreshop.messenger.list = Class.create({
                     xtype: 'button',
                     iconCls: 'pimcore_icon_reload',
                     handler: this.reload.bind(this)
-                }],
+                }, '-', {
+                    xtype: 'combo',
+                    store: autoRefreshStore,
+                    displayField: 'text',
+                    valueField: 'value',
+                    value: 0,
+                    editable: false,
+                    width: 200,
+                    queryMode: 'local',
+                    listeners: {
+                        select: function (combo, record) {
+                            this.startAutoRefresh(record.get('value'));
+                        }.bind(this)
+                    }
+                }, '->', this.lastRefreshLabel],
                 items: [{
                     xtype: 'panel',
                     layout: 'border',
@@ -79,6 +136,7 @@ coreshop.messenger.list = Class.create({
             tabPanel.setActiveItem('coreshop_messenger_list');
 
             this.panel.on('destroy', function () {
+                this.stopAutoRefresh();
                 pimcore.globalmanager.remove('coreshop_messenger_list');
             }.bind(this));
 
@@ -99,7 +157,10 @@ coreshop.messenger.list = Class.create({
                     rootProperty: 'data'
                 }
             },
-            fields: ['name', 'count']
+            fields: ['receiver', 'count'],
+            listeners: {
+                load: this.updateLastRefreshLabel.bind(this)
+            }
         });
         this.chartStore.load();
 
@@ -118,16 +179,23 @@ coreshop.messenger.list = Class.create({
                 type: 'category',
                 position: 'bottom',
                 grid: true,
-                fields: ['receiver'],
+                fields: ['receiver']
             }],
             series: [{
                 type: 'bar',
                 title: 'Messages',
                 xField: 'receiver',
                 yField: 'count',
+                highlight: true,
                 label: {
                     field: 'count',
                     display: 'insideEnd'
+                },
+                tooltip: {
+                    trackMouse: true,
+                    renderer: function (tooltip, record) {
+                        tooltip.setHtml(record.get('receiver') + ': ' + record.get('count') + ' ' + t('coreshop_messenger_messages'));
+                    }
                 }
             }]
         };
