@@ -161,6 +161,7 @@ jobs:
           bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioBackendBundle
           bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioUiBundle
           bin/console pimcore:deployment:classes-rebuild --force --create-classes
+          bin/console generic-data-index:update:index -r
 
       - name: Install CoreShop
         run: |
