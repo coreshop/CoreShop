@@ -96,6 +96,7 @@ export const CategoryMultiSelect: React.FC<CategoryMultiSelectProps> = ({
                 <ManyToManyRelation
                     allowedClasses={allowedClasses}
                     dataObjectsAllowed={true}
+                    allowedDataObjectTypes={['object']}
                     assetsAllowed={false}
                     documentsAllowed={false}
                     allowToClearRelation={false}

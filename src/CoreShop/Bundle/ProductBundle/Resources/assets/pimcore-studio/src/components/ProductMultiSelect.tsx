@@ -90,6 +90,7 @@ export const ProductMultiSelect: React.FC<ProductMultiSelectProps> = ({
                 <ManyToManyRelation
                     allowedClasses={allowedClasses}
                     dataObjectsAllowed={true}
+                    allowedDataObjectTypes={['object']}
                     assetsAllowed={false}
                     documentsAllowed={false}
                     allowToClearRelation={false}

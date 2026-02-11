@@ -36,7 +36,7 @@ const CurrencyMultiSelectInner: React.FC<{
   return (
     <Select
       mode="multiple"
-      value={value}
+      value={value?.map(v => typeof v === 'string' ? Number(v) : v)}
       onChange={onChange}
       options={options}
       loading={loading}

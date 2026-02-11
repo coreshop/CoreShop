@@ -96,6 +96,7 @@ export const CustomerGroupMultiSelect: React.FC<CustomerGroupMultiSelectProps> =
                 <ManyToManyRelation
                     allowedClasses={allowedClasses}
                     dataObjectsAllowed={true}
+                    allowedDataObjectTypes={['object']}
                     assetsAllowed={false}
                     documentsAllowed={false}
                     allowToClearRelation={false}

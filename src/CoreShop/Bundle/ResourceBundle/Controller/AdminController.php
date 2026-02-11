@@ -55,7 +55,9 @@ class AdminController extends UserAwareController
     }
 
     /**
-     * @return non-empty-array<array-key, SubscribedService|string>
+     * @psalm-suppress ImplementedReturnTypeMismatch
+     *
+     * @return array<array-key, SubscribedService|string>
      */
     public static function getSubscribedServices(): array
     {

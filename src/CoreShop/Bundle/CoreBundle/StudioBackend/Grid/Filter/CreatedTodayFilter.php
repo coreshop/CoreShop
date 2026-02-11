@@ -45,6 +45,7 @@ final class CreatedTodayFilter implements FilterInterface, StudioGridFilterInter
 
         // Check if this filter is requested
         $isRequested = false;
+        /** @psalm-suppress InternalMethod */
         foreach ($parameters->getColumnFilters() as $filter) {
             if (($filter['type'] ?? null) === self::COLUMN_TYPE) {
                 $isRequested = true;

@@ -1,5 +1,2 @@
 _pimcore:
     resource: "@PimcoreCoreBundle/config/routing.yaml"
-
-_coreshop_ai:
-    resource: "@CoreShopAIBundle/Resources/config/routing.yaml"

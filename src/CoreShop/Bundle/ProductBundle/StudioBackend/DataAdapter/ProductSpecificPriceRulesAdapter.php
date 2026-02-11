@@ -20,7 +20,7 @@ namespace CoreShop\Bundle\ProductBundle\StudioBackend\DataAdapter;
 use CoreShop\Bundle\ProductBundle\CoreExtension\ProductSpecificPriceRules;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
+use JMS\Serializer\ArrayTransformerInterface;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\DataNormalizerInterface;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\Model\FieldContextData;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\SetterDataInterface;
@@ -32,7 +32,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 final readonly class ProductSpecificPriceRulesAdapter implements SetterDataInterface, DataNormalizerInterface
 {
     public function __construct(
-        private SerializerInterface $serializer,
+        private ArrayTransformerInterface $serializer,
         private ParameterBagInterface $parameterBag,
     ) {
     }

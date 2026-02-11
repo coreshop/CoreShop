@@ -72,7 +72,9 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
 
         $collection->addBundle(new PimcoreApplicationLoggerBundle(), 10);
+        /** @psalm-suppress DeprecatedClass */
         $collection->addBundle(new PimcoreStaticRoutesBundle(), 10);
+        /** @psalm-suppress DeprecatedClass */
         $collection->addBundle(new PimcoreSimpleBackendSearchBundle(), 10);
     }
     public function getNiceName(): string

@@ -20,7 +20,7 @@ namespace CoreShop\Bundle\ProductBundle\StudioBackend\DataAdapter;
 use CoreShop\Bundle\ProductBundle\CoreExtension\ProductUnitDefinitions;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
+use JMS\Serializer\ArrayTransformerInterface;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\DataNormalizerInterface;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\Model\FieldContextData;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\SetterDataInterface;
@@ -31,7 +31,7 @@ use Pimcore\Model\UserInterface;
 final readonly class ProductUnitDefinitionsAdapter implements SetterDataInterface, DataNormalizerInterface
 {
     public function __construct(
-        private SerializerInterface $serializer,
+        private ArrayTransformerInterface $serializer,
     ) {
     }
 
@@ -105,7 +105,7 @@ final readonly class ProductUnitDefinitionsAdapter implements SetterDataInterfac
         // Transform unitDefinitions to additionalUnitDefinitions
         if (isset($data['unitDefinitions']) && is_array($data['unitDefinitions'])) {
             $additionalUnitDefinitions = [];
-            $defaultUnitId = $this->extractUnitId($data['defaultUnitDefinition']['unit'] ?? null);
+            $defaultUnitId = isset($data['defaultUnitDefinition']) ? $this->extractUnitId($data['defaultUnitDefinition']['unit'] ?? null) : null;
 
             foreach ($data['unitDefinitions'] as $unitDefinition) {
                 if (!is_array($unitDefinition)) {

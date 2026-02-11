@@ -10,16 +10,9 @@ parameters:
         - '**/ProcessManager/IndexProcess.php'
         - '**/DataHub/*.php'
         - 'vendor/***'
-        - Core/EventListener/*.php (?)
-        - Core/Context/CustomerAndStoreBasedStorageListContext.php (?)
-        - Core/Context/SessionAndStoreBasedStorageListContext.php (?)
-        - Core/Context/StoreBasedStorageListContext.php (?)
-        - Core/Provider/CoreContextProvider.php (?)
-        - Core/Storage/SessionStorageListStorage.php (?)
-        - Core/Repository/CustomerAndStoreAwareRepositoryInterface.php (?)
-        - DependencyInjection/CoreShopStorageListExtension.php (?)
-        - SplPriorityQueue.php (?)
-        - PriorityQueue.php (?)
+        # Optional admin-ui-classic-bundle listeners
+        - '**/EventListener/MenuAdminListener.php'
+        - '**/EventListener/PimcoreAdminListener.php'
 
     ignoreErrors:
         # Magic calls
@@ -50,6 +43,9 @@ parameters:
         - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Access to undefined constant PackageVersions\\Versions::VERSIONS/'
+
+        # Optional pimcore/admin-ui-classic-bundle dependency
+        - '/class Pimcore\\Bundle\\AdminBundle\\/'
 
 includes:
     - ./vendor/phpstan/phpstan-doctrine/extension.neon

@@ -69,6 +69,8 @@
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver" />
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Controller\AdminController" />
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Security\User\User" />
+                <referencedClass name="Pimcore\Bundle\StaticRoutesBundle\PimcoreStaticRoutesBundle" />
+                <referencedClass name="Pimcore\Bundle\SimpleBackendSearchBundle\PimcoreSimpleBackendSearchBundle" />
             </errorLevel>
         </DeprecatedClass>
         <DeprecatedInterface>
@@ -97,6 +99,7 @@
                 <referencedMethod name="Pimcore\Bundle\AdminBundle\Controller\AdminController::decodeJson" />
                 <referencedMethod name="Pimcore\Bundle\AdminBundle\Controller\AdminController::getAdminUser" />
                 <referencedMethod name="Doctrine\DBAL\Query\QueryBuilder::getQueryPart" />
+                <referencedMethod name="Symfony\Component\HttpFoundation\Request::get" />
             </errorLevel>
         </DeprecatedMethod>
         <UndefinedInterfaceMethod>
@@ -119,6 +122,7 @@
                 <referencedMethod name="Pimcore\File::getValidFilename" />
                 <referencedMethod name="Doctrine\DBAL\Schema\Column::__construct" />
                 <referencedMethod name="Pimcore\File::getLocalTempFilePath" />
+                <referencedMethod name="Pimcore\Bundle\StudioBackendBundle\MappedParameter\Filter\ColumnFiltersParameterInterface::getColumnFilters" />
             </errorLevel>
         </InternalMethod>
 

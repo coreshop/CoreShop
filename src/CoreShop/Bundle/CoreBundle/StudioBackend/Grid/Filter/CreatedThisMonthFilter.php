@@ -44,6 +44,7 @@ final class CreatedThisMonthFilter implements FilterInterface, StudioGridFilterI
         }
 
         $isRequested = false;
+        /** @psalm-suppress InternalMethod */
         foreach ($parameters->getColumnFilters() as $filter) {
             if (($filter['type'] ?? null) === self::COLUMN_TYPE) {
                 $isRequested = true;

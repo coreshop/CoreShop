@@ -30,8 +30,8 @@ final class ResourceLoader extends Loader
     public function __construct(
         private RegistryInterface $modelRegistry,
         private RouteFactoryInterface $routeFactory,
+        private string $backendRequirement,
         ?string $env = null,
-        private string $backendRequirement
     ) {
         parent::__construct($env);
     }
