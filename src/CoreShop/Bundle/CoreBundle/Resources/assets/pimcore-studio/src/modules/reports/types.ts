@@ -120,7 +120,9 @@ export interface CategoriesReportItem {
   orderCount: number
   quantityCount: number
   sales: number
+  salesFormatted: string
   profit: number
+  profitFormatted: string
 }
 
 /**
@@ -128,9 +130,9 @@ export interface CategoriesReportItem {
  */
 export interface VouchersReportItem {
   code: string
-  usageCount: number
-  sales: number
-  salesFormatted: string
+  discount: string
+  rule: string
+  usedDate: number
 }
 
 /**
@@ -148,13 +150,26 @@ export interface CartsReportItem {
  */
 export interface AbandonedCartsReportItem {
   cartId: number
-  createdDate: string
-  modifiedDate: string
-  user: string
+  userName: string
   email: string
-  items: number
-  total: number
-  totalFormatted: string
+  selectedPayment: string
+  creationDate: number
+  modificationDate: number
+  itemsInCart: number
+}
+
+/**
+ * Manufacturer report data item
+ */
+export interface ManufacturerReportItem {
+  name: string
+  manufacturerName: string
+  orderCount: number
+  quantityCount: number
+  sales: number
+  salesFormatted: string
+  profit: number
+  profitFormatted: string
 }
 
 /**

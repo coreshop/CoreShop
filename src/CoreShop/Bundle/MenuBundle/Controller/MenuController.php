@@ -131,7 +131,7 @@ class MenuController
                 $transformed['widgetEvent'] = $item['extras']['widgetEvent'];
             }
             if (isset($item['extras']['widgetButton'])) {
-                $transformed['widgetButton'] = $item['extras']['widgetEvent'];
+                $transformed['widgetButton'] = $item['extras']['widgetButton'];
             }
         }
 

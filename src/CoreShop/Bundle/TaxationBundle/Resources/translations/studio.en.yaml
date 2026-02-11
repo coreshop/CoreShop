@@ -9,6 +9,7 @@ coreshop_permission_tax_rate: 'CoreShop: Tax Rate'
 coreshop_permission_tax_rule_group: 'CoreShop: Tax Rule'
 
 # Studio v2
+coreshop_name: 'Name'
 coreshop_active: 'Active'
 coreshop_tax_rate_select: 'Select tax rate'
 coreshop_tax_rule_group_select: 'Select tax rule group'

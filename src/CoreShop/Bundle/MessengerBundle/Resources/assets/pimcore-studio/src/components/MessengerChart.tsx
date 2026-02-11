@@ -22,9 +22,10 @@ export interface MessengerChartProps {
   data: MessengerChartData[]
   loading: boolean
   error: string | null
+  onBarClick?: (receiver: string) => void
 }
 
-export const MessengerChart: React.FC<MessengerChartProps> = ({ data, loading, error }) => {
+export const MessengerChart: React.FC<MessengerChartProps> = ({ data, loading, error, onBarClick }) => {
   const { styles, theme } = useMessengerChartStyles()
   const { t } = useTranslation()
 
@@ -97,7 +98,7 @@ export const MessengerChart: React.FC<MessengerChartProps> = ({ data, loading, e
                   title={`${item.receiver} (${item.count})`}
                   placement="top"
                 >
-                  <div className={styles.barWrapper}>
+                  <div className={styles.barWrapper} onClick={() => onBarClick?.(item.receiver)}>
                     <div className={styles.barOuter}>
                       <div
                         className={styles.bar}
@@ -170,6 +171,8 @@ const useMessengerChartStyles = createStyles(({ css, token }) => ({
   `,
   chartArea: css`
     height: 140px;
+    overflow-x: auto;
+    overflow-y: hidden;
   `,
   emptyState: css`
     height: 100%;
@@ -181,13 +184,13 @@ const useMessengerChartStyles = createStyles(({ css, token }) => ({
     display: flex;
     align-items: flex-end;
     height: 100%;
-    gap: 8px;
+    gap: 6px;
     padding: 0 4px;
+    min-width: min-content;
   `,
   barWrapper: css`
-    flex: 1;
-    min-width: 50px;
-    max-width: 120px;
+    flex: 0 0 auto;
+    width: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;

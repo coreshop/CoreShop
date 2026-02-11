@@ -17,18 +17,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject\Grid;
 
-use Pimcore\Bundle\StudioBackendBundle\DataIndex\Filter\FilterInterface;
-
 /**
  * Interface for CoreShop grid filters in Pimcore Studio v2.
  *
- * Extends Pimcore's FilterInterface and adds metadata methods for
- * listing available filters in the UI.
- *
- * Each filter has its own column type and registers directly with
- * Pimcore's filter system (pimcore.studio_backend.search_index.data_object.filter).
+ * Provides metadata methods for listing available filters in the UI.
+ * Filter classes should also implement Pimcore's FilterInterface directly
+ * for the actual filter application.
  */
-interface StudioGridFilterInterface extends FilterInterface
+interface StudioGridFilterInterface
 {
     /**
      * Get the column filter type for this filter.

@@ -28,116 +28,13 @@ import { useTranslation } from 'react-i18next'
 import { SalesReport } from './SalesReport'
 import { ProductsReport } from './ProductsReport'
 import { CustomersReport } from './CustomersReport'
-import { ReportPanel } from './ReportPanel'
-import type { ReportConfig } from '../types'
-
-// Simple reports that use table view
-const simpleReportConfigs: Record<string, { config: ReportConfig, columns: any[] }> = {
-  carriers: {
-    config: {
-      type: 'carriers',
-      name: 'coreshop_report_carriers',
-      icon: 'CarOutlined',
-      hasStoreFilter: true,
-      hasPagination: true
-    },
-    columns: [
-      { title: 'Carrier', dataIndex: 'carrier', key: 'carrier' },
-      { title: 'Orders', dataIndex: 'count', key: 'count', align: 'right' },
-      { title: 'Sales', dataIndex: 'salesFormatted', key: 'salesFormatted', align: 'right' }
-    ]
-  },
-  payment_providers: {
-    config: {
-      type: 'payment_providers',
-      name: 'coreshop_report_payment_providers',
-      icon: 'CreditCardOutlined',
-      hasStoreFilter: true,
-      hasPagination: true
-    },
-    columns: [
-      { title: 'Payment Provider', dataIndex: 'provider', key: 'provider' },
-      { title: 'Orders', dataIndex: 'count', key: 'count', align: 'right' },
-      { title: 'Sales', dataIndex: 'salesFormatted', key: 'salesFormatted', align: 'right' }
-    ]
-  },
-  categories: {
-    config: {
-      type: 'categories',
-      name: 'coreshop_report_categories',
-      icon: 'AppstoreOutlined',
-      hasStoreFilter: true,
-      hasPagination: true
-    },
-    columns: [
-      { title: 'Category', dataIndex: 'categoryName', key: 'categoryName' },
-      { title: 'Orders', dataIndex: 'orderCount', key: 'orderCount', align: 'right' },
-      { title: 'Quantity', dataIndex: 'quantityCount', key: 'quantityCount', align: 'right' },
-      { title: 'Sales', dataIndex: 'sales', key: 'sales', align: 'right', render: (v: number) => (v / 100).toFixed(2) }
-    ]
-  },
-  vouchers: {
-    config: {
-      type: 'vouchers',
-      name: 'coreshop_report_vouchers',
-      icon: 'TagOutlined',
-      hasStoreFilter: true,
-      hasPagination: true
-    },
-    columns: [
-      { title: 'Code', dataIndex: 'code', key: 'code' },
-      { title: 'Usage', dataIndex: 'usageCount', key: 'usageCount', align: 'right' },
-      { title: 'Sales', dataIndex: 'salesFormatted', key: 'salesFormatted', align: 'right' }
-    ]
-  },
-  manufacturer: {
-    config: {
-      type: 'manufacturer',
-      name: 'coreshop_report_manufacturer',
-      icon: 'BankOutlined',
-      hasStoreFilter: true,
-      hasPagination: true
-    },
-    columns: [
-      { title: 'Manufacturer', dataIndex: 'name', key: 'name' },
-      { title: 'Orders', dataIndex: 'orderCount', key: 'orderCount', align: 'right' },
-      { title: 'Quantity', dataIndex: 'quantityCount', key: 'quantityCount', align: 'right' },
-      { title: 'Sales', dataIndex: 'sales', key: 'sales', align: 'right', render: (v: number) => (v / 100).toFixed(2) }
-    ]
-  },
-  carts_abandoned: {
-    config: {
-      type: 'carts_abandoned',
-      name: 'coreshop_report_carts_abandoned',
-      icon: 'StopOutlined',
-      hasStoreFilter: true,
-      hasPagination: true
-    },
-    columns: [
-      { title: 'Cart ID', dataIndex: 'cartId', key: 'cartId' },
-      { title: 'Created', dataIndex: 'createdDate', key: 'createdDate' },
-      { title: 'Customer', dataIndex: 'email', key: 'email' },
-      { title: 'Items', dataIndex: 'items', key: 'items', align: 'right' },
-      { title: 'Total', dataIndex: 'totalFormatted', key: 'totalFormatted', align: 'right' }
-    ]
-  }
-}
-
-/**
- * Icon mapping
- */
-const iconMap: Record<string, React.ReactNode> = {
-  LineChartOutlined: <LineChartOutlined />,
-  ShoppingOutlined: <ShoppingOutlined />,
-  AppstoreOutlined: <AppstoreOutlined />,
-  TeamOutlined: <TeamOutlined />,
-  CarOutlined: <CarOutlined />,
-  CreditCardOutlined: <CreditCardOutlined />,
-  ShoppingCartOutlined: <ShoppingCartOutlined />,
-  StopOutlined: <StopOutlined />,
-  TagOutlined: <TagOutlined />,
-  BankOutlined: <BankOutlined />
-}
+import { CartsReport } from './CartsReport'
+import { CarriersReport } from './CarriersReport'
+import { PaymentProvidersReport } from './PaymentProvidersReport'
+import { CategoriesReport } from './CategoriesReport'
+import { ManufacturerReport } from './ManufacturerReport'
+import { VouchersReport } from './VouchersReport'
+import { AbandonedCartsReport } from './AbandonedCartsReport'
 
 /**
  * ReportsManager - Main reports dashboard with tabs for each report type
@@ -167,6 +64,16 @@ export const ReportsManager: React.FC = () => {
       children: <ProductsReport />
     },
     {
+      key: 'categories',
+      label: (
+        <span>
+          <AppstoreOutlined />
+          {t('coreshop_report_categories', { defaultValue: 'Categories' })}
+        </span>
+      ),
+      children: <CategoriesReport />
+    },
+    {
       key: 'customers',
       label: (
         <span>
@@ -176,17 +83,66 @@ export const ReportsManager: React.FC = () => {
       ),
       children: <CustomersReport />
     },
-    // Add simple reports
-    ...Object.entries(simpleReportConfigs).map(([key, { config, columns }]) => ({
-      key,
+    {
+      key: 'carriers',
       label: (
         <span>
-          {iconMap[config.icon]}
-          {t(config.name, { defaultValue: config.name })}
+          <CarOutlined />
+          {t('coreshop_report_carriers', { defaultValue: 'Carriers' })}
         </span>
       ),
-      children: <ReportPanel config={config} columns={columns} />
-    }))
+      children: <CarriersReport />
+    },
+    {
+      key: 'payment_providers',
+      label: (
+        <span>
+          <CreditCardOutlined />
+          {t('coreshop_report_payment_providers', { defaultValue: 'Payment Providers' })}
+        </span>
+      ),
+      children: <PaymentProvidersReport />
+    },
+    {
+      key: 'carts',
+      label: (
+        <span>
+          <ShoppingCartOutlined />
+          {t('coreshop_report_carts', { defaultValue: 'Carts' })}
+        </span>
+      ),
+      children: <CartsReport />
+    },
+    {
+      key: 'carts_abandoned',
+      label: (
+        <span>
+          <StopOutlined />
+          {t('coreshop_report_carts_abandoned', { defaultValue: 'Abandoned Carts' })}
+        </span>
+      ),
+      children: <AbandonedCartsReport />
+    },
+    {
+      key: 'vouchers',
+      label: (
+        <span>
+          <TagOutlined />
+          {t('coreshop_report_vouchers', { defaultValue: 'Vouchers' })}
+        </span>
+      ),
+      children: <VouchersReport />
+    },
+    {
+      key: 'manufacturer',
+      label: (
+        <span>
+          <BankOutlined />
+          {t('coreshop_report_manufacturer', { defaultValue: 'Manufacturer' })}
+        </span>
+      ),
+      children: <ManufacturerReport />
+    }
   ]
 
   return (

@@ -64,6 +64,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_settings')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'settings')
+            ->setAttribute('widgetId', 'coreshop-settings-widget')
             ->setExtra('order', 30)
         ;
 
@@ -425,6 +426,16 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('function', 'store')
             ->setAttribute('widgetId', 'coreshop-store-store')
             ->setExtra('order', 100)
+        ;
+
+        $menuItem
+            ->addChild('coreshop_ai_assistant')
+            ->setLabel('coreshop_ai_assistant')
+            ->setAttribute('iconCls', 'coreshop_ai_icon')
+            ->setAttribute('resource', 'coreshop.ai')
+            ->setAttribute('function', 'assistant')
+            ->setAttribute('widgetId', 'coreshop-ai-assistant')
+            ->setExtra('order', 105)
         ;
 
         $menuItem

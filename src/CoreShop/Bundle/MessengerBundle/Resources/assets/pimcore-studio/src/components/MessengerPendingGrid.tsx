@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Table,
   Select,
@@ -35,9 +35,13 @@ import { MessengerMessage } from '../types'
 
 const { Paragraph } = Typography
 
-export const MessengerPendingGrid: React.FC = () => {
+export interface MessengerPendingGridProps {
+  selectedReceiver?: string | null
+}
+
+export const MessengerPendingGrid: React.FC<MessengerPendingGridProps> = ({ selectedReceiver: externalReceiver }) => {
   const { receivers, loading: receiversLoading } = useMessengerReceivers()
-  const [selectedReceiver, setSelectedReceiver] = useState<string | null>(null)
+  const [selectedReceiver, setSelectedReceiver] = useState<string | null>(externalReceiver ?? null)
   const [infoModalOpen, setInfoModalOpen] = useState(false)
   const [selectedMessage, setSelectedMessage] = useState<MessengerMessage | null>(null)
   const { styles } = usePendingGridStyles()
@@ -49,6 +53,12 @@ export const MessengerPendingGrid: React.FC = () => {
     error,
     reload
   } = useMessengerMessages(selectedReceiver)
+
+  useEffect(() => {
+    if (externalReceiver != null) {
+      setSelectedReceiver(externalReceiver)
+    }
+  }, [externalReceiver])
 
   const handleReceiverChange = (value: string) => {
     setSelectedReceiver(value)

@@ -16,6 +16,7 @@ import { coreshopOrderServiceIds } from '@coreshop/order/src/modules/cart-price-
 import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
 import { coreshopPaymentServiceIds } from '@coreshop/payment/src/modules/payment-provider-rules/service-ids'
 import { coreshopQuantityPriceRulesServiceIds } from '@coreshop/productquantitypricerules/src/modules/quantity-price-rules/service-ids'
+import { coreshopShippingServiceIds } from '@coreshop/shipping/src/modules/shipping-rules/service-ids'
 import {
   CategoriesCondition,
   CarriersCondition,
@@ -195,6 +196,25 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
       products: ProductsCondition,
       stores: StoresCondition,
       timespan: TimespanCondition,
+      zones: ZonesCondition
+    }
+  },
+
+  // ============================================
+  // Shipping Rule Extensions (ShippingBundle)
+  // ============================================
+  {
+    serviceId: coreshopShippingServiceIds.shippingRuleConditionRegistry,
+    type: 'condition',
+    registrations: {
+      categories: CategoriesCondition,
+      countries: CountriesCondition,
+      currencies: CurrenciesCondition,
+      customerGroups: CustomerGroupsCondition,
+      customers: CustomersCondition,
+      guest: GuestCondition,
+      products: ProductsCondition,
+      stores: StoresCondition,
       zones: ZonesCondition
     }
   }

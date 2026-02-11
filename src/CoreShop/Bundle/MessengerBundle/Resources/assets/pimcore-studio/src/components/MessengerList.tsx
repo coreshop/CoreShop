@@ -24,12 +24,33 @@ export const MessengerList: React.FC = () => {
   const { data, loading, error, reload } = useMessengerChart()
   const { styles } = useMessengerListStyles()
   const { t } = useTranslation()
+  const [activeTab, setActiveTab] = React.useState('pending')
+  const [pendingReceiver, setPendingReceiver] = React.useState<string | null>(null)
 
   const handleGlobalReload = () => {
     reload()
   }
 
+  const handleBarClick = (receiver: string) => {
+    setPendingReceiver(receiver)
+    setActiveTab('pending')
+  }
+
   const tabItems = [
+    {
+      key: 'pending',
+      label: (
+        <Space size={4}>
+          <ClockCircleOutlined />
+          {t('coreshop_messenger_pending_messages', { defaultValue: 'Pending Messages' })}
+        </Space>
+      ),
+      children: (
+        <div className={styles.tabContent}>
+          <MessengerPendingGrid selectedReceiver={pendingReceiver} />
+        </div>
+      ),
+    },
     {
       key: 'failed',
       label: (
@@ -41,20 +62,6 @@ export const MessengerList: React.FC = () => {
       children: (
         <div className={styles.tabContent}>
           <MessengerFailedGrid />
-        </div>
-      ),
-    },
-    {
-      key: 'pending',
-      label: (
-        <Space size={4}>
-          <ClockCircleOutlined />
-          {t('coreshop_messenger_pending_messages', { defaultValue: 'Pending Messages' })}
-        </Space>
-      ),
-      children: (
-        <div className={styles.tabContent}>
-          <MessengerPendingGrid />
         </div>
       ),
     },
@@ -76,12 +83,13 @@ export const MessengerList: React.FC = () => {
       </div>
 
       <div className={styles.chartSection}>
-        <MessengerChart data={data} loading={loading} error={error} />
+        <MessengerChart data={data} loading={loading} error={error} onBarClick={handleBarClick} />
       </div>
 
       <div className={styles.tabsSection}>
         <Tabs
-          defaultActiveKey="failed"
+          activeKey={activeTab}
+          onChange={setActiveTab}
           type="card"
           items={tabItems}
           className={styles.tabs}

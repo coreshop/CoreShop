@@ -43,5 +43,6 @@ final class CoreShopVariantExtension extends AbstractModelExtension
         $container->setParameter('coreshop.variant.redirect_to_main_variant', $configs['redirect_to_main_variant']);
 
         $loader->load('services.yml');
+        $loader->load('services/studio.yml');
     }
 }

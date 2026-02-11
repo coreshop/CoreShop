@@ -19,13 +19,11 @@ namespace CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter;
 
 use Carbon\Carbon;
 use CoreShop\Component\Pimcore\DataObject\Grid\StudioGridFilterInterface;
+use Pimcore\Bundle\StudioBackendBundle\DataIndex\Filter\FilterInterface;
 use Pimcore\Bundle\StudioBackendBundle\DataIndex\Query\QueryInterface;
 use Pimcore\Bundle\StudioBackendBundle\MappedParameter\Filter\ColumnFiltersParameterInterface;
 
-/**
- * Studio v2 grid filter that shows only items created this year.
- */
-final class CreatedThisYearFilter implements StudioGridFilterInterface
+final class CreatedThisYearFilter implements FilterInterface, StudioGridFilterInterface
 {
     public const COLUMN_TYPE = 'coreshop_created_this_year';
 

@@ -93,6 +93,7 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
         <ConditionComponent
           data={condition.configuration}
           onChange={handleDataChange}
+          registryId={registryId}
         />
       ) : (
         <div style={{ color: '#999', fontStyle: 'italic' }}>

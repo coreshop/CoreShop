@@ -10,15 +10,20 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { Card, Form, Row, Col, Select, Typography, Space, Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { orderCreationApi } from '@coreshop/order/src/modules/order-creation/api'
 import type {
   OrderCreationStepConfig,
   OrderCreationState,
   OrderCreationStepProps,
   AddressInfo
 } from '@coreshop/order/src/modules/order-creation/types'
+import { AddressCreationModal } from './AddressCreationModal'
 
 /**
  * Format address for display in select option
@@ -47,6 +52,8 @@ const formatAddress = (addr: AddressInfo): string => {
 
 const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatch, triggerPreview }) => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
+  const [createModalOpen, setCreateModalOpen] = useState(false)
 
   // Get addresses from customer details
   const addresses = state.customerDetails?.addresses || []
@@ -71,10 +78,40 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
     }
   }
 
+  const handleAddressCreated = useCallback(async (addressId: number) => {
+    setCreateModalOpen(false)
+
+    // Reload customer details to get the new address in the list
+    if (state.customerId) {
+      try {
+        const details = await orderCreationApi.getCustomerDetails(state.customerId)
+        dispatch({ type: 'SET_CUSTOMER', payload: { id: state.customerId, details } })
+      } catch (err) {
+        void messageApi.error(getErrorMessage(err, 'Failed to reload customer'))
+      }
+    }
+
+    void messageApi.success(
+      t('coreshop_address_created_success', { defaultValue: 'Address created successfully' })
+    )
+  }, [state.customerId, dispatch, messageApi, t])
+
   return (
     <Card
       title={t('coreshop_order_creation_address', { defaultValue: 'Addresses' })}
       size="small"
+      extra={
+        state.customerId && (
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            size="small"
+            onClick={() => setCreateModalOpen(true)}
+          >
+            {t('coreshop_address_create', { defaultValue: 'Create Address' })}
+          </Button>
+        )
+      }
     >
       <Row gutter={24}>
         <Col span={12}>
@@ -159,6 +196,15 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
             defaultValue: 'No addresses available for this customer.'
           })}
         </Typography.Text>
+      )}
+
+      {state.customerId && (
+        <AddressCreationModal
+          open={createModalOpen}
+          customerId={state.customerId}
+          onClose={() => setCreateModalOpen(false)}
+          onCreated={(addressId) => void handleAddressCreated(addressId)}
+        />
       )}
     </Card>
   )

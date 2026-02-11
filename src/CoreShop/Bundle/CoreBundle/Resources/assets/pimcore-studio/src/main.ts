@@ -27,6 +27,7 @@ import { CountryFormExtensionModule } from './modules/extension/country/country-
 import { OrderCreationExtensionModule } from './modules/extension/order-creation'
 import { NotificationRulesExtensionModule } from './modules/extension/notification-rules'
 import { ReportsModule } from './modules/reports'
+import { SettingsModule } from './modules/settings'
 import { AssignToNewCompanyPanel, AssignToExistingCompanyPanel } from './modules/customer-company-assignment'
 
 const plugin: IAbstractPlugin = {
@@ -73,6 +74,7 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(CarrierExtensionModule)
         moduleSystem.registerModule(StoreExtensionModule)
         moduleSystem.registerModule(ReportsModule)
+        moduleSystem.registerModule(SettingsModule)
     }
 }
 

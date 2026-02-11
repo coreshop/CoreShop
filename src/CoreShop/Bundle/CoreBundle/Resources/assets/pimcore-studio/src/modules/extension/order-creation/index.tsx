@@ -13,7 +13,7 @@
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import type { OrderCreationStepRegistry } from '@coreshop/order/src/modules/order-creation/registry'
 import { orderCreationServiceIds } from '@coreshop/order/src/modules/order-creation/service-ids'
-import { AddressStepConfig, ShippingStepConfig } from './steps'
+import { AddressStepConfig, ShippingStepConfig, PaymentStepConfig } from './steps'
 
 /**
  * Wait for OrderCreationStepRegistry to be available
@@ -58,5 +58,6 @@ export const OrderCreationExtensionModule: AbstractModule = {
     // Register CoreBundle steps (extensions)
     registry.register('address', AddressStepConfig)
     registry.register('shipping', ShippingStepConfig)
+    registry.register('payment', PaymentStepConfig)
   }
 }

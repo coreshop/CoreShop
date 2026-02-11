@@ -10,13 +10,31 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { IAbstractPlugin } from '@pimcore/studio-ui-bundle'
+import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
+import { serviceIds } from '@pimcore/studio-ui-bundle/app'
+import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { PimcoreBundleIconModule } from './modules/icon-library'
+import {
+    DynamicTypeObjectDataCoreShopSerializedData,
+    DynamicTypeObjectDataCoreShopDynamicDropdown,
+    DynamicTypeObjectDataCoreShopDynamicDropdownMultiple,
+    DynamicTypeObjectDataCoreShopItemSelector,
+    DynamicTypeObjectDataCoreShopSuperBoxSelect
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-pimcore',
 
     onInit() {
+        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+            serviceIds['DynamicTypes/ObjectDataRegistry']
+        )
+
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopSerializedData())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopDynamicDropdown())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopDynamicDropdownMultiple())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopItemSelector())
+        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopSuperBoxSelect())
     },
 
     onStartup({ moduleSystem }) {

@@ -12,3 +12,4 @@
 
 export { AddressStepConfig } from './AddressStep'
 export { ShippingStepConfig } from './ShippingStep'
+export { PaymentStepConfig } from './PaymentStep'
