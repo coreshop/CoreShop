@@ -9,7 +9,7 @@ on:
       - '*.php'
       - 'src/**'
       - '.github/workflows/behat_ui.yml'
-  pull_request_target:
+  pull_request:
     branches: [ '5.0', 'next' ]
     paths:
       - 'composer.json'
@@ -134,6 +134,19 @@ jobs:
 
       - name: Install Pimcore
         run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
+
+      - name: Install Pimcore Bundles
+        run: |
+          bin/console pimcore:bundle:install --no-post-change-commands PimcoreApplicationLoggerBundle
+          bin/console pimcore:bundle:install --no-post-change-commands PimcoreCustomReportsBundle
+          bin/console pimcore:bundle:install --no-post-change-commands PimcoreGenericDataIndexBundle
+          bin/console pimcore:bundle:install --no-post-change-commands PimcoreGenericExecutionEngineBundle
+          bin/console pimcore:bundle:install --no-post-change-commands PimcoreSimpleBackendSearchBundle
+          bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioBackendBundle
+          bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioUiBundle
+          bin/console pimcore:bundle:install --no-post-change-commands PimcoreUuidBundle
+          bin/console pimcore:deployment:classes-rebuild --force --create-classes
+          bin/console doctrine:migrations:migrate
 
       - name: Install CoreShop
         run: |
