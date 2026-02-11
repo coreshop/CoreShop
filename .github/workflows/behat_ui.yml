@@ -81,12 +81,6 @@ jobs:
           action.auto_create_index: "false"
         ports:
           - 9200:9200
-        options: >-
-          --health-cmd="curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\\|yellow\"'"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-          --health-start-period=30s
 
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
