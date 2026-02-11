@@ -41,7 +41,8 @@
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-doctrine": "^1.3.40",
         "phpstan/phpstan-webmozart-assert": "^1.2.4",
-        "pimcore/opensearch-client": "^2.0"
+        "pimcore/opensearch-client": "^2.0",
+        "pimcore/studio-ui-bundle": "^0.6.30"
     },
     "autoload": {
         "psr-4": {
