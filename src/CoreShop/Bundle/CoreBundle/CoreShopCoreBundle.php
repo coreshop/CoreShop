@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle;
 
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
-use CoreShop\Bundle\AIBundle\CoreShopAIBundle;
 use CoreShop\Bundle\ClassDefinitionPatchBundle\CoreShopClassDefinitionPatchBundle;
 use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
@@ -91,7 +90,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopStoreBundle(), 2500);
         $collection->addBundle(new CoreShopIndexBundle(), 2400);
         $collection->addBundle(new CoreShopShippingBundle(), 2300);
-        $collection->addBundle(new CoreShopAIBundle(), 2200);
         $collection->addBundle(new CoreShopSequenceBundle(), 2100);
         $collection->addBundle(new CoreShopNotificationBundle(), 2000);
         $collection->addBundle(new CoreShopTrackingBundle(), 2000);

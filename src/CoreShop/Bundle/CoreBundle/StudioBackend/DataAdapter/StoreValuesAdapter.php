@@ -21,7 +21,7 @@ use CoreShop\Bundle\CoreBundle\CoreExtension\StoreValues;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
+use JMS\Serializer\ArrayTransformerInterface;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\DataNormalizerInterface;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\Model\FieldContextData;
 use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\SetterDataInterface;
@@ -33,7 +33,7 @@ use Pimcore\Model\UserInterface;
 final readonly class StoreValuesAdapter implements SetterDataInterface, DataNormalizerInterface
 {
     public function __construct(
-        private SerializerInterface $serializer,
+        private ArrayTransformerInterface $serializer,
         private StoreRepositoryInterface $storeRepository,
         private int $decimalFactor,
     ) {
