@@ -1,3 +1,6 @@
+## 4.1.9
+* Fix Injection in CustomerTransformerController by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2945
+
 ## 4.1.8
 * [Messenger] dispatch `FailedMessageDetailsEvent` to allow customization of failed message details generation by @jdreesen in https://github.com/coreshop/CoreShop/pull/2911
 * [Messenger] wrap failed message details info modal data in `<pre>` tags by @jdreesen in https://github.com/coreshop/CoreShop/pull/2910
