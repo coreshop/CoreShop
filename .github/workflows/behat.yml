@@ -9,7 +9,7 @@ on:
       - '*.php'
       - 'src/**'
       - '.github/workflows/behat.yml'
-  pull_request:
+  pull_request_target:
     branches: [ '5.0', 'next' ]
     paths:
       - 'composer.json'
@@ -70,6 +70,23 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      opensearch:
+        image: "opensearchproject/opensearch:2.11.1"
+        env:
+          discovery.type: single-node
+          plugins.security.disabled: "true"
+          OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+          action.auto_create_index: "false"
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd="curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\\|yellow\"'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+          --health-start-period=30s
+
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
@@ -125,6 +142,17 @@ jobs:
 
       - name: Assets Install
         run: bin/console assets:install --symlink
+
+      - name: Configure OpenSearch Client
+        run: |
+          mkdir -p config/local
+          cat > config/local/opensearch.yaml << 'EOF'
+          pimcore_open_search_client:
+            clients:
+              default:
+                hosts: ['http://127.0.0.1:9200']
+                ssl_verification: false
+          EOF
 
       - name: Install Pimcore
         run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
