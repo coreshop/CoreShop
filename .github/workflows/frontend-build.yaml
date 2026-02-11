@@ -28,7 +28,7 @@ jobs:
         
       - name: Type check
         run: npm run check-types
-        
+
       - name: Build all bundles
         run: npm run build
         
