@@ -144,7 +144,6 @@ jobs:
           bin/console pimcore:bundle:install --no-post-change-commands PimcoreSimpleBackendSearchBundle
           bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioBackendBundle
           bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioUiBundle
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreUuidBundle
           bin/console pimcore:deployment:classes-rebuild --force --create-classes
           bin/console doctrine:migrations:migrate
 
