@@ -32,7 +32,7 @@ class ConfigurationController extends ResourceController
         ConfigurationServiceInterface $configurationService,
         StoreRepositoryInterface $storeRepository,
     ): Response {
-        $values = $this->decodeJson($this->getParameterFromRequest($request, 'values'), true, [], false);
+        $values = json_decode($this->getParameterFromRequest($request, 'values'), true);
         $values = array_htmlspecialchars($values);
 
         foreach ($values as $store => $storeValues) {

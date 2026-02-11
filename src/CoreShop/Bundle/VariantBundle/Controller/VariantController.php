@@ -118,7 +118,7 @@ class VariantController extends AdminController
              * @psalm-suppress InternalMethod
              */
             $messageBus->dispatch(
-                new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()?->getId()),
+                new CreateVariantMessage($product->getId(), $attributeIds, $this->getPimcoreUser()?->getId()),
             );
         }
 

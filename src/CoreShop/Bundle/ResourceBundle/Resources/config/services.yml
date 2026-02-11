@@ -68,8 +68,6 @@ services:
 
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
-        calls:
-            - [ 'setPimcoreSerializer', [ '@pimcore.serializer' ] ]
         tags:
             - { name: container.service_subscriber }
 
