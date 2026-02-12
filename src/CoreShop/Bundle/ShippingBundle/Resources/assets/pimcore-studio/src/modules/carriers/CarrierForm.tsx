@@ -134,7 +134,7 @@ export const CarrierForm: React.FC<CarrierFormProps> = ({
   const settingsTab = (
     <div style={{ padding: 24 }}>
       <SchemaForm<CarrierDetail>
-        alias="coreshop.carrier"
+        blockPrefix="coreshop_carrier"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

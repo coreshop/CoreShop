@@ -145,7 +145,7 @@ export const TaxRuleGroupForm: React.FC<TaxRuleGroupFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<TaxRuleGroupDetail>
-        alias="coreshop.tax_rule_group"
+        blockPrefix="coreshop_taxation_tax_rule_group"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

@@ -20,8 +20,6 @@ namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ShippingBundle\Attribute\AsCarrierPriceCalculator;
-use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType;
-use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleType;
 use CoreShop\Bundle\ShippingBundle\Attribute\AsShippableValidator;
 use CoreShop\Bundle\ShippingBundle\Attribute\AsShippingRuleActionProcessor;
 use CoreShop\Bundle\ShippingBundle\Attribute\AsShippingRuleConditionChecker;
@@ -41,10 +39,9 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopShippingExtension extends AbstractModelExtension implements PrependExtensionInterface
+final class CoreShopShippingExtension extends AbstractModelExtension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -113,15 +110,5 @@ final class CoreShopShippingExtension extends AbstractModelExtension implements 
             AsShippingTaxCalculatorStrategy::class,
             $configs['autoconfigure_with_attributes'],
         );
-    }
-
-    public function prepend(ContainerBuilder $container): void
-    {
-        $container->prependExtensionConfig('core_shop_studio_form', [
-            'aliases' => [
-                'coreshop.shipping_rule' => ShippingRuleType::class,
-                'coreshop.carrier' => CarrierType::class,
-            ],
-        ]);
     }
 }

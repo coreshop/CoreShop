@@ -31,7 +31,7 @@ export const CurrencyForm: React.FC<CurrencyFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<CurrencyDetail>
-        alias="coreshop.currency"
+        blockPrefix="coreshop_currency"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

@@ -29,7 +29,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<StoreDetail>
-        alias="coreshop.store"
+        blockPrefix="coreshop_store"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

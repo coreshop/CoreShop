@@ -33,12 +33,12 @@ export interface UseFormSchemaResult<T> {
 /**
  * React hook that fetches a form schema and creates a FormBuilder.
  *
- * @param alias - Schema alias (e.g., 'coreshop.country')
+ * @param blockPrefix - Schema block prefix (e.g., 'coreshop_country')
  * @param decorators - Optional decorators to apply after schema conversion
  *
  * @example
  * ```typescript
- * const { builder, loading } = useFormSchema<CountryDetail>('coreshop.country', [
+ * const { builder, loading } = useFormSchema<CountryDetail>('coreshop_country', [
  *   { name: 'iso-hint', decorator: transformFieldDecorator('isoCode', (f) => ({
  *     ...f, tooltip: 'ISO 3166-1 alpha-2'
  *   }))}
@@ -51,7 +51,7 @@ export interface UseFormSchemaResult<T> {
  * ```
  */
 export const useFormSchema = <T = any>(
-  alias: string,
+  blockPrefix: string,
   decorators?: Array<{ name: string; decorator: FormDecorator<T> }>,
 ): UseFormSchemaResult<T> => {
   const [builder, setBuilder] = React.useState<FormBuilder<T> | null>(null)
@@ -66,7 +66,7 @@ export const useFormSchema = <T = any>(
         setLoading(true)
         setError(null)
 
-        const schema = await fetchFormSchema(alias)
+        const schema = await fetchFormSchema(blockPrefix)
 
         if (cancelled) return
 
@@ -98,7 +98,7 @@ export const useFormSchema = <T = any>(
     return () => {
       cancelled = true
     }
-  }, [alias])
+  }, [blockPrefix])
 
   return { builder, loading, error }
 }

@@ -20,7 +20,6 @@ namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\StoreBundle\Attribute\AsRequestBasedResolverStoreContext;
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
 use CoreShop\Bundle\StoreBundle\Attribute\AsStoreContext;
 use CoreShop\Bundle\StoreBundle\Collector\StoreCollector;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
@@ -30,10 +29,9 @@ use CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopStoreExtension extends AbstractModelExtension implements PrependExtensionInterface
+final class CoreShopStoreExtension extends AbstractModelExtension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -79,14 +77,5 @@ final class CoreShopStoreExtension extends AbstractModelExtension implements Pre
             AsRequestBasedResolverStoreContext::class,
             $configs['autoconfigure_with_attributes'],
         );
-    }
-
-    public function prepend(ContainerBuilder $container): void
-    {
-        $container->prependExtensionConfig('core_shop_studio_form', [
-            'aliases' => [
-                'coreshop.store' => StoreType::class,
-            ],
-        ]);
     }
 }

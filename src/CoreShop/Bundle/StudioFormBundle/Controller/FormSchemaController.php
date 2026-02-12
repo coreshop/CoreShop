@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StudioFormBundle\Controller;
 
-use CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaAliasRegistry;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry;
 use CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,17 +28,17 @@ final class FormSchemaController extends AbstractController
 {
     public function __construct(
         private readonly FormSchemaGenerator $generator,
-        private readonly FormSchemaAliasRegistry $aliasRegistry,
+        private readonly BlockPrefixFormTypeRegistry $blockPrefixRegistry,
     ) {
     }
 
-    public function schemaAction(Request $request, string $alias): JsonResponse
+    public function schemaAction(Request $request, string $blockPrefix): JsonResponse
     {
-        $formTypeClass = $this->aliasRegistry->resolve($alias);
+        $formTypeClass = $this->blockPrefixRegistry->resolve($blockPrefix);
 
-        if (!class_exists($formTypeClass)) {
+        if ($formTypeClass === null) {
             return new JsonResponse(
-                ['error' => sprintf('Form type "%s" not found.', $alias)],
+                ['error' => sprintf('No form type registered for block prefix "%s".', $blockPrefix)],
                 Response::HTTP_NOT_FOUND,
             );
         }

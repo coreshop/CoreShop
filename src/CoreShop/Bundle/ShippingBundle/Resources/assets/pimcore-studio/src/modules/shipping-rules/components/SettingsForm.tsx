@@ -21,7 +21,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<ShippingRuleDetail>
-        alias="coreshop.shipping_rule"
+        blockPrefix="coreshop_shipping_rule"
         data={rule}
         onChange={onChange}
         currentLocale={currentLocale}

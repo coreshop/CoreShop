@@ -11,10 +11,11 @@ services:
     # Type Mapper Registry
     CoreShop\Bundle\StudioFormBundle\Form\Schema\FormTypeMapperRegistry: ~
 
-    # Alias Registry
-    CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaAliasRegistry:
+    # Block Prefix Registry (auto-populated by RegisterStudioFormTypesPass)
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry:
         arguments:
-            - '%coreshop_studio_form.aliases%'
+            - '@form.registry'
+            - []
 
     # Translations Type Mapper (handles coreshop_translations compound fields)
     CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\TranslationsTypeMapper:
@@ -30,7 +31,7 @@ services:
     CoreShop\Bundle\StudioFormBundle\Controller\FormSchemaController:
         arguments:
             - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator'
-            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaAliasRegistry'
+            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry'
         tags:
             - { name: container.service_subscriber }
 

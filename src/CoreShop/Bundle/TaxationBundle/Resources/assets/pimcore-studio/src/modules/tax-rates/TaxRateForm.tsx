@@ -30,7 +30,7 @@ export const TaxRateForm: React.FC<TaxRateFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<TaxRateDetail>
-        alias="coreshop.tax_rate"
+        blockPrefix="coreshop_tax_rate"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

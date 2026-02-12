@@ -68,7 +68,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 
       {/* Other fields via SchemaForm */}
       <SchemaForm<NotificationRule>
-        alias="coreshop.notification_rule"
+        blockPrefix="coreshop_notification_rule"
         data={rule}
         onChange={handleFormChange}
         currentLocale={currentLocale}

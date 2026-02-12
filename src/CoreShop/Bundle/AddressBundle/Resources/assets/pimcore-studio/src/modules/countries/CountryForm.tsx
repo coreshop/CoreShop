@@ -37,7 +37,7 @@ export const CountryForm: React.FC<CountryFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<CountryDetail>
-        alias="coreshop.country"
+        blockPrefix="coreshop_country"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

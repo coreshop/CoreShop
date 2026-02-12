@@ -37,7 +37,7 @@ export const StateForm: React.FC<StateFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<StateDetail>
-        alias="coreshop.state"
+        blockPrefix="coreshop_state"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

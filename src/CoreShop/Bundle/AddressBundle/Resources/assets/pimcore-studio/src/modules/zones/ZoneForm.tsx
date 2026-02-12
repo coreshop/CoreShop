@@ -31,7 +31,7 @@ export const ZoneForm: React.FC<ZoneFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<ZoneDetail>
-        alias="coreshop.zone"
+        blockPrefix="coreshop_zone"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

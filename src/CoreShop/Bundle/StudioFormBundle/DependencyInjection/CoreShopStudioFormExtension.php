@@ -26,12 +26,8 @@ final class CoreShopStudioFormExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $configs = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
-
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-
-        $container->setParameter('coreshop_studio_form.aliases', $configs['aliases']);
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration

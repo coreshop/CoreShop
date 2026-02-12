@@ -38,6 +38,7 @@ services:
             - '%coreshop.form.type.cart_price_rule.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleTranslationType:
         arguments:

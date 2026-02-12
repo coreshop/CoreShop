@@ -19,20 +19,20 @@ const schemaCache = new Map<string, FormSchemaResponse>()
 const pendingRequests = new Map<string, Promise<FormSchemaResponse>>()
 
 /**
- * Fetch a form schema by alias.
+ * Fetch a form schema by block prefix.
  *
  * Uses module-level caching to prevent duplicate API calls
  * when multiple components request the same schema.
  */
-export const fetchFormSchema = async (alias: string): Promise<FormSchemaResponse> => {
+export const fetchFormSchema = async (blockPrefix: string): Promise<FormSchemaResponse> => {
   // Return from cache if available
-  const cached = schemaCache.get(alias)
+  const cached = schemaCache.get(blockPrefix)
   if (cached) {
     return cached
   }
 
   // Return existing pending request if already loading
-  const pending = pendingRequests.get(alias)
+  const pending = pendingRequests.get(blockPrefix)
   if (pending) {
     return pending
   }
@@ -41,37 +41,37 @@ export const fetchFormSchema = async (alias: string): Promise<FormSchemaResponse
   const request = (async () => {
     try {
       const response = await fetch(
-        `/pimcore-studio/api/coreshop-studio-form/schema/${encodeURIComponent(alias)}`,
+        `/pimcore-studio/api/coreshop-studio-form/schema/${encodeURIComponent(blockPrefix)}`,
       )
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch form schema for "${alias}": ${response.statusText}`)
+        throw new Error(`Failed to fetch form schema for "${blockPrefix}": ${response.statusText}`)
       }
 
       const schema: FormSchemaResponse = await response.json()
-      schemaCache.set(alias, schema)
+      schemaCache.set(blockPrefix, schema)
 
       return schema
     } catch (err) {
-      console.error(`[StudioForm] Failed to load schema for "${alias}":`, err)
+      console.error(`[StudioForm] Failed to load schema for "${blockPrefix}":`, err)
       throw err
     } finally {
-      pendingRequests.delete(alias)
+      pendingRequests.delete(blockPrefix)
     }
   })()
 
-  pendingRequests.set(alias, request)
+  pendingRequests.set(blockPrefix, request)
 
   return request
 }
 
 /**
- * Clear cached schema for a specific alias, or all schemas.
+ * Clear cached schema for a specific block prefix, or all schemas.
  */
-export const clearSchemaCache = (alias?: string): void => {
-  if (alias) {
-    schemaCache.delete(alias)
-    pendingRequests.delete(alias)
+export const clearSchemaCache = (blockPrefix?: string): void => {
+  if (blockPrefix) {
+    schemaCache.delete(blockPrefix)
+    pendingRequests.delete(blockPrefix)
   } else {
     schemaCache.clear()
     pendingRequests.clear()

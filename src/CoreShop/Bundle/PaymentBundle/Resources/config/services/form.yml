@@ -71,6 +71,7 @@ services:
             - '%coreshop.form.type.payment_provider_rule.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleTranslationType:
         arguments:

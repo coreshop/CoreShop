@@ -29,7 +29,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<ProductPriceRule>
-        alias="coreshop.product_price_rule"
+        blockPrefix="coreshop_product_price_rule"
         data={rule}
         onChange={onChange}
         currentLocale={currentLocale}

@@ -20,8 +20,8 @@ import type { FormDecorator } from '../form-builder/types'
 import { useFormSchema } from './useFormSchema'
 
 export interface SchemaFormProps<T = any> {
-  /** Schema alias (e.g., 'coreshop.country') */
-  alias: string
+  /** Schema block prefix (e.g., 'coreshop_country') */
+  blockPrefix: string
   /** Form data */
   data?: T
   /** Change handler */
@@ -44,7 +44,7 @@ export interface SchemaFormProps<T = any> {
  * @example
  * ```typescript
  * <SchemaForm
- *   alias="coreshop.country"
+ *   blockPrefix="coreshop_country"
  *   data={countryData}
  *   onChange={handleChange}
  *   currentLocale={locale}
@@ -52,14 +52,14 @@ export interface SchemaFormProps<T = any> {
  * ```
  */
 export const SchemaForm = <T extends Record<string, any> = any>({
-  alias,
+  blockPrefix,
   data,
   onChange,
   decorators,
   currentLocale,
   form,
 }: SchemaFormProps<T>): React.JSX.Element => {
-  const { builder, loading, error } = useFormSchema<T>(alias, decorators)
+  const { builder, loading, error } = useFormSchema<T>(blockPrefix, decorators)
 
   if (loading) {
     return (

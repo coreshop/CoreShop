@@ -25,17 +25,6 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_studio_form');
-        $rootNode = $treeBuilder->getRootNode();
-
-        $rootNode
-            ->children()
-                ->arrayNode('aliases')
-                    ->useAttributeAsKey('name')
-                    ->scalarPrototype()->end()
-                    ->defaultValue([])
-                ->end()
-            ->end()
-        ;
 
         return $treeBuilder;
     }

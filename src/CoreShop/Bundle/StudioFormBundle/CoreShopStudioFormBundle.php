@@ -19,6 +19,7 @@ namespace CoreShop\Bundle\StudioFormBundle;
 
 use CoreShop\Bundle\StudioFormBundle\DependencyInjection\Compiler\RegisterFormTypeMapperPass;
 use CoreShop\Bundle\StudioFormBundle\DependencyInjection\Compiler\RegisterFormSchemaEnricherPass;
+use CoreShop\Bundle\StudioFormBundle\DependencyInjection\Compiler\RegisterStudioFormTypesPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -30,5 +31,6 @@ final class CoreShopStudioFormBundle extends Bundle
 
         $container->addCompilerPass(new RegisterFormTypeMapperPass());
         $container->addCompilerPass(new RegisterFormSchemaEnricherPass());
+        $container->addCompilerPass(new RegisterStudioFormTypesPass());
     }
 }
