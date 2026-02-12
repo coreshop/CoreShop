@@ -167,6 +167,7 @@ async function buildPlugin(plugin) {
     const buildEnv = {
       ...process.env,
       CORESHOP_BUNDLE_NAME: bundleName,
+      CORESHOP_BUNDLE_DIR: plugin.name.replace(/Bundle$/, ''),
       CORESHOP_BUILD_ID: require('uuid').v4()
     };
     
@@ -249,9 +250,10 @@ async function main() {
     // Build all plugins in parallel using concurrently for better output management
     const commands = plugins.map(plugin => {
       const bundleName = plugin.name.replace(/Bundle$/, '').toLowerCase();
+      const bundleDir = plugin.name.replace(/Bundle$/, '');
       const buildId = require('uuid').v4();
-      
-      return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUILD_ID=${buildId} rsbuild build --config rsbuild.studio.config.ts`;
+
+      return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_BUILD_ID=${buildId} rsbuild build --config rsbuild.studio.config.ts`;
     });
     
     const names = plugins.map(plugin => plugin.name.replace('Bundle', '')).join(',');
@@ -309,9 +311,10 @@ async function main() {
       // Build concurrently command using template config with fixed ports
       const commands = validPlugins.map(plugin => {
         const bundleName = plugin.name.replace(/Bundle$/, '').toLowerCase();
+        const bundleDir = plugin.name.replace(/Bundle$/, '');
         const port = bundlePortMap[bundleName] || 3000;
-        
-        return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_DEV_PORT=${port} NODE_ENV=dev-server rsbuild dev --config rsbuild.studio.config.ts`;
+
+        return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_DEV_PORT=${port} NODE_ENV=dev-server rsbuild dev --config rsbuild.studio.config.ts`;
       });
       
       const names = validPlugins.map(plugin => plugin.name.replace('Bundle', '')).join(',');
@@ -357,6 +360,7 @@ async function main() {
         const devEnv = {
           ...process.env,
           CORESHOP_BUNDLE_NAME: bundleName,
+          CORESHOP_BUNDLE_DIR: plugin.name.replace(/Bundle$/, ''),
           CORESHOP_DEV_PORT: port.toString(),
           NODE_ENV: 'dev-server'
         };

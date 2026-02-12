@@ -16,6 +16,7 @@ import { v4 } from 'uuid'
 
 // Get bundle configuration from environment variables
 const BUNDLE_NAME = process.env.CORESHOP_BUNDLE_NAME
+const BUNDLE_DIR = process.env.CORESHOP_BUNDLE_DIR
 const BUILD_ID = process.env.CORESHOP_BUILD_ID
 const DEV_PORT = process.env.CORESHOP_DEV_PORT
 
@@ -23,36 +24,39 @@ if (!BUNDLE_NAME) {
   throw new Error('CORESHOP_BUNDLE_NAME environment variable is required')
 }
 
+// Resolve the actual bundle directory name (preserving original casing)
+// CORESHOP_BUNDLE_DIR has the correct casing (e.g. "ProductQuantityPriceRules")
+// Fallback: capitalize first letter only (works for single-word names)
+const resolvedBundleDir = BUNDLE_DIR ?? (BUNDLE_NAME.charAt(0).toUpperCase() + BUNDLE_NAME.slice(1))
+
 /**
  * Load package.json dependencies for a bundle
  */
-function loadBundleDependencies(bundleName: string): Record<string, any> {
-  const capitalizedBundle = bundleName.charAt(0).toUpperCase() + bundleName.slice(1)
-  const packagePath = path.resolve(__dirname, 'src/CoreShop/Bundle', `${capitalizedBundle}Bundle/Resources/assets/pimcore-studio/package.json`)
-  
+function loadBundleDependencies(bundleDir: string): Record<string, any> {
+  const packagePath = path.resolve(__dirname, 'src/CoreShop/Bundle', `${bundleDir}Bundle/Resources/assets/pimcore-studio/package.json`)
+
   try {
     const packageContent = fs.readFileSync(packagePath, 'utf8')
     const pkg = JSON.parse(packageContent)
     return pkg.dependencies || {}
   } catch (error) {
-    console.warn(`Warning: Could not load dependencies for ${bundleName}: ${error}`)
+    console.warn(`Warning: Could not load dependencies for ${bundleDir}: ${error}`)
     return {}
   }
 }
 
 // Generate configuration for the specified bundle
-const capitalizedBundle = BUNDLE_NAME.charAt(0).toUpperCase() + BUNDLE_NAME.slice(1)
-const bundleDir = path.resolve(__dirname, 'src/CoreShop/Bundle', `${capitalizedBundle}Bundle/Resources/assets/pimcore-studio`)
+const bundleDir = path.resolve(__dirname, 'src/CoreShop/Bundle', `${resolvedBundleDir}Bundle/Resources/assets/pimcore-studio`)
 const buildId = BUILD_ID || v4()
-const buildPath = path.resolve(__dirname, 'src/CoreShop/Bundle', `${capitalizedBundle}Bundle/Resources/public/studio`, buildId)
+const buildPath = path.resolve(__dirname, 'src/CoreShop/Bundle', `${resolvedBundleDir}Bundle/Resources/public/studio`, buildId)
 const bundlePrefix = `coreshop${BUNDLE_NAME.toLowerCase()}`
 const entryFile = './src/main.ts'
 
 // Load bundle-specific dependencies for module federation
-const dependencies = loadBundleDependencies(BUNDLE_NAME)
+const dependencies = loadBundleDependencies(resolvedBundleDir)
 
 // Clean old build directories (following rsbuild-config-factory.ts.bak pattern)
-const studioPath = path.resolve(__dirname, 'src/CoreShop/Bundle', `${capitalizedBundle}Bundle/Resources/public/studio`)
+const studioPath = path.resolve(__dirname, 'src/CoreShop/Bundle', `${resolvedBundleDir}Bundle/Resources/public/studio`)
 if (fs.existsSync(studioPath)) {
   fs.readdirSync(studioPath).forEach((file) => {
     const filePath = path.resolve(studioPath, file)
@@ -106,8 +110,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      [`@CoreShop${capitalizedBundle}`]: './src',
-      [`@CoreShop${capitalizedBundle}/assets`]: './src/assets',
+      [`@CoreShop${resolvedBundleDir}`]: './src',
+      [`@CoreShop${resolvedBundleDir}/assets`]: './src/assets',
       // Shared CoreShop bundle aliases for cross-bundle imports
       // Sub-path aliases (must come before main aliases for proper resolution)
       '@coreshop/pimcore/src': path.resolve(__dirname, 'src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio/src'),
