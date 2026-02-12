@@ -34,8 +34,3 @@ services:
             - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry'
         tags:
             - { name: container.service_subscriber }
-
-    # Webpack Entry Point Provider
-    CoreShop\Bundle\StudioFormBundle\Studio\WebpackEntryPointProvider:
-        tags:
-            - { name: pimcore_studio_ui.webpack_entry_point_provider }

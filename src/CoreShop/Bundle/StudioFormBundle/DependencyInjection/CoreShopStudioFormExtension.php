@@ -28,6 +28,12 @@ final class CoreShopStudioFormExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration

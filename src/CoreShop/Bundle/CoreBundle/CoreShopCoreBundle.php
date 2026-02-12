@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\CoreBundle;
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
 use CoreShop\Bundle\ClassDefinitionPatchBundle\CoreShopClassDefinitionPatchBundle;
 use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
+use CoreShop\Bundle\StudioFormBundle\CoreShopStudioFormBundle;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
@@ -97,6 +98,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
+        $collection->addBundle(new CoreShopStudioFormBundle(), 3900);
         $collection->addBundle(new PimcoreCustomReportsBundle(), 20000);
         /**
          * @psalm-suppress DeprecatedClass
