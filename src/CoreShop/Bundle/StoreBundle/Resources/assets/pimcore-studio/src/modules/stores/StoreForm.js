@@ -11,7 +11,7 @@
  */
 import React from 'react';
 import { container } from '@pimcore/studio-ui-bundle';
-import { DynamicForm } from '@coreshop/resource/src/entities/form-builder';
+import { DynamicForm } from '@coreshop/studio-form/src/form-builder';
 export const StoreForm = ({ data, onChange }) => {
     const builder = container.get('CoreShop/Store/Store/FormBuilder');
     const config = React.useMemo(() => builder.build({ data }), [builder, data]);

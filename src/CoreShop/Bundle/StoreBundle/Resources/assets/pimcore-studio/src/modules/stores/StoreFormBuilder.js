@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 import { Input, Select } from 'antd';
-import { FormBuilder } from '@coreshop/resource/src/entities/form-builder';
+import { FormBuilder } from '@coreshop/studio-form/src/form-builder';
 import { listSites } from './api';
 import { CurrencySelectField } from "@coreshop/currency/src";
 // Module-level cache for sites

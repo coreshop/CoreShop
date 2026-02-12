@@ -1,0 +1,35 @@
+services:
+    _defaults:
+        public: true
+
+    # Schema Generator
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator:
+        arguments:
+            - '@form.factory'
+            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormTypeMapperRegistry'
+
+    # Type Mapper Registry
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\FormTypeMapperRegistry: ~
+
+    # Alias Registry
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaAliasRegistry:
+        arguments:
+            - '%coreshop_studio_form.aliases%'
+
+    # Builtin Type Mapper
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\BuiltinTypeMapper:
+        tags:
+            - { name: coreshop_studio_form.type_mapper, priority: -100 }
+
+    # Controller
+    CoreShop\Bundle\StudioFormBundle\Controller\FormSchemaController:
+        arguments:
+            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator'
+            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaAliasRegistry'
+        tags:
+            - { name: container.service_subscriber }
+
+    # Webpack Entry Point Provider
+    CoreShop\Bundle\StudioFormBundle\Studio\WebpackEntryPointProvider:
+        tags:
+            - { name: pimcore_studio_ui.webpack_entry_point_provider }

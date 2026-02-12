@@ -13,7 +13,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import { Input, Switch, Select } from 'antd'
 import type { CountryDetail } from './api'
 import { ZoneSelect } from '../zones/ZoneSelect'

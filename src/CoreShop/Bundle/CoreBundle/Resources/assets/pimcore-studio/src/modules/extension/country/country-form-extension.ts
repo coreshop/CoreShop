@@ -15,8 +15,8 @@
  */
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
-import type { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
-import { addFieldDecorator } from '@coreshop/resource/src/entities/form-builder'
+import type { FormBuilder } from '@coreshop/studio-form/src/form-builder'
+import { addFieldDecorator } from '@coreshop/studio-form/src/form-builder'
 import type { CountryDetail } from '@coreshop/address/src/modules/countries/api'
 import { CurrencySelectField } from '@coreshop/currency/src/components/CurrencySelectField'
 

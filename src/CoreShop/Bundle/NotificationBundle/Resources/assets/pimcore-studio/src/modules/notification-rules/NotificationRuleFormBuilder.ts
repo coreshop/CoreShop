@@ -14,7 +14,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import { Input, Switch } from 'antd'
 import type { NotificationRule } from './types'
 

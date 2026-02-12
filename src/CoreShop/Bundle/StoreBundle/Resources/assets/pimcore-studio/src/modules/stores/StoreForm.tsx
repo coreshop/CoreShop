@@ -12,7 +12,7 @@
 
 import React from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import type { StoreDetail } from './api'
 
 export const StoreForm: React.FC<{

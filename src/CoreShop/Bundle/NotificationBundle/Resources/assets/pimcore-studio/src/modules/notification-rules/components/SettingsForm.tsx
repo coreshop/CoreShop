@@ -13,7 +13,7 @@
 import React from 'react'
 import { Form, Select } from 'antd'
 import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import { useTranslation } from 'react-i18next'
 import type { NotificationRule, NotificationRuleType } from '../types'
 

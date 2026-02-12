@@ -1,0 +1,87 @@
+/**
+ * CoreShop Schema Adapter - Default Widget Registrations
+ *
+ * Registers Ant Design components for standard Symfony form types.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+import { Input, InputNumber, Switch, Select } from 'antd'
+import type { WidgetRegistry } from './WidgetRegistry'
+
+/**
+ * Register default Ant Design widget resolvers.
+ */
+export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
+  // Text input
+  registry.register('input', () => ({
+    component: Input,
+  }))
+
+  // Textarea
+  registry.register('textarea', () => ({
+    component: Input.TextArea,
+    props: { rows: 4 },
+  }))
+
+  // Number input
+  registry.register('inputNumber', () => ({
+    component: InputNumber,
+    props: { style: { width: '100%' } },
+  }))
+
+  // Switch (boolean)
+  registry.register('switch', () => ({
+    component: Switch,
+    valuePropName: 'checked',
+  }))
+
+  // Select (choice type)
+  registry.register('select', (field) => {
+    const choices = field.uiType.choices ?? []
+    const options = choices.map(c => ({
+      value: c.value,
+      label: c.label,
+    }))
+
+    return {
+      component: Select,
+      props: {
+        options,
+        allowClear: true,
+        showSearch: true,
+        filterOption: (input: string, option: any) =>
+          (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
+        mode: field.uiType.multiple ? 'multiple' : undefined,
+      },
+    }
+  })
+
+  // Entity select (resolved by bundle-specific registrations)
+  registry.register('entitySelect', (field) => {
+    // entitySelect is typically overridden by specific bundles
+    // Fallback: render a basic Select with a hint
+    return {
+      component: Select,
+      props: {
+        placeholder: `Select ${field.uiType.entityType ?? 'entity'}...`,
+        allowClear: true,
+        showSearch: true,
+      },
+    }
+  })
+
+  // Hidden (not rendered)
+  registry.register('hidden', () => ({
+    component: Input,
+    extra: {
+      hidden: true,
+    },
+  }))
+}

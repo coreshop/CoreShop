@@ -12,7 +12,7 @@
 
 import React from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import { Tabs, Table, Button, InputNumber, Switch, Popconfirm } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import type { CarrierDetail, CarrierConfig, ShippingRuleAssignment } from './api'

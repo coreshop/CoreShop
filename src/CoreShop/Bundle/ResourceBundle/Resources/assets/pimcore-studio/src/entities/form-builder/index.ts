@@ -1,7 +1,7 @@
 /**
- * CoreShop Form Builder
+ * CoreShop Form Builder - Re-exports from StudioFormBundle
  *
- * Exports for the Form Builder system.
+ * @deprecated Import from '@coreshop/studio-form/src/form-builder' instead.
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -12,12 +12,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-// Core
-export { FormBuilder } from './FormBuilder'
-export * from './types'
-
-// Components
-export { DynamicForm } from './components/DynamicForm'
-
-// Standard Decorators
-export * from './decorators'
+export * from '@coreshop/studio-form/src/form-builder'

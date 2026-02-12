@@ -12,7 +12,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import { Input, Select, Switch } from 'antd'
 import type { CarrierDetail, CarrierConfig } from './api'
 import { AssetSelect } from '@coreshop/pimcore/src/components/AssetSelect'

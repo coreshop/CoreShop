@@ -13,7 +13,7 @@
 import React from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
-import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import type { TaxRuleGroupDetail, TaxRule } from './api'
 import { Space, Typography, Table, Button, Select, Popconfirm } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
