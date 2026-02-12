@@ -310,7 +310,7 @@ Includes built-in loading spinner and error display.
 The FormBuilder system was extracted from ResourceBundle. Update imports:
 
 ```typescript
-// Old (deprecated, still works via re-exports)
+// Old (removed)
 import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
 
 // New

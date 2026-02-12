@@ -2,7 +2,7 @@
 
 The FormBuilder provides a **decorator-based pattern** for building flexible, extensible entity forms. Inspired by Pimcore Studio's ListingBuilder pattern, it enables bundles to define base forms and other bundles to extend them without creating tight coupling.
 
-> **Note:** The FormBuilder system lives in the **StudioFormBundle** (`@coreshop/studio-form`). It was extracted from ResourceBundle to be reusable for any Pimcore Studio project. The old import path `@coreshop/resource/src/entities/form-builder` still works via re-exports but is deprecated. Use `@coreshop/studio-form/src/form-builder` instead.
+> **Note:** The FormBuilder system lives in the **StudioFormBundle** (`@coreshop/studio-form`). Import from `@coreshop/studio-form/src/form-builder`.
 >
 > StudioFormBundle also provides a **Schema Adapter** that can automatically generate FormBuilderConfig from Symfony Form Types via a JSON API. See [StudioFormBundle](04_StudioFormBundle.md) for details.
 
