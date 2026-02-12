@@ -77,6 +77,17 @@ export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
     }
   })
 
+  // Collection of text entries (tags input)
+  registry.register('collection', () => ({
+    component: Select,
+    props: {
+      mode: 'tags',
+      tokenSeparators: [','],
+      open: false,
+      suffixIcon: null,
+    },
+  }))
+
   // Hidden (not rendered)
   registry.register('hidden', () => ({
     component: Input,
