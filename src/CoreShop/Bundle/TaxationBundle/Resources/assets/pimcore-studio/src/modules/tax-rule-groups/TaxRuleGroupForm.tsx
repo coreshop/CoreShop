@@ -11,9 +11,8 @@
  */
 
 import React from 'react'
-import { container } from '@pimcore/studio-ui-bundle'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
-import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { TaxRuleGroupDetail, TaxRule } from './api'
 import { Space, Typography, Table, Button, Select, Popconfirm } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
@@ -32,12 +31,9 @@ export const TaxRuleGroupForm: React.FC<TaxRuleGroupFormProps> = ({
   data,
   onChange,
   currentLocale,
-  locales
 }) => {
   const { t } = useTranslation()
   const messageApi = useMessage()
-  const builder = container.get<FormBuilder<TaxRuleGroupDetail>>('CoreShop/Taxation/TaxRuleGroup/FormBuilder')
-  const config = React.useMemo(() => builder.build({ data, locale: currentLocale, locales }), [builder, data, currentLocale, locales])
   const [taxRates, setTaxRates] = React.useState<Array<{ id: number, name: string }>>([])
 
   const BEHAVIORS = [
@@ -148,13 +144,12 @@ export const TaxRuleGroupForm: React.FC<TaxRuleGroupFormProps> = ({
 
   return (
     <div style={{ padding: 12 }}>
-      <Space align="baseline" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-        <Typography.Title level={5} style={{ margin: 0 }}>
-          {t('coreshop_tax_rule_group', { defaultValue: 'Tax Rule Group' })}
-        </Typography.Title>
-      </Space>
-
-      <DynamicForm config={config} data={data} onChange={onChange} currentLocale={currentLocale} />
+      <SchemaForm<TaxRuleGroupDetail>
+        alias="coreshop.tax_rule_group"
+        data={data}
+        onChange={onChange}
+        currentLocale={currentLocale}
+      />
 
       <div style={{ marginTop: 24 }}>
         <Space style={{ marginBottom: 16 }}>

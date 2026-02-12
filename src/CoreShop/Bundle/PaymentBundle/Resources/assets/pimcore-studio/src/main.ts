@@ -21,7 +21,6 @@ import { AmountCondition, PaymentProviderRuleCondition } from './modules/payment
 import { AdditionPercentAction, AdditionAmountAction, DiscountPercentAction, PaymentProviderRuleAction, PriceAction } from './modules/payment-provider-rules/actions'
 import { PaymentProviderManager } from './modules/payment-providers/PaymentProviderManager'
 import { PaymentProviderRuleManager } from './modules/payment-provider-rules/PaymentProviderRuleManager'
-import { PaymentProviderRuleFormBuilderModule } from './modules/payment-provider-rules/form-builder-module'
 import { GatewayRegistry, PayPalExpressCheckoutConfigurator, SofortConfigurator } from './modules/payment-providers/gateways'
 import {
     DynamicTypeObjectDataCoreShopPaymentProvider,
@@ -105,7 +104,6 @@ const plugin: IAbstractPlugin = {
 
   onStartup({ moduleSystem }) {
     moduleSystem.registerModule(PaymentBundleIconModule)
-    moduleSystem.registerModule(PaymentProviderRuleFormBuilderModule)
   }
 }
 

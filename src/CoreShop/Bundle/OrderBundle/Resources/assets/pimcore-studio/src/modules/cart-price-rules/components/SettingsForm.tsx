@@ -11,8 +11,7 @@
  */
 
 import React from 'react'
-import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { CartPriceRule } from '../types'
 
 interface SettingsFormProps {
@@ -26,14 +25,15 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   rule,
   onChange,
   currentLocale,
-  locales
 }) => {
-  const builder = container.get<FormBuilder<CartPriceRule>>('CoreShop/Order/CartPriceRule/FormBuilder')
-  const config = React.useMemo(() => builder.build({ data: rule, locale: currentLocale, locales }), [builder, rule, currentLocale, locales])
-
   return (
     <div style={{ padding: 12 }}>
-      <DynamicForm config={config} data={rule} onChange={onChange} currentLocale={currentLocale} />
+      <SchemaForm<CartPriceRule>
+        alias="coreshop.cart_price_rule"
+        data={rule}
+        onChange={onChange}
+        currentLocale={currentLocale}
+      />
     </div>
   )
 }

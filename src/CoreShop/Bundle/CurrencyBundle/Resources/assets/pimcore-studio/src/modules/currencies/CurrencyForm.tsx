@@ -1,7 +1,7 @@
 /**
- * CoreShop CurrencyBundle - Currency Form (Form Builder Version)
+ * CoreShop CurrencyBundle - Currency Form (Schema-driven)
  *
- * Form component using the new FormBuilder pattern.
+ * Form component using the StudioForm schema system.
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -13,11 +13,8 @@
  */
 
 import React from 'react'
-import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { CurrencyDetail } from './api'
-import { Space, Typography } from 'antd'
-import { useTranslation } from 'react-i18next'
 
 export interface CurrencyFormProps {
   data?: CurrencyDetail
@@ -26,56 +23,15 @@ export interface CurrencyFormProps {
   locales?: string[]
 }
 
-/**
- * Currency Form Component
- *
- * Uses FormBuilder pattern for composable, extensible form configuration.
- * Base form is defined in CurrencyBundle, extensions can be added by other bundles.
- */
 export const CurrencyForm: React.FC<CurrencyFormProps> = ({
   data,
   onChange,
   currentLocale,
-  locales
 }) => {
-  const { t } = useTranslation()
-
-  // Get the form builder from container
-  const builder = container.get<FormBuilder<CurrencyDetail>>(
-    'CoreShop/Currency/Currency/FormBuilder'
-  )
-
-  // Build final config with all decorators applied
-  const config = React.useMemo(() => {
-    return builder.build({
-      data,
-      locale: currentLocale,
-      locales
-    })
-  }, [builder, data, currentLocale, locales])
-
   return (
     <div style={{ padding: 12 }}>
-      <Space
-        align="baseline"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: 16
-        }}
-      >
-        <Typography.Title level={5} style={{ margin: 0 }}>
-          {t('coreshop_currency_configuration', { defaultValue: 'Currency Configuration' })}
-        </Typography.Title>
-        {currentLocale && (
-          <Typography.Text type="secondary">
-            {currentLocale.toUpperCase()}
-          </Typography.Text>
-        )}
-      </Space>
-
-      <DynamicForm
-        config={config}
+      <SchemaForm<CurrencyDetail>
+        alias="coreshop.currency"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

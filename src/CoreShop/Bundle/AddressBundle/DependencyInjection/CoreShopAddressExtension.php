@@ -19,6 +19,9 @@ namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
 use CoreShop\Bundle\AddressBundle\Attribute\AsCountryContext;
 use CoreShop\Bundle\AddressBundle\Attribute\AsRequestBasedResolverCountryContext;
+use CoreShop\Bundle\AddressBundle\Form\Type\CountryType;
+use CoreShop\Bundle\AddressBundle\Form\Type\StateType;
+use CoreShop\Bundle\AddressBundle\Form\Type\ZoneType;
 use CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler\CompositeCountryContextPass;
 use CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -28,9 +31,10 @@ use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface;
 use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopAddressExtension extends AbstractModelExtension
+final class CoreShopAddressExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -80,5 +84,16 @@ final class CoreShopAddressExtension extends AbstractModelExtension
             AsRequestBasedResolverCountryContext::class,
             $configs['autoconfigure_with_attributes'],
         );
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('core_shop_studio_form', [
+            'aliases' => [
+                'coreshop.country' => CountryType::class,
+                'coreshop.state' => StateType::class,
+                'coreshop.zone' => ZoneType::class,
+            ],
+        ]);
     }
 }

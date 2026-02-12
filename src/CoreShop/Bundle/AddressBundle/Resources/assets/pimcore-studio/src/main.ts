@@ -18,9 +18,6 @@ import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules
 import {ZoneManager} from './modules/zones/ZoneManager'
 import { CountryManager } from './modules/countries/CountryManager'
 import { StateManager } from './modules/states/StateManager'
-import { CountryFormBuilderModule } from './modules/countries/form-builder-module'
-import { ZoneFormBuilderModule } from './modules/zones/form-builder-module'
-import { StateFormBuilderModule } from './modules/states/form-builder-module'
 import {
     DynamicTypeObjectDataCoreShopCountry,
     DynamicTypeObjectDataCoreShopCountryMultiselect,
@@ -44,9 +41,6 @@ const plugin: IAbstractPlugin = {
 
     onStartup({moduleSystem}) {
         moduleSystem.registerModule(AddressBundleIconModule)
-        moduleSystem.registerModule(CountryFormBuilderModule)
-        moduleSystem.registerModule(ZoneFormBuilderModule)
-        moduleSystem.registerModule(StateFormBuilderModule)
 
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
 

@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\PaymentBundle\DependencyInjection;
 use CoreShop\Bundle\PaymentBundle\Attribute\AsPaymentPriceCalculator;
 use CoreShop\Bundle\PaymentBundle\Attribute\AsPaymentRuleActionProcessor;
 use CoreShop\Bundle\PaymentBundle\Attribute\AsPaymentRuleConditionChecker;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleType;
 use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentCalculatorsPass;
 use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleActionPass;
 use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleConditionPass;
@@ -31,9 +32,10 @@ use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessor
 use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopPaymentExtension extends AbstractModelExtension
+final class CoreShopPaymentExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -82,5 +84,14 @@ final class CoreShopPaymentExtension extends AbstractModelExtension
             AsPaymentPriceCalculator::class,
             $configs['autoconfigure_with_attributes'],
         );
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('core_shop_studio_form', [
+            'aliases' => [
+                'coreshop.payment_provider_rule' => PaymentProviderRuleType::class,
+            ],
+        ]);
     }
 }

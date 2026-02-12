@@ -11,8 +11,7 @@
  */
 
 import React from 'react'
-import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import { Tabs, Table, Button, InputNumber, Switch, Popconfirm } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import type { CarrierDetail, CarrierConfig, ShippingRuleAssignment } from './api'
@@ -33,8 +32,6 @@ export const CarrierForm: React.FC<CarrierFormProps> = ({
   currentLocale,
   locales
 }) => {
-  const builder = container.get<FormBuilder<CarrierDetail>>('CoreShop/Shipping/Carrier/FormBuilder')
-  const formConfig = React.useMemo(() => builder.build({ data, locale: currentLocale, locales }), [builder, data, currentLocale, locales])
   const [shippingRules, setShippingRules] = React.useState<ShippingRuleAssignment[]>(
     data?.shippingRules ?? []
   )
@@ -136,7 +133,12 @@ export const CarrierForm: React.FC<CarrierFormProps> = ({
 
   const settingsTab = (
     <div style={{ padding: 24 }}>
-      <DynamicForm config={formConfig} data={data} onChange={onChange} currentLocale={currentLocale} />
+      <SchemaForm<CarrierDetail>
+        alias="coreshop.carrier"
+        data={data}
+        onChange={onChange}
+        currentLocale={currentLocale}
+      />
     </div>
   )
 

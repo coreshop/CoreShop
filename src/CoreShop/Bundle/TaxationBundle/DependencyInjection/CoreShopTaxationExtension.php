@@ -19,11 +19,14 @@ namespace CoreShop\Bundle\TaxationBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateType;
+use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopTaxationExtension extends AbstractModelExtension
+final class CoreShopTaxationExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -48,5 +51,15 @@ final class CoreShopTaxationExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('core_shop_studio_form', [
+            'aliases' => [
+                'coreshop.tax_rate' => TaxRateType::class,
+                'coreshop.tax_rule_group' => TaxRuleGroupType::class,
+            ],
+        ]);
     }
 }

@@ -11,20 +11,29 @@
  */
 
 import React from 'react'
-import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { StoreDetail } from './api'
 
-export const StoreForm: React.FC<{
+export interface StoreFormProps {
   data?: StoreDetail
   onChange: (draft: Partial<StoreDetail>) => void
-}> = ({ data, onChange }) => {
-  const builder = container.get<FormBuilder<StoreDetail>>('CoreShop/Store/Store/FormBuilder')
-  const config = React.useMemo(() => builder.build({ data }), [builder, data])
+  currentLocale?: string
+  locales?: string[]
+}
 
+export const StoreForm: React.FC<StoreFormProps> = ({
+  data,
+  onChange,
+  currentLocale,
+}) => {
   return (
     <div style={{ padding: 12 }}>
-      <DynamicForm config={config} data={data} onChange={onChange} />
+      <SchemaForm<StoreDetail>
+        alias="coreshop.store"
+        data={data}
+        onChange={onChange}
+        currentLocale={currentLocale}
+      />
     </div>
   )
 }

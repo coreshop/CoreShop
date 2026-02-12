@@ -19,6 +19,7 @@ namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\OrderBundle\Attribute\AsCartPriceRuleActionProcessor;
 use CoreShop\Bundle\OrderBundle\Attribute\AsCartPriceRuleConditionChecker;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
 use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableCustomAttributesCalculator;
 use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableDiscountCalculator;
 use CoreShop\Bundle\OrderBundle\Attribute\AsPurchasableDiscountPriceCalculator;
@@ -46,9 +47,10 @@ use CoreShop\Component\Order\Cart\Rule\Condition\CartRuleConditionCheckerInterfa
 use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopOrderExtension extends AbstractModelExtension
+final class CoreShopOrderExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -145,5 +147,14 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             AsPurchasableWholesalePriceCalculator::class,
             $configs['autoconfigure_with_attributes'],
         );
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('core_shop_studio_form', [
+            'aliases' => [
+                'coreshop.cart_price_rule' => CartPriceRuleType::class,
+            ],
+        ]);
     }
 }

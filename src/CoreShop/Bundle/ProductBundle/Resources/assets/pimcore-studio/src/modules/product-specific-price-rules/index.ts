@@ -11,7 +11,5 @@
  */
 
 export * from './types'
-export * from './ProductSpecificPriceRuleFormBuilder'
-export * from './form-builder-module'
 export * from './components/ProductSpecificPriceRulesPanel'
 export * from './components/SettingsForm'

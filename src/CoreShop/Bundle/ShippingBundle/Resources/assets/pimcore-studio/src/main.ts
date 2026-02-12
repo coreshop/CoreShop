@@ -1,5 +1,5 @@
 /**
- * CoreShop PaymentBundle Studio Plugin
+ * CoreShop ShippingBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -13,9 +13,7 @@
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { ShippingBundleIconModule } from './modules/icon-library'
 import { CarrierManager } from './modules/carriers/CarrierManager'
-import { CarrierFormBuilderModule } from './modules/carriers/form-builder-module'
 import { ShippingRuleManager } from './modules/shipping-rules/ShippingRuleManager'
-import { ShippingRuleFormBuilderModule } from './modules/shipping-rules/form-builder-module'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { coreshopShippingServiceIds } from './modules/shipping-rules/service-ids'
 import {
@@ -94,8 +92,6 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(ShippingBundleIconModule)
-        moduleSystem.registerModule(CarrierFormBuilderModule)
-        moduleSystem.registerModule(ShippingRuleFormBuilderModule)
     }
 }
 

@@ -18,7 +18,6 @@ import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/regi
 import { coreshopNotificationServiceIds } from './modules/notification-rules/service-ids'
 import { MailAction, StoreMailAction, OrderMailAction, StoreOrderMailAction } from './modules/notification-rules/actions'
 import { NotificationRuleManager } from './modules/notification-rules/NotificationRuleManager'
-import { NotificationRuleFormBuilderModule } from './modules/notification-rules/form-builder-module'
 
 const plugin: IAbstractPlugin = {
   name: 'coreshop-notification',
@@ -72,7 +71,6 @@ const plugin: IAbstractPlugin = {
 
   onStartup({ moduleSystem }) {
     moduleSystem.registerModule(NotificationBundleIconModule)
-    moduleSystem.registerModule(NotificationRuleFormBuilderModule)
   }
 }
 

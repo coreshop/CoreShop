@@ -19,6 +19,7 @@ namespace CoreShop\Bundle\NotificationBundle\DependencyInjection;
 
 use CoreShop\Bundle\NotificationBundle\Attribute\AsNotificationRuleActionProcessor;
 use CoreShop\Bundle\NotificationBundle\Attribute\AsNotificationRuleConditionChecker;
+use CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleType;
 use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleActionPass;
 use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -28,9 +29,10 @@ use CoreShop\Component\Notification\Rule\Condition\NotificationConditionCheckerI
 use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopNotificationExtension extends AbstractModelExtension
+final class CoreShopNotificationExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -66,5 +68,14 @@ final class CoreShopNotificationExtension extends AbstractModelExtension
             AsNotificationRuleConditionChecker::class,
             true,
         );
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('core_shop_studio_form', [
+            'aliases' => [
+                'coreshop.notification_rule' => NotificationRuleType::class,
+            ],
+        ]);
     }
 }

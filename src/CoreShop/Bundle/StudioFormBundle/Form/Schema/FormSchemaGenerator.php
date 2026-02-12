@@ -88,7 +88,18 @@ final class FormSchemaGenerator
                 $uiType = new UiTypeDescriptor($blockPrefix);
             }
 
-            $childSchema = $this->buildSchema($field);
+            // For translations: build children from the first locale entry
+            // instead of listing all locales as separate fields
+            if (!empty($uiType->options['childrenFromFirstEntry'])) {
+                $firstChild = null;
+                foreach ($field as $child) {
+                    $firstChild = $child;
+                    break;
+                }
+                $childSchema = $firstChild !== null ? $this->buildSchema($firstChild) : new FormSchema($blockPrefix);
+            } else {
+                $childSchema = $this->buildSchema($field);
+            }
 
             return new FieldSchema(
                 name: $field->getName(),

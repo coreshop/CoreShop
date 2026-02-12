@@ -17,7 +17,6 @@ import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-ma
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { CurrencyManager } from './modules/currencies/CurrencyManager'
 import { ExchangeRateManager } from './modules/exchange-rates/ExchangeRateManager'
-import { CurrencyFormBuilderModule } from './modules/currencies/form-builder-module'
 import {
     DynamicTypeObjectDataCoreShopCurrency,
     DynamicTypeObjectDataCoreShopCurrencyMultiselect,
@@ -43,8 +42,6 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(CurrencyBundleIconModule)
-        moduleSystem.registerModule(CurrencyFormBuilderModule)
-        // options provider removed; component fetches directly
 
         // Register Currency entity widget (used by menu)
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)

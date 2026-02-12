@@ -44,40 +44,48 @@ final class BuiltinTypeMapper implements FormTypeMapperInterface
 
     public function supports(FormInterface $field): bool
     {
-        $innerType = $this->getInnerTypeName($field->getConfig()->getType());
-
-        if (isset(self::TYPE_MAP[$innerType])) {
-            return true;
-        }
-
-        if ($innerType === ChoiceType::class) {
-            return true;
-        }
-
-        if ($innerType === CollectionType::class) {
-            return true;
-        }
-
-        return false;
+        return $this->resolveWidget($field) !== null;
     }
 
     public function map(FormInterface $field, array $options): UiTypeDescriptor
     {
-        $innerType = $this->getInnerTypeName($field->getConfig()->getType());
+        $widget = $this->resolveWidget($field);
 
-        if (isset(self::TYPE_MAP[$innerType])) {
-            return new UiTypeDescriptor(self::TYPE_MAP[$innerType]);
-        }
-
-        if ($innerType === ChoiceType::class) {
+        if ($widget === 'select') {
             return $this->mapChoiceType($field, $options);
         }
 
-        if ($innerType === CollectionType::class) {
+        if ($widget === 'collection') {
             return $this->mapCollectionType($options);
         }
 
-        return new UiTypeDescriptor('input');
+        return new UiTypeDescriptor($widget ?? 'input');
+    }
+
+    private function resolveWidget(FormInterface $field): ?string
+    {
+        $resolvedType = $field->getConfig()->getType();
+
+        // Walk up the type hierarchy to find a matching mapper
+        while ($resolvedType !== null) {
+            $typeName = $resolvedType->getInnerType()::class;
+
+            if (isset(self::TYPE_MAP[$typeName])) {
+                return self::TYPE_MAP[$typeName];
+            }
+
+            if ($typeName === ChoiceType::class) {
+                return 'select';
+            }
+
+            if ($typeName === CollectionType::class) {
+                return 'collection';
+            }
+
+            $resolvedType = $resolvedType->getParent();
+        }
+
+        return null;
     }
 
     /**
@@ -125,12 +133,5 @@ final class BuiltinTypeMapper implements FormTypeMapperInterface
         }
 
         return new UiTypeDescriptor('collection', $collectionOptions);
-    }
-
-    private function getInnerTypeName(ResolvedFormTypeInterface $resolvedType): string
-    {
-        $innerType = $resolvedType->getInnerType();
-
-        return $innerType::class;
     }
 }

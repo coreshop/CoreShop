@@ -22,8 +22,6 @@ import { TaxRuleGroupExtensionModule } from './modules/extension/tax-rule-group'
 import { CarrierExtensionModule } from './modules/extension/carrier'
 import { RuleRegistryExtensionModule } from './modules/extension/rule-registry'
 import { SaleTabExtensionModule } from './modules/extension/sale-tab'
-import { StoreExtensionModule } from './modules/extension/store'
-import { CountryFormExtensionModule } from './modules/extension/country/country-form-extension'
 import { OrderCreationExtensionModule } from './modules/extension/order-creation'
 import { NotificationRulesExtensionModule } from './modules/extension/notification-rules'
 import { ReportsModule } from './modules/reports'
@@ -69,10 +67,8 @@ const plugin: IAbstractPlugin = {
         // Register other extension modules
         moduleSystem.registerModule(CoreBundleIconModule)
         moduleSystem.registerModule(CoreBundleMenuModule)
-        moduleSystem.registerModule(CountryFormExtensionModule)
         moduleSystem.registerModule(TaxRuleGroupExtensionModule)
         moduleSystem.registerModule(CarrierExtensionModule)
-        moduleSystem.registerModule(StoreExtensionModule)
         moduleSystem.registerModule(ReportsModule)
         moduleSystem.registerModule(SettingsModule)
     }

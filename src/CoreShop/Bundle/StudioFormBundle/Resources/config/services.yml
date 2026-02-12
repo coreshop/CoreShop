@@ -16,6 +16,11 @@ services:
         arguments:
             - '%coreshop_studio_form.aliases%'
 
+    # Translations Type Mapper (handles coreshop_translations compound fields)
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\TranslationsTypeMapper:
+        tags:
+            - { name: coreshop_studio_form.type_mapper, priority: 10 }
+
     # Builtin Type Mapper
     CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\BuiltinTypeMapper:
         tags:
