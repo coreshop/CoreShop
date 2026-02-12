@@ -99,12 +99,20 @@ final class BuiltinTypeMapper implements FormTypeMapperInterface
             $choiceOptions['multiple'] = true;
         }
 
-        // Extract resolved choices
+        // Extract resolved choices from ChoiceView objects
         $choices = [];
         foreach ($field->createView()->vars['choices'] ?? [] as $choice) {
             if (is_object($choice) && property_exists($choice, 'value') && property_exists($choice, 'label')) {
+                $value = $choice->value;
+
+                // ChoiceView->value is always a string, but entity IDs are integers.
+                // Cast numeric strings to int so antd Select's strict equality (===) matches.
+                if (is_numeric($value) && (string) (int) $value === $value) {
+                    $value = (int) $value;
+                }
+
                 $choices[] = [
-                    'value' => $choice->value,
+                    'value' => $value,
                     'label' => (string) $choice->label,
                 ];
             }
