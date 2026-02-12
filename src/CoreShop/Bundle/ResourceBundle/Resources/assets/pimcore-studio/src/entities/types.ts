@@ -1,6 +1,8 @@
 export interface EntityListItem {
   id: number
   name: string
+  identifier?: string
+  active?: boolean
 }
 
 export interface EntityGetResponse<T> {

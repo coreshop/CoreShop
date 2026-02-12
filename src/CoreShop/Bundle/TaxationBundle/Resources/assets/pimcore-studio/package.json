@@ -3,11 +3,6 @@
   "version": "1.0.0",
   "description": "CoreShop TaxationBundle - Pimcore Studio Plugin",
   "main": "src/index.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./tax-rates": "./src/modules/tax-rates/index.ts",
-    "./tax-rule-groups": "./src/modules/tax-rule-groups/index.ts"
-  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

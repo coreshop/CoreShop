@@ -13,7 +13,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import type { AbstractDecorator, AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element/listing/decorators/abstract-decorator'
+import type { AbstractDecorator, AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element'
 
 export interface GridFilterDecoratorConfig {
   listType: string

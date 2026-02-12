@@ -33,11 +33,12 @@ const loadProductUnits = async (): Promise<Array<{ value: number; label: string 
   loadPromise = (async () => {
     try {
       const units = await productUnitApi.list()
-      cachedOptions = units.map((unit) => ({
+      const result = units.map((unit) => ({
         value: unit.id!,
         label: unit.name ?? `#${unit.id}`
       }))
-      return cachedOptions
+      cachedOptions = result
+      return result
     } catch (err) {
       console.error('Failed to load product units:', err)
       throw err
@@ -83,7 +84,7 @@ export const ProductUnitSelect: React.FC<SelectProps> = (props) => {
       placeholder={props.placeholder ?? 'Select a product unit'}
       showSearch
       filterOption={(input, option) =>
-        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       }
     />
   )

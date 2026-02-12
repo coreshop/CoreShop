@@ -2,6 +2,7 @@
   "name": "@coreshop/productquantitypricerules",
   "version": "1.0.0",
   "description": "CoreShop ProductQuantityPriceRulesBundle - Pimcore Studio Plugin",
+  "main": "src/index.ts",
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

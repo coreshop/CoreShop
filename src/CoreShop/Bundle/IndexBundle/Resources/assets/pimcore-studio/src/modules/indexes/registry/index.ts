@@ -18,7 +18,15 @@ import type { ReactNode } from 'react'
 export interface ConfigComponentProps {
   value?: Record<string, any>
   onChange: (value: Record<string, any>) => void
+  indexConfig?: any
+  config?: Record<string, any>
+  depth?: number
+  configuration?: Record<string, any>
 }
+
+export type GetterConfiguratorProps = ConfigComponentProps
+export type InterpreterConfiguratorProps = ConfigComponentProps
+export type WorkerConfiguratorProps = ConfigComponentProps
 
 /**
  * Getter/Interpreter Configurator

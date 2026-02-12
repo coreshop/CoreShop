@@ -83,7 +83,7 @@ export const ZoneSelect: React.FC<SelectProps> = (props) => {
       placeholder={props.placeholder ?? 'Select a zone'}
       showSearch
       filterOption={(input, option) =>
-        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       }
     />
   )

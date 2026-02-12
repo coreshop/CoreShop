@@ -3,12 +3,6 @@
   "version": "1.0.0",
   "description": "CoreShop CurrencyBundle - Pimcore Studio Plugin",
   "main": "src/index.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./components": "./src/components/index.ts",
-    "./exchange-rates": "./src/modules/exchange-rates/index.ts",
-    "./currencies": "./src/modules/currencies/index.ts"
-  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

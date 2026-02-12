@@ -13,7 +13,7 @@
  */
 
 import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
-import { Input, Checkbox } from 'antd'
+import { Input, Switch } from 'antd'
 import type { ShippingRuleDetail } from './api'
 
 export const createShippingRuleFormBuilder = (): FormBuilder<ShippingRuleDetail> => {
@@ -34,7 +34,8 @@ export const createShippingRuleFormBuilder = (): FormBuilder<ShippingRuleDetail>
       {
         name: 'active',
         label: 'Active',
-        component: Checkbox
+        component: Switch,
+        valuePropName: 'checked'
       }
     ]
   })

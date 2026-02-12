@@ -52,7 +52,7 @@ function convertAllowedTypes(props: ClassDefinitionProps): DataComponentProps {
 export class DynamicTypeObjectDataCoreShopRelations extends DynamicTypeObjectDataAbstract {
   id: string = 'coreShopRelations'
   supportsBatchAppendModes: boolean = true
-  gridCellEditMode: 'edit-modal' | 'cell' | 'disabled' = 'edit-modal'
+  gridCellEditMode = 'edit-modal' as const
   gridCellEditModalSettings = {
     modalSize: 'XL' as const,
     formLayout: 'vertical' as const

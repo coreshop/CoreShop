@@ -53,7 +53,7 @@ function convertAllowedTypes(props: ClassDefinitionProps): DataComponentProps {
 
 export class DynamicTypeObjectDataCoreShopRelation extends DynamicTypeObjectDataAbstract {
   id: string = 'coreShopRelation'
-  gridCellEditMode: 'edit-modal' | 'cell' | 'disabled' = 'edit-modal'
+  gridCellEditMode = 'edit-modal' as const
   gridCellEditModalSettings = {
     modalSize: 'L' as const,
     formLayout: 'vertical' as const

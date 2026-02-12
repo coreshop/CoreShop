@@ -137,7 +137,7 @@ export const NestedCondition: React.FC<ConditionProps> = ({
                     onChange={(c) => handleChange(index, c)}
                     onMove={handleMove}
                     onDelete={() => handleDelete(index)}
-                    registryId={registryId}
+                    registryId={registryId!}
                     indexId={indexId}
                   />
                 ))}

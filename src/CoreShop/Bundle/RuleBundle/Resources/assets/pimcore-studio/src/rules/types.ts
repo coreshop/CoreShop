@@ -28,7 +28,7 @@ export interface Rule {
   id?: number
   name: string
   description?: string
-  active: boolean
+  active?: boolean
   priority?: number
   conditions?: RuleCondition[]
   actions?: RuleAction[]

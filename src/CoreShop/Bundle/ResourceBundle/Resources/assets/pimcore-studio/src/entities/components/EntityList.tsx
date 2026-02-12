@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tree, Skeleton } from 'antd'
+import { Tree, Skeleton, Tag } from 'antd'
 import type { DataNode } from 'antd/es/tree'
 import {
   ContentLayout,
@@ -24,6 +24,7 @@ export interface EntityListProps {
   groups?: GroupItem[]
   rootTitle?: string
   addLabel?: string
+  leafIcon?: string
   resolveGroupId?: (item: EntityListItem, groups: GroupItem[]) => number | null | undefined
   onReload: () => void
   onAdd: (groupId?: number) => void
@@ -40,6 +41,7 @@ export const EntityList: React.FC<EntityListProps> = ({
   loading,
   rootTitle,
   addLabel,
+  leafIcon = 'widget-default',
   resolveGroupId,
   onReload,
   onAdd,
@@ -53,6 +55,8 @@ export const EntityList: React.FC<EntityListProps> = ({
   const { styles } = useEntityListStyles()
 
   const leafRow = (it: EntityListItem): React.ReactNode => {
+    const inactive = it.active === false
+
     const base = (
       <Dropdown
         trigger={ ['contextMenu'] }
@@ -60,7 +64,11 @@ export const EntityList: React.FC<EntityListProps> = ({
           { key: 'delete', icon: <Icon value='trash' />, label: t('toolbar.delete', { defaultValue: 'Delete' }), onClick: () => onDelete(it.id) }
         ] } }
       >
-          <span>{it.name}</span>
+          <span className={`${styles.leafNode} ${inactive ? styles.inactive : ''}`}>
+            <span className={styles.leafIcon}><Icon value={leafIcon} /></span>
+            {it.name}
+            {inactive && <Tag className={styles.inactiveTag}>{t('entity.inactive', { defaultValue: 'Inactive' })}</Tag>}
+          </span>
       </Dropdown>
     )
     return buildDragInfo ? (
@@ -70,8 +78,14 @@ export const EntityList: React.FC<EntityListProps> = ({
     ) : base
   }
 
-  const groupHeader = (g: GroupItem | { id: null, name: string }): React.ReactNode => {
-    const content = <span>{g.name}</span>
+  const groupHeader = (g: GroupItem | { id: null, name: string }, count: number): React.ReactNode => {
+    const content = (
+      <span className={styles.groupNode}>
+        <Icon value='folder' />
+        <span>{g.name}</span>
+        <span className={styles.groupCount}>({count})</span>
+      </span>
+    )
     if (!dragType || !onMove) return content
     return (
       <DroppableEntity
@@ -93,10 +107,15 @@ export const EntityList: React.FC<EntityListProps> = ({
     })
 
     if (!groups || groups.length === 0 || !resolveGroupId) {
-      // single-level: keep a visible root node, expanded by default
       return [{
         key: 'root',
-        title: <><Icon value='folder' /> <span>{rootTitle ?? t('entity.list.all', { defaultValue: 'All' })}</span></>,
+        title: (
+          <span className={styles.groupNode}>
+            <Icon value='folder' />
+            <span>{rootTitle ?? t('entity.list.all', { defaultValue: 'All' })}</span>
+            <span className={styles.groupCount}>({items.length})</span>
+          </span>
+        ),
         selectable: false,
         expanded: true,
         children: items.map(buildLeafNode)
@@ -116,20 +135,20 @@ export const EntityList: React.FC<EntityListProps> = ({
 
     const nodes: DataNode[] = groups.map(g => ({
       key: `group-${g.id}`,
-      title: <><Icon value='folder' /> {groupHeader(g)}</>,
+      title: groupHeader(g, (groupedMap[g.id] ?? []).length),
       selectable: false,
       children: (groupedMap[g.id] ?? []).map(buildLeafNode)
     }))
     if (ungrouped.length > 0) {
       nodes.push({
         key: 'group-unknown',
-        title: <><Icon value='folder' /> {groupHeader({ id: null, name: t('entity.group.unknown', { defaultValue: 'unbekannt' }) })}</>,
+        title: groupHeader({ id: null, name: t('entity.group.unknown', { defaultValue: 'unbekannt' }) }, ungrouped.length),
         selectable: false,
         children: ungrouped.map(buildLeafNode)
       })
     }
     return nodes
-  }, [items, groups, resolveGroupId, t, dragType, onMove])
+  }, [items, groups, resolveGroupId, t, dragType, onMove, leafIcon])
 
   const initialExpandedKeys = React.useMemo<React.Key[]>(() => {
     const keys: React.Key[] = []
@@ -163,12 +182,13 @@ export const EntityList: React.FC<EntityListProps> = ({
       ) }
     >
       {loading ? (
-        <div className={`${styles.tree} ${styles.contentPadding}`}>
+        <div className={styles.contentPadding}>
           <Skeleton active title={false} paragraph={{ rows: 8 }} />
         </div>
       ) : (
         <Tree
           className={ styles.tree }
+          showLine={false}
           defaultExpandedKeys={ expandedKeys }
           expandedKeys={ expandedKeys }
           onExpand={ (keys) => { expandedTouchedRef.current = true; setExpandedKeys(keys as React.Key[]) } }

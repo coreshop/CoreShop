@@ -57,7 +57,7 @@ export const AssignToExistingCompanyButton = ({ icon, label }: MenuButtonProps):
         className="main-nav__list-btn"
         onClick={handleClick}
       >
-        <Icon value={icon} />
+        <Icon value={icon ?? ''} />
         {label || t('coreshop_customer_to_company_assign_to_existing', { defaultValue: 'Assign to Existing Company' })}
       </button>
 

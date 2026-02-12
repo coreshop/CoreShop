@@ -1,5 +1,5 @@
 import React from 'react'
-import { useStudioLanguages } from '@coreshop/resource/src/components/localization/useStudioLanguages'
+import { useStudioLanguages } from '../../../components/localization/useStudioLanguages'
 
 interface LocalizationState {
   locales: string[]

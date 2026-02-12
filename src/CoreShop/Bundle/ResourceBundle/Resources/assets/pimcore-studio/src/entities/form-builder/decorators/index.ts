@@ -171,7 +171,7 @@ export const conditionalFieldsDecorator = <T = any>(
     return {
       ...config,
       fields: config.fields.map(field =>
-        fieldNames.includes(field.name)
+        fieldNames.includes(field.name as string)
           ? { ...field, hidden: !shouldShow }
           : field
       )
@@ -194,7 +194,7 @@ export const groupFieldsDecorator = <T = any>(
 
     const fields = config.fields.map(field => {
       for (const [sectionKey, fieldNames] of Object.entries(groups)) {
-        if (fieldNames.includes(field.name)) {
+        if (fieldNames.includes(field.name as string)) {
           return { ...field, section: sectionKey }
         }
       }

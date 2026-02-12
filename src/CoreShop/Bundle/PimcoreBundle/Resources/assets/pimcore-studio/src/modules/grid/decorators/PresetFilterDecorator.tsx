@@ -13,7 +13,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { type AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element/listing/decorators/abstract-decorator'
+import { type AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element'
 import { usePresetFilterOptional } from '../context/PresetFilterContext'
 
 export interface PresetFilterDecoratorConfig {

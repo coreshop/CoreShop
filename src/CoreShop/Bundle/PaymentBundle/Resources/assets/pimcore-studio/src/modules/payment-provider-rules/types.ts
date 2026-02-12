@@ -13,9 +13,6 @@
 import type { Rule } from '@coreshop/rule/src/rules'
 
 export interface PaymentProviderRule extends Rule {
-  id?: number
-  name?: string
-  active?: boolean
   conditions?: any[]
   actions?: any[]
   translations?: Record<string, { label?: string }>

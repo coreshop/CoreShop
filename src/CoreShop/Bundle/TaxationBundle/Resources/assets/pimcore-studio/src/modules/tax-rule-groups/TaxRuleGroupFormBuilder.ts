@@ -31,7 +31,8 @@ export const createTaxRuleGroupFormBuilder = (): FormBuilder<TaxRuleGroupDetail>
       {
         name: 'active',
         label: 'active',
-        component: Switch
+        component: Switch,
+        valuePropName: 'checked'
       }
     ]
   })

@@ -80,7 +80,7 @@ export const IndexSelect: React.FC<SelectProps> = (props) => {
       placeholder={props.placeholder ?? 'Select an index'}
       showSearch
       filterOption={(input, option) =>
-        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       }
     />
   )

@@ -12,6 +12,10 @@ export interface ProductUnitDetail {
   id: number
   name: string
   translations?: ProductUnitTranslation[]
+  fullLabel?: string
+  fullPluralLabel?: string
+  shortLabel?: string
+  shortPluralLabel?: string
 }
 
 export const productUnitApi = new EntityApi<ProductUnitDetail>({

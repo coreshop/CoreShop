@@ -62,7 +62,7 @@ export const CategoryMultiSelectCondition: React.FC<ConditionProps> = ({
       <Form.Item label={t('coreshop_filters_quantityUnit', { defaultValue: 'Quantity Value' })}>
         <QuantityUnitSelect
           value={data.quantityUnit ?? "0"}
-          onChange={(value) => onChange({ quantityUnit: value })}
+          onChange={(value) => onChange({ quantityUnit: Number(value) })}
         />
       </Form.Item>
 

@@ -29,12 +29,13 @@ const loadPaymentProviderRules = async (): Promise<Array<{ value: number; label:
 
   loadPromise = (async () => {
     try {
-      const data = await paymentProviderRuleApi.list()
-      cachedOptions = data.data.map(rule => ({
+      const items = await paymentProviderRuleApi.list()
+      const result = items.map((rule: any) => ({
         value: rule.id!,
         label: rule.name ?? `#${rule.id}`
       }))
-      return cachedOptions
+      cachedOptions = result
+      return result
     } catch (err) {
       console.error('Failed to load payment provider rules:', err)
       throw err
@@ -77,7 +78,7 @@ export const PaymentProviderRuleSelect: React.FC<SelectProps> = (props) => {
       placeholder={props.placeholder ?? 'Select a payment provider rule'}
       showSearch
       filterOption={(input, option) =>
-        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       }
     />
   )

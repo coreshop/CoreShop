@@ -18,7 +18,7 @@ export const SaleToolbar: React.FC = () => {
   // Set callback to re-render when buttons change
   React.useEffect(() => {
     buttonRegistry.setChangeCallback(forceUpdate)
-    return () => buttonRegistry.setChangeCallback(undefined)
+    return () => buttonRegistry.setChangeCallback(() => {})
   }, [buttonRegistry])
 
   // Get all registered buttons sorted by priority

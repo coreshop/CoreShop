@@ -82,7 +82,7 @@ export const ProductUnitManager: React.FC = () => {
               setData({
                 ...draft,
                 translations: updatedTranslations
-              })
+              } as Partial<ProductUnitDetail>)
             }}
             currentLocale={currentLocale}
             locales={ctx?.locales}

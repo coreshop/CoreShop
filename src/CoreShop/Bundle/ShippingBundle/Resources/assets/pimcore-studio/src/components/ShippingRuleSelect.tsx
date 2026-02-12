@@ -33,11 +33,12 @@ const loadShippingRules = async (): Promise<Array<{ value: number, label: string
   loadPromise = (async () => {
     try {
       const rules = await shippingRuleApi.list()
-      cachedOptions = rules.map(rule => ({
+      const result = rules.map(rule => ({
         value: rule.id!,
         label: rule.name ?? `#${rule.id}`
       }))
-      return cachedOptions
+      cachedOptions = result
+      return result
     } catch (err) {
       console.error('Failed to load shipping rules:', err)
       throw err
@@ -81,7 +82,7 @@ export const ShippingRuleSelect: React.FC<SelectProps> = (props) => {
       placeholder={props.placeholder ?? 'Select a shipping rule'}
       showSearch
       filterOption={(input, option) =>
-        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       }
     />
   )

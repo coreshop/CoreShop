@@ -13,7 +13,11 @@
 import React from 'react'
 import { Tree, Empty, Skeleton, Typography } from 'antd'
 import { createStyles } from 'antd-style'
-import type { DataNode } from 'antd/es/tree'
+import type { DataNode as AntDataNode } from 'antd/es/tree'
+
+interface DataNode extends AntDataNode {
+  data?: Record<string, any> | null
+}
 import {
   Draggable,
   Icon,

@@ -43,7 +43,8 @@ export const createStateFormBuilder = (): FormBuilder<StateDetail> => {
       {
         name: 'active',
         label: 'active',
-        component: Switch
+        component: Switch,
+        valuePropName: 'checked'
       }
     ]
   })

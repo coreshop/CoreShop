@@ -25,18 +25,19 @@ const loadStates = async (): Promise<Array<{ value: number; label: string }>> =>
   if (cachedStates) return cachedStates
   if (stateLoadPromise) return stateLoadPromise
 
-  stateLoadPromise = (async () => {
+  const promise = (async () => {
     try {
       const res = await fetch('/pimcore-studio/api/coreshop/states/list', {
         credentials: 'same-origin'
       })
       const data = await res.json()
       const states = data.data || data || []
-      cachedStates = states.map((s: { id: number; name?: string; countryName?: string }) => ({
+      const result = states.map((s: { id: number; name?: string; countryName?: string }) => ({
         value: s.id,
         label: s.countryName ? `${s.name} (${s.countryName})` : (s.name ?? `#${s.id}`)
       }))
-      return cachedStates
+      cachedStates = result
+      return result
     } catch (err) {
       console.error('Failed to load states:', err)
       return []
@@ -45,7 +46,8 @@ const loadStates = async (): Promise<Array<{ value: number; label: string }>> =>
     }
   })()
 
-  return stateLoadPromise
+  stateLoadPromise = promise
+  return promise
 }
 
 interface AddressCreationModalProps {

@@ -71,7 +71,7 @@ export class DynamicTypeObjectDataCoreShopItemSelector extends DynamicTypeObject
   readonly id = 'coreShopItemSelector'
   readonly dynamicTypeFieldFilterType = new DynamicTypeFieldFilterMultiselect()
 
-  gridCellEditMode: 'edit-modal' | 'cell' | 'disabled' = 'edit-modal'
+  gridCellEditMode = 'edit-modal' as const
   gridCellEditModalSettings = {
     modalSize: 'L' as const,
     formLayout: 'vertical' as const

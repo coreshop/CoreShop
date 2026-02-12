@@ -147,7 +147,7 @@ export const DynamicForm = <T extends Record<string, any> = any>({
 
     // For localized fields, use translations[currentLocale][fieldName] path
     const fieldName = field.localized && currentLocale
-      ? ['translations', currentLocale, field.name]
+      ? ['translations', currentLocale, ...(Array.isArray(field.name) ? field.name : [field.name])]
       : field.name
 
     const formItem = (
@@ -159,6 +159,7 @@ export const DynamicForm = <T extends Record<string, any> = any>({
         required={field.required}
         tooltip={tooltip}
         hidden={field.hidden}
+        valuePropName={field.valuePropName}
       >
         <FieldComponent
           disabled={field.disabled}

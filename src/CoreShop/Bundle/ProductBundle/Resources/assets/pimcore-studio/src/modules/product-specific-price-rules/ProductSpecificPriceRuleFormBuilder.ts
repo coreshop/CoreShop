@@ -13,7 +13,7 @@
  */
 
 import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
-import { Input, InputNumber, Checkbox } from 'antd'
+import { Input, InputNumber, Switch } from 'antd'
 import type { ProductSpecificPriceRule } from './types'
 
 export const createProductSpecificPriceRuleFormBuilder = (): FormBuilder<ProductSpecificPriceRule> => {
@@ -37,7 +37,8 @@ export const createProductSpecificPriceRuleFormBuilder = (): FormBuilder<Product
       {
         name: 'active',
         label: 'Active',
-        component: Checkbox
+        component: Switch,
+        valuePropName: 'checked'
       },
       {
         name: 'priority',
@@ -50,7 +51,8 @@ export const createProductSpecificPriceRuleFormBuilder = (): FormBuilder<Product
       {
         name: 'inherit',
         label: 'Inherit from Parent',
-        component: Checkbox
+        component: Switch,
+        valuePropName: 'checked'
       }
     ]
   })

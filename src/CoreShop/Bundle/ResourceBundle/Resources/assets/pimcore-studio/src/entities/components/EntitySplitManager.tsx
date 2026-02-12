@@ -30,6 +30,7 @@ export interface EntitySplitManagerProps<TDetail extends Record<string, any>> {
   leftRootTitle?: string
   dragType?: string
   buildDragInfo?: (item: EntityListItem) => DragAndDropInfo | null
+  leafIcon?: string
 }
 
 export function EntitySplitManager<TDetail extends Record<string, any>>({
@@ -38,7 +39,8 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
   createEmpty,
   leftRootTitle,
   dragType,
-  buildDragInfo
+  buildDragInfo,
+  leafIcon
 }: EntitySplitManagerProps<TDetail>): React.JSX.Element {
   const messageApi = useMessage()
   const [list, setList] = React.useState<EntityListItem[]>([])
@@ -142,6 +144,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
         items={list}
         loading={loadingList}
         rootTitle={leftRootTitle}
+        leafIcon={leafIcon}
         buildDragInfo={computedBuildDragInfo}
         onAdd={handleAdd}
         onDelete={handleDelete}

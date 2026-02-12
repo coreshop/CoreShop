@@ -91,7 +91,7 @@ const OrderListInner: React.FC = () => {
 
   const handleCreateOrder = (): void => {
     const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)
-    widgetManager.openWidget({
+    ;(widgetManager as any).openWidget({
       name: 'coreshop-order-creation',
       config: {}
     })

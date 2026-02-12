@@ -16,9 +16,10 @@ export interface EntityTabbedManagerProps<TDetail extends Record<string, any>> {
   buildDragInfo?: (item: EntityListItem) => DragAndDropInfo | null
   dragType?: string
   leftRootTitle?: string
+  leafIcon?: string
 }
 
-export function EntityTabbedManager<TDetail extends Record<string, any>>({ api, getTitle, buildSavePayload, onAdd, renderDetail, leftExtras, localizable, buildDragInfo, dragType, leftRootTitle }: EntityTabbedManagerProps<TDetail>): React.JSX.Element {
+export function EntityTabbedManager<TDetail extends Record<string, any>>({ api, getTitle, buildSavePayload, onAdd, renderDetail, leftExtras, localizable, buildDragInfo, dragType, leftRootTitle, leafIcon }: EntityTabbedManagerProps<TDetail>): React.JSX.Element {
   const computedBuildDragInfo = React.useMemo(() => {
     if (buildDragInfo) return buildDragInfo
     if (!dragType) return undefined
@@ -42,6 +43,7 @@ export function EntityTabbedManager<TDetail extends Record<string, any>>({ api, 
             items={ items }
             loading={ loading }
             rootTitle={ leftRootTitle }
+            leafIcon={ leafIcon }
             buildDragInfo={ computedBuildDragInfo }
             onAdd={ async () => {
               if (!onAdd) return

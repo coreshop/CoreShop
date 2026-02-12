@@ -3,13 +3,6 @@
   "version": "1.0.0",
   "description": "CoreShop ShippingBundle - Pimcore Studio Plugin",
   "main": "src/index.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./shipping-rules": "./src/modules/shipping-rules/index.ts",
-    "./shipping-rules/conditions": "./src/modules/shipping-rules/conditions/index.ts",
-    "./shipping-rules/actions": "./src/modules/shipping-rules/actions/index.ts",
-    "./components": "./src/components/index.ts"
-  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

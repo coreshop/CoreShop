@@ -34,11 +34,12 @@ const loadTaxRuleGroups = async (): Promise<Array<{ value: number, label: string
   loadPromise = (async () => {
     try {
       const groups = await taxRuleGroupApi.list()
-      cachedOptions = groups.map(group => ({
+      const result = groups.map(group => ({
         value: group.id!,
         label: group.name ?? `#${group.id}`
       }))
-      return cachedOptions
+      cachedOptions = result
+      return result
     } catch (err) {
       console.error('Failed to load tax rule groups:', err)
       throw err

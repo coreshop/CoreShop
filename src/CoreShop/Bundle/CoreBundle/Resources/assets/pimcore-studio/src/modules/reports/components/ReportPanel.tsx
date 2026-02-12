@@ -164,7 +164,7 @@ export const ReportPanel: React.FC<ReportPanelProps> = ({
               total={total}
               onChange={handlePaginationChange}
               showSizeChanger
-              showTotal={(t) => `${t} ${t('items', { defaultValue: 'items' })}`}
+              showTotal={(total) => `${total} ${t('items', { defaultValue: 'items' })}`}
             />
           </div>
         )}

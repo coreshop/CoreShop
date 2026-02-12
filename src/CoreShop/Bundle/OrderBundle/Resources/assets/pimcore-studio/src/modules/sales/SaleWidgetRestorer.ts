@@ -10,9 +10,15 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import type { WidgetRestorer } from '@pimcore/studio-ui-bundle/modules/widget-manager/services/widget-restorer-registry'
 import type { WidgetManagerTabConfig } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import type { AppDispatch } from '@pimcore/studio-ui-bundle/app'
+
+// WidgetRestorer interface defined locally since the module path is not exported
+interface WidgetRestorer {
+  supports(config: WidgetManagerTabConfig): boolean
+  cleanConfig(config: WidgetManagerTabConfig): WidgetManagerTabConfig
+  restore(config: WidgetManagerTabConfig, dispatch: AppDispatch): boolean
+}
 
 /**
  * Widget component names that this restorer handles

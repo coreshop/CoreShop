@@ -13,7 +13,7 @@
  */
 
 import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
-import { Input, Checkbox } from 'antd'
+import { Input, Switch } from 'antd'
 import type { PaymentProviderRule } from './types'
 
 export const createPaymentProviderRuleFormBuilder = (): FormBuilder<PaymentProviderRule> => {
@@ -43,7 +43,8 @@ export const createPaymentProviderRuleFormBuilder = (): FormBuilder<PaymentProvi
       {
         name: 'active',
         label: 'Active',
-        component: Checkbox
+        component: Switch,
+        valuePropName: 'checked'
       }
     ]
   })

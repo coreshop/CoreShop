@@ -34,11 +34,12 @@ const loadStores = async (): Promise<Array<{ value: number, label: string }>> =>
   loadPromise = (async () => {
     try {
       const stores = await storeApi.list()
-      cachedOptions = stores.map(store => ({
+      const result = stores.map(store => ({
         value: store.id!,
         label: store.name
       }))
-      return cachedOptions
+      cachedOptions = result
+      return result
     } catch (err) {
       console.error('Failed to load stores:', err)
       throw err

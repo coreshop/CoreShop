@@ -114,11 +114,11 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
 
   // Get configurator components
   const GetterConfiguratorComponent = selectedGetter
-    ? (getterConfiguratorRegistry.get(selectedGetter) || DefaultGetterConfigurator)
+    ? (getterConfiguratorRegistry.get(selectedGetter)?.component ?? DefaultGetterConfigurator)
     : null
 
   const InterpreterConfiguratorComponent = selectedInterpreter
-    ? (interpreterConfiguratorRegistry.get(selectedInterpreter) || DefaultInterpreterConfigurator)
+    ? (interpreterConfiguratorRegistry.get(selectedInterpreter)?.component ?? DefaultInterpreterConfigurator)
     : null
 
   // Get field types for the selected worker

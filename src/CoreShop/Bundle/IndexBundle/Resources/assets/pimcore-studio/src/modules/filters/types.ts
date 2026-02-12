@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import type { Entity } from '@coreshop/resource/src/entities/types'
+import type { EntityListItem } from '@coreshop/resource/src/entities/types'
 
 /**
  * Filter Condition Interface
@@ -28,7 +28,7 @@ export interface FilterCondition {
 /**
  * Filter Interface
  */
-export interface Filter extends Entity {
+export interface Filter extends EntityListItem {
   name: string
   resultsPerPage?: number
   orderDirection?: 'asc' | 'desc'

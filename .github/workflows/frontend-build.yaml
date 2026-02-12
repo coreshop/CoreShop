@@ -22,10 +22,7 @@ jobs:
           
       - name: Install dependencies
         run: npm ci
-        
-      - name: Lint and fix
-        run: npm run lint || true
-        
+
       - name: Type check
         run: npm run check-types
 

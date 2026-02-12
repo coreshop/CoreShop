@@ -18,7 +18,7 @@ CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule:
         active:
             expose: true
             type: boolean
-            groups: [Detailed, Version]
+            groups: [List, Detailed, Version]
         priority:
             expose: true
             type: integer

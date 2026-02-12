@@ -5,7 +5,7 @@ const buildUrl = (base: string, resource: string, route: string): string => {
 }
 
 export class EntityApi<TDetail extends Record<string, any> = any> {
-  private readonly cfg: Required<EntityApiConfig>
+  protected readonly cfg: Required<EntityApiConfig>
 
   constructor(config: EntityApiConfig) {
     this.cfg = {

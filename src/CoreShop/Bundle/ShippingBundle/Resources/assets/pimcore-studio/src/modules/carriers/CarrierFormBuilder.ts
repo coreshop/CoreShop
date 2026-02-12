@@ -87,7 +87,8 @@ export const createCarrierFormBuilder = (config: CarrierConfig): FormBuilder<Car
       {
         name: 'hideFromCheckout',
         label: 'Hide From Checkout',
-        component: Switch
+        component: Switch,
+        valuePropName: 'checked'
       }
     ]
   })

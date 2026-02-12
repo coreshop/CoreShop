@@ -33,11 +33,12 @@ const loadCarriers = async (): Promise<Array<{ value: number, label: string }>> 
   loadPromise = (async () => {
     try {
       const carriers = await carrierApi.list()
-      cachedOptions = carriers.map(carrier => ({
+      const result = carriers.map(carrier => ({
         value: carrier.id!,
         label: carrier.identifier ?? `#${carrier.id}`
       }))
-      return cachedOptions
+      cachedOptions = result
+      return result
     } catch (err) {
       console.error('Failed to load carriers:', err)
       throw err
@@ -81,7 +82,7 @@ export const CarrierSelect: React.FC<SelectProps> = (props) => {
       placeholder={props.placeholder ?? 'Select a carrier'}
       showSearch
       filterOption={(input, option) =>
-        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
       }
     />
   )

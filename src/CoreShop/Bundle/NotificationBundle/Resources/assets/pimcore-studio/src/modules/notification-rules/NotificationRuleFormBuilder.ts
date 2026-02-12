@@ -15,7 +15,7 @@
  */
 
 import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
-import { Input, Checkbox } from 'antd'
+import { Input, Switch } from 'antd'
 import type { NotificationRule } from './types'
 
 export const createNotificationRuleFormBuilder = (): FormBuilder<NotificationRule> => {
@@ -36,7 +36,8 @@ export const createNotificationRuleFormBuilder = (): FormBuilder<NotificationRul
       {
         name: 'active',
         label: 'coreshop_active',
-        component: Checkbox
+        component: Switch,
+        valuePropName: 'checked'
       },
       {
         name: ['translations', '__LOCALE__', 'label'],

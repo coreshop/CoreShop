@@ -14,4 +14,4 @@ CoreShop\Component\Address\Model\AddressIdentifier:
         active:
             expose: true
             type: boolean
-            groups: [Detailed]
+            groups: [List, Detailed]

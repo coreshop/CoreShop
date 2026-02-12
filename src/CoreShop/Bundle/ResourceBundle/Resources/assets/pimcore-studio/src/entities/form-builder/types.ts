@@ -20,8 +20,8 @@ import type { FormInstance, Rule } from 'antd/es/form'
  * Field Definition
  */
 export interface FieldDefinition<T = any> {
-  /** Field name (key in data object) */
-  name: string
+  /** Field name (key in data object, or array for nested paths like ['translations', '__LOCALE__', 'name']) */
+  name: string | string[]
   /** Display label */
   label: string
   /** React component to render */
@@ -40,6 +40,8 @@ export interface FieldDefinition<T = any> {
   tooltip?: string
   /** Custom props passed to component */
   componentProps?: Record<string, any>
+  /** Value prop name for Form.Item (e.g. 'checked' for Checkbox/Switch) */
+  valuePropName?: string
   /** Field width in grid (1-24, Ant Design Col span) */
   span?: number
   /** Custom wrapper component */

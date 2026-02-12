@@ -101,6 +101,7 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
     try {
       await api.save(payload)
       updateTab(id, { dirty: false })
+      await loadList()
       void messageApi.success('Saved successfully')
     } catch (error) {
       void messageApi.error(getErrorMessage(error, 'Failed to save'))

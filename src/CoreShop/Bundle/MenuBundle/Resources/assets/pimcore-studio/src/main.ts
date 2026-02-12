@@ -6,7 +6,7 @@
  */
 
 import { type IAbstractPlugin } from '@pimcore/studio-ui-bundle'
-import { CoreShopMenuExtension } from './modules/menu-extension.tsx'
+import { CoreShopMenuExtension } from './modules/menu-extension'
 
 const CoreShopMenuPlugin: IAbstractPlugin = {
   name: 'coreshop-menu',

@@ -2,7 +2,12 @@ import React from 'react'
 import { Select } from 'antd'
 import type { SelectProps } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { customerGroupApi } from '../modules/customer-groups/api'
+// Customer group list endpoint (no EntityApi module exists for this DataObject-based entity)
+const fetchCustomerGroupList = async (): Promise<Array<{ id: number; name?: string }>> => {
+  const res = await fetch('/pimcore-studio/api/coreshop/customer_groups/list', { credentials: 'same-origin' })
+  const json = await res.json()
+  return json.data || json || []
+}
 import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
 
 type Option = { value: number, label: string }
@@ -16,7 +21,7 @@ const loadCustomerGroups = async (): Promise<Option[]> => {
 
   loadPromise = (async () => {
     try {
-      const rows = await customerGroupApi.list()
+      const rows = await fetchCustomerGroupList()
       cachedOptions = (Array.isArray(rows) ? rows : [])
         .map((r: any) => ({ value: r.id, label: r.name ?? String(r.id) }))
         .filter((o: any) => o.value != null && o.label)

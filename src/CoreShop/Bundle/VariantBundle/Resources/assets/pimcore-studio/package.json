@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "CoreShop VariantBundle - Pimcore Studio Plugin",
   "main": "src/index.ts",
-  "exports": {
-    ".": "./src/index.ts"
-  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

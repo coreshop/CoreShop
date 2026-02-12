@@ -48,7 +48,8 @@ export const createTaxRateFormBuilder = (): FormBuilder<TaxRateDetail> => {
       {
         name: 'active',
         label: 'active',
-        component: Switch
+        component: Switch,
+        valuePropName: 'checked'
       }
     ]
   })

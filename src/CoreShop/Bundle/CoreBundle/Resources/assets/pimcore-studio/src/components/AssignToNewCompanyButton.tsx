@@ -57,7 +57,7 @@ export const AssignToNewCompanyButton = ({ icon, label }: MenuButtonProps): Reac
         className="main-nav__list-btn"
         onClick={handleClick}
       >
-        <Icon value={icon} />
+        <Icon value={icon ?? ''} />
         {label || t('coreshop_customer_to_company_assign_to_new', { defaultValue: 'Assign to New Company' })}
       </button>
 

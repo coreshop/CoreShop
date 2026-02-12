@@ -9,6 +9,10 @@
 export { AssignToNewCompanyPanel } from './AssignToNewCompanyPanel'
 export { AssignToExistingCompanyPanel } from './AssignToExistingCompanyPanel'
 
+// Modal components
+export { AssignToNewCompanyModal } from './AssignToNewCompanyModal'
+export { AssignToExistingCompanyModal } from './AssignToExistingCompanyModal'
+
 // Shared components
 export { AssignmentForm } from './AssignmentForm'
 export { customerCompanyApi } from './api'

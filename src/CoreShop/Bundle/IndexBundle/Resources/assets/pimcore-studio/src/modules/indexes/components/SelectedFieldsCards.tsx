@@ -90,13 +90,13 @@ export const SelectedFieldsCards: React.FC<SelectedFieldsCardsProps> = ({
 
               {column.getter && (
                 <div style={{ fontSize: 12, color: 'var(--ant-color-text-secondary)' }}>
-                  📌 Getter: <Tag size="small">{column.getter}</Tag>
+                  Getter: <Tag>{column.getter}</Tag>
                 </div>
               )}
 
               {column.interpreter && (
                 <div style={{ fontSize: 12, color: 'var(--ant-color-text-secondary)' }}>
-                  🔄 Interpreter: <Tag size="small">{column.interpreter}</Tag>
+                  Interpreter: <Tag>{column.interpreter}</Tag>
                 </div>
               )}
             </Space>

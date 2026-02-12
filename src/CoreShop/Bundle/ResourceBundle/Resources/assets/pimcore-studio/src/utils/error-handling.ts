@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import trackError, { GeneralError } from '@pimcore/studio-ui-bundle/modules/app'
+import { trackError, GeneralError } from '@pimcore/studio-ui-bundle/modules/app'
 
 /**
  * Extract a user-friendly error message from various error types

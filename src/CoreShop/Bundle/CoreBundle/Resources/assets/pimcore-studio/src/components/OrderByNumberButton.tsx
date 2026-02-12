@@ -63,7 +63,7 @@ export const OrderByNumberButton = ({ icon, label }: MenuButtonProps): React.JSX
       className="main-nav__list-btn"
       onClick={handleClick}
     >
-      <Icon value={icon} />
+      <Icon value={icon ?? ''} />
       {label || t('coreshop_order_by_number')}
     </button>
   )

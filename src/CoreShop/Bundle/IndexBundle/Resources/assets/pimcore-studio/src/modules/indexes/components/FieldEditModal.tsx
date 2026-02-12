@@ -88,9 +88,9 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
           objectKey: values.objectKey,
           name: values.name,
           getter: values.getter || null,
-          getterConfig: Object.keys(getterConfig).length > 0 ? getterConfig : null,
+          getterConfig: Object.keys(getterConfig).length > 0 ? getterConfig : undefined,
           interpreter: values.interpreter || null,
-          interpreterConfig: Object.keys(interpreterConfig).length > 0 ? interpreterConfig : null,
+          interpreterConfig: Object.keys(interpreterConfig).length > 0 ? interpreterConfig : undefined,
           columnType: values.columnType
         })
       }

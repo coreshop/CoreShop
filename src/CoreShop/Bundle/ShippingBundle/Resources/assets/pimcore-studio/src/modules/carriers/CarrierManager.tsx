@@ -57,7 +57,7 @@ export const CarrierManager: React.FC = () => {
             const res = await carrierApi.add({
               identifier: value.toLowerCase().replace(/\s+/g, '-')
             })
-            resolve(res.data.id)
+            resolve(res.data.id!)
           }
         })
       })}

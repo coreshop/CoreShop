@@ -18,9 +18,10 @@ export interface GroupedEntityTabbedManagerProps<TDetail extends Record<string, 
   applyGroup?: (data: TDetail, groupId: number | null) => TDetail
   buildDragInfo?: (item: EntityListItem) => DragAndDropInfo | null
   dragType?: string
+  leafIcon?: string
 }
 
-export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>({ api, loadGroups, resolveGroupId, getTitle, buildSavePayload, onAdd, renderDetail, leftExtras, localizable, applyGroup, buildDragInfo, dragType }: GroupedEntityTabbedManagerProps<TDetail>): React.JSX.Element {
+export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>({ api, loadGroups, resolveGroupId, getTitle, buildSavePayload, onAdd, renderDetail, leftExtras, localizable, applyGroup, buildDragInfo, dragType, leafIcon }: GroupedEntityTabbedManagerProps<TDetail>): React.JSX.Element {
   const [groups, setGroups] = React.useState<GroupItem[]>([])
   const didInitialLoad = React.useRef(false)
   const computedBuildDragInfo = React.useMemo(() => {
@@ -64,6 +65,7 @@ export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>(
           groups={ groups }
           items={ items }
           loading={ loading }
+          leafIcon={ leafIcon }
           buildDragInfo={ computedBuildDragInfo }
           dragType={ dragType }
           onMove={ async (id, targetGroupId) => {

@@ -47,8 +47,9 @@ const loadGatewayFactories = async (): Promise<GatewayFactory[]> => {
       }
 
       const data = await response.json()
-      cachedFactories = data.factories || []
-      return cachedFactories
+      const result = data.factories || []
+      cachedFactories = result
+      return result
     } catch (err) {
       console.error('Failed to load gateway factories:', err)
       throw err

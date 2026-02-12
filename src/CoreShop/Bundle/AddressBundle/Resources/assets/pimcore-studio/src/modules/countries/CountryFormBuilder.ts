@@ -52,7 +52,8 @@ export const createCountryFormBuilder = (): FormBuilder<CountryDetail> => {
       {
         name: 'active',
         label: 'active',
-        component: Switch
+        component: Switch,
+        valuePropName: 'checked'
       },
       {
         name: 'zone',

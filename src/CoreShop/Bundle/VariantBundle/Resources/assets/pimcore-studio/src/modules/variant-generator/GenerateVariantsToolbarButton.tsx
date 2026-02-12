@@ -13,8 +13,8 @@ import { Button } from 'antd'
 import { DataObjectContext, useDataObjectDraft } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
-import type { ResourceConfigProvider } from '@coreshop/resource/config'
-import { coreshopResourceServiceIds } from '@coreshop/resource/config'
+import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
+import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { VariantGeneratorModal } from './VariantGeneratorModal'
 
 // Module-level cache for variant-aware classes

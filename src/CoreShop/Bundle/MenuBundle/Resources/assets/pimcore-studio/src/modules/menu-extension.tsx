@@ -121,10 +121,10 @@ export const CoreShopMenuExtension = {
                 const buttonConfig = buttonRegistry.get(item.widgetButton);
 
                 if (buttonConfig) {
-                    navItem.button = ({ closeMainNav }: { closeMainNav?: () => void }) => React.createElement(buttonConfig.button, {
+                    navItem.button = (({ closeMainNav }: { closeMainNav: () => void }) => React.createElement(buttonConfig.button, {
                         icon: item.icon!,
                         closeMainNav,
-                    })
+                    })) as any
 
                     mainNavRegistry.registerMainNavItem(navItem)
                 }

@@ -11,8 +11,8 @@
  */
 
 import React from 'react'
-import { SaleManager } from './SaleManager'
+import { OrderList } from './OrderList'
 
 export const OrderManager: React.FC = () => {
-  return <SaleManager type="order" />
+  return <OrderList />
 }

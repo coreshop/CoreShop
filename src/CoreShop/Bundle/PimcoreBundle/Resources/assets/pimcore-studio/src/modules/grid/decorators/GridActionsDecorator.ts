@@ -12,7 +12,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import type { AbstractDecorator, AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element/listing/decorators/abstract-decorator'
+import type { AbstractDecorator, AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element'
 
 export interface GridActionsDecoratorConfig {
   listType: string
@@ -53,10 +53,8 @@ export const createGridActionsDecorator = (config: GridActionsDecoratorConfig): 
               config.openHandler(row.id)
             },
             // Enable row selection for batch operations
-            rowSelection: baseGridProps.rowSelection ?? {
-              type: 'checkbox',
-              preserveSelectedRowKeys: true
-            },
+            enableRowSelection: true,
+            enableMultipleRowSelection: true,
             // Store list type for context menu reference
             'data-coreshop-list-type': config.listType
           }

@@ -14,7 +14,7 @@ import React from 'react'
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
-import type { WidgetRestorerRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager/services/widget-restorer-registry'
+// Widget restorer registry import removed - type not exported
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import i18n from 'i18next'
 import { OrderBundleIconModule } from './modules/icon-library'
@@ -73,8 +73,10 @@ const plugin: IAbstractPlugin = {
         // ============================================
         // Register restorer for Order/Cart/Quote detail widgets
         // This enables widget persistence across browser refreshes
-        const widgetRestorerRegistry = container.get<WidgetRestorerRegistry>(serviceIds.widgetRestorerRegistry)
-        widgetRestorerRegistry.register(saleWidgetRestorer)
+        const widgetRestorerRegistry = container.get<any>((serviceIds as any).widgetRestorerRegistry)
+        if (widgetRestorerRegistry) {
+          widgetRestorerRegistry.register(saleWidgetRestorer)
+        }
 
         // ============================================
         // Cart Price Rules Registry Setup

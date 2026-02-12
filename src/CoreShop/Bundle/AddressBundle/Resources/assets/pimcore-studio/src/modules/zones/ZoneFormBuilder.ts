@@ -37,7 +37,8 @@ export const createZoneFormBuilder = (): FormBuilder<ZoneDetail> => {
       {
         name: 'active',
         label: 'active',
-        component: Switch
+        component: Switch,
+        valuePropName: 'checked'
       }
     ]
   })

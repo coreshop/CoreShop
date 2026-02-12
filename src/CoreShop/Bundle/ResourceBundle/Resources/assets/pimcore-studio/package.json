@@ -3,16 +3,6 @@
   "version": "1.0.0",
   "description": "CoreShop ResourceBundle - Pimcore Studio Plugin",
   "main": "src/index.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./entities": "./src/entities/index.ts",
-    "./entities/api": "./src/entities/api.ts",
-    "./entities/types": "./src/entities/types.ts",
-    "./entities/extensions": "./src/entities/extensions/index.ts",
-    "./entities/form-builder": "./src/entities/form-builder/index.ts",
-    "./config": "./src/config/index.ts",
-    "./utils": "./src/utils/index.ts"
-  },
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx ./src --fix",
