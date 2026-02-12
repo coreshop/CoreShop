@@ -119,7 +119,13 @@ final class FormSchemaGenerator
         }
 
         if ($uiType === null) {
-            // Last resort fallback
+            // Skip compound fields that no mapper can handle (e.g., conditions/actions
+            // collections) - these have dedicated rendering in their own tabs.
+            if ($field->getConfig()->getCompound()) {
+                return null;
+            }
+
+            // Last resort fallback for simple fields
             $uiType = new UiTypeDescriptor('input');
         }
 

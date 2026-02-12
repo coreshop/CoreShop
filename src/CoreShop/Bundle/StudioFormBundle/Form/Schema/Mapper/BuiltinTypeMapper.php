@@ -65,6 +65,7 @@ final class BuiltinTypeMapper implements FormTypeMapperInterface
     private function resolveWidget(FormInterface $field): ?string
     {
         $resolvedType = $field->getConfig()->getType();
+        $isDirectType = true;
 
         // Walk up the type hierarchy to find a matching mapper
         while ($resolvedType !== null) {
@@ -78,10 +79,13 @@ final class BuiltinTypeMapper implements FormTypeMapperInterface
                 return 'select';
             }
 
-            if ($typeName === CollectionType::class) {
+            // Only match CollectionType at the direct level, not through parent walking.
+            // Custom collection types (conditions, actions) have dedicated renderers.
+            if ($isDirectType && $typeName === CollectionType::class) {
                 return 'collection';
             }
 
+            $isDirectType = false;
             $resolvedType = $resolvedType->getParent();
         }
 
