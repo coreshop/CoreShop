@@ -12,7 +12,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { Input, InputNumber, Switch, Select } from 'antd'
+import { Input, InputNumber, Switch, Select, DatePicker, TimePicker, ColorPicker, Slider } from 'antd'
 import type { WidgetRegistry } from './WidgetRegistry'
 
 /**
@@ -94,5 +94,50 @@ export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
     extra: {
       hidden: true,
     },
+  }))
+
+  // Email input
+  registry.register('email', () => ({
+    component: Input,
+    props: { type: 'email' },
+  }))
+
+  // URL input
+  registry.register('url', () => ({
+    component: Input,
+    props: { type: 'url' },
+  }))
+
+  // Password input
+  registry.register('password', () => ({
+    component: Input.Password,
+  }))
+
+  // Date picker
+  registry.register('datePicker', () => ({
+    component: DatePicker,
+    props: { style: { width: '100%' } },
+  }))
+
+  // Date+time picker
+  registry.register('dateTimePicker', () => ({
+    component: DatePicker,
+    props: { showTime: true, style: { width: '100%' } },
+  }))
+
+  // Time picker
+  registry.register('timePicker', () => ({
+    component: TimePicker,
+    props: { style: { width: '100%' } },
+  }))
+
+  // Color picker
+  registry.register('colorPicker', () => ({
+    component: ColorPicker,
+  }))
+
+  // Range slider
+  registry.register('slider', () => ({
+    component: Slider,
   }))
 }

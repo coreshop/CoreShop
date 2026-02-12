@@ -22,13 +22,20 @@ use CoreShop\Bundle\StudioFormBundle\Form\Schema\UiTypeDescriptor;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\ResolvedFormTypeInterface;
 
 final class BuiltinTypeMapper implements FormTypeMapperInterface
 {
@@ -40,6 +47,14 @@ final class BuiltinTypeMapper implements FormTypeMapperInterface
         NumberType::class => 'inputNumber',
         CheckboxType::class => 'switch',
         HiddenType::class => 'hidden',
+        EmailType::class => 'email',
+        UrlType::class => 'url',
+        PasswordType::class => 'password',
+        DateType::class => 'datePicker',
+        DateTimeType::class => 'dateTimePicker',
+        TimeType::class => 'timePicker',
+        ColorType::class => 'colorPicker',
+        RangeType::class => 'slider',
     ];
 
     public function supports(FormInterface $field): bool

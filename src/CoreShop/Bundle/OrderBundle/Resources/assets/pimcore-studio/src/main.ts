@@ -22,9 +22,9 @@ import { DynamicTypeObjectDataCoreShopCartPriceRule } from './dynamic-types'
 import { SalesListingBuildersModule } from './modules/sales/listing-builders'
 import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
-import { AmountCondition, VoucherCondition, NotCombinableCondition } from './modules/cart-price-rules/conditions'
-import { SurchargePercentAction, SurchargeAmountAction, CartItemAction } from './modules/cart-price-rules/actions'
-import { DiscountAmountAction, DiscountPercentAction } from './modules/shared/rules/actions'
+import { createSchemaCondition, createSchemaAction } from '@coreshop/rule/src/rules/components'
+import { NotCombinableCondition } from './modules/cart-price-rules/conditions'
+import { CartItemAction } from './modules/cart-price-rules/actions'
 import { coreshopOrderServiceIds } from './modules/cart-price-rules/service-ids'
 import {
   OrderList,
@@ -95,18 +95,21 @@ const plugin: IAbstractPlugin = {
         const cartItemActionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry)
 
         // Register Cart Price Rule Conditions (OrderBundle-specific)
-        conditionRegistry.register('amount', AmountCondition)
-        conditionRegistry.register('voucher', VoucherCondition)
+        // Schema-based: form rendered dynamically from backend PHP form type
+        conditionRegistry.register('amount', createSchemaCondition('coreshop_cart_price_rule_condition_amount'))
+        conditionRegistry.register('voucher', createSchemaCondition('coreshop_cart_price_rule_condition_voucher'))
+        // Custom component: complex API-driven multi-select
         conditionRegistry.register('not_combinable', NotCombinableCondition)
 
         // Register Cart Price Rule Actions (OrderBundle-specific)
-        // Note: discountPercent and discountAmount are registered by CoreBundle (glue layer)
-        actionRegistry.register('surchargePercent', SurchargePercentAction)
-        actionRegistry.register('surchargeAmount', SurchargeAmountAction)
+        // Schema-based: form rendered dynamically from backend PHP form type
+        actionRegistry.register('surchargePercent', createSchemaAction('coreshop_cart_price_rule_action_surcharge_percent'))
+        actionRegistry.register('surchargeAmount', createSchemaAction('coreshop_cart_price_rule_action_surcharge_amount'))
+        // Custom component: nested conditions/actions
         actionRegistry.register('cartItemAction', CartItemAction)
 
-        // Register Cart Item Conditions
-        cartItemConditionRegistry.register('amount', AmountCondition)
+        // Register Cart Item Conditions (schema-based)
+        cartItemConditionRegistry.register('amount', createSchemaCondition('coreshop_cart_price_rule_condition_amount'))
 
         // Cart Item Actions are registered by CoreBundle (glue layer)
 
