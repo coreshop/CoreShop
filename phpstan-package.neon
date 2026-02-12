@@ -13,6 +13,18 @@ parameters:
         # Optional admin-ui-classic-bundle listeners
         - '**/EventListener/MenuAdminListener.php'
         - '**/EventListener/PimcoreAdminListener.php'
+        # Optional admin-ui-classic-bundle GridColumnConfig (causes internal error)
+        - '**/Pimcore/GridColumnConfig/ResourceFieldGetter.php'
+        # StorageListBundle Core files depend on optional CoreBundle/StoreComponent/CustomerComponent
+        - '**/Core/EventListener/SessionStoreStorageListSubscriber.php'
+        - '**/Core/EventListener/SessionStoreStorageListLogoutSubscriber.php'
+        - '**/Core/EventListener/StorageListBlamerListener.php'
+        - '**/Core/Context/CustomerAndStoreBasedStorageListContext.php'
+        - '**/Core/Context/SessionAndStoreBasedStorageListContext.php'
+        - '**/Core/Context/StoreBasedStorageListContext.php'
+        - '**/Core/Provider/CoreContextProvider.php'
+        - '**/Core/Storage/SessionStorageListStorage.php'
+        - '**/Core/Repository/CustomerAndStoreAwareRepositoryInterface.php'
 
     ignoreErrors:
         # Magic calls
@@ -46,6 +58,9 @@ parameters:
 
         # Optional pimcore/admin-ui-classic-bundle dependency
         - '/class Pimcore\\Bundle\\AdminBundle\\/'
+
+        # Optional pimcore/studio-backend-bundle dependency
+        - '/class Pimcore\\Bundle\\StudioBackendBundle\\/'
 
 includes:
     - ./vendor/phpstan/phpstan-doctrine/extension.neon

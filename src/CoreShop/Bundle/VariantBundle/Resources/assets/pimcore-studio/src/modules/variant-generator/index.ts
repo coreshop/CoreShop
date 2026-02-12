@@ -6,6 +6,6 @@
  */
 
 export { VariantGeneratorModal } from './VariantGeneratorModal'
-export { useGenerateVariantsMenuItem } from './useGenerateVariantsMenuItem'
+export { GenerateVariantsToolbarButton } from './GenerateVariantsToolbarButton'
 export { variantGeneratorApi } from './api'
 export type { AttributeNode, AttributesResponse, GenerateResponse } from './api'

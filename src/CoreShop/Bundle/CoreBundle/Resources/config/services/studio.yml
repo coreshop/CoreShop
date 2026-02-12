@@ -22,26 +22,31 @@ services:
   # - pimcore.studio_backend.search_index.data_object.filter (for applying the filter)
   # - coreshop.studio.grid.filter (for listing available filters in the API)
   CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedTodayFilter:
+    autowire: true
     tags:
       - { name: pimcore.studio_backend.search_index.data_object.filter }
       - { name: coreshop.studio.grid.filter, type: coreshop_created_today }
 
   CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisWeekFilter:
+    autowire: true
     tags:
       - { name: pimcore.studio_backend.search_index.data_object.filter }
       - { name: coreshop.studio.grid.filter, type: coreshop_created_this_week }
 
   CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisMonthFilter:
+    autowire: true
     tags:
       - { name: pimcore.studio_backend.search_index.data_object.filter }
       - { name: coreshop.studio.grid.filter, type: coreshop_created_this_month }
 
   CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisYearFilter:
+    autowire: true
     tags:
       - { name: pimcore.studio_backend.search_index.data_object.filter }
       - { name: coreshop.studio.grid.filter, type: coreshop_created_this_year }
 
   CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedLastYearFilter:
+    autowire: true
     tags:
       - { name: pimcore.studio_backend.search_index.data_object.filter }
       - { name: coreshop.studio.grid.filter, type: coreshop_created_last_year }

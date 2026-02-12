@@ -27,6 +27,103 @@ interface BuildResult {
   error?: string
 }
 
+/**
+ * Get the list of bundles changed since the base branch.
+ * Returns null if all bundles should be built (e.g. root config changed).
+ */
+function getChangedBundles(plugins: Plugin[]): Plugin[] | null {
+  // Detect base branch from environment or default
+  const baseBranch = process.env.GITHUB_BASE_REF || process.env.BASE_BRANCH || 'master'
+
+  let changedFiles: string[]
+  try {
+    const result = execSync(`git diff --name-only origin/${baseBranch}...HEAD`, {
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe']
+    })
+    changedFiles = result.trim().split('\n').filter(Boolean)
+  } catch {
+    // If git diff fails (e.g. shallow clone, no remote), build everything
+    console.log('Could not determine changed files, building all bundles')
+    return null
+  }
+
+  if (changedFiles.length === 0) {
+    return []
+  }
+
+  // If root build config changed, rebuild everything
+  const rootConfigFiles = [
+    'rsbuild.template.config.ts',
+    'rsbuild.studio.config.ts',
+    'rsbuild.config.ts',
+    'package.json',
+    'package-lock.json',
+    'tsconfig.json',
+    'studio-build.ts'
+  ]
+  if (changedFiles.some(f => rootConfigFiles.includes(f))) {
+    console.log('Root config changed, building all bundles')
+    return null
+  }
+
+  // Map changed files to affected bundles
+  const changedBundleNames = new Set<string>()
+  for (const file of changedFiles) {
+    const match = file.match(/^src\/CoreShop\/Bundle\/(\w+Bundle)\//)
+    if (match) {
+      changedBundleNames.add(match[1])
+    }
+  }
+
+  if (changedBundleNames.size === 0) {
+    return []
+  }
+
+  // Expand dependency graph: if a dependency changed, dependents must rebuild too
+  // Build a map of bundle -> its file: dependencies from package.json
+  const bundleDeps = new Map<string, string[]>()
+  for (const plugin of plugins) {
+    const pkgPath = path.resolve(__dirname, plugin.path, 'package.json')
+    try {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
+      const deps = Object.values({ ...pkg.dependencies, ...pkg.devDependencies }) as string[]
+      const fileDeps: string[] = []
+      for (const dep of deps) {
+        if (typeof dep === 'string' && dep.startsWith('file:')) {
+          // Extract bundle name from file: path like "file:../../ResourceBundle/Resources/assets/pimcore-studio"
+          const depMatch = dep.match(/(\w+Bundle)\/Resources\/assets\/pimcore-studio/)
+          if (depMatch) {
+            fileDeps.push(depMatch[1])
+          }
+        }
+      }
+      bundleDeps.set(plugin.name, fileDeps)
+    } catch {
+      // If package.json can't be read, no deps
+    }
+  }
+
+  // Iteratively expand: if any dependency is in changedBundleNames, add the dependent
+  let expanded = true
+  while (expanded) {
+    expanded = false
+    for (const [bundle, deps] of bundleDeps) {
+      if (!changedBundleNames.has(bundle)) {
+        for (const dep of deps) {
+          if (changedBundleNames.has(dep)) {
+            changedBundleNames.add(bundle)
+            expanded = true
+            break
+          }
+        }
+      }
+    }
+  }
+
+  return plugins.filter(p => changedBundleNames.has(p.name))
+}
+
 // Color codes for console output
 const colors = {
   reset: '\x1b[0m',
@@ -94,7 +191,8 @@ const bundlePortMap = {
   'shipping': 3017,
   'store': 3018,
   'taxation': 3019,
-  'user': 3020
+  'user': 3020,
+  'variant': 3021
 };
 
 function log(message, color = colors.reset) {
@@ -167,6 +265,7 @@ async function buildPlugin(plugin) {
     const buildEnv = {
       ...process.env,
       CORESHOP_BUNDLE_NAME: bundleName,
+      CORESHOP_BUNDLE_DIR: plugin.name.replace(/Bundle$/, ''),
       CORESHOP_BUILD_ID: require('uuid').v4()
     };
     
@@ -243,24 +342,44 @@ async function main() {
       }
     }
   } else if (command === 'build') {
-    log('Building all plugins in parallel...', colors.yellow);
-    log(`Found ${plugins.length} bundles to build concurrently`, colors.cyan);
-    
+    const changedOnly = args.includes('--changed-only');
+    let buildPlugins = plugins;
+
+    if (changedOnly) {
+      const changed = getChangedBundles(plugins);
+      if (changed !== null) {
+        buildPlugins = changed;
+        if (buildPlugins.length === 0) {
+          log('No bundles changed, nothing to build.', colors.green);
+          process.exit(0);
+        }
+        log(`Building ${buildPlugins.length} changed bundle(s): ${buildPlugins.map(p => p.name.replace('Bundle', '')).join(', ')}`, colors.yellow);
+      } else {
+        log('Building all plugins in parallel...', colors.yellow);
+      }
+    } else {
+      log('Building all plugins in parallel...', colors.yellow);
+    }
+
+    log(`Found ${buildPlugins.length} bundles to build concurrently`, colors.cyan);
+
     // Build all plugins in parallel using concurrently for better output management
-    const commands = plugins.map(plugin => {
+    const commands = buildPlugins.map(plugin => {
       const bundleName = plugin.name.replace(/Bundle$/, '').toLowerCase();
+      const bundleDir = plugin.name.replace(/Bundle$/, '');
       const buildId = require('uuid').v4();
-      
-      return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUILD_ID=${buildId} rsbuild build --config rsbuild.studio.config.ts`;
+
+      return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_BUILD_ID=${buildId} rsbuild build --config rsbuild.studio.config.ts`;
     });
-    
-    const names = plugins.map(plugin => plugin.name.replace('Bundle', '')).join(',');
+
+    const names = buildPlugins.map(plugin => plugin.name.replace('Bundle', '')).join(',');
     const colorNames = ['blue', 'green', 'magenta', 'cyan', 'yellow', 'red']
-      .slice(0, Math.min(plugins.length, 6)).join(',');
-    
-    // Use concurrently for parallel builds with colored output
-    const concurrentlyCmd = `npx concurrently ${commands.map(cmd => `"${cmd}"`).join(' ')} --names "${names}" --prefix-colors "${colorNames}" --kill-others-on-fail --max-processes ${plugins.length}`;
-    
+      .slice(0, Math.min(buildPlugins.length, 6)).join(',');
+
+    // Use concurrently directly (already in devDependencies, no npx overhead)
+    const concurrentlyBin = path.resolve(__dirname, 'node_modules/.bin/concurrently');
+    const concurrentlyCmd = `${concurrentlyBin} ${commands.map(cmd => `"${cmd}"`).join(' ')} --names "${names}" --prefix-colors "${colorNames}" --kill-others-on-fail --max-processes ${buildPlugins.length}`;
+
     try {
       await runCommand(concurrentlyCmd, __dirname);
       log('\n🎉 All bundles built successfully!', colors.green);
@@ -309,17 +428,19 @@ async function main() {
       // Build concurrently command using template config with fixed ports
       const commands = validPlugins.map(plugin => {
         const bundleName = plugin.name.replace(/Bundle$/, '').toLowerCase();
+        const bundleDir = plugin.name.replace(/Bundle$/, '');
         const port = bundlePortMap[bundleName] || 3000;
-        
-        return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_DEV_PORT=${port} NODE_ENV=dev-server rsbuild dev --config rsbuild.studio.config.ts`;
+
+        return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_DEV_PORT=${port} NODE_ENV=dev-server rsbuild dev --config rsbuild.studio.config.ts`;
       });
       
       const names = validPlugins.map(plugin => plugin.name.replace('Bundle', '')).join(',');
       const colorNames = ['blue', 'green', 'magenta', 'cyan', 'yellow', 'red']
         .slice(0, Math.min(validPlugins.length, 6)).join(',');
       
-      // Use concurrently to run all dev servers in parallel with optimized settings
-      const concurrentlyCmd = `npx concurrently ${commands.map(cmd => `"${cmd}"`).join(' ')} --names "${names}" --prefix-colors "${colorNames}" --kill-others-on-fail --restart-tries 2 --max-processes ${validPlugins.length}`;
+      // Use concurrently directly (already in devDependencies, no npx overhead)
+      const concurrentlyBin = path.resolve(__dirname, 'node_modules/.bin/concurrently');
+      const concurrentlyCmd = `${concurrentlyBin} ${commands.map(cmd => `"${cmd}"`).join(' ')} --names "${names}" --prefix-colors "${colorNames}" --kill-others-on-fail --restart-tries 2 --max-processes ${validPlugins.length}`;
       
       try {
         await runCommand(concurrentlyCmd, __dirname);
@@ -357,6 +478,7 @@ async function main() {
         const devEnv = {
           ...process.env,
           CORESHOP_BUNDLE_NAME: bundleName,
+          CORESHOP_BUNDLE_DIR: plugin.name.replace(/Bundle$/, ''),
           CORESHOP_DEV_PORT: port.toString(),
           NODE_ENV: 'dev-server'
         };

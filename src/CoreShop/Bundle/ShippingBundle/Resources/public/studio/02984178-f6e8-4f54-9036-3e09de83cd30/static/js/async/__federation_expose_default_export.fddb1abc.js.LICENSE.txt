@@ -1,0 +1,173 @@
+/**
+ * CoreShop CoreBundle Studio Plugin
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop Form Builder
+ *
+ * Builder class for composable, decorator-based form configuration.
+ * Inspired by Pimcore Studio's ListingBuilder pattern.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop Form Builder
+ *
+ * Exports for the Form Builder system.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop Form Builder - Dynamic Form Component
+ *
+ * Renders a form based on FormBuilderConfig.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop OrderBundle Studio Plugin
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop PaymentBundle Studio Plugin
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop PimcoreBundle Studio Plugin
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop RuleBundle Studio Plugin
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop ShippingBundle - Carrier Form Builder
+ *
+ * Base form builder for Carrier entities.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop ShippingBundle - Shipping Rule Select Component
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop ShippingBundle - ShippingRule Form Builder
+ *
+ * Base form builder for ShippingRule entities.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop ShippingBundle Icon Library
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop ShippingBundle Studio Plugin
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop ShippingBundle Studio Plugin
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
