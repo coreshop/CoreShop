@@ -39,7 +39,8 @@
       "src/CoreShop/Bundle/ShippingBundle/Resources/assets/pimcore-studio",
       "src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio",
       "src/CoreShop/Bundle/TaxationBundle/Resources/assets/pimcore-studio",
-      "src/CoreShop/Bundle/UserBundle/Resources/assets/pimcore-studio"
+      "src/CoreShop/Bundle/UserBundle/Resources/assets/pimcore-studio",
+      "src/CoreShop/Bundle/VariantBundle/Resources/assets/pimcore-studio"
     ]
   },
   "devDependencies": {
