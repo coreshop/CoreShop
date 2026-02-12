@@ -46,10 +46,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "🚀 Build CoreShop Studio bundles
+          git commit -m "🚀 Build CoreShop Studio bundles [skip ci]
 
           🤖 Generated with [GitHub Actions](https://github.com/coreshop/CoreShop/actions)
-          
+
           Co-Authored-By: GitHub Action <action@github.com>"
           
       - name: Push changes
