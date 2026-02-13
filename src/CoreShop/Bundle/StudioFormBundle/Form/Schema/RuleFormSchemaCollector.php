@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StudioFormBundle\Form\Schema;
 
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+
 final class RuleFormSchemaCollector
 {
     public function __construct(
@@ -25,17 +27,23 @@ final class RuleFormSchemaCollector
     }
 
     /**
-     * Collect schemas for a map of type name to form type class.
+     * Collect schemas for all given type names using a FormTypeRegistry.
      *
-     * @param array<string, string> $formTypeMap Map of type name => form type FQCN
+     * @param string[] $typeNames Type names to collect schemas for
      *
      * @return array<string, FormSchema> Map of type name to FormSchema
      */
-    public function collectSchemas(array $formTypeMap): array
+    public function collectSchemas(FormTypeRegistryInterface $formTypeRegistry, array $typeNames): array
     {
         $schemas = [];
 
-        foreach ($formTypeMap as $typeName => $formTypeClass) {
+        foreach ($typeNames as $typeName) {
+            if (!$formTypeRegistry->has($typeName, 'default')) {
+                continue;
+            }
+
+            $formTypeClass = $formTypeRegistry->get($typeName, 'default');
+
             try {
                 $schemas[$typeName] = $this->generator->generate($formTypeClass);
             } catch (\Throwable) {

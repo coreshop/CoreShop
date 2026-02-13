@@ -18,18 +18,26 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\NotificationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class NotificationRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request, RuleFormSchemaCollector $schemaCollector): Response
-    {
+    public function getConfigAction(
+        Request $request,
+        RuleFormSchemaCollector $schemaCollector,
+        #[Autowire(service: 'coreshop.form_registry.notification_rule.conditions')]
+        FormTypeRegistryInterface $conditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.notification_rule.actions')]
+        FormTypeRegistryInterface $actionFormRegistry,
+    ): Response {
         $conditions = [];
         $actions = [];
         $schemas = [];
@@ -68,7 +76,12 @@ class NotificationRuleController extends ResourceController
                     $actions[$type] = [];
                 }
 
-                $actions[$type] = array_merge($actions[$type], array_keys($this->getParameter($actionParameter)));
+                $typeActions = array_keys($this->getParameter($actionParameter));
+                $actions[$type] = array_merge($actions[$type], $typeActions);
+
+                // Main registry uses compound keys: {notificationType}.{actionName}
+                $compoundKeys = array_map(static fn (string $name) => $type . '.' . $name, $typeActions);
+                $schemas = array_merge($schemas, $schemaCollector->collectSchemas($actionFormRegistry, $compoundKeys));
             }
 
             if ($parameterBag->has($conditionParameter)) {
@@ -76,19 +89,12 @@ class NotificationRuleController extends ResourceController
                     $conditions[$type] = [];
                 }
 
-                $conditions[$type] = array_merge($conditions[$type], array_keys($this->getParameter($conditionParameter)));
-            }
+                $typeConditions = array_keys($this->getParameter($conditionParameter));
+                $conditions[$type] = array_merge($conditions[$type], $typeConditions);
 
-            // Collect schemas for this notification type
-            $actionFormTypesParam = $actionParameter . '.form_types';
-            $conditionFormTypesParam = $conditionParameter . '.form_types';
-
-            if ($parameterBag->has($actionFormTypesParam)) {
-                $schemas = array_merge($schemas, $schemaCollector->collectSchemas($this->getParameter($actionFormTypesParam)));
-            }
-
-            if ($parameterBag->has($conditionFormTypesParam)) {
-                $schemas = array_merge($schemas, $schemaCollector->collectSchemas($this->getParameter($conditionFormTypesParam)));
+                // Main registry uses compound keys: {notificationType}.{conditionName}
+                $compoundKeys = array_map(static fn (string $name) => $type . '.' . $name, $typeConditions);
+                $schemas = array_merge($schemas, $schemaCollector->collectSchemas($conditionFormRegistry, $compoundKeys));
             }
         }
 

@@ -42,7 +42,6 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
         $formRegistry = $container->getDefinition($this->formRegistry);
 
         $map = [];
-        $formTypeMap = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             foreach ($attributes as $tag) {
                 $definition = $container->findDefinition($id);
@@ -59,13 +58,10 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
                     $formRegistry
                         ->addMethodCall('add', [$tag['type'], 'default', $tag['form-type']])
                     ;
-
-                    $formTypeMap[$tag['type']] = $tag['form-type'];
                 }
             }
         }
 
         $container->setParameter($this->parameter, $map);
-        $container->setParameter($this->parameter . '.form_types', $formTypeMap);
     }
 }

@@ -18,26 +18,31 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductPriceRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request, RuleFormSchemaCollector $schemaCollector): Response
-    {
+    public function getConfigAction(
+        Request $request,
+        RuleFormSchemaCollector $schemaCollector,
+        #[Autowire(service: 'coreshop.form_registry.product_price_rule.conditions')]
+        FormTypeRegistryInterface $conditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.product_price_rule.actions')]
+        FormTypeRegistryInterface $actionFormRegistry,
+    ): Response {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
-
-        $conditionFormTypes = $this->getParameter('coreshop.product_price_rule.conditions.form_types');
-        $actionFormTypes = $this->getParameter('coreshop.product_price_rule.actions.form_types');
 
         return $this->viewHandler->handle([
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
             'schemas' => array_merge(
-                $schemaCollector->collectSchemas($conditionFormTypes),
-                $schemaCollector->collectSchemas($actionFormTypes),
+                $schemaCollector->collectSchemas($conditionFormRegistry, array_keys($conditions)),
+                $schemaCollector->collectSchemas($actionFormRegistry, array_keys($actions)),
             ),
         ]);
     }

@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherGeneratorType;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
@@ -29,6 +30,7 @@ use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,18 +49,23 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
-    public function getConfigAction(Request $request, RuleFormSchemaCollector $schemaCollector): JsonResponse
-    {
+    public function getConfigAction(
+        Request $request,
+        RuleFormSchemaCollector $schemaCollector,
+        #[Autowire(service: 'coreshop.form_registry.cart_price_rule.conditions')]
+        FormTypeRegistryInterface $conditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_price_rule.actions')]
+        FormTypeRegistryInterface $actionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_item_price_rule.conditions')]
+        FormTypeRegistryInterface $itemConditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_item_price_rule.actions')]
+        FormTypeRegistryInterface $itemActionFormRegistry,
+    ): JsonResponse {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
         $itemActions = $this->getCartItemConfigActions();
         $itemConditions = $this->getCartItemConfigConditions();
-
-        $conditionFormTypes = $this->getParameter('coreshop.cart_price_rule.conditions.form_types');
-        $actionFormTypes = $this->getParameter('coreshop.cart_price_rule.actions.form_types');
-        $itemConditionFormTypes = $this->getParameter('coreshop.cart_item_price_rule.conditions.form_types');
-        $itemActionFormTypes = $this->getParameter('coreshop.cart_item_price_rule.actions.form_types');
 
         return $this->viewHandler->handle([
             'actions' => array_keys($actions),
@@ -66,10 +73,10 @@ class CartPriceRuleController extends ResourceController
             'itemActions' => array_keys($itemActions),
             'itemConditions' => array_keys($itemConditions),
             'schemas' => array_merge(
-                $schemaCollector->collectSchemas($conditionFormTypes),
-                $schemaCollector->collectSchemas($actionFormTypes),
-                $schemaCollector->collectSchemas($itemConditionFormTypes),
-                $schemaCollector->collectSchemas($itemActionFormTypes),
+                $schemaCollector->collectSchemas($conditionFormRegistry, array_keys($conditions)),
+                $schemaCollector->collectSchemas($actionFormRegistry, array_keys($actions)),
+                $schemaCollector->collectSchemas($itemConditionFormRegistry, array_keys($itemConditions)),
+                $schemaCollector->collectSchemas($itemActionFormRegistry, array_keys($itemActions)),
             ),
         ]);
     }
