@@ -14,8 +14,8 @@ services:
     # Block Prefix Registry (auto-populated by RegisterStudioFormTypesPass)
     CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry:
         arguments:
-            - '@form.registry'
-            - []
+            $formRegistry: '@form.registry'
+            $formTypeClasses: []
 
     # Translations Type Mapper (handles coreshop_translations compound fields)
     CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\TranslationsTypeMapper:
