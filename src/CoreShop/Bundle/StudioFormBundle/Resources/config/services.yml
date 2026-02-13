@@ -23,5 +23,3 @@ services:
         arguments:
             - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator'
             - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry'
-        tags:
-            - { name: container.service_subscriber }

@@ -19,12 +19,11 @@ namespace CoreShop\Bundle\StudioFormBundle\Controller;
 
 use CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry;
 use CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class FormSchemaController extends AbstractController
+final class FormSchemaController
 {
     public function __construct(
         private readonly FormSchemaGenerator $generator,
