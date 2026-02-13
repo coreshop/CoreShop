@@ -22,6 +22,11 @@ services:
         tags:
             - { name: coreshop_studio_form.type_mapper, priority: 10 }
 
+    # Autocomplete Type Mapper
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\AutocompleteTypeMapper:
+        tags:
+            - { name: coreshop_studio_form.type_mapper, priority: 5 }
+
     # Builtin Type Mapper
     CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\BuiltinTypeMapper:
         tags:

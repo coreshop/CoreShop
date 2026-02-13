@@ -96,30 +96,6 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\CoreBundle\Form\Type\CategoryChoiceType:
-        arguments:
-            - '@coreshop.repository.category'
-        tags:
-            - { name: form.type }
-
-    CoreShop\Bundle\CoreBundle\Form\Type\ProductChoiceType:
-        arguments:
-            - '@coreshop.repository.product'
-        tags:
-            - { name: form.type }
-
-    CoreShop\Bundle\CoreBundle\Form\Type\CustomerChoiceType:
-        arguments:
-            - '@coreshop.repository.customer'
-        tags:
-            - { name: form.type }
-
-    CoreShop\Bundle\CoreBundle\Form\Type\CustomerGroupChoiceType:
-        arguments:
-            - '@coreshop.repository.customer_group'
-        tags:
-            - { name: form.type }
-
     CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType:
         arguments:
             - '%coreshop.form.type.shipping_rule.action.price.validation_groups%'

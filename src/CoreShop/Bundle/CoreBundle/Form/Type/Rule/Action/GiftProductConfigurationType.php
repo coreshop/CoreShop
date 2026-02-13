@@ -17,15 +17,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action;
 
+use CoreShop\Bundle\StudioFormBundle\Form\Type\AutocompleteType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class GiftProductConfigurationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('product', IntegerType::class);
+        $builder->add('product', AutocompleteType::class, [
+            'autocomplete_class' => 'CoreShopProduct',
+        ]);
     }
 
     public function getBlockPrefix(): string

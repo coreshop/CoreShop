@@ -209,3 +209,9 @@ coreshop_admin_customer_company_name_duplication_check:
         _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::checkForNameDuplicatesAction
     options:
         expose: true
+
+coreshop_studio_object_search:
+    path: /pimcore-studio/api/coreshop/object-search
+    defaults:
+        _controller: CoreShop\Bundle\CoreBundle\Controller\ObjectSearchController::searchAction
+    methods: [GET]

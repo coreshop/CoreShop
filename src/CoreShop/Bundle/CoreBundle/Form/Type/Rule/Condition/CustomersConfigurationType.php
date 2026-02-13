@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\CoreBundle\Form\Type\CustomerChoiceType;
+use CoreShop\Bundle\StudioFormBundle\Form\Type\AutocompleteType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -26,7 +26,8 @@ final class CustomersConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('customers', CustomerChoiceType::class, [
+            ->add('customers', AutocompleteType::class, [
+                'autocomplete_class' => 'CoreShopCustomer',
                 'multiple' => true,
             ])
         ;

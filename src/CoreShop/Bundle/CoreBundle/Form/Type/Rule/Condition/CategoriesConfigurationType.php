@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\CoreBundle\Form\Type\CategoryChoiceType;
+use CoreShop\Bundle\StudioFormBundle\Form\Type\AutocompleteType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +27,8 @@ final class CategoriesConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('categories', CategoryChoiceType::class, [
+            ->add('categories', AutocompleteType::class, [
+                'autocomplete_class' => 'CoreShopCategory',
                 'multiple' => true,
             ])
             ->add('recursive', CheckboxType::class)
