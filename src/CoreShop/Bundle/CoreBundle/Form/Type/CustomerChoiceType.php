@@ -15,23 +15,20 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type;
+namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class CarrierChoiceType extends AbstractType
+final class CustomerChoiceType extends AbstractType
 {
     public function __construct(
-        private RepositoryInterface $carrierRepository,
+        private RepositoryInterface $customerRepository,
     ) {
     }
 
@@ -47,39 +44,53 @@ final class CarrierChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
-                    /**
-                     * @var CarrierInterface[] $carriers
-                     */
-                    $carriers = $this->carrierRepository->findAll();
+                    $customers = $this->customerRepository->findAll();
 
-                    usort($carriers, function (CarrierInterface $a, CarrierInterface $b): int {
-                        return $a->getIdentifier() <=> $b->getIdentifier();
+                    usort($customers, function (object $a, object $b): int {
+                        $labelA = $this->getCustomerLabel($a);
+                        $labelB = $this->getCustomerLabel($b);
+
+                        return $labelA <=> $labelB;
                     });
 
-                    return $carriers;
+                    return $customers;
                 },
                 'choice_value' => 'id',
-                'choice_label' => 'identifier',
+                'choice_label' => function (object $entity): string {
+                    return $this->getCustomerLabel($entity);
+                },
                 'choice_translation_domain' => false,
-                'active' => true,
             ])
         ;
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options): void
+    private function getCustomerLabel(object $entity): string
     {
-        parent::buildView($view, $form, $options);
+        $parts = [];
 
-        $description = [];
-        $carriers = $form->getConfig()->getOption('choices');
-        foreach ($carriers as $carrier) {
-            if (!empty($carrier->getDescription())) {
-                $description[$carrier->getId()] = $carrier->getDescription();
-            }
+        if (method_exists($entity, 'getFirstname') && $entity->getFirstname()) {
+            $parts[] = $entity->getFirstname();
         }
-        $view->vars = array_merge($view->vars, [
-            'choices_description' => $description,
-        ]);
+
+        if (method_exists($entity, 'getLastname') && $entity->getLastname()) {
+            $parts[] = $entity->getLastname();
+        }
+
+        if (!empty($parts)) {
+            $name = implode(' ', $parts);
+
+            if (method_exists($entity, 'getEmail') && $entity->getEmail()) {
+                return $name . ' (' . $entity->getEmail() . ')';
+            }
+
+            return $name;
+        }
+
+        if (method_exists($entity, 'getEmail') && $entity->getEmail()) {
+            return $entity->getEmail();
+        }
+
+        return '#' . $entity->getId();
     }
 
     public function getParent(): string
@@ -89,6 +100,6 @@ final class CarrierChoiceType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_carrier_choice';
+        return 'coreshop_customer_choice';
     }
 }

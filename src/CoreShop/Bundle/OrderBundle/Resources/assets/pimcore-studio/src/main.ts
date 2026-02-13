@@ -23,7 +23,6 @@ import { SalesListingBuildersModule } from './modules/sales/listing-builders'
 import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { createSchemaCondition, createSchemaAction } from '@coreshop/rule/src/rules/components'
-import { NotCombinableCondition } from './modules/cart-price-rules/conditions'
 import { CartItemAction } from './modules/cart-price-rules/actions'
 import { coreshopOrderServiceIds } from './modules/cart-price-rules/service-ids'
 import {
@@ -98,8 +97,8 @@ const plugin: IAbstractPlugin = {
         // Schema-based: form rendered dynamically from backend PHP form type
         conditionRegistry.register('amount', createSchemaCondition('coreshop_cart_price_rule_condition_amount'))
         conditionRegistry.register('voucher', createSchemaCondition('coreshop_cart_price_rule_condition_voucher'))
-        // Custom component: complex API-driven multi-select
-        conditionRegistry.register('not_combinable', NotCombinableCondition)
+        // Schema-based: form rendered dynamically from backend PHP form type
+        conditionRegistry.register('not_combinable', createSchemaCondition('coreshop_cart_price_rule_condition_not_combinable'))
 
         // Register Cart Price Rule Actions (OrderBundle-specific)
         // Schema-based: form rendered dynamically from backend PHP form type

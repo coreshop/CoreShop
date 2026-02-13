@@ -16,9 +16,8 @@ import { type WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-ma
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { PaymentBundleIconModule } from './modules/icon-library'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
+import { createSchemaCondition, createSchemaAction } from '@coreshop/rule/src/rules/components'
 import { coreshopPaymentServiceIds } from './modules/payment-provider-rules/service-ids'
-import { AmountCondition, PaymentProviderRuleCondition } from './modules/payment-provider-rules/conditions'
-import { AdditionPercentAction, AdditionAmountAction, DiscountPercentAction, PaymentProviderRuleAction, PriceAction } from './modules/payment-provider-rules/actions'
 import { PaymentProviderManager } from './modules/payment-providers/PaymentProviderManager'
 import { PaymentProviderRuleManager } from './modules/payment-provider-rules/PaymentProviderRuleManager'
 import { GatewayRegistry, PayPalExpressCheckoutConfigurator, SofortConfigurator } from './modules/payment-providers/gateways'
@@ -61,15 +60,15 @@ const plugin: IAbstractPlugin = {
     )
 
     // Register PaymentBundle-specific conditions
-    conditionRegistry.register('amount', AmountCondition)
-    conditionRegistry.register('paymentProviderRule', PaymentProviderRuleCondition)
+    conditionRegistry.register('amount', createSchemaCondition('coreshop_payment_provider_rule_condition_amount'))
+    conditionRegistry.register('paymentProviderRule', createSchemaCondition('coreshop_payment_provider_rule_condition_payment_provider_rule'))
 
     // Register PaymentBundle-specific actions
-    actionRegistry.register('additionPercent', AdditionPercentAction)
-    actionRegistry.register('additionAmount', AdditionAmountAction)
-    actionRegistry.register('discountPercent', DiscountPercentAction)
-    actionRegistry.register('paymentProviderRule', PaymentProviderRuleAction)
-    actionRegistry.register('price', PriceAction)
+    actionRegistry.register('additionPercent', createSchemaAction('coreshop_payment_provider_rule_action_addition_percent'))
+    actionRegistry.register('additionAmount', createSchemaAction('coreshop_shipping_rule_action_addition_amount'))
+    actionRegistry.register('discountPercent', createSchemaAction('coreshop_payment_provider_rule_action_discount_percent'))
+    actionRegistry.register('paymentProviderRule', createSchemaAction('coreshop_payment_provider_rule_condition_payment_provider_rule'))
+    actionRegistry.register('price', createSchemaAction('coreshop_payment_provider_rule_action_price'))
 
     // ============================================
     // Gateway Configurator Registry Setup

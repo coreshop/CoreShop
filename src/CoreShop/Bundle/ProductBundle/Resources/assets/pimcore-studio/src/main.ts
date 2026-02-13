@@ -22,9 +22,9 @@ import {
     DynamicTypeObjectDataCoreShopProductSpecificPriceRules
 } from './dynamic-types'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
+import { createSchemaCondition, createSchemaAction } from '@coreshop/rule/src/rules/components'
 import { coreshopProductServiceIds } from './modules/product-price-rules/service-ids'
-import { NestedCondition, TimespanCondition, WeightCondition } from './modules/product-price-rules/conditions'
-import { DiscountAmountAction, DiscountPercentAction, PriceAction, DiscountPriceAction, EmptyAction } from './modules/product-price-rules/actions'
+import { NestedCondition, WeightCondition } from './modules/product-price-rules/conditions'
 import { ProductPriceRuleManager } from './modules/product-price-rules/ProductPriceRuleManager'
 import { ProductUnitManager } from './modules/product-units/ProductUnitManager'
 
@@ -53,15 +53,15 @@ const plugin: IAbstractPlugin = {
 
         // Register Product Price Rule Conditions (ProductBundle-specific)
         conditionRegistry.register('nested', NestedCondition)
-        conditionRegistry.register('timespan', TimespanCondition)
+        conditionRegistry.register('timespan', createSchemaCondition('coreshop_product_price_rule_condition_timespan'))
         conditionRegistry.register('weight', WeightCondition)
 
         // Register Product Price Rule Actions (ProductBundle-specific)
-        actionRegistry.register('discountAmount', DiscountAmountAction)
-        actionRegistry.register('discountPercent', DiscountPercentAction)
-        actionRegistry.register('price', PriceAction)
-        actionRegistry.register('discountPrice', DiscountPriceAction)
-        actionRegistry.register('notDiscountableCustomAttributes', EmptyAction)
+        actionRegistry.register('discountAmount', createSchemaAction('coreshop_product_price_rule_action_discount_amount'))
+        actionRegistry.register('discountPercent', createSchemaAction('coreshop_product_price_rule_action_discount_percent'))
+        actionRegistry.register('price', createSchemaAction('coreshop_product_price_rule_action_price'))
+        actionRegistry.register('discountPrice', createSchemaAction('coreshop_product_price_rule_action_price'))
+        actionRegistry.register('notDiscountableCustomAttributes', createSchemaAction('coreshop_rule_empty'))
 
         // Register ProductSpecificPriceRule registries as singleton services
         container.bind(coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry).to(ConditionRegistry).inSingletonScope()
@@ -73,15 +73,15 @@ const plugin: IAbstractPlugin = {
 
         // Register Product Specific Price Rule Conditions (same as ProductPriceRules)
         specificConditionRegistry.register('nested', NestedCondition)
-        specificConditionRegistry.register('timespan', TimespanCondition)
+        specificConditionRegistry.register('timespan', createSchemaCondition('coreshop_product_price_rule_condition_timespan'))
         specificConditionRegistry.register('weight', WeightCondition)
 
         // Register Product Specific Price Rule Actions (same as ProductPriceRules)
-        specificActionRegistry.register('discountAmount', DiscountAmountAction)
-        specificActionRegistry.register('discountPercent', DiscountPercentAction)
-        specificActionRegistry.register('price', PriceAction)
-        specificActionRegistry.register('discountPrice', DiscountPriceAction)
-        specificActionRegistry.register('notDiscountableCustomAttributes', EmptyAction)
+        specificActionRegistry.register('discountAmount', createSchemaAction('coreshop_product_price_rule_action_discount_amount'))
+        specificActionRegistry.register('discountPercent', createSchemaAction('coreshop_product_price_rule_action_discount_percent'))
+        specificActionRegistry.register('price', createSchemaAction('coreshop_product_price_rule_action_price'))
+        specificActionRegistry.register('discountPrice', createSchemaAction('coreshop_product_price_rule_action_price'))
+        specificActionRegistry.register('notDiscountableCustomAttributes', createSchemaAction('coreshop_rule_empty'))
     },
 
     onStartup({ moduleSystem }) {

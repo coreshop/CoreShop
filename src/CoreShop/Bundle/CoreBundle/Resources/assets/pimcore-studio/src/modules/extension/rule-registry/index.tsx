@@ -1,8 +1,11 @@
 /**
  * Rule Registry Extension Module
  *
- * This module extends rule registries from other bundles (OrderBundle, ProductBundle, ShippingBundle)
+ * This module extends rule registries from other bundles (OrderBundle, ProductBundle, ShippingBundle, PaymentBundle)
  * with shared conditions and actions that CoreBundle provides.
+ *
+ * All shared conditions/actions are schema-based: the form is rendered dynamically from
+ * the backend PHP form type via the StudioFormBundle schema endpoint.
  *
  * Because bundles load asynchronously via Module Federation, we use lazy initialization:
  * - Check if registries are bound in the container
@@ -12,34 +15,13 @@
 
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import type { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
+import { createSchemaCondition, createSchemaAction } from '@coreshop/rule/src/rules/components'
 import { coreshopOrderServiceIds } from '@coreshop/order/src/modules/cart-price-rules/service-ids'
 import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
 import { coreshopPaymentServiceIds } from '@coreshop/payment/src/modules/payment-provider-rules/service-ids'
 import { coreshopQuantityPriceRulesServiceIds } from '@coreshop/productquantitypricerules/src/modules/quantity-price-rules/service-ids'
 import { coreshopShippingServiceIds } from '@coreshop/shipping/src/modules/shipping-rules/service-ids'
-import {
-  CategoriesCondition,
-  CarriersCondition,
-  CountriesCondition,
-  CurrenciesCondition,
-  CustomerGroupsCondition,
-  CustomersCondition,
-  GuestCondition,
-  NestedCondition,
-  ProductsCondition,
-  StoresCondition,
-  TimespanCondition,
-  ZonesCondition
-} from '../../shared/rules/conditions'
-import {
-  DiscountAmountAction,
-  DiscountPercentAction
-} from '../../shared/rules/actions'
-import { PriceAction } from '@coreshop/product/src/modules/product-price-rules/actions'
-import {
-  NotCombinableWithCartPriceVoucherRuleCondition,
-  QuantityCondition
-} from '../../product-price-rules/conditions'
+import { NestedCondition } from '../../shared/rules/conditions'
 
 /**
  * Registry extension configuration
@@ -48,6 +30,23 @@ interface RegistryExtension {
   serviceId: symbol
   type: 'condition' | 'action'
   registrations: Record<string, any>
+}
+
+/**
+ * Shared condition factories (same form types used across all rule types)
+ */
+const sharedConditions = {
+  carriers: createSchemaCondition('coreshop_rule_condition_carriers'),
+  categories: createSchemaCondition('coreshop_rule_condition_categories'),
+  countries: createSchemaCondition('coreshop_rule_condition_countries'),
+  currencies: createSchemaCondition('coreshop_rule_condition_currencies'),
+  customerGroups: createSchemaCondition('coreshop_rule_condition_customer_groups'),
+  customers: createSchemaCondition('coreshop_rule_condition_customers'),
+  guest: createSchemaCondition('coreshop_rule_empty'),
+  products: createSchemaCondition('coreshop_rule_condition_products'),
+  stores: createSchemaCondition('coreshop_rule_condition_stores'),
+  timespan: createSchemaCondition('coreshop_rule_condition_timespan'),
+  zones: createSchemaCondition('coreshop_rule_condition_zones')
 }
 
 /**
@@ -61,26 +60,18 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
     serviceId: coreshopOrderServiceIds.cartPriceRuleConditionRegistry,
     type: 'condition',
     registrations: {
-      carriers: CarriersCondition,
-      categories: CategoriesCondition,
-      countries: CountriesCondition,
-      currencies: CurrenciesCondition,
-      customerGroups: CustomerGroupsCondition,
-      customers: CustomersCondition,
-      guest: GuestCondition,
-      nested: NestedCondition,
-      products: ProductsCondition,
-      stores: StoresCondition,
-      timespan: TimespanCondition,
-      zones: ZonesCondition
+      ...sharedConditions,
+      nested: NestedCondition
     }
   },
   {
     serviceId: coreshopOrderServiceIds.cartPriceRuleActionRegistry,
     type: 'action',
     registrations: {
-      discountAmount: DiscountAmountAction,
-      discountPercent: DiscountPercentAction
+      discountAmount: createSchemaAction('coreshop_cart_price_rule_action_discount_amount'),
+      discountPercent: createSchemaAction('coreshop_cart_price_rule_action_discount_percent'),
+      freeShipping: createSchemaAction('coreshop_rule_action_free_shipping'),
+      giftProduct: createSchemaAction('coreshop_rule_action_gift_product')
     }
   },
 
@@ -91,28 +82,19 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
     serviceId: coreshopProductServiceIds.productPriceRuleConditionRegistry,
     type: 'condition',
     registrations: {
-      categories: CategoriesCondition,
-      countries: CountriesCondition,
-      currencies: CurrenciesCondition,
-      customerGroups: CustomerGroupsCondition,
-      customers: CustomersCondition,
-      guest: GuestCondition,
+      ...sharedConditions,
       nested: NestedCondition,
-      not_combinable_with_cart_price_voucher_rule: NotCombinableWithCartPriceVoucherRuleCondition,
-      products: ProductsCondition,
-      quantity: QuantityCondition,
-      stores: StoresCondition,
-      timespan: TimespanCondition,
-      zones: ZonesCondition
+      not_combinable_with_cart_price_voucher_rule: createSchemaCondition('coreshop_cart_price_rule_condition_not_combinable'),
+      quantity: createSchemaCondition('coreshop_product_price_rule_condition_quantity')
     }
   },
   {
     serviceId: coreshopProductServiceIds.productPriceRuleActionRegistry,
     type: 'action',
     registrations: {
-      discountAmount: DiscountAmountAction,
-      discountPercent: DiscountPercentAction,
-      price: PriceAction
+      discountAmount: createSchemaAction('coreshop_product_price_rule_action_discount_amount'),
+      discountPercent: createSchemaAction('coreshop_product_price_rule_action_discount_percent'),
+      price: createSchemaAction('coreshop_product_price_rule_action_price')
     }
   },
 
@@ -123,27 +105,18 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
     serviceId: coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry,
     type: 'condition',
     registrations: {
-      categories: CategoriesCondition,
-      countries: CountriesCondition,
-      currencies: CurrenciesCondition,
-      customerGroups: CustomerGroupsCondition,
-      customers: CustomersCondition,
-      guest: GuestCondition,
+      ...sharedConditions,
       nested: NestedCondition,
-      not_combinable_with_cart_price_voucher_rule: NotCombinableWithCartPriceVoucherRuleCondition,
-      products: ProductsCondition,
-      stores: StoresCondition,
-      timespan: TimespanCondition,
-      zones: ZonesCondition
+      not_combinable_with_cart_price_voucher_rule: createSchemaCondition('coreshop_cart_price_rule_condition_not_combinable')
     }
   },
   {
     serviceId: coreshopProductServiceIds.productSpecificPriceRuleActionRegistry,
     type: 'action',
     registrations: {
-      discountAmount: DiscountAmountAction,
-      discountPercent: DiscountPercentAction,
-      price: PriceAction
+      discountAmount: createSchemaAction('coreshop_product_price_rule_action_discount_amount'),
+      discountPercent: createSchemaAction('coreshop_product_price_rule_action_discount_percent'),
+      price: createSchemaAction('coreshop_product_price_rule_action_price')
     }
   },
 
@@ -154,28 +127,16 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
     serviceId: coreshopPaymentServiceIds.paymentProviderRuleConditionRegistry,
     type: 'condition',
     registrations: {
-      carriers: CarriersCondition,
-      categories: CategoriesCondition,
-      countries: CountriesCondition,
-      currencies: CurrenciesCondition,
-      customerGroups: CustomerGroupsCondition,
-      customers: CustomersCondition,
-      guest: GuestCondition,
-      nested: NestedCondition,
-      products: ProductsCondition,
-      stores: StoresCondition,
-      timespan: TimespanCondition,
-      zones: ZonesCondition
+      ...sharedConditions,
+      nested: NestedCondition
     }
   },
   {
     serviceId: coreshopPaymentServiceIds.paymentProviderRuleActionRegistry,
     type: 'action',
     registrations: {
-      discountAmount: DiscountAmountAction,
-      discountPercent: DiscountPercentAction,
-      // Note: additionAmount and price are registered in PaymentBundle main.ts
-      // They are PaymentBundle-specific but could be moved here as shared actions
+      discountAmount: createSchemaAction('coreshop_shipping_rule_action_discount_amount'),
+      discountPercent: createSchemaAction('coreshop_payment_provider_rule_action_discount_percent')
     }
   },
 
@@ -186,17 +147,8 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
     serviceId: coreshopQuantityPriceRulesServiceIds.conditionRegistry,
     type: 'condition',
     registrations: {
-      categories: CategoriesCondition,
-      countries: CountriesCondition,
-      currencies: CurrenciesCondition,
-      customerGroups: CustomerGroupsCondition,
-      customers: CustomersCondition,
-      guest: GuestCondition,
-      nested: NestedCondition,
-      products: ProductsCondition,
-      stores: StoresCondition,
-      timespan: TimespanCondition,
-      zones: ZonesCondition
+      ...sharedConditions,
+      nested: NestedCondition
     }
   },
 
@@ -207,15 +159,15 @@ const REGISTRY_EXTENSIONS: RegistryExtension[] = [
     serviceId: coreshopShippingServiceIds.shippingRuleConditionRegistry,
     type: 'condition',
     registrations: {
-      categories: CategoriesCondition,
-      countries: CountriesCondition,
-      currencies: CurrenciesCondition,
-      customerGroups: CustomerGroupsCondition,
-      customers: CustomersCondition,
-      guest: GuestCondition,
-      products: ProductsCondition,
-      stores: StoresCondition,
-      zones: ZonesCondition
+      categories: sharedConditions.categories,
+      countries: sharedConditions.countries,
+      currencies: sharedConditions.currencies,
+      customerGroups: sharedConditions.customerGroups,
+      customers: sharedConditions.customers,
+      guest: sharedConditions.guest,
+      products: sharedConditions.products,
+      stores: sharedConditions.stores,
+      zones: sharedConditions.zones
     }
   }
 ]
@@ -255,14 +207,14 @@ function applyRegistryExtensionsInternal(): void {
   try {
     if (container.isBound(CART_ITEM_REGISTRIES.conditionRegistryId)) {
       const cartItemConditionRegistry = container.get<ConditionRegistry>(CART_ITEM_REGISTRIES.conditionRegistryId)
-      cartItemConditionRegistry.register('categories', CategoriesCondition)
-      cartItemConditionRegistry.register('products', ProductsCondition)
+      cartItemConditionRegistry.register('categories', sharedConditions.categories)
+      cartItemConditionRegistry.register('products', sharedConditions.products)
     }
 
     if (container.isBound(CART_ITEM_REGISTRIES.actionRegistryId)) {
       const cartItemActionRegistry = container.get<ActionRegistry>(CART_ITEM_REGISTRIES.actionRegistryId)
-      cartItemActionRegistry.register('discountAmount', DiscountAmountAction)
-      cartItemActionRegistry.register('discountPercent', DiscountPercentAction)
+      cartItemActionRegistry.register('discountAmount', createSchemaAction('coreshop_cart_price_rule_action_discount_amount'))
+      cartItemActionRegistry.register('discountPercent', createSchemaAction('coreshop_cart_price_rule_action_discount_percent'))
     }
   } catch (error) {
     console.error('[CoreShop Core] Failed to extend CartItem registries:', error)
