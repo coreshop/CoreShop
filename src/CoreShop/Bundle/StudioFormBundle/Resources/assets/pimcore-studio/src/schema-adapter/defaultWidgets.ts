@@ -14,7 +14,6 @@
 
 import { Input, InputNumber, Switch, Select, DatePicker, TimePicker, ColorPicker, Slider } from 'antd'
 import type { WidgetRegistry } from './WidgetRegistry'
-import { AutocompleteWidget } from './widgets/AutocompleteWidget'
 
 /**
  * Register default Ant Design widget resolvers.
@@ -140,16 +139,5 @@ export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
   // Range slider
   registry.register('slider', () => ({
     component: Slider,
-  }))
-
-  // Autocomplete (server-side search)
-  registry.register('autocomplete', (field) => ({
-    component: AutocompleteWidget,
-    props: {
-      autocompleteClass: field.uiType.autocompleteClass,
-      url: field.uiType.url,
-      multiple: field.uiType.multiple ?? false,
-      minChars: field.uiType.minChars ?? 1,
-    },
   }))
 }

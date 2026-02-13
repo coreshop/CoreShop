@@ -27,6 +27,7 @@ import { NotificationRulesExtensionModule } from './modules/extension/notificati
 import { ReportsModule } from './modules/reports'
 import { SettingsModule } from './modules/settings'
 import { AssignToNewCompanyPanel, AssignToExistingCompanyPanel } from './modules/customer-company-assignment'
+import { PimcoreRelationWidgetModule } from './modules/pimcore-relation-widget'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -69,6 +70,7 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(CoreBundleMenuModule)
         moduleSystem.registerModule(TaxRuleGroupExtensionModule)
         moduleSystem.registerModule(CarrierExtensionModule)
+        moduleSystem.registerModule(PimcoreRelationWidgetModule)
         moduleSystem.registerModule(ReportsModule)
         moduleSystem.registerModule(SettingsModule)
     }
