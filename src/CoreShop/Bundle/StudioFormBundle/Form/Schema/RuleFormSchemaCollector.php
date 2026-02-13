@@ -29,9 +29,13 @@ final class RuleFormSchemaCollector
     /**
      * Collect schemas for all given type names using a FormTypeRegistry.
      *
+     * Schemas are keyed by their block prefix (e.g. 'coreshop_cart_price_rule_condition_amount'),
+     * not by type name. This ensures the frontend cache lookup matches, since each rule engine
+     * has different block prefixes for the same condition name (e.g. 'timespan').
+     *
      * @param string[] $typeNames Type names to collect schemas for
      *
-     * @return array<string, FormSchema> Map of type name to FormSchema
+     * @return array<string, FormSchema> Map of block prefix to FormSchema
      */
     public function collectSchemas(FormTypeRegistryInterface $formTypeRegistry, array $typeNames): array
     {
@@ -45,7 +49,8 @@ final class RuleFormSchemaCollector
             $formTypeClass = $formTypeRegistry->get($typeName, 'default');
 
             try {
-                $schemas[$typeName] = $this->generator->generate($formTypeClass);
+                $schema = $this->generator->generate($formTypeClass);
+                $schemas[$schema->blockPrefix] = $schema;
             } catch (\Throwable) {
                 // Skip types that fail to generate (e.g. missing dependencies)
             }

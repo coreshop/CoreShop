@@ -63,7 +63,7 @@ final class FormSchemaGenerator
         $blockPrefix = $this->getBlockPrefix($view);
         $fields = [];
 
-        foreach ($view->children as $childView) {
+        foreach ($view->children ?? [] as $childView) {
             $fields[] = $this->serializeFieldView($childView);
         }
 
@@ -76,6 +76,9 @@ final class FormSchemaGenerator
     private function serializeFieldView(FormView $childView): FieldSchema
     {
         $blockPrefixes = $childView->vars['block_prefixes'] ?? [];
+        if (!is_array($blockPrefixes)) {
+            $blockPrefixes = [];
+        }
         // Strip the unique block prefix (last element, e.g. '_cart_price_rule_name')
         array_pop($blockPrefixes);
 
@@ -88,7 +91,7 @@ final class FormSchemaGenerator
         );
 
         // Choice fields: serialize choices, multiple, expanded from FormView vars
-        if (isset($childView->vars['choices'])) {
+        if (isset($childView->vars['choices']) && is_array($childView->vars['choices'])) {
             $field->choices = $this->serializeChoices($childView->vars['choices']);
             $field->multiple = $childView->vars['multiple'] ?? false;
             $field->expanded = $childView->vars['expanded'] ?? false;
@@ -119,7 +122,7 @@ final class FormSchemaGenerator
         }
 
         // Recursively serialize compound children
-        if (count($childView->children) > 0) {
+        if (count($childView->children ?? []) > 0) {
             $field->children = $this->serializeView($childView);
         }
 
@@ -198,7 +201,7 @@ final class FormSchemaGenerator
         ];
 
         $extra = [];
-        foreach ($view->vars as $key => $value) {
+        foreach ($view->vars ?? [] as $key => $value) {
             if (!in_array($key, $standardVars, true) && !str_starts_with($key, '_')) {
                 // Only include scalar or simple array values
                 if (is_scalar($value) || is_array($value)) {
