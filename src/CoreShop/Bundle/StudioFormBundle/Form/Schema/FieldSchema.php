@@ -23,14 +23,30 @@ final class FieldSchema implements \JsonSerializable
 
     public ?string $section = null;
 
+    /** @var array<string, mixed>|null */
+    public ?array $choices = null;
+
+    public bool $multiple = false;
+
+    public bool $expanded = false;
+
+    /** @var array<string, mixed> */
+    public array $extra = [];
+
+    public ?FormSchema $prototype = null;
+
+    /** @var array<string, FormSchema>|null */
+    public ?array $prototypes = null;
+
     /**
-     * @param FieldSchema[]|null $fields
+     * @param string[] $blockPrefixes
      */
     public function __construct(
         public string $name,
-        public string $blockPrefix,
-        public bool $required,
-        public UiTypeDescriptor $uiType,
+        public array $blockPrefixes,
+        public bool $required = false,
+        public ?string $label = null,
+        public bool $disabled = false,
         public ?FormSchema $children = null,
     ) {
     }
@@ -39,13 +55,38 @@ final class FieldSchema implements \JsonSerializable
     {
         $data = [
             'name' => $this->name,
-            'blockPrefix' => $this->blockPrefix,
+            'blockPrefixes' => $this->blockPrefixes,
             'required' => $this->required,
-            'uiType' => $this->uiType,
         ];
+
+        if ($this->label !== null) {
+            $data['label'] = $this->label;
+        }
+
+        if ($this->disabled) {
+            $data['disabled'] = true;
+        }
+
+        if ($this->choices !== null) {
+            $data['choices'] = $this->choices;
+            $data['multiple'] = $this->multiple;
+            $data['expanded'] = $this->expanded;
+        }
+
+        if (count($this->extra) > 0) {
+            $data['extra'] = $this->extra;
+        }
 
         if ($this->children !== null) {
             $data['children'] = $this->children;
+        }
+
+        if ($this->prototype !== null) {
+            $data['prototype'] = $this->prototype;
+        }
+
+        if ($this->prototypes !== null) {
+            $data['prototypes'] = $this->prototypes;
         }
 
         if ($this->tab !== null) {

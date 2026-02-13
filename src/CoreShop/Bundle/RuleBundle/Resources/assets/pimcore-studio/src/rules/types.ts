@@ -37,6 +37,7 @@ export interface Rule {
 export interface RuleConfig {
   conditions: string[]
   actions: string[]
+  schemas?: Record<string, any>
   [key: string]: any
 }
 

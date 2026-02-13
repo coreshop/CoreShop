@@ -20,7 +20,7 @@ import type { WidgetRegistry } from './WidgetRegistry'
 /**
  * Convert a backend FormSchemaResponse to a FormBuilderConfig.
  *
- * Uses the WidgetRegistry to resolve widget types to React components.
+ * Uses the WidgetRegistry to resolve block prefixes to React components.
  */
 export const toFormBuilderConfig = <T = any>(
   schema: FormSchemaResponse,
@@ -63,39 +63,18 @@ const convertField = <T = any>(
   field: FormSchemaField,
   widgetRegistry: WidgetRegistry,
 ): FieldDefinition<T>[] | null => {
-  // Handle translations compound field
-  if (field.uiType.widget === 'coreshop_translations' && field.children) {
+  // Handle translations compound field (detected by block prefix)
+  if (field.blockPrefixes.includes('coreshop_translations') && field.children) {
     return convertTranslationFields<T>(field, widgetRegistry)
   }
 
-  // Handle entity select by checking entityType
-  if (field.uiType.widget === 'entitySelect' && field.uiType.entityType) {
-    const entityResolver = widgetRegistry.resolve({
-      ...field,
-      uiType: { ...field.uiType, widget: field.uiType.entityType },
-    })
-
-    if (entityResolver) {
-      return [{
-        name: field.name,
-        label: field.name,
-        component: entityResolver.component,
-        required: field.required,
-        componentProps: entityResolver.props,
-        valuePropName: entityResolver.valuePropName,
-        section: field.section,
-        ...(entityResolver.extra ?? {}),
-      }]
-    }
-  }
-
-  // Resolve through widget registry
+  // Resolve through widget registry (walks blockPrefixes)
   const resolved = widgetRegistry.resolve(field)
 
   if (resolved) {
     return [{
       name: field.name,
-      label: field.name,
+      label: field.label ?? field.name,
       component: resolved.component,
       required: field.required,
       componentProps: resolved.props,
@@ -108,7 +87,7 @@ const convertField = <T = any>(
   // Fallback: text input
   return [{
     name: field.name,
-    label: field.name,
+    label: field.label ?? field.name,
     component: Input,
     required: field.required,
     section: field.section,
@@ -135,7 +114,7 @@ const convertTranslationFields = <T = any>(
 
     fields.push({
       name: childField.name,
-      label: childField.name,
+      label: childField.label ?? childField.name,
       component: resolved?.component ?? Input,
       required: childField.required,
       localized: true,

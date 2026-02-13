@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherGeneratorType;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
@@ -46,7 +47,7 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
-    public function getConfigAction(Request $request): JsonResponse
+    public function getConfigAction(Request $request, RuleFormSchemaCollector $schemaCollector): JsonResponse
     {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
@@ -54,11 +55,22 @@ class CartPriceRuleController extends ResourceController
         $itemActions = $this->getCartItemConfigActions();
         $itemConditions = $this->getCartItemConfigConditions();
 
+        $conditionFormTypes = $this->getParameter('coreshop.cart_price_rule.conditions.form_types');
+        $actionFormTypes = $this->getParameter('coreshop.cart_price_rule.actions.form_types');
+        $itemConditionFormTypes = $this->getParameter('coreshop.cart_item_price_rule.conditions.form_types');
+        $itemActionFormTypes = $this->getParameter('coreshop.cart_item_price_rule.actions.form_types');
+
         return $this->viewHandler->handle([
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
             'itemActions' => array_keys($itemActions),
             'itemConditions' => array_keys($itemConditions),
+            'schemas' => array_merge(
+                $schemaCollector->collectSchemas($conditionFormTypes),
+                $schemaCollector->collectSchemas($actionFormTypes),
+                $schemaCollector->collectSchemas($itemConditionFormTypes),
+                $schemaCollector->collectSchemas($itemActionFormTypes),
+            ),
         ]);
     }
 

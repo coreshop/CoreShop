@@ -53,6 +53,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
         $formRegistry = $container->getDefinition($this->formRegistry);
 
         $map = [];
+        $formTypeMap = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             foreach ($attributes as $tag) {
                 $definition = $container->findDefinition($id);
@@ -93,6 +94,8 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
                 if (isset($tag['form-type'])) {
                     $formRegistries[$type]->addMethodCall('add', [$tag['type'], 'default', $tag['form-type']]);
                     $formRegistry->addMethodCall('add', [$fqtn, 'default', $tag['form-type']]);
+
+                    $formTypeMap[$tag['notification-type']][$tag['type']] = $tag['form-type'];
                 }
 
                 $registeredTypes[$fqtn] = $fqtn;
@@ -101,6 +104,10 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
 
         foreach ($map as $type => $realMap) {
             $container->setParameter($this->parameter . '.' . $type, $realMap);
+        }
+
+        foreach ($formTypeMap as $type => $typeFormTypes) {
+            $container->setParameter($this->parameter . '.' . $type . '.form_types', $typeFormTypes);
         }
 
         $container->setParameter($this->parameter . '.types', $types);

@@ -13,34 +13,29 @@
  */
 
 /**
- * UI type descriptor from backend
- */
-export interface FormSchemaUiType {
-  widget: string
-  /** Entity type for entitySelect widget */
-  entityType?: string
-  /** Whether multiple selection is allowed */
-  multiple?: boolean
-  /** Choices for select widget */
-  choices?: Array<{ value: string | number; label: string }>
-  /** Whether collection allows adding items */
-  allowAdd?: boolean
-  /** Whether collection allows deleting items */
-  allowDelete?: boolean
-  /** Any additional options */
-  [key: string]: any
-}
-
-/**
- * Field schema from backend
+ * Field schema from backend (serialized from Symfony FormView)
  */
 export interface FormSchemaField {
   name: string
-  blockPrefix: string
+  /** Symfony block prefix chain, e.g. ['form', 'text', 'email'] */
+  blockPrefixes: string[]
   required: boolean
-  uiType: FormSchemaUiType
+  label?: string | null
+  disabled?: boolean
+  /** Choices for choice-based fields */
+  choices?: Array<{ value: string | number; label: string; group?: string }>
+  /** Whether multiple selection is allowed (choice fields) */
+  multiple?: boolean
+  /** Whether choices are rendered as expanded (radio/checkbox) */
+  expanded?: boolean
+  /** Extra vars from FormView (e.g. autocomplete_class, allow_add) */
+  extra?: Record<string, any>
   /** Children for compound fields (like translations) */
   children?: FormSchemaResponse
+  /** Single prototype (standard Symfony CollectionType) */
+  prototype?: FormSchemaResponse
+  /** Multiple prototypes keyed by type (CoreShop condition/action collections) */
+  prototypes?: Record<string, FormSchemaResponse>
   /** Tab assignment (from enricher) */
   tab?: string
   /** Section assignment (from enricher) */

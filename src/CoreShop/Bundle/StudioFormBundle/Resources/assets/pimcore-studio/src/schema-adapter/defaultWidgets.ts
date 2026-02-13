@@ -1,7 +1,7 @@
 /**
  * CoreShop Schema Adapter - Default Widget Registrations
  *
- * Registers Ant Design components for standard Symfony form types.
+ * Registers Ant Design components for standard Symfony form type block prefixes.
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -16,35 +16,41 @@ import { Input, InputNumber, Switch, Select, DatePicker, TimePicker, ColorPicker
 import type { WidgetRegistry } from './WidgetRegistry'
 
 /**
- * Register default Ant Design widget resolvers.
+ * Register default Ant Design widget resolvers by Symfony block prefix.
  */
 export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
-  // Text input
-  registry.register('input', () => ({
+  // TextType → block prefix 'text'
+  registry.register('text', () => ({
     component: Input,
   }))
 
-  // Textarea
+  // TextareaType → block prefix 'textarea'
   registry.register('textarea', () => ({
     component: Input.TextArea,
     props: { rows: 4 },
   }))
 
-  // Number input
-  registry.register('inputNumber', () => ({
+  // IntegerType → block prefix 'integer'
+  registry.register('integer', () => ({
+    component: InputNumber,
+    props: { style: { width: '100%' }, precision: 0 },
+  }))
+
+  // NumberType → block prefix 'number'
+  registry.register('number', () => ({
     component: InputNumber,
     props: { style: { width: '100%' } },
   }))
 
-  // Switch (boolean)
-  registry.register('switch', () => ({
+  // CheckboxType → block prefix 'checkbox'
+  registry.register('checkbox', () => ({
     component: Switch,
     valuePropName: 'checked',
   }))
 
-  // Select (choice type)
-  registry.register('select', (field) => {
-    const choices = field.uiType.choices ?? []
+  // ChoiceType → block prefix 'choice'
+  registry.register('choice', (field) => {
+    const choices = field.choices ?? []
     const options = choices.map(c => ({
       value: c.value,
       label: c.label,
@@ -58,26 +64,12 @@ export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
         showSearch: true,
         filterOption: (input: string, option: any) =>
           (option?.label ?? '').toLowerCase().includes(input.toLowerCase()),
-        mode: field.uiType.multiple ? 'multiple' : undefined,
+        mode: field.multiple ? 'multiple' : undefined,
       },
     }
   })
 
-  // Entity select (resolved by bundle-specific registrations)
-  registry.register('entitySelect', (field) => {
-    // entitySelect is typically overridden by specific bundles
-    // Fallback: render a basic Select with a hint
-    return {
-      component: Select,
-      props: {
-        placeholder: `Select ${field.uiType.entityType ?? 'entity'}...`,
-        allowClear: true,
-        showSearch: true,
-      },
-    }
-  })
-
-  // Collection of text entries (tags input)
+  // CollectionType → block prefix 'collection'
   registry.register('collection', () => ({
     component: Select,
     props: {
@@ -88,7 +80,7 @@ export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
     },
   }))
 
-  // Hidden (not rendered)
+  // HiddenType → block prefix 'hidden'
   registry.register('hidden', () => ({
     component: Input,
     extra: {
@@ -96,48 +88,48 @@ export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
     },
   }))
 
-  // Email input
+  // EmailType → block prefix 'email'
   registry.register('email', () => ({
     component: Input,
     props: { type: 'email' },
   }))
 
-  // URL input
+  // UrlType → block prefix 'url'
   registry.register('url', () => ({
     component: Input,
     props: { type: 'url' },
   }))
 
-  // Password input
+  // PasswordType → block prefix 'password'
   registry.register('password', () => ({
     component: Input.Password,
   }))
 
-  // Date picker
-  registry.register('datePicker', () => ({
+  // DateType → block prefix 'date'
+  registry.register('date', () => ({
     component: DatePicker,
     props: { style: { width: '100%' } },
   }))
 
-  // Date+time picker
-  registry.register('dateTimePicker', () => ({
+  // DateTimeType → block prefix 'datetime'
+  registry.register('datetime', () => ({
     component: DatePicker,
     props: { showTime: true, style: { width: '100%' } },
   }))
 
-  // Time picker
-  registry.register('timePicker', () => ({
+  // TimeType → block prefix 'time'
+  registry.register('time', () => ({
     component: TimePicker,
     props: { style: { width: '100%' } },
   }))
 
-  // Color picker
-  registry.register('colorPicker', () => ({
+  // ColorType → block prefix 'color'
+  registry.register('color', () => ({
     component: ColorPicker,
   }))
 
-  // Range slider
-  registry.register('slider', () => ({
+  // RangeType → block prefix 'range'
+  registry.register('range', () => ({
     component: Slider,
   }))
 }

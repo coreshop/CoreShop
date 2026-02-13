@@ -11,11 +11,15 @@
  */
 
 import { EntityApi } from '@coreshop/resource/src/entities'
+import { preSeedSchemaCache } from '@coreshop/studio-form'
 import type { Rule, RuleConfig } from './types'
 
 export class RuleApi<T extends Rule = Rule> extends EntityApi<T> {
   /**
    * Get rule configuration (available conditions and actions)
+   *
+   * Also pre-seeds the schema cache with embedded schemas from the response,
+   * eliminating the need for separate HTTP requests per condition/action.
    */
   async getConfig(): Promise<RuleConfig> {
     // Access cfg from parent EntityApi class
@@ -33,6 +37,13 @@ export class RuleApi<T extends Rule = Rule> extends EntityApi<T> {
       throw new Error(`Failed to get config: ${response.statusText}`)
     }
 
-    return response.json()
+    const config: RuleConfig = await response.json()
+
+    // Pre-seed schema cache with embedded schemas
+    if (config.schemas) {
+      preSeedSchemaCache(config.schemas)
+    }
+
+    return config
   }
 }

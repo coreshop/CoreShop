@@ -1,7 +1,7 @@
 /**
  * CoreShop CoreBundle - Pimcore Relation Widget Module
  *
- * Registers the 'autocomplete' widget type to render Pimcore's
+ * Registers the 'coreshop_autocomplete' block prefix to render Pimcore's
  * ManyToManyRelation / ManyToOneRelation components in schema-based forms.
  *
  * This source file is available under the terms of the
@@ -23,11 +23,11 @@ export const PimcoreRelationWidgetModule: AbstractModule = {
   onInit(): void {
     const widgetRegistry = container.get<WidgetRegistry>(widgetRegistryServiceId)
 
-    widgetRegistry.register('autocomplete', (field) => ({
+    widgetRegistry.register('coreshop_autocomplete', (field) => ({
       component: PimcoreRelationWidget,
       props: {
-        autocompleteClass: field.uiType.autocompleteClass,
-        multiple: field.uiType.multiple ?? false,
+        autocompleteClass: field.extra?.autocomplete_class,
+        multiple: field.extra?.multiple ?? false,
       },
     }))
   }

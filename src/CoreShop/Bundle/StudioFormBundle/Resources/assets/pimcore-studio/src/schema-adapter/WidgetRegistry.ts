@@ -1,7 +1,9 @@
 /**
  * CoreShop Schema Adapter - Widget Registry
  *
- * Maps widget type strings to React component resolvers.
+ * Maps Symfony block prefix names to React component resolvers.
+ * Walks blockPrefixes from most-specific to least-specific,
+ * mirroring Symfony's Twig block rendering strategy.
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -36,48 +38,60 @@ export interface WidgetResolverResult {
 export type WidgetResolver = (field: FormSchemaField) => WidgetResolverResult | null
 
 /**
- * Registry for mapping widget type strings to React components.
+ * Registry for mapping Symfony block prefixes to React components.
  *
- * StudioFormBundle registers default widgets (input, textarea, etc.).
- * CoreShop bundles register entity-specific widgets (coreshop.zone, etc.).
+ * Resolution walks the field's blockPrefixes array from most-specific
+ * to least-specific (right to left), exactly like Symfony's Twig rendering
+ * finds template blocks.
+ *
+ * Example: blockPrefixes = ['form', 'text', 'email']
+ * Tries: 'email' → 'text' → 'form'
  */
 export class WidgetRegistry {
   private resolvers = new Map<string, WidgetResolver>()
 
   /**
-   * Register a widget resolver for a widget type.
+   * Register a widget resolver for a block prefix.
    */
-  register(widgetType: string, resolver: WidgetResolver): void {
-    this.resolvers.set(widgetType, resolver)
+  register(blockPrefix: string, resolver: WidgetResolver): void {
+    this.resolvers.set(blockPrefix, resolver)
   }
 
   /**
-   * Get the resolver for a widget type.
+   * Get the resolver for a block prefix.
    */
-  get(widgetType: string): WidgetResolver | undefined {
-    return this.resolvers.get(widgetType)
+  get(blockPrefix: string): WidgetResolver | undefined {
+    return this.resolvers.get(blockPrefix)
   }
 
   /**
-   * Check if a resolver exists for a widget type.
+   * Check if a resolver exists for a block prefix.
    */
-  has(widgetType: string): boolean {
-    return this.resolvers.has(widgetType)
+  has(blockPrefix: string): boolean {
+    return this.resolvers.has(blockPrefix)
   }
 
   /**
    * Resolve a field to a React component and props.
+   *
+   * Walks blockPrefixes from most-specific to least-specific.
    */
   resolve(field: FormSchemaField): WidgetResolverResult | null {
-    const resolver = this.resolvers.get(field.uiType.widget)
-    if (!resolver) {
-      return null
+    const prefixes = field.blockPrefixes
+    for (let i = prefixes.length - 1; i >= 0; i--) {
+      const resolver = this.resolvers.get(prefixes[i])
+      if (resolver) {
+        const result = resolver(field)
+        if (result) {
+          return result
+        }
+      }
     }
-    return resolver(field)
+    return null
   }
 
   /**
-   * Get all registered widget types.
+   * Get all registered block prefixes.
    */
   getRegisteredTypes(): string[] {
     return Array.from(this.resolvers.keys())

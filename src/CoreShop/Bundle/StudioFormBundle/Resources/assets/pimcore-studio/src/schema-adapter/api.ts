@@ -66,6 +66,18 @@ export const fetchFormSchema = async (blockPrefix: string): Promise<FormSchemaRe
 }
 
 /**
+ * Pre-seed the schema cache with schemas from a getConfig response.
+ *
+ * This eliminates the need for separate HTTP requests for each
+ * condition/action schema - they are all included in the getConfig response.
+ */
+export const preSeedSchemaCache = (schemas: Record<string, FormSchemaResponse>): void => {
+  for (const [key, schema] of Object.entries(schemas)) {
+    schemaCache.set(key, schema)
+  }
+}
+
+/**
  * Clear cached schema for a specific block prefix, or all schemas.
  */
 export const clearSchemaCache = (blockPrefix?: string): void => {

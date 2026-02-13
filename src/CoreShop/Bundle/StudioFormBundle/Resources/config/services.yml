@@ -6,10 +6,6 @@ services:
     CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator:
         arguments:
             - '@form.factory'
-            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormTypeMapperRegistry'
-
-    # Type Mapper Registry
-    CoreShop\Bundle\StudioFormBundle\Form\Schema\FormTypeMapperRegistry: ~
 
     # Block Prefix Registry (auto-populated by RegisterStudioFormTypesPass)
     CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry:
@@ -17,20 +13,10 @@ services:
             $formRegistry: '@form.registry'
             $formTypeClasses: []
 
-    # Translations Type Mapper (handles coreshop_translations compound fields)
-    CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\TranslationsTypeMapper:
-        tags:
-            - { name: coreshop_studio_form.type_mapper, priority: 10 }
-
-    # Autocomplete Type Mapper
-    CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\AutocompleteTypeMapper:
-        tags:
-            - { name: coreshop_studio_form.type_mapper, priority: 5 }
-
-    # Builtin Type Mapper
-    CoreShop\Bundle\StudioFormBundle\Form\Schema\Mapper\BuiltinTypeMapper:
-        tags:
-            - { name: coreshop_studio_form.type_mapper, priority: -100 }
+    # Rule Form Schema Collector
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector:
+        arguments:
+            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator'
 
     # Controller
     CoreShop\Bundle\StudioFormBundle\Controller\FormSchemaController:
