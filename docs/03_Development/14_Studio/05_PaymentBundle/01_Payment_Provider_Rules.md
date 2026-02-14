@@ -10,6 +10,101 @@ Payment Provider Rules in CoreShop allow you to define conditions and price modi
 - **Actions**: Define price modifications (e.g., surcharge, discount, fixed price)
 - **Gateway Configurators**: Define configuration UI for payment gateways (e.g., PayPal, Stripe)
 
+## Schema-Driven Forms (No Custom JS Needed)
+
+**Most payment provider rule conditions and actions no longer require custom React components.** The configuration forms are rendered automatically from PHP FormTypes via the StudioFormBundle.
+
+To add a new condition or action, you only need:
+
+1. A PHP FormType defining the configuration fields
+2. A service registration with the `form-type` attribute
+
+The frontend auto-generates the React form from the backend schema at runtime.
+
+### Adding a Custom Condition (PHP Only)
+
+```php
+<?php
+
+namespace App\Form\Type\Rule\Condition;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class MinItemCountConfigurationType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('minItems', IntegerType::class, [
+                'label' => 'app_condition_min_items',
+            ])
+        ;
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'app_payment_provider_rule_condition_min_item_count';
+    }
+}
+```
+
+```yaml
+services:
+    app.payment_provider_rule.condition.min_item_count:
+        class: App\Rule\Condition\MinItemCountConditionChecker
+        tags:
+            - name: coreshop.payment_provider_rule.condition
+              type: minItemCount
+              form-type: App\Form\Type\Rule\Condition\MinItemCountConfigurationType
+```
+
+**Done.** No React/TypeScript code needed. The condition form renders automatically.
+
+### Adding a Custom Action (PHP Only)
+
+```php
+<?php
+
+namespace App\Form\Type\Rule\Action;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class PercentageSurchargeConfigurationType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('percent', NumberType::class, [
+                'label' => 'app_action_surcharge_percent',
+                'required' => true,
+                'scale' => 2,
+            ])
+        ;
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'app_payment_provider_rule_action_percentage_surcharge';
+    }
+}
+```
+
+```yaml
+services:
+    app.payment_provider_rule.action.percentage_surcharge:
+        class: App\Rule\Action\PercentageSurchargeActionProcessor
+        tags:
+            - name: coreshop.payment_provider_rule.action
+              type: percentageSurcharge
+              form-type: App\Form\Type\Rule\Action\PercentageSurchargeConfigurationType
+```
+
+For the full schema-driven pattern explanation, see [StudioFormBundle Examples — Example 13](../02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
+
 ## Architecture
 
 ### Registry Structure
@@ -30,8 +125,9 @@ container.bind(coreshopPaymentServiceIds.gatewayConfiguratorRegistry)
 
 ### Bundle Responsibilities
 
-- **PaymentBundle**: Registers payment-specific conditions/actions and gateway configurators
-- **CoreBundle**: Registers shared conditions/actions (categories, customers, countries, etc.)
+- **PaymentBundle**: Creates registries; all condition/action forms are schema-driven from PHP FormTypes
+- **CoreBundle**: Registers `NestedCondition` (the only hand-written component) across all rule type registries
+- **Schema system**: Automatically generates and registers all other condition/action forms at runtime
 
 ### Service IDs
 
@@ -44,202 +140,58 @@ export const coreshopPaymentServiceIds = {
 }
 ```
 
-## Adding a Custom Condition
-
-### Step 1: Create the React Component
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/payment-provider-rules/conditions/MinItemCountCondition.tsx
-
-import React from 'react'
-import { Form, InputNumber } from 'antd'
-import { useTranslation } from 'react-i18next'
-import type { ConditionComponentProps } from '@coreshop/rule/src/rules/types'
-
-export const MinItemCountCondition: React.FC<ConditionComponentProps> = ({
-  data,
-  onChange
-}) => {
-  const { t } = useTranslation()
-  const minItems = data?.minItems || 1
-
-  const handleChange = (value: number | null) => {
-    onChange({ ...data, minItems: value || 1 })
-  }
-
-  return (
-    <Form.Item
-      label={t('coreshop_condition_min_items', { defaultValue: 'Minimum Items' })}
-      help="Minimum number of items in cart for this rule to apply"
-    >
-      <InputNumber
-        value={minItems}
-        onChange={handleChange}
-        min={1}
-        precision={0}
-        style={{ width: '100%' }}
-      />
-    </Form.Item>
-  )
-}
-```
-
-### Step 2: Register the Condition
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
-
-import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
-import type { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
-import { coreshopPaymentServiceIds } from '@coreshop/payment/src/modules/payment-provider-rules/service-ids'
-import { MinItemCountCondition } from './modules/payment-provider-rules/conditions'
-
-const plugin: IAbstractPlugin = {
-    name: 'your-bundle',
-
-    onInit() {
-        const conditionRegistry = container.get<ConditionRegistry>(
-            coreshopPaymentServiceIds.paymentProviderRuleConditionRegistry
-        )
-        conditionRegistry.register('minItemCount', MinItemCountCondition)
-    }
-}
-
-export default plugin
-```
-
-## Adding a Custom Action
-
-### Step 1: Create the React Component
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/payment-provider-rules/actions/PercentageSurchargeAction.tsx
-
-import React from 'react'
-import { Form, InputNumber } from 'antd'
-import { useTranslation } from 'react-i18next'
-import type { ActionComponentProps } from '@coreshop/rule/src/rules/types'
-
-export const PercentageSurchargeAction: React.FC<ActionComponentProps> = ({
-  data,
-  onChange
-}) => {
-  const { t } = useTranslation()
-  const [form] = Form.useForm()
-
-  React.useEffect(() => {
-    form.setFieldsValue(data ?? {})
-  }, [data])
-
-  return (
-    <Form
-      form={form}
-      layout="vertical"
-      onValuesChange={(_, allValues) => {
-        onChange(allValues)
-      }}
-    >
-      <Form.Item
-        label={t('coreshop_action_surcharge_percent', { defaultValue: 'Surcharge Percentage' })}
-        name="percent"
-        help="Percentage to add to payment cost"
-        rules={[{ required: true, message: 'Percentage is required' }]}
-      >
-        <InputNumber
-          min={0}
-          max={100}
-          precision={2}
-          addonAfter="%"
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
-    </Form>
-  )
-}
-```
-
-### Step 2: Register the Action
-
-```typescript
-const actionRegistry = container.get<ActionRegistry>(
-    coreshopPaymentServiceIds.paymentProviderRuleActionRegistry
-)
-actionRegistry.register('percentageSurcharge', PercentageSurchargeAction)
-```
-
 ## Built-in Components
 
-### Conditions (PaymentBundle)
+### Conditions (All schema-driven from PHP FormTypes)
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `amount` | AmountCondition | Cart amount range (min/max, gross/net, total) |
-| `paymentProviderRule` | PaymentProviderRuleCondition | Reference another payment provider rule |
+| Key | Source Bundle | Description |
+|-----|-------------|-------------|
+| `amount` | PaymentBundle | Cart amount range (min/max, gross/net, total) |
+| `paymentProviderRule` | PaymentBundle | Reference another payment provider rule |
+| `carriers` | CoreBundle | Selected shipping carriers |
+| `categories` | CoreBundle | Product categories in cart |
+| `countries` | CoreBundle | Customer/billing country |
+| `currencies` | CoreBundle | Order currency |
+| `customerGroups` | CoreBundle | Customer groups |
+| `customers` | CoreBundle | Specific customers |
+| `guest` | CoreBundle | Guest checkout |
+| `products` | CoreBundle | Specific products in cart |
+| `stores` | CoreBundle | Store selection |
+| `zones` | CoreBundle | Geographic zones |
 
-### Conditions (Shared from CoreBundle)
+### Conditions (Hand-written — require custom JS)
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `carriers` | CarriersCondition | Selected shipping carriers |
-| `categories` | CategoriesCondition | Product categories in cart |
-| `countries` | CountriesCondition | Customer/billing country |
-| `currencies` | CurrenciesCondition | Order currency |
-| `customerGroups` | CustomerGroupsCondition | Customer groups |
-| `customers` | CustomersCondition | Specific customers |
-| `guest` | GuestCondition | Guest checkout |
-| `nested` | NestedCondition | Combine conditions with AND/OR |
-| `products` | ProductsCondition | Specific products in cart |
-| `stores` | StoresCondition | Store selection |
-| `timespan` | TimespanCondition | Date/time range |
-| `zones` | ZonesCondition | Geographic zones |
+| Key | Source Bundle | Reason |
+|-----|-------------|--------|
+| `nested` | CoreBundle | Recursively renders sub-conditions with AND/OR logic |
+| `timespan` | CoreBundle | Uses custom date/time picker composition |
 
-### Actions (PaymentBundle)
+### Actions (All schema-driven from PHP FormTypes)
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `additionPercent` | AdditionPercentAction | Add percentage surcharge |
-| `additionAmount` | AdditionAmountAction | Add fixed amount surcharge |
-| `discountPercent` | DiscountPercentAction | Percentage discount |
-| `price` | PriceAction | Fixed price override |
-| `paymentProviderRule` | PaymentProviderRuleAction | Apply another payment provider rule |
-
-### Actions (Shared from CoreBundle)
-
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `discountAmount` | DiscountAmountAction | Fixed amount discount |
-| `discountPercent` | DiscountPercentAction | Percentage discount |
+| Key | Source Bundle | Description |
+|-----|-------------|-------------|
+| `additionPercent` | PaymentBundle | Add percentage surcharge |
+| `additionAmount` | PaymentBundle | Add fixed amount surcharge |
+| `discountPercent` | PaymentBundle | Percentage discount |
+| `discountAmount` | CoreBundle | Fixed amount discount |
+| `price` | PaymentBundle | Fixed price override |
+| `paymentProviderRule` | PaymentBundle | Apply another payment provider rule |
 
 ## Gateway Configurators
 
-Gateway configurators provide custom configuration UI for payment gateways (PayPal, Stripe, etc.).
-
-### Architecture
-
-```typescript
-export interface GatewayConfiguratorProps {
-  config: Record<string, any>
-  onChange: (config: Record<string, any>) => void
-}
-
-export type GatewayConfigurator = React.FC<GatewayConfiguratorProps>
-```
+Gateway configurators provide custom configuration UI for payment gateways (PayPal, Stripe, etc.). These still use hand-written React components because they are not part of the rule system.
 
 ### Creating a Custom Gateway Configurator
 
 ```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/payment-providers/gateways/StripeConfigurator.tsx
-
 import React from 'react'
-import { Form, Input, Switch, Select } from 'antd'
-import { useTranslation } from 'react-i18next'
+import { Form, Input, Switch } from 'antd'
 import type { GatewayConfiguratorProps } from '@coreshop/payment/src/modules/payment-providers/gateways'
 
 export const StripeConfigurator: React.FC<GatewayConfiguratorProps> = ({
   config,
   onChange
 }) => {
-  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   React.useEffect(() => {
@@ -254,43 +206,14 @@ export const StripeConfigurator: React.FC<GatewayConfiguratorProps> = ({
         onChange(allValues)
       }}
     >
-      <Form.Item
-        label={t('coreshop_gateway_stripe_publishable_key', { defaultValue: 'Publishable Key' })}
-        name="publishable_key"
-        rules={[{ required: true, message: 'Publishable key is required' }]}
-      >
+      <Form.Item label="Publishable Key" name="publishable_key" rules={[{ required: true }]}>
         <Input placeholder="pk_live_..." />
       </Form.Item>
-
-      <Form.Item
-        label={t('coreshop_gateway_stripe_secret_key', { defaultValue: 'Secret Key' })}
-        name="secret_key"
-        rules={[{ required: true, message: 'Secret key is required' }]}
-      >
+      <Form.Item label="Secret Key" name="secret_key" rules={[{ required: true }]}>
         <Input.Password placeholder="sk_live_..." />
       </Form.Item>
-
-      <Form.Item
-        label={t('coreshop_gateway_stripe_sandbox', { defaultValue: 'Sandbox Mode' })}
-        name="sandbox"
-        valuePropName="checked"
-      >
+      <Form.Item label="Sandbox Mode" name="sandbox" valuePropName="checked">
         <Switch />
-      </Form.Item>
-
-      <Form.Item
-        label={t('coreshop_gateway_stripe_payment_methods', { defaultValue: 'Payment Methods' })}
-        name="payment_methods"
-      >
-        <Select
-          mode="multiple"
-          options={[
-            { value: 'card', label: 'Credit Card' },
-            { value: 'sepa_debit', label: 'SEPA Direct Debit' },
-            { value: 'ideal', label: 'iDEAL' },
-            { value: 'giropay', label: 'Giropay' },
-          ]}
-        />
       </Form.Item>
     </Form>
   )
@@ -303,78 +226,20 @@ export const StripeConfigurator: React.FC<GatewayConfiguratorProps> = ({
 import { GatewayRegistry } from '@coreshop/payment/src/modules/payment-providers/gateways'
 import { coreshopPaymentServiceIds } from '@coreshop/payment/src/modules/payment-provider-rules/service-ids'
 
-const plugin: IAbstractPlugin = {
-    name: 'your-bundle',
+const gatewayRegistry = container.get<GatewayRegistry>(
+    coreshopPaymentServiceIds.gatewayConfiguratorRegistry
+)
 
-    onInit() {
-        const gatewayRegistry = container.get<GatewayRegistry>(
-            coreshopPaymentServiceIds.gatewayConfiguratorRegistry
-        )
-
-        // Register with the factory name (lowercase)
-        gatewayRegistry.register('stripe', StripeConfigurator)
-    }
-}
+// Register with the factory name (lowercase)
+gatewayRegistry.register('stripe', StripeConfigurator)
 ```
 
 ### Built-in Gateway Configurators
 
-| Factory Name | Configurator | Description |
-|--------------|--------------|-------------|
-| `paypal_express_checkout` | PayPalExpressCheckoutConfigurator | PayPal Express settings |
-| `sofort` | SofortConfigurator | Sofort/Klarna settings |
-
-## File Structure
-
-```
-PaymentBundle/Resources/assets/pimcore-studio/src/
-├── main.ts                              # Plugin entry, registry setup
-├── components/
-│   ├── index.ts
-│   └── PaymentProviderSelect.tsx        # Reusable payment provider select
-├── modules/
-│   ├── icon-library/
-│   │   └── index.ts
-│   ├── payment-providers/
-│   │   ├── index.ts
-│   │   ├── api.ts                       # Payment provider API client
-│   │   ├── PaymentProviderManager.tsx   # Payment provider manager widget
-│   │   ├── PaymentProviderForm.tsx      # Payment provider form
-│   │   ├── PaymentProviderRuleGroupPanel.tsx
-│   │   └── gateways/
-│   │       ├── index.ts
-│   │       ├── GatewayRegistry.ts       # Gateway configurator registry
-│   │       ├── GatewayConfigPanel.tsx   # Gateway config wrapper
-│   │       ├── PayPalExpressCheckoutConfigurator.tsx
-│   │       └── SofortConfigurator.tsx
-│   └── payment-provider-rules/
-│       ├── index.ts
-│       ├── service-ids.ts               # Registry service IDs
-│       ├── types.ts                     # TypeScript types
-│       ├── api.ts                       # Payment provider rule API
-│       ├── PaymentProviderRuleManager.tsx
-│       ├── PaymentProviderRuleFormBuilder.ts
-│       ├── form-builder-module.ts
-│       ├── components/
-│       │   ├── index.ts
-│       │   ├── SettingsForm.tsx
-│       │   └── PaymentProviderRuleSelect.tsx
-│       ├── conditions/
-│       │   ├── index.ts
-│       │   ├── AmountCondition.tsx
-│       │   └── PaymentProviderRuleCondition.tsx
-│       └── actions/
-│           ├── index.ts
-│           ├── AdditionPercentAction.tsx
-│           ├── AdditionAmountAction.tsx
-│           ├── DiscountPercentAction.tsx
-│           ├── PriceAction.tsx
-│           └── PaymentProviderRuleAction.tsx
-└── dynamic-types/
-    ├── index.ts
-    ├── DynamicTypeObjectDataCoreShopPaymentProvider.tsx
-    └── DynamicTypeObjectDataCoreShopPaymentProviderMultiselect.tsx
-```
+| Factory Name | Description |
+|--------------|-------------|
+| `paypal_express_checkout` | PayPal Express settings |
+| `sofort` | Sofort/Klarna settings |
 
 ## Backend Implementation
 
@@ -412,14 +277,12 @@ class MinItemCountConditionChecker implements PaymentConditionCheckerInterface
 namespace App\CoreShop\Action;
 
 use CoreShop\Component\Payment\Rule\Action\PaymentPriceActionProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 
 class PercentageSurchargeActionProcessor implements PaymentPriceActionProcessorInterface
 {
     public function getPrice(
-        PaymentProviderInterface $paymentProvider,
-        CartInterface $cart,
+        $paymentProvider,
+        $cart,
         int $price,
         array $configuration
     ): int {
@@ -431,25 +294,9 @@ class PercentageSurchargeActionProcessor implements PaymentPriceActionProcessorI
 }
 ```
 
-### Service Registration
-
-```yaml
-# config/services.yaml
-
-# Condition
-App\CoreShop\Condition\MinItemCountConditionChecker:
-  tags:
-    - { name: coreshop.payment_provider_rule.condition, type: minItemCount, form-type: App\Form\Type\MinItemCountConditionType }
-
-# Action
-App\CoreShop\Action\PercentageSurchargeActionProcessor:
-  tags:
-    - { name: coreshop.payment_provider_rule.action, type: percentageSurcharge, form-type: App\Form\Type\PercentageSurchargeActionType }
-```
-
 ## Testing Your Extension
 
-1. **Build the bundle**: `npm run dev:single YourBundle`
+1. **Clear the Symfony cache**: `docker compose exec php bin/console cache:clear`
 2. **Clear browser cache**: Hard refresh (Ctrl+Shift+R)
 3. **Test conditions/actions**:
    - Navigate to CoreShop -> Payment -> Payment Provider Rules
@@ -467,10 +314,8 @@ App\CoreShop\Action\PercentageSurchargeActionProcessor:
 
 ## Best Practices
 
-1. **Use TypeScript**: Type-safe components prevent runtime errors
-2. **Cache API calls**: Implement module-level caching for select options
-3. **Validate required fields**: Use Form.Item `rules` for validation
-4. **Add help text**: Guide users with clear descriptions
-5. **Handle currencies properly**: Always specify currency for amount-based actions
-6. **Test with multiple payment providers**: Ensure rules work across different providers
-7. **Secure gateway credentials**: Use Input.Password for sensitive fields
+1. **Prefer PHP FormTypes**: Use the schema-driven approach for all new conditions/actions
+2. **Gateway configurators still need React**: They are not part of the rule system
+3. **Cache API calls**: Implement module-level caching for select options in hand-written components
+4. **Secure gateway credentials**: Use `Input.Password` for sensitive fields in gateway configurators
+5. **Test with multiple payment providers**: Ensure rules work across different providers

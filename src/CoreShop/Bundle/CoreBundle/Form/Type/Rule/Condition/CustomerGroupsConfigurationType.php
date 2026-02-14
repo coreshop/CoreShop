@@ -27,6 +27,7 @@ final class CustomerGroupsConfigurationType extends AbstractType
     {
         $builder
             ->add('customerGroups', AutocompleteType::class, [
+                'label' => 'coreshop_condition_customerGroups',
                 'autocomplete_class' => 'CoreShopCustomerGroup',
                 'multiple' => true,
             ])

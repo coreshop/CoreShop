@@ -28,10 +28,13 @@ final class CategoriesConfigurationType extends AbstractType
     {
         $builder
             ->add('categories', AutocompleteType::class, [
+                'label' => 'coreshop_condition_categories',
                 'autocomplete_class' => 'CoreShopCategory',
                 'multiple' => true,
             ])
-            ->add('recursive', CheckboxType::class)
+            ->add('recursive', CheckboxType::class, [
+                'label' => 'coreshop_condition_recursive',
+            ])
         ;
     }
 

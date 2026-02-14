@@ -10,15 +10,6 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { CategoriesCondition } from './CategoriesCondition'
-export { ProductsCondition } from './ProductsCondition'
-export { CustomersCondition } from './CustomersCondition'
-export { CustomerGroupsCondition } from './CustomerGroupsCondition'
-export { CountriesCondition } from './CountriesCondition'
-export { ZonesCondition } from './ZonesCondition'
-export { CurrenciesCondition } from './CurrenciesCondition'
-export { StoresCondition } from './StoresCondition'
-export { CarriersCondition } from './CarriersCondition'
-export { GuestCondition } from './GuestCondition'
+// Legacy manual rule conditions were removed in favor of schema-driven rendering.
+// Keep only custom conditions that are still intentionally hand-written.
 export { NestedCondition } from './NestedCondition'
-export { TimespanCondition } from './TimespanCondition'

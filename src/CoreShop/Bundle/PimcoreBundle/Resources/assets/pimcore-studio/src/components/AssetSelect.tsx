@@ -11,101 +11,70 @@
  */
 
 import React from 'react'
-import { Input, Button, Space, Spin } from 'antd'
-import { DeleteOutlined, FileImageOutlined, LoadingOutlined } from '@ant-design/icons'
-import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
+import {
+  ManyToOneRelation,
+  type ManyToOneRelationValueType,
+} from '@pimcore/studio-ui-bundle/modules/element'
 import { loadElementDetails } from '@coreshop/resource/src/entities/api/helperApi'
 
 interface AssetSelectProps {
   value?: number | null
   onChange?: (value: number | null) => void
-  placeholder?: string
-  accept?: string | string[]  // Asset types to accept, e.g., 'asset', 'asset:image', 'asset:document'
+  disabled?: boolean
 }
 
 export const AssetSelect: React.FC<AssetSelectProps> = ({
   value,
   onChange,
-  placeholder,
-  accept = 'asset'
+  disabled,
 }) => {
-  const [displayValue, setDisplayValue] = React.useState<string>('')
-  const [loading, setLoading] = React.useState<boolean>(false)
+  const [fullPath, setFullPath] = React.useState<string | undefined>(undefined)
 
-  // Load asset path when value changes
   React.useEffect(() => {
     if (!value) {
-      setDisplayValue('')
+      setFullPath(undefined)
       return
     }
 
-    setLoading(true)
     loadElementDetails([String(value)], 'asset')
-      .then(details => {
+      .then((details) => {
         const detail = details[String(value)]
-        if (detail && detail.fullPath) {
-          setDisplayValue(detail.fullPath)
-        } else {
-          setDisplayValue(`Asset #${value}`)
+        if (detail?.fullPath) {
+          setFullPath(detail.fullPath)
         }
       })
-      .catch(err => {
-        console.error('Failed to load asset details:', err)
-        setDisplayValue(`Asset #${value}`)
-      })
-      .finally(() => {
-        setLoading(false)
+      .catch(() => {
+        setFullPath(undefined)
       })
   }, [value])
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    setDisplayValue(newValue)
+  const relationValue: ManyToOneRelationValueType = React.useMemo(() => {
+    if (!value) return null
+    return { type: 'asset', id: value, fullPath }
+  }, [value, fullPath])
 
-    if (newValue === '') {
+  const handleChange = React.useCallback((newValue: ManyToOneRelationValueType) => {
+    if (!newValue || (newValue as any).textInput) {
       onChange?.(null)
+      setFullPath(undefined)
     } else {
-      const numValue = parseInt(newValue, 10)
-      if (!isNaN(numValue)) {
-        onChange?.(numValue)
+      const rel = newValue as { id: number; fullPath?: string }
+      onChange?.(rel.id)
+      if (rel.fullPath) {
+        setFullPath(rel.fullPath)
       }
     }
-  }
-
-  const handleClear = () => {
-    setDisplayValue('')
-    onChange?.(null)
-  }
-
-  const handleDrop = (info: any) => {
-    const droppedId = info?.data?.id
-    if (typeof droppedId === 'number') {
-      onChange?.(droppedId)
-    }
-  }
+  }, [onChange])
 
   return (
-    <DroppableEntity
-      accept={accept}
-      isValidData={(info) => typeof info?.data?.id === 'number'}
-      onDrop={handleDrop}
-    >
-      <Space.Compact style={{ width: '100%' }}>
-        <Input
-          value={displayValue}
-          onChange={handleInputChange}
-          placeholder={placeholder}
-          prefix={loading ? <Spin indicator={<LoadingOutlined spin />} size="small" /> : <FileImageOutlined />}
-          readOnly={loading}
-        />
-        {value && !loading && (
-          <Button
-            icon={<DeleteOutlined />}
-            onClick={handleClear}
-            danger
-          />
-        )}
-      </Space.Compact>
-    </DroppableEntity>
+    <ManyToOneRelation
+      value={relationValue}
+      onChange={handleChange}
+      assetsAllowed
+      documentsAllowed={false}
+      dataObjectsAllowed={false}
+      allowToClearRelation
+      disabled={disabled}
+    />
   )
 }

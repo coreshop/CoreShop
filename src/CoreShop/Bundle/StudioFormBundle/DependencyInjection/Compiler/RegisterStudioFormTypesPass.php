@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 final class RegisterStudioFormTypesPass implements CompilerPassInterface
 {
     public const string TAG = 'coreshop.studio_form';
+    private const string FORM_TYPE_TAG = 'form.type';
 
     public function process(ContainerBuilder $container): void
     {
@@ -32,15 +33,21 @@ final class RegisterStudioFormTypesPass implements CompilerPassInterface
         }
 
         $registry = $container->getDefinition(BlockPrefixFormTypeRegistry::class);
-        $taggedServices = $container->findTaggedServiceIds(self::TAG);
+        $taggedServices = array_merge(
+            $container->findTaggedServiceIds(self::TAG),
+            $container->findTaggedServiceIds(self::FORM_TYPE_TAG),
+        );
 
         $formTypeClasses = [];
 
         foreach ($taggedServices as $id => $tags) {
             $definition = $container->getDefinition($id);
-            $formTypeClasses[] = $definition->getClass() ?? $id;
+            $class = $definition->getClass();
+            if (is_string($class) && $class !== '') {
+                $formTypeClasses[] = $class;
+            }
         }
 
-        $registry->replaceArgument('$formTypeClasses', $formTypeClasses);
+        $registry->replaceArgument('$formTypeClasses', array_values(array_unique($formTypeClasses)));
     }
 }

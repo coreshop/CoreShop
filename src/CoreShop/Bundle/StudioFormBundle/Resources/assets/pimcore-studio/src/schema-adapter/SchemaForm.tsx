@@ -15,8 +15,8 @@
 import React from 'react'
 import { Spin, Alert } from 'antd'
 import type { FormInstance } from 'antd/es/form'
-import { DynamicForm } from '../form-builder/components/DynamicForm'
-import type { FormDecorator } from '../form-builder/types'
+import { DynamicForm } from '../form-builder'
+import type { FormDecorator } from '../form-builder'
 import { useFormSchema } from './useFormSchema'
 
 export interface SchemaFormProps<T = any> {

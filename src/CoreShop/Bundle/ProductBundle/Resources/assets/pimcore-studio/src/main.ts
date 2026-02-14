@@ -14,6 +14,9 @@ import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { Input } from 'antd'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { ProductBundleIconModule } from './modules/icon-library'
 import {
     DynamicTypeObjectDataCoreShopProductUnit,
@@ -22,7 +25,6 @@ import {
     DynamicTypeObjectDataCoreShopProductSpecificPriceRules
 } from './dynamic-types'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
-import { createSchemaCondition, createSchemaAction } from '@coreshop/rule/src/rules/components'
 import { coreshopProductServiceIds } from './modules/product-price-rules/service-ids'
 import { NestedCondition, WeightCondition } from './modules/product-price-rules/conditions'
 import { ProductPriceRuleManager } from './modules/product-price-rules/ProductPriceRuleManager'
@@ -53,15 +55,8 @@ const plugin: IAbstractPlugin = {
 
         // Register Product Price Rule Conditions (ProductBundle-specific)
         conditionRegistry.register('nested', NestedCondition)
-        conditionRegistry.register('timespan', createSchemaCondition('coreshop_product_price_rule_condition_timespan'))
         conditionRegistry.register('weight', WeightCondition)
-
-        // Register Product Price Rule Actions (ProductBundle-specific)
-        actionRegistry.register('discountAmount', createSchemaAction('coreshop_product_price_rule_action_discount_amount'))
-        actionRegistry.register('discountPercent', createSchemaAction('coreshop_product_price_rule_action_discount_percent'))
-        actionRegistry.register('price', createSchemaAction('coreshop_product_price_rule_action_price'))
-        actionRegistry.register('discountPrice', createSchemaAction('coreshop_product_price_rule_action_price'))
-        actionRegistry.register('notDiscountableCustomAttributes', createSchemaAction('coreshop_rule_empty'))
+        void actionRegistry
 
         // Register ProductSpecificPriceRule registries as singleton services
         container.bind(coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry).to(ConditionRegistry).inSingletonScope()
@@ -73,18 +68,21 @@ const plugin: IAbstractPlugin = {
 
         // Register Product Specific Price Rule Conditions (same as ProductPriceRules)
         specificConditionRegistry.register('nested', NestedCondition)
-        specificConditionRegistry.register('timespan', createSchemaCondition('coreshop_product_price_rule_condition_timespan'))
         specificConditionRegistry.register('weight', WeightCondition)
-
-        // Register Product Specific Price Rule Actions (same as ProductPriceRules)
-        specificActionRegistry.register('discountAmount', createSchemaAction('coreshop_product_price_rule_action_discount_amount'))
-        specificActionRegistry.register('discountPercent', createSchemaAction('coreshop_product_price_rule_action_discount_percent'))
-        specificActionRegistry.register('price', createSchemaAction('coreshop_product_price_rule_action_price'))
-        specificActionRegistry.register('discountPrice', createSchemaAction('coreshop_product_price_rule_action_price'))
-        specificActionRegistry.register('notDiscountableCustomAttributes', createSchemaAction('coreshop_rule_empty'))
+        void specificActionRegistry
     },
 
     onStartup({ moduleSystem }) {
+        // Hide ProductBundle-owned rule collection prefixes from generic schema forms
+        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+        const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+        ;[
+          'coreshop_product_price_rule_condition_collection',
+          'coreshop_product_price_rule_action_collection',
+          'coreshop_product_specific_price_rule_condition_collection',
+          'coreshop_product_specific_price_rule_action_collection',
+        ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+
         moduleSystem.registerModule(ProductBundleIconModule)
 
         // Register Product Price Rules widget

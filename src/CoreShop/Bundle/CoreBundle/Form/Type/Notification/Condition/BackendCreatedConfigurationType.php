@@ -26,7 +26,9 @@ final class BackendCreatedConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('backendCreated', CheckboxType::class)
+            ->add('backendCreated', CheckboxType::class, [
+                'label' => 'coreshop_condition_backendCreated',
+            ])
         ;
     }
 }

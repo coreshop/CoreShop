@@ -16,6 +16,8 @@ import { PlusOutlined, SettingOutlined, SearchOutlined, TagOutlined, CloseOutlin
 import { container } from '@pimcore/studio-ui-bundle'
 import { useGlobalDataObjectContext } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { ConditionsPanel } from '@coreshop/rule/src/rules/components/ConditionsPanel'
+import { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
+import { createSchemaCondition } from '@coreshop/rule/src/rules/components'
 import type { RuleCondition } from '@coreshop/rule/src/rules/types'
 import { useTranslation } from 'react-i18next'
 import type { QuantityPriceRule, QuantityPriceRulesFieldData, CalculationBehaviour, QuantityRange } from '../types'
@@ -97,6 +99,20 @@ export const ProductQuantityPriceRulesPanel: React.FC<Props> = ({
   const availableConditionTypes = React.useMemo(() => {
     return value.conditions || []
   }, [value.conditions])
+
+  React.useEffect(() => {
+    if (!hasConditionRegistry) {
+      return
+    }
+
+    const conditionRegistry = container.get<ConditionRegistry>(coreshopQuantityPriceRulesServiceIds.conditionRegistry)
+
+    for (const [type, blockPrefix] of Object.entries(value.conditionSchemaByType ?? {})) {
+      if (!conditionRegistry.has(type)) {
+        conditionRegistry.register(type, createSchemaCondition(blockPrefix))
+      }
+    }
+  }, [hasConditionRegistry, value.conditionSchemaByType])
 
   // Get calculation behaviour options
   const calculationBehaviourOptions = (value.stores?.calculationBehaviourTypes ?? DEFAULT_CALCULATION_BEHAVIOURS)

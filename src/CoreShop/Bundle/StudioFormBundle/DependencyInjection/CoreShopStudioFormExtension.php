@@ -28,6 +28,7 @@ final class CoreShopStudioFormExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('services/demo.yml');
 
         $bundles = $container->getParameter('kernel.bundles');
 

@@ -42,6 +42,8 @@ class NotificationRuleController extends ResourceController
         $actions = [];
         $schemas = [];
         $types = [];
+        $conditionSchemaByType = [];
+        $actionSchemaByType = [];
 
         /**
          * @var array $actionTypes
@@ -81,7 +83,15 @@ class NotificationRuleController extends ResourceController
 
                 // Main registry uses compound keys: {notificationType}.{actionName}
                 $compoundKeys = array_map(static fn (string $name) => $type . '.' . $name, $typeActions);
-                $schemas = array_merge($schemas, $schemaCollector->collectSchemas($actionFormRegistry, $compoundKeys));
+                $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, $compoundKeys);
+                $schemas = array_merge($schemas, $actionSchemas['schemas']);
+
+                foreach ($typeActions as $actionName) {
+                    $compoundKey = $type . '.' . $actionName;
+                    if (isset($actionSchemas['schemaByType'][$compoundKey])) {
+                        $actionSchemaByType[$type][$actionName] = $actionSchemas['schemaByType'][$compoundKey];
+                    }
+                }
             }
 
             if ($parameterBag->has($conditionParameter)) {
@@ -94,7 +104,15 @@ class NotificationRuleController extends ResourceController
 
                 // Main registry uses compound keys: {notificationType}.{conditionName}
                 $compoundKeys = array_map(static fn (string $name) => $type . '.' . $name, $typeConditions);
-                $schemas = array_merge($schemas, $schemaCollector->collectSchemas($conditionFormRegistry, $compoundKeys));
+                $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, $compoundKeys);
+                $schemas = array_merge($schemas, $conditionSchemas['schemas']);
+
+                foreach ($typeConditions as $conditionName) {
+                    $compoundKey = $type . '.' . $conditionName;
+                    if (isset($conditionSchemas['schemaByType'][$compoundKey])) {
+                        $conditionSchemaByType[$type][$conditionName] = $conditionSchemas['schemaByType'][$compoundKey];
+                    }
+                }
             }
         }
 
@@ -104,6 +122,8 @@ class NotificationRuleController extends ResourceController
             'actions' => $actions,
             'conditions' => $conditions,
             'schemas' => $schemas,
+            'conditionSchemaByType' => $conditionSchemaByType,
+            'actionSchemaByType' => $actionSchemaByType,
         ]);
     }
 

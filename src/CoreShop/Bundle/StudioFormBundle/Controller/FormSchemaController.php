@@ -42,14 +42,7 @@ final class FormSchemaController
             );
         }
 
-        try {
             $schema = $this->generator->generate($formTypeClass);
-        } catch (\Throwable $e) {
-            return new JsonResponse(
-                ['error' => sprintf('Failed to generate schema: %s', $e->getMessage())],
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-            );
-        }
 
         return new JsonResponse($schema);
     }

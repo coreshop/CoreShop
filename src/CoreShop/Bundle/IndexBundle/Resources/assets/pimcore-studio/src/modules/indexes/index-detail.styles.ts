@@ -27,7 +27,7 @@ export const useIndexDetailStyles = createStyles(({ css }) => ({
     .ant-tabs-tabpane {
       height: 100%;
       min-height: 0;
-      overflow: hidden;
+      overflow: auto;
     }
   `
 }))

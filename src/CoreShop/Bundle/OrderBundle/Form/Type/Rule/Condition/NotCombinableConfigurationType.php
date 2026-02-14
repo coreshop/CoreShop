@@ -35,6 +35,7 @@ final class NotCombinableConfigurationType extends AbstractType
     {
         $builder
             ->add('price_rules', CartPriceRuleChoiceType::class, [
+                'label' => 'coreshop_cart_pricerules',
                 'multiple' => true,
             ])
         ;

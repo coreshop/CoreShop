@@ -37,6 +37,8 @@ export interface Rule {
 export interface RuleConfig {
   conditions: string[]
   actions: string[]
+  conditionSchemaByType?: Record<string, string>
+  actionSchemaByType?: Record<string, string>
   schemas?: Record<string, any>
   [key: string]: any
 }
@@ -44,11 +46,17 @@ export interface RuleConfig {
 export interface ConditionComponentProps {
   data: Record<string, any>
   onChange: (data: Record<string, any>) => void
+  type?: string
+  currentLocale?: string
+  locales?: string[]
   registryId?: symbol | string  // Optional: required for nested conditions
 }
 
 export interface ActionComponentProps {
   data: Record<string, any>
   onChange: (data: Record<string, any>) => void
+  type?: string
+  currentLocale?: string
+  locales?: string[]
   registryId?: symbol | string  // Optional: required for nested actions
 }

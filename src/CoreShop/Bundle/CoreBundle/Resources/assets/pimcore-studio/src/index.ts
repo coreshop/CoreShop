@@ -10,13 +10,6 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-// CoreBundle provides shared conditions and actions that get registered
-// into other bundles' registries. Import them from their specific paths:
-//
-// import { QuantityCondition } from '@coreshop/core/product-price-rules/conditions'
-// import { NotDiscountableCustomAttributesAction } from '@coreshop/core/product-price-rules/actions'
-
-export * from './modules/product-price-rules/conditions'
-export * from './modules/product-price-rules/actions'
-export * from './modules/cart-price-rules/conditions'
-export * from './modules/cart-price-rules/actions'
+// All conditions and actions are now schema-generated from backend form types.
+// Only NestedCondition remains as a custom component (recursive structure).
+export { NestedCondition } from './modules/shared/rules/conditions'

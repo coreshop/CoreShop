@@ -159,3 +159,7 @@ services:
         tags:
             - { name: form.type }
 
+    CoreShop\Bundle\ShippingBundle\Form\Schema\CarrierSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+

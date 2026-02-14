@@ -10,6 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { FreeShippingAction } from './FreeShippingAction'
-export { GiftProductAction } from './GiftProductAction'
-export { VoucherCreditAction } from './VoucherCreditAction'
+// All actions are now schema-generated from backend form types

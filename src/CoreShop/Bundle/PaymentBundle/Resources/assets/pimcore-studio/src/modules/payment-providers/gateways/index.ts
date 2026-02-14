@@ -12,5 +12,3 @@
 
 export { GatewayRegistry, type GatewayConfigurator, type GatewayConfiguratorProps } from './GatewayRegistry'
 export { GatewayConfigPanel, type GatewayConfigPanelProps } from './GatewayConfigPanel'
-export { PayPalExpressCheckoutConfigurator } from './PayPalExpressCheckoutConfigurator'
-export { SofortConfigurator } from './SofortConfigurator'

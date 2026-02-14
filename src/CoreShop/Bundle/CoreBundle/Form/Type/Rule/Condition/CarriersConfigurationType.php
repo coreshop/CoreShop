@@ -27,6 +27,7 @@ final class CarriersConfigurationType extends AbstractType
     {
         $builder
             ->add('carriers', CarrierChoiceType::class, [
+                'label' => 'coreshop_condition_carriers',
                 'multiple' => true,
             ])
         ;

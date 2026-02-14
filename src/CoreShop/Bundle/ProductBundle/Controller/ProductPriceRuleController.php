@@ -37,13 +37,18 @@ class ProductPriceRuleController extends ResourceController
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
+        $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
+        $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
+
         return $this->viewHandler->handle([
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
             'schemas' => array_merge(
-                $schemaCollector->collectSchemas($conditionFormRegistry, array_keys($conditions)),
-                $schemaCollector->collectSchemas($actionFormRegistry, array_keys($actions)),
+                $conditionSchemas['schemas'],
+                $actionSchemas['schemas'],
             ),
+            'conditionSchemaByType' => $conditionSchemas['schemaByType'],
+            'actionSchemaByType' => $actionSchemas['schemaByType'],
         ]);
     }
 

@@ -11,110 +11,73 @@
  */
 
 import React from 'react'
-import { Input, Button, Space, Spin } from 'antd'
-import { DeleteOutlined, FileTextOutlined, LoadingOutlined } from '@ant-design/icons'
-import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
+import {
+  ManyToOneRelation,
+  type ManyToOneRelationValueType,
+} from '@pimcore/studio-ui-bundle/modules/element'
 import { loadElementDetails } from '@coreshop/resource/src/entities/api/helperApi'
 
 interface DocumentSelectProps {
   value?: number | null
   onChange?: (value: number | null) => void
-  placeholder?: string
-  accept?: string | string[]  // Document types to accept, e.g., 'document', 'document:email'
-  documentTypes?: string[]  // Filter by document types, e.g., ['email', 'page']
+  documentTypes?: string[]
+  disabled?: boolean
 }
 
 export const DocumentSelect: React.FC<DocumentSelectProps> = ({
   value,
   onChange,
-  placeholder,
-  accept = 'document',
-  documentTypes
+  documentTypes,
+  disabled,
 }) => {
-  // Build accept array based on documentTypes if provided
-  const acceptTypes = React.useMemo(() => {
-    if (documentTypes && documentTypes.length > 0) {
-      return documentTypes.map(type => `document:${type}`)
-    }
-    return accept
-  }, [accept, documentTypes])
-  const [displayValue, setDisplayValue] = React.useState<string>('')
-  const [loading, setLoading] = React.useState<boolean>(false)
+  const [fullPath, setFullPath] = React.useState<string | undefined>(undefined)
 
-  // Load document path when value changes
   React.useEffect(() => {
     if (!value) {
-      setDisplayValue('')
+      setFullPath(undefined)
       return
     }
 
-    setLoading(true)
     loadElementDetails([String(value)], 'document')
-      .then(details => {
+      .then((details) => {
         const detail = details[String(value)]
-        if (detail && detail.fullPath) {
-          setDisplayValue(detail.fullPath)
-        } else {
-          setDisplayValue(`Document #${value}`)
+        if (detail?.fullPath) {
+          setFullPath(detail.fullPath)
         }
       })
-      .catch(err => {
-        console.error('Failed to load document details:', err)
-        setDisplayValue(`Document #${value}`)
-      })
-      .finally(() => {
-        setLoading(false)
+      .catch(() => {
+        setFullPath(undefined)
       })
   }, [value])
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    setDisplayValue(newValue)
+  const relationValue: ManyToOneRelationValueType = React.useMemo(() => {
+    if (!value) return null
+    return { type: 'document', id: value, fullPath }
+  }, [value, fullPath])
 
-    if (newValue === '') {
+  const handleChange = React.useCallback((newValue: ManyToOneRelationValueType) => {
+    if (!newValue || (newValue as any).textInput) {
       onChange?.(null)
+      setFullPath(undefined)
     } else {
-      const numValue = parseInt(newValue, 10)
-      if (!isNaN(numValue)) {
-        onChange?.(numValue)
+      const rel = newValue as { id: number; fullPath?: string }
+      onChange?.(rel.id)
+      if (rel.fullPath) {
+        setFullPath(rel.fullPath)
       }
     }
-  }
-
-  const handleClear = () => {
-    setDisplayValue('')
-    onChange?.(null)
-  }
-
-  const handleDrop = (info: any) => {
-    const droppedId = info?.data?.id
-    if (typeof droppedId === 'number') {
-      onChange?.(droppedId)
-    }
-  }
+  }, [onChange])
 
   return (
-    <DroppableEntity
-      accept={acceptTypes}
-      isValidData={(info) => typeof info?.data?.id === 'number'}
-      onDrop={handleDrop}
-    >
-      <Space.Compact style={{ width: '100%' }}>
-        <Input
-          value={displayValue}
-          onChange={handleInputChange}
-          placeholder={placeholder}
-          prefix={loading ? <Spin indicator={<LoadingOutlined spin />} size="small" /> : <FileTextOutlined />}
-          readOnly={loading}
-        />
-        {value && !loading && (
-          <Button
-            icon={<DeleteOutlined />}
-            onClick={handleClear}
-            danger
-          />
-        )}
-      </Space.Compact>
-    </DroppableEntity>
+    <ManyToOneRelation
+      value={relationValue}
+      onChange={handleChange}
+      assetsAllowed={false}
+      documentsAllowed
+      allowedDocumentTypes={documentTypes}
+      dataObjectsAllowed={false}
+      allowToClearRelation
+      disabled={disabled}
+    />
   )
 }

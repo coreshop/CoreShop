@@ -12,11 +12,15 @@
 
 import React from 'react'
 import { Tabs, Modal, Input, Form, Button, Typography, Space } from 'antd'
-import { PlusOutlined, SettingOutlined, SearchOutlined, ThunderboltOutlined, TagOutlined } from '@ant-design/icons'
+import { PlusOutlined, TagOutlined } from '@ant-design/icons'
 import { container } from '@pimcore/studio-ui-bundle'
-import { ConditionsPanel } from '@coreshop/rule/src/rules/components/ConditionsPanel'
-import { ActionsPanel } from '@coreshop/rule/src/rules/components/ActionsPanel'
-import type { RuleCondition, RuleAction } from '@coreshop/rule/src/rules/types'
+import type { RuleConfig } from '@coreshop/rule/src/rules/types'
+import { RuleForm } from '@coreshop/rule/src/rules/components/RuleForm'
+import {
+  ActionRegistry,
+  ConditionRegistry,
+  registerSchemaComponentsFromMaps
+} from '@coreshop/rule/src/rules/registry'
 import { useTranslation } from 'react-i18next'
 import type { ProductSpecificPriceRule, ProductSpecificPriceRulesData } from '../types'
 import { coreshopProductServiceIds } from '../../product-price-rules/service-ids'
@@ -71,44 +75,38 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
   const [addModalVisible, setAddModalVisible] = React.useState(false)
   const [newRuleName, setNewRuleName] = React.useState('')
 
-  // Check if registries are available
-  const hasConditionRegistry = React.useMemo(() => {
+  // Register schema-based components from backend mappings
+  React.useEffect(() => {
     try {
-      return container.isBound(coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry)
+      const conditionRegistry = container.get<ConditionRegistry>(coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry)
+      const actionRegistry = container.get<ActionRegistry>(coreshopProductServiceIds.productSpecificPriceRuleActionRegistry)
+
+      registerSchemaComponentsFromMaps(
+        conditionRegistry,
+        actionRegistry,
+        value.conditionSchemaByType,
+        value.actionSchemaByType,
+      )
     } catch (e) {
-      console.warn('Product specific price rules condition registry not available:', e)
-      return false
+      console.warn('Product specific price rules registries not available:', e)
     }
-  }, [])
+  }, [
+    value.conditionSchemaByType,
+    value.actionSchemaByType,
+  ])
 
-  const hasActionRegistry = React.useMemo(() => {
-    try {
-      return container.isBound(coreshopProductServiceIds.productSpecificPriceRuleActionRegistry)
-    } catch (e) {
-      console.warn('Product specific price rules action registry not available:', e)
-      return false
-    }
-  }, [])
-
-  // Get available types from backend
-  const availableConditionTypes = React.useMemo(() => {
-    return value.conditions || []
-  }, [value.conditions])
-
-  const availableActionTypes = React.useMemo(() => {
-    return value.actions || []
-  }, [value.actions])
+  // Build RuleConfig from the value prop
+  const config: RuleConfig = React.useMemo(() => ({
+    conditions: value.conditions || [],
+    actions: value.actions || [],
+    conditionSchemaByType: value.conditionSchemaByType,
+    actionSchemaByType: value.actionSchemaByType,
+  }), [value.conditions, value.actions, value.conditionSchemaByType, value.actionSchemaByType])
 
   const handleRuleChange = (index: number, updatedRule: ProductSpecificPriceRule) => {
     const newRules = [...value.rules]
     newRules[index] = updatedRule
     onChange({ ...value, rules: newRules })
-  }
-
-  const handleFieldChange = (index: number, field: keyof ProductSpecificPriceRule, fieldValue: any) => {
-    const rule = value.rules[index]
-    if (!rule) return
-    handleRuleChange(index, { ...rule, [field]: fieldValue })
   }
 
   const handleAddRule = () => {
@@ -149,89 +147,29 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
     })
   }
 
-  // Build sub-tabs for a single rule
-  const buildRuleSubTabs = (rule: ProductSpecificPriceRule, ruleIndex: number) => {
-    return [
-      {
-        key: 'settings',
-        label: (
-          <Space size={4}>
-            <SettingOutlined />
-            {t('settings', { defaultValue: 'Settings' })}
-          </Space>
-        ),
-        children: (
-          <SettingsForm
-            rule={rule}
-            onChange={(updatedRule) => handleRuleChange(ruleIndex, updatedRule)}
-            currentLocale={currentLocale}
-            locales={locales}
-          />
-        )
-      },
-      {
-        key: 'conditions',
-        label: (
-          <Space size={4}>
-            <SearchOutlined />
-            {t('coreshop_conditions', { defaultValue: 'Conditions' })}
-          </Space>
-        ),
-        children: hasConditionRegistry ? (
-          <div style={{ padding: 16 }}>
-            <ConditionsPanel
-              conditions={rule.conditions as RuleCondition[]}
-              availableTypes={availableConditionTypes}
-              onChange={(conditions: RuleCondition[]) => handleFieldChange(ruleIndex, 'conditions', conditions)}
-              registryId={coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry}
-            />
-          </div>
-        ) : (
-          <div style={{ padding: 16 }}>
-            <Typography.Text type="secondary">
-              {t('coreshop_conditions_not_available', { defaultValue: 'Conditions not available' })}
-            </Typography.Text>
-          </div>
-        )
-      },
-      {
-        key: 'actions',
-        label: (
-          <Space size={4}>
-            <ThunderboltOutlined />
-            {t('coreshop_actions', { defaultValue: 'Actions' })}
-          </Space>
-        ),
-        children: hasActionRegistry ? (
-          <div style={{ padding: 16 }}>
-            <ActionsPanel
-              actions={rule.actions as RuleAction[]}
-              availableTypes={availableActionTypes}
-              onChange={(actions: RuleAction[]) => handleFieldChange(ruleIndex, 'actions', actions)}
-              registryId={coreshopProductServiceIds.productSpecificPriceRuleActionRegistry}
-            />
-          </div>
-        ) : (
-          <div style={{ padding: 16 }}>
-            <Typography.Text type="secondary">
-              {t('coreshop_actions_not_available', { defaultValue: 'Actions not available' })}
-            </Typography.Text>
-          </div>
-        )
-      }
-    ]
-  }
-
-  // Build main rule tabs
+  // Build main rule tabs - each rule delegates to RuleForm
   const ruleTabItems = value.rules.map((rule, index) => ({
     key: String(index),
     label: generateTabLabel(rule, t),
     closable: !disabled,
     children: (
-      <Tabs
-        defaultActiveKey="settings"
-        items={buildRuleSubTabs(rule, index)}
-        size="small"
+      <RuleForm
+        rule={rule}
+        config={config}
+        conditionRegistryId={coreshopProductServiceIds.productSpecificPriceRuleConditionRegistry}
+        actionRegistryId={coreshopProductServiceIds.productSpecificPriceRuleActionRegistry}
+        currentLocale={currentLocale}
+        locales={locales}
+        settingsComponent={
+          <SettingsForm
+            rule={rule}
+            onChange={(updatedRule) => handleRuleChange(index, updatedRule)}
+            currentLocale={currentLocale}
+            locales={locales}
+          />
+        }
+        onChange={(updatedRule) => handleRuleChange(index, updatedRule as ProductSpecificPriceRule)}
+        hideToolbar
       />
     )
   }))

@@ -18,11 +18,13 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\StudioFormBundle\Form\Schema;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use Psr\Log\LoggerInterface;
 
 final class RuleFormSchemaCollector
 {
     public function __construct(
         private readonly FormSchemaGenerator $generator,
+        private readonly ?LoggerInterface $logger = null,
     ) {
     }
 
@@ -39,7 +41,23 @@ final class RuleFormSchemaCollector
      */
     public function collectSchemas(FormTypeRegistryInterface $formTypeRegistry, array $typeNames): array
     {
+        return $this->collectSchemasWithTypeMap($formTypeRegistry, $typeNames)['schemas'];
+    }
+
+    /**
+     * Collect schemas and the corresponding block prefix mapping by rule type.
+     *
+     * @param string[] $typeNames
+     *
+     * @return array{
+     *   schemas: array<string, FormSchema>,
+     *   schemaByType: array<string, string>
+     * }
+     */
+    public function collectSchemasWithTypeMap(FormTypeRegistryInterface $formTypeRegistry, array $typeNames): array
+    {
         $schemas = [];
+        $schemaByType = [];
 
         foreach ($typeNames as $typeName) {
             if (!$formTypeRegistry->has($typeName, 'default')) {
@@ -51,11 +69,22 @@ final class RuleFormSchemaCollector
             try {
                 $schema = $this->generator->generate($formTypeClass);
                 $schemas[$schema->blockPrefix] = $schema;
-            } catch (\Throwable) {
-                // Skip types that fail to generate (e.g. missing dependencies)
+                $schemaByType[$typeName] = $schema->blockPrefix;
+            } catch (\Throwable $e) {
+                $this->logger?->warning(
+                    sprintf(
+                        'Failed to generate Studio form schema for rule type "%s" (%s): %s',
+                        $typeName,
+                        $formTypeClass,
+                        $e->getMessage(),
+                    ),
+                );
             }
         }
 
-        return $schemas;
+        return [
+            'schemas' => $schemas,
+            'schemaByType' => $schemaByType,
+        ];
     }
 }

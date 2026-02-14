@@ -17,6 +17,7 @@ import { container } from '@pimcore/studio-ui-bundle'
 import type { RuleCondition } from '../types'
 import type { ConditionRegistry } from '../registry/ConditionRegistry'
 import { coreshopRuleServiceIds } from '../registry'
+import { formatTypeLabel } from './type-label'
 
 interface ConditionItemProps {
   condition: RuleCondition
@@ -26,6 +27,8 @@ interface ConditionItemProps {
   onMove: (from: number, to: number) => void
   onDelete: () => void
   registryId: symbol | string
+  currentLocale?: string
+  locales?: string[]
 }
 
 export const ConditionItem: React.FC<ConditionItemProps> = ({
@@ -35,7 +38,9 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
   onChange,
   onMove,
   onDelete,
-  registryId
+  registryId,
+  currentLocale,
+  locales
 }) => {
   const handleDataChange = (configuration: Record<string, any>) => {
     onChange({ ...condition, configuration })
@@ -51,7 +56,7 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
   const title = (
     <Space>
       <span style={{ fontWeight: 600 }}>
-        Condition: {condition.type}
+        {formatTypeLabel('Condition', condition.type)}
       </span>
     </Space>
   )
@@ -92,8 +97,11 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
       {ConditionComponent ? (
         <ConditionComponent
           data={condition.configuration}
+          type={condition.type}
           onChange={handleDataChange}
           registryId={registryId}
+          currentLocale={currentLocale}
+          locales={locales}
         />
       ) : (
         <div style={{ color: '#999', fontStyle: 'italic' }}>

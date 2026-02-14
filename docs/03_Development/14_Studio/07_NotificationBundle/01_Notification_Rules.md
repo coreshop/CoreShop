@@ -17,6 +17,14 @@ Notification Rules use **type-prefixed conditions and actions**. This means:
 - Actions are registered as `{type}.{action}` (e.g., `order.mail`)
 - The same action component (e.g., `MailAction`) can be reused across different notification types
 
+## Schema-Driven Forms
+
+Like all other rule types in CoreShop, notification rule conditions and actions can be **schema-driven** — their forms rendered automatically from PHP FormTypes via the StudioFormBundle. To add a new condition or action, you only need a PHP FormType and a service registration with the `form-type` attribute. No React code needed for standard forms.
+
+For the full schema-driven pattern, see [StudioFormBundle Examples — Example 13](../02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
+
+Notification-specific conditions (state selectors, transition selectors) and mail actions still use hand-written React components because they have specialized UI requirements (language tabs, state dropdowns populated from the backend workflow configuration, etc.).
+
 ## Architecture
 
 ### Notification Types

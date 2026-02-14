@@ -10,5 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { DiscountAmountAction } from './DiscountAmountAction'
-export { DiscountPercentAction } from './DiscountPercentAction'
+// All actions are now schema-generated from backend form types

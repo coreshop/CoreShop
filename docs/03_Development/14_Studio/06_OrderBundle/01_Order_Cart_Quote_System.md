@@ -369,6 +369,8 @@ const plugin: IAbstractPlugin = {
 
 The OrderBundle also includes Cart Price Rules with a full condition/action system.
 
+**Most cart price rule conditions and actions are schema-driven** — their forms are rendered automatically from PHP FormTypes via the StudioFormBundle. No custom React components are needed for standard conditions/actions.
+
 ### Service IDs
 
 ```typescript
@@ -380,29 +382,51 @@ export const coreshopOrderServiceIds = {
 }
 ```
 
-### Built-in Conditions (OrderBundle)
+### Built-in Conditions (All schema-driven from PHP FormTypes)
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `amount` | AmountCondition | Cart amount range |
-| `voucher` | VoucherCondition | Voucher code required |
-| `not_combinable` | NotCombinableCondition | Cannot combine with other rules |
+| Key | Source Bundle | Description |
+|-----|-------------|-------------|
+| `amount` | OrderBundle | Cart amount range |
+| `voucher` | OrderBundle | Voucher code required |
+| `not_combinable` | OrderBundle | Cannot combine with other rules |
+| `categories` | CoreBundle | Product categories |
+| `products` | CoreBundle | Specific products |
+| `customers` | CoreBundle | Specific customers |
+| `customerGroups` | CoreBundle | Customer groups |
+| `guest` | CoreBundle | Guest checkout |
+| `countries` | CoreBundle | Customer countries |
+| `zones` | CoreBundle | Geographic zones |
+| `stores` | CoreBundle | Store selection |
+| `currencies` | CoreBundle | Currency selection |
+| `carriers` | CoreBundle | Shipping carriers |
 
-### Built-in Actions (OrderBundle)
+### Conditions (Hand-written — require custom JS)
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `surchargePercent` | SurchargePercentAction | Add percentage surcharge |
-| `surchargeAmount` | SurchargeAmountAction | Add fixed surcharge |
-| `cartItemAction` | CartItemAction | Apply actions to cart items (nested) |
+| Key | Source Bundle | Reason |
+|-----|-------------|--------|
+| `nested` | CoreBundle | Recursively renders sub-conditions with AND/OR logic |
+| `timespan` | CoreBundle | Uses custom date/time picker composition |
 
-### Shared Conditions/Actions (CoreBundle)
+### Built-in Actions (Schema-driven)
 
-CoreBundle registers these shared components:
-- Categories, Products, Customers, CustomerGroups, Guest
-- Countries, Zones, Stores, Currencies
-- Carriers, Nested, Timespan
-- DiscountAmount, DiscountPercent
+| Key | Source Bundle | Description |
+|-----|-------------|-------------|
+| `surchargePercent` | OrderBundle | Add percentage surcharge |
+| `surchargeAmount` | OrderBundle | Add fixed surcharge |
+| `discountAmount` | CoreBundle | Fixed amount discount |
+| `discountPercent` | CoreBundle | Percentage discount |
+| `giftProduct` | CoreBundle | Free gift product |
+| `freeShipping` | CoreBundle | Free shipping |
+
+### Actions (Hand-written — require custom JS)
+
+| Key | Source Bundle | Reason |
+|-----|-------------|--------|
+| `cartItemAction` | OrderBundle | Renders nested cart-item condition/action panels |
+
+### Adding Custom Conditions/Actions
+
+New cart price rule conditions/actions only require a PHP FormType and service tag — no React code needed. See [StudioFormBundle Examples — Example 13](../02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
 
 ## File Structure
 

@@ -13,6 +13,9 @@
 import { type IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { Input } from 'antd'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { ProductQuantityPriceRulesBundleIconModule } from './modules/icon-library'
 import { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
 import { coreshopQuantityPriceRulesServiceIds } from './modules/quantity-price-rules'
@@ -37,6 +40,11 @@ const plugin: IAbstractPlugin = {
   },
 
   onStartup({ moduleSystem }) {
+    // Hide ProductQuantityPriceRulesBundle-owned rule collection prefix from generic schema forms
+    const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+    const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+    formWidgetRegistry.register('coreshop_product_quantity_price_rule_condition_collection', hiddenWidget)
+
     moduleSystem.registerModule(ProductQuantityPriceRulesBundleIconModule)
   }
 }

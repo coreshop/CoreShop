@@ -20,6 +20,66 @@ The system consists of:
 | Scope | Global or per-product | Per-product (Data Object field) |
 | UI | Separate manager | Inline in Data Object |
 
+## Schema-Driven Forms (No Custom JS Needed)
+
+**Quantity price rule conditions no longer require custom React components.** The configuration forms are rendered automatically from PHP FormTypes via the StudioFormBundle.
+
+To add a new condition, you only need:
+
+1. A PHP FormType defining the configuration fields
+2. A service registration with the `form-type` attribute
+
+The frontend auto-generates the React form from the backend schema at runtime.
+
+### Adding a Custom Condition (PHP Only)
+
+```php
+<?php
+
+namespace App\Form\Type\Rule\Condition;
+
+use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class MinCartValueConfigurationType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('minValue', NumberType::class, [
+                'label' => 'app_condition_min_value',
+                'required' => true,
+                'scale' => 2,
+            ])
+            ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'app_currency',
+            ])
+        ;
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'app_quantity_price_rule_condition_min_cart_value';
+    }
+}
+```
+
+```yaml
+services:
+    app.quantity_price_rule.condition.min_cart_value:
+        class: App\Rule\Condition\MinCartValueConditionChecker
+        tags:
+            - name: coreshop.product_quantity_price_rules.condition
+              type: minCartValue
+              form-type: App\Form\Type\Rule\Condition\MinCartValueConfigurationType
+```
+
+**Done.** No React/TypeScript code needed. The condition form renders automatically in the Quantity Price Rule editor.
+
+For the full schema-driven pattern explanation, see [StudioFormBundle Examples — Example 13](../02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
+
 ## Architecture
 
 ### Condition Registry Only
@@ -36,7 +96,8 @@ container.bind(coreshopQuantityPriceRulesServiceIds.conditionRegistry)
 ### Bundle Responsibilities
 
 - **ProductQuantityPriceRulesBundle**: Creates the condition registry and UI components
-- **CoreBundle**: Registers shared conditions (categories, customers, countries, etc.)
+- **CoreBundle**: Registers `NestedCondition` (the only hand-written component)
+- **Schema system**: Automatically generates and registers all other condition forms at runtime
 
 ### Service IDs
 
@@ -100,102 +161,28 @@ type CalculationBehaviour =
   | 'by_price'      // By price
 ```
 
-## Adding a Custom Condition
-
-### Step 1: Create the React Component
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/quantity-price-rules/conditions/MinCartValueCondition.tsx
-
-import React from 'react'
-import { Form, InputNumber, Select } from 'antd'
-import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import { currencyApi } from '@coreshop/currency/src/modules/currencies/api'
-
-export const MinCartValueCondition: React.FC<ConditionComponentProps> = ({
-  data,
-  onChange
-}) => {
-  const minValue = data.minValue || 0
-  const currency = data.currency || null
-  const [currencies, setCurrencies] = React.useState<Array<{ id: number, name: string }>>([])
-
-  React.useEffect(() => {
-    currencyApi.list()
-      .then((response) => {
-        setCurrencies(Array.isArray(response) ? response : [])
-      })
-      .catch(() => setCurrencies([]))
-  }, [])
-
-  return (
-    <Form layout="vertical">
-      <Form.Item label="Minimum Cart Value">
-        <InputNumber
-          value={minValue}
-          onChange={(value) => onChange({ ...data, minValue: value || 0 })}
-          min={0}
-          precision={2}
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
-      <Form.Item label="Currency">
-        <Select
-          value={currency}
-          onChange={(value) => onChange({ ...data, currency: value })}
-          options={currencies.map(c => ({ label: c.name, value: c.id }))}
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
-    </Form>
-  )
-}
-```
-
-### Step 2: Register the Condition
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
-
-import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
-import type { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
-import { coreshopQuantityPriceRulesServiceIds } from '@coreshop/productquantitypricerules/src/modules/quantity-price-rules/service-ids'
-import { MinCartValueCondition } from './modules/quantity-price-rules/conditions'
-
-const plugin: IAbstractPlugin = {
-    name: 'your-bundle',
-
-    onInit() {
-        // Get the Quantity Price Rule condition registry
-        const conditionRegistry = container.get<ConditionRegistry>(
-            coreshopQuantityPriceRulesServiceIds.conditionRegistry
-        )
-
-        // Register the custom condition
-        conditionRegistry.register('minCartValue', MinCartValueCondition)
-    }
-}
-
-export default plugin
-```
-
 ## Built-in Conditions
 
-### Conditions (Shared from CoreBundle)
+### Conditions (All schema-driven from PHP FormTypes)
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `categories` | CategoriesCondition | Product categories |
-| `products` | ProductsCondition | Specific products |
-| `customers` | CustomersCondition | Specific customers |
-| `customerGroups` | CustomerGroupsCondition | Customer groups |
-| `guest` | GuestCondition | Guest checkout |
-| `countries` | CountriesCondition | Customer countries |
-| `zones` | ZonesCondition | Geographic zones |
-| `stores` | StoresCondition | Store selection |
-| `currencies` | CurrenciesCondition | Currency selection |
-| `nested` | NestedCondition | Combine conditions with AND/OR |
-| `timespan` | TimespanCondition | Date/time range |
+| Key | Source Bundle | Description |
+|-----|-------------|-------------|
+| `categories` | CoreBundle | Product categories |
+| `products` | CoreBundle | Specific products |
+| `customers` | CoreBundle | Specific customers |
+| `customerGroups` | CoreBundle | Customer groups |
+| `guest` | CoreBundle | Guest checkout |
+| `countries` | CoreBundle | Customer countries |
+| `zones` | CoreBundle | Geographic zones |
+| `stores` | CoreBundle | Store selection |
+| `currencies` | CoreBundle | Currency selection |
+
+### Conditions (Hand-written — require custom JS)
+
+| Key | Source Bundle | Reason |
+|-----|-------------|--------|
+| `nested` | CoreBundle | Recursively renders sub-conditions with AND/OR logic |
+| `timespan` | CoreBundle | Uses custom date/time picker composition |
 
 ## UI Components
 
@@ -226,41 +213,6 @@ Features:
 - Copy/paste ranges between rules
 - Conditional field editing based on pricing behaviour
 
-## File Structure
-
-```
-ProductQuantityPriceRulesBundle/Resources/assets/pimcore-studio/src/
-├── main.ts                           # Plugin entry, registry setup
-├── modules/
-│   ├── icon-library/
-│   │   └── index.ts
-│   └── quantity-price-rules/
-│       ├── service-ids.ts            # Registry service ID
-│       ├── types.ts                  # TypeScript types
-│       ├── index.ts                  # Module exports
-│       └── components/
-│           ├── index.ts
-│           ├── QuantityPriceRulePanel.tsx      # Single rule editor
-│           ├── ProductQuantityPriceRulesPanel.tsx  # Multi-rule manager
-│           └── RangesPanel.tsx                 # Ranges grid editor
-└── dynamic-types/
-    ├── index.ts
-    └── DynamicTypeObjectDataCoreShopProductQuantityPriceRules.tsx
-```
-
-## Dynamic Type Integration
-
-Quantity Price Rules are attached to products via a Pimcore Data Object field:
-
-```typescript
-// DynamicTypeObjectDataCoreShopProductQuantityPriceRules.tsx
-export class DynamicTypeObjectDataCoreShopProductQuantityPriceRules
-  extends DynamicTypeObjectDataAbstract {
-  readonly id = 'coreShopProductQuantityPriceRules'
-  // Renders ProductQuantityPriceRulesPanel in Data Object editor
-}
-```
-
 ## Backend Implementation
 
 ### PHP Condition Checker
@@ -282,51 +234,15 @@ class MinCartValueConditionChecker implements QuantityRangeConditionCheckerInter
     ): bool {
         $cartValue = $context['cart']?->getTotal() ?? 0;
         $minValue = $configuration['minValue'] ?? 0;
-        $currency = $configuration['currency'] ?? null;
 
-        // Check if cart value meets minimum
         return $cartValue >= $minValue;
     }
 }
 ```
 
-### Service Registration
-
-```yaml
-# config/services.yaml
-App\CoreShop\Condition\MinCartValueConditionChecker:
-  tags:
-    - { name: coreshop.product_quantity_price_rules.condition, type: minCartValue, form-type: App\Form\Type\MinCartValueConditionType }
-```
-
-## How Ranges Work
-
-### Pricing Behaviour Logic
-
-```typescript
-// Amount-based behaviours need: amount, currency, pseudoPrice
-const AMOUNT_BASED_BEHAVIOURS = ['fixed', 'amount_decrease', 'amount_increase']
-
-// Percent-based behaviours need: percentage only
-const PERCENT_BASED_BEHAVIOURS = ['percentage_decrease', 'percentage_increase']
-```
-
-When changing pricing behaviour:
-- Switching to percent-based: Resets amount, pseudoPrice, currency to 0/null
-- Switching to amount-based: Resets percentage to 0
-
-### Example Range Configuration
-
-| Quantity | Behaviour | Amount | Percentage | Result |
-|----------|-----------|--------|------------|--------|
-| 1+ | fixed | 100 | - | Fixed price: $100 |
-| 10+ | percentage_decrease | - | 10% | 10% off base price |
-| 50+ | percentage_decrease | - | 20% | 20% off base price |
-| 100+ | amount_decrease | 50 | - | $50 off base price |
-
 ## Testing Your Extension
 
-1. **Build the bundle**: `npm run dev:single YourBundle`
+1. **Clear the Symfony cache**: `docker compose exec php bin/console cache:clear`
 2. **Clear browser cache**: Hard refresh (Ctrl+Shift+R)
 3. **Test the condition**:
    - Open a Product Data Object
@@ -338,8 +254,8 @@ When changing pricing behaviour:
 
 ## Best Practices
 
-1. **Conditions Only**: Remember Quantity Price Rules don't have actions - pricing is defined via ranges
-2. **Unit Awareness**: If products have unit definitions, consider them in your conditions
-3. **Currency Handling**: For amount-based conditions, always include currency selection
-4. **Range Validation**: Ensure ranges don't overlap in unexpected ways
-5. **Performance**: Cache API calls for entity selects (currencies, stores, etc.)
+1. **Prefer PHP FormTypes**: Use the schema-driven approach for all new conditions
+2. **Conditions Only**: Remember Quantity Price Rules don't have actions — pricing is defined via ranges
+3. **Unit Awareness**: If products have unit definitions, consider them in your conditions
+4. **Currency Handling**: For amount-based conditions, use `CurrencyChoiceType` which renders as a select automatically
+5. **Test with the schema endpoint**: `GET /pimcore-studio/api/coreshop-studio-form/schema/{blockPrefix}` to verify your form generates correctly

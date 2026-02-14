@@ -34,13 +34,40 @@ import type { ConditionComponentProps, ActionComponentProps } from '../types'
  * ```
  */
 export const createSchemaCondition = (blockPrefix: string): React.FC<ConditionComponentProps> => {
-  const SchemaCondition: React.FC<ConditionComponentProps> = ({ data, onChange }) => (
-    <SchemaForm
-      blockPrefix={blockPrefix}
-      data={data}
-      onChange={(draft) => onChange({ ...data, ...draft })}
-    />
-  )
+  const SchemaCondition: React.FC<ConditionComponentProps> = ({ data, type, onChange, currentLocale, locales }) => {
+    // Some backends can return the wrapper form block prefix instead of the pure
+    // configuration form prefix. Provide both shapes so both variants render.
+    const schemaData = {
+      ...(data ?? {}),
+      ...(type ? { type } : {}),
+      configuration: data ?? {},
+    }
+
+    return (
+      <SchemaForm
+        blockPrefix={blockPrefix}
+        data={schemaData}
+        currentLocale={currentLocale}
+        locales={locales}
+        onChange={(draft) => {
+          const next = { ...(data ?? {}) }
+          const wrapperConfiguration = (draft as Record<string, any>).configuration
+          if (wrapperConfiguration && typeof wrapperConfiguration === 'object') {
+            Object.assign(next, wrapperConfiguration)
+          }
+
+          for (const [key, value] of Object.entries(draft)) {
+            if (key === 'configuration' || key === 'type' || key === 'id' || key === 'sort') {
+              continue
+            }
+            next[key] = value
+          }
+
+          onChange(next)
+        }}
+      />
+    )
+  }
   SchemaCondition.displayName = `SchemaCondition(${blockPrefix})`
   return SchemaCondition
 }
@@ -58,13 +85,39 @@ export const createSchemaCondition = (blockPrefix: string): React.FC<ConditionCo
  * ```
  */
 export const createSchemaAction = (blockPrefix: string): React.FC<ActionComponentProps> => {
-  const SchemaAction: React.FC<ActionComponentProps> = ({ data, onChange }) => (
-    <SchemaForm
-      blockPrefix={blockPrefix}
-      data={data}
-      onChange={(draft) => onChange({ ...data, ...draft })}
-    />
-  )
+  const SchemaAction: React.FC<ActionComponentProps> = ({ data, type, onChange, currentLocale, locales }) => {
+    // See createSchemaCondition: support wrapper and pure configuration schemas.
+    const schemaData = {
+      ...(data ?? {}),
+      ...(type ? { type } : {}),
+      configuration: data ?? {},
+    }
+
+    return (
+      <SchemaForm
+        blockPrefix={blockPrefix}
+        data={schemaData}
+        currentLocale={currentLocale}
+        locales={locales}
+        onChange={(draft) => {
+          const next = { ...(data ?? {}) }
+          const wrapperConfiguration = (draft as Record<string, any>).configuration
+          if (wrapperConfiguration && typeof wrapperConfiguration === 'object') {
+            Object.assign(next, wrapperConfiguration)
+          }
+
+          for (const [key, value] of Object.entries(draft)) {
+            if (key === 'configuration' || key === 'type' || key === 'id' || key === 'sort') {
+              continue
+            }
+            next[key] = value
+          }
+
+          onChange(next)
+        }}
+      />
+    )
+  }
   SchemaAction.displayName = `SchemaAction(${blockPrefix})`
   return SchemaAction
 }

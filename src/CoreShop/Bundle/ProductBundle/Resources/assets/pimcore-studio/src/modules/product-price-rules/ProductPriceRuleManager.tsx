@@ -11,9 +11,11 @@
  */
 
 import React from 'react'
+import { container } from '@pimcore/studio-ui-bundle'
 import { EntityTabbedManager } from '@coreshop/resource'
 import { RuleForm } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
+import { ActionRegistry, ConditionRegistry, registerSchemaComponentsFromConfig } from '@coreshop/rule/src/rules/registry'
 import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { productPriceRuleApi } from './api'
@@ -31,7 +33,12 @@ export const ProductPriceRuleManager: React.FC = () => {
   // Load config on mount
   React.useEffect(() => {
     productPriceRuleApi.getConfig()
-      .then(setConfig)
+      .then((cfg) => {
+        const conditionRegistry = container.get<ConditionRegistry>(coreshopProductServiceIds.productPriceRuleConditionRegistry)
+        const actionRegistry = container.get<ActionRegistry>(coreshopProductServiceIds.productPriceRuleActionRegistry)
+        registerSchemaComponentsFromConfig(conditionRegistry, actionRegistry, cfg)
+        setConfig(cfg)
+      })
       .catch(err => {
         void messageApi.error(getErrorMessage(err, 'Failed to load config'))
       })
@@ -69,6 +76,8 @@ export const ProductPriceRuleManager: React.FC = () => {
             config={config}
             conditionRegistryId={coreshopProductServiceIds.productPriceRuleConditionRegistry}
             actionRegistryId={coreshopProductServiceIds.productPriceRuleActionRegistry}
+            currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
             settingsComponent={
               <SettingsForm
                 rule={data}

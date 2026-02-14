@@ -28,10 +28,13 @@ final class ProductsConfigurationType extends AbstractType
     {
         $builder
             ->add('products', AutocompleteType::class, [
+                'label' => 'coreshop_condition_products',
                 'autocomplete_class' => 'CoreShopProduct',
                 'multiple' => true,
             ])
-            ->add('include_variants', CheckboxType::class)
+            ->add('include_variants', CheckboxType::class, [
+                'label' => 'coreshop_condition_include_variants',
+            ])
         ;
     }
 

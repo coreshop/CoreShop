@@ -101,3 +101,12 @@ services:
             - '%coreshop.form.type.shipping_rule.action.price.validation_groups%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\StoreSettingsType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\CoreBundle\Form\Schema\StoreSettingsSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }

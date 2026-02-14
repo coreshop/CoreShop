@@ -2,6 +2,48 @@
 
 The RuleBundle provides the infrastructure for all rule-based features in CoreShop (Cart Price Rules, Product Price Rules, Shipping Rules, etc.). It includes the RuleApi, Registry system, and reusable UI components.
 
+## Schema-Driven Rule Forms (Default)
+
+**Most rule conditions and actions no longer require custom JavaScript/React code.** The StudioFormBundle automatically renders configuration forms from PHP FormTypes. When you register a condition or action with a `form-type` attribute in its service tag, the frontend auto-generates the React component from the backend schema.
+
+This means:
+
+- **Adding a new condition/action** = PHP FormType + service tag. No React code needed.
+- **The frontend calls `registerSchemaComponentsFromConfig()`** which creates React components dynamically from the `conditionSchemaByType` / `actionSchemaByType` maps returned by the `get-config` endpoint.
+- **Only special components** that need custom UI behavior (e.g., `NestedCondition`, `TimespanCondition`) still require hand-written React components.
+
+For the full pattern with examples, see [StudioFormBundle Examples — Rule Engine Integration](04_StudioFormBundle.md#rule-form-integrations) and [Example 13](05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
+
+### How It Works
+
+1. PHP FormType defines the condition/action configuration fields
+2. Service tag includes the `form-type` attribute pointing to the FormType class
+3. A `RegisterFormTypesFromTagsPass` compiler pass collects the form types and registers them in the block prefix registry
+4. The `get-config` endpoint returns `conditionSchemaByType` / `actionSchemaByType` maps plus embedded `schemas`
+5. The frontend calls `registerSchemaComponentsFromConfig()` which uses `createSchemaCondition()` / `createSchemaAction()` to generate React wrappers around `SchemaForm`
+6. `preSeedSchemaCache()` is called with the embedded schemas to avoid per-type HTTP requests
+
+```typescript
+// This happens automatically in each RuleManager — no manual code needed:
+const config = await ruleApi.getConfig()
+
+if (config.schemas) {
+    preSeedSchemaCache(config.schemas)
+}
+
+registerSchemaComponentsFromConfig(conditionRegistry, actionRegistry, config)
+```
+
+### What Bundles Still Do in JS
+
+Each bundle's `main.ts` still:
+
+1. **Creates and binds registries** (ConditionRegistry, ActionRegistry)
+2. **Registers special components** that cannot be schema-driven (nested, timespan, etc.)
+3. **Hides rule collection block prefixes** in the widget registry (so they don't render inside generic entity forms)
+
+Schema-based components are registered at runtime when `registerSchemaComponentsFromConfig()` is called, not at plugin init time.
+
 ## RuleApi Base Class
 
 The `RuleApi` class extends `EntityApi` and adds rule-specific functionality.
@@ -26,26 +68,21 @@ In addition to all EntityApi methods (list, get, add, save, delete), RuleApi pro
 
 #### `getConfig()` - Get Rule Configuration
 
-Fetches available conditions and actions for the rule type:
+Fetches available conditions, actions, and their schema mappings:
 
 ```typescript
 const config = await cartPriceRuleApi.getConfig()
-// Returns: { conditions: string[], actions: string[] }
 ```
 
 **Response Format:**
 ```typescript
 interface RuleConfig {
-  conditions: string[]  // Available condition types
-  actions: string[]     // Available action types
+  conditions: string[]                           // Available condition type keys
+  actions: string[]                              // Available action type keys
+  conditionSchemaByType: Record<string, string>  // type → block prefix mapping
+  actionSchemaByType: Record<string, string>     // type → block prefix mapping
+  schemas: Record<string, FormSchema>            // Embedded schemas (for preSeedSchemaCache)
 }
-```
-
-**Example:**
-```typescript
-const config = await cartPriceRuleApi.getConfig()
-console.log(config.conditions) // ['countries', 'products', 'customers', ...]
-console.log(config.actions)    // ['discount', 'freeShipping', ...]
 ```
 
 ## Registry Pattern
@@ -68,16 +105,10 @@ const conditionRegistry = container.get<ConditionRegistry>(
   serviceIds.conditionRegistry
 )
 
-// Register a condition
-conditionRegistry.register('countries', CountriesCondition)
+// Register a hand-written condition (only for special components)
+conditionRegistry.register('nested', NestedCondition)
 
-// Get a condition component
-const Component = conditionRegistry.get('countries')
-
-// Check if condition exists
-if (conditionRegistry.has('countries')) {
-  // ...
-}
+// Schema-based conditions are registered automatically via registerSchemaComponentsFromConfig()
 ```
 
 ### ActionRegistry
@@ -95,8 +126,7 @@ const actionRegistry = container.get<ActionRegistry>(
   serviceIds.actionRegistry
 )
 
-// Register an action
-actionRegistry.register('discount', DiscountAction)
+// Schema-based actions are registered automatically via registerSchemaComponentsFromConfig()
 ```
 
 ### Multiple Registries
@@ -108,83 +138,55 @@ actionRegistry.register('discount', DiscountAction)
 const productConditionRegistry = container.get<ConditionRegistry>(
   coreshopProductServiceIds.productPriceRuleConditionRegistry
 )
-const productActionRegistry = container.get<ActionRegistry>(
-  coreshopProductServiceIds.productPriceRuleActionRegistry
-)
 
 // Cart Price Rules
 const cartConditionRegistry = container.get<ConditionRegistry>(
   coreshopOrderServiceIds.cartPriceRuleConditionRegistry
 )
-const cartActionRegistry = container.get<ActionRegistry>(
-  coreshopOrderServiceIds.cartPriceRuleActionRegistry
+```
+
+## Schema Registration Functions
+
+### `registerSchemaComponentsFromConfig()`
+
+Auto-registers schema-driven components from a `RuleConfig` response:
+
+```typescript
+import { registerSchemaComponentsFromConfig } from '@coreshop/rule/src/rules/registry'
+
+const config = await ruleApi.getConfig()
+registerSchemaComponentsFromConfig(conditionRegistry, actionRegistry, config)
+```
+
+This iterates over `conditionSchemaByType` and `actionSchemaByType`, creating `SchemaCondition` / `SchemaAction` wrappers. It **does not overwrite** hand-written components already registered in the registry.
+
+### `registerSchemaComponentsFromMaps()`
+
+Lower-level function if you need direct control:
+
+```typescript
+import { registerSchemaComponentsFromMaps } from '@coreshop/rule/src/rules/registry'
+
+registerSchemaComponentsFromMaps(
+  conditionRegistry,
+  actionRegistry,
+  conditionSchemaByType,
+  actionSchemaByType,
+  schemas,
+  { overwriteExisting: false }
 )
 ```
 
-## Registration in Bundles
+### `createSchemaCondition()` / `createSchemaAction()`
 
-### ProductBundle Example
-
-```typescript
-// src/CoreShop/Bundle/ProductBundle/Resources/assets/pimcore-studio/src/main.ts
-
-import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
-import { coreshopProductServiceIds } from './modules/product-price-rules/service-ids'
-import { WeightCondition } from './modules/product-price-rules/conditions'
-import { DiscountAction } from './modules/product-price-rules/actions'
-
-const plugin: IAbstractPlugin = {
-    name: 'coreshop-product',
-
-    onInit() {
-        // Bind registries
-        container.bind(coreshopProductServiceIds.productPriceRuleConditionRegistry)
-          .to(ConditionRegistry)
-          .inSingletonScope()
-
-        container.bind(coreshopProductServiceIds.productPriceRuleActionRegistry)
-          .to(ActionRegistry)
-          .inSingletonScope()
-
-        // Get registries
-        const conditionRegistry = container.get<ConditionRegistry>(
-          coreshopProductServiceIds.productPriceRuleConditionRegistry
-        )
-        const actionRegistry = container.get<ActionRegistry>(
-          coreshopProductServiceIds.productPriceRuleActionRegistry
-        )
-
-        // Register components
-        conditionRegistry.register('weight', WeightCondition)
-        actionRegistry.register('discount', DiscountAction)
-    }
-}
-```
-
-### CoreBundle as Glue Layer
-
-CoreBundle registers shared components into multiple registries:
+Factory functions that create a React component wrapping `SchemaForm`:
 
 ```typescript
-// src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src/main.ts
+import { createSchemaCondition, createSchemaAction } from '@coreshop/rule/src/rules/components'
 
-const plugin: IAbstractPlugin = {
-    onInit() {
-        // Get ProductPriceRule registries
-        const productConditionRegistry = container.get<ConditionRegistry>(
-          coreshopProductServiceIds.productPriceRuleConditionRegistry
-        )
-
-        // Get CartPriceRule registries
-        const cartConditionRegistry = container.get<ConditionRegistry>(
-          coreshopOrderServiceIds.cartPriceRuleConditionRegistry
-        )
-
-        // Register shared conditions in BOTH registries
-        productConditionRegistry.register('countries', CountriesCondition)
-        cartConditionRegistry.register('countries', CountriesCondition)
-    }
-}
+// Manual registration (usually not needed — registerSchemaComponentsFromConfig does this)
+conditionRegistry.register('amount', createSchemaCondition('coreshop_cart_price_rule_condition_amount'))
+actionRegistry.register('surchargePercent', createSchemaAction('coreshop_cart_price_rule_action_surcharge_percent'))
 ```
 
 ## Rule Components
@@ -206,6 +208,8 @@ export const CartPriceRuleManager = () => (
 )
 ```
 
+`RuleManager` automatically calls `registerSchemaComponentsFromConfig()` when it loads the config, so schema-based components are available without any manual setup.
+
 ### RuleForm
 
 Form component with conditions and actions panels:
@@ -223,26 +227,16 @@ import { RuleForm } from '@coreshop/rule/src/rules/components'
 />
 ```
 
-### ConditionsPanel
-
-Panel for managing rule conditions:
+### ConditionsPanel / ActionsPanel
 
 ```typescript
-import { ConditionsPanel } from '@coreshop/rule/src/rules/components'
+import { ConditionsPanel, ActionsPanel } from '@coreshop/rule/src/rules/components'
 
 <ConditionsPanel
   conditions={rule.conditions}
   onChange={handleConditionsChange}
   registryId={serviceIds.conditionRegistry}
 />
-```
-
-### ActionsPanel
-
-Panel for managing rule actions:
-
-```typescript
-import { ActionsPanel } from '@coreshop/rule/src/rules/components'
 
 <ActionsPanel
   actions={rule.actions}
@@ -251,185 +245,111 @@ import { ActionsPanel } from '@coreshop/rule/src/rules/components'
 />
 ```
 
-## EmptyAction / EmptyCondition
+## Components That Still Need Custom JS
 
-For rules without configuration UI:
+Only a few special components still require hand-written React code:
 
-```typescript
-import { EmptyAction, EmptyCondition } from '@coreshop/rule/src/rules'
+| Component | Reason |
+|-----------|--------|
+| `NestedCondition` | Recursively renders sub-conditions with AND/OR logic; cannot be expressed as a flat form |
+| `TimespanCondition` | Uses custom date/time picker composition |
+| `CartItemAction` | Renders nested cart-item condition/action panels |
 
-// Register action without config
-actionRegistry.register('notDiscountableCustomAttributes', EmptyAction)
+All other conditions and actions (countries, stores, currencies, categories, products, customers, amount, weight, etc.) are rendered automatically from their PHP FormTypes.
 
-// Register condition without config
-conditionRegistry.register('alwaysTrue', EmptyCondition)
-```
+## Adding a New Condition/Action (Preferred Approach)
 
-These components display an info message instead of a form.
+### Step 1: Create the PHP FormType
 
-## Component Props
+```php
+<?php
 
-### ActionComponentProps
+namespace App\Form\Type\Rule\Condition;
 
-```typescript
-interface ActionComponentProps {
-  data: any                      // Action configuration data
-  onChange: (data: any) => void  // Update handler
-}
-```
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-### ConditionComponentProps
+final class MinimumWeightConfigurationType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('minWeight', IntegerType::class, [
+                'label' => 'app_condition_min_weight',
+            ])
+        ;
+    }
 
-```typescript
-interface ConditionComponentProps {
-  data: any                      // Condition configuration data
-  onChange: (data: any) => void  // Update handler
-}
-```
-
-## Complete Example
-
-### 1. Service IDs
-
-```typescript
-// service-ids.ts
-export const coreshopProductServiceIds = {
-  productPriceRuleConditionRegistry: Symbol.for('ProductPriceRuleConditionRegistry'),
-  productPriceRuleActionRegistry: Symbol.for('ProductPriceRuleActionRegistry')
-}
-```
-
-### 2. Create Action Component
-
-```typescript
-// DiscountAction.tsx
-import React from 'react'
-import { Form, InputNumber } from 'antd'
-import type { ActionComponentProps } from '@coreshop/rule/src/rules'
-
-export const DiscountAction: React.FC<ActionComponentProps> = ({ data, onChange }) => {
-  return (
-    <Form layout="vertical">
-      <Form.Item label="Discount Amount">
-        <InputNumber
-          value={data.amount || 0}
-          onChange={(value) => onChange({ ...data, amount: value })}
-        />
-      </Form.Item>
-    </Form>
-  )
-}
-```
-
-### 3. Register in Plugin
-
-```typescript
-// main.ts
-import { ActionRegistry } from '@coreshop/rule/src/rules/registry'
-import { coreshopProductServiceIds } from './service-ids'
-import { DiscountAction } from './actions/DiscountAction'
-
-const plugin: IAbstractPlugin = {
-    onInit() {
-        container.bind(coreshopProductServiceIds.productPriceRuleActionRegistry)
-          .to(ActionRegistry)
-          .inSingletonScope()
-
-        const actionRegistry = container.get<ActionRegistry>(
-          coreshopProductServiceIds.productPriceRuleActionRegistry
-        )
-
-        actionRegistry.register('discount', DiscountAction)
+    public function getBlockPrefix(): string
+    {
+        return 'app_shipping_rule_condition_minimum_weight';
     }
 }
 ```
 
-### 4. Use in RuleManager
+### Step 2: Register the Service with `form-type`
+
+```yaml
+services:
+    app.shipping_rule.condition.minimum_weight:
+        class: App\Rule\Condition\MinimumWeightChecker
+        tags:
+            - name: coreshop.shipping_rule.condition
+              type: minimumWeight
+              form-type: App\Form\Type\Rule\Condition\MinimumWeightConfigurationType
+```
+
+### Step 3: Done
+
+No React/TypeScript code needed. The condition form is rendered automatically in Studio.
+
+### When You Need Custom JS (Rare)
+
+If your condition/action requires custom UI behavior that cannot be expressed as a Symfony FormType (e.g., recursive nesting, complex interactive widgets), you can still register a hand-written React component:
 
 ```typescript
-// ProductPriceRuleManager.tsx
-import { RuleManager } from '@coreshop/rule/src/rules/components'
-import { productPriceRuleApi } from './api'
-import { coreshopProductServiceIds } from './service-ids'
-
-export const ProductPriceRuleManager = () => (
-  <RuleManager
-    api={productPriceRuleApi}
-    conditionRegistryId={coreshopProductServiceIds.productPriceRuleConditionRegistry}
-    actionRegistryId={coreshopProductServiceIds.productPriceRuleActionRegistry}
-  />
-)
+// In your bundle's main.ts
+const conditionRegistry = container.get<ConditionRegistry>(serviceIds.conditionRegistry)
+conditionRegistry.register('myCustomCondition', MyCustomCondition)
 ```
+
+Hand-written components take priority over schema-generated ones — `registerSchemaComponentsFromConfig()` does not overwrite existing entries.
 
 ## Best Practices
 
-### 1. Separate Registries Per Rule Type
+### 1. Prefer Schema-Driven Components
 
-**⚠️ Each rule type MUST have its own registries!**
+Use PHP FormTypes instead of writing React components. This:
+- Eliminates frontend/backend duplication
+- Automatically supports all StudioFormBundle widgets (choices, autocomplete, collections, etc.)
+- Requires zero JS build steps for new conditions/actions
+
+### 2. Separate Registries Per Rule Type
+
+**Each rule type MUST have its own registries!**
 
 ```typescript
 // ✅ GOOD - Separate registries
 const productConditionRegistry = container.get(productServiceIds.conditionRegistry)
 const cartConditionRegistry = container.get(cartServiceIds.conditionRegistry)
-
-// ❌ BAD - Sharing registries
-const sharedRegistry = container.get(serviceIds.conditionRegistry)
-```
-
-### 2. Registry IDs are Mandatory
-
-Always pass `registryId` to rule components:
-
-```typescript
-// ✅ GOOD
-<RuleForm
-  conditionRegistryId={serviceIds.conditionRegistry}
-  actionRegistryId={serviceIds.actionRegistry}
-/>
-
-// ❌ BAD - Missing registryId (will not work)
-<RuleForm rule={data} onChange={setData} />
 ```
 
 ### 3. Bind Registries in onInit
-
-Bind registries during plugin initialization:
 
 ```typescript
 onInit() {
   // ✅ GOOD - Bind in onInit
   container.bind(serviceIds.registry).to(ConditionRegistry).inSingletonScope()
 }
-
-onStartup() {
-  // ❌ BAD - Too late, components may need it earlier
-  container.bind(serviceIds.registry).to(ConditionRegistry).inSingletonScope()
-}
 ```
 
-### 4. Type Your Components
+### 4. Use preSeedSchemaCache
 
-Use proper TypeScript types:
-
-```typescript
-// ✅ GOOD
-export const MyCondition: React.FC<ConditionComponentProps> = ({ data, onChange }) => {
-  const conditionData = data as MyConditionData
-  // ...
-}
-
-// ❌ BAD - No types
-export const MyCondition = ({ data, onChange }) => {
-  // ...
-}
-```
+Always pre-seed the schema cache from the `get-config` response to avoid N+1 HTTP requests.
 
 ## Real-World Examples
 
-See the [Extending Rule Actions](../../01_Extending_Guide/04_Extending_Rule_Actions.md) and [Extending Rule Conditions](../../01_Extending_Guide/05_Extending_Rule_Conditions.md) guides for complete examples.
-
-## Next Steps
-
-- [Building CRUD Features](03_Entity_CRUD.md) - Create complete CRUD interfaces
-- [Extending Rule Actions](../../01_Extending_Guide/04_Extending_Rule_Actions.md) - Create custom actions
-- [Extending Rule Conditions](../../01_Extending_Guide/05_Extending_Rule_Conditions.md) - Create custom conditions
+- [StudioFormBundle Examples — Example 13](05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form) — Full end-to-end schema-driven rule component
+- [StudioFormBundle Examples — Example 14](05_StudioFormBundle_Examples.md#example-14--cross-bundle-extension-formtypeextension) — Cross-bundle form extension
+- [Extending Shipping Rules](../01_Extending_Shipping_Rules.md) — Shipping rule extensions

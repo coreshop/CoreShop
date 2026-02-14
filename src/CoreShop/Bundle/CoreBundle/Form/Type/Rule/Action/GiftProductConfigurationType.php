@@ -26,6 +26,7 @@ final class GiftProductConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('product', AutocompleteType::class, [
+            'label' => 'coreshop_action_giftProduct',
             'autocomplete_class' => 'CoreShopProduct',
         ]);
     }

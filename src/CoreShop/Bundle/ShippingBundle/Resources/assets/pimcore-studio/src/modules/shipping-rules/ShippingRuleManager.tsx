@@ -3,9 +3,11 @@
  */
 
 import React from 'react'
+import { container } from '@pimcore/studio-ui-bundle'
 import { EntityTabbedManager, getErrorMessage } from '@coreshop/resource'
 import { RuleForm } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
+import { ActionRegistry, ConditionRegistry, registerSchemaComponentsFromConfig } from '@coreshop/rule/src/rules/registry'
 import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { shippingRuleApi } from './api'
@@ -22,7 +24,12 @@ export const ShippingRuleManager: React.FC = () => {
   // Load config on mount
   React.useEffect(() => {
     shippingRuleApi.getConfig()
-      .then(setConfig)
+      .then((cfg) => {
+        const conditionRegistry = container.get<ConditionRegistry>(coreshopShippingServiceIds.shippingRuleConditionRegistry)
+        const actionRegistry = container.get<ActionRegistry>(coreshopShippingServiceIds.shippingRuleActionRegistry)
+        registerSchemaComponentsFromConfig(conditionRegistry, actionRegistry, cfg)
+        setConfig(cfg)
+      })
       .catch(err => {
         void messageApi.error(getErrorMessage(err, 'Failed to load config'))
       })
@@ -59,6 +66,8 @@ export const ShippingRuleManager: React.FC = () => {
             config={config}
             conditionRegistryId={coreshopShippingServiceIds.shippingRuleConditionRegistry}
             actionRegistryId={coreshopShippingServiceIds.shippingRuleActionRegistry}
+            currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
             settingsComponent={
               <SettingsForm
                 rule={data}

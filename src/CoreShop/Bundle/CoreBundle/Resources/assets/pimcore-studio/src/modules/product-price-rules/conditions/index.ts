@@ -10,5 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { QuantityCondition } from './QuantityCondition'
-export { NotCombinableWithCartPriceVoucherRuleCondition } from './NotCombinableWithCartPriceVoucherRuleCondition'
+// All conditions are now schema-generated from backend form types

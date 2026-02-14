@@ -28,6 +28,7 @@ final class UserTypeConfigurationType extends AbstractType
     {
         $builder
             ->add('userType', ChoiceType::class, [
+                'label' => 'coreshop_condition_userType',
                 'choices' => [
                     UserTypeChecker::TYPE_PASSWORD_RESET,
                     UserTypeChecker::TYPE_REGISTER,

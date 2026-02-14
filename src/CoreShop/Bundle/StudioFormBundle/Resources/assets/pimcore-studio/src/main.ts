@@ -16,6 +16,7 @@ import { container, type IAbstractPlugin } from '@pimcore/studio-ui-bundle'
 import { WidgetRegistry } from './schema-adapter/WidgetRegistry'
 import { registerDefaultWidgets } from './schema-adapter/defaultWidgets'
 import { widgetRegistryServiceId } from './services'
+import { DemoModule } from './modules/demo'
 
 const plugin: IAbstractPlugin = {
   name: 'coreshop-studio-form-plugin',
@@ -29,8 +30,8 @@ const plugin: IAbstractPlugin = {
     registerDefaultWidgets(registry)
   },
 
-  onStartup() {
-    // No modules to register at startup for the base bundle
+  onStartup({ moduleSystem }) {
+    moduleSystem.registerModule(DemoModule)
   },
 }
 

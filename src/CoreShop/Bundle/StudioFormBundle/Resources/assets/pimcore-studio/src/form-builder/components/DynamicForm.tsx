@@ -13,7 +13,7 @@
  */
 
 import React from 'react'
-import { Form, Collapse, Row, Col, Tag } from 'antd'
+import { Form, Collapse, Row, Col, Tag, Tabs } from 'antd'
 import { GlobalOutlined } from '@ant-design/icons'
 import type { FormInstance } from 'antd/es/form'
 import type { FormBuilderConfig, FieldDefinition, SectionDefinition } from '../types'
@@ -62,6 +62,7 @@ export const DynamicForm = <T extends Record<string, any> = any>({
   // Track entity ID and locale to only reset form when they change
   const lastLoadedIdRef = React.useRef<number | undefined>(undefined)
   const lastLoadedLocaleRef = React.useRef<string | undefined>(undefined)
+  const lastLoadedDataRef = React.useRef<T | undefined>(undefined)
 
   // Check if config has localized fields
   const hasLocalizedFields = React.useMemo(() =>
@@ -73,6 +74,28 @@ export const DynamicForm = <T extends Record<string, any> = any>({
   // This is critical for localized fields to work correctly
   React.useEffect(() => {
     const entityId = (data as any)?.id
+    const hasEntityIdentity = typeof entityId !== 'undefined'
+    const hasLocaleIdentity = typeof currentLocale !== 'undefined'
+
+    // Forms without an entity identity (e.g. rule condition/action configuration)
+    // still need an initial hydration when async data arrives from backend.
+    if (!hasEntityIdentity && !hasLocaleIdentity) {
+      if (data === lastLoadedDataRef.current) {
+        return
+      }
+
+      // Don't stomp over active user edits.
+      if (form.isFieldsTouched(true)) {
+        return
+      }
+
+      lastLoadedDataRef.current = data
+      if (data) {
+        form.setFieldsValue(data as any)
+      }
+      return
+    }
+
     const entityChanged = lastLoadedIdRef.current !== entityId
     const localeChanged = lastLoadedLocaleRef.current !== currentLocale
 
@@ -95,21 +118,7 @@ export const DynamicForm = <T extends Record<string, any> = any>({
       }
       form.setFieldsValue(formData)
     }
-  }, [(data as any)?.id, currentLocale, form, hasLocalizedFields])
-
-  // Group fields by section
-  const fieldsBySection = React.useMemo(() => {
-    const grouped = new Map<string | undefined, FieldDefinition<T>[]>()
-
-    for (const field of config.fields) {
-      const section = field.section
-      const fields = grouped.get(section) ?? []
-      fields.push(field)
-      grouped.set(section, fields)
-    }
-
-    return grouped
-  }, [config.fields])
+  }, [data, (data as any)?.id, currentLocale, form, hasLocalizedFields])
 
   // Sections sorted by order
   const sortedSections = React.useMemo(() => {
@@ -120,6 +129,18 @@ export const DynamicForm = <T extends Record<string, any> = any>({
       return orderA - orderB
     })
   }, [config.sections])
+
+  // Tabs sorted by order
+  const sortedTabs = React.useMemo(() => {
+    if (!config.tabs) return []
+    return [...config.tabs].sort((a, b) => {
+      const orderA = a.order ?? 999
+      const orderB = b.order ?? 999
+      return orderA - orderB
+    })
+  }, [config.tabs])
+
+  const defaultTabKey = sortedTabs[0]?.key
 
   // Render a single field
   const renderField = (field: FieldDefinition<T>) => {
@@ -186,8 +207,21 @@ export const DynamicForm = <T extends Record<string, any> = any>({
   }
 
   // Render fields for a section
-  const renderSectionFields = (sectionKey?: string) => {
-    const fields = fieldsBySection.get(sectionKey) ?? []
+  const renderSectionFields = (sectionKey?: string, tabKey?: string) => {
+    const fields = config.fields.filter((field) => {
+      const sectionMatches = field.section === sectionKey
+      if (!sectionMatches) {
+        return false
+      }
+
+      if (!tabKey) {
+        return true
+      }
+
+      const resolvedTabKey = field.tab ?? defaultTabKey
+      return resolvedTabKey === tabKey
+    })
+
     if (fields.length === 0) return null
 
     // If columns specified, use Row/Col layout
@@ -203,8 +237,8 @@ export const DynamicForm = <T extends Record<string, any> = any>({
   }
 
   // Render a section
-  const renderSection = (section: SectionDefinition) => {
-    const content = renderSectionFields(section.key)
+  const renderSection = (section: SectionDefinition, tabKey?: string) => {
+    const content = renderSectionFields(section.key, tabKey)
     if (!content) return null
 
     // Translate section title and description
@@ -263,11 +297,29 @@ export const DynamicForm = <T extends Record<string, any> = any>({
       }}
       {...(config.formProps ?? {})}
     >
-      {/* Render sections */}
-      {sortedSections.map(section => renderSection(section))}
+      {sortedTabs.length > 0 ? (
+        <Tabs
+          defaultActiveKey={defaultTabKey}
+          items={sortedTabs.map((tab) => ({
+            key: tab.key,
+            label: t(tab.title, { defaultValue: tab.title }),
+            children: (
+              <>
+                {sortedSections.map(section => renderSection(section, tab.key))}
+                {renderSectionFields(undefined, tab.key)}
+              </>
+            ),
+          }))}
+        />
+      ) : (
+        <>
+          {/* Render sections */}
+          {sortedSections.map(section => renderSection(section))}
 
-      {/* Render fields without section */}
-      {renderSectionFields(undefined)}
+          {/* Render fields without section */}
+          {renderSectionFields(undefined)}
+        </>
+      )}
     </Form>
   )
 }

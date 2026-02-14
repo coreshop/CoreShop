@@ -61,9 +61,18 @@ final class FormSchemaGenerator
     private function serializeView(FormView $view): FormSchema
     {
         $blockPrefix = $this->getBlockPrefix($view);
-        $fields = [];
 
-        foreach ($view->children ?? [] as $childView) {
+        // Collect children and sort by Symfony's priority option (higher = first).
+        $children = iterator_to_array($view->children ?? []);
+        usort($children, static function (FormView $a, FormView $b): int {
+            $pa = $a->vars['priority'] ?? 0;
+            $pb = $b->vars['priority'] ?? 0;
+
+            return $pb <=> $pa;
+        });
+
+        $fields = [];
+        foreach ($children as $childView) {
             $fields[] = $this->serializeFieldView($childView);
         }
 
@@ -79,14 +88,21 @@ final class FormSchemaGenerator
         if (!is_array($blockPrefixes)) {
             $blockPrefixes = [];
         }
-        // Strip the unique block prefix (last element, e.g. '_cart_price_rule_name')
-        array_pop($blockPrefixes);
+        // Strip only the unique runtime block prefix (e.g. '_cart_price_rule_name').
+        // Keep real type prefixes like "number" or "coreshop_*" intact.
+        $blockPrefixes = $this->stripUniqueBlockPrefix($blockPrefixes);
+
+        $label = $childView->vars['label'] ?? null;
+        // Symfony allows label = false (meaning "don't display a label"); treat as null.
+        if (!is_string($label)) {
+            $label = null;
+        }
 
         $field = new FieldSchema(
             name: $childView->vars['name'],
             blockPrefixes: $blockPrefixes,
             required: $childView->vars['required'] ?? false,
-            label: $childView->vars['label'] ?? null,
+            label: $label,
             disabled: $childView->vars['disabled'] ?? false,
         );
 
@@ -99,6 +115,12 @@ final class FormSchemaGenerator
 
         // Extract extra vars (e.g. autocomplete_class set by custom types in buildView)
         $field->extra = $this->extractExtraVars($childView);
+
+        // Preserve "multiple" for our autocomplete type so frontend can choose
+        // between ManyToOne and ManyToMany relation widgets.
+        if (in_array('coreshop_autocomplete', $blockPrefixes, true) && isset($childView->vars['multiple'])) {
+            $field->extra['multiple'] = (bool) $childView->vars['multiple'];
+        }
 
         // Collection type metadata
         if (isset($childView->vars['allow_add'])) {
@@ -132,13 +154,32 @@ final class FormSchemaGenerator
     private function getBlockPrefix(FormView $view): string
     {
         $blockPrefixes = $view->vars['block_prefixes'] ?? [];
-        // The second-to-last element is the type's block prefix
-        // e.g. ['form', 'coreshop_cart_price_rule', '_cart_price_rule'] -> 'coreshop_cart_price_rule'
-        if (count($blockPrefixes) >= 2) {
-            return $blockPrefixes[count($blockPrefixes) - 2];
+        if (!is_array($blockPrefixes) || count($blockPrefixes) === 0) {
+            return 'form';
         }
 
-        return $blockPrefixes[0] ?? 'form';
+        // Root forms can be either:
+        // - ['form', 'coreshop_x', '_coreshop_x'] (with unique suffix)
+        // - ['form', 'coreshop_x'] (without unique suffix)
+        // Always use the most specific non-unique prefix.
+        $blockPrefixes = $this->stripUniqueBlockPrefix($blockPrefixes);
+
+        return $blockPrefixes[count($blockPrefixes) - 1] ?? 'form';
+    }
+
+    /**
+     * @param string[] $blockPrefixes
+     *
+     * @return string[]
+     */
+    private function stripUniqueBlockPrefix(array $blockPrefixes): array
+    {
+        $last = end($blockPrefixes);
+        if (is_string($last) && str_starts_with($last, '_')) {
+            array_pop($blockPrefixes);
+        }
+
+        return $blockPrefixes;
     }
 
     /**
@@ -156,7 +197,7 @@ final class FormSchemaGenerator
                 foreach ($choice as $groupedChoice) {
                     if ($groupedChoice instanceof ChoiceView) {
                         $result[] = [
-                            'value' => $groupedChoice->value,
+                            'value' => $this->normalizeChoiceValue($groupedChoice->value),
                             'label' => (string) $groupedChoice->label,
                             'group' => $choice->label,
                         ];
@@ -164,13 +205,29 @@ final class FormSchemaGenerator
                 }
             } elseif ($choice instanceof ChoiceView) {
                 $result[] = [
-                    'value' => $choice->value,
+                    'value' => $this->normalizeChoiceValue($choice->value),
                     'label' => (string) $choice->label,
                 ];
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Normalize a ChoiceView value.
+     *
+     * Symfony's ChoiceView always stores values as strings, but the API returns
+     * entity IDs as integers. Convert numeric strings to integers so that
+     * Ant Design's Select can match values with strict equality.
+     */
+    private function normalizeChoiceValue(string $value): string|int
+    {
+        if (ctype_digit($value)) {
+            return (int) $value;
+        }
+
+        return $value;
     }
 
     /**
@@ -188,7 +245,7 @@ final class FormSchemaGenerator
             'required', 'disabled', 'label', 'label_attr', 'label_format',
             'label_html', 'label_translation_parameters', 'help', 'help_attr',
             'help_html', 'help_translation_parameters', 'compound', 'method',
-            'action', 'submitted', 'attr', 'row_attr', 'errors', 'valid',
+            'action', 'submitted', 'row_attr', 'errors', 'valid',
             'form', 'translation_domain', 'unique_block_prefix', 'priority',
             // Choice type vars
             'choices', 'multiple', 'expanded', 'preferred_choices',

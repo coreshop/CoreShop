@@ -12,15 +12,18 @@
 
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { ShippingBundleIconModule } from './modules/icon-library'
+import { CarrierWidgetsModule } from './modules/carriers/widgets'
 import { CarrierManager } from './modules/carriers/CarrierManager'
 import { ShippingRuleManager } from './modules/shipping-rules/ShippingRuleManager'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
-import { createSchemaCondition, createSchemaAction } from '@coreshop/rule/src/rules/components'
 import { coreshopShippingServiceIds } from './modules/shipping-rules/service-ids'
 import { NestedCondition } from '@coreshop/core/src/modules/shared/rules/conditions'
 import type {WidgetRegistry} from "@pimcore/studio-ui-bundle/modules/widget-manager";
 import {serviceIds} from "@pimcore/studio-ui-bundle/app";
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { Input } from 'antd'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import {
     DynamicTypeObjectDataCoreShopCarrier,
     DynamicTypeObjectDataCoreShopCarrierMultiselect
@@ -56,27 +59,24 @@ const plugin: IAbstractPlugin = {
 
         // Get registries
         const conditionRegistry = container.get<ConditionRegistry>(coreshopShippingServiceIds.shippingRuleConditionRegistry)
-        const actionRegistry = container.get<ActionRegistry>(coreshopShippingServiceIds.shippingRuleActionRegistry)
+        container.get<ActionRegistry>(coreshopShippingServiceIds.shippingRuleActionRegistry)
 
-        // Register ShippingBundle-specific conditions
-        conditionRegistry.register('weight', createSchemaCondition('coreshop_shipping_rule_condition_weight'))
-        conditionRegistry.register('amount', createSchemaCondition('coreshop_shipping_rule_condition_amount'))
-        conditionRegistry.register('postcodes', createSchemaCondition('coreshop_shipping_rule_condition_postcode'))
-        conditionRegistry.register('dimension', createSchemaCondition('coreshop_shipping_rule_condition_dimension'))
-        conditionRegistry.register('shippingRule', createSchemaCondition('coreshop_shipping_rule_condition_shipping_rule'))
+        // Register non-schema custom condition(s).
+        // Schema-based conditions/actions are auto-registered at runtime from backend mappings.
         conditionRegistry.register('nested', NestedCondition)
-
-        // Register ShippingBundle-specific actions
-        actionRegistry.register('additionPercent', createSchemaAction('coreshop_shipping_rule_action_addition_percent'))
-        actionRegistry.register('additionAmount', createSchemaAction('coreshop_shipping_rule_action_addition_amount'))
-        actionRegistry.register('discountPercent', createSchemaAction('coreshop_shipping_rule_action_discount_percent'))
-        actionRegistry.register('discountAmount', createSchemaAction('coreshop_shipping_rule_action_discount_amount'))
-        actionRegistry.register('price', createSchemaAction('coreshop_shipping_rule_action_price'))
-        actionRegistry.register('shippingRule', createSchemaAction('coreshop_shipping_rule_condition_shipping_rule'))
     },
 
     onStartup({ moduleSystem }) {
+        // Hide ShippingBundle-owned rule collection prefixes from generic schema forms
+        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+        const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+        ;[
+          'coreshop_shipping_rule_condition_collection',
+          'coreshop_product_shipping_action_collection',
+        ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+
         moduleSystem.registerModule(ShippingBundleIconModule)
+        moduleSystem.registerModule(CarrierWidgetsModule)
     }
 }
 

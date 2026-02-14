@@ -14,10 +14,14 @@ import { type IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { type WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { NotificationBundleIconModule } from './modules/icon-library'
+import { Input } from 'antd'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { coreshopNotificationServiceIds } from './modules/notification-rules/service-ids'
-import { MailAction, StoreMailAction, OrderMailAction, StoreOrderMailAction } from './modules/notification-rules/actions'
 import { NotificationRuleManager } from './modules/notification-rules/NotificationRuleManager'
+import { LocalizedMailDocumentsWidget } from './modules/notification-rules/widgets/LocalizedMailDocumentsWidget'
+import { StoreLocalizedMailDocumentsWidget } from './modules/notification-rules/widgets/StoreLocalizedMailDocumentsWidget'
 
 const plugin: IAbstractPlugin = {
   name: 'coreshop-notification',
@@ -35,29 +39,6 @@ const plugin: IAbstractPlugin = {
       .to(ActionRegistry)
       .inSingletonScope()
 
-    // Get action registry
-    const actionRegistry = container.get<ActionRegistry>(
-      coreshopNotificationServiceIds.notificationRuleActionRegistry
-    )
-
-    // Register base mail action for all notification types
-    // The action type is prefixed with the notification type by the backend
-    // e.g., "order.mail", "payment.mail", etc.
-    // We register a single "mail" action that works for all types
-    actionRegistry.register('mail', MailAction)
-    actionRegistry.register('storeMail', StoreMailAction)
-    actionRegistry.register('orderMail', OrderMailAction)
-    actionRegistry.register('storeOrderMail', StoreOrderMailAction)
-
-    // Also register with type prefixes for compatibility
-    const notificationTypes = ['order', 'payment', 'invoice', 'shipment', 'quote', 'user', 'messaging']
-    notificationTypes.forEach(type => {
-      actionRegistry.register(`${type}.mail`, MailAction)
-      actionRegistry.register(`${type}.storeMail`, StoreMailAction)
-      actionRegistry.register(`${type}.orderMail`, OrderMailAction)
-      actionRegistry.register(`${type}.storeOrderMail`, StoreOrderMailAction)
-    })
-
     // ============================================
     // Widget Registration
     // ============================================
@@ -70,6 +51,33 @@ const plugin: IAbstractPlugin = {
   },
 
   onStartup({ moduleSystem }) {
+    const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+
+    // Hide NotificationBundle-owned rule collection prefixes from generic schema forms
+    const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+    ;[
+      'coreshop_notification_rule_condition_collection',
+      'coreshop_notification_action_collection',
+    ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+
+    // Symfony/Twig-like block-prefix override:
+    // Notification type is rendered by dedicated custom selector in SettingsForm.
+    formWidgetRegistry.register('coreshop_notification_rule_type', () => ({
+      component: Input,
+      extra: {
+        hidden: true,
+      },
+    }))
+
+    // Register custom widgets for localized mail document fields
+    formWidgetRegistry.register('coreshop_localized_mail_documents', () => ({
+      component: LocalizedMailDocumentsWidget,
+    }))
+
+    formWidgetRegistry.register('coreshop_store_localized_mail_documents', () => ({
+      component: StoreLocalizedMailDocumentsWidget,
+    }))
+
     moduleSystem.registerModule(NotificationBundleIconModule)
   }
 }

@@ -11,9 +11,11 @@
  */
 
 import React from 'react'
+import { container } from '@pimcore/studio-ui-bundle'
 import { EntityTabbedManager } from '@coreshop/resource'
 import { RuleForm } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
+import { ActionRegistry, ConditionRegistry, registerSchemaComponentsFromMaps } from '@coreshop/rule/src/rules/registry'
 import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { notificationRuleApi } from './api'
@@ -32,7 +34,26 @@ export const NotificationRuleManager: React.FC = () => {
   // Load config on mount
   React.useEffect(() => {
     notificationRuleApi.getConfig()
-      .then(setConfig)
+      .then((cfg) => {
+        const conditionRegistry = container.get<ConditionRegistry>(coreshopNotificationServiceIds.notificationRuleConditionRegistry)
+        const actionRegistry = container.get<ActionRegistry>(coreshopNotificationServiceIds.notificationRuleActionRegistry)
+
+        const conditionMap: Record<string, string> = {}
+        const actionMap: Record<string, string> = {}
+
+        for (const type of cfg.types) {
+          for (const [conditionName, blockPrefix] of Object.entries(cfg.conditionSchemaByType?.[type] ?? {})) {
+            conditionMap[`${type}.${conditionName}`] = blockPrefix
+          }
+
+          for (const [actionName, blockPrefix] of Object.entries(cfg.actionSchemaByType?.[type] ?? {})) {
+            actionMap[`${type}.${actionName}`] = blockPrefix
+          }
+        }
+
+        registerSchemaComponentsFromMaps(conditionRegistry, actionRegistry, conditionMap, actionMap, cfg.schemas)
+        setConfig(cfg)
+      })
       .catch(err => {
         void messageApi.error(getErrorMessage(err, 'Failed to load notification config'))
       })
@@ -96,6 +117,8 @@ export const NotificationRuleManager: React.FC = () => {
             config={ruleConfig}
             conditionRegistryId={coreshopNotificationServiceIds.notificationRuleConditionRegistry}
             actionRegistryId={coreshopNotificationServiceIds.notificationRuleActionRegistry}
+            currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
             settingsComponent={
               <SettingsForm
                 rule={data}

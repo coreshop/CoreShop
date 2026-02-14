@@ -30,7 +30,10 @@ final class ProductQuantityPriceRuleNestedConfigurationType extends AbstractNest
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('conditions', ProductQuantityPriceRuleConditionCollectionType::class, ['nested' => true])
+            ->add('conditions', ProductQuantityPriceRuleConditionCollectionType::class, [
+                'nested' => true,
+                'entry_options' => ['data_class' => null],
+            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {

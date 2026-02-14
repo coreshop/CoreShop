@@ -37,9 +37,9 @@ export interface FormSchemaField {
   /** Multiple prototypes keyed by type (CoreShop condition/action collections) */
   prototypes?: Record<string, FormSchemaResponse>
   /** Tab assignment (from enricher) */
-  tab?: string
+  tab?: string | null
   /** Section assignment (from enricher) */
-  section?: string
+  section?: string | null
 }
 
 /**

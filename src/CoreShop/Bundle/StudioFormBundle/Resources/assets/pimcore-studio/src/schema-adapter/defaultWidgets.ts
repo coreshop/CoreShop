@@ -12,8 +12,10 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { Input, InputNumber, Switch, Select, DatePicker, TimePicker, ColorPicker, Slider } from 'antd'
+import { Input, InputNumber, Switch, Select, DatePicker, TimePicker, ColorPicker, Slider, Checkbox, Radio } from 'antd'
 import type { WidgetRegistry } from './WidgetRegistry'
+import { CollectionWidget } from './CollectionWidget'
+import { GridCollectionWidget } from './GridCollectionWidget'
 
 /**
  * Register default Ant Design widget resolvers by Symfony block prefix.
@@ -51,10 +53,46 @@ export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
   // ChoiceType → block prefix 'choice'
   registry.register('choice', (field) => {
     const choices = field.choices ?? []
-    const options = choices.map(c => ({
+    const flatOptions = choices.map(c => ({
       value: c.value,
       label: c.label,
+      group: c.group,
     }))
+
+    if (field.expanded) {
+      if (field.multiple) {
+        return {
+          component: Checkbox.Group,
+          props: {
+            options: flatOptions.map(({ value, label }) => ({ value, label })),
+          },
+        }
+      }
+
+      return {
+        component: Radio.Group,
+        props: {
+          options: flatOptions.map(({ value, label }) => ({ value, label })),
+          optionType: 'default',
+        },
+      }
+    }
+
+    const groupedOptions = new Map<string, Array<{ value: string | number; label: string }>>()
+    const options: Array<{ value: string | number; label: string } | { label: string; options: Array<{ value: string | number; label: string }> }> = []
+    for (const option of flatOptions) {
+      if (!option.group) {
+        options.push({ value: option.value, label: option.label })
+        continue
+      }
+
+      const group = groupedOptions.get(option.group) ?? []
+      group.push({ value: option.value, label: option.label })
+      groupedOptions.set(option.group, group)
+    }
+    for (const [groupLabel, groupOptions] of groupedOptions.entries()) {
+      options.push({ label: groupLabel, options: groupOptions })
+    }
 
     return {
       component: Select,
@@ -69,14 +107,32 @@ export const registerDefaultWidgets = (registry: WidgetRegistry): void => {
     }
   })
 
-  // CollectionType → block prefix 'collection'
-  registry.register('collection', () => ({
+  // TagCollectionType → block prefix 'tag_collection'
+  registry.register('tag_collection', () => ({
     component: Select,
     props: {
       mode: 'tags',
+      style: { width: '100%' },
       tokenSeparators: [','],
       open: false,
-      suffixIcon: null,
+    },
+  }))
+
+  // Grid collection → block prefix 'grid_collection'
+  registry.register('grid_collection', (field) => ({
+    component: GridCollectionWidget,
+    props: {
+      field,
+      widgetRegistry: registry,
+    },
+  }))
+
+  // CollectionType → block prefix 'collection'
+  registry.register('collection', (field) => ({
+    component: CollectionWidget,
+    props: {
+      field,
+      widgetRegistry: registry,
     },
   }))
 

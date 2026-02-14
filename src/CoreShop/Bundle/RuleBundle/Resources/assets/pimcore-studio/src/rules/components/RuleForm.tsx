@@ -33,6 +33,8 @@ interface RuleFormProps {
   settingsComponent: React.ReactNode
   conditionRegistryId: symbol | string
   actionRegistryId: symbol | string
+  currentLocale?: string
+  locales?: string[]
   additionalTabs?: RuleFormTab[]
   onSave?: (rule: Rule) => Promise<void>
   onChange: (rule: Rule) => void
@@ -48,7 +50,9 @@ export const RuleForm: React.FC<RuleFormProps> = ({
   onChange,
   hideToolbar = false,
   conditionRegistryId,
-  actionRegistryId
+  actionRegistryId,
+  currentLocale,
+  locales
 }) => {
   const { t } = useTranslation()
   const messageApi = useMessage()
@@ -90,6 +94,8 @@ export const RuleForm: React.FC<RuleFormProps> = ({
           availableTypes={config.conditions}
           onChange={handleConditionsChange}
           registryId={conditionRegistryId}
+          currentLocale={currentLocale}
+          locales={locales}
         />
       )
     },
@@ -102,6 +108,8 @@ export const RuleForm: React.FC<RuleFormProps> = ({
           availableTypes={config.actions}
           onChange={handleActionsChange}
           registryId={actionRegistryId}
+          currentLocale={currentLocale}
+          locales={locales}
         />
       )
     }

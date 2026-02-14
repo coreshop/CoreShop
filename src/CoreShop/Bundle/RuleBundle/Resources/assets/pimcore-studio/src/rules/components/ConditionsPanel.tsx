@@ -16,19 +16,24 @@ import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import type { RuleCondition } from '../types'
 import { ConditionItem } from './ConditionItem'
+import { formatTypeLabel } from './type-label'
 
 interface ConditionsPanelProps {
   conditions: RuleCondition[]
   availableTypes: string[]
   onChange: (conditions: RuleCondition[]) => void
   registryId: symbol | string
+  currentLocale?: string
+  locales?: string[]
 }
 
 export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
   conditions,
   availableTypes,
   onChange,
-  registryId
+  registryId,
+  currentLocale,
+  locales
 }) => {
   // Debug logging
   const handleAdd = (type: string) => {
@@ -69,7 +74,7 @@ export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
 
   const menuItems: MenuProps['items'] = availableTypes.map(type => ({
     key: type,
-    label: `Condition: ${type}`,
+    label: formatTypeLabel('Condition', type),
     onClick: () => handleAdd(type)
   }))
 
@@ -101,6 +106,8 @@ export const ConditionsPanel: React.FC<ConditionsPanelProps> = ({
                 onMove={handleMove}
                 onDelete={() => handleDelete(index)}
                 registryId={registryId}
+                currentLocale={currentLocale}
+                locales={locales}
               />
             ))}
           </div>

@@ -35,6 +35,11 @@ services:
             - '@coreshop.form_registry.index.worker'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\IndexBundle\Form\Schema\IndexSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
 
     CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnType:
         arguments:
@@ -93,6 +98,15 @@ services:
             - '%coreshop.form.type.filter.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\IndexBundle\Form\Schema\FilterSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\IndexBundle\Form\Schema\FilterConditionSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
 
     CoreShop\Bundle\IndexBundle\Form\Type\FilterPreConditionType:
         class: CoreShop\Bundle\IndexBundle\Form\Type\FilterPreConditionType
@@ -190,54 +204,63 @@ services:
             - '%coreshop.form.type.filter.condition.boolean.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategorySelectType:
         arguments:
             - '%coreshop.form.type.filter.condition.category.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategoryMultiSelectType:
         arguments:
             - '%coreshop.form.type.filter.condition.category_multiselect.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType:
         arguments:
             - '%coreshop.form.type.filter.condition.multiselect.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSearchType:
         arguments:
             - '%coreshop.form.type.filter.condition.search.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionRangeType:
         arguments:
             - '%coreshop.form.type.filter.condition.range.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType:
         arguments:
             - '%coreshop.form.type.filter.condition.select.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterPreConditionNestedType:
         arguments:
             - '%coreshop.form.type.filter.condition.pre_nested.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterUserConditionNestedType:
         arguments:
             - '%coreshop.form.type.filter.condition.user_nested.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Worker\OpenSearchWorkerType:
         arguments:

@@ -1,5 +1,1 @@
-export * from './WeightCondition'
-export * from './AmountCondition'
-export * from './PostcodesCondition'
-export * from './DimensionCondition'
-export * from './ShippingRuleCondition'
+// All conditions are now schema-generated from backend form types

@@ -26,5 +26,7 @@ export interface ProductSpecificPriceRule extends Rule {
 export interface ProductSpecificPriceRulesData {
   actions: string[]
   conditions: string[]
+  actionSchemaByType?: Record<string, string>
+  conditionSchemaByType?: Record<string, string>
   rules: ProductSpecificPriceRule[]
 }

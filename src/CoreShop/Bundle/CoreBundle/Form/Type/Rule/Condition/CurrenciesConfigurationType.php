@@ -27,6 +27,7 @@ final class CurrenciesConfigurationType extends AbstractType
     {
         $builder
             ->add('currencies', CurrencyChoiceType::class, [
+                'label' => 'coreshop_condition_currencies',
                 'multiple' => true,
             ])
         ;

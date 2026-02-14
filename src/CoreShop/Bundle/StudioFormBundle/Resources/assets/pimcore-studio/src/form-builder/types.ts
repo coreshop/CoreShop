@@ -28,6 +28,8 @@ export interface FieldDefinition<T = any> {
   component: React.ComponentType<any>
   /** Section this field belongs to */
   section?: string
+  /** Tab this field belongs to */
+  tab?: string
   /** Field is required */
   required?: boolean
   /** Field is disabled */
@@ -73,6 +75,18 @@ export interface SectionDefinition {
 }
 
 /**
+ * Tab Definition (for grouping sections/fields)
+ */
+export interface TabDefinition {
+  /** Unique tab key */
+  key: string
+  /** Display title */
+  title: string
+  /** Tab order/priority */
+  order?: number
+}
+
+/**
  * Form Builder Configuration
  */
 export interface FormBuilderConfig<T = any> {
@@ -80,6 +94,8 @@ export interface FormBuilderConfig<T = any> {
   fields: FieldDefinition<T>[]
   /** Section definitions */
   sections?: SectionDefinition[]
+  /** Tab definitions */
+  tabs?: TabDefinition[]
   /** Form layout */
   layout?: 'vertical' | 'horizontal' | 'inline'
   /** Number of columns in grid layout */

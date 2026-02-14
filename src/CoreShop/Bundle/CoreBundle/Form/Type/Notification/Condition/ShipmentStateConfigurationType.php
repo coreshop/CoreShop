@@ -27,6 +27,7 @@ final class ShipmentStateConfigurationType extends AbstractType
     {
         $builder
             ->add('shipmentState', TextType::class, [
+                'label' => 'coreshop_select_state',
             ])
         ;
     }

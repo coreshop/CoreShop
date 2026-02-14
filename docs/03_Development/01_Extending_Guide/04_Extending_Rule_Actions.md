@@ -118,7 +118,17 @@ core_shop_product:
 
 ## Pimcore Studio (React)
 
-For the new Pimcore Studio UI, you need to create a React component instead of ExtJS:
+### Schema-Driven (Recommended — No Custom JS Needed)
+
+**The service registration above is all you need for Pimcore Studio.** The `form-type` attribute in the service tag automatically makes the configuration form available in Studio. No React/TypeScript code is required.
+
+The StudioFormBundle renders the PHP FormType (`CustomActionType`) as a React form at runtime. The `get-config` endpoint returns a `actionSchemaByType` mapping, and `registerSchemaComponentsFromConfig()` auto-generates the React component from the schema.
+
+For details, see [StudioFormBundle — Rule Engine Integration](../14_Studio/02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
+
+### Hand-Written React Component (Only for Special UIs)
+
+If your action needs custom interactive behavior that cannot be expressed as a Symfony FormType (e.g., complex multi-step wizards, drag-and-drop), you can still create a hand-written React component:
 
 ```typescript
 // src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/product-price-rules/actions/CustomAction.tsx
@@ -160,9 +170,7 @@ export const CustomAction: React.FC<ActionComponentProps> = ({
 }
 ```
 
-### Registering the React Action
-
-Register the action in your bundle's main plugin file:
+Register the hand-written action in your bundle's main plugin file. Hand-written components take priority over schema-generated ones:
 
 ```typescript
 // src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
@@ -187,54 +195,4 @@ const plugin: IAbstractPlugin = {
 }
 
 export default plugin
-```
-
-### Action Without Configuration
-
-If your action doesn't need any configuration UI, you can use the built-in `EmptyAction`:
-
-```typescript
-import { EmptyAction } from '@coreshop/rule/src/rules'
-
-actionRegistry.register('customActionWithoutConfig', EmptyAction)
-```
-
-### Available Form Components
-
-The Studio UI uses Ant Design components. Commonly used form components:
-
-- `InputNumber` - Number input with precision
-- `Input` - Text input
-- `Select` - Dropdown selection
-- `Checkbox` - Boolean values
-- `DatePicker` - Date selection
-- `Switch` - Toggle switch
-
-### Using Entity Selects
-
-For selecting entities (e.g., products, categories), use the `useEntitySelect` hook:
-
-```typescript
-import { useEntitySelect } from '@coreshop/resource'
-import { productApi } from '@coreshop/product/src/modules/products/api'
-
-export const CustomAction: React.FC<ActionComponentProps> = ({ data, onChange }) => {
-  const productIds = data.products || []
-  const [options, value, handleSelectChange, loading] = useEntitySelect(productApi, productIds)
-
-  const handleChange = (selectedIds: number[]) => {
-    handleSelectChange(selectedIds)
-    onChange({ ...data, products: selectedIds })
-  }
-
-  return (
-    <Select
-      mode="multiple"
-      value={value}
-      onChange={handleChange}
-      options={options}
-      loading={loading}
-    />
-  )
-}
 ```

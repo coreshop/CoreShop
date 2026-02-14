@@ -62,3 +62,11 @@ services:
             - '%coreshop.notification_rule.actions.types%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\NotificationBundle\Form\Schema\MailActionSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\NotificationBundle\Form\Schema\NotificationRuleSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }

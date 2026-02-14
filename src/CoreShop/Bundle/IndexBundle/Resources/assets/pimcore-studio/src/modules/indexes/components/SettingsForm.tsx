@@ -11,9 +11,10 @@
  */
 
 import React from 'react'
-import { Form, Input, Select, Checkbox, Card } from 'antd'
+import { Card } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { Index, IndexConfig } from '../api'
 import type { WorkerConfiguratorRegistry } from '../registry'
 import { serviceIds } from '../service-ids'
@@ -31,10 +32,6 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
     () => container.get<WorkerConfiguratorRegistry>(serviceIds.workerConfiguratorRegistry),
     []
   )
-
-  const handleFieldChange = (field: keyof Index, value: any) => {
-    onChange({ ...index, [field]: value })
-  }
 
   const handleConfigurationChange = (configuration: Record<string, any>) => {
     onChange({
@@ -55,73 +52,13 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
     return result
   }, [index.worker])
 
-  // Get worker types - handle both array and object formats
-  let workerTypes: string[] = []
-  if (Array.isArray(config.workerTypes)) {
-    workerTypes = config.workerTypes
-  } else if (config.workerTypes && typeof config.workerTypes === 'object') {
-    workerTypes = Object.keys(config.workerTypes)
-  } else if (Array.isArray(config.workers)) {
-    workerTypes = config.workers
-  }
-
-  const workerOptions = workerTypes.map(worker => ({
-    label: worker,
-    value: worker
-  }))
-
-  // Get class options
-  const classOptions = config.classes.map(cls => ({
-    label: cls.name,
-    value: cls.name
-  }))
-
   return (
-    <Form layout="vertical">
-      <Form.Item
-        label={t('coreshop_name', { defaultValue: 'Name' })}
-        required
-      >
-        <Input
-          value={index.name}
-          onChange={(e) => handleFieldChange('name', e.target.value)}
-        />
-      </Form.Item>
-
-      <Form.Item
-        label={t('coreshop_class', { defaultValue: 'Class' })}
-        required
-      >
-        <Select
-          value={index.class}
-          onChange={(value) => handleFieldChange('class', value)}
-          options={classOptions}
-          showSearch
-          filterOption={(input, option) =>
-            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-          }
-        />
-      </Form.Item>
-
-      <Form.Item
-        label={t('coreshop_indexes_worker', { defaultValue: 'Worker' })}
-        required
-      >
-        <Select
-          value={index.worker}
-          onChange={(value) => handleFieldChange('worker', value)}
-          options={workerOptions}
-        />
-      </Form.Item>
-
-      <Form.Item>
-        <Checkbox
-          checked={index.indexLastVersion ?? false}
-          onChange={(e) => handleFieldChange('indexLastVersion', e.target.checked)}
-        >
-          {t('coreshop_indexes_index_last_version', { defaultValue: 'Index Last Version (unchecked = published version)' })}
-        </Checkbox>
-      </Form.Item>
+    <>
+      <SchemaForm<Index>
+        blockPrefix="coreshop_index"
+        data={index}
+        onChange={(draft) => onChange({ ...index, ...draft })}
+      />
 
       {/* Worker-specific configuration */}
       {index.worker && WorkerConfiguratorComponent && (
@@ -148,6 +85,6 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
           {t('coreshop_indexes_no_configurator', { defaultValue: `No configurator available for worker type "${index.worker}"` })}
         </div>
       )}
-    </Form>
+    </>
   )
 }

@@ -27,9 +27,15 @@ final class NotificationRuleType extends RuleType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextareaType::class)
-            ->add('active', CheckboxType::class)
-            ->add('type', NotificationRuleTypeChoiceType::class)
+            ->add('name', TextareaType::class, [
+                'priority' => 100,
+            ])
+            ->add('active', CheckboxType::class, [
+                'priority' => 90,
+            ])
+            ->add('type', NotificationRuleTypeChoiceType::class, [
+                'priority' => 80,
+            ])
             ->add('conditions', NotificationRuleConditionCollectionType::class)
             ->add('actions', NotificationRuleActionCollectionType::class)
         ;

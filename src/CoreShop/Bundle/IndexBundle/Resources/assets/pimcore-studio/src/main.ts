@@ -12,26 +12,15 @@
 
 import { type IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds as pimcoreServiceIds } from '@pimcore/studio-ui-bundle/app'
-import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import type { WidgetRegistry as PimcoreWidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { widgetRegistryServiceId, type WidgetRegistry } from '@coreshop/studio-form'
+import { Input } from 'antd'
 import { IndexBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopFilter } from './dynamic-types'
-import { ConditionRegistry } from './modules/filters/conditions'
+import { ConditionRegistry, NestedCondition } from './modules/filters/conditions'
 import { serviceIds } from './modules/filters/service-ids'
-import {
-  RangeCondition,
-  SelectCondition,
-  MultiselectCondition,
-  BooleanCondition,
-  SearchCondition,
-  CategorySelectCondition,
-  CategoryMultiSelectCondition,
-  SelectFromMultiselectCondition,
-  MultiselectFromMultiselectCondition,
-  RelationalSelectCondition,
-  RelationalMultiselectCondition,
-  NestedCondition
-} from './modules/filters/conditions'
+import { FilterFieldSelect, FilterFieldsMultiSelect, FilterValueSelect, FilterValueMultiSelect } from './modules/filters/widgets'
 import { FilterManager } from './modules/filters/FilterManager'
 import { IndexManager } from './modules/indexes/IndexManager'
 import { GetterConfiguratorRegistry, InterpreterConfiguratorRegistry, WorkerConfiguratorRegistry } from './modules/indexes/registry'
@@ -59,8 +48,8 @@ const plugin: IAbstractPlugin = {
         )
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopFilter())
 
-        // Register widgets
-        const widgetManager = container.get<WidgetRegistry>(pimcoreServiceIds.widgetManager)
+        // Register Pimcore widgets
+        const widgetManager = container.get<PimcoreWidgetRegistry>(pimcoreServiceIds.widgetManager)
 
         widgetManager.registerWidget({
             name: 'coreshop-index-filter',
@@ -72,6 +61,13 @@ const plugin: IAbstractPlugin = {
             component: IndexManager
         })
 
+        // Register custom schema widgets for filter conditions
+        const schemaWidgetRegistry = container.get<WidgetRegistry>(widgetRegistryServiceId)
+        schemaWidgetRegistry.register('coreshop_filter_index_field', () => ({ component: FilterFieldSelect }))
+        schemaWidgetRegistry.register('coreshop_filter_index_fields', () => ({ component: FilterFieldsMultiSelect }))
+        schemaWidgetRegistry.register('coreshop_filter_value_select', () => ({ component: FilterValueSelect }))
+        schemaWidgetRegistry.register('coreshop_filter_value_multiselect', () => ({ component: FilterValueMultiSelect }))
+
         // Create and bind separate registries for pre-conditions and user-conditions
         container.bind(serviceIds.preConditionRegistry).to(ConditionRegistry).inSingletonScope()
         container.bind(serviceIds.userConditionRegistry).to(ConditionRegistry).inSingletonScope()
@@ -80,27 +76,10 @@ const plugin: IAbstractPlugin = {
         const preConditionRegistry = container.get<ConditionRegistry>(serviceIds.preConditionRegistry)
         const userConditionRegistry = container.get<ConditionRegistry>(serviceIds.userConditionRegistry)
 
-        // Register filter conditions in BOTH registries
-        // (Pre-conditions and User-conditions can use the same condition types)
-        const conditionTypes = [
-          { type: 'range', component: RangeCondition },
-          { type: 'select', component: SelectCondition },
-          { type: 'multiselect', component: MultiselectCondition },
-          { type: 'boolean', component: BooleanCondition },
-          { type: 'search', component: SearchCondition },
-          { type: 'category_select', component: CategorySelectCondition },
-          { type: 'category_multiselect', component: CategoryMultiSelectCondition },
-          { type: 'select_from_multiselect', component: SelectFromMultiselectCondition },
-          { type: 'multiselect_from_multiselect', component: MultiselectFromMultiselectCondition },
-          { type: 'relational_select', component: RelationalSelectCondition },
-          { type: 'relational_multiselect', component: RelationalMultiselectCondition },
-          { type: 'nested', component: NestedCondition }
-        ]
-
-        conditionTypes.forEach(({ type, component }) => {
-          preConditionRegistry.register(type, component)
-          userConditionRegistry.register(type, component)
-        })
+        // Register NestedCondition manually (recursive, needs ConditionRegistry/ConditionItem)
+        // Other conditions are registered dynamically from schema config in FilterManager
+        preConditionRegistry.register('nested', NestedCondition)
+        userConditionRegistry.register('nested', NestedCondition)
 
         // Create and bind getter/interpreter/worker configurator registries for indices
         container.bind(indexServiceIds.getterConfiguratorRegistry).to(GetterConfiguratorRegistry).inSingletonScope()
@@ -135,6 +114,14 @@ const plugin: IAbstractPlugin = {
     },
 
     onStartup({ moduleSystem }) {
+        // Hide IndexBundle-owned rule collection prefixes from generic schema forms
+        const formWidgetRegistry = container.get<WidgetRegistry>(widgetRegistryServiceId)
+        const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+        ;[
+          'coreshop_filter_pre_condition_collection',
+          'coreshop_filter_user_condition_collection',
+        ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+
         moduleSystem.registerModule(IndexBundleIconModule)
     }
 }
