@@ -62,4 +62,9 @@ final class CartCreationType extends AbstractResourceType
             'sales_state' => OrderSaleStates::STATE_CART,
         ]);
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_cart_creation';
+    }
 }

@@ -110,3 +110,7 @@ services:
     CoreShop\Bundle\CoreBundle\Form\Schema\StoreSettingsSchemaEnricher:
         tags:
             - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\CoreBundle\Form\Schema\CartCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }

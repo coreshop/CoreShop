@@ -104,3 +104,16 @@ services:
             - '%coreshop.form.type.cart_price_rule.condition.not_combinable.validation_groups%'
         tags:
            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\AdminAddressCreationType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\OrderBundle\Form\Schema\CartCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\OrderBundle\Form\Schema\AdminAddressCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }

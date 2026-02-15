@@ -180,6 +180,21 @@ export const conditionalFieldsDecorator = <T = any>(
 }
 
 /**
+ * Filter to only show fields and sections matching a specific section key.
+ *
+ * Useful for multi-step wizards where each step renders a subset of the schema.
+ */
+export const sectionFilterDecorator = <T = any>(
+  sectionKey: string
+): FormDecorator<T> => {
+  return (config) => ({
+    ...config,
+    fields: config.fields.filter(f => f.section === sectionKey),
+    sections: config.sections?.filter(s => s.key === sectionKey) ?? [],
+  })
+}
+
+/**
  * Group fields into sections decorator
  */
 export const groupFieldsDecorator = <T = any>(

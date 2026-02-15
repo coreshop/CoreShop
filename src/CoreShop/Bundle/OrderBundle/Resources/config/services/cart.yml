@@ -20,6 +20,7 @@ services:
             - '%coreshop.form.type.cart.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     coreshop.form.data_mapper.cart_item_quantity.property_mapper:
         class: Symfony\Component\Form\Extension\Core\DataMapper\DataMapper

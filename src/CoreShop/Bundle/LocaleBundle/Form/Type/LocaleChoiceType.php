@@ -62,4 +62,9 @@ final class LocaleChoiceType extends AbstractType
     {
         return ChoiceType::class;
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_locale_choice';
+    }
 }
