@@ -15,6 +15,7 @@ import { Card } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { Index, IndexConfig } from '../api'
+import { mergeFormDraft } from '../mergeFormDraft'
 
 interface SettingsFormProps {
   index: Index
@@ -28,7 +29,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ index, config, onCha
   const handleConfigurationChange = (configuration: Record<string, any>) => {
     onChange({
       ...index,
-      configuration
+      configuration: mergeFormDraft(index.configuration || {}, configuration)
     })
   }
 

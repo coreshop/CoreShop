@@ -83,14 +83,19 @@ services:
             - { name: form.type }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterType:
-        arguments: ['@coreshop.form_registry.index.interpreter']
+        arguments:
+            - '@coreshop.form_registry.index.interpreter'
         tags:
             - { name: form.type }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterCollectionType:
-        arguments: ['@coreshop.registry.index.interpreter']
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
 
     # Filter Forms
     CoreShop\Bundle\IndexBundle\Form\Type\FilterType:

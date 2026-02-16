@@ -15,9 +15,9 @@ import { Modal, Form, Input, Select, Tabs, Collapse } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { IndexColumn, IndexConfig } from '../api'
-import { NESTED_INTERPRETER_TYPES, ITERATOR_INTERPRETER_TYPE } from '../configurators'
-import { InterpreterConfigRenderer } from '../configurators/InterpreterConfigRenderer'
+import { InterpreterSchemaProvider } from '../InterpreterSchemaContext'
 import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { mergeFormDraft } from '../mergeFormDraft'
 
 interface ColumnConfigDialogProps {
   column: IndexColumn | null
@@ -42,6 +42,13 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
   const [selectedInterpreter, setSelectedInterpreter] = React.useState<string | undefined>(undefined)
   const [getterConfig, setGetterConfig] = React.useState<Record<string, any>>({})
   const [interpreterConfig, setInterpreterConfig] = React.useState<Record<string, any>>({})
+  const filterSelectOption = (input: string, option?: { label?: React.ReactNode; value?: string | number }) => {
+    const term = input.toLowerCase()
+    const label = (option?.label ?? '').toString().toLowerCase()
+    const value = (option?.value ?? '').toString().toLowerCase()
+
+    return label.includes(term) || value.includes(term)
+  }
 
   // Load form data when dialog opens
   React.useEffect(() => {
@@ -84,14 +91,14 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
     }
   }
 
-  const handleGetterChange = (value: string) => {
+  const handleGetterChange = (value?: string) => {
     setSelectedGetter(value)
     if (!column?.getter || column.getter !== value) {
       setGetterConfig({})
     }
   }
 
-  const handleInterpreterChange = (value: string) => {
+  const handleInterpreterChange = (value?: string) => {
     setSelectedInterpreter(value)
     if (!column?.interpreter || column.interpreter !== value) {
       setInterpreterConfig({})
@@ -100,11 +107,19 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
 
   // Resolve block prefixes from config
   const getterBlockPrefix = selectedGetter ? config.getters.find(g => g.type === selectedGetter)?.blockPrefix : undefined
-  const interpreterBlockPrefix = selectedInterpreter ? config.interpreters.find(i => i.type === selectedInterpreter)?.blockPrefix : undefined
-  const isCustomInterpreter = selectedInterpreter && (
-    NESTED_INTERPRETER_TYPES.includes(selectedInterpreter) ||
-    selectedInterpreter === ITERATOR_INTERPRETER_TYPE
-  )
+  const interpreterBlockPrefix = selectedInterpreter
+    ? config.interpreters.find(i => i.type === selectedInterpreter)?.blockPrefix
+    : undefined
+
+  const interpreterSchemaByType = React.useMemo(() => {
+    const map: Record<string, string> = {}
+    for (const i of config.interpreters) {
+      if (i.blockPrefix) {
+        map[i.type] = i.blockPrefix
+      }
+    }
+    return map
+  }, [config.interpreters])
 
   // Get field types for the selected worker
   const fieldTypeOptions = workerType && config.fieldTypes[workerType]
@@ -175,6 +190,8 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
                         options={fieldTypeOptions}
                         placeholder="Select column type"
                         showSearch
+                        optionFilterProp="label"
+                        filterOption={filterSelectOption}
                       />
                     </Form.Item>
                   )}
@@ -202,6 +219,8 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
                               placeholder="Select getter"
                               allowClear
                               showSearch
+                              optionFilterProp="label"
+                              filterOption={filterSelectOption}
                               onChange={handleGetterChange}
                             />
                           </Form.Item>
@@ -211,8 +230,9 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
                               <h4 style={{ marginTop: 0, marginBottom: 16 }}>Getter Parameters</h4>
                               <SchemaForm
                                 blockPrefix={getterBlockPrefix}
+                                embedded
                                 data={getterConfig}
-                                onChange={setGetterConfig}
+                                onChange={(draft) => setGetterConfig((prev) => mergeFormDraft(prev, draft))}
                               />
                             </div>
                           )}
@@ -234,6 +254,8 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
                               placeholder="Select interpreter"
                               allowClear
                               showSearch
+                              optionFilterProp="label"
+                              filterOption={filterSelectOption}
                               onChange={handleInterpreterChange}
                             />
                           </Form.Item>
@@ -241,23 +263,14 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
                           {selectedInterpreter && interpreterBlockPrefix && (
                             <div style={{ marginTop: 16, padding: 16, background: '#fafafa', borderRadius: 4 }}>
                               <h4 style={{ marginTop: 0, marginBottom: 16 }}>Interpreter Parameters</h4>
-                              <SchemaForm
-                                blockPrefix={interpreterBlockPrefix}
-                                data={interpreterConfig}
-                                onChange={setInterpreterConfig}
-                              />
-                            </div>
-                          )}
-
-                          {selectedInterpreter && isCustomInterpreter && (
-                            <div style={{ marginTop: 16, padding: 16, background: '#fafafa', borderRadius: 4 }}>
-                              <h4 style={{ marginTop: 0, marginBottom: 16 }}>Interpreter Parameters</h4>
-                              <InterpreterConfigRenderer
-                                type={selectedInterpreter}
-                                value={interpreterConfig}
-                                onChange={setInterpreterConfig}
-                                indexConfig={config}
-                              />
+                              <InterpreterSchemaProvider value={interpreterSchemaByType}>
+                                <SchemaForm
+                                  blockPrefix={interpreterBlockPrefix}
+                                  embedded
+                                  data={interpreterConfig}
+                                  onChange={(draft) => setInterpreterConfig((prev) => mergeFormDraft(prev, draft))}
+                                />
+                              </InterpreterSchemaProvider>
                             </div>
                           )}
                         </>

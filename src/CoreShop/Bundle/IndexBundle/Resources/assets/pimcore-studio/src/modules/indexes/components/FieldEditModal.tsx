@@ -15,8 +15,8 @@ import { Modal, Form, Input, Select, Button, Tabs } from 'antd'
 import { createStyles } from 'antd-style'
 import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { IndexColumn, IndexConfig } from '../api'
-import { NESTED_INTERPRETER_TYPES, ITERATOR_INTERPRETER_TYPE } from '../configurators'
-import { InterpreterConfigRenderer } from '../configurators/InterpreterConfigRenderer'
+import { InterpreterSchemaProvider } from '../InterpreterSchemaContext'
+import { mergeFormDraft } from '../mergeFormDraft'
 
 const { TabPane } = Tabs
 
@@ -41,6 +41,13 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
   const [selectedInterpreter, setSelectedInterpreter] = useState<string | undefined>()
   const [getterConfig, setGetterConfig] = useState<Record<string, any>>({})
   const [interpreterConfig, setInterpreterConfig] = useState<Record<string, any>>({})
+  const filterSelectOption = (input: string, option?: { label?: React.ReactNode; value?: string | number }) => {
+    const term = input.toLowerCase()
+    const label = (option?.label ?? '').toString().toLowerCase()
+    const value = (option?.value ?? '').toString().toLowerCase()
+
+    return label.includes(term) || value.includes(term)
+  }
 
   useEffect(() => {
     if (field && open) {
@@ -69,12 +76,22 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
   }
 
   const handleGetterConfigChange = (newConfig: Record<string, any>) => {
-    setGetterConfig(newConfig)
+    setGetterConfig((prev) => mergeFormDraft(prev, newConfig))
   }
 
   const handleInterpreterConfigChange = (newConfig: Record<string, any>) => {
-    setInterpreterConfig(newConfig)
+    setInterpreterConfig((prev) => mergeFormDraft(prev, newConfig))
   }
+
+  const interpreterSchemaByType = React.useMemo(() => {
+    const map: Record<string, string> = {}
+    for (const i of config?.interpreters ?? []) {
+      if (i.blockPrefix) {
+        map[i.type] = i.blockPrefix
+      }
+    }
+    return map
+  }, [config?.interpreters])
 
   const handleApply = () => {
     form.validateFields().then(values => {
@@ -123,12 +140,9 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
   // Resolve getter block prefix from config
   const getterBlockPrefix = selectedGetter ? config?.getters?.find(g => g.type === selectedGetter)?.blockPrefix : undefined
 
-  // Check if interpreter needs custom rendering (nested/iterator) or SchemaForm
-  const interpreterBlockPrefix = selectedInterpreter ? config?.interpreters?.find(i => i.type === selectedInterpreter)?.blockPrefix : undefined
-  const isCustomInterpreter = selectedInterpreter && (
-    NESTED_INTERPRETER_TYPES.includes(selectedInterpreter) ||
-    selectedInterpreter === ITERATOR_INTERPRETER_TYPE
-  )
+  const interpreterBlockPrefix = selectedInterpreter
+    ? config?.interpreters?.find(i => i.type === selectedInterpreter)?.blockPrefix
+    : undefined
 
   return (
     <Modal
@@ -136,123 +150,125 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
       onCancel={onClose}
       title={title}
       width={800}
-      footer={null}
-      className={styles.modal}
-      destroyOnClose
-    >
-      <Tabs defaultActiveKey="settings" className={styles.tabs}>
-        <TabPane tab="Settings" key="settings">
-          <Form
-            form={form}
-            layout="horizontal"
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 18 }}
-            className={styles.form}
-          >
-            <Form.Item
-              label="Key"
-              name="objectKey"
-              rules={[{ required: true, message: 'Please enter a key' }]}
-            >
-              <Input placeholder="Enter field key" readOnly disabled />
-            </Form.Item>
-
-            <Form.Item
-              label="Name"
-              name="name"
-              rules={[{ required: true, message: 'Please enter a name' }]}
-            >
-              <Input placeholder="Enter field name" />
-            </Form.Item>
-
-            <Form.Item
-              label="Type"
-              name="columnType"
-              rules={[{ required: true, message: 'Please select a type' }]}
-            >
-              <Select
-                placeholder="Select column type"
-                options={typeOptions}
-              />
-            </Form.Item>
-
-            {/* Getter Section */}
-            <div className={styles.section}>
-              <div className={styles.sectionTitle}>Getter Configuration</div>
-              <Form.Item
-                label="Getter Class"
-                name="getter"
-              >
-                <Select
-                  placeholder="Select getter class"
-                  allowClear
-                  options={getterOptions}
-                  onChange={handleGetterChange}
-                />
-              </Form.Item>
-
-              {/* Getter Configuration Fields - SchemaForm driven */}
-              {selectedGetter && getterBlockPrefix && (
-                <div className={styles.configFields}>
-                  <SchemaForm
-                    blockPrefix={getterBlockPrefix}
-                    data={getterConfig}
-                    onChange={handleGetterConfigChange}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Interpreter Section */}
-            <div className={styles.section}>
-              <div className={styles.sectionTitle}>Interpreter Configuration</div>
-              <Form.Item
-                label="Interpreter"
-                name="interpreter"
-              >
-                <Select
-                  placeholder="Select interpreter"
-                  allowClear
-                  options={interpreterOptions}
-                  onChange={handleInterpreterChange}
-                />
-              </Form.Item>
-
-              {/* Interpreter Configuration Fields - SchemaForm for simple types */}
-              {selectedInterpreter && interpreterBlockPrefix && (
-                <div className={styles.configFields}>
-                  <SchemaForm
-                    blockPrefix={interpreterBlockPrefix}
-                    data={interpreterConfig}
-                    onChange={handleInterpreterConfigChange}
-                  />
-                </div>
-              )}
-
-              {/* Custom components for recursive interpreter types */}
-              {selectedInterpreter && isCustomInterpreter && (
-                <div className={styles.configFields}>
-                  <InterpreterConfigRenderer
-                    type={selectedInterpreter}
-                    value={interpreterConfig}
-                    onChange={handleInterpreterConfigChange}
-                    indexConfig={config}
-                  />
-                </div>
-              )}
-            </div>
-          </Form>
-        </TabPane>
-      </Tabs>
-
-      <div className={styles.footer}>
+      footer={[
         <Button
+          key="apply"
           type="primary"
           onClick={handleApply}
           icon={<span>✓</span>}
         >
           Apply
-        </Button>
+        </Button>,
+      ]}
+      className={styles.modal}
+      destroyOnClose
+    >
+      <div className={styles.content}>
+        <Tabs defaultActiveKey="settings" className={styles.tabs}>
+          <TabPane tab="Settings" key="settings">
+            <Form
+              form={form}
+              layout="horizontal"
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 18 }}
+              className={styles.form}
+            >
+              <Form.Item
+                label="Key"
+                name="objectKey"
+                rules={[{ required: true, message: 'Please enter a key' }]}
+              >
+                <Input placeholder="Enter field key" readOnly disabled />
+              </Form.Item>
+
+              <Form.Item
+                label="Name"
+                name="name"
+                rules={[{ required: true, message: 'Please enter a name' }]}
+              >
+                <Input placeholder="Enter field name" />
+              </Form.Item>
+
+              <Form.Item
+                label="Type"
+                name="columnType"
+                rules={[{ required: true, message: 'Please select a type' }]}
+              >
+                <Select
+                  placeholder="Select column type"
+                  options={typeOptions}
+                  showSearch
+                  optionFilterProp="label"
+                  filterOption={filterSelectOption}
+                />
+              </Form.Item>
+
+              {/* Getter Section */}
+              <div className={styles.section}>
+                <div className={styles.sectionTitle}>Getter Configuration</div>
+                <Form.Item
+                  label="Getter Class"
+                  name="getter"
+                >
+                  <Select
+                    placeholder="Select getter class"
+                    allowClear
+                    options={getterOptions}
+                    showSearch
+                    optionFilterProp="label"
+                    filterOption={filterSelectOption}
+                    onChange={handleGetterChange}
+                  />
+                </Form.Item>
+
+                {/* Getter Configuration Fields - SchemaForm driven */}
+                {selectedGetter && getterBlockPrefix && (
+                  <div className={styles.configFields}>
+                    <SchemaForm
+                      blockPrefix={getterBlockPrefix}
+                      embedded
+                      data={getterConfig}
+                      onChange={handleGetterConfigChange}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Interpreter Section */}
+              <div className={styles.section}>
+                <div className={styles.sectionTitle}>Interpreter Configuration</div>
+                <Form.Item
+                  label="Interpreter"
+                  name="interpreter"
+                >
+                  <Select
+                    placeholder="Select interpreter"
+                    allowClear
+                    options={interpreterOptions}
+                    showSearch
+                    optionFilterProp="label"
+                    filterOption={filterSelectOption}
+                    onChange={handleInterpreterChange}
+                  />
+                </Form.Item>
+
+                {/* Interpreter Configuration Fields - SchemaForm driven */}
+                {selectedInterpreter && interpreterBlockPrefix && (
+                  <div className={styles.configFields}>
+                    <InterpreterSchemaProvider value={interpreterSchemaByType}>
+                      <SchemaForm
+                        blockPrefix={interpreterBlockPrefix}
+                        embedded
+                        data={interpreterConfig}
+                        onChange={handleInterpreterConfigChange}
+                      />
+                    </InterpreterSchemaProvider>
+                  </div>
+                )}
+              </div>
+            </Form>
+          </TabPane>
+        </Tabs>
       </div>
     </Modal>
   )
@@ -260,14 +276,40 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
 
 const useModalStyles = createStyles(({ css, token }) => ({
   modal: css`
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 120px);
+    }
+
     .ant-modal-header {
       background: ${token.colorBgContainer};
       border-bottom: 1px solid ${token.colorBorderSecondary};
     }
 
     .ant-modal-body {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
       padding: 0;
       background: ${token.colorBgElevated};
+    }
+
+    .ant-modal-footer {
+      padding: 12px 16px;
+      margin-top: 0;
+      background: ${token.colorBgContainer};
+      border-top: 1px solid ${token.colorBorderSecondary};
+
+      .ant-btn-primary {
+        background: ${token.colorSuccess};
+        border-color: ${token.colorSuccess};
+
+        &:hover {
+          background: ${token.colorSuccessHover};
+          border-color: ${token.colorSuccessHover};
+        }
+      }
     }
 
     .ant-modal-close {
@@ -278,6 +320,11 @@ const useModalStyles = createStyles(({ css, token }) => ({
         background: ${token.colorBgTextHover};
       }
     }
+  `,
+  content: css`
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   `,
   tabs: css`
     .ant-tabs-nav {
@@ -309,24 +356,6 @@ const useModalStyles = createStyles(({ css, token }) => ({
       width: 100%;
     }
   `,
-  footer: css`
-    padding: 12px 16px;
-    background: ${token.colorBgContainer};
-    border-top: 1px solid ${token.colorBorderSecondary};
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-
-    .ant-btn-primary {
-      background: ${token.colorSuccess};
-      border-color: ${token.colorSuccess};
-
-      &:hover {
-        background: ${token.colorSuccessHover};
-        border-color: ${token.colorSuccessHover};
-      }
-    }
-  `,
   section: css`
     margin-top: 24px;
     padding: 16px;
@@ -350,14 +379,46 @@ const useModalStyles = createStyles(({ css, token }) => ({
   `,
   configFields: css`
     margin-top: 8px;
-    padding-left: 0;
+    padding: 12px;
+    border: 1px solid ${token.colorBorderSecondary};
+    border-radius: 8px;
+    background: ${token.colorBgContainer};
 
-    .ant-form-item {
+    .coreshop-schema-form-embedded .ant-form-item {
       margin-bottom: 12px;
 
       &:last-child {
         margin-bottom: 0;
       }
+    }
+
+    .coreshop-schema-form-embedded .ant-form-item-label {
+      padding-bottom: 6px;
+    }
+
+    .coreshop-schema-form-embedded .ant-form-item-control {
+      min-width: 0;
+      width: 100%;
+    }
+
+    .coreshop-interpreter-collection__add {
+      position: static !important;
+      transform: none !important;
+    }
+
+    .coreshop-interpreter-collection .ant-card {
+      border-color: ${token.colorBorderSecondary};
+      background: ${token.colorBgContainer};
+    }
+
+    .coreshop-interpreter-collection .ant-card-head {
+      min-height: 40px;
+      background: ${token.colorFillTertiary};
+      border-bottom-color: ${token.colorBorderSecondary};
+    }
+
+    .coreshop-interpreter-collection .ant-card-head-title {
+      padding: 8px 0;
     }
   `
 }))

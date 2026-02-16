@@ -10,9 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { NestedInterpreterConfigurator } from './NestedInterpreterConfigurator'
-export { IteratorInterpreterConfigurator } from './IteratorInterpreterConfigurator'
 export { InterpreterConfigRenderer } from './InterpreterConfigRenderer'
-
-export const NESTED_INTERPRETER_TYPES = ['nested', 'nestedLocalized', 'nestedRelational']
-export const ITERATOR_INTERPRETER_TYPE = 'iterator'

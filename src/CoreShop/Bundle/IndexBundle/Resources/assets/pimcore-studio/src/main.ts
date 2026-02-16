@@ -23,6 +23,8 @@ import { serviceIds } from './modules/filters/service-ids'
 import { FilterFieldSelect, FilterFieldsMultiSelect, FilterValueSelect, FilterValueMultiSelect } from './modules/filters/widgets'
 import { FilterManager } from './modules/filters/FilterManager'
 import { IndexManager } from './modules/indexes/IndexManager'
+import { InterpreterWidget } from './modules/indexes/widgets/InterpreterWidget'
+import { InterpreterCollectionWidget } from './modules/indexes/widgets/InterpreterCollectionWidget'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-index',
@@ -67,8 +69,17 @@ const plugin: IAbstractPlugin = {
         preConditionRegistry.register('nested', NestedCondition)
         userConditionRegistry.register('nested', NestedCondition)
 
-        // Getter, interpreter, and worker configurators are now handled by StudioFormBundle
-        // via SchemaForm with block prefixes provided by the backend /get-config endpoint
+        // Register interpreter widget for dynamic schema loading (no prototypes needed)
+        schemaWidgetRegistry.register('coreshop_index_column_interpreter', (field) => ({
+            component: InterpreterWidget,
+            props: { field },
+        }))
+
+        // Register interpreter collection widget (nested interpreter lists)
+        schemaWidgetRegistry.register('interpreter_collection', (field) => ({
+            component: InterpreterCollectionWidget,
+            props: { field },
+        }))
     },
 
     onStartup({ moduleSystem }) {

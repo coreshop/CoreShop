@@ -34,6 +34,8 @@ export interface SchemaFormProps<T = any> {
   locales?: string[]
   /** External form instance */
   form?: FormInstance
+  /** Render without a wrapping <form> (for embedding inside another form) */
+  embedded?: boolean
 }
 
 /**
@@ -58,6 +60,7 @@ export const SchemaForm = <T extends Record<string, any> = any>({
   decorators,
   currentLocale,
   form,
+  embedded = false,
 }: SchemaFormProps<T>): React.JSX.Element => {
   const { builder, loading, error } = useFormSchema<T>(blockPrefix, decorators)
 
@@ -90,9 +93,18 @@ export const SchemaForm = <T extends Record<string, any> = any>({
     )
   }
 
-  const config = builder.build({ data, locale: currentLocale })
+  const builtConfig = builder.build({ data, locale: currentLocale })
+  const config = embedded
+    ? {
+        ...builtConfig,
+        formProps: {
+          ...(builtConfig.formProps ?? {}),
+          component: false,
+        },
+      }
+    : builtConfig
 
-  return (
+  const formElement = (
     <DynamicForm
       config={config}
       data={data}
@@ -101,4 +113,11 @@ export const SchemaForm = <T extends Record<string, any> = any>({
       form={form}
     />
   )
+
+  if (embedded) {
+    // Preserve vertical form styling when rendering without a wrapping <form> tag.
+    return <div className="coreshop-schema-form-embedded ant-form ant-form-vertical">{formElement}</div>
+  }
+
+  return formElement
 }
