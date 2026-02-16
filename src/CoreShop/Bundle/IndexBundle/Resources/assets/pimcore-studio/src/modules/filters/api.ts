@@ -11,6 +11,7 @@
  */
 
 import { EntityApi } from '@coreshop/resource/src/entities/api'
+import { preSeedSchemaCache } from '@coreshop/studio-form'
 import type { Filter, FilterConfig, IndexField, FieldValue } from './types'
 
 /**
@@ -43,7 +44,13 @@ export class FilterApi extends EntityApi<Filter> {
       throw new Error('Failed to fetch filter config')
     }
 
-    return await response.json()
+    const config: FilterConfig = await response.json()
+
+    if (config.schemas) {
+      preSeedSchemaCache(config.schemas)
+    }
+
+    return config
   }
 
   /**

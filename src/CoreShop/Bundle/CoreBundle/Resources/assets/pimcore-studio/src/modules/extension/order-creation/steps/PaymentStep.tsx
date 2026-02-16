@@ -1,6 +1,8 @@
 /**
  * CoreShop CoreBundle - Payment Step Component
  *
+ * Schema-driven payment provider selection step.
+ *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
@@ -11,9 +13,9 @@
  */
 
 import React from 'react'
-import { Card, Form } from 'antd'
+import { Card, Spin } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { PaymentProviderSelect } from '@coreshop/payment/src/components'
+import { useFormSchema, DynamicForm, sectionFilterDecorator } from '@coreshop/studio-form'
 import type {
   OrderCreationStepConfig,
   OrderCreationState,
@@ -23,28 +25,35 @@ import type {
 const PaymentStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatch, triggerPreview }) => {
   const { t } = useTranslation()
 
-  const handleChange = (value: number | null): void => {
-    dispatch({ type: 'UPDATE_FORM_DATA', payload: { paymentProvider: value } })
-    triggerPreview()
+  const { builder, loading } = useFormSchema('coreshop_cart_creation', [
+    { name: 'section-filter', decorator: sectionFilterDecorator('payment') },
+  ])
+
+  if (loading || !builder) {
+    return (
+      <Card title={t('coreshop_order_creation_payment', { defaultValue: 'Payment' })} size="small">
+        <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
+          <Spin />
+        </div>
+      </Card>
+    )
   }
+
+  const config = builder.build()
 
   return (
     <Card
       title={t('coreshop_order_creation_payment', { defaultValue: 'Payment' })}
       size="small"
     >
-      <Form.Item
-        label={t('coreshop_payment_provider', { defaultValue: 'Payment Provider' })}
-        required
-      >
-        <PaymentProviderSelect
-          value={(state.formData as Record<string, unknown>).paymentProvider as number ?? undefined}
-          onChange={(value) => handleChange(value as number)}
-          placeholder={t('coreshop_select_payment_provider', { defaultValue: 'Select Payment Provider' })}
-          allowClear
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
+      <DynamicForm
+        config={config}
+        data={state.formData}
+        onChange={(changedValues) => {
+          dispatch({ type: 'UPDATE_FORM_DATA', payload: changedValues })
+          triggerPreview()
+        }}
+      />
     </Card>
   )
 }
@@ -64,6 +73,5 @@ export const PaymentStepConfig: OrderCreationStepConfig = {
     paymentProvider: (state.formData as Record<string, unknown>).paymentProvider
   }),
 
-  // Only show if items exist
   isVisible: (state: OrderCreationState) => state.formData.items.length > 0
 }

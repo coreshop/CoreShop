@@ -14,6 +14,7 @@
   "private": true,
   "dependencies": {
     "@coreshop/resource": "file:../../../../ResourceBundle/Resources/assets/pimcore-studio",
+    "@coreshop/studio-form": "*",
     "@coreshop/currency": "file:../../../../CurrencyBundle/Resources/assets/pimcore-studio",
     "@coreshop/menu": "file:../../../../MenuBundle/Resources/assets/pimcore-studio",
     "@coreshop/address": "file:../../../../AddressBundle/Resources/assets/pimcore-studio",

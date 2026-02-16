@@ -70,4 +70,8 @@ export interface QuantityPriceRulesFieldData {
   conditions: string[]
   /** Available action types from backend (currently not used for QuantityPriceRules) */
   actions: string[]
+  /** Condition type -> form block prefix map for schema-driven rendering */
+  conditionSchemaByType?: Record<string, string>
+  /** Action type -> form block prefix map for schema-driven rendering */
+  actionSchemaByType?: Record<string, string>
 }

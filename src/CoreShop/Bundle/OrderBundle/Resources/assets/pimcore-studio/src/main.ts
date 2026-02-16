@@ -16,16 +16,16 @@ import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 // Widget restorer registry import removed - type not exported
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { Input } from 'antd'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import i18n from 'i18next'
 import { OrderBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopCartPriceRule } from './dynamic-types'
 import { SalesListingBuildersModule } from './modules/sales/listing-builders'
 import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
-import { CartPriceRuleFormBuilderModule } from './modules/cart-price-rules/form-builder-module'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
-import { AmountCondition, VoucherCondition, NotCombinableCondition } from './modules/cart-price-rules/conditions'
-import { SurchargePercentAction, SurchargeAmountAction, CartItemAction } from './modules/cart-price-rules/actions'
-import { DiscountAmountAction, DiscountPercentAction } from './modules/shared/rules/actions'
+import { CartItemAction } from './modules/cart-price-rules/actions'
 import { coreshopOrderServiceIds } from './modules/cart-price-rules/service-ids'
 import {
   OrderList,
@@ -95,21 +95,14 @@ const plugin: IAbstractPlugin = {
         const cartItemConditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry)
         const cartItemActionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry)
 
-        // Register Cart Price Rule Conditions (OrderBundle-specific)
-        conditionRegistry.register('amount', AmountCondition)
-        conditionRegistry.register('voucher', VoucherCondition)
-        conditionRegistry.register('not_combinable', NotCombinableCondition)
-
-        // Register Cart Price Rule Actions (OrderBundle-specific)
-        // Note: discountPercent and discountAmount are registered by CoreBundle (glue layer)
-        actionRegistry.register('surchargePercent', SurchargePercentAction)
-        actionRegistry.register('surchargeAmount', SurchargeAmountAction)
+        // Register custom non-schema action(s).
+        // Schema-based conditions/actions are auto-registered at runtime from backend mappings.
         actionRegistry.register('cartItemAction', CartItemAction)
 
-        // Register Cart Item Conditions
-        cartItemConditionRegistry.register('amount', AmountCondition)
-
         // Cart Item Actions are registered by CoreBundle (glue layer)
+        void conditionRegistry
+        void cartItemConditionRegistry
+        void cartItemActionRegistry
 
         // ============================================
         // Sales (Order/Cart/Quote) Registry Setup
@@ -237,9 +230,18 @@ const plugin: IAbstractPlugin = {
     },
 
     onStartup({ moduleSystem }) {
+        // Hide OrderBundle-owned rule collection prefixes from generic schema forms
+        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+        const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+        ;[
+          'coreshop_cart_price_rule_condition_collection',
+          'coreshop_cart_price_rule_action_collection',
+          'coreshop_cart_item_price_rule_condition_collection',
+          'coreshop_cart_item_price_rule_action_collection',
+        ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+
         moduleSystem.registerModule(OrderBundleIconModule)
         moduleSystem.registerModule(SalesListingBuildersModule)
-        moduleSystem.registerModule(CartPriceRuleFormBuilderModule)
 
         // Register widgets
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)

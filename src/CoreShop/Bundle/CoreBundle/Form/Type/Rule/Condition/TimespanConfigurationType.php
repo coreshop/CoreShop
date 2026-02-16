@@ -26,8 +26,12 @@ final class TimespanConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateTo', NumberType::class)
-            ->add('dateFrom', NumberType::class)
+            ->add('dateTo', NumberType::class, [
+                'label' => 'coreshop_condition_timespan_dateTo',
+            ])
+            ->add('dateFrom', NumberType::class, [
+                'label' => 'coreshop_condition_timespan_dateFrom',
+            ])
         ;
     }
 

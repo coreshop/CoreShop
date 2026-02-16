@@ -14,6 +14,7 @@ import React from 'react'
 import { Form, Select, Typography, Alert, Spin } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import { GatewayRegistry } from './GatewayRegistry'
 import { coreshopPaymentServiceIds } from '../../payment-provider-rules/service-ids'
 import type { GatewayConfig } from '../api'
@@ -23,13 +24,18 @@ interface GatewayFactory {
   name: string
 }
 
-// Module-level cache to avoid multiple API calls
-let cachedFactories: GatewayFactory[] | null = null
-let loadPromise: Promise<GatewayFactory[]> | null = null
+interface GatewayConfigResponse {
+  factories: GatewayFactory[]
+  gatewayBlockPrefixes: Record<string, string>
+}
 
-const loadGatewayFactories = async (): Promise<GatewayFactory[]> => {
-  if (cachedFactories) {
-    return cachedFactories
+// Module-level cache to avoid multiple API calls
+let cachedConfig: GatewayConfigResponse | null = null
+let loadPromise: Promise<GatewayConfigResponse> | null = null
+
+const loadGatewayConfig = async (): Promise<GatewayConfigResponse> => {
+  if (cachedConfig) {
+    return cachedConfig
   }
 
   if (loadPromise) {
@@ -43,15 +49,17 @@ const loadGatewayFactories = async (): Promise<GatewayFactory[]> => {
       })
 
       if (!response.ok) {
-        throw new Error(`Failed to load gateway factories: ${response.status}`)
+        throw new Error(`Failed to load gateway config: ${response.status}`)
       }
 
       const data = await response.json()
-      const result = data.factories || []
-      cachedFactories = result
-      return result
+      cachedConfig = {
+        factories: data.factories || [],
+        gatewayBlockPrefixes: data.gatewayBlockPrefixes || {}
+      }
+      return cachedConfig
     } catch (err) {
-      console.error('Failed to load gateway factories:', err)
+      console.error('Failed to load gateway config:', err)
       throw err
     } finally {
       loadPromise = null
@@ -71,8 +79,9 @@ export const GatewayConfigPanel: React.FC<GatewayConfigPanelProps> = ({
   onChange
 }) => {
   const { t } = useTranslation()
-  const [factories, setFactories] = React.useState<GatewayFactory[]>(cachedFactories || [])
-  const [loading, setLoading] = React.useState(!cachedFactories)
+  const [factories, setFactories] = React.useState<GatewayFactory[]>(cachedConfig?.factories || [])
+  const [blockPrefixes, setBlockPrefixes] = React.useState<Record<string, string>>(cachedConfig?.gatewayBlockPrefixes || {})
+  const [loading, setLoading] = React.useState(!cachedConfig)
 
   // Track if the factory was already saved when data was first loaded
   // Only lock if: had a factory name when first loaded with an ID
@@ -88,12 +97,13 @@ export const GatewayConfigPanel: React.FC<GatewayConfigPanelProps> = ({
 
   React.useEffect(() => {
     void (async () => {
-      if (!cachedFactories) {
+      if (!cachedConfig) {
         setLoading(true)
       }
       try {
-        const data = await loadGatewayFactories()
-        setFactories(data)
+        const data = await loadGatewayConfig()
+        setFactories(data.factories)
+        setBlockPrefixes(data.gatewayBlockPrefixes)
       } catch {
         // Error already logged
       } finally {
@@ -108,7 +118,7 @@ export const GatewayConfigPanel: React.FC<GatewayConfigPanelProps> = ({
   // initialFactory: undefined = not loaded yet, null = loaded without factory, string = loaded with factory
   const isLocked = typeof initialFactory === 'string' && initialFactory.length > 0
 
-  // Get the gateway registry from container
+  // Get the gateway registry from container (fallback for custom configurators)
   const gatewayRegistry = React.useMemo(() => {
     if (container.isBound(coreshopPaymentServiceIds.gatewayConfiguratorRegistry)) {
       return container.get<GatewayRegistry>(coreshopPaymentServiceIds.gatewayConfiguratorRegistry)
@@ -116,7 +126,8 @@ export const GatewayConfigPanel: React.FC<GatewayConfigPanelProps> = ({
     return null
   }, [])
 
-  // Get the custom configurator for the selected factory
+  // Check if factory has a schema-based form or a custom React configurator
+  const factoryBlockPrefix = selectedFactory ? blockPrefixes[selectedFactory] : undefined
   const GatewayConfigurator = selectedFactory && gatewayRegistry
     ? gatewayRegistry.get(selectedFactory)
     : undefined
@@ -179,8 +190,16 @@ export const GatewayConfigPanel: React.FC<GatewayConfigPanelProps> = ({
       {selectedFactory && (
         <div style={{ marginTop: 16 }}>
           {GatewayConfigurator ? (
+            // Custom React configurator takes precedence
             <GatewayConfigurator
               config={gatewayConfig?.decryptedConfig ?? {}}
+              onChange={handleConfigChange}
+            />
+          ) : factoryBlockPrefix ? (
+            // Schema-based form from backend FormType
+            <SchemaForm
+              blockPrefix={factoryBlockPrefix}
+              data={gatewayConfig?.decryptedConfig ?? {}}
               onChange={handleConfigChange}
             />
           ) : (

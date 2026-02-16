@@ -16,19 +16,24 @@ import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import type { RuleAction } from '../types'
 import { ActionItem } from './ActionItem'
+import { formatTypeLabel } from './type-label'
 
 interface ActionsPanelProps {
   actions: RuleAction[]
   availableTypes: string[]
   onChange: (actions: RuleAction[]) => void
   registryId: symbol | string
+  currentLocale?: string
+  locales?: string[]
 }
 
 export const ActionsPanel: React.FC<ActionsPanelProps> = ({
   actions,
   availableTypes,
   onChange,
-  registryId
+  registryId,
+  currentLocale,
+  locales
 }) => {
   const handleAdd = (type: string) => {
     const newAction: RuleAction = {
@@ -68,7 +73,7 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
 
   const menuItems: MenuProps['items'] = availableTypes.map(type => ({
     key: type,
-    label: `Action: ${type}`,
+    label: formatTypeLabel('Action', type),
     onClick: () => handleAdd(type)
   }))
 
@@ -100,6 +105,8 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
                 onMove={handleMove}
                 onDelete={() => handleDelete(index)}
                 registryId={registryId}
+                currentLocale={currentLocale}
+                locales={locales}
               />
             ))}
           </div>

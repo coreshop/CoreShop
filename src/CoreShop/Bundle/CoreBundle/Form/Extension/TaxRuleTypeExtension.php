@@ -29,10 +29,12 @@ final class TaxRuleTypeExtension extends AbstractTypeExtension
     {
         $builder
             ->add('country', CountryChoiceType::class, [
+                'label' => 'coreshop_country',
                 'active' => null,
                 'required' => false,
             ])
             ->add('state', StateChoiceType::class, [
+                'label' => 'coreshop_state',
                 'active' => null,
                 'required' => false,
             ])

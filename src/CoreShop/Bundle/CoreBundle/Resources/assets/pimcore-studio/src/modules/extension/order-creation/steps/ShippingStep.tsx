@@ -1,6 +1,9 @@
 /**
  * CoreShop CoreBundle - Shipping Step Component
  *
+ * Schema-driven carrier selection step.
+ * Uses coreshop_carrier_choice widget to read from OrderCreation preview data.
+ *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
@@ -11,31 +14,27 @@
  */
 
 import React from 'react'
-import { Card, Form, Select, Typography, Space } from 'antd'
+import { Card, Typography, Spin } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { useFormSchema, DynamicForm, sectionFilterDecorator } from '@coreshop/studio-form'
 import type {
   OrderCreationStepConfig,
   OrderCreationState,
   OrderCreationStepProps,
-  CarrierInfo
+  CarrierInfo,
 } from '@coreshop/order/src/modules/order-creation/types'
 
-/**
- * Format currency value (cents to display)
- */
 const formatCurrency = (value: number | undefined | null, isoCode?: string): string => {
-  if (value === undefined || value === null) {
-    return '-'
-  }
+  if (value === undefined || value === null) return '-'
   const amount = value / 100
   if (isoCode) {
     try {
       return new Intl.NumberFormat(undefined, {
         style: 'currency',
-        currency: isoCode
+        currency: isoCode,
       }).format(amount)
     } catch {
-      // Fallback if currency code is invalid
+      // Fallback
     }
   }
   return amount.toFixed(2)
@@ -44,45 +43,51 @@ const formatCurrency = (value: number | undefined | null, isoCode?: string): str
 const ShippingStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatch, triggerPreview }) => {
   const { t } = useTranslation()
 
-  // Get carriers from preview (populated by CoreBundle backend)
-  const carriers = state.preview?.carriers || []
+  const { builder, loading } = useFormSchema('coreshop_cart_creation', [
+    { name: 'section-filter', decorator: sectionFilterDecorator('shipping') },
+  ])
+
+  const carriers = state.preview?.carriers ?? []
   const currencyCode = state.preview?.baseCurrency?.isoCode
+  const selectedCarrier = carriers.find((c: CarrierInfo) => c.id === state.formData.carrier)
 
-  const carrierOptions = carriers.map((carrier: CarrierInfo) => ({
-    value: carrier.id,
-    label: `${carrier.name} - ${formatCurrency(carrier.price, currencyCode)}`
-  }))
-
-  const handleChange = (value: number | null): void => {
-    dispatch({ type: 'UPDATE_FORM_DATA', payload: { carrier: value } })
-    triggerPreview()
+  if (loading || !builder) {
+    return (
+      <Card title={t('coreshop_order_creation_shipping', { defaultValue: 'Shipping' })} size="small">
+        <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
+          <Spin />
+        </div>
+      </Card>
+    )
   }
 
-  // Get selected carrier details
-  const selectedCarrier = carriers.find((c: CarrierInfo) => c.id === state.formData.carrier)
+  const config = builder.build()
+
+  // Inject carriers into widget componentProps (widgets can't use React Context
+  // across module federation boundaries, so we pass data via props instead)
+  config.fields = config.fields.map(f => ({
+    ...f,
+    componentProps: { ...f.componentProps, carriers, currencyCode },
+  }))
 
   return (
     <Card
       title={t('coreshop_order_creation_shipping', { defaultValue: 'Shipping' })}
       size="small"
     >
-      <Form.Item label={t('coreshop_carrier', { defaultValue: 'Carrier' })}>
-        <Select
-          value={state.formData.carrier ?? undefined}
-          onChange={handleChange}
-          options={carrierOptions}
-          placeholder={t('coreshop_select_carrier', { defaultValue: 'Select Carrier' })}
-          allowClear
-          style={{ width: '100%' }}
-          disabled={carriers.length === 0}
-        />
-      </Form.Item>
+      <DynamicForm
+        config={config}
+        data={state.formData}
+        onChange={(changedValues) => {
+          dispatch({ type: 'UPDATE_FORM_DATA', payload: changedValues })
+          triggerPreview()
+        }}
+      />
 
       {carriers.length === 0 && (
         <Typography.Text type="secondary">
           {t('coreshop_no_carriers_available', {
-            defaultValue:
-              'No carriers available. Please select shipping and invoice addresses first.'
+            defaultValue: 'No carriers available. Please select shipping and invoice addresses first.',
           })}
         </Typography.Text>
       )}
@@ -106,19 +111,17 @@ export const ShippingStepConfig: OrderCreationStepConfig = {
   priority: 50,
   component: ShippingStepComponent,
 
-  // Carrier is optional
   isValid: () => true,
 
   getValues: (state: OrderCreationState) => ({
-    carrier: state.formData.carrier
+    carrier: state.formData.carrier,
   }),
 
-  // Only show if addresses are selected and items exist
   isVisible: (state: OrderCreationState) => {
     return Boolean(
       state.formData.items.length > 0 &&
         state.formData.shippingAddress &&
         state.formData.invoiceAddress
     )
-  }
+  },
 }

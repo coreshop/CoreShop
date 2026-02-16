@@ -45,6 +45,9 @@ export interface FilterConfig {
   success: boolean
   pre_conditions: string[]
   user_conditions: string[]
+  schemas?: Record<string, any>
+  preConditionSchemaByType?: Record<string, string>
+  userConditionSchemaByType?: Record<string, string>
 }
 
 /**

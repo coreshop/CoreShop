@@ -20,6 +20,117 @@ CoreShop has two types of product-related price rules:
 
 Both rule types share the same conditions and actions, but differ in how they're managed.
 
+## Schema-Driven Forms (No Custom JS Needed)
+
+**Most product price rule conditions and actions no longer require custom React components.** The configuration forms are rendered automatically from PHP FormTypes via the StudioFormBundle.
+
+To add a new condition or action, you only need:
+
+1. A PHP FormType defining the configuration fields
+2. A service registration with the `form-type` attribute
+
+The frontend auto-generates the React form from the backend schema at runtime.
+
+### Adding a Custom Action (PHP Only)
+
+```php
+<?php
+
+namespace App\Form\Type\Rule\Action;
+
+use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class CustomDiscountConfigurationType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('discount', NumberType::class, [
+                'label' => 'app_action_discount',
+                'required' => true,
+                'scale' => 2,
+            ])
+            ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'app_currency',
+            ])
+        ;
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'app_product_price_rule_action_custom_discount';
+    }
+}
+```
+
+```yaml
+services:
+    app.product_price_rule.action.custom_discount:
+        class: App\Rule\Action\CustomDiscountActionProcessor
+        tags:
+            - name: coreshop.product_price_rule.action
+              type: customDiscount
+              form-type: App\Form\Type\Rule\Action\CustomDiscountConfigurationType
+```
+
+**Done.** No React/TypeScript code needed. The action form renders automatically in the Product Price Rule editor.
+
+To also register for Product Specific Price Rules, add a second tag:
+
+```yaml
+            - name: coreshop.product_specific_price_rule.action
+              type: customDiscount
+              form-type: App\Form\Type\Rule\Action\CustomDiscountConfigurationType
+```
+
+### Adding a Custom Condition (PHP Only)
+
+```php
+<?php
+
+namespace App\Form\Type\Rule\Condition;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class MinOrderQuantityConfigurationType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('minQuantity', IntegerType::class, [
+                'label' => 'app_condition_min_quantity',
+            ])
+            ->add('maxQuantity', IntegerType::class, [
+                'label' => 'app_condition_max_quantity',
+                'required' => false,
+            ])
+        ;
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'app_product_price_rule_condition_min_order_quantity';
+    }
+}
+```
+
+```yaml
+services:
+    app.product_price_rule.condition.min_order_quantity:
+        class: App\Rule\Condition\MinOrderQuantityChecker
+        tags:
+            - name: coreshop.product_price_rule.condition
+              type: minOrderQuantity
+              form-type: App\Form\Type\Rule\Condition\MinOrderQuantityConfigurationType
+```
+
+For the full schema-driven pattern explanation, see [StudioFormBundle Examples — Example 13](../02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
+
 ## Architecture
 
 ### Separate Registries
@@ -42,8 +153,9 @@ container.bind(coreshopProductServiceIds.productSpecificPriceRuleActionRegistry)
 
 ### Bundle Responsibilities
 
-- **ProductBundle**: Registers product-specific conditions/actions (weight, nested, timespan, price actions)
-- **CoreBundle**: Registers shared conditions/actions (categories, customers, countries, currencies, etc.)
+- **ProductBundle**: Creates registries; all condition/action forms are schema-driven from PHP FormTypes
+- **CoreBundle**: Registers `NestedCondition` (the only hand-written component) across all rule type registries
+- **Schema system**: Automatically generates and registers all other condition/action forms at runtime
 
 ### Service IDs
 
@@ -57,63 +169,61 @@ export const coreshopProductServiceIds = {
 }
 ```
 
-## Adding a Custom Product Price Rule Action
+## Built-in Product Price Rule Components
 
-### Step 1: Create the React Component
+### Conditions (All schema-driven from PHP FormTypes)
+
+| Key | Source Bundle | Description |
+|-----|-------------|-------------|
+| `weight` | ProductBundle | Product weight range (min/max) |
+| `categories` | CoreBundle | Product categories |
+| `products` | CoreBundle | Specific products |
+| `customers` | CoreBundle | Specific customers |
+| `customerGroups` | CoreBundle | Customer groups |
+| `guest` | CoreBundle | Guest checkout |
+| `countries` | CoreBundle | Customer countries |
+| `zones` | CoreBundle | Geographic zones |
+| `stores` | CoreBundle | Store selection |
+| `currencies` | CoreBundle | Currency selection |
+| `quantity` | CoreBundle | Cart quantity range |
+| `not_combinable_with_cart_price_voucher_rule` | CoreBundle | Voucher exclusion |
+
+### Conditions (Hand-written — require custom JS)
+
+| Key | Source Bundle | Reason |
+|-----|-------------|--------|
+| `nested` | CoreBundle | Recursively renders sub-conditions with AND/OR logic |
+| `timespan` | CoreBundle | Uses custom date/time picker composition |
+
+### Actions (All schema-driven from PHP FormTypes)
+
+| Key | Source Bundle | Description |
+|-----|-------------|-------------|
+| `discountAmount` | ProductBundle | Fixed amount discount |
+| `discountPercent` | ProductBundle | Percentage discount |
+| `price` | ProductBundle | Fixed price override |
+| `discountPrice` | ProductBundle | Discounted fixed price |
+| `notDiscountableCustomAttributes` | ProductBundle | Marks products as non-discountable |
+
+## Hand-Written React Components (Rare)
+
+If your condition/action needs custom interactive behavior that cannot be expressed as a Symfony FormType, you can still write a React component:
 
 ```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/product-price-rules/actions/CustomDiscountAction.tsx
-
-import React, { useState, useEffect } from 'react'
-import { Form, InputNumber, Select } from 'antd'
-import { useTranslation } from 'react-i18next'
+import React from 'react'
+import { Form, InputNumber } from 'antd'
 import type { ActionComponentProps } from '@coreshop/rule/src/rules'
-import { currencyApi } from '@coreshop/currency/src/modules/currencies/api'
 
 export const CustomDiscountAction: React.FC<ActionComponentProps> = ({
   data,
   onChange
 }) => {
-  const { t } = useTranslation()
-  const discount = data.discount || 0
-  const currency = data.currency || null
-  const [currencies, setCurrencies] = useState<Array<{ id: number, name: string }>>([])
-
-  useEffect(() => {
-    currencyApi.list()
-      .then((response) => {
-        setCurrencies(Array.isArray(response) ? response : [])
-      })
-      .catch(() => {
-        setCurrencies([])
-      })
-  }, [])
-
-  const handleDiscountChange = (value: number | null) => {
-    onChange({ ...data, discount: value || 0 })
-  }
-
-  const handleCurrencyChange = (value: number) => {
-    onChange({ ...data, currency: value })
-  }
-
   return (
     <Form layout="vertical">
-      <Form.Item label={t('coreshop_action_discount', { defaultValue: 'Discount' })}>
+      <Form.Item label="Discount Amount">
         <InputNumber
-          value={discount}
-          onChange={handleDiscountChange}
-          min={0}
-          precision={2}
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
-      <Form.Item label={t('coreshop_currency', { defaultValue: 'Currency' })}>
-        <Select
-          value={currency}
-          onChange={handleCurrencyChange}
-          options={currencies.map(c => ({ label: c.name, value: c.id }))}
-          style={{ width: '100%' }}
+          value={data.amount || 0}
+          onChange={(value) => onChange({ ...data, amount: value })}
         />
       </Form.Item>
     </Form>
@@ -121,282 +231,18 @@ export const CustomDiscountAction: React.FC<ActionComponentProps> = ({
 }
 ```
 
-### Step 2: Export the Action
+Register in your bundle's `main.ts` — hand-written components take priority over schema-generated ones:
 
 ```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/product-price-rules/actions/index.ts
-
-export * from './CustomDiscountAction'
-```
-
-### Step 3: Register the Action
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
-
-import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
-import type { ActionRegistry } from '@coreshop/rule/src/rules/registry'
-import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
-import { CustomDiscountAction } from './modules/product-price-rules/actions'
-
-const plugin: IAbstractPlugin = {
-    name: 'your-bundle',
-
-    onInit() {
-        // Get the ProductPriceRule action registry
-        const actionRegistry = container.get<ActionRegistry>(
-            coreshopProductServiceIds.productPriceRuleActionRegistry
-        )
-
-        // Register the custom action
-        actionRegistry.register('customDiscount', CustomDiscountAction)
-
-        // Optionally register for Product Specific Price Rules too
-        const specificActionRegistry = container.get<ActionRegistry>(
-            coreshopProductServiceIds.productSpecificPriceRuleActionRegistry
-        )
-        specificActionRegistry.register('customDiscount', CustomDiscountAction)
-    }
-}
-
-export default plugin
-```
-
-### Important: Data Handling
-
-**CRITICAL**: Actions receive `data` as the configuration object directly, NOT `data.configuration`:
-
-```typescript
-// WRONG
-React.useEffect(() => {
-    form.setFieldsValue(data.configuration ?? {})
-}, [data])
-
-// CORRECT
-React.useEffect(() => {
-    form.setFieldsValue(data ?? {})
-}, [data])
-```
-
-## Adding a Custom Product Price Rule Condition
-
-### Step 1: Create the React Component
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/product-price-rules/conditions/MinOrderQuantityCondition.tsx
-
-import React from 'react'
-import { Form, InputNumber } from 'antd'
-import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-
-export const MinOrderQuantityCondition: React.FC<ConditionComponentProps> = ({
-  data,
-  onChange
-}) => {
-  const minQuantity = data.minQuantity || 1
-  const maxQuantity = data.maxQuantity || 0
-
-  const handleMinChange = (value: number | null) => {
-    onChange({ ...data, minQuantity: value || 1 })
-  }
-
-  const handleMaxChange = (value: number | null) => {
-    onChange({ ...data, maxQuantity: value || 0 })
-  }
-
-  return (
-    <Form layout="vertical">
-      <Form.Item
-        label="Minimum Quantity"
-        help="Minimum quantity required for this rule to apply"
-      >
-        <InputNumber
-          value={minQuantity}
-          onChange={handleMinChange}
-          min={1}
-          precision={0}
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
-      <Form.Item
-        label="Maximum Quantity"
-        help="Maximum quantity (0 = no limit)"
-      >
-        <InputNumber
-          value={maxQuantity}
-          onChange={handleMaxChange}
-          min={0}
-          precision={0}
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
-    </Form>
-  )
-}
-```
-
-### Step 2: Register the Condition
-
-```typescript
-// In your main.ts
-const conditionRegistry = container.get<ConditionRegistry>(
-    coreshopProductServiceIds.productPriceRuleConditionRegistry
+const actionRegistry = container.get<ActionRegistry>(
+    coreshopProductServiceIds.productPriceRuleActionRegistry
 )
-conditionRegistry.register('minOrderQuantity', MinOrderQuantityCondition)
+actionRegistry.register('customDiscount', CustomDiscountAction)
 ```
 
-## Built-in Product Price Rule Components
-
-### Conditions (ProductBundle)
-
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `weight` | WeightCondition | Product weight range (min/max) |
-| `nested` | NestedCondition | Combine conditions with AND/OR logic |
-| `timespan` | TimespanCondition | Date/time range |
-
-### Conditions (Shared from CoreBundle)
-
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `categories` | CategoriesCondition | Product categories |
-| `products` | ProductsCondition | Specific products |
-| `customers` | CustomersCondition | Specific customers |
-| `customerGroups` | CustomerGroupsCondition | Customer groups |
-| `guest` | GuestCondition | Guest checkout |
-| `countries` | CountriesCondition | Customer countries |
-| `zones` | ZonesCondition | Geographic zones |
-| `stores` | StoresCondition | Store selection |
-| `currencies` | CurrenciesCondition | Currency selection |
-| `quantity` | QuantityCondition | Cart quantity range |
-| `not_combinable_with_cart_price_voucher_rule` | NotCombinableCondition | Voucher exclusion |
-
-### Actions (ProductBundle)
-
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `discountAmount` | DiscountAmountAction | Fixed amount discount |
-| `discountPercent` | DiscountPercentAction | Percentage discount |
-| `price` | PriceAction | Fixed price override |
-| `discountPrice` | DiscountPriceAction | Discounted fixed price |
-| `notDiscountableCustomAttributes` | EmptyAction | Marks products as non-discountable |
-
-### Actions (Shared from CoreBundle)
-
-CoreBundle also registers these shared actions:
-
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `discountAmount` | DiscountAmountAction | Fixed amount discount (with currency) |
-| `discountPercent` | DiscountPercentAction | Percentage discount |
-| `price` | PriceAction | Fixed price override |
-
-## Using Select Components with Caching
-
-For entity selection, use module-level caching to prevent duplicate API calls:
-
-```typescript
-// Module-level cache
-let cachedCurrencies: Array<{ value: number, label: string }> | null = null
-let loadPromise: Promise<Array<{ value: number, label: string }>> | null = null
-
-const loadCurrencies = async (): Promise<Array<{ value: number, label: string }>> => {
-  if (cachedCurrencies) return cachedCurrencies
-  if (loadPromise) return loadPromise
-
-  loadPromise = (async () => {
-    try {
-      const currencies = await currencyApi.list()
-      cachedCurrencies = currencies.map(c => ({
-        value: c.id!,
-        label: c.name ?? `#${c.id}`
-      }))
-      return cachedCurrencies
-    } finally {
-      loadPromise = null
-    }
-  })()
-
-  return loadPromise
-}
-
-export const clearCurrencyCache = () => {
-  cachedCurrencies = null
-  loadPromise = null
-}
-```
-
-## Using Relation Components
-
-For product/category selection with drag-and-drop:
-
-```typescript
-import { ProductMultiSelectField } from '@coreshop/product/src/components'
-import { CategoryMultiSelectField } from '@coreshop/product/src/components'
-
-export const ProductsCondition: React.FC<ConditionComponentProps> = ({ data, onChange }) => {
-  return (
-    <Form layout="vertical">
-      <Form.Item label="Products">
-        <ProductMultiSelectField
-          value={data.products ?? []}
-          onChange={(products) => onChange({ ...data, products })}
-        />
-      </Form.Item>
-    </Form>
-  )
-}
-```
-
-## File Structure
-
-```
-ProductBundle/Resources/assets/pimcore-studio/src/
-├── main.ts                              # Plugin entry, registry setup
-├── modules/
-│   ├── product-price-rules/
-│   │   ├── service-ids.ts               # Registry service IDs
-│   │   ├── types.ts                     # TypeScript types
-│   │   ├── api.ts                       # API client
-│   │   ├── ProductPriceRuleManager.tsx  # Main manager widget
-│   │   ├── ProductPriceRuleFormBuilder.ts
-│   │   ├── form-builder-module.ts
-│   │   ├── components/
-│   │   │   └── SettingsForm.tsx
-│   │   ├── conditions/
-│   │   │   ├── index.ts
-│   │   │   └── WeightCondition.tsx
-│   │   └── actions/
-│   │       ├── index.ts
-│   │       ├── DiscountAmountAction.tsx
-│   │       ├── DiscountPercentAction.tsx
-│   │       ├── DiscountPriceAction.tsx
-│   │       └── PriceAction.tsx
-│   └── product-specific-price-rules/
-│       ├── types.ts
-│       ├── ProductSpecificPriceRuleFormBuilder.ts
-│       ├── form-builder-module.ts
-│       ├── components/
-│       │   ├── SettingsForm.tsx
-│       │   └── ProductSpecificPriceRulesPanel.tsx
-│       └── index.ts
-├── components/
-│   ├── CategoryMultiSelect.tsx
-│   ├── CategoryMultiSelectField.tsx
-│   ├── ProductMultiSelect.tsx
-│   ├── ProductMultiSelectField.tsx
-│   └── ProductUnitSelect.tsx
-└── dynamic-types/
-    ├── index.ts
-    ├── DynamicTypeObjectDataCoreShopProductUnit.tsx
-    ├── DynamicTypeObjectDataCoreShopProductUnitDefinition.tsx
-    ├── DynamicTypeObjectDataCoreShopProductUnitDefinitions.tsx
-    └── DynamicTypeObjectDataCoreShopProductSpecificPriceRules.tsx
-```
+**Important: Data Handling** — Actions/conditions receive `data` as the configuration object directly, NOT `data.configuration`.
 
 ## Backend Implementation
-
-Don't forget to implement the backend logic:
 
 ### PHP Action Processor
 
@@ -432,9 +278,39 @@ App\CoreShop\Action\CustomDiscountActionProcessor:
     - { name: coreshop.product_price_rule.action, type: customDiscount, form-type: App\Form\Type\CustomDiscountType }
 ```
 
+## File Structure
+
+```
+ProductBundle/Resources/assets/pimcore-studio/src/
+├── main.ts                              # Plugin entry, registry setup
+├── modules/
+│   ├── product-price-rules/
+│   │   ├── service-ids.ts               # Registry service IDs
+│   │   ├── types.ts                     # TypeScript types
+│   │   ├── api.ts                       # API client
+│   │   ├── ProductPriceRuleManager.tsx  # Main manager widget
+│   │   └── components/
+│   │       └── SettingsForm.tsx
+│   └── product-specific-price-rules/
+│       ├── types.ts
+│       ├── components/
+│       │   ├── SettingsForm.tsx
+│       │   └── ProductSpecificPriceRulesPanel.tsx
+│       └── index.ts
+├── components/
+│   ├── CategoryMultiSelect.tsx
+│   ├── ProductMultiSelect.tsx
+│   └── ProductUnitSelect.tsx
+└── dynamic-types/
+    ├── index.ts
+    └── DynamicTypeObjectDataCoreShopProductSpecificPriceRules.tsx
+```
+
+Note: There are no `conditions/` or `actions/` subdirectories — all condition/action forms are generated from PHP FormTypes at runtime.
+
 ## Testing Your Extension
 
-1. **Build the bundle**: `npm run dev:single YourBundle`
+1. **Clear the Symfony cache**: `docker compose exec php bin/console cache:clear`
 2. **Clear browser cache**: Hard refresh (Ctrl+Shift+R / Cmd+Shift+R)
 3. **Test the action/condition**:
    - Navigate to CoreShop -> Product -> Product Price Rules
@@ -443,32 +319,10 @@ App\CoreShop\Action\CustomDiscountActionProcessor:
    - Verify the form displays correctly
    - Save and verify the data persists
 
-## Troubleshooting
-
-### Action/Condition Not Showing
-
-- Verify the bundle is loaded: Check browser console for errors
-- Check registry registration: Ensure `container.get()` uses correct service ID
-- Verify action type: The registered key must match the backend type
-
-### Data Not Saving
-
-- Check `onChange` handler: Ensure it's called with the full data object
-- Verify backend processor: Check PHP service is registered
-- Check browser network tab: Inspect API request payload
-
-### Form Not Displaying
-
-- Check data handling: Use `data` directly, not `data.configuration`
-- Verify imports: Ensure all Ant Design components are imported
-- Check console for React errors
-
 ## Best Practices
 
-1. **Always use TypeScript**: Type-safe components prevent runtime errors
-2. **Implement module-level caching**: Prevents duplicate API calls
-3. **Use Ant Design components**: Consistent UI across CoreShop
-4. **Add help text**: Guide users with `help` prop on Form.Item
-5. **Validate inputs**: Use Form.Item `rules` for validation
-6. **Handle loading states**: Show loading indicators for async operations
-7. **Test with both rule types**: Ensure your extension works for both Product Price Rules and Product Specific Price Rules
+1. **Prefer PHP FormTypes**: Use the schema-driven approach for all new conditions/actions
+2. **Use appropriate Symfony form types**: `ChoiceType` for selects, `NumberType` for numbers, `AutocompleteType` for Pimcore relations
+3. **Test with both rule types**: Ensure your extension works for both Product Price Rules and Product Specific Price Rules
+4. **Only write React for truly special UIs**: Recursive nesting, drag-and-drop, etc.
+5. **Test with the schema endpoint**: `GET /pimcore-studio/api/coreshop-studio-form/schema/{blockPrefix}` to verify your form generates correctly

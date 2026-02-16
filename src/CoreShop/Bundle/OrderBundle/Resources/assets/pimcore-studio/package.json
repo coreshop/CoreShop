@@ -13,6 +13,7 @@
   "license": "CCL",
   "private": true,
   "dependencies": {
+    "@coreshop/studio-form": "*",
     "@pimcore/studio-ui-bundle": "1.0.0-canary.20251119-143005-1b35b01",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",

@@ -1061,5 +1061,148 @@ BundleX/Resources/assets/pimcore-studio/src/
 └── main.ts  # Registration in onInit()
 ```
 
+## StudioFormBundle - Schema-Driven Form System
+
+StudioFormBundle generates React forms from Symfony form types. Instead of manually building React forms, you define a Symfony FormType and the bundle auto-generates a JSON schema that the frontend renders dynamically.
+
+### Data Flow
+
+```
+Symfony FormType → FormSchemaGenerator → JSON Schema → FormSchemaAdapter → FormBuilder → DynamicForm (React)
+```
+
+### Backend (PHP)
+
+#### Key Classes
+
+| Class | Location | Purpose |
+|-------|----------|---------|
+| `FormSchemaGenerator` | `StudioFormBundle/Form/Schema/` | Converts Symfony FormView → JSON schema |
+| `FormSchemaEnricherInterface` | `StudioFormBundle/Form/Schema/` | Extension point: add tabs, sections, hide fields |
+| `BlockPrefixFormTypeRegistry` | `StudioFormBundle/Form/Schema/` | Maps Symfony block prefixes → form type classes |
+| `RuleFormSchemaCollector` | `StudioFormBundle/Form/Schema/` | Collects schemas for rule engine form types |
+| `FormSchemaController` | `StudioFormBundle/Controller/` | `GET /pimcore-studio/api/coreshop-studio-form/schema/{blockPrefix}` |
+
+#### Enricher Pattern
+
+Enrichers customize the generated schema per bundle (tagged `coreshop_studio_form.enricher`):
+
+```php
+class CartCreationSchemaEnricher implements FormSchemaEnricherInterface
+{
+    public function supports(string $formTypeClass): bool
+    {
+        return $formTypeClass === CartCreationType::class;
+    }
+
+    public function enrich(FormSchema $schema, string $formTypeClass): FormSchema
+    {
+        $schema->addSection('base', 'Base', 10);
+        $schema->setFieldSection('currency', 'base');
+        return $schema;
+    }
+}
+```
+
+Multiple enrichers process the same schema sequentially (priority-ordered). OrderBundle adds base sections, CoreBundle adds address/shipping/payment sections.
+
+#### Service Tags
+
+- `coreshop.studio_form` — registers a FormType in BlockPrefixFormTypeRegistry
+- `coreshop_studio_form.enricher` — registers a FormSchemaEnricher (supports `priority`)
+
+### Frontend (React/TypeScript)
+
+#### Key Components
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `WidgetRegistry` | `schema-adapter/WidgetRegistry.ts` | Maps block prefixes → React components |
+| `FormSchemaAdapter` | `schema-adapter/FormSchemaAdapter.ts` | Converts JSON schema → FormBuilderConfig |
+| `FormBuilder` | `form-builder/FormBuilder.ts` | Decorator-based config builder |
+| `DynamicForm` | `form-builder/components/DynamicForm.tsx` | Renders form from config (tabs, sections, fields) |
+| `SchemaForm` | `schema-adapter/SchemaForm.tsx` | Convenience: `useFormSchema` + `DynamicForm` |
+
+#### Widget Resolution
+
+WidgetRegistry resolves block prefixes right-to-left (most specific first), matching Symfony's Twig block resolution:
+```
+blockPrefixes: ['form', 'text', 'email'] → tries email → text → form
+```
+
+#### Default Widgets
+
+Standard Symfony types are pre-mapped: `text`→Input, `textarea`→Input.TextArea, `integer`→InputNumber, `checkbox`→Switch, `choice`→Select/Radio/Checkbox, `date`→DatePicker, `collection`→CollectionWidget, `grid_collection`→GridCollectionWidget.
+
+Custom widgets are registered via `WidgetRegistry.register(blockPrefix, resolver)`.
+
+#### Schema Caching (Frontend)
+
+`fetchFormSchema()` uses module-level caching + request deduplication. `preSeedSchemaCache()` for bulk pre-loading rule schemas.
+
+#### Standard Decorators
+
+Available from `@coreshop/studio-form/src/form-builder/decorators/`:
+- `addFieldDecorator`, `removeFieldDecorator`, `transformFieldDecorator`
+- `addSectionDecorator`, `sectionSortingDecorator`, `sectionFilterDecorator`
+- `hiddenFieldsDecorator`, `readonlyDecorator`
+- `addValidationDecorator`, `requiredFieldDecorator`
+- `conditionalFieldsDecorator`, `groupFieldsDecorator`
+
+#### Usage Example
+
+```typescript
+import { SchemaForm } from '@coreshop/studio-form'
+
+// Simple: auto-generates form from Symfony FormType
+<SchemaForm blockPrefix="coreshop_cart_creation" data={data} onChange={onChange} />
+
+// With decorators:
+const { builder, loading } = useFormSchema('coreshop_country', [
+  { name: 'hide-field', decorator: removeFieldDecorator('internalCode') },
+  { name: 'add-custom', decorator: addFieldDecorator({ name: 'custom', label: 'Custom', component: Input }) }
+])
+```
+
+### File Structure
+
+```
+StudioFormBundle/
+├── Form/Schema/
+│   ├── FormSchema.php, FieldSchema.php          # DTOs
+│   ├── FormSchemaGenerator.php                   # Core engine
+│   ├── FormSchemaEnricherInterface.php           # Extension point
+│   ├── BlockPrefixFormTypeRegistry.php           # Block prefix → class map
+│   └── RuleFormSchemaCollector.php               # Multi-schema for rules
+├── Controller/FormSchemaController.php           # API endpoint
+├── DependencyInjection/Compiler/
+│   ├── RegisterFormSchemaEnricherPass.php
+│   └── RegisterStudioFormTypesPass.php
+└── Resources/assets/pimcore-studio/src/
+    ├── schema-adapter/                           # Schema → FormBuilder
+    │   ├── WidgetRegistry.ts, FormSchemaAdapter.ts
+    │   ├── api.ts, useFormSchema.ts, SchemaForm.tsx
+    │   └── defaultWidgets.ts
+    └── form-builder/                             # FormBuilder + DynamicForm
+        ├── FormBuilder.ts
+        ├── components/DynamicForm.tsx
+        └── decorators/index.ts
+```
+
+### Bundle Integration Example
+
+```yaml
+# OrderBundle/Resources/config/services/forms.yml
+services:
+  CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType:
+    tags:
+      - { name: form.type }
+      - { name: coreshop.studio_form }
+
+  CoreShop\Bundle\OrderBundle\Form\Schema\CartCreationSchemaEnricher:
+    tags:
+      - { name: coreshop_studio_form.enricher, priority: 10 }
+```
+
 ## Knowledge Graph
 Use the knowledge-graph-mcp before and after every task you do.

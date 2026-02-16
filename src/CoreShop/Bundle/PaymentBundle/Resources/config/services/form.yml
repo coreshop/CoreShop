@@ -36,7 +36,7 @@ services:
             - '%coreshop.form.type.payment_provider.validation_groups%'
         tags:
             - { name: form.type }
-
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType:
         arguments:
@@ -71,6 +71,7 @@ services:
             - '%coreshop.form.type.payment_provider_rule.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleTranslationType:
         arguments:
@@ -135,4 +136,8 @@ services:
             - '%coreshop.form.type.payment_provider_rule.common.payment_provider_rule.validation_groups%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Schema\PaymentProviderSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
 

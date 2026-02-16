@@ -12,5 +12,3 @@
 
 export { CartItemDiscountAmountAction } from './CartItemDiscountAmountAction'
 export { CartItemDiscountPercentAction } from './CartItemDiscountPercentAction'
-export { CartItemProductsCondition } from './CartItemProductsCondition'
-export { CartItemCategoriesCondition } from './CartItemCategoriesCondition'

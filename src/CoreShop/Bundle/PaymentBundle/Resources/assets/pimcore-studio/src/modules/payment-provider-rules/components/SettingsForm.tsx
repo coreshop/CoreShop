@@ -11,8 +11,7 @@
  */
 
 import React from 'react'
-import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { PaymentProviderRule } from '../types'
 
 interface SettingsFormProps {
@@ -26,14 +25,15 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   rule,
   onChange,
   currentLocale,
-  locales
 }) => {
-  const builder = container.get<FormBuilder<PaymentProviderRule>>('CoreShop/Payment/PaymentProviderRule/FormBuilder')
-  const config = React.useMemo(() => builder.build({ data: rule, locale: currentLocale, locales }), [builder, rule, currentLocale, locales])
-
   return (
     <div style={{ padding: 12 }}>
-      <DynamicForm config={config} data={rule} onChange={onChange} currentLocale={currentLocale} />
+      <SchemaForm<PaymentProviderRule>
+        blockPrefix="coreshop_payment_provider_rule"
+        data={rule}
+        onChange={onChange}
+        currentLocale={currentLocale}
+      />
     </div>
   )
 }

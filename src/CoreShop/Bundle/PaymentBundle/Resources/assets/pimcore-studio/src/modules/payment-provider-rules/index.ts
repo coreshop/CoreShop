@@ -15,11 +15,5 @@ export { paymentProviderRuleApi, PaymentProviderRuleApi } from './api'
 export { coreshopPaymentServiceIds } from './service-ids'
 export type { PaymentProviderRule } from './types'
 
-// Conditions
-export { AmountCondition } from './conditions'
-
-// Actions
-export { AdditionPercentAction, DiscountPercentAction, PaymentProviderRuleAction } from './actions'
-
 // Components
 export { SettingsForm, PaymentProviderRuleSelect, clearPaymentProviderRuleCache } from './components'

@@ -49,4 +49,7 @@ export interface NotificationRuleConfig {
   types: NotificationRuleType[]
   conditions: Record<NotificationRuleType, string[]>
   actions: Record<NotificationRuleType, string[]>
+  conditionSchemaByType?: Record<NotificationRuleType, Record<string, string>>
+  actionSchemaByType?: Record<NotificationRuleType, Record<string, string>>
+  schemas?: Record<string, any>
 }

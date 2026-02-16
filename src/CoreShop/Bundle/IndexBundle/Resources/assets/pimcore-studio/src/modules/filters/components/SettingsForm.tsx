@@ -11,10 +11,8 @@
  */
 
 import React from 'react'
-import { Form, Input, InputNumber, Select } from 'antd'
-import { useTranslation } from 'react-i18next'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { Filter } from '../types'
-import { IndexSelect } from '../../shared/IndexSelect'
 
 interface SettingsFormProps {
   filter: Filter
@@ -25,64 +23,13 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   filter,
   onChange
 }) => {
-  const { t } = useTranslation()
   return (
     <div style={{ padding: 24 }}>
-      <Form layout="vertical">
-        <Form.Item
-          label={t('coreshop_name', { defaultValue: 'Name' })}
-          required
-        >
-          <Input
-            value={filter.name}
-            onChange={(e) => onChange({ ...filter, name: e.target.value })}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('coreshop_filters_index', { defaultValue: 'Index' })}
-          required
-        >
-          <IndexSelect
-            value={filter.index ?? undefined}
-            onChange={(value) => onChange({ ...filter, index: value ?? null })}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('coreshop_filters_order_direction', { defaultValue: 'Order Direction' })}
-        >
-          <Select
-            value={filter.orderDirection ?? 'desc'}
-            onChange={(value) => onChange({ ...filter, orderDirection: value })}
-            options={[
-              { label: t('coreshop_filters_order_desc', { defaultValue: 'Descending' }), value: 'desc' },
-              { label: t('coreshop_filters_order_asc', { defaultValue: 'Ascending' }), value: 'asc' }
-            ]}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('coreshop_filters_order_key', { defaultValue: 'Order Key' })}
-        >
-          <Input
-            value={filter.orderKey ?? ''}
-            onChange={(e) => onChange({ ...filter, orderKey: e.target.value })}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('coreshop_filters_results_per_page', { defaultValue: 'Results Per Page' })}
-        >
-          <InputNumber
-            value={filter.resultsPerPage ?? 10}
-            onChange={(value) => onChange({ ...filter, resultsPerPage: value ?? 10 })}
-            min={1}
-            max={1000}
-            style={{ width: '100%' }}
-          />
-        </Form.Item>
-      </Form>
+      <SchemaForm<Filter>
+        blockPrefix="coreshop_filter"
+        data={filter}
+        onChange={(draft) => onChange({ ...filter, ...draft })}
+      />
     </div>
   )
 }

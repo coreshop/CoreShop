@@ -39,6 +39,18 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
     {
         parent::buildForm($builder, $options);
 
+        // For prototypes: add configuration fields from the configuration_type option
+        // (prototypes have no data, so the PRE_SET_DATA listener below won't fire)
+        if (
+            $options['configuration_type'] !== null
+            && $this->formTypeRegistry->has($options['configuration_type'], 'default')
+        ) {
+            $this->addConfigurationFields(
+                $builder,
+                $this->formTypeRegistry->get($options['configuration_type'], 'default'),
+            );
+        }
+
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
@@ -89,7 +101,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
     /**
      * @param string        $configurationType
      */
-    protected function addConfigurationFields(FormInterface $form, $configurationType): void
+    protected function addConfigurationFields(FormInterface|FormBuilderInterface $form, $configurationType): void
     {
         $form->add('configuration', $configurationType);
     }

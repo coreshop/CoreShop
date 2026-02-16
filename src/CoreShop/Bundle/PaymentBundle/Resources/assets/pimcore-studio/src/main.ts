@@ -14,15 +14,16 @@ import { type IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { type WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { Input } from 'antd'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { PaymentBundleIconModule } from './modules/icon-library'
+import { PaymentProviderWidgetsModule } from './modules/payment-providers/widgets'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { coreshopPaymentServiceIds } from './modules/payment-provider-rules/service-ids'
-import { AmountCondition, PaymentProviderRuleCondition } from './modules/payment-provider-rules/conditions'
-import { AdditionPercentAction, AdditionAmountAction, DiscountPercentAction, PaymentProviderRuleAction, PriceAction } from './modules/payment-provider-rules/actions'
 import { PaymentProviderManager } from './modules/payment-providers/PaymentProviderManager'
 import { PaymentProviderRuleManager } from './modules/payment-provider-rules/PaymentProviderRuleManager'
-import { PaymentProviderRuleFormBuilderModule } from './modules/payment-provider-rules/form-builder-module'
-import { GatewayRegistry, PayPalExpressCheckoutConfigurator, SofortConfigurator } from './modules/payment-providers/gateways'
+import { GatewayRegistry } from './modules/payment-providers/gateways'
 import {
     DynamicTypeObjectDataCoreShopPaymentProvider,
     DynamicTypeObjectDataCoreShopPaymentProviderMultiselect
@@ -61,16 +62,10 @@ const plugin: IAbstractPlugin = {
       coreshopPaymentServiceIds.paymentProviderRuleActionRegistry
     )
 
-    // Register PaymentBundle-specific conditions
-    conditionRegistry.register('amount', AmountCondition)
-    conditionRegistry.register('paymentProviderRule', PaymentProviderRuleCondition)
-
-    // Register PaymentBundle-specific actions
-    actionRegistry.register('additionPercent', AdditionPercentAction)
-    actionRegistry.register('additionAmount', AdditionAmountAction)
-    actionRegistry.register('discountPercent', DiscountPercentAction)
-    actionRegistry.register('paymentProviderRule', PaymentProviderRuleAction)
-    actionRegistry.register('price', PriceAction)
+    // Schema-based conditions/actions are auto-registered at runtime from backend mappings.
+    // Keep registries instantiated here so other bundles can extend them during startup.
+    void conditionRegistry
+    void actionRegistry
 
     // ============================================
     // Gateway Configurator Registry Setup
@@ -79,13 +74,9 @@ const plugin: IAbstractPlugin = {
       .to(GatewayRegistry)
       .inSingletonScope()
 
-    const gatewayRegistry = container.get<GatewayRegistry>(
-      coreshopPaymentServiceIds.gatewayConfiguratorRegistry
-    )
-
-    // Register PaymentBundle-specific gateway configurators
-    gatewayRegistry.register('paypal_express_checkout', PayPalExpressCheckoutConfigurator)
-    gatewayRegistry.register('sofort', SofortConfigurator)
+    // GatewayRegistry is available for custom gateway configurators that can't
+    // be expressed as Symfony form types. Schema-based gateways are auto-resolved
+    // from backend block prefixes in GatewayConfigPanel.
 
     // ============================================
     // Widget Registration
@@ -104,8 +95,16 @@ const plugin: IAbstractPlugin = {
   },
 
   onStartup({ moduleSystem }) {
+    // Hide PaymentBundle-owned rule collection prefixes from generic schema forms
+    const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+    const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+    ;[
+      'coreshop_payment_provider_rule_condition_collection',
+      'coreshop_payment_action_collection',
+    ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+
     moduleSystem.registerModule(PaymentBundleIconModule)
-    moduleSystem.registerModule(PaymentProviderRuleFormBuilderModule)
+    moduleSystem.registerModule(PaymentProviderWidgetsModule)
   }
 }
 

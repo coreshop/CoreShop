@@ -36,6 +36,7 @@ coreshop_shipping_tax_strategy_taxRule: 'based on tax rule'
 coreshop_shipping_tax_strategy_cartItems: 'based on cart items'
 
 # Studio v2
+coreshop_carrier_shipping_rules: 'Shipping Rules'
 coreshop_carrier_select: 'Select carrier'
 coreshop_identifier_required: 'Identifier is required'
 coreshop_loading_configuration: 'Loading configuration...'

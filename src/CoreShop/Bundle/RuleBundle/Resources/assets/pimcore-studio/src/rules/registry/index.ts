@@ -12,4 +12,6 @@
 
 export { ConditionRegistry } from './ConditionRegistry'
 export { ActionRegistry } from './ActionRegistry'
+export { registerSchemaComponentsFromConfig, registerSchemaComponentsFromMaps } from './registerSchemaComponents'
+export type { SchemaRegistrationOptions } from './registerSchemaComponents'
 export { coreshopRuleServiceIds } from './service-ids'

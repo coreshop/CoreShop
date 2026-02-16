@@ -1,7 +1,7 @@
 /**
- * CoreShop AddressBundle - Country Form (Form Builder Version)
+ * CoreShop AddressBundle - Country Form (Schema Form Version)
  *
- * Form component using the new FormBuilder pattern.
+ * Form component using the SchemaForm pattern.
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -13,47 +13,31 @@
  */
 
 import React from 'react'
-import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { CountryDetail } from './api'
 
 export interface CountryFormProps {
   data?: CountryDetail
   onChange: (draft: Partial<CountryDetail>) => void
-  currentLocale: string
+  currentLocale?: string
   locales?: string[]
 }
 
 /**
  * Country Form Component
  *
- * Uses FormBuilder pattern for composable, extensible form configuration.
+ * Uses SchemaForm pattern for composable, extensible form configuration.
  * Base form is defined in AddressBundle, extensions added by CoreBundle and others.
  */
 export const CountryForm: React.FC<CountryFormProps> = ({
   data,
   onChange,
   currentLocale,
-  locales
 }) => {
-  // Get the form builder from container
-  const builder = container.get<FormBuilder<CountryDetail>>(
-    'CoreShop/Address/Country/FormBuilder'
-  )
-
-  // Build final config with all decorators applied
-  const config = React.useMemo(() => {
-    return builder.build({
-      data,
-      locale: currentLocale,
-      locales
-    })
-  }, [builder, data, currentLocale, locales])
-
   return (
     <div style={{ padding: 12 }}>
-      <DynamicForm
-        config={config}
+      <SchemaForm<CountryDetail>
+        blockPrefix="coreshop_country"
         data={data}
         onChange={onChange}
         currentLocale={currentLocale}

@@ -11,6 +11,7 @@
  */
 
 import { EntityApi } from '@coreshop/resource/src/entities'
+import { preSeedSchemaCache } from '@coreshop/studio-form'
 import type { NotificationRule, NotificationRuleConfig } from './types'
 
 export class NotificationRuleApi extends EntityApi<NotificationRule> {
@@ -32,7 +33,14 @@ export class NotificationRuleApi extends EntityApi<NotificationRule> {
       throw new Error(`Failed to get config: ${response.statusText}`)
     }
 
-    return response.json()
+    const config: NotificationRuleConfig = await response.json()
+
+    // Pre-seed schema cache with embedded schemas
+    if (config.schemas) {
+      preSeedSchemaCache(config.schemas)
+    }
+
+    return config
   }
 
   /**

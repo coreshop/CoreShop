@@ -36,7 +36,7 @@ class PaymentProviderRuleGroupCollectionType extends AbstractType
             'entry_type' => PaymentProviderRuleGroupType::class,
             'allow_add' => true,
             'allow_delete' => true,
-            'by_reference' => true,
+            'by_reference' => false,
         ]);
     }
 }

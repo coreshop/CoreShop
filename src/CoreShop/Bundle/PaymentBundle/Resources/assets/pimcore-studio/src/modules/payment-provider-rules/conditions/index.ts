@@ -10,5 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { AmountCondition } from './AmountCondition'
-export { PaymentProviderRuleCondition } from './PaymentProviderRuleCondition'
+// All conditions are now schema-generated from backend form types

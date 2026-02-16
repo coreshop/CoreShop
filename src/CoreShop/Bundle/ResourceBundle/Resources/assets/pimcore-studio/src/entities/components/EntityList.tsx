@@ -133,12 +133,14 @@ export const EntityList: React.FC<EntityListProps> = ({
       else ungrouped.push(it)
     }
 
-    const nodes: DataNode[] = groups.map(g => ({
-      key: `group-${g.id}`,
-      title: groupHeader(g, (groupedMap[g.id] ?? []).length),
-      selectable: false,
-      children: (groupedMap[g.id] ?? []).map(buildLeafNode)
-    }))
+    const nodes: DataNode[] = groups
+      .filter(g => (groupedMap[g.id] ?? []).length > 0)
+      .map(g => ({
+        key: `group-${g.id}`,
+        title: groupHeader(g, (groupedMap[g.id] ?? []).length),
+        selectable: false,
+        children: (groupedMap[g.id] ?? []).map(buildLeafNode)
+      }))
     if (ungrouped.length > 0) {
       nodes.push({
         key: 'group-unknown',

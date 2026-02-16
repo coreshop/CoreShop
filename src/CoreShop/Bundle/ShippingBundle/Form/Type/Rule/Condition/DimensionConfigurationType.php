@@ -37,18 +37,21 @@ final class DimensionConfigurationType extends AbstractType
     {
         $builder
             ->add('height', IntegerType::class, [
+                'label' => 'coreshop_condition_dimension_height',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('width', IntegerType::class, [
+                'label' => 'coreshop_condition_dimension_width',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('depth', IntegerType::class, [
+                'label' => 'coreshop_condition_dimension_depth',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),

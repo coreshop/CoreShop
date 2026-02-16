@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { ManyToManyRelationValue } from '../types/relation'
 import { loadElementDetails } from '../api/helperApi'
 
@@ -30,36 +30,68 @@ export function useRelationIds(
 ): [ManyToManyRelationValue | null, (value: ManyToManyRelationValue | null) => string[], boolean] {
   const [relationValue, setRelationValue] = useState<ManyToManyRelationValue | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
+  const relationValueRef = useRef<ManyToManyRelationValue | null>(null)
+
+  useEffect(() => {
+    relationValueRef.current = relationValue
+  }, [relationValue])
 
   // Convert backend format (string IDs) to ManyToManyRelationValue format
   useEffect(() => {
-    if (!ids) {
+    let cancelled = false
+
+    if (!ids || (Array.isArray(ids) && ids.length === 0)) {
+      setLoading(false)
       setRelationValue(null)
-      return
+      return () => {
+        cancelled = true
+      }
     }
 
     // If already in ManyToManyRelationValue format, sanitize and filter items
     if (Array.isArray(ids) && ids.length > 0 && typeof ids[0] === 'object') {
       const items = ids as ManyToManyRelationValue
 
-      // Sanitize items: ensure all have a valid type, fallback to elementType
-      const sanitizedItems = items
-        .filter(item => item && item.id != null)
-        .map(item => ({
-          ...item,
-          type: (typeof item.type === 'string' && item.type.length > 0) ? item.type : elementType
-        }))
+      const sanitizedItems = sanitizeRelationItems(items, entityName, elementType)
 
-      setRelationValue(sanitizedItems.length > 0 ? sanitizedItems : null)
-      return
+      if (!cancelled) {
+        setLoading(false)
+        setRelationValue(sanitizedItems.length > 0 ? sanitizedItems : null)
+      }
+      return () => {
+        cancelled = true
+      }
     }
 
     // Convert string IDs to ManyToManyRelationValue format by loading details from API
-    if (Array.isArray(ids) && ids.length > 0 && typeof ids[0] === 'string') {
+    if (Array.isArray(ids) && ids.length > 0 && (typeof ids[0] === 'string' || typeof ids[0] === 'number')) {
+      const normalizedIds = (ids as Array<string | number>).map(String)
+      const currentById = new Map(
+        (relationValueRef.current ?? []).map(item => [String(item.id), item] as const)
+      )
+
+      const fromCurrent = normalizedIds
+        .map(id => currentById.get(id))
+        .filter((item): item is ManyToManyRelationValue[number] => item != null)
+
+      if (fromCurrent.length === normalizedIds.length) {
+        const sanitizedCurrent = sanitizeRelationItems(fromCurrent, entityName, elementType)
+        setLoading(false)
+        setRelationValue(sanitizedCurrent.length > 0 ? sanitizedCurrent : null)
+        return () => {
+          cancelled = true
+        }
+      }
+
       setLoading(true)
-      loadElementDetails(ids as string[], elementType)
+      loadElementDetails(normalizedIds, elementType)
         .then(details => {
-          const converted = ids.map(id => {
+          const converted = normalizedIds.map(id => {
+            const currentItem = currentById.get(id)
+            if (currentItem) {
+              return currentItem
+            }
+
             const detail = details[id]
             if (detail) {
               return detail
@@ -73,37 +105,78 @@ export function useRelationIds(
               isPublished: true
             }
           })
-          setRelationValue(converted)
+          const sanitized = sanitizeRelationItems(converted, entityName, elementType)
+          if (!cancelled) {
+            setRelationValue(sanitized.length > 0 ? sanitized : null)
+          }
         })
         .catch(error => {
           console.error('Failed to load element details:', error)
           // Fallback to simple format on error
-          const converted = ids.map(id => ({
+          const converted = normalizedIds.map(id => ({
             id: parseInt(id),
             type: elementType,
             fullPath: `${entityName} ${id}`,
-            subtype: null,
-            isPublished: true
+              subtype: null,
+              isPublished: true
           }))
-          setRelationValue(converted)
+          const sanitized = sanitizeRelationItems(converted, entityName, elementType)
+          if (!cancelled) {
+            setRelationValue(sanitized.length > 0 ? sanitized : null)
+          }
         })
         .finally(() => {
-          setLoading(false)
+          if (!cancelled) {
+            setLoading(false)
+          }
         })
-      return
+    } else {
+      // Unsupported shape
+      setLoading(false)
+      setRelationValue(null)
     }
 
-    // Empty array
-    if (Array.isArray(ids) && ids.length === 0) {
-      setRelationValue(null)
+    return () => {
+      cancelled = true
     }
   }, [ids, entityName, elementType])
 
   // Handler that converts ManyToManyRelationValue back to string IDs for backend
   const handleChange = (value: ManyToManyRelationValue | null): string[] => {
-    setRelationValue(value)
-    return value?.map(item => String(item.id)) || []
+    const sanitized = sanitizeRelationItems(value ?? [], entityName, elementType)
+    relationValueRef.current = sanitized.length > 0 ? sanitized : null
+    setRelationValue(sanitized.length > 0 ? sanitized : null)
+    return sanitized.map(item => String(item.id))
   }
 
   return [relationValue, handleChange, loading]
+}
+
+const sanitizeRelationItems = (
+  items: Array<Partial<ManyToManyRelationValue[number]> | null | undefined>,
+  entityName: string,
+  elementType: string
+): ManyToManyRelationValue => {
+  return items
+    .map((item) => {
+      if (item == null || item.id == null) {
+        return null
+      }
+
+      const numericId = typeof item.id === 'number' ? item.id : Number(item.id)
+      if (!Number.isFinite(numericId)) {
+        return null
+      }
+
+      return {
+        id: numericId,
+        type: (typeof item.type === 'string' && item.type.length > 0) ? item.type : elementType,
+        fullPath: (typeof item.fullPath === 'string' && item.fullPath.length > 0)
+          ? item.fullPath
+          : `${entityName} ${String(numericId)}`,
+        subtype: item.subtype ?? null,
+        isPublished: item.isPublished ?? true,
+      }
+    })
+    .filter((item): item is ManyToManyRelationValue[number] => item != null)
 }

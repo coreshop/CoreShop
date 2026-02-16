@@ -50,8 +50,12 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
   React.useEffect(() => { void loadList() }, [])
 
   const findTab = (id: number): EntityTab<TDetail> | undefined => tabs.find(t => t.id === id)
-  const updateTab = (id: number, patch: Partial<EntityTab<TDetail>>): void => {
-    setTabs(prev => prev.map(t => t.id === id ? { ...t, ...patch } : t))
+  const updateTab = (id: number, patch: Partial<EntityTab<TDetail>> | ((tab: EntityTab<TDetail>) => Partial<EntityTab<TDetail>>)): void => {
+    setTabs(prev => prev.map(t => {
+      if (t.id !== id) return t
+      const resolved = typeof patch === 'function' ? patch(t) : patch
+      return { ...t, ...resolved }
+    }))
   }
 
   const ensureTab = (id: number): void => {

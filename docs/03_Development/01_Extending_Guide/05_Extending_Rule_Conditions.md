@@ -108,7 +108,17 @@ core_shop_product:
 
 ## Pimcore Studio (React)
 
-For the new Pimcore Studio UI, you need to create a React component instead of ExtJS:
+### Schema-Driven (Recommended — No Custom JS Needed)
+
+**The service registration above is all you need for Pimcore Studio.** The `form-type` attribute in the service tag automatically makes the configuration form available in Studio. No React/TypeScript code is required.
+
+The StudioFormBundle renders the PHP FormType (`CustomConditionType`) as a React form at runtime. The `get-config` endpoint returns a `conditionSchemaByType` mapping, and `registerSchemaComponentsFromConfig()` auto-generates the React component from the schema.
+
+For details, see [StudioFormBundle — Rule Engine Integration](../14_Studio/02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
+
+### Hand-Written React Component (Only for Special UIs)
+
+If your condition needs custom interactive behavior that cannot be expressed as a Symfony FormType (e.g., recursive nesting with AND/OR logic, drag-and-drop), you can still create a hand-written React component:
 
 ```typescript
 // src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/product-price-rules/conditions/CustomCondition.tsx
@@ -150,9 +160,7 @@ export const CustomCondition: React.FC<ConditionComponentProps> = ({
 }
 ```
 
-### Registering the React Condition
-
-Register the condition in your bundle's main plugin file:
+Register the hand-written condition in your bundle's main plugin file. Hand-written components take priority over schema-generated ones:
 
 ```typescript
 // src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
@@ -178,77 +186,3 @@ const plugin: IAbstractPlugin = {
 
 export default plugin
 ```
-
-### Condition Without Configuration
-
-If your condition doesn't need any configuration UI, you can use the built-in `EmptyCondition`:
-
-```typescript
-import { EmptyCondition } from '@coreshop/rule/src/rules'
-
-conditionRegistry.register('customConditionWithoutConfig', EmptyCondition)
-```
-
-### Using Entity Selects in Conditions
-
-For selecting entities (e.g., countries, customers), use the `useEntitySelect` hook:
-
-```typescript
-import { useEntitySelect } from '@coreshop/resource'
-import { countryApi } from '@coreshop/address/src/modules/countries/api'
-
-export const CustomCondition: React.FC<ConditionComponentProps> = ({ data, onChange }) => {
-  const countryIds = data.countries || []
-  const [options, value, handleSelectChange, loading] = useEntitySelect(countryApi, countryIds)
-
-  const handleChange = (selectedIds: number[]) => {
-    handleSelectChange(selectedIds)
-    onChange({ ...data, countries: selectedIds })
-  }
-
-  return (
-    <Form layout="vertical">
-      <Form.Item label="Countries">
-        <Select
-          mode="multiple"
-          value={value}
-          onChange={handleChange}
-          options={options}
-          loading={loading}
-          showSearch
-          optionFilterProp="label"
-        />
-      </Form.Item>
-    </Form>
-  )
-}
-```
-
-The `useEntitySelect` hook automatically:
-- Loads all available entities from the API
-- Loads missing entities (for saved rules)
-- Prevents duplicate selections
-- Provides loading state
-- Returns properly formatted options for the Select component
-
-### Nested Conditions
-
-For conditions that contain sub-conditions (like "AND"/"OR" logic), use the `NestedCondition`:
-
-```typescript
-import { NestedCondition } from '@coreshop/core/src/modules/shared/rules/conditions'
-
-conditionRegistry.register('nested', NestedCondition)
-```
-
-### Available Form Components
-
-The Studio UI uses Ant Design components. Commonly used form components:
-
-- `InputNumber` - Number input with precision
-- `Input` - Text input
-- `Select` - Dropdown selection (with `mode="multiple"` for multi-select)
-- `Checkbox` - Boolean values
-- `DatePicker` - Date selection
-- `Switch` - Toggle switch
-- `TimePicker` - Time selection

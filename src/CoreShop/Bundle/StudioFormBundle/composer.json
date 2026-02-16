@@ -1,0 +1,38 @@
+{
+    "name": "coreshop/studio-form-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop StudioFormBundle - Reusable Form Schema System for Pimcore Studio",
+    "keywords": [
+        "coreshop",
+        "pimcore",
+        "studio",
+        "form",
+        "schema"
+    ],
+    "homepage": "https://www.coreshop.com",
+    "license": "CCL",
+    "authors": [
+        {
+            "name": "CoreShop GmbH",
+            "email": "info@coreshop.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "symfony/form": "^6.3 || ^7.0",
+        "symfony/http-kernel": "^6.3 || ^7.0",
+        "symfony/framework-bundle": "^6.3 || ^7.0",
+        "symfony/serializer": "^6.3 || ^7.0",
+        "pimcore/pimcore": "^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\StudioFormBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.0-dev"
+        }
+    }
+}

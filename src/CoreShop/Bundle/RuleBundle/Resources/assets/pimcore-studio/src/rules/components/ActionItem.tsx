@@ -17,6 +17,7 @@ import { container } from '@pimcore/studio-ui-bundle'
 import type { RuleAction } from '../types'
 import type { ActionRegistry } from '../registry'
 import { coreshopRuleServiceIds } from '../registry'
+import { formatTypeLabel } from './type-label'
 
 interface ActionItemProps {
   action: RuleAction
@@ -26,6 +27,8 @@ interface ActionItemProps {
   onMove: (from: number, to: number) => void
   onDelete: () => void
   registryId: symbol | string
+  currentLocale?: string
+  locales?: string[]
 }
 
 export const ActionItem: React.FC<ActionItemProps> = ({
@@ -35,7 +38,9 @@ export const ActionItem: React.FC<ActionItemProps> = ({
   onChange,
   onMove,
   onDelete,
-  registryId
+  registryId,
+  currentLocale,
+  locales
 }) => {
   const handleDataChange = (configuration: Record<string, any>) => {
     onChange({ ...action, configuration })
@@ -51,7 +56,7 @@ export const ActionItem: React.FC<ActionItemProps> = ({
   const title = (
     <Space>
       <span style={{ fontWeight: 600 }}>
-        Action: {action.type}
+        {formatTypeLabel('Action', action.type)}
       </span>
     </Space>
   )
@@ -92,7 +97,10 @@ export const ActionItem: React.FC<ActionItemProps> = ({
       {ActionComponent ? (
         <ActionComponent
           data={action.configuration}
+          type={action.type}
           onChange={handleDataChange}
+          currentLocale={currentLocale}
+          locales={locales}
         />
       ) : (
         <div style={{ color: '#999', fontStyle: 'italic' }}>

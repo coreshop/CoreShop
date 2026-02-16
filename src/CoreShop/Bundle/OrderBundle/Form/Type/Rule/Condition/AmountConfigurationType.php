@@ -37,12 +37,14 @@ final class AmountConfigurationType extends AbstractType
     {
         $builder
             ->add('minAmount', MoneyType::class, [
+                'label' => 'coreshop_condition_amount_minAmount',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('maxAmount', MoneyType::class, [
+                'label' => 'coreshop_condition_amount_maxAmount',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),

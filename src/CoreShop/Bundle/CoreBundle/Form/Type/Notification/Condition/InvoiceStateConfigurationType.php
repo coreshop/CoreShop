@@ -27,6 +27,7 @@ final class InvoiceStateConfigurationType extends AbstractType
     {
         $builder
             ->add('invoiceState', TextType::class, [
+                'label' => 'coreshop_select_state',
             ])
         ;
     }

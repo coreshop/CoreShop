@@ -12,8 +12,7 @@
 
 import React from 'react'
 import { Form, Select } from 'antd'
-import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import { useTranslation } from 'react-i18next'
 import type { NotificationRule, NotificationRuleType } from '../types'
 
@@ -31,15 +30,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
   onChange,
   types,
   currentLocale,
-  locales,
   onTypeChange
 }) => {
   const { t } = useTranslation()
-  const builder = container.get<FormBuilder<NotificationRule>>('CoreShop/Notification/NotificationRule/FormBuilder')
-  const config = React.useMemo(
-    () => builder.build({ data: rule, locale: currentLocale, locales }),
-    [builder, rule, currentLocale, locales]
-  )
 
   const typeOptions = types.map(type => ({
     value: type,
@@ -73,9 +66,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
         </Form.Item>
       </Form>
 
-      {/* Other fields via FormBuilder + DynamicForm */}
-      <DynamicForm
-        config={config}
+      {/* Other fields via SchemaForm */}
+      <SchemaForm<NotificationRule>
+        blockPrefix="coreshop_notification_rule"
         data={rule}
         onChange={handleFormChange}
         currentLocale={currentLocale}

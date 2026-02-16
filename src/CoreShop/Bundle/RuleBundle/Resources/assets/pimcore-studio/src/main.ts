@@ -13,6 +13,9 @@
 import {IAbstractPlugin, container} from '@pimcore/studio-ui-bundle'
 import { RuleBundleIconModule } from './modules/icon-library'
 import { ActionRegistry, ConditionRegistry, coreshopRuleServiceIds } from './rules/registry'
+import { Input } from 'antd'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-rule',
@@ -25,6 +28,26 @@ const plugin: IAbstractPlugin = {
     },
 
     onStartup({ moduleSystem }) {
+        // Symfony/Twig-like block-prefix override:
+        // Rule collections are rendered in dedicated RuleForm tabs, not inside generic settings schema.
+        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+        const hiddenRuleCollectionWidget = () => ({
+            component: Input,
+            extra: {
+                hidden: true,
+            },
+        })
+        // Only hide generic rule collection prefixes owned by RuleBundle.
+        // Bundle-specific prefixes are hidden by their respective bundles.
+        const collectionPrefixesToHide = [
+            'coreshop_rule_condition_collection',
+            'coreshop_rule_action_collection',
+        ]
+
+        collectionPrefixesToHide.forEach((prefix) => {
+            formWidgetRegistry.register(prefix, hiddenRuleCollectionWidget)
+        })
+
         moduleSystem.registerModule(RuleBundleIconModule)
     }
 }

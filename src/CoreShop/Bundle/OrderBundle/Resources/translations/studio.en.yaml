@@ -255,6 +255,7 @@ coreshop_cart_price_rule_not_combinable: 'Automatic Rule is not combinable with 
 coreshop_action_discountAmount: 'Discount Amount'
 coreshop_action_surchargeAmount: 'Surcharge Amount'
 coreshop_action_discountAmount_gross: 'Gross'
+coreshop_action_surchargeAmount_gross: 'Gross'
 coreshop_action_discountPercent: 'Discount Percent'
 coreshop_action_surchargePercent: 'Surcharge Percent'
 coreshop_order_by_number: 'Open order by number'

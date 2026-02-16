@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, Component, type ErrorInfo } from 'react'
-import { Form, Alert } from 'antd'
+import { Form, Alert, Spin } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { ManyToManyRelation } from '@pimcore/studio-ui-bundle/modules/element'
 import type { ManyToManyRelationValue } from '@coreshop/resource/src/entities/types/relation'
@@ -92,22 +92,24 @@ export const CategoryMultiSelect: React.FC<CategoryMultiSelectProps> = ({
 
     return (
         <Form.Item label={computedLabel} name={name}>
-            <ManyToManyRelationErrorBoundary>
-                <ManyToManyRelation
-                    allowedClasses={allowedClasses}
-                    dataObjectsAllowed={true}
-                    allowedDataObjectTypes={['object']}
-                    assetsAllowed={false}
-                    documentsAllowed={false}
-                    allowToClearRelation={false}
-                    maxItems={null}
-                    pathFormatterClass={null}
-                    width={null}
-                    height={null}
-                    value={relationValue}
-                    onChange={handleChange}
-                />
-            </ManyToManyRelationErrorBoundary>
+            <Spin spinning={loading}>
+                <ManyToManyRelationErrorBoundary>
+                    <ManyToManyRelation
+                        allowedClasses={allowedClasses}
+                        dataObjectsAllowed={true}
+                        allowedDataObjectTypes={['object']}
+                        assetsAllowed={false}
+                        documentsAllowed={false}
+                        allowToClearRelation={false}
+                        maxItems={null}
+                        pathFormatterClass={null}
+                        width={null}
+                        height={null}
+                        value={relationValue}
+                        onChange={handleChange}
+                    />
+                </ManyToManyRelationErrorBoundary>
+            </Spin>
         </Form.Item>
     )
 }

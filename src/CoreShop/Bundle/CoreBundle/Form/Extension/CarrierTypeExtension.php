@@ -27,9 +27,14 @@ final class CarrierTypeExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('taxRule', TaxRuleGroupChoiceType::class);
         $builder->add('stores', StoreChoiceType::class, [
+            'label' => 'coreshop_stores',
             'multiple' => true,
+            'priority' => 40,
+        ]);
+        $builder->add('taxRule', TaxRuleGroupChoiceType::class, [
+            'label' => 'coreshop_tax_rule_group',
+            'priority' => 30,
         ]);
     }
 

@@ -11,24 +11,36 @@
  */
 
 import React from 'react'
+import { container } from '@pimcore/studio-ui-bundle'
 import { EntityTabbedManager } from '@coreshop/resource'
 import { useFormModal } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { filterApi } from './api'
 import type { Filter, FilterConfig } from './types'
 import { FilterDetail } from './FilterDetail'
+import type { ConditionRegistry } from './conditions/ConditionRegistry'
+import { serviceIds } from './service-ids'
+import { registerFilterSchemaConditionsFromMap } from './registerFilterSchemaConditions'
 
 export const FilterManager: React.FC = () => {
   const { t } = useTranslation()
   const modal = useFormModal()
   const [config, setConfig] = React.useState<FilterConfig | null>(null)
 
-  // Load config on mount
+  // Load config on mount and register schema-based conditions
   React.useEffect(() => {
     filterApi.getConfig()
-      .then(setConfig)
-      .catch(err => {
+      .then((cfg) => {
+        const preCondReg = container.get<ConditionRegistry>(serviceIds.preConditionRegistry)
+        const userCondReg = container.get<ConditionRegistry>(serviceIds.userConditionRegistry)
 
+        registerFilterSchemaConditionsFromMap(preCondReg, cfg.preConditionSchemaByType, cfg.schemas)
+        registerFilterSchemaConditionsFromMap(userCondReg, cfg.userConditionSchemaByType, cfg.schemas)
+
+        setConfig(cfg)
+      })
+      .catch(err => {
+        console.error('Failed to load filter config:', err)
       })
   }, [])
 

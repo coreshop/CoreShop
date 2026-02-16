@@ -16,7 +16,6 @@ import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-ma
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { StoreBundleIconModule } from './modules/icon-library'
 import { StoreManager } from './modules/stores/StoreManager'
-import { StoreFormBuilderModule } from './modules/stores/form-builder-module'
 import {
     DynamicTypeObjectDataCoreShopStore,
     DynamicTypeObjectDataCoreShopStoreMultiselect
@@ -36,7 +35,6 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(StoreBundleIconModule)
-        moduleSystem.registerModule(StoreFormBuilderModule)
 
         // Register Store Manager widget
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)

@@ -28,15 +28,18 @@ final class ExchangeRateType extends AbstractResourceType
     {
         $builder
             ->add('exchangeRate', NumberType::class, [
+                'label' => 'coreshop_exchange_rate',
                 'required' => true,
                 'scale' => 10,
                 'rounding_mode' => $options['rounding_mode'],
             ])
             ->add('fromCurrency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_from_currency',
                 'required' => true,
                 'empty_data' => false,
             ])
             ->add('toCurrency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_to_currency',
                 'required' => true,
                 'empty_data' => false,
             ])

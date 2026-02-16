@@ -14,6 +14,7 @@ import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { PimcoreBundleIconModule } from './modules/icon-library'
+import { AssetSelectWidgetModule } from './modules/asset-select-widget'
 import {
     DynamicTypeObjectDataCoreShopSerializedData,
     DynamicTypeObjectDataCoreShopDynamicDropdown,
@@ -39,6 +40,7 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(PimcoreBundleIconModule)
+        moduleSystem.registerModule(AssetSelectWidgetModule)
     }
 }
 

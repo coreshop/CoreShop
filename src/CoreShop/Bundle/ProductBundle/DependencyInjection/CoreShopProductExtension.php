@@ -158,19 +158,17 @@ final class CoreShopProductExtension extends AbstractModelExtension implements P
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (!array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
-            return;
+        if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
+            $container->prependExtensionConfig('pimcore_studio_backend', [
+                'data_object_data_adapter_mapping' => [
+                    'CoreShop\\Bundle\\ProductBundle\\StudioBackend\\DataAdapter\\ProductUnitDefinitionsAdapter' => [
+                        'coreShopProductUnitDefinitions',
+                    ],
+                    'CoreShop\\Bundle\\ProductBundle\\StudioBackend\\DataAdapter\\ProductSpecificPriceRulesAdapter' => [
+                        'coreShopProductSpecificPriceRules',
+                    ],
+                ],
+            ]);
         }
-
-        $container->prependExtensionConfig('pimcore_studio_backend', [
-            'data_object_data_adapter_mapping' => [
-                'CoreShop\\Bundle\\ProductBundle\\StudioBackend\\DataAdapter\\ProductUnitDefinitionsAdapter' => [
-                    'coreShopProductUnitDefinitions',
-                ],
-                'CoreShop\\Bundle\\ProductBundle\\StudioBackend\\DataAdapter\\ProductSpecificPriceRulesAdapter' => [
-                    'coreShopProductSpecificPriceRules',
-                ],
-            ],
-        ]);
     }
 }

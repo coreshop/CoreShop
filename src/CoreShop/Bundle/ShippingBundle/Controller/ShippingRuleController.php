@@ -18,17 +18,38 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ShippingBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShippingRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request): Response
-    {
+    public function getConfigAction(
+        Request $request,
+        RuleFormSchemaCollector $schemaCollector,
+        #[Autowire(service: 'coreshop.form_registry.shipping_rule.conditions')]
+        FormTypeRegistryInterface $conditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.shipping_rule.actions')]
+        FormTypeRegistryInterface $actionFormRegistry,
+    ): Response {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
-        return $this->viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
+        $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
+        $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
+
+        return $this->viewHandler->handle([
+            'actions' => array_keys($actions),
+            'conditions' => array_keys($conditions),
+            'schemas' => array_merge(
+                $conditionSchemas['schemas'],
+                $actionSchemas['schemas'],
+            ),
+            'conditionSchemaByType' => $conditionSchemas['schemaByType'],
+            'actionSchemaByType' => $actionSchemas['schemaByType'],
+        ]);
     }
 
     /**

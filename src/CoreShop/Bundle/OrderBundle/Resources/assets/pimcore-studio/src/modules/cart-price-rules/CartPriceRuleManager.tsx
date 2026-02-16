@@ -11,9 +11,16 @@
  */
 
 import React from 'react'
+import { container } from '@pimcore/studio-ui-bundle'
 import { EntityTabbedManager, getErrorMessage } from '@coreshop/resource'
 import { RuleForm, type RuleFormTab } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
+import {
+  ActionRegistry,
+  ConditionRegistry,
+  registerSchemaComponentsFromConfig,
+  registerSchemaComponentsFromMaps
+} from '@coreshop/rule/src/rules/registry'
 import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { cartPriceRuleApi } from './api'
@@ -22,16 +29,39 @@ import { SettingsForm } from './components/SettingsForm'
 import { VoucherCodesPanel } from './components/VoucherCodesPanel'
 import { coreshopOrderServiceIds } from './service-ids'
 
+type CartPriceRuleConfig = RuleConfig & {
+  itemConditions?: string[]
+  itemActions?: string[]
+  itemConditionSchemaByType?: Record<string, string>
+  itemActionSchemaByType?: Record<string, string>
+}
+
 export const CartPriceRuleManager: React.FC = () => {
   const { t } = useTranslation()
   const messageApi = useMessage()
   const modal = useFormModal()
-  const [config, setConfig] = React.useState<RuleConfig>({ conditions: [], actions: [] })
+  const [config, setConfig] = React.useState<CartPriceRuleConfig>({ conditions: [], actions: [] })
 
   // Load config on mount
   React.useEffect(() => {
     cartPriceRuleApi.getConfig()
-      .then(setConfig)
+      .then((cfg: CartPriceRuleConfig) => {
+        const conditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartPriceRuleConditionRegistry)
+        const actionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartPriceRuleActionRegistry)
+        const cartItemConditionRegistry = container.get<ConditionRegistry>(coreshopOrderServiceIds.cartItemConditionRegistry)
+        const cartItemActionRegistry = container.get<ActionRegistry>(coreshopOrderServiceIds.cartItemActionRegistry)
+
+        registerSchemaComponentsFromConfig(conditionRegistry, actionRegistry, cfg)
+        registerSchemaComponentsFromMaps(
+          cartItemConditionRegistry,
+          cartItemActionRegistry,
+          cfg.itemConditionSchemaByType,
+          cfg.itemActionSchemaByType,
+          cfg.schemas,
+        )
+
+        setConfig(cfg)
+      })
       .catch(err => {
         void messageApi.error(getErrorMessage(err, 'Failed to load config'))
       })
@@ -83,6 +113,8 @@ export const CartPriceRuleManager: React.FC = () => {
             config={config}
             conditionRegistryId={coreshopOrderServiceIds.cartPriceRuleConditionRegistry}
             actionRegistryId={coreshopOrderServiceIds.cartPriceRuleActionRegistry}
+            currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
             settingsComponent={
               <SettingsForm
                 rule={data}

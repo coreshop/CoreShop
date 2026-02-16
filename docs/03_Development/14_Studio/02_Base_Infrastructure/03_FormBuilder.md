@@ -2,6 +2,10 @@
 
 The FormBuilder provides a **decorator-based pattern** for building flexible, extensible entity forms. Inspired by Pimcore Studio's ListingBuilder pattern, it enables bundles to define base forms and other bundles to extend them without creating tight coupling.
 
+> **Note:** The FormBuilder system lives in the **StudioFormBundle** (`@coreshop/studio-form`). Import from `@coreshop/studio-form/src/form-builder`.
+>
+> StudioFormBundle also provides a **Schema Adapter** that can automatically generate FormBuilderConfig from Symfony Form Types via a JSON API. See [StudioFormBundle](04_StudioFormBundle.md) for details.
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -148,7 +152,7 @@ Create a base FormBuilder in your bundle:
 
 ```typescript
 // CountryFormBuilder.ts
-import { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import { Input, Switch } from 'antd'
 import type { CountryDetail } from './api'
 import { ZoneSelect } from '../zones/ZoneSelect'
@@ -222,7 +226,7 @@ const plugin: IAbstractPlugin = {
 // CountryForm.tsx
 import React from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
-import { DynamicForm, type FormBuilder } from '@coreshop/resource/src/entities/form-builder'
+import { DynamicForm, type FormBuilder } from '@coreshop/studio-form/src/form-builder'
 import type { CountryDetail } from './api'
 
 export interface CountryFormProps {
@@ -372,7 +376,7 @@ ResourceBundle provides commonly used decorators.
 Add a field to the form:
 
 ```typescript
-import { addFieldDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { addFieldDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('currency', addFieldDecorator({
   name: 'currency',
@@ -399,7 +403,7 @@ addFieldDecorator(field, 2)
 Remove a field by name:
 
 ```typescript
-import { removeFieldDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { removeFieldDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('remove-zone', removeFieldDecorator('zone'))
 ```
@@ -409,7 +413,7 @@ builder.addDecorator('remove-zone', removeFieldDecorator('zone'))
 Add a section for grouping fields:
 
 ```typescript
-import { addSectionDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { addSectionDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('general-section', addSectionDecorator({
   key: 'general',
@@ -424,7 +428,7 @@ builder.addDecorator('general-section', addSectionDecorator({
 Transform an existing field:
 
 ```typescript
-import { transformFieldDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { transformFieldDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('modify-name', transformFieldDecorator('name', (field) => ({
   ...field,
@@ -441,7 +445,7 @@ builder.addDecorator('modify-name', transformFieldDecorator('name', (field) => (
 Add validation rules to a field:
 
 ```typescript
-import { addValidationDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { addValidationDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('email-validation', addValidationDecorator('email', [
   { type: 'email', message: 'Invalid email' }
@@ -453,7 +457,7 @@ builder.addDecorator('email-validation', addValidationDecorator('email', [
 Make a field required:
 
 ```typescript
-import { requiredFieldDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { requiredFieldDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('require-iso', requiredFieldDecorator('isoCode', 'ISO Code is required'))
 ```
@@ -463,7 +467,7 @@ builder.addDecorator('require-iso', requiredFieldDecorator('isoCode', 'ISO Code 
 Show/hide fields based on condition:
 
 ```typescript
-import { conditionalFieldsDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { conditionalFieldsDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('conditional', conditionalFieldsDecorator(
   (data) => data?.active === true,
@@ -476,7 +480,7 @@ builder.addDecorator('conditional', conditionalFieldsDecorator(
 Make all fields readonly:
 
 ```typescript
-import { readonlyDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { readonlyDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('readonly', readonlyDecorator)
 ```
@@ -486,7 +490,7 @@ builder.addDecorator('readonly', readonlyDecorator)
 Group fields into sections automatically:
 
 ```typescript
-import { groupFieldsDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { groupFieldsDecorator } from '@coreshop/studio-form/src/form-builder'
 
 builder.addDecorator('grouping', groupFieldsDecorator({
   'general': ['name', 'active'],
@@ -527,8 +531,8 @@ CoreBundle extends forms from other bundles:
 ```typescript
 // CoreBundle/country-form-extension.ts
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
-import type { FormBuilder } from '@coreshop/resource/src/entities/form-builder'
-import { addFieldDecorator } from '@coreshop/resource/src/entities/form-builder'
+import type { FormBuilder } from '@coreshop/studio-form/src/form-builder'
+import { addFieldDecorator } from '@coreshop/studio-form/src/form-builder'
 import type { CountryDetail } from '@coreshop/address/src/modules/countries/api'
 import { CurrencySelectField } from '@coreshop/currency/src/components/CurrencySelectField'
 
@@ -891,7 +895,7 @@ export const ExtensionModule: AbstractModule = {
 Decorators are pure functions - easy to test:
 
 ```typescript
-import { addFieldDecorator } from '@coreshop/resource/src/entities/form-builder'
+import { addFieldDecorator } from '@coreshop/studio-form/src/form-builder'
 
 describe('addFieldDecorator', () => {
   it('should add field at end by default', () => {

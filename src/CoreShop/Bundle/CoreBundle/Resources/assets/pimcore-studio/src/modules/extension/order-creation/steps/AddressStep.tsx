@@ -1,6 +1,9 @@
 /**
  * CoreShop CoreBundle - Address Step Component
  *
+ * Schema-driven address selection step.
+ * Uses coreshop_customer_address_choice widget to read from OrderCreation context.
+ *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
@@ -11,77 +14,40 @@
  */
 
 import React, { useState, useCallback } from 'react'
-import { Card, Form, Row, Col, Select, Typography, Space, Button } from 'antd'
+import { Card, Button, Typography, Spin, Space } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { useFormSchema, DynamicForm, sectionFilterDecorator } from '@coreshop/studio-form'
+import type { FormDecorator } from '@coreshop/studio-form'
 import { orderCreationApi } from '@coreshop/order/src/modules/order-creation/api'
 import type {
   OrderCreationStepConfig,
   OrderCreationState,
   OrderCreationStepProps,
-  AddressInfo
 } from '@coreshop/order/src/modules/order-creation/types'
 import { AddressCreationModal } from './AddressCreationModal'
 
-/**
- * Format address for display in select option
- */
-const formatAddress = (addr: AddressInfo): string => {
-  const parts: string[] = []
-
-  if (addr.firstname || addr.lastname) {
-    parts.push([addr.firstname, addr.lastname].filter(Boolean).join(' '))
-  }
-  if (addr.company) {
-    parts.push(addr.company)
-  }
-  if (addr.street) {
-    parts.push([addr.street, addr.number].filter(Boolean).join(' '))
-  }
-  if (addr.postcode || addr.city) {
-    parts.push([addr.postcode, addr.city].filter(Boolean).join(' '))
-  }
-  if (addr.countryName) {
-    parts.push(addr.countryName)
-  }
-
-  return parts.join(', ') || `Address #${addr.id}`
-}
+const twoColumnDecorator: FormDecorator = (config) => ({
+  ...config,
+  columns: 2,
+  fields: config.fields.map((f) => ({ ...f, span: 12 })),
+})
 
 const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatch, triggerPreview }) => {
   const { t } = useTranslation()
   const messageApi = useMessage()
   const [createModalOpen, setCreateModalOpen] = useState(false)
 
-  // Get addresses from customer details
-  const addresses = state.customerDetails?.addresses || []
-
-  const addressOptions = addresses.map((addr) => ({
-    value: addr.id,
-    label: formatAddress(addr)
-  }))
-
-  const handleChange = (field: string, value: number | null): void => {
-    dispatch({ type: 'UPDATE_FORM_DATA', payload: { [field]: value } })
-    triggerPreview()
-  }
-
-  const handleCopyShippingToInvoice = (): void => {
-    if (state.formData.shippingAddress) {
-      dispatch({
-        type: 'UPDATE_FORM_DATA',
-        payload: { invoiceAddress: state.formData.shippingAddress }
-      })
-      triggerPreview()
-    }
-  }
+  const { builder, loading } = useFormSchema('coreshop_cart_creation', [
+    { name: 'section-filter', decorator: sectionFilterDecorator('address') },
+    { name: 'two-columns', decorator: twoColumnDecorator },
+  ])
 
   const handleAddressCreated = useCallback(async (addressId: number) => {
     setCreateModalOpen(false)
 
-    // Reload customer details to get the new address in the list
     if (state.customerId) {
       try {
         const details = await orderCreationApi.getCustomerDetails(state.customerId)
@@ -96,104 +62,89 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
     )
   }, [state.customerId, dispatch, messageApi, t])
 
+  const handleCopyShippingToInvoice = (): void => {
+    if (state.formData.shippingAddress) {
+      dispatch({
+        type: 'UPDATE_FORM_DATA',
+        payload: { invoiceAddress: state.formData.shippingAddress },
+      })
+      triggerPreview()
+    }
+  }
+
+  if (loading || !builder) {
+    return (
+      <Card title={t('coreshop_order_creation_address', { defaultValue: 'Addresses' })} size="small">
+        <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
+          <Spin />
+        </div>
+      </Card>
+    )
+  }
+
+  const addresses = state.customerDetails?.addresses ?? []
+  const config = builder.build()
+
+  // Inject addresses into widget componentProps (widgets can't use React Context
+  // across module federation boundaries, so we pass data via props instead)
+  config.fields = config.fields.map(f => ({
+    ...f,
+    componentProps: { ...f.componentProps, addresses },
+  }))
+
   return (
     <Card
       title={t('coreshop_order_creation_address', { defaultValue: 'Addresses' })}
       size="small"
       extra={
-        state.customerId && (
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            size="small"
-            onClick={() => setCreateModalOpen(true)}
-          >
-            {t('coreshop_address_create', { defaultValue: 'Create Address' })}
-          </Button>
-        )
+        <Space>
+          {state.formData.shippingAddress && (
+            <Button
+              type="link"
+              size="small"
+              onClick={handleCopyShippingToInvoice}
+            >
+              {t('coreshop_copy_from_shipping', { defaultValue: 'Copy shipping to invoice' })}
+            </Button>
+          )}
+          {state.customerId && (
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              size="small"
+              onClick={() => setCreateModalOpen(true)}
+            >
+              {t('coreshop_address_create', { defaultValue: 'Create Address' })}
+            </Button>
+          )}
+        </Space>
       }
     >
-      <Row gutter={24}>
-        <Col span={12}>
-          <Form.Item
-            label={t('coreshop_address_shipping', { defaultValue: 'Shipping Address' })}
-          >
-            <Select
-              value={state.formData.shippingAddress ?? undefined}
-              onChange={(value) => handleChange('shippingAddress', value)}
-              options={addressOptions}
-              placeholder={t('coreshop_select_address', { defaultValue: 'Select Address' })}
-              allowClear
-              style={{ width: '100%' }}
-              showSearch
-              filterOption={(input, option) =>
-                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-              }
-            />
-          </Form.Item>
-          {state.preview?.address_shipping_formatted && (
-            <Typography.Paragraph
-              type="secondary"
-              style={{ fontSize: 12, marginTop: -8 }}
-            >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: state.preview.address_shipping_formatted
-                }}
-              />
-            </Typography.Paragraph>
-          )}
-        </Col>
-        <Col span={12}>
-          <Form.Item
-            label={
-              <Space>
-                {t('coreshop_address_invoice', { defaultValue: 'Invoice Address' })}
-                {state.formData.shippingAddress && (
-                  <Button
-                    type="link"
-                    size="small"
-                    onClick={handleCopyShippingToInvoice}
-                    style={{ padding: 0 }}
-                  >
-                    {t('coreshop_copy_from_shipping', { defaultValue: 'Copy from shipping' })}
-                  </Button>
-                )}
-              </Space>
-            }
-          >
-            <Select
-              value={state.formData.invoiceAddress ?? undefined}
-              onChange={(value) => handleChange('invoiceAddress', value)}
-              options={addressOptions}
-              placeholder={t('coreshop_select_address', { defaultValue: 'Select Address' })}
-              allowClear
-              style={{ width: '100%' }}
-              showSearch
-              filterOption={(input, option) =>
-                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-              }
-            />
-          </Form.Item>
-          {state.preview?.address_billing_formatted && (
-            <Typography.Paragraph
-              type="secondary"
-              style={{ fontSize: 12, marginTop: -8 }}
-            >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: state.preview.address_billing_formatted
-                }}
-              />
-            </Typography.Paragraph>
-          )}
-        </Col>
-      </Row>
+      <DynamicForm
+        config={config}
+        data={state.formData}
+        onChange={(changedValues) => {
+          dispatch({ type: 'UPDATE_FORM_DATA', payload: changedValues })
+          triggerPreview()
+        }}
+      />
+
+      {state.preview?.address_shipping_formatted && (
+        <Typography.Paragraph type="secondary" style={{ fontSize: 12 }}>
+          <div dangerouslySetInnerHTML={{ __html: state.preview.address_shipping_formatted }} />
+        </Typography.Paragraph>
+      )}
+
+      {state.preview?.address_billing_formatted && (
+        <Typography.Paragraph type="secondary" style={{ fontSize: 12 }}>
+          <div dangerouslySetInnerHTML={{ __html: state.preview.address_billing_formatted }} />
+        </Typography.Paragraph>
+      )}
 
       {addresses.length === 0 && (
         <Typography.Text type="secondary">
           {t('coreshop_no_addresses_available', {
-            defaultValue: 'No addresses available for this customer.'
+            defaultValue: 'No addresses available for this customer.',
           })}
         </Typography.Text>
       )}
@@ -217,14 +168,12 @@ export const AddressStepConfig: OrderCreationStepConfig = {
   priority: 40,
   component: AddressStepComponent,
 
-  // Address step is always valid (addresses are optional for preview)
   isValid: () => true,
 
   getValues: (state: OrderCreationState) => ({
     shippingAddress: state.formData.shippingAddress,
-    invoiceAddress: state.formData.invoiceAddress
+    invoiceAddress: state.formData.invoiceAddress,
   }),
 
-  // Only show if products exist
-  isVisible: (state: OrderCreationState) => state.formData.items.length > 0
+  isVisible: (state: OrderCreationState) => state.formData.items.length > 0,
 }

@@ -118,7 +118,7 @@ services:
 
     CoreShop\Component\Core\Notification\Rule\Condition\Order\BackendUpdateChecker:
         tags:
-            - { name: coreshop.notification_rule.condition, type: backendUpdated, notification-type: order }
+            - { name: coreshop.notification_rule.condition, type: backendUpdated, notification-type: order, form-type: CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType }
 
     #### PAYMENT
     coreshop.notification_rule.condition.payment.payment_state:
@@ -234,6 +234,11 @@ services:
             - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreOrderMailConfigurationType }
             - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreOrderMailConfigurationType }
             - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreOrderMailConfigurationType }
+
+    # Schema Enrichers
+    CoreShop\Bundle\CoreBundle\Form\Schema\NotificationMailActionSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
 
     # Listeners -> here the actual magic happens
     CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener:

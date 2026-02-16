@@ -1,0 +1,25 @@
+services:
+    _defaults:
+        public: true
+
+    # Schema Generator
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator:
+        arguments:
+            - '@form.factory'
+
+    # Block Prefix Registry (auto-populated by RegisterStudioFormTypesPass)
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry:
+        arguments:
+            $formRegistry: '@form.registry'
+            $formTypeClasses: []
+
+    # Rule Form Schema Collector
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector:
+        arguments:
+            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator'
+
+    # Controller
+    CoreShop\Bundle\StudioFormBundle\Controller\FormSchemaController:
+        arguments:
+            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator'
+            - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry'

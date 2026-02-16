@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\StudioBackend\DataAdapter;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension\ProductQuantityPriceRules;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\ArrayTransformerInterface;
@@ -27,6 +29,7 @@ use Pimcore\Bundle\StudioBackendBundle\DataObject\Data\SetterDataInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\UserInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final readonly class ProductQuantityPriceRulesAdapter implements SetterDataInterface, DataNormalizerInterface
@@ -34,6 +37,9 @@ final readonly class ProductQuantityPriceRulesAdapter implements SetterDataInter
     public function __construct(
         private ArrayTransformerInterface $serializer,
         private ParameterBagInterface $parameterBag,
+        private RuleFormSchemaCollector $schemaCollector,
+        #[Autowire(service: 'coreshop.form_registry.product_quantity_price_rules.conditions')]
+        private FormTypeRegistryInterface $conditionFormRegistry,
     ) {
     }
 
@@ -61,6 +67,8 @@ final readonly class ProductQuantityPriceRulesAdapter implements SetterDataInter
         $result = [
             'conditions' => $this->getConfigConditions(),
             'actions' => $this->getConfigActions(),
+            'conditionSchemaByType' => $this->getConditionSchemaByType(),
+            'actionSchemaByType' => [],
             'rules' => [],
             'stores' => [
                 'calculationBehaviourTypes' => $calculationBehaviourTypes,
@@ -138,5 +146,16 @@ final readonly class ProductQuantityPriceRulesAdapter implements SetterDataInter
         $conditions = $this->parameterBag->get('coreshop.product_quantity_price_rules.conditions');
 
         return array_keys($conditions);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getConditionSchemaByType(): array
+    {
+        return $this->schemaCollector->collectSchemasWithTypeMap(
+            $this->conditionFormRegistry,
+            $this->getConfigConditions(),
+        )['schemaByType'];
     }
 }

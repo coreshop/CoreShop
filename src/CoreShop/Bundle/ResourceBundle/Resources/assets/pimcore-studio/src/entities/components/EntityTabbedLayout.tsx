@@ -9,6 +9,28 @@ import { LocalizationProvider, useLocalization } from './localization/Localizati
 import { Select, Skeleton } from 'antd'
 import { useEntityTabbedLayoutStyles } from './entity-tabbed-layout.styles'
 
+/** Deep-merge a draft into existing data, handling nested objects like translations. */
+function deepMergeDraft<T extends Record<string, any>>(existing: T, draft: Partial<T>): T {
+  const result = { ...existing }
+  for (const key of Object.keys(draft) as Array<keyof T>) {
+    const existingVal = existing[key]
+    const draftVal = draft[key]
+    if (
+      draftVal !== null &&
+      typeof draftVal === 'object' &&
+      !Array.isArray(draftVal) &&
+      existingVal !== null &&
+      typeof existingVal === 'object' &&
+      !Array.isArray(existingVal)
+    ) {
+      result[key] = deepMergeDraft(existingVal as any, draftVal as any)
+    } else {
+      result[key] = draftVal as any
+    }
+  }
+  return result
+}
+
 export interface LeftPaneContext {
   items: EntityListItem[]
   loading: boolean
@@ -115,7 +137,7 @@ export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, g
             onChange={ (key) => setActiveKey(key) }
             onClose={ (key) => onHandleClose(key as string) }
           />
-          <Content className='detail-tabs__content'>
+          <Content className={`detail-tabs__content ${styles.detailContent}`}>
             {activeTab !== undefined && (
               activeTab.loading ? (
                 <div className={ styles.contentPadding }>
@@ -126,16 +148,14 @@ export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, g
                   <RenderWithLocale
                     render={ (ctx) => renderDetail(activeTab.data, (draft) => {
                       if (activeTab) {
-                        updateTab(activeTab.id, { data: { ...(activeTab.data as any), ...draft } })
-                        updateTab(activeTab.id, { dirty: true })
+                        updateTab(activeTab.id, (tab) => ({ data: deepMergeDraft(tab.data as any, draft), dirty: true }))
                       }
                     }, ctx) }
                   />
                 ) : (
                   renderDetail(activeTab.data, (draft) => {
                     if (activeTab) {
-                      updateTab(activeTab.id, { data: { ...(activeTab.data as any), ...draft } })
-                      updateTab(activeTab.id, { dirty: true })
+                      updateTab(activeTab.id, (tab) => ({ data: deepMergeDraft(tab.data as any, draft), dirty: true }))
                     }
                   })
                 )
