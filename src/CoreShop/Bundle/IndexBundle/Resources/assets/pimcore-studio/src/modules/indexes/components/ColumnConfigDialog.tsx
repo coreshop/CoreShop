@@ -12,12 +12,11 @@
 
 import React from 'react'
 import { Modal, Form, Input, Select, Tabs, Collapse } from 'antd'
-import { container } from '@pimcore/studio-ui-bundle'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { IndexColumn, IndexConfig } from '../api'
-import type { GetterConfiguratorRegistry, InterpreterConfiguratorRegistry } from '../registry'
-import { serviceIds } from '../service-ids'
-import { DefaultGetterConfigurator, DefaultInterpreterConfigurator } from '../configurators'
+import { NESTED_INTERPRETER_TYPES, ITERATOR_INTERPRETER_TYPE } from '../configurators'
+import { InterpreterConfigRenderer } from '../configurators/InterpreterConfigRenderer'
 import { getErrorMessage } from '@coreshop/resource/src/entities'
 
 interface ColumnConfigDialogProps {
@@ -87,7 +86,6 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
 
   const handleGetterChange = (value: string) => {
     setSelectedGetter(value)
-    // Reset getter config when changing getter type
     if (!column?.getter || column.getter !== value) {
       setGetterConfig({})
     }
@@ -95,31 +93,18 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
 
   const handleInterpreterChange = (value: string) => {
     setSelectedInterpreter(value)
-    // Reset interpreter config when changing interpreter type
     if (!column?.interpreter || column.interpreter !== value) {
       setInterpreterConfig({})
     }
   }
 
-  // Get configurator registries
-  const getterConfiguratorRegistry = React.useMemo(
-    () => container.get<GetterConfiguratorRegistry>(serviceIds.getterConfiguratorRegistry),
-    []
+  // Resolve block prefixes from config
+  const getterBlockPrefix = selectedGetter ? config.getters.find(g => g.type === selectedGetter)?.blockPrefix : undefined
+  const interpreterBlockPrefix = selectedInterpreter ? config.interpreters.find(i => i.type === selectedInterpreter)?.blockPrefix : undefined
+  const isCustomInterpreter = selectedInterpreter && (
+    NESTED_INTERPRETER_TYPES.includes(selectedInterpreter) ||
+    selectedInterpreter === ITERATOR_INTERPRETER_TYPE
   )
-
-  const interpreterConfiguratorRegistry = React.useMemo(
-    () => container.get<InterpreterConfiguratorRegistry>(serviceIds.interpreterConfiguratorRegistry),
-    []
-  )
-
-  // Get configurator components
-  const GetterConfiguratorComponent = selectedGetter
-    ? (getterConfiguratorRegistry.get(selectedGetter)?.component ?? DefaultGetterConfigurator)
-    : null
-
-  const InterpreterConfiguratorComponent = selectedInterpreter
-    ? (interpreterConfiguratorRegistry.get(selectedInterpreter)?.component ?? DefaultInterpreterConfigurator)
-    : null
 
   // Get field types for the selected worker
   const fieldTypeOptions = workerType && config.fieldTypes[workerType]
@@ -221,11 +206,12 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
                             />
                           </Form.Item>
 
-                          {GetterConfiguratorComponent && (
+                          {selectedGetter && getterBlockPrefix && (
                             <div style={{ marginTop: 16, padding: 16, background: '#fafafa', borderRadius: 4 }}>
                               <h4 style={{ marginTop: 0, marginBottom: 16 }}>Getter Parameters</h4>
-                              <GetterConfiguratorComponent
-                                config={getterConfig}
+                              <SchemaForm
+                                blockPrefix={getterBlockPrefix}
+                                data={getterConfig}
                                 onChange={setGetterConfig}
                               />
                             </div>
@@ -252,12 +238,25 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
                             />
                           </Form.Item>
 
-                          {InterpreterConfiguratorComponent && (
+                          {selectedInterpreter && interpreterBlockPrefix && (
                             <div style={{ marginTop: 16, padding: 16, background: '#fafafa', borderRadius: 4 }}>
                               <h4 style={{ marginTop: 0, marginBottom: 16 }}>Interpreter Parameters</h4>
-                              <InterpreterConfiguratorComponent
-                                config={interpreterConfig}
+                              <SchemaForm
+                                blockPrefix={interpreterBlockPrefix}
+                                data={interpreterConfig}
                                 onChange={setInterpreterConfig}
+                              />
+                            </div>
+                          )}
+
+                          {selectedInterpreter && isCustomInterpreter && (
+                            <div style={{ marginTop: 16, padding: 16, background: '#fafafa', borderRadius: 4 }}>
+                              <h4 style={{ marginTop: 0, marginBottom: 16 }}>Interpreter Parameters</h4>
+                              <InterpreterConfigRenderer
+                                type={selectedInterpreter}
+                                value={interpreterConfig}
+                                onChange={setInterpreterConfig}
+                                indexConfig={config}
                               />
                             </div>
                           )}

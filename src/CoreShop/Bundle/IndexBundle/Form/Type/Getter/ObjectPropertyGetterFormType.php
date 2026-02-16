@@ -15,14 +15,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\IndexBundle\Form\Type\Interpreter;
+namespace CoreShop\Bundle\IndexBundle\Form\Type\Getter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class ObjectPropertyInterpreterFormType extends AbstractType
+final class ObjectPropertyGetterFormType extends AbstractType
 {
     /**
      * @param string[] $validationGroups
@@ -54,6 +54,6 @@ final class ObjectPropertyInterpreterFormType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_index_interpreter_object_property';
+        return 'coreshop_index_getter_object_property';
     }
 }

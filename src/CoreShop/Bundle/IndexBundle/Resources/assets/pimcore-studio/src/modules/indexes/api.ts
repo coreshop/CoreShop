@@ -11,6 +11,7 @@
  */
 
 import { EntityApi } from '@coreshop/resource/src/entities/api'
+import { preSeedSchemaCache } from '@coreshop/studio-form'
 
 /**
  * Index Entity
@@ -47,12 +48,16 @@ export interface IndexColumn {
  */
 export interface IndexConfig {
   success: boolean
-  workers?: string[]
+  workers?: Array<{ type: string; name: string; blockPrefix?: string }>
   workerTypes?: string[] | Record<string, string>
   classes: Array<{ name: string }>
-  getters: Array<{ type: string; name: string }>
-  interpreters: Array<{ type: string; name: string; localized?: boolean; relation?: boolean }>
+  getters: Array<{ type: string; name: string; blockPrefix?: string }>
+  interpreters: Array<{ type: string; name: string; localized?: boolean; relation?: boolean; blockPrefix?: string }>
   fieldTypes: Record<string, Array<{ type: string; name: string }>>
+  schemas?: Record<string, any>
+  getterSchemaByType?: Record<string, string>
+  interpreterSchemaByType?: Record<string, string>
+  workerSchemaByType?: Record<string, string>
 }
 
 /**
@@ -118,7 +123,13 @@ export class IndexApi extends EntityApi<Index> {
       throw new Error('Failed to fetch index config')
     }
 
-    return await response.json()
+    const config: IndexConfig = await response.json()
+
+    if (config.schemas) {
+      preSeedSchemaCache(config.schemas)
+    }
+
+    return config
   }
 
   /**

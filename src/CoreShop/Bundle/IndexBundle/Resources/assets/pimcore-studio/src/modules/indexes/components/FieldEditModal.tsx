@@ -13,10 +13,10 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Form, Input, Select, Button, Tabs } from 'antd'
 import { createStyles } from 'antd-style'
-import { container } from '@pimcore/studio-ui-bundle'
+import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { IndexColumn, IndexConfig } from '../api'
-import type { GetterConfiguratorRegistry, InterpreterConfiguratorRegistry } from '../registry'
-import { serviceIds } from '../service-ids'
+import { NESTED_INTERPRETER_TYPES, ITERATOR_INTERPRETER_TYPE } from '../configurators'
+import { InterpreterConfigRenderer } from '../configurators/InterpreterConfigRenderer'
 
 const { TabPane } = Tabs
 
@@ -41,10 +41,6 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
   const [selectedInterpreter, setSelectedInterpreter] = useState<string | undefined>()
   const [getterConfig, setGetterConfig] = useState<Record<string, any>>({})
   const [interpreterConfig, setInterpreterConfig] = useState<Record<string, any>>({})
-
-  // Get registries from container
-  const getterConfiguratorRegistry = container.get<GetterConfiguratorRegistry>(serviceIds.getterConfiguratorRegistry)
-  const interpreterConfiguratorRegistry = container.get<InterpreterConfiguratorRegistry>(serviceIds.interpreterConfiguratorRegistry)
 
   useEffect(() => {
     if (field && open) {
@@ -124,6 +120,16 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
     { label: 'Datetime', value: 'DATETIME' }
   ]
 
+  // Resolve getter block prefix from config
+  const getterBlockPrefix = selectedGetter ? config?.getters?.find(g => g.type === selectedGetter)?.blockPrefix : undefined
+
+  // Check if interpreter needs custom rendering (nested/iterator) or SchemaForm
+  const interpreterBlockPrefix = selectedInterpreter ? config?.interpreters?.find(i => i.type === selectedInterpreter)?.blockPrefix : undefined
+  const isCustomInterpreter = selectedInterpreter && (
+    NESTED_INTERPRETER_TYPES.includes(selectedInterpreter) ||
+    selectedInterpreter === ITERATOR_INTERPRETER_TYPE
+  )
+
   return (
     <Modal
       open={open}
@@ -185,13 +191,14 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
                 />
               </Form.Item>
 
-              {/* Getter Configuration Fields - Dynamic from Registry */}
-              {selectedGetter && getterConfiguratorRegistry.has(selectedGetter) && (
+              {/* Getter Configuration Fields - SchemaForm driven */}
+              {selectedGetter && getterBlockPrefix && (
                 <div className={styles.configFields}>
-                  {getterConfiguratorRegistry.get(selectedGetter)?.component({
-                    value: getterConfig,
-                    onChange: handleGetterConfigChange
-                  })}
+                  <SchemaForm
+                    blockPrefix={getterBlockPrefix}
+                    data={getterConfig}
+                    onChange={handleGetterConfigChange}
+                  />
                 </div>
               )}
             </div>
@@ -211,14 +218,26 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
                 />
               </Form.Item>
 
-              {/* Interpreter Configuration Fields - Dynamic from Registry */}
-              {selectedInterpreter && interpreterConfiguratorRegistry.has(selectedInterpreter) && (
+              {/* Interpreter Configuration Fields - SchemaForm for simple types */}
+              {selectedInterpreter && interpreterBlockPrefix && (
                 <div className={styles.configFields}>
-                  {interpreterConfiguratorRegistry.get(selectedInterpreter)?.component({
-                    value: interpreterConfig,
-                    onChange: handleInterpreterConfigChange,
-                    indexConfig: config
-                  })}
+                  <SchemaForm
+                    blockPrefix={interpreterBlockPrefix}
+                    data={interpreterConfig}
+                    onChange={handleInterpreterConfigChange}
+                  />
+                </div>
+              )}
+
+              {/* Custom components for recursive interpreter types */}
+              {selectedInterpreter && isCustomInterpreter && (
+                <div className={styles.configFields}>
+                  <InterpreterConfigRenderer
+                    type={selectedInterpreter}
+                    value={interpreterConfig}
+                    onChange={handleInterpreterConfigChange}
+                    indexConfig={config}
+                  />
                 </div>
               )}
             </div>

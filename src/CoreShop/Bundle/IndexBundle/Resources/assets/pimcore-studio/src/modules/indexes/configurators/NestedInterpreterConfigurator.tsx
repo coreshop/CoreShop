@@ -13,10 +13,8 @@
 import React from 'react'
 import { Form, Select, Button, List, Card, Space, Typography } from 'antd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
-import { container } from '@pimcore/studio-ui-bundle'
-import type { ConfigComponentProps, InterpreterConfiguratorRegistry } from '../registry'
-import { serviceIds } from '../service-ids'
 import type { IndexConfig } from '../api'
+import { InterpreterConfigRenderer } from './InterpreterConfigRenderer'
 
 const { Text } = Typography
 
@@ -25,9 +23,11 @@ interface NestedInterpreterItem {
   interpreterConfig?: Record<string, any>
 }
 
-interface NestedInterpreterConfiguratorProps extends ConfigComponentProps {
+interface NestedInterpreterConfiguratorProps {
+  value?: Record<string, any>
+  onChange: (value: Record<string, any>) => void
   indexConfig?: IndexConfig
-  depth?: number // Track nesting depth for visual hierarchy
+  depth?: number
 }
 
 export const NestedInterpreterConfigurator: React.FC<NestedInterpreterConfiguratorProps> = ({
@@ -36,8 +36,6 @@ export const NestedInterpreterConfigurator: React.FC<NestedInterpreterConfigurat
   indexConfig,
   depth = 0
 }) => {
-  const interpreterRegistry = container.get<InterpreterConfiguratorRegistry>(serviceIds.interpreterConfiguratorRegistry)
-
   const interpreters: NestedInterpreterItem[] = value?.interpreters || []
 
   const interpreterOptions = indexConfig?.interpreters?.map(i => ({
@@ -124,19 +122,20 @@ export const NestedInterpreterConfigurator: React.FC<NestedInterpreterConfigurat
                     />
                   </Form.Item>
 
-                  {item.type && interpreterRegistry.has(item.type) && (
+                  {item.type && (
                     <div style={{
                       padding: 8,
                       background: 'var(--ant-color-bg-container)',
                       borderRadius: 4,
                       border: '1px solid var(--ant-color-border-secondary)'
                     }}>
-                      {interpreterRegistry.get(item.type)?.component({
-                        value: item.interpreterConfig,
-                        onChange: (interpreterConfig) => handleInterpreterConfigChange(index, interpreterConfig),
-                        indexConfig,
-                        depth: depth + 1
-                      })}
+                      <InterpreterConfigRenderer
+                        type={item.type}
+                        value={item.interpreterConfig || {}}
+                        onChange={(interpreterConfig) => handleInterpreterConfigChange(index, interpreterConfig)}
+                        indexConfig={indexConfig}
+                        depth={depth + 1}
+                      />
                     </div>
                   )}
                 </Space>

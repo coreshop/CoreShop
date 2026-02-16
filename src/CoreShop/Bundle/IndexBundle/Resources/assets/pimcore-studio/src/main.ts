@@ -23,20 +23,6 @@ import { serviceIds } from './modules/filters/service-ids'
 import { FilterFieldSelect, FilterFieldsMultiSelect, FilterValueSelect, FilterValueMultiSelect } from './modules/filters/widgets'
 import { FilterManager } from './modules/filters/FilterManager'
 import { IndexManager } from './modules/indexes/IndexManager'
-import { GetterConfiguratorRegistry, InterpreterConfiguratorRegistry, WorkerConfiguratorRegistry } from './modules/indexes/registry'
-import { serviceIds as indexServiceIds } from './modules/indexes/service-ids'
-import {
-  MysqlWorkerConfigurator,
-  OpenSearchWorkerConfigurator,
-  BrickGetterConfigurator,
-  FieldcollectionGetterConfigurator,
-  ClassificationStoreGetterConfigurator,
-  ObjectPropertyGetterConfigurator,
-  ExpressionInterpreterConfigurator,
-  ObjectPropertyInterpreterConfigurator,
-  NestedInterpreterConfigurator,
-  IteratorInterpreterConfigurator
-} from './modules/indexes/configurators'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-index',
@@ -81,36 +67,8 @@ const plugin: IAbstractPlugin = {
         preConditionRegistry.register('nested', NestedCondition)
         userConditionRegistry.register('nested', NestedCondition)
 
-        // Create and bind getter/interpreter/worker configurator registries for indices
-        container.bind(indexServiceIds.getterConfiguratorRegistry).to(GetterConfiguratorRegistry).inSingletonScope()
-        container.bind(indexServiceIds.interpreterConfiguratorRegistry).to(InterpreterConfiguratorRegistry).inSingletonScope()
-        container.bind(indexServiceIds.workerConfiguratorRegistry).to(WorkerConfiguratorRegistry).inSingletonScope()
-
-        // Get registries
-        const getterConfiguratorRegistry = container.get<GetterConfiguratorRegistry>(indexServiceIds.getterConfiguratorRegistry)
-        const interpreterConfiguratorRegistry = container.get<InterpreterConfiguratorRegistry>(indexServiceIds.interpreterConfiguratorRegistry)
-        const workerConfiguratorRegistry = container.get<WorkerConfiguratorRegistry>(indexServiceIds.workerConfiguratorRegistry)
-
-        // Register worker configurators
-        workerConfiguratorRegistry.register('mysql', MysqlWorkerConfigurator)
-        workerConfiguratorRegistry.register('opensearch', OpenSearchWorkerConfigurator)
-
-        // Register getter configurators (types must match backend service tags)
-        getterConfiguratorRegistry.register('brick', BrickGetterConfigurator)
-        getterConfiguratorRegistry.register('fieldcollection', FieldcollectionGetterConfigurator)
-        getterConfiguratorRegistry.register('classificationstore', ClassificationStoreGetterConfigurator)
-        getterConfiguratorRegistry.register('objectproperty', ObjectPropertyGetterConfigurator)
-
-        // Register interpreter configurators (types must match backend service tags)
-        interpreterConfiguratorRegistry.register('expression', ExpressionInterpreterConfigurator)
-        interpreterConfiguratorRegistry.register('objectProperty', ObjectPropertyInterpreterConfigurator)
-        interpreterConfiguratorRegistry.register('nested', NestedInterpreterConfigurator)
-        interpreterConfiguratorRegistry.register('nestedLocalized', NestedInterpreterConfigurator)
-        interpreterConfiguratorRegistry.register('nestedRelational', NestedInterpreterConfigurator)
-        interpreterConfiguratorRegistry.register('iterator', IteratorInterpreterConfigurator)
-
-        // Note: Default getter/interpreter configurators will be used automatically if no specific one is registered
-        // Specific configurators can be registered here or via extensions
+        // Getter, interpreter, and worker configurators are now handled by StudioFormBundle
+        // via SchemaForm with block prefixes provided by the backend /get-config endpoint
     },
 
     onStartup({ moduleSystem }) {

@@ -12,17 +12,17 @@
 
 import React from 'react'
 import { Form, Select, Space } from 'antd'
-import { container } from '@pimcore/studio-ui-bundle'
-import type { ConfigComponentProps, InterpreterConfiguratorRegistry } from '../registry'
-import { serviceIds } from '../service-ids'
 import type { IndexConfig } from '../api'
+import { InterpreterConfigRenderer } from './InterpreterConfigRenderer'
 
 interface IteratorInterpreterItem {
   type: string
   interpreterConfig?: Record<string, any>
 }
 
-interface IteratorInterpreterConfiguratorProps extends ConfigComponentProps {
+interface IteratorInterpreterConfiguratorProps {
+  value?: Record<string, any>
+  onChange: (value: Record<string, any>) => void
   indexConfig?: IndexConfig
   depth?: number
 }
@@ -33,8 +33,6 @@ export const IteratorInterpreterConfigurator: React.FC<IteratorInterpreterConfig
   indexConfig,
   depth = 0
 }) => {
-  const interpreterRegistry = container.get<InterpreterConfiguratorRegistry>(serviceIds.interpreterConfiguratorRegistry)
-
   const interpreter: IteratorInterpreterItem = value?.interpreter || { type: '', interpreterConfig: {} }
 
   const interpreterOptions = indexConfig?.interpreters?.map(i => ({
@@ -68,19 +66,20 @@ export const IteratorInterpreterConfigurator: React.FC<IteratorInterpreterConfig
         />
       </Form.Item>
 
-      {interpreter.type && interpreterRegistry.has(interpreter.type) && (
+      {interpreter.type && (
         <div style={{
           padding: 8,
           background: 'var(--ant-color-fill-quaternary)',
           borderRadius: 4,
           border: '1px solid var(--ant-color-border-secondary)'
         }}>
-          {interpreterRegistry.get(interpreter.type)?.component({
-            value: interpreter.interpreterConfig,
-            onChange: handleConfigChange,
-            indexConfig,
-            depth: depth + 1
-          })}
+          <InterpreterConfigRenderer
+            type={interpreter.type}
+            value={interpreter.interpreterConfig || {}}
+            onChange={handleConfigChange}
+            indexConfig={indexConfig}
+            depth={depth + 1}
+          />
         </div>
       )}
     </Space>

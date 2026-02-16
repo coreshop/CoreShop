@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
@@ -45,35 +47,58 @@ class IndexController extends ResourceController
         return $this->viewHandler->handle($typesObject);
     }
 
-    public function getConfigAction(): Response
-    {
+    public function getConfigAction(
+        RuleFormSchemaCollector $schemaCollector,
+        #[Autowire(service: 'coreshop.form_registry.index.getter')]
+        FormTypeRegistryInterface $getterFormTypeRegistry,
+        #[Autowire(service: 'coreshop.form_registry.index.interpreter')]
+        FormTypeRegistryInterface $interpreterFormTypeRegistry,
+        #[Autowire(service: 'coreshop.form_registry.index.worker')]
+        FormTypeRegistryInterface $workerFormTypeRegistry,
+    ): Response {
         $indexInterpreterRegistry = $this->container->get('coreshop.registry.index.interpreter');
-        $interpreters = $this->getInterpreterTypes();
-        $interpretersResult = [];
 
-        $getters = $this->getGetterTypes();
+        $getterTypes = $this->getGetterTypes();
+        $interpreterTypes = $this->getInterpreterTypes();
+        $workerTypes = $this->getWorkerTypes();
+
+        $getterSchemas = $schemaCollector->collectSchemasWithTypeMap($getterFormTypeRegistry, $getterTypes);
+        $interpreterSchemas = $schemaCollector->collectSchemasWithTypeMap($interpreterFormTypeRegistry, $interpreterTypes);
+        $workerSchemas = $schemaCollector->collectSchemasWithTypeMap($workerFormTypeRegistry, $workerTypes);
+
         $gettersResult = [];
 
-        foreach ($getters as $getter) {
-            $gettersResult[] = [
+        foreach ($getterTypes as $getter) {
+            $entry = [
                 'type' => $getter,
                 'name' => $getter,
             ];
+
+            if (isset($getterSchemas['schemaByType'][$getter])) {
+                $entry['blockPrefix'] = $getterSchemas['schemaByType'][$getter];
+            }
+
+            $gettersResult[] = $entry;
         }
 
-        foreach ($interpreters as $interpreter) {
+        $interpretersResult = [];
+
+        foreach ($interpreterTypes as $interpreter) {
             $class = $indexInterpreterRegistry->get($interpreter);
             $implements = class_implements($class) ?: [];
 
-            $localized = in_array(LocalizedInterpreterInterface::class, $implements, true);
-            $relation = in_array(RelationInterpreterInterface::class, $implements, true);
-
-            $interpretersResult[] = [
+            $entry = [
                 'type' => $interpreter,
                 'name' => $interpreter,
-                'localized' => $localized,
-                'relation' => $relation,
+                'localized' => in_array(LocalizedInterpreterInterface::class, $implements, true),
+                'relation' => in_array(RelationInterpreterInterface::class, $implements, true),
             ];
+
+            if (isset($interpreterSchemas['schemaByType'][$interpreter])) {
+                $entry['blockPrefix'] = $interpreterSchemas['schemaByType'][$interpreter];
+            }
+
+            $interpretersResult[] = $entry;
         }
 
         /**
@@ -110,6 +135,21 @@ class IndexController extends ResourceController
             }
         }
 
+        $workersResult = [];
+
+        foreach ($workerTypes as $workerType) {
+            $entry = [
+                'type' => $workerType,
+                'name' => $workerType,
+            ];
+
+            if (isset($workerSchemas['schemaByType'][$workerType])) {
+                $entry['blockPrefix'] = $workerSchemas['schemaByType'][$workerType];
+            }
+
+            $workersResult[] = $entry;
+        }
+
         return $this->viewHandler->handle(
             [
                 'success' => true,
@@ -117,7 +157,16 @@ class IndexController extends ResourceController
                 'getters' => $gettersResult,
                 'fieldTypes' => $fieldTypesResult,
                 'classes' => $availableClasses,
-                'workerTypes' => $this->getWorkerTypes(),
+                'workerTypes' => $workerTypes,
+                'workers' => $workersResult,
+                'schemas' => array_merge(
+                    $getterSchemas['schemas'],
+                    $interpreterSchemas['schemas'],
+                    $workerSchemas['schemas'],
+                ),
+                'getterSchemaByType' => $getterSchemas['schemaByType'],
+                'interpreterSchemaByType' => $interpreterSchemas['schemaByType'],
+                'workerSchemaByType' => $workerSchemas['schemaByType'],
             ],
         );
     }
