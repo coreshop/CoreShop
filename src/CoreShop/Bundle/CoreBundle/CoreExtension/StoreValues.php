@@ -448,9 +448,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                     //This means that we inherited store values and also changed something, thus we break the inheritance and
                     //give the product its own record
                     if (count($changeSet) > 0) {
-                        $productStoreValue = clone $productStoreValue;
-                        $productStoreValue->setProduct($object);
-                        $productStoreValue->setFieldName($this->getName());
+                        $newStoreValue = $this->getFactory()->createNew();
+                        $newStoreValue->setStore($productStoreValue->getStore());
+                        $newStoreValue->setPrice($productStoreValue->getPrice());
+                        $newStoreValue->setTaxRule($productStoreValue->getTaxRule());
+                        $newStoreValue->setProduct($object);
+                        $newStoreValue->setFieldName($this->getName());
+                        $productStoreValue = $newStoreValue;
                     }
                 } else {
                     $productStoreValue->setProduct($object);
@@ -669,7 +673,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             }
 
             if ($storeValuesEntity instanceof ProductStoreValuesInterface && $storeValuesEntity->getProduct() && $storeValuesEntity->getProduct()->getId() !== $object->getId()) {
-                $storeValuesEntity = clone $storeValuesEntity;
+                $storeValuesEntity = $this->getFactory()->createNew();
                 $storeValuesEntity->setProduct($object);
                 $storeValuesEntity->setFieldName($this->getName());
             }
