@@ -427,17 +427,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('widgetId', 'coreshop-store-store')
             ->setExtra('order', 100)
         ;
-
-        $menuItem
-            ->addChild('coreshop_ai_assistant')
-            ->setLabel('coreshop_ai_assistant')
-            ->setAttribute('iconCls', 'coreshop_ai_icon')
-            ->setAttribute('resource', 'coreshop.ai')
-            ->setAttribute('function', 'assistant')
-            ->setAttribute('widgetId', 'coreshop-ai-assistant')
-            ->setExtra('order', 105)
-        ;
-
+        
         $menuItem
             ->addChild('coreshop_messenger')
             ->setLabel('coreshop_messenger')
