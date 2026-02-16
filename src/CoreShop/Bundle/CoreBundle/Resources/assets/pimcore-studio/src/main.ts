@@ -20,12 +20,9 @@ import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studi
 import { CoreBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopStoreValues } from './dynamic-types'
 import { CoreBundleMenuModule } from './modules/menu'
-import { TaxRuleGroupExtensionModule } from './modules/extension/tax-rule-group'
-import { CarrierExtensionModule } from './modules/extension/carrier'
 import { RuleRegistryExtensionModule } from './modules/extension/rule-registry'
 import { SaleTabExtensionModule } from './modules/extension/sale-tab'
 import { OrderCreationExtensionModule } from './modules/extension/order-creation'
-import { NotificationRulesExtensionModule } from './modules/extension/notification-rules'
 import { ReportsModule } from './modules/reports'
 import { SettingsModule } from './modules/settings'
 import { AssignToNewCompanyPanel, AssignToExistingCompanyPanel } from './modules/customer-company-assignment'
@@ -78,13 +75,10 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(RuleRegistryExtensionModule)
         moduleSystem.registerModule(SaleTabExtensionModule)
         moduleSystem.registerModule(OrderCreationExtensionModule)
-        moduleSystem.registerModule(NotificationRulesExtensionModule)
 
         // Register other extension modules
         moduleSystem.registerModule(CoreBundleIconModule)
         moduleSystem.registerModule(CoreBundleMenuModule)
-        moduleSystem.registerModule(TaxRuleGroupExtensionModule)
-        moduleSystem.registerModule(CarrierExtensionModule)
         moduleSystem.registerModule(PimcoreRelationWidgetModule)
         moduleSystem.registerModule(ReportsModule)
         moduleSystem.registerModule(SettingsModule)

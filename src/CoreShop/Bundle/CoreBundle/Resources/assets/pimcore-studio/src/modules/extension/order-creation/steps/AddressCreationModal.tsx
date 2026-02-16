@@ -67,7 +67,7 @@ export const AddressCreationModal: React.FC<AddressCreationModalProps> = ({
         }
       }
 
-      const res = await fetch('/admin/coreshop/order/address/create', {
+      const res = await fetch('/pimcore-studio/api/coreshop/order/address/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

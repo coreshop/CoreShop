@@ -40,7 +40,7 @@ export const reportsApi = {
    */
   async getData(reportType: ReportType, params: ReportFilterParams): Promise<ReportResponse> {
     const queryString = buildParams({ ...params, report: reportType })
-    const response = await fetch(`/admin/coreshop/report/get-data?${queryString}`)
+    const response = await fetch(`/pimcore-studio/api/coreshop/report/get-data?${queryString}`)
 
     if (!response.ok) {
       throw new Error(`Failed to fetch report data: ${response.statusText}`)
@@ -54,7 +54,7 @@ export const reportsApi = {
    */
   getExportUrl(reportType: ReportType, params: ReportFilterParams): string {
     const queryString = buildParams({ ...params, report: reportType })
-    return `/admin/coreshop/report/export?${queryString}`
+    return `/pimcore-studio/api/coreshop/report/export?${queryString}`
   },
 
   /**

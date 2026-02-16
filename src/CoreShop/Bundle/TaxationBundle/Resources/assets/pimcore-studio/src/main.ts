@@ -20,8 +20,8 @@ import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studi
 import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
 import { TaxRateManager } from './modules/tax-rates/TaxRateManager'
 import { TaxRuleGroupManager } from './modules/tax-rule-groups/TaxRuleGroupManager'
-import { loadTaxRates, getTaxRateCache } from './dynamic-types/DynamicTypeObjectDataCoreShopTaxRate'
-import { loadTaxRuleGroups, getTaxRuleGroupCache } from './dynamic-types/DynamicTypeObjectDataCoreShopTaxRuleGroup'
+import { loadTaxRates, getTaxRateCache } from './components/TaxRateSelect'
+import { loadTaxRuleGroups, getTaxRuleGroupCache } from './components/TaxRuleGroupSelect'
 import {
     DynamicTypeObjectDataCoreShopTaxRate,
     DynamicTypeObjectDataCoreShopTaxRuleGroup

@@ -74,7 +74,7 @@ export const AboutModal: React.FC<AboutModalProps> = (props) => {
     if (props.open && !version) {
       const fetchVersion = async (): Promise<void> => {
         try {
-          const response = await fetch('/admin/coreshop/settings/get-settings')
+          const response = await fetch('/pimcore-studio/api/coreshop/settings/get-settings')
           const data: SettingsResponse = await response.json()
           setVersion(data.bundle.version)
         } catch (error) {

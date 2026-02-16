@@ -44,7 +44,7 @@ const loadGatewayConfig = async (): Promise<GatewayConfigResponse> => {
 
   loadPromise = (async () => {
     try {
-      const response = await fetch('/admin/coreshop/payment_providers/get-config', {
+      const response = await fetch('/pimcore-studio/api/coreshop/payment_providers/get-config', {
         credentials: 'same-origin'
       })
 

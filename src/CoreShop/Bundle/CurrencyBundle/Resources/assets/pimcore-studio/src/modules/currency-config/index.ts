@@ -38,7 +38,7 @@ const loadConfig = async (): Promise<CurrencyConfig> => {
 
   loadPromise = (async () => {
     try {
-      const response = await fetch('/admin/coreshop/currencies/get-config')
+      const response = await fetch('/pimcore-studio/api/coreshop/currencies/get-config')
       if (!response.ok) {
         console.warn('[CoreShop] Failed to load currency config, using defaults')
         cachedConfig = DEFAULT_CONFIG

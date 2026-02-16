@@ -13,3 +13,6 @@
 // Public API for external plugins
 export * from './modules/tax-rates'
 export * from './modules/tax-rule-groups'
+export { TaxRateSelect, loadTaxRates, getTaxRateCache, clearTaxRateCache } from './components/TaxRateSelect'
+export { TaxRateMultiSelectField } from './components/TaxRateMultiSelectField'
+export { TaxRuleGroupSelect, loadTaxRuleGroups, getTaxRuleGroupCache, clearTaxRuleGroupCache } from './components/TaxRuleGroupSelect'

@@ -6,15 +6,7 @@
  */
 
 import { DynamicTypeObjectDataCoreShopSelect } from '@coreshop/resource/src/dynamic-types/DynamicTypeObjectDataCoreShopSelect'
-import { createOptionsLoader } from '@coreshop/resource/src/utils/createOptionsLoader'
-import { taxRateApi } from '../modules/tax-rates/api'
-
-const { load: loadTaxRates, getCache: getTaxRateCache, clearCache: clearTaxRateCache } = createOptionsLoader(async () => {
-  const rows = await taxRateApi.list()
-  return (Array.isArray(rows) ? rows : [])
-    .map((r: any) => ({ value: r.id, label: r.name ?? String(r.id) }))
-    .filter((o: any) => o.value != null && o.label)
-})
+import { loadTaxRates, getTaxRateCache, clearTaxRateCache } from '../components/TaxRateSelect'
 
 export { loadTaxRates, getTaxRateCache, clearTaxRateCache }
 

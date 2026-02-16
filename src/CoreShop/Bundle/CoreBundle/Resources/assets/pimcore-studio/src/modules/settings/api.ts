@@ -30,7 +30,7 @@ interface SaveAllResponse {
  */
 export const settingsApi = {
   async getAll(): Promise<ConfigurationData> {
-    const response = await fetch('/admin/coreshop/configurations/get-all')
+    const response = await fetch('/pimcore-studio/api/coreshop/configurations/get-all')
 
     if (!response.ok) {
       throw new Error(`Failed to fetch configuration: ${response.statusText}`)
@@ -49,7 +49,7 @@ export const settingsApi = {
     const formData = new FormData()
     formData.append('values', JSON.stringify(values))
 
-    const response = await fetch('/admin/coreshop/configurations/save-all', {
+    const response = await fetch('/pimcore-studio/api/coreshop/configurations/save-all', {
       method: 'POST',
       body: formData
     })

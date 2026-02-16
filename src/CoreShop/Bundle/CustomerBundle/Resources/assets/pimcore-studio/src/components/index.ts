@@ -10,7 +10,3 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { CustomerMultiSelect } from './CustomerMultiSelect'
-export { CustomerMultiSelectField } from './CustomerMultiSelectField'
-export { CustomerGroupMultiSelect } from './CustomerGroupMultiSelect'
-export { CustomerGroupMultiSelectField } from './CustomerGroupMultiSelectField'
