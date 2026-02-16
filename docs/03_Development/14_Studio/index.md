@@ -41,7 +41,7 @@ export default plugin
 
 ### Module Federation
 
-CoreShop uses Webpack Module Federation to share code across bundles:
+CoreShop uses Module Federation to share code across bundles:
 
 ```typescript
 // Importing from other bundles
@@ -53,6 +53,7 @@ import { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
 **Key Bundles:**
 - `@coreshop/resource` - Base CRUD infrastructure
 - `@coreshop/rule` - Rule system (Actions, Conditions, Registries)
+- `@coreshop/studio-form` - Schema-driven form system
 - `@coreshop/core` - Shared components and utilities
 - `@coreshop/address` - Countries, States, Zones
 - `@coreshop/order` - Cart Price Rules, Orders
@@ -81,23 +82,53 @@ Most CRUD features follow the **EntityTabbedManager** pattern:
 
 ```
 EntityTabbedManager
-├── EntityListView (left panel - list of items)
-└── EntityDetailView (right panel - form for selected item)
+├── EntityList (left panel - tree view of items)
+└── EntityTabbedLayout (right panel - tabbed detail forms)
 ```
 
 **Example:**
 ```typescript
 import { EntityTabbedManager } from '@coreshop/resource'
-import { countryApi } from './api'
-import { CountryForm } from './CountryForm'
+import { taxRateApi } from './api'
 
-export const CountryManager = () => (
-  <EntityTabbedManager
-    api={countryApi}
-    detailComponent={CountryForm}
-  />
-)
+export const TaxRateManager: React.FC = () => {
+  const { t } = useTranslation()
+  const modal = useFormModal()
+
+  return (
+    <EntityTabbedManager<TaxRateDetail>
+      api={taxRateApi}
+      localizable
+      leftRootTitle={t('coreshop_tax_rate')}
+      getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
+      buildSavePayload={(data) => data}
+      onAdd={async () => await new Promise<number>((resolve) => {
+        modal.input({
+          title: t('coreshop_tax_rate'),
+          label: t('coreshop_name'),
+          onOk: async (value: string) => {
+            const res = await taxRateApi.add({ name: value })
+            resolve(res.data.id)
+          }
+        })
+      })}
+      renderDetail={(data, setData, ctx) => {
+        if (!data) return <div>Select an item...</div>
+        return (
+          <TaxRateForm
+            data={data}
+            onChange={(draft) => setData(draft)}
+            currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
+          />
+        )
+      }}
+    />
+  )
+}
 ```
+
+For grouped entities (e.g., Countries by Zone), use `GroupedEntityTabbedManager`.
 
 ### 2. Rule System Pattern
 
@@ -108,27 +139,44 @@ Rules (Cart Price Rules, Product Price Rules, etc.) use a **Registry Pattern**:
 const conditionRegistry = container.get<ConditionRegistry>(serviceIds.conditionRegistry)
 const actionRegistry = container.get<ActionRegistry>(serviceIds.actionRegistry)
 
-// Register components
-conditionRegistry.register('countries', CountriesCondition)
-actionRegistry.register('discount', DiscountAction)
+// Register hand-written components (only for special cases)
+conditionRegistry.register('nested', NestedCondition)
+
+// Schema-based components are registered at runtime from backend config
+registerSchemaComponentsFromConfig(conditionRegistry, actionRegistry, config)
 ```
 
 **Key Components:**
-- `RuleManager` - Main rule management UI
-- `RuleForm` - Form with Conditions and Actions panels
+- `RuleForm` - Form with Settings, Conditions, and Actions tabs
 - `ConditionsPanel` - Manages rule conditions
 - `ActionsPanel` - Manages rule actions
 
-### 3. API Layer
+### 3. Extension System
+
+CoreShop provides 7 extension types for customizing entities without modifying core code. All imported from `@coreshop/resource/src/entities`:
+
+| Type | Service ID | Purpose |
+|------|-----------|---------|
+| Form Extensions | `entityFormExtensionsServiceId` | Add fields to entity forms |
+| Table Column Extensions | `entityTableColumnExtensionsServiceId` | Add columns to nested tables |
+| Save Decorators | `entitySaveDecoratorsServiceId` | Transform save payloads |
+| Tab Extensions | `entityTabExtensionsServiceId` | Add tabs to entity detail views |
+| Action Extensions | `entityActionExtensionsServiceId` | Add toolbar/context-menu/footer buttons |
+| Validation Extensions | `entityValidationExtensionsServiceId` | Custom validation before save |
+| Lifecycle Hooks | `entityLifecycleHooksServiceId` | beforeLoad/afterLoad/beforeSave/afterSave hooks |
+
+**Slot naming:** `{bundle}.{resource}.{component}` (e.g., `coreshop.address.country.form`)
+
+Register extensions in AbstractModule's `onInit()`, then register module in bundle's `main.ts` via `onStartup({ moduleSystem })`.
+
+### 4. API Layer
 
 All entities use the **EntityApi** base class:
 
 ```typescript
 import { EntityApi } from '@coreshop/resource/src/entities'
 
-export class CountryApi extends EntityApi<Country> {}
-
-export const countryApi = new CountryApi({
+export const countryApi = new EntityApi<CountryDetail>({
   basePath: '/pimcore-studio/api',
   resourcePath: '/coreshop/countries'
 })
@@ -141,25 +189,28 @@ export const countryApi = new CountryApi({
 - `save(data)` - Update entity
 - `delete(id)` - Delete entity
 
-### 4. Hooks and Utilities
+### 5. Hooks and Utilities
 
 **useEntitySelect** - For entity selection dropdowns:
 ```typescript
 import { useEntitySelect } from '@coreshop/resource'
 import { countryApi } from '@coreshop/address/src/modules/countries/api'
 
-const [options, value, handleChange, loading] = useEntitySelect(countryApi, selectedIds)
+const [options, value, handleChange, loading] = useEntitySelect(
+  countryApi,
+  selectedIds,
+  'name'  // optional: label key (default: 'name')
+)
 ```
 
 This hook automatically:
 - Loads all available entities
-- Loads missing entities (for saved selections)
-- Prevents duplicates
+- Normalizes IDs (string to number)
 - Provides loading state
 
 ## Bundle Independence
 
-**⚠️ CRITICAL: NO BUNDLE HAS A DEPENDENCY TO COREBUNDLE!**
+**No bundle has a dependency to CoreBundle!**
 
 Individual bundles (ProductBundle, OrderBundle, etc.) MUST NOT import from CoreBundle. Instead:
 
@@ -167,12 +218,11 @@ Individual bundles (ProductBundle, OrderBundle, etc.) MUST NOT import from CoreB
 - CoreBundle acts as a **glue layer** that registers shared components into bundle-specific registries
 - Use Module Federation aliases for cross-bundle imports
 
-**Example:**
 ```typescript
-// ❌ WRONG - ProductBundle importing from CoreBundle
+// WRONG - ProductBundle importing from CoreBundle
 import { SomeComponent } from '@coreshop/core/...'
 
-// ✅ CORRECT - Import from appropriate bundle
+// CORRECT - Import from appropriate bundle
 import { SomeComponent } from '@coreshop/rule/src/rules'
 ```
 
@@ -190,7 +240,7 @@ src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/
 │   │   │   └── types.ts                 # TypeScript interfaces
 │   │   └── icon-library/
 │   │       └── index.ts                 # Icon definitions
-│   └── components/                      # Reusable components
+│   └── dynamic-types/                   # Pimcore Data Object field types
 ├── package.json
 ├── tsconfig.json
 └── rsbuild.config.ts                    # Build configuration
@@ -231,78 +281,40 @@ export default plugin
 ### 2. Create an Entity Manager
 
 ```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/your-feature/YourFeatureManager.tsx
+import { EntityTabbedManager, EntityApi } from '@coreshop/resource'
 
-import React from 'react'
-import { EntityTabbedManager } from '@coreshop/resource'
-import { yourFeatureApi } from './api'
-import { YourFeatureForm } from './YourFeatureForm'
+const yourFeatureApi = new EntityApi<YourFeature>({
+  basePath: '/pimcore-studio/api',
+  resourcePath: '/coreshop/your-features'
+})
 
 export const YourFeatureManager: React.FC = () => {
+  const modal = useFormModal()
+
   return (
-    <EntityTabbedManager
+    <EntityTabbedManager<YourFeature>
       api={yourFeatureApi}
-      detailComponent={YourFeatureForm}
-      listColumns={[
-        { key: 'name', title: 'Name', dataIndex: 'name' },
-        { key: 'active', title: 'Active', dataIndex: 'active' }
-      ]}
+      buildSavePayload={(data) => data}
+      onAdd={async () => await new Promise<number>((resolve) => {
+        modal.input({
+          title: 'Add Feature',
+          label: 'Name',
+          onOk: async (value: string) => {
+            const res = await yourFeatureApi.add({ name: value })
+            resolve(res.data.id)
+          }
+        })
+      })}
+      renderDetail={(data, setData) => {
+        if (!data) return <div>Select an item...</div>
+        return <YourFeatureForm data={data} onChange={setData} />
+      }}
     />
   )
 }
 ```
 
-### 3. Create an API Client
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/your-feature/api.ts
-
-import { EntityApi } from '@coreshop/resource/src/entities'
-import type { YourFeature } from './types'
-
-export class YourFeatureApi extends EntityApi<YourFeature> {}
-
-export const yourFeatureApi = new YourFeatureApi({
-  basePath: '/pimcore-studio/api',
-  resourcePath: '/coreshop/your-features'
-})
-```
-
-### 4. Create a Form Component
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/your-feature/YourFeatureForm.tsx
-
-import React from 'react'
-import { Form, Input, Switch } from 'antd'
-import type { EntityDetailComponentProps } from '@coreshop/resource'
-import type { YourFeature } from './types'
-
-export const YourFeatureForm: React.FC<EntityDetailComponentProps<YourFeature>> = ({
-  data,
-  onChange
-}) => {
-  return (
-    <Form layout="vertical">
-      <Form.Item label="Name" required>
-        <Input
-          value={data?.name || ''}
-          onChange={(e) => onChange({ ...data, name: e.target.value })}
-        />
-      </Form.Item>
-
-      <Form.Item label="Active">
-        <Switch
-          checked={data?.active || false}
-          onChange={(checked) => onChange({ ...data, active: checked })}
-        />
-      </Form.Item>
-    </Form>
-  )
-}
-```
-
-### 5. Build and Deploy
+### 3. Build and Deploy
 
 ```bash
 # Development mode (single bundle)
@@ -317,9 +329,9 @@ npm run build
 
 ## Next Steps
 
-- [Bundle Plugin System](01_Bundle_Plugin_System.md) - Deep dive into the plugin architecture
 - [Base Infrastructure](02_Base_Infrastructure/01_ResourceBundle.md) - ResourceBundle and RuleBundle details
-- [Components](03_Components/01_EntityTabbedManager.md) - Reusable component library
+- [FormBuilder](02_Base_Infrastructure/03_FormBuilder.md) - Decorator-based form builder
+- [StudioFormBundle](02_Base_Infrastructure/04_StudioFormBundle.md) - Schema-driven forms from PHP FormTypes
 - [Extending Rule Actions](../01_Extending_Guide/04_Extending_Rule_Actions.md) - Creating custom rule actions
 - [Extending Rule Conditions](../01_Extending_Guide/05_Extending_Rule_Conditions.md) - Creating custom rule conditions
 
@@ -330,19 +342,6 @@ npm run build
 - Always define interfaces for your data types
 - Use proper typing for component props
 - Leverage type inference where possible
-
-```typescript
-interface YourFeature {
-  id: number
-  name: string
-  active: boolean
-}
-
-interface YourFeatureFormProps {
-  data: YourFeature
-  onChange: (data: YourFeature) => void
-}
-```
 
 ### Component Structure
 
@@ -356,36 +355,7 @@ interface YourFeatureFormProps {
 - Implement proper dependency arrays in useEffect
 - Lazy load components when appropriate
 
-### Testing
-
-- Write unit tests for business logic
-- Use React Testing Library for component tests
-- Mock API calls in tests
-
 ## Common Patterns
-
-### Loading Data on Mount
-
-```typescript
-const [data, setData] = useState([])
-const [loading, setLoading] = useState(false)
-
-useEffect(() => {
-  const loadData = async () => {
-    setLoading(true)
-    try {
-      const result = await api.list()
-      setData(result)
-    } catch (error) {
-      console.error('Failed to load data:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  loadData()
-}, [])
-```
 
 ### Form Handling
 

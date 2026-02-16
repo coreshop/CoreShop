@@ -1,1 +1,2 @@
-export { CarrierMultiSelectField } from './components/CarrierMultiSelectField'
+export { CarrierSelect } from './components/CarrierSelect'
+export { loadCarriers, getCarrierCache, clearCarrierCache } from './components/CarrierSelect'

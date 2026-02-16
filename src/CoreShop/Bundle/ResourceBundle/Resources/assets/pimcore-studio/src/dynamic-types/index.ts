@@ -12,3 +12,5 @@
 
 export { DynamicTypeObjectDataCoreShopRelation } from './DynamicTypeObjectDataCoreShopRelation'
 export { DynamicTypeObjectDataCoreShopRelations } from './DynamicTypeObjectDataCoreShopRelations'
+export { DynamicTypeObjectDataCoreShopSelect } from './DynamicTypeObjectDataCoreShopSelect'
+export { DynamicTypeObjectDataCoreShopMultiSelect } from './DynamicTypeObjectDataCoreShopMultiSelect'

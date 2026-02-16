@@ -11,70 +11,23 @@
  */
 
 import React from 'react'
-import { Select, type SelectProps } from 'antd'
+import type { SelectProps } from 'antd'
 import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
+import { createOptionsLoader } from '@coreshop/resource/src/utils/createOptionsLoader'
+import { EntitySelect } from '@coreshop/resource/src/components/EntitySelect'
 import { taxRuleGroupApi } from '@coreshop/taxation/src/modules/tax-rule-groups/api'
 
-// Module-level cache to avoid multiple API calls
-let cachedOptions: Array<{ value: number, label: string }> | null = null
-let loadPromise: Promise<Array<{ value: number, label: string }>> | null = null
+const { load: loadTaxRuleGroups, getCache: getTaxRuleGroupCache, clearCache: clearTaxRuleGroupCache } = createOptionsLoader(async () => {
+  const groups = await taxRuleGroupApi.list()
+  return groups.map(group => ({
+    value: group.id!,
+    label: group.name ?? `#${group.id}`
+  }))
+})
 
-const loadTaxRuleGroups = async (): Promise<Array<{ value: number, label: string }>> => {
-  // Return cached data if available
-  if (cachedOptions) {
-    return cachedOptions
-  }
-
-  // If already loading, return the existing promise
-  if (loadPromise) {
-    return loadPromise
-  }
-
-  // Start new load
-  loadPromise = (async () => {
-    try {
-      const groups = await taxRuleGroupApi.list()
-      const result = groups.map(group => ({
-        value: group.id!,
-        label: group.name ?? `#${group.id}`
-      }))
-      cachedOptions = result
-      return result
-    } catch (err) {
-      console.error('Failed to load tax rule groups:', err)
-      throw err
-    } finally {
-      loadPromise = null
-    }
-  })()
-
-  return loadPromise
-}
-
-// Export function to clear cache if needed
-export const clearTaxRuleGroupCache = () => {
-  cachedOptions = null
-  loadPromise = null
-}
+export { clearTaxRuleGroupCache }
 
 export const TaxRuleGroupSelect: React.FC<SelectProps> = (props) => {
-  const [options, setOptions] = React.useState<Array<{ value: number, label: string }>>(cachedOptions || [])
-  const [loading, setLoading] = React.useState(!cachedOptions)
-
-  React.useEffect(() => {
-    void (async () => {
-      if (!cachedOptions) {
-        setLoading(true)
-      }
-      try {
-        const opts = await loadTaxRuleGroups()
-        setOptions(opts)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
-
   return (
     <DroppableEntity
       accept='coreshop:tax_rule_group'
@@ -86,10 +39,10 @@ export const TaxRuleGroupSelect: React.FC<SelectProps> = (props) => {
         }
       }}
     >
-      <Select
+      <EntitySelect
         {...props}
-        loading={loading}
-        options={options}
+        loadOptions={loadTaxRuleGroups}
+        getCachedOptions={getTaxRuleGroupCache}
       />
     </DroppableEntity>
   )

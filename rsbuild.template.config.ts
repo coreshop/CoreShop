@@ -110,7 +110,8 @@ export default defineConfig({
     },
     decorators: {
       version: 'legacy'
-    }
+    },
+    tsconfigPath: path.resolve(__dirname, 'tsconfig.studio.json')
   },
   resolve: {
     alias: {
@@ -131,6 +132,7 @@ export default defineConfig({
       '@coreshop/store/src': path.resolve(__dirname, 'src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio/src'),
       '@coreshop/customer/src': path.resolve(__dirname, 'src/CoreShop/Bundle/CustomerBundle/Resources/assets/pimcore-studio/src'),
       '@coreshop/core/src': path.resolve(__dirname, 'src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src'),
+      '@coreshop/studio-form/src': path.resolve(__dirname, 'src/CoreShop/Bundle/StudioFormBundle/Resources/assets/pimcore-studio/src'),
       // Main entry aliases - use index.ts for library exports (matches package.json "main")
       // main.ts is for Pimcore plugin entry, index.ts is for library exports
       '@coreshop/pimcore': path.resolve(__dirname, 'src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio/src/main.ts'),
@@ -145,7 +147,8 @@ export default defineConfig({
       '@coreshop/taxation': path.resolve(__dirname, 'src/CoreShop/Bundle/TaxationBundle/Resources/assets/pimcore-studio/src/index.ts'),
       '@coreshop/store': path.resolve(__dirname, 'src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio/src/index.ts'),
       '@coreshop/customer': path.resolve(__dirname, 'src/CoreShop/Bundle/CustomerBundle/Resources/assets/pimcore-studio/src/index.ts'),
-      '@coreshop/core': path.resolve(__dirname, 'src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src/index.ts')
+      '@coreshop/core': path.resolve(__dirname, 'src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src/index.ts'),
+      '@coreshop/studio-form': path.resolve(__dirname, 'src/CoreShop/Bundle/StudioFormBundle/Resources/assets/pimcore-studio/src/index.ts')
     }
   },
   output: {
@@ -309,6 +312,12 @@ export default defineConfig({
           strictVersion: false
         },
         '@coreshop/core': {
+          singleton: true,
+          eager: false,
+          requiredVersion: false,
+          strictVersion: false
+        },
+        '@coreshop/studio-form': {
           singleton: true,
           eager: false,
           requiredVersion: false,

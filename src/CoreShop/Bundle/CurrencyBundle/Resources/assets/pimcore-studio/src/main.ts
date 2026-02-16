@@ -15,8 +15,12 @@ import { CurrencyBundleIconModule } from './modules/icon-library'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
+import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
 import { CurrencyManager } from './modules/currencies/CurrencyManager'
 import { ExchangeRateManager } from './modules/exchange-rates/ExchangeRateManager'
+import { loadCurrencies, getCurrencyCache } from './components/CurrencySelect'
 import {
     DynamicTypeObjectDataCoreShopCurrency,
     DynamicTypeObjectDataCoreShopCurrencyMultiselect,
@@ -38,6 +42,14 @@ const plugin: IAbstractPlugin = {
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrency())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrencyMultiselect())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopMoneyCurrency())
+
+        // Register StudioForm widget for CurrencyChoiceType
+        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+
+        formWidgetRegistry.register('coreshop_currency_choice', (field) => ({
+            component: EntityChoiceWidget,
+            props: { loadOptions: loadCurrencies, getCachedOptions: getCurrencyCache, droppableAccept: 'coreshop:currency', mode: field.multiple ? 'multiple' as const : undefined }
+        }))
     },
 
     onStartup({ moduleSystem }) {

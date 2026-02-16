@@ -13,77 +13,27 @@
  */
 
 import React from 'react'
-import { Select, type SelectProps } from 'antd'
+import type { SelectProps } from 'antd'
+import { createOptionsLoader } from '@coreshop/resource/src/utils/createOptionsLoader'
+import { EntitySelect } from '@coreshop/resource/src/components/EntitySelect'
 import { paymentProviderApi } from '../modules/payment-providers/api'
 
-// Module-level cache to avoid multiple API calls
-let cachedOptions: Array<{ value: number; label: string }> | null = null
-let loadPromise: Promise<Array<{ value: number; label: string }>> | null = null
+const { load: loadPaymentProviders, getCache: getPaymentProviderCache, clearCache: clearPaymentProviderCache } = createOptionsLoader(async () => {
+  const providers = await paymentProviderApi.list()
+  return providers.map(provider => ({
+    value: provider.id!,
+    label: provider.identifier ?? `#${provider.id}`
+  }))
+})
 
-const loadPaymentProviders = async (): Promise<Array<{ value: number; label: string }>> => {
-  // Return cached data if available
-  if (cachedOptions) {
-    return cachedOptions
-  }
-
-  // If already loading, return the existing promise (prevents race conditions)
-  if (loadPromise) {
-    return loadPromise
-  }
-
-  // Start new load
-  loadPromise = (async () => {
-    try {
-      const providers = await paymentProviderApi.list()
-      cachedOptions = providers.map(provider => ({
-        value: provider.id!,
-        label: provider.identifier ?? `#${provider.id}`
-      }))
-      return cachedOptions
-    } catch (err) {
-      console.error('Failed to load payment providers:', err)
-      throw err
-    } finally {
-      loadPromise = null
-    }
-  })()
-
-  return loadPromise
-}
-
-// Export function to clear cache if needed (e.g., after creating new provider)
-export const clearPaymentProviderCache = () => {
-  cachedOptions = null
-  loadPromise = null
-}
+export { loadPaymentProviders, getPaymentProviderCache, clearPaymentProviderCache }
 
 export const PaymentProviderSelect: React.FC<SelectProps> = (props) => {
-  const [options, setOptions] = React.useState<Array<{ value: number; label: string }>>(cachedOptions || [])
-  const [loading, setLoading] = React.useState(!cachedOptions)
-
-  React.useEffect(() => {
-    void (async () => {
-      if (!cachedOptions) {
-        setLoading(true)
-      }
-      try {
-        const opts = await loadPaymentProviders()
-        setOptions(opts)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
-
   return (
-    <Select
+    <EntitySelect
       {...props}
-      loading={loading}
-      options={options}
-      showSearch
-      filterOption={(input, option) =>
-        String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-      }
+      loadOptions={loadPaymentProviders}
+      getCachedOptions={getPaymentProviderCache}
     />
   )
 }

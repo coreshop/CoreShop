@@ -15,9 +15,15 @@ import {AddressBundleIconModule} from './modules/icon-library'
 import {serviceIds} from '@pimcore/studio-ui-bundle/app'
 import type {WidgetRegistry} from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
+import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
 import {ZoneManager} from './modules/zones/ZoneManager'
 import { CountryManager } from './modules/countries/CountryManager'
 import { StateManager } from './modules/states/StateManager'
+import { loadCountries, getCountryCache } from './components/CountrySelect'
+import { loadStates, getStateCache } from './components/StateSelect'
+import { loadZones, getZoneCache } from './components/ZoneMultiSelect'
 import {
     DynamicTypeObjectDataCoreShopCountry,
     DynamicTypeObjectDataCoreShopCountryMultiselect,
@@ -37,6 +43,24 @@ const plugin: IAbstractPlugin = {
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountryMultiselect())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopState())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopAddressIdentifier())
+
+        // Register StudioForm widgets for ChoiceTypes
+        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+
+        formWidgetRegistry.register('coreshop_country_choice', (field) => ({
+            component: EntityChoiceWidget,
+            props: { loadOptions: loadCountries, getCachedOptions: getCountryCache, droppableAccept: 'coreshop:country', mode: field.multiple ? 'multiple' as const : undefined }
+        }))
+
+        formWidgetRegistry.register('coreshop_state_choice', (field) => ({
+            component: EntityChoiceWidget,
+            props: { loadOptions: loadStates, getCachedOptions: getStateCache, droppableAccept: 'coreshop:state', mode: field.multiple ? 'multiple' as const : undefined }
+        }))
+
+        formWidgetRegistry.register('coreshop_zone_choice', (field) => ({
+            component: EntityChoiceWidget,
+            props: { loadOptions: loadZones, getCachedOptions: getZoneCache, droppableAccept: 'coreshop:zone', mode: field.multiple ? 'multiple' as const : undefined }
+        }))
     },
 
     onStartup({moduleSystem}) {

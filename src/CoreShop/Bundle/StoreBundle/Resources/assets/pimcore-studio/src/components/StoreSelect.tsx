@@ -1,80 +1,21 @@
-/**
- * CoreShop StoreBundle Studio Plugin
- *
- * This source file is available under the terms of the
- * CoreShop Commercial License (CCL)
- * Full copyright and license information is available in
- * LICENSE.md which is distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    CoreShop Commercial License (CCL)
- */
-
 import React from 'react'
-import { Select, type SelectProps } from 'antd'
-import { storeApi } from '../modules/stores/api'
+import type { SelectProps } from 'antd'
 import { DroppableEntity } from '@coreshop/resource/src/entities/components/dnd/DroppableEntity'
+import { createOptionsLoader } from '@coreshop/resource/src/utils/createOptionsLoader'
+import { EntitySelect } from '@coreshop/resource/src/components/EntitySelect'
+import { storeApi } from '../modules/stores/api'
 
-// Module-level cache to avoid multiple API calls
-let cachedOptions: Array<{ value: number, label: string }> | null = null
-let loadPromise: Promise<Array<{ value: number, label: string }>> | null = null
+const { load: loadStores, getCache: getStoreCache, clearCache: clearStoreCache } = createOptionsLoader(async () => {
+  const stores = await storeApi.list()
+  return stores.map(store => ({
+    value: store.id!,
+    label: store.name
+  }))
+})
 
-const loadStores = async (): Promise<Array<{ value: number, label: string }>> => {
-  // Return cached data if available
-  if (cachedOptions) {
-    return cachedOptions
-  }
-
-  // If already loading, return the existing promise
-  if (loadPromise) {
-    return loadPromise
-  }
-
-  // Start new load
-  loadPromise = (async () => {
-    try {
-      const stores = await storeApi.list()
-      const result = stores.map(store => ({
-        value: store.id!,
-        label: store.name
-      }))
-      cachedOptions = result
-      return result
-    } catch (err) {
-      console.error('Failed to load stores:', err)
-      throw err
-    } finally {
-      loadPromise = null
-    }
-  })()
-
-  return loadPromise
-}
-
-// Export function to clear cache if needed
-export const clearStoreCache = () => {
-  cachedOptions = null
-  loadPromise = null
-}
+export { loadStores, getStoreCache, clearStoreCache }
 
 export const StoreSelect: React.FC<SelectProps> = (props) => {
-  const [options, setOptions] = React.useState<Array<{ value: number, label: string }>>(cachedOptions || [])
-  const [loading, setLoading] = React.useState(!cachedOptions)
-
-  React.useEffect(() => {
-    void (async () => {
-      if (!cachedOptions) {
-        setLoading(true)
-      }
-      try {
-        const opts = await loadStores()
-        setOptions(opts)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
-
   return (
     <DroppableEntity
       accept="coreshop:store"
@@ -86,10 +27,10 @@ export const StoreSelect: React.FC<SelectProps> = (props) => {
         }
       }}
     >
-      <Select
+      <EntitySelect
         {...props}
-        loading={loading}
-        options={options}
+        loadOptions={loadStores}
+        getCachedOptions={getStoreCache}
       />
     </DroppableEntity>
   )

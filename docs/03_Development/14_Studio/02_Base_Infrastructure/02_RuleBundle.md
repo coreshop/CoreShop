@@ -21,18 +21,7 @@ For the full pattern with examples, see [StudioFormBundle Examples — Rule Engi
 3. A `RegisterFormTypesFromTagsPass` compiler pass collects the form types and registers them in the block prefix registry
 4. The `get-config` endpoint returns `conditionSchemaByType` / `actionSchemaByType` maps plus embedded `schemas`
 5. The frontend calls `registerSchemaComponentsFromConfig()` which uses `createSchemaCondition()` / `createSchemaAction()` to generate React wrappers around `SchemaForm`
-6. `preSeedSchemaCache()` is called with the embedded schemas to avoid per-type HTTP requests
-
-```typescript
-// This happens automatically in each RuleManager — no manual code needed:
-const config = await ruleApi.getConfig()
-
-if (config.schemas) {
-    preSeedSchemaCache(config.schemas)
-}
-
-registerSchemaComponentsFromConfig(conditionRegistry, actionRegistry, config)
-```
+6. `preSeedSchemaCache()` is called automatically inside `RuleApi.getConfig()` with the embedded schemas
 
 ### What Bundles Still Do in JS
 
@@ -68,7 +57,7 @@ In addition to all EntityApi methods (list, get, add, save, delete), RuleApi pro
 
 #### `getConfig()` - Get Rule Configuration
 
-Fetches available conditions, actions, and their schema mappings:
+Fetches available conditions, actions, and their schema mappings. **Automatically calls `preSeedSchemaCache()`** with the embedded schemas.
 
 ```typescript
 const config = await cartPriceRuleApi.getConfig()
@@ -79,9 +68,9 @@ const config = await cartPriceRuleApi.getConfig()
 interface RuleConfig {
   conditions: string[]                           // Available condition type keys
   actions: string[]                              // Available action type keys
-  conditionSchemaByType: Record<string, string>  // type → block prefix mapping
-  actionSchemaByType: Record<string, string>     // type → block prefix mapping
-  schemas: Record<string, FormSchema>            // Embedded schemas (for preSeedSchemaCache)
+  conditionSchemaByType: Record<string, string>  // type -> block prefix mapping
+  actionSchemaByType: Record<string, string>     // type -> block prefix mapping
+  schemas: Record<string, FormSchema>            // Embedded schemas (auto-seeded)
 }
 ```
 
@@ -193,38 +182,124 @@ actionRegistry.register('surchargePercent', createSchemaAction('coreshop_cart_pr
 
 ### RuleManager
 
-Main component for managing rules (list + detail view):
+A simple list+detail component built on `EntitySplitManager`. Loads config automatically.
 
 ```typescript
-import { RuleManager } from '@coreshop/rule/src/rules/components'
-
-export const CartPriceRuleManager = () => (
-  <RuleManager
-    api={cartPriceRuleApi}
-    conditionRegistryId={serviceIds.cartPriceRuleConditionRegistry}
-    actionRegistryId={serviceIds.cartPriceRuleActionRegistry}
-    settingsComponent={<SettingsForm />}
-  />
-)
+interface RuleManagerProps<T extends Rule> {
+  api: RuleApi<T>
+  renderForm: (rule: T, config: RuleConfig, onSave: (rule: T) => Promise<void>, onChange: (rule: T) => void) => React.ReactNode
+  createEmptyRule: () => T
+}
 ```
 
-`RuleManager` automatically calls `registerSchemaComponentsFromConfig()` when it loads the config, so schema-based components are available without any manual setup.
+**Note:** `RuleManager` does **not** auto-register schema components. You must call `registerSchemaComponentsFromConfig()` yourself in the `renderForm` callback or in a `useEffect`.
+
+### Recommended Pattern: EntityTabbedManager + RuleForm
+
+In practice, most rule managers use `EntityTabbedManager` from ResourceBundle (for tabbed detail views with dirty tracking) rather than `RuleManager`. Here's the actual pattern used:
+
+```typescript
+import { EntityTabbedManager } from '@coreshop/resource'
+import { RuleForm, registerSchemaComponentsFromConfig } from '@coreshop/rule/src/rules'
+import type { RuleConfig } from '@coreshop/rule/src/rules'
+
+export const ShippingRuleManager: React.FC = () => {
+  const { t } = useTranslation()
+  const messageApi = useMessage()
+  const modal = useFormModal()
+  const [config, setConfig] = React.useState<RuleConfig>({ conditions: [], actions: [] })
+
+  // Load config and register schema components on mount
+  React.useEffect(() => {
+    shippingRuleApi.getConfig()
+      .then((cfg) => {
+        const conditionRegistry = container.get<ConditionRegistry>(
+          coreshopShippingServiceIds.shippingRuleConditionRegistry
+        )
+        const actionRegistry = container.get<ActionRegistry>(
+          coreshopShippingServiceIds.shippingRuleActionRegistry
+        )
+        registerSchemaComponentsFromConfig(conditionRegistry, actionRegistry, cfg)
+        setConfig(cfg)
+      })
+      .catch(err => {
+        void messageApi.error(getErrorMessage(err, 'Failed to load config'))
+      })
+  }, [])
+
+  return (
+    <EntityTabbedManager<ShippingRuleDetail>
+      api={shippingRuleApi}
+      dragType='coreshop:shipping_rule'
+      leftRootTitle={t('coreshop_carriers_shipping_rule')}
+      getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
+      buildSavePayload={(data) => data}
+      onAdd={async () => await new Promise<number>((resolve) => {
+        modal.input({
+          title: t('coreshop_carriers_shipping_rule'),
+          label: t('coreshop_name'),
+          rule: { required: true, message: t('coreshop_name_required') },
+          onOk: async (nameValue: string) => {
+            const res = await shippingRuleApi.add({ name: nameValue })
+            resolve(res.data.id!)
+          }
+        })
+      })}
+      renderDetail={(data, setData, ctx) => {
+        if (!data) return <div>Select a shipping rule...</div>
+
+        return (
+          <RuleForm
+            rule={data}
+            config={config}
+            conditionRegistryId={coreshopShippingServiceIds.shippingRuleConditionRegistry}
+            actionRegistryId={coreshopShippingServiceIds.shippingRuleActionRegistry}
+            currentLocale={ctx?.currentLocale ?? 'en'}
+            locales={ctx?.locales}
+            settingsComponent={
+              <SettingsForm
+                rule={data}
+                onChange={setData}
+                currentLocale={ctx?.currentLocale ?? 'en'}
+                locales={ctx?.locales}
+              />
+            }
+            onChange={setData}
+            hideToolbar={true}
+          />
+        )
+      }}
+    />
+  )
+}
+```
 
 ### RuleForm
 
-Form component with conditions and actions panels:
+Form component with Settings, Conditions, and Actions tabs:
 
 ```typescript
-import { RuleForm } from '@coreshop/rule/src/rules/components'
+interface RuleFormProps {
+  rule: Rule
+  config: RuleConfig
+  settingsComponent: React.ReactNode
+  conditionRegistryId: symbol | string
+  actionRegistryId: symbol | string
+  currentLocale?: string
+  locales?: string[]
+  additionalTabs?: RuleFormTab[]
+  onSave?: (rule: Rule) => Promise<void>
+  onChange: (rule: Rule) => void
+  hideToolbar?: boolean        // Hide save button (when managed by EntityTabbedManager)
+}
 
-<RuleForm
-  rule={data}
-  config={config}
-  conditionRegistryId={serviceIds.conditionRegistry}
-  actionRegistryId={serviceIds.actionRegistry}
-  settingsComponent={<SettingsForm />}
-  onChange={setData}
-/>
+// Additional tabs (e.g., Voucher Codes for Cart Price Rules)
+interface RuleFormTab {
+  key: string
+  label: string
+  component: React.ReactNode
+  disabled?: boolean
+}
 ```
 
 ### ConditionsPanel / ActionsPanel
@@ -234,14 +309,20 @@ import { ConditionsPanel, ActionsPanel } from '@coreshop/rule/src/rules/componen
 
 <ConditionsPanel
   conditions={rule.conditions}
+  availableTypes={config.conditions}
   onChange={handleConditionsChange}
   registryId={serviceIds.conditionRegistry}
+  currentLocale={currentLocale}
+  locales={locales}
 />
 
 <ActionsPanel
   actions={rule.actions}
+  availableTypes={config.actions}
   onChange={handleActionsChange}
   registryId={serviceIds.actionRegistry}
+  currentLocale={currentLocale}
+  locales={locales}
 />
 ```
 
@@ -330,7 +411,7 @@ Use PHP FormTypes instead of writing React components. This:
 **Each rule type MUST have its own registries!**
 
 ```typescript
-// ✅ GOOD - Separate registries
+// Separate registries
 const productConditionRegistry = container.get(productServiceIds.conditionRegistry)
 const cartConditionRegistry = container.get(cartServiceIds.conditionRegistry)
 ```
@@ -339,14 +420,13 @@ const cartConditionRegistry = container.get(cartServiceIds.conditionRegistry)
 
 ```typescript
 onInit() {
-  // ✅ GOOD - Bind in onInit
   container.bind(serviceIds.registry).to(ConditionRegistry).inSingletonScope()
 }
 ```
 
-### 4. Use preSeedSchemaCache
+### 4. Schema Cache is Automatic
 
-Always pre-seed the schema cache from the `get-config` response to avoid N+1 HTTP requests.
+`RuleApi.getConfig()` automatically calls `preSeedSchemaCache()` with the embedded schemas. No manual call needed.
 
 ## Real-World Examples
 

@@ -447,13 +447,10 @@ OrderBundle/Resources/assets/pimcore-studio/src/
 │   │   │   ├── SettingsForm.tsx
 │   │   │   └── VoucherCodesPanel.tsx
 │   │   ├── conditions/
-│   │   │   ├── AmountCondition.tsx
-│   │   │   ├── VoucherCondition.tsx
-│   │   │   └── NotCombinableCondition.tsx
+│   │   │   └── index.ts                 # All conditions are schema-generated
 │   │   ├── actions/
-│   │   │   ├── SurchargeAmountAction.tsx
-│   │   │   ├── SurchargePercentAction.tsx
-│   │   │   └── CartItemAction.tsx
+│   │   │   ├── CartItemAction.tsx       # Hand-written (nested panels)
+│   │   │   └── index.ts
 │   │   └── cart-item/                   # Nested cart item rules
 │   │       ├── CartItemConditionItem.tsx
 │   │       ├── CartItemActionItem.tsx

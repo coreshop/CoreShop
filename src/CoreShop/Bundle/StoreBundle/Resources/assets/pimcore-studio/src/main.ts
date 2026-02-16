@@ -14,8 +14,12 @@ import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { widgetRegistryServiceId } from '@coreshop/studio-form'
+import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
+import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
 import { StoreBundleIconModule } from './modules/icon-library'
 import { StoreManager } from './modules/stores/StoreManager'
+import { loadStores, getStoreCache } from './components/StoreSelect'
 import {
     DynamicTypeObjectDataCoreShopStore,
     DynamicTypeObjectDataCoreShopStoreMultiselect
@@ -31,6 +35,14 @@ const plugin: IAbstractPlugin = {
 
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStore())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStoreMultiselect())
+
+        // Register StudioForm widget for StoreChoiceType
+        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+
+        formWidgetRegistry.register('coreshop_store_choice', (field) => ({
+            component: EntityChoiceWidget,
+            props: { loadOptions: loadStores, getCachedOptions: getStoreCache, droppableAccept: 'coreshop:store', mode: field.multiple ? 'multiple' as const : undefined }
+        }))
     },
 
     onStartup({ moduleSystem }) {

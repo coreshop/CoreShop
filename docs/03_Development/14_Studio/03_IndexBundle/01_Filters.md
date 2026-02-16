@@ -13,6 +13,12 @@ The Filter system in CoreShop Studio v2 consists of:
 
 ## Architecture
 
+### Schema-Driven Conditions
+
+Like all rule types in CoreShop, filter conditions are **schema-driven** — their forms are rendered automatically from PHP FormTypes. Only `NestedCondition` requires a hand-written React component (for recursive sub-condition rendering).
+
+All other condition types (range, select, multiselect, boolean, search) are auto-generated from their backend FormTypes via `registerFilterSchemaConditions`.
+
 ### Components Structure
 
 ```
@@ -29,12 +35,8 @@ IndexBundle/Resources/assets/pimcore-studio/src/modules/filters/
 │   └── EmptyCondition.tsx    # Placeholder for unimplemented types
 └── conditions/
     ├── ConditionRegistry.ts  # Registry for condition components
-    ├── RangeCondition.tsx    # Price/numeric range filter
-    ├── SelectCondition.tsx   # Single-select dropdown
-    ├── MultiselectCondition.tsx
-    ├── BooleanCondition.tsx  # Yes/No filter
-    ├── SearchCondition.tsx   # Full-text search
-    └── NestedCondition.tsx   # Nested condition groups
+    ├── NestedCondition.tsx   # Hand-written: recursive condition groups
+    └── index.ts              # Exports ConditionRegistry + NestedCondition
 ```
 
 ## API
@@ -91,6 +93,8 @@ interface FilterCondition {
 ```
 
 ## Condition Types
+
+All condition types below are schema-generated from PHP FormTypes. They don't have hand-written React components.
 
 ### 1. Range Condition
 
@@ -153,9 +157,9 @@ Full-text search across multiple fields.
 
 **Use Case:** Product name/description search
 
-### 6. Nested Condition
+### 6. Nested Condition (Hand-Written)
 
-Recursive container for grouping conditions.
+Recursive container for grouping conditions. This is the **only** hand-written React component because it recursively renders sub-conditions with the registry.
 
 **Configuration:**
 - `label`: Display label for the group
@@ -165,13 +169,12 @@ Recursive container for grouping conditions.
 
 ## Registering Filter Conditions
 
-Conditions are registered in `main.ts` using separate registries:
+Conditions are registered in `main.ts` using separate registries for pre-conditions and user-conditions:
 
 ```typescript
 import { container } from '@pimcore/studio-ui-bundle'
-import { ConditionRegistry } from './modules/filters/conditions'
+import { ConditionRegistry, NestedCondition } from './modules/filters/conditions'
 import { serviceIds } from './modules/filters/service-ids'
-import { RangeCondition } from './modules/filters/conditions'
 
 // Create and bind registries
 container.bind(serviceIds.preConditionRegistry).to(ConditionRegistry).inSingletonScope()
@@ -181,69 +184,73 @@ container.bind(serviceIds.userConditionRegistry).to(ConditionRegistry).inSinglet
 const preConditionRegistry = container.get<ConditionRegistry>(serviceIds.preConditionRegistry)
 const userConditionRegistry = container.get<ConditionRegistry>(serviceIds.userConditionRegistry)
 
-// Register conditions
-preConditionRegistry.register('range', RangeCondition)
-userConditionRegistry.register('range', RangeCondition)
+// Register the only hand-written condition
+preConditionRegistry.register('nested', NestedCondition)
+userConditionRegistry.register('nested', NestedCondition)
+
+// All other conditions (range, select, multiselect, boolean, search) are registered
+// at runtime via registerFilterSchemaConditions() when FilterManager loads the config
 ```
+
+## Custom Widgets
+
+IndexBundle provides custom widgets for filter-specific field selection:
+
+- `FilterFieldSelect` — select a single index field
+- `FilterFieldsMultiSelect` — select multiple index fields
+- `FilterValueSelect` — select a value from an index field
+- `FilterValueMultiSelect` — select multiple values from an index field
+
+These are registered in the StudioFormBundle WidgetRegistry and used by the schema-generated condition forms.
 
 ## Creating Custom Condition Types
 
-To create a custom condition type:
+### Schema-Driven (Preferred — No React Code)
 
-1. **Create the component:**
+Create a PHP FormType and register with the `form-type` tag:
 
-```typescript
-// MyCustomCondition.tsx
-import React from 'react'
-import { Form, Input } from 'antd'
-import type { ConditionProps } from '../types'
+```php
+<?php
 
-export const MyCustomCondition: React.FC<ConditionProps> = ({
-  data,
-  onChange,
-  indexId
-}) => {
-  return (
-    <Form layout="vertical">
-      <Form.Item label="Label">
-        <Input
-          value={data.label}
-          onChange={(e) => onChange({ label: e.target.value })}
-        />
-      </Form.Item>
+namespace App\Form\Type\Filter\Condition;
 
-      <Form.Item label="Custom Field">
-        <Input
-          value={data.configuration?.customValue}
-          onChange={(e) => onChange({
-            configuration: {
-              ...data.configuration,
-              customValue: e.target.value
-            }
-          })}
-        />
-      </Form.Item>
-    </Form>
-  )
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class CustomConditionType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('customValue', TextType::class, ['label' => 'Custom Value']);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'app_filter_condition_custom';
+    }
 }
 ```
 
-2. **Register the condition:**
+```yaml
+services:
+    app.filter.condition.custom:
+        class: App\Filter\Condition\CustomProcessor
+        tags:
+            - { name: coreshop.filter.condition_type, type: custom, form-type: App\Form\Type\Filter\Condition\CustomConditionType }
+```
+
+### Hand-Written (When Needed)
+
+For conditions needing custom UI (rare):
 
 ```typescript
 // In your bundle's main.ts
-import { MyCustomCondition } from './conditions/MyCustomCondition'
-
 const preConditionRegistry = container.get<ConditionRegistry>(serviceIds.preConditionRegistry)
 const userConditionRegistry = container.get<ConditionRegistry>(serviceIds.userConditionRegistry)
 
 preConditionRegistry.register('myCustomCondition', MyCustomCondition)
 userConditionRegistry.register('myCustomCondition', MyCustomCondition)
 ```
-
-3. **Register backend condition handler:**
-
-The backend must also register the condition processor. See ExtJS documentation for backend configuration.
 
 ## Widget Registration
 
@@ -276,8 +283,6 @@ $menuItem
 
 The MenuBundle automatically creates the widget ID from: `{resource}-{function}` = `coreshop-index-filter`
 
-Therefore, the frontend widget must be registered with the exact name `coreshop-index-filter` to match.
-
 ## Pre-Conditions vs User Conditions
 
 ### Pre-Conditions
@@ -300,26 +305,7 @@ Both use the same condition types and registry but serve different purposes in t
 4. **Pre-Select Values**: Use sparingly to guide users without restricting them
 5. **Nested Conditions**: Use for complex filter logic, but avoid excessive nesting
 6. **Quantity Units**: Set appropriate quantity units for measurements
-
-## Example: Creating a Product Filter
-
-1. **Create Filter**
-   - Name: "Product Catalog Filter"
-   - Index: Select your product index
-   - Results Per Page: 20
-   - Order Direction: desc
-   - Order Key: name
-
-2. **Add Pre-Conditions** (hidden backend filters)
-   - Boolean condition: `enabled = true`
-   - Select condition: `store = current_store`
-
-3. **Add User Conditions** (visible frontend filters)
-   - Range condition: Price (field: `price`, label: "Price")
-   - Multiselect condition: Manufacturers (field: `manufacturer`)
-   - Multiselect condition: Colors (field: `color`)
-   - Boolean condition: In Stock (field: `inStock`, label: "In Stock Only")
-   - Search condition: Product Search (fields: `['name', 'description']`)
+7. **Prefer schema-driven**: Use PHP FormTypes for new condition types
 
 ## Future Enhancements
 

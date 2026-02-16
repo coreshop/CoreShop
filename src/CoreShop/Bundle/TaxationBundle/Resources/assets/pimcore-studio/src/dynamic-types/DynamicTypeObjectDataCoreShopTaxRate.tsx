@@ -5,97 +5,21 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { Select } from 'antd'
-import {
-  DynamicTypeObjectDataAbstractSelect,
-  DynamicTypeFieldFilterMultiselect
-} from '@pimcore/studio-ui-bundle/modules/element'
+import { DynamicTypeObjectDataCoreShopSelect } from '@coreshop/resource/src/dynamic-types/DynamicTypeObjectDataCoreShopSelect'
+import { createOptionsLoader } from '@coreshop/resource/src/utils/createOptionsLoader'
 import { taxRateApi } from '../modules/tax-rates/api'
 
-type Option = { value: number, label: string }
+const { load: loadTaxRates, getCache: getTaxRateCache, clearCache: clearTaxRateCache } = createOptionsLoader(async () => {
+  const rows = await taxRateApi.list()
+  return (Array.isArray(rows) ? rows : [])
+    .map((r: any) => ({ value: r.id, label: r.name ?? String(r.id) }))
+    .filter((o: any) => o.value != null && o.label)
+})
 
-// Module-level cache
-let cachedOptions: Option[] | null = null
-let loadPromise: Promise<Option[]> | null = null
+export { loadTaxRates, getTaxRateCache, clearTaxRateCache }
 
-export const loadTaxRates = async (): Promise<Option[]> => {
-  if (cachedOptions) return cachedOptions
-  if (loadPromise) return loadPromise
-
-  loadPromise = (async () => {
-    try {
-      const rows = await taxRateApi.list()
-      const list = Array.isArray(rows) ? rows : []
-      cachedOptions = list
-        .map((r: any) => ({ value: r.id, label: r.name ?? String(r.id) }))
-        .filter((o: any) => o.value != null && o.label)
-      return cachedOptions
-    } catch (err) {
-      console.error('Failed to load tax rates:', err)
-      return []
-    } finally {
-      loadPromise = null
-    }
-  })()
-
-  return loadPromise
-}
-
-export const clearTaxRateCache = () => {
-  cachedOptions = null
-  loadPromise = null
-}
-
-const TaxRateSelectInner: React.FC<{
-  value?: number
-  onChange?: (value: number) => void
-  disabled?: boolean
-  style?: React.CSSProperties
-}> = ({ value, onChange, disabled, style }) => {
-  const [options, setOptions] = React.useState<Option[]>([])
-  const [loading, setLoading] = React.useState(true)
-
-  React.useEffect(() => {
-    void (async () => {
-      try {
-        const opts = await loadTaxRates()
-        setOptions(opts)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
-
-  return (
-    <Select
-      value={value}
-      onChange={onChange}
-      options={options}
-      loading={loading}
-      disabled={disabled}
-      style={style}
-      showSearch
-      optionFilterProp="label"
-      allowClear
-    />
-  )
-}
-
-export class DynamicTypeObjectDataCoreShopTaxRate extends DynamicTypeObjectDataAbstractSelect {
+export class DynamicTypeObjectDataCoreShopTaxRate extends DynamicTypeObjectDataCoreShopSelect {
   readonly id = 'coreShopTaxRate'
-  readonly dynamicTypeFieldFilterType = new DynamicTypeFieldFilterMultiselect()
-
-  getObjectDataComponent(props: any): React.ReactElement {
-    const { name, noteditable, defaultFieldWidth, ...rest } = props
-
-    return (
-      <TaxRateSelectInner
-        value={rest.value}
-        onChange={rest.onChange}
-        disabled={noteditable === true}
-        style={{ width: defaultFieldWidth?.width ?? '100%' }}
-      />
-    )
-  }
+  loadOptions = loadTaxRates
+  getCachedOptions = getTaxRateCache
 }

@@ -5,97 +5,13 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { Select } from 'antd'
-import {
-  DynamicTypeObjectDataAbstractSelect,
-  DynamicTypeFieldFilterMultiselect
-} from '@pimcore/studio-ui-bundle/modules/element'
-import { paymentProviderApi } from '../modules/payment-providers/api'
+import { DynamicTypeObjectDataCoreShopSelect } from '@coreshop/resource/src/dynamic-types/DynamicTypeObjectDataCoreShopSelect'
+import { loadPaymentProviders, getPaymentProviderCache, clearPaymentProviderCache } from '../components/PaymentProviderSelect'
 
-type Option = { value: number, label: string }
+export { loadPaymentProviders, clearPaymentProviderCache }
 
-// Module-level cache
-let cachedOptions: Option[] | null = null
-let loadPromise: Promise<Option[]> | null = null
-
-export const loadPaymentProviders = async (): Promise<Option[]> => {
-  if (cachedOptions) return cachedOptions
-  if (loadPromise) return loadPromise
-
-  loadPromise = (async () => {
-    try {
-      const rows = await paymentProviderApi.list()
-      const list = Array.isArray(rows) ? rows : []
-      cachedOptions = list
-        .map((r: any) => ({ value: r.id, label: r.identifier ?? String(r.id) }))
-        .filter((o: any) => o.value != null && o.label)
-      return cachedOptions
-    } catch (err) {
-      console.error('Failed to load payment providers:', err)
-      return []
-    } finally {
-      loadPromise = null
-    }
-  })()
-
-  return loadPromise
-}
-
-export const clearPaymentProviderCache = () => {
-  cachedOptions = null
-  loadPromise = null
-}
-
-const PaymentProviderSelectInner: React.FC<{
-  value?: number
-  onChange?: (value: number) => void
-  disabled?: boolean
-  style?: React.CSSProperties
-}> = ({ value, onChange, disabled, style }) => {
-  const [options, setOptions] = React.useState<Option[]>([])
-  const [loading, setLoading] = React.useState(true)
-
-  React.useEffect(() => {
-    void (async () => {
-      try {
-        const opts = await loadPaymentProviders()
-        setOptions(opts)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
-
-  return (
-    <Select
-      value={value}
-      onChange={onChange}
-      options={options}
-      loading={loading}
-      disabled={disabled}
-      style={style}
-      showSearch
-      optionFilterProp="label"
-      allowClear
-    />
-  )
-}
-
-export class DynamicTypeObjectDataCoreShopPaymentProvider extends DynamicTypeObjectDataAbstractSelect {
+export class DynamicTypeObjectDataCoreShopPaymentProvider extends DynamicTypeObjectDataCoreShopSelect {
   readonly id = 'coreShopPaymentProvider'
-  readonly dynamicTypeFieldFilterType = new DynamicTypeFieldFilterMultiselect()
-
-  getObjectDataComponent(props: any): React.ReactElement {
-    const { name, noteditable, defaultFieldWidth, ...rest } = props
-
-    return (
-      <PaymentProviderSelectInner
-        value={rest.value}
-        onChange={rest.onChange}
-        disabled={noteditable === true}
-        style={{ width: defaultFieldWidth?.width ?? '100%' }}
-      />
-    )
-  }
+  loadOptions = loadPaymentProviders
+  getCachedOptions = getPaymentProviderCache
 }

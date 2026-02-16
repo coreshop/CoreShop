@@ -1,63 +1,13 @@
-import React from 'react'
-import { Form, Select } from 'antd'
-import { useTranslation } from 'react-i18next'
+import { createOptionsLoader } from '@coreshop/resource/src/utils/createOptionsLoader'
 import { zoneApi } from '../modules/zones/api'
 
-type Option = { value: number, label: string }
+const zoneLoader = createOptionsLoader(async () => {
+  const rows = await zoneApi.list()
+  return (Array.isArray(rows) ? rows : [])
+    .map((r: any) => ({ value: r.id, label: r.name ?? String(r.id) }))
+    .filter((o: any) => o.value != null && o.label)
+})
 
-export interface ZoneMultiSelectProps {
-    name?: string
-    label?: string
-    labelKey?: string
-    placeholder?: string
-    disabled?: boolean
-    size?: 'small' | 'middle' | 'large'
-    className?: string
-    style?: React.CSSProperties
-}
-
-export const ZoneMultiSelect: React.FC<ZoneMultiSelectProps> = ({
-    name = 'zones',
-    label,
-    labelKey,
-    placeholder,
-    disabled,
-    size,
-    className,
-    style,
-}) => {
-    const [options, setOptions] = React.useState<Option[]>([])
-    const { t } = useTranslation()
-
-    React.useEffect(() => {
-        zoneApi.list()
-            .then((rows: any) => {
-                const list = Array.isArray(rows) ? rows : []
-                const opts = list
-                    .map((r: any) => ({ value: r.id, label: r.name ?? String(r.id) }))
-                    .filter((o: any) => o.value != null && o.label)
-                setOptions(opts)
-            })
-            .catch(() => setOptions([]))
-    }, [])
-
-    const computedLabel = label ?? (labelKey ? t(labelKey) : t('coreshop_zones', { defaultValue: 'Zones' }))
-    const computedPlaceholder = placeholder ?? t('coreshop.ui.select', { defaultValue: 'Select' })
-
-    return (
-        <Form.Item label={computedLabel} name={name}>
-            <Select
-                mode="multiple"
-                options={options}
-                placeholder={computedPlaceholder}
-                disabled={disabled}
-                size={size}
-                showSearch
-                className={className}
-                style={style}
-                optionFilterProp='label'
-                maxTagCount='responsive'
-            />
-        </Form.Item>
-    )
-}
+export const loadZones = zoneLoader.load
+export const getZoneCache = zoneLoader.getCache
+export const clearZoneCache = zoneLoader.clearCache

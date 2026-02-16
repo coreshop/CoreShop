@@ -11,5 +11,3 @@
  */
 
 export { StoreSelect } from './StoreSelect'
-export { StoreMultiSelect } from './StoreMultiSelect'
-export { StoreMultiSelectField } from './StoreMultiSelectField'

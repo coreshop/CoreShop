@@ -17,6 +17,8 @@ import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules
 import { Input } from 'antd'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
+import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
+import { loadPaymentProviders, getPaymentProviderCache } from './components/PaymentProviderSelect'
 import { PaymentBundleIconModule } from './modules/icon-library'
 import { PaymentProviderWidgetsModule } from './modules/payment-providers/widgets'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
@@ -77,6 +79,16 @@ const plugin: IAbstractPlugin = {
     // GatewayRegistry is available for custom gateway configurators that can't
     // be expressed as Symfony form types. Schema-based gateways are auto-resolved
     // from backend block prefixes in GatewayConfigPanel.
+
+    // ============================================
+    // StudioForm Widget Registration
+    // ============================================
+    const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+
+    formWidgetRegistry.register('coreshop_payment_provider_choice', (field) => ({
+      component: EntityChoiceWidget,
+      props: { loadOptions: loadPaymentProviders, getCachedOptions: getPaymentProviderCache, droppableAccept: 'coreshop:payment_provider', mode: field.multiple ? 'multiple' as const : undefined }
+    }))
 
     // ============================================
     // Widget Registration

@@ -11,7 +11,7 @@
  */
 
 // Re-export shared conditions
-export { NestedCondition } from '@coreshop/core/src/modules/shared/rules/conditions'
+export { NestedCondition } from '@coreshop/core'
 
 // ProductBundle-specific conditions
 export { WeightCondition } from './WeightCondition'

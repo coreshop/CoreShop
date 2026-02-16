@@ -19,11 +19,15 @@ Notification Rules use **type-prefixed conditions and actions**. This means:
 
 ## Schema-Driven Forms
 
-Like all other rule types in CoreShop, notification rule conditions and actions can be **schema-driven** — their forms rendered automatically from PHP FormTypes via the StudioFormBundle. To add a new condition or action, you only need a PHP FormType and a service registration with the `form-type` attribute. No React code needed for standard forms.
+Like all other rule types in CoreShop, notification rule conditions and actions are **schema-driven** — their forms rendered automatically from PHP FormTypes via the StudioFormBundle. **All conditions are now schema-generated from backend form types.** No hand-written React condition components exist in NotificationBundle.
+
+To add a new condition or action, you only need a PHP FormType and a service registration with the `form-type` attribute. No React code needed for standard forms.
 
 For the full schema-driven pattern, see [StudioFormBundle Examples — Example 13](../02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
 
-Notification-specific conditions (state selectors, transition selectors) and mail actions still use hand-written React components because they have specialized UI requirements (language tabs, state dropdowns populated from the backend workflow configuration, etc.).
+### CoreBundle Extension Module
+
+CoreBundle previously registered hand-written condition components (state selectors, transition selectors) into the notification rule registries. These are now also schema-generated. The CoreBundle extension module at `CoreBundle/Resources/assets/pimcore-studio/src/modules/extension/notification-rules/` is kept as a placeholder for any future non-schema extensions.
 
 ## Architecture
 
@@ -42,19 +46,17 @@ export type NotificationRuleType =
 
 ### Registry Structure
 
-NotificationBundle creates the registries, CoreBundle registers the conditions:
+NotificationBundle creates the registries. Schema components are registered at runtime from the backend config:
 
 ```typescript
-// NotificationBundle creates registries
+// NotificationBundle creates registries in main.ts onInit()
 container.bind(coreshopNotificationServiceIds.notificationRuleConditionRegistry)
     .to(ConditionRegistry).inSingletonScope()
 container.bind(coreshopNotificationServiceIds.notificationRuleActionRegistry)
     .to(ActionRegistry).inSingletonScope()
 
-// CoreBundle registers conditions with type prefixes
-conditionRegistry.register('order.orderState', OrderStateCondition)
-conditionRegistry.register('order.orderTransition', OrderTransitionCondition)
-// ... etc
+// Schema components are registered in NotificationRuleManager via:
+// registerSchemaComponentsFromMaps(conditionRegistry, actionRegistry, ...)
 ```
 
 ### Service IDs
@@ -67,252 +69,155 @@ export const coreshopNotificationServiceIds = {
 }
 ```
 
-## Built-in Conditions
-
-### Common Conditions (All Notification Types)
-
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `stores` | StoresCondition | Limit to specific stores |
-| `{type}.stores` | StoresCondition | Store condition with type prefix |
+## Built-in Conditions (All Schema-Driven)
 
 ### Order Notification Conditions
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `order.orderState` | OrderStateCondition | Order workflow state |
-| `order.orderTransition` | OrderTransitionCondition | Order state transition |
-| `order.orderPaymentState` | OrderPaymentStateCondition | Payment state of order |
-| `order.orderPaymentTransition` | OrderPaymentTransitionCondition | Payment state transition |
-| `order.orderShippingState` | OrderShippingStateCondition | Shipping state of order |
-| `order.orderShippingTransition` | OrderShippingTransitionCondition | Shipping state transition |
-| `order.orderInvoiceState` | OrderInvoiceStateCondition | Invoice state of order |
-| `order.orderInvoiceTransition` | OrderInvoiceTransitionCondition | Invoice state transition |
-| `order.saleState` | SaleStateCondition | General sale state |
-| `order.carriers` | CarriersCondition | Specific carriers |
-| `order.payment` | PaymentCondition | Payment provider condition |
-| `order.comment` | CommentCondition | Order has comment |
-| `order.backendCreated` | BackendCreatedCondition | Order created from backend |
+| Key | Description |
+|-----|-------------|
+| `order.orderState` | Order workflow state |
+| `order.orderTransition` | Order state transition |
+| `order.orderPaymentState` | Payment state of order |
+| `order.orderPaymentTransition` | Payment state transition |
+| `order.orderShippingState` | Shipping state of order |
+| `order.orderShippingTransition` | Shipping state transition |
+| `order.orderInvoiceState` | Invoice state of order |
+| `order.orderInvoiceTransition` | Invoice state transition |
+| `order.saleState` | General sale state |
+| `order.carriers` | Specific carriers |
+| `order.payment` | Payment provider condition |
+| `order.comment` | Order has comment |
+| `order.backendCreated` | Order created from backend |
 
 ### Payment Notification Conditions
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `payment.paymentState` | PaymentStateCondition | Payment state |
-| `payment.paymentTransition` | PaymentTransitionCondition | Payment state transition |
+| Key | Description |
+|-----|-------------|
+| `payment.paymentState` | Payment state |
+| `payment.paymentTransition` | Payment state transition |
 
 ### Invoice Notification Conditions
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `invoice.invoiceState` | InvoiceStateCondition | Invoice state |
-| `invoice.invoiceTransition` | InvoiceTransitionCondition | Invoice state transition |
+| Key | Description |
+|-----|-------------|
+| `invoice.invoiceState` | Invoice state |
+| `invoice.invoiceTransition` | Invoice state transition |
 
 ### Shipment Notification Conditions
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `shipment.shipmentState` | ShipmentStateCondition | Shipment state |
-| `shipment.shipmentTransition` | ShipmentTransitionCondition | Shipment state transition |
+| Key | Description |
+|-----|-------------|
+| `shipment.shipmentState` | Shipment state |
+| `shipment.shipmentTransition` | Shipment state transition |
 
 ### Quote Notification Conditions
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `quote.quoteState` | QuoteStateCondition | Quote state |
-| `quote.quoteTransition` | QuoteTransitionCondition | Quote state transition |
+| Key | Description |
+|-----|-------------|
+| `quote.quoteState` | Quote state |
+| `quote.quoteTransition` | Quote state transition |
 
-### User Notification Conditions
+### User / Messaging Notification Conditions
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `user.userType` | UserTypeCondition | Type of user event (register, password reset, etc.) |
-
-### Messaging Notification Conditions
-
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `messaging.messageType` | MessageTypeCondition | Type of message (contact, inquiry, etc.) |
+| Key | Description |
+|-----|-------------|
+| `user.userType` | Type of user event (register, password reset, etc.) |
+| `messaging.messageType` | Type of message (contact, inquiry, etc.) |
+| `{type}.stores` | Store condition (available for all types) |
 
 ## Built-in Actions
 
 ### Mail Actions
 
-| Key | Component | Description |
-|-----|-----------|-------------|
-| `mail` | MailAction | Basic email with language-specific templates |
-| `storeMail` | StoreMailAction | Store-specific email templates |
-| `orderMail` | OrderMailAction | Order-specific email with order data |
-| `storeOrderMail` | StoreOrderMailAction | Combined store and order email |
+| Key | Description |
+|-----|-------------|
+| `mail` | Basic email with language-specific templates |
+| `storeMail` | Store-specific email templates |
+| `orderMail` | Order-specific email with order data |
+| `storeOrderMail` | Combined store and order email |
 
 All mail actions are registered for each notification type:
 - `order.mail`, `order.storeMail`, `order.orderMail`, `order.storeOrderMail`
 - `payment.mail`, `payment.storeMail`, etc.
 
-## Adding a Custom Condition
+## Adding a Custom Condition (Schema-Driven — Preferred)
 
-### Step 1: Create the Condition Component
+### Step 1: Create the PHP FormType
 
-For state-based conditions, extend `AbstractStateCondition`:
+```php
+<?php
 
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/notification-rules/conditions/CustomStateCondition.tsx
+namespace App\Form\Type\Notification\Condition;
 
-import React from 'react'
-import { AbstractStateCondition } from '@coreshop/notification/src/modules/notification-rules/conditions'
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-export const CustomStateCondition: React.FC<any> = (props) => {
-  const states = [
-    { value: 'pending', label: 'Pending' },
-    { value: 'processing', label: 'Processing' },
-    { value: 'completed', label: 'Completed' }
-  ]
+final class MinAmountConditionType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('minAmount', IntegerType::class, [
+            'label' => 'Minimum Amount',
+        ]);
+    }
 
-  return (
-    <AbstractStateCondition
-      {...props}
-      label="Custom State"
-      states={states}
-    />
-  )
-}
-```
-
-For non-state conditions:
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/notification-rules/conditions/MinAmountCondition.tsx
-
-import React from 'react'
-import { Form, InputNumber } from 'antd'
-import { useTranslation } from 'react-i18next'
-import type { ConditionComponentProps } from '@coreshop/rule/src/rules/types'
-
-export const MinAmountCondition: React.FC<ConditionComponentProps> = ({
-  data,
-  onChange
-}) => {
-  const { t } = useTranslation()
-  const config = data ?? {}
-
-  return (
-    <Form.Item label={t('coreshop_min_amount', { defaultValue: 'Minimum Amount' })}>
-      <InputNumber
-        value={config.minAmount}
-        onChange={(value) => onChange({ ...config, minAmount: value })}
-        min={0}
-        precision={2}
-        style={{ width: '100%' }}
-      />
-    </Form.Item>
-  )
-}
-```
-
-### Step 2: Register the Condition
-
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
-
-import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
-import type { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
-import { coreshopNotificationServiceIds } from '@coreshop/notification/src/modules/notification-rules/service-ids'
-import { MinAmountCondition } from './modules/notification-rules/conditions'
-
-const plugin: IAbstractPlugin = {
-    name: 'your-bundle',
-
-    onInit() {
-        const conditionRegistry = container.get<ConditionRegistry>(
-            coreshopNotificationServiceIds.notificationRuleConditionRegistry
-        )
-
-        // Register for specific notification type(s)
-        conditionRegistry.register('order.minAmount', MinAmountCondition)
-
-        // Or register for multiple types
-        const types = ['order', 'quote']
-        types.forEach(type => {
-            conditionRegistry.register(`${type}.minAmount`, MinAmountCondition)
-        })
+    public function getBlockPrefix(): string
+    {
+        return 'app_notification_condition_min_amount';
     }
 }
+```
 
-export default plugin
+### Step 2: Register the Service
+
+```yaml
+services:
+    App\CoreShop\Notification\Condition\MinAmountConditionChecker:
+        tags:
+            - { name: coreshop.notification_rule.condition, type: order.minAmount, form-type: App\Form\Type\Notification\Condition\MinAmountConditionType }
+```
+
+### Step 3: Done
+
+No React/TypeScript code needed. The condition form is rendered automatically.
+
+### When You Need Custom JS (Rare)
+
+If your condition requires specialized UI that cannot be expressed as a FormType:
+
+```typescript
+// In your bundle's main.ts
+import { coreshopNotificationServiceIds } from '@coreshop/notification/src/modules/notification-rules/service-ids'
+
+const conditionRegistry = container.get<ConditionRegistry>(
+    coreshopNotificationServiceIds.notificationRuleConditionRegistry
+)
+
+// Register for specific notification type(s)
+conditionRegistry.register('order.minAmount', MinAmountCondition)
+
+// Or register for multiple types
+const types = ['order', 'quote']
+types.forEach(type => {
+    conditionRegistry.register(`${type}.minAmount`, MinAmountCondition)
+})
 ```
 
 ## Adding a Custom Action
 
-### Step 1: Create the Action Component
+### Schema-Driven (Preferred)
 
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/notification-rules/actions/WebhookAction.tsx
+Same pattern as conditions — create a PHP FormType and register with `form-type` tag:
 
-import React from 'react'
-import { Form, Input, Select } from 'antd'
-import { useTranslation } from 'react-i18next'
-import type { ActionComponentProps } from '@coreshop/rule/src/rules/types'
-
-interface WebhookActionConfig {
-  url?: string
-  method?: 'GET' | 'POST' | 'PUT'
-  headers?: string
-}
-
-export const WebhookAction: React.FC<ActionComponentProps> = ({
-  data,
-  onChange
-}) => {
-  const { t } = useTranslation()
-  const config = (data ?? {}) as WebhookActionConfig
-
-  const handleChange = (field: string, value: any) => {
-    onChange({ ...config, [field]: value })
-  }
-
-  return (
-    <>
-      <Form.Item
-        label={t('coreshop_webhook_url', { defaultValue: 'Webhook URL' })}
-        required
-      >
-        <Input
-          value={config.url}
-          onChange={(e) => handleChange('url', e.target.value)}
-          placeholder="https://api.example.com/webhook"
-        />
-      </Form.Item>
-
-      <Form.Item
-        label={t('coreshop_webhook_method', { defaultValue: 'HTTP Method' })}
-      >
-        <Select
-          value={config.method || 'POST'}
-          onChange={(value) => handleChange('method', value)}
-          options={[
-            { value: 'GET', label: 'GET' },
-            { value: 'POST', label: 'POST' },
-            { value: 'PUT', label: 'PUT' }
-          ]}
-        />
-      </Form.Item>
-
-      <Form.Item
-        label={t('coreshop_webhook_headers', { defaultValue: 'Custom Headers (JSON)' })}
-      >
-        <Input.TextArea
-          value={config.headers}
-          onChange={(e) => handleChange('headers', e.target.value)}
-          placeholder='{"Authorization": "Bearer xxx"}'
-          rows={3}
-        />
-      </Form.Item>
-    </>
-  )
-}
+```yaml
+services:
+    App\CoreShop\Notification\Action\WebhookActionProcessor:
+        tags:
+            - { name: coreshop.notification_rule.action, type: webhook, form-type: App\Form\Type\WebhookActionType }
 ```
 
-### Step 2: Register the Action
+### Hand-Written (When Needed)
 
 ```typescript
 const actionRegistry = container.get<ActionRegistry>(
@@ -324,146 +229,6 @@ const notificationTypes = ['order', 'payment', 'invoice', 'shipment', 'quote', '
 notificationTypes.forEach(type => {
     actionRegistry.register(`${type}.webhook`, WebhookAction)
 })
-
-// Or register without prefix (generic)
-actionRegistry.register('webhook', WebhookAction)
-```
-
-## State and Transition Conditions
-
-### State Conditions
-
-State conditions check the current state of an entity:
-
-```typescript
-// StateConditionBase.tsx pattern
-export const createStateCondition = (
-  label: string,
-  stateKey: string,
-  states: Array<{ value: string; label: string }>
-) => {
-  const StateCondition: React.FC<ConditionComponentProps> = ({ data, onChange }) => {
-    return (
-      <Form.Item label={label}>
-        <Select
-          value={data?.[stateKey]}
-          onChange={(value) => onChange({ ...data, [stateKey]: value })}
-          options={states}
-        />
-      </Form.Item>
-    )
-  }
-  return StateCondition
-}
-```
-
-### Transition Conditions
-
-Transition conditions check if a specific state change is occurring:
-
-```typescript
-// TransitionConditionBase.tsx pattern
-export const createTransitionCondition = (
-  label: string,
-  transitions: Array<{ value: string; label: string }>
-) => {
-  const TransitionCondition: React.FC<ConditionComponentProps> = ({ data, onChange }) => {
-    return (
-      <Form.Item label={label}>
-        <Select
-          value={data?.transition}
-          onChange={(value) => onChange({ ...data, transition: value })}
-          options={transitions}
-        />
-      </Form.Item>
-    )
-  }
-  return TransitionCondition
-}
-```
-
-## Mail Action with Language Support
-
-The `MailAction` component supports multi-language email templates:
-
-```typescript
-const MailAction: React.FC<ActionComponentProps> = ({ data, onChange }) => {
-  const languages = getAvailableLanguages() // ['en', 'de', 'fr']
-  const config = data as MailActionConfig
-
-  // Renders tabs for each language
-  // Each tab has a DocumentSelect for email template
-  // config.mails = { en: 123, de: 456, fr: 789 }
-}
-```
-
-Configuration structure:
-```typescript
-interface MailActionConfig {
-  mails?: Record<string, number | null>  // Language -> Document ID
-  doNotSendToDesignatedRecipient?: boolean
-}
-```
-
-## File Structure
-
-```
-NotificationBundle/Resources/assets/pimcore-studio/src/
-├── main.ts                              # Plugin entry, registry setup
-├── modules/
-│   ├── icon-library/
-│   │   └── index.ts
-│   └── notification-rules/
-│       ├── index.ts
-│       ├── service-ids.ts               # Registry service IDs
-│       ├── types.ts                     # TypeScript types
-│       ├── api.ts                       # API client
-│       ├── NotificationRuleManager.tsx  # Manager widget
-│       ├── NotificationRuleFormBuilder.ts
-│       ├── form-builder-module.ts
-│       ├── components/
-│       │   ├── index.ts
-│       │   └── SettingsForm.tsx
-│       ├── conditions/
-│       │   ├── index.ts
-│       │   └── AbstractStateCondition.tsx
-│       └── actions/
-│           ├── index.ts
-│           ├── MailAction.tsx
-│           ├── StoreMailAction.tsx
-│           ├── OrderMailAction.tsx
-│           └── StoreOrderMailAction.tsx
-
-CoreBundle/Resources/assets/pimcore-studio/src/modules/extension/notification-rules/
-├── index.tsx                            # Extension module
-└── conditions/
-    ├── index.ts
-    ├── StateConditionBase.tsx
-    ├── TransitionConditionBase.tsx
-    ├── StoresCondition.tsx
-    ├── CarriersCondition.tsx
-    ├── PaymentCondition.tsx
-    ├── CommentCondition.tsx
-    ├── BackendCreatedCondition.tsx
-    ├── MessageTypeCondition.tsx
-    ├── UserTypeCondition.tsx
-    ├── OrderStateCondition.tsx
-    ├── OrderTransitionCondition.tsx
-    ├── OrderPaymentStateCondition.tsx
-    ├── OrderPaymentTransitionCondition.tsx
-    ├── OrderShippingStateCondition.tsx
-    ├── OrderShippingTransitionCondition.tsx
-    ├── OrderInvoiceStateCondition.tsx
-    ├── OrderInvoiceTransitionCondition.tsx
-    ├── SaleStateCondition.tsx
-    ├── PaymentStateCondition.tsx
-    ├── PaymentTransitionCondition.tsx
-    ├── InvoiceStateCondition.tsx
-    ├── InvoiceTransitionCondition.tsx
-    ├── ShipmentStateCondition.tsx
-    ├── ShipmentTransitionCondition.tsx
-    ├── QuoteStateCondition.tsx
-    └── QuoteTransitionCondition.tsx
 ```
 
 ## Backend Implementation
@@ -489,7 +254,7 @@ class MinAmountConditionChecker implements NotificationConditionCheckerInterface
         }
 
         $minAmount = $configuration['minAmount'] ?? 0;
-        return $subject->getTotal() >= ($minAmount * 100); // Convert to cents
+        return $subject->getTotal() >= ($minAmount * 100);
     }
 }
 ```
@@ -511,77 +276,49 @@ class WebhookActionProcessor implements NotificationRuleProcessorInterface
         array $configuration
     ): void {
         $url = $configuration['url'] ?? null;
-        $method = $configuration['method'] ?? 'POST';
-        $headers = json_decode($configuration['headers'] ?? '{}', true);
+        if (!$url) return;
 
-        if (!$url) {
-            return;
-        }
-
-        // Send webhook request
-        $this->httpClient->request($method, $url, [
-            'headers' => $headers,
+        $this->httpClient->request($configuration['method'] ?? 'POST', $url, [
             'json' => $this->serializeSubject($subject)
         ]);
     }
 }
 ```
 
-### Service Registration
+## File Structure
 
-```yaml
-# config/services.yaml
-
-# Condition
-App\CoreShop\Notification\Condition\MinAmountConditionChecker:
-  tags:
-    - { name: coreshop.notification_rule.condition, type: order.minAmount, form-type: App\Form\Type\MinAmountConditionType }
-
-# Action
-App\CoreShop\Notification\Action\WebhookActionProcessor:
-  tags:
-    - { name: coreshop.notification_rule.action, type: webhook, form-type: App\Form\Type\WebhookActionType }
 ```
+NotificationBundle/Resources/assets/pimcore-studio/src/
+├── main.ts                              # Plugin entry, registry setup
+├── modules/
+│   ├── icon-library/
+│   │   └── index.ts
+│   └── notification-rules/
+│       ├── index.ts
+│       ├── service-ids.ts               # Registry service IDs
+│       ├── types.ts                     # TypeScript types
+│       ├── api.ts                       # API client
+│       ├── NotificationRuleManager.tsx  # Manager widget
+│       ├── NotificationRuleFormBuilder.ts
+│       ├── form-builder-module.ts
+│       ├── components/
+│       │   ├── index.ts
+│       │   └── SettingsForm.tsx
+│       ├── conditions/
+│       │   └── index.ts                 # Empty — all schema-generated
+│       └── actions/
+│           └── index.ts                 # Empty — all schema-generated
 
-## Async Registry Loading
-
-CoreBundle uses async initialization to wait for NotificationBundle's registries:
-
-```typescript
-async function waitForRegistry(maxAttempts: number = 50, interval: number = 100): Promise<boolean> {
-  let attempts = 0
-
-  return new Promise((resolve) => {
-    const checkRegistry = () => {
-      attempts++
-
-      if (container.isBound(coreshopNotificationServiceIds.notificationRuleConditionRegistry)) {
-        resolve(true)
-        return
-      }
-
-      if (attempts >= maxAttempts) {
-        console.warn('[CoreShop Core] Timeout waiting for notification rule registry')
-        resolve(false)
-        return
-      }
-
-      setTimeout(checkRegistry, interval)
-    }
-
-    checkRegistry()
-  })
-}
+CoreBundle/Resources/assets/pimcore-studio/src/modules/extension/notification-rules/
+├── index.tsx                            # Placeholder module (all conditions now schema-generated)
+└── api/
+    └── workflow-api.ts                  # Workflow API for state/transition data
 ```
-
-This pattern ensures CoreBundle's conditions are registered only after NotificationBundle has created the registries.
 
 ## Best Practices
 
-1. **Use type prefixes**: Always prefix conditions/actions with the notification type
-2. **Reuse base components**: Use `AbstractStateCondition` for state-based conditions
-3. **Support all languages**: Use tabs for language-specific configurations
-4. **Handle async loading**: Use `waitForRegistry` pattern when extending registries
+1. **Use schema-driven forms**: All standard conditions/actions should use PHP FormTypes
+2. **Use type prefixes**: Always prefix conditions/actions with the notification type
+3. **Consider all notification types**: Register actions for all relevant notification types
+4. **Test state transitions**: Verify conditions work for both states and transitions
 5. **Document email placeholders**: Document available placeholders for email templates
-6. **Test state transitions**: Verify conditions work for both states and transitions
-7. **Consider all notification types**: Register actions for all relevant notification types

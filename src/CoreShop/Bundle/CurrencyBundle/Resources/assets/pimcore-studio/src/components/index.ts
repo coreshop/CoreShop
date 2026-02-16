@@ -10,7 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { CurrencySelect } from './CurrencySelect'
-export { CurrencySelectField } from './CurrencySelectField'
-export { CurrencyMultiSelect } from './CurrencyMultiSelect'
-export { CurrencyMultiSelectField } from './CurrencyMultiSelectField'
+export { loadCurrencies, getCurrencyCache, clearCurrencyCache } from './CurrencySelect'

@@ -181,6 +181,92 @@ final class CollectionDemoType extends AbstractType
     }
 }`
 
+const ENTITY_CHOICES_PHP = `final class EntityChoiceDemoType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('country', CountryChoiceType::class, [
+                'label' => 'Country (Single)',
+                'required' => false,
+            ])
+            ->add('countries', CountryChoiceType::class, [
+                'label' => 'Countries (Multiple)',
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->add('state', StateChoiceType::class, [
+                'label' => 'State (Single)',
+                'required' => false,
+            ])
+            ->add('states', StateChoiceType::class, [
+                'label' => 'States (Multiple)',
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->add('zone', ZoneChoiceType::class, [
+                'label' => 'Zone',
+                'required' => false,
+            ])
+            ->add('zones', ZoneChoiceType::class, [
+                'label' => 'Zones (Multiple)',
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'Currency (Single)',
+                'required' => false,
+            ])
+            ->add('currencies', CurrencyChoiceType::class, [
+                'label' => 'Currencies (Multiple)',
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->add('store', StoreChoiceType::class, [
+                'label' => 'Store',
+                'required' => false,
+            ])
+            ->add('stores', StoreChoiceType::class, [
+                'label' => 'Stores (Multiple)',
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->add('paymentProvider', PaymentProviderChoiceType::class, [
+                'label' => 'Payment Provider (Single)',
+                'required' => false,
+            ])
+            ->add('paymentProviders', PaymentProviderChoiceType::class, [
+                'label' => 'Payment Providers (Multiple)',
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->add('taxRate', TaxRateChoiceType::class, [
+                'label' => 'Tax Rate (Single)',
+                'required' => false,
+            ])
+            ->add('taxRates', TaxRateChoiceType::class, [
+                'label' => 'Tax Rates (Multiple)',
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->add('taxRuleGroup', TaxRuleGroupChoiceType::class, [
+                'label' => 'Tax Rule Group (Single)',
+                'required' => false,
+            ])
+            ->add('taxRuleGroups', TaxRuleGroupChoiceType::class, [
+                'label' => 'Tax Rule Groups (Multiple)',
+                'multiple' => true,
+                'required' => false,
+            ])
+        ;
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_demo_entity_choices';
+    }
+}`
+
 // --- Components ---
 
 interface DemoTabProps {
@@ -267,6 +353,17 @@ export const DemoShowcase: React.FC = () => {
           blockPrefix="coreshop_demo_field_types"
           description="All supported field types with collapsible sections: Email, URL, Password, Number, Integer, Date, DateTime, Time, Color, Range."
           phpSource={FIELD_TYPES_PHP}
+        />
+      ),
+    },
+    {
+      key: 'entity-choices',
+      label: 'Entity Choices',
+      children: (
+        <DemoTab
+          blockPrefix="coreshop_demo_entity_choices"
+          description="CoreShop entity ChoiceTypes rendered via EntityChoiceWidget: Country, State, Zone, Currency, Store, Payment Provider, Tax Rate, Tax Rule Group — with single and multi-select variants."
+          phpSource={ENTITY_CHOICES_PHP}
         />
       ),
     },
