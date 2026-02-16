@@ -21,7 +21,7 @@ export interface TaxRule {
   state?: number
 }
 
-export interface TaxRuleGroupDetail {
+export interface TaxRuleGroupDetail extends Record<string, any> {
   id: number
   name: string
   active: boolean

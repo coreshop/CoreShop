@@ -1,5 +1,5 @@
 /**
- * CoreShop OrderBundle Studio Plugin
+ * CoreShop RuleBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -15,11 +15,11 @@ import { Form, Select, Button, Dropdown, Space, Empty, Card } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import { container } from '@pimcore/studio-ui-bundle'
-import type { ConditionComponentProps } from '@coreshop/rule/src/rules'
-import type { RuleCondition } from '@coreshop/rule/src/rules/types'
-import { coreshopRuleServiceIds } from '@coreshop/rule/src/rules/registry'
-import type { ConditionRegistry } from '@coreshop/rule/src/rules/registry/ConditionRegistry'
-import { ConditionItem } from '@coreshop/rule/src/rules/components/ConditionItem'
+import type { ConditionComponentProps } from '../index'
+import type { RuleCondition } from '../types'
+import { coreshopRuleServiceIds } from '../registry'
+import type { ConditionRegistry } from '../registry/ConditionRegistry'
+import { ConditionItem } from '../components/ConditionItem'
 
 interface NestedConditionData {
   operator?: 'and' | 'or' | 'not'

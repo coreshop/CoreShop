@@ -11,28 +11,15 @@
  */
 
 import React from 'react'
-import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
+import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { StoreDetail } from './api'
 
-export interface StoreFormProps {
-  data?: StoreDetail
-  onChange: (draft: Partial<StoreDetail>) => void
-  currentLocale?: string
-  locales?: string[]
-}
-
-export const StoreForm: React.FC<StoreFormProps> = ({
-  data,
-  onChange,
-  currentLocale,
-}) => {
+export const StoreForm: React.FC<SchemaFormProps<StoreDetail>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<StoreDetail>
+        {...props}
         blockPrefix="coreshop_store"
-        data={data}
-        onChange={onChange}
-        currentLocale={currentLocale}
       />
     </div>
   )

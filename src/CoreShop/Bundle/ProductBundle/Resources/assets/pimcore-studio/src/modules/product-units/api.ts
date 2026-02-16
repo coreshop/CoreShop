@@ -8,7 +8,7 @@ export interface ProductUnitTranslation {
   shortPluralLabel?: string
 }
 
-export interface ProductUnitDetail {
+export interface ProductUnitDetail extends Record<string, any> {
   id: number
   name: string
   translations?: ProductUnitTranslation[]

@@ -12,7 +12,7 @@ import { coreshopOrderServiceIds } from '@coreshop/order/src/modules/cart-price-
 import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
 import { coreshopPaymentServiceIds } from '@coreshop/payment/src/modules/payment-provider-rules/service-ids'
 import { coreshopQuantityPriceRulesServiceIds } from '@coreshop/productquantitypricerules/src/modules/quantity-price-rules/service-ids'
-import { NestedCondition } from '../../shared/rules/conditions'
+import { NestedCondition } from '@coreshop/rule/src/rules/conditions'
 
 const NESTED_CONDITION_REGISTRIES: Array<symbol | string> = [
   coreshopOrderServiceIds.cartPriceRuleConditionRegistry,

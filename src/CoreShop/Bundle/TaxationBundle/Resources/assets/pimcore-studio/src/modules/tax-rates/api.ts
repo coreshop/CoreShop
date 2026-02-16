@@ -17,7 +17,7 @@ export interface TaxRateTranslation {
   name: string
 }
 
-export interface TaxRateDetail {
+export interface TaxRateDetail extends Record<string, any> {
   id: number
   name: string
   rate: number

@@ -11,29 +11,15 @@
  */
 
 import React from 'react'
-import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
-import type { CarrierDetail, CarrierConfig } from './api'
+import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
+import type { CarrierDetail } from './api'
 
-export interface CarrierFormProps {
-  data?: CarrierDetail
-  config: CarrierConfig
-  onChange: (draft: Partial<CarrierDetail>) => void
-  currentLocale: string
-  locales?: string[]
-}
-
-export const CarrierForm: React.FC<CarrierFormProps> = ({
-  data,
-  onChange,
-  currentLocale,
-}) => {
+export const CarrierForm: React.FC<SchemaFormProps<CarrierDetail>> = (props) => {
   return (
     <div style={{ padding: 24 }}>
       <SchemaForm<CarrierDetail>
+        {...props}
         blockPrefix="coreshop_carrier"
-        data={data}
-        onChange={onChange}
-        currentLocale={currentLocale}
       />
     </div>
   )

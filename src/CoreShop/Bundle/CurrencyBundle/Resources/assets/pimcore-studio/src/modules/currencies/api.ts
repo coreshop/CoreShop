@@ -1,6 +1,6 @@
 import { EntityApi } from '@coreshop/resource/src/entities'
 
-export interface CurrencyDetail {
+export interface CurrencyDetail extends Record<string, any> {
   id: number
   name: string
   isoCode?: string

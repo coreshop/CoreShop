@@ -11,22 +11,16 @@
  */
 
 import React from 'react'
-import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
+import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { PaymentProvider } from './api'
 
-export const PaymentProviderForm: React.FC<{
-    data?: PaymentProvider
-    onChange: (draft: Partial<PaymentProvider>) => void
-    currentLocale: string
-}> = ({ data, onChange, currentLocale }) => {
-    return (
-        <div style={{ padding: 24 }}>
-            <SchemaForm<PaymentProvider>
-                blockPrefix="coreshop_payment_provider"
-                data={data}
-                onChange={onChange}
-                currentLocale={currentLocale}
-            />
-        </div>
-    )
+export const PaymentProviderForm: React.FC<SchemaFormProps<PaymentProvider>> = (props) => {
+  return (
+    <div style={{ padding: 24 }}>
+      <SchemaForm<PaymentProvider>
+        {...props}
+        blockPrefix="coreshop_payment_provider"
+      />
+    </div>
+  )
 }

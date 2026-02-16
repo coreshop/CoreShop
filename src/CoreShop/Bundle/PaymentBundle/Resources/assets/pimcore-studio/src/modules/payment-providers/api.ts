@@ -21,7 +21,7 @@ export interface PaymentProviderRuleGroup {
   paymentProviderRule?: any // TODO: Define PaymentProviderRule interface
 }
 
-export interface PaymentProvider {
+export interface PaymentProvider extends Record<string, any> {
   id?: number
   identifier?: string
   active?: boolean

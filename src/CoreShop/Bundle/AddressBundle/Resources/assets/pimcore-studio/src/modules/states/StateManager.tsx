@@ -38,14 +38,7 @@ export const StateManager: React.FC = () => {
         return null
       }}
       applyGroup={(data, groupId) => ({ ...data, country: groupId ?? undefined } as StateDetail)}
-      buildSavePayload={(data) => ({
-        id: data.id,
-        name: data.name,
-        active: data.active,
-        isoCode: data.isoCode,
-        country: data.country,
-        translations: data.translations
-      })}
+      buildSavePayload={(data) => data}
       onAdd={async (groupId?: number) => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_state_add', { defaultValue: 'Add State' }),

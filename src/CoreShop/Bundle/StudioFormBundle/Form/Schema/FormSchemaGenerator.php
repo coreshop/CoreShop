@@ -113,12 +113,12 @@ final class FormSchemaGenerator
             $field->expanded = $childView->vars['expanded'] ?? false;
         }
 
-        // Extract extra vars (e.g. autocomplete_class set by custom types in buildView)
+        // Extract extra vars (e.g. relation_class set by custom types in buildView)
         $field->extra = $this->extractExtraVars($childView);
 
-        // Preserve "multiple" for our autocomplete type so frontend can choose
+        // Preserve "multiple" for PimcoreRelationType so frontend can choose
         // between ManyToOne and ManyToMany relation widgets.
-        if (in_array('coreshop_autocomplete', $blockPrefixes, true) && isset($childView->vars['multiple'])) {
+        if (in_array('coreshop_pimcore_relation', $blockPrefixes, true) && isset($childView->vars['multiple'])) {
             $field->extra['multiple'] = (bool) $childView->vars['multiple'];
         }
 
@@ -234,7 +234,7 @@ final class FormSchemaGenerator
      * Extract custom extra vars that form types set in buildView().
      *
      * Standard FormView vars (id, name, full_name, required, etc.) are excluded.
-     * Only non-standard vars that form types add (e.g. autocomplete_class) are included.
+     * Only non-standard vars that form types add (e.g. relation_class) are included.
      *
      * @return array<string, mixed>
      */

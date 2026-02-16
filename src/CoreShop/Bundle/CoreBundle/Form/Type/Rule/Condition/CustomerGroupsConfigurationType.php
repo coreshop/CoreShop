@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\StudioFormBundle\Form\Type\AutocompleteType;
+use CoreShop\Bundle\StudioFormBundle\Form\Type\PimcoreRelationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -26,9 +26,9 @@ final class CustomerGroupsConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('customerGroups', AutocompleteType::class, [
+            ->add('customerGroups', PimcoreRelationType::class, [
                 'label' => 'coreshop_condition_customerGroups',
-                'autocomplete_class' => 'CoreShopCustomerGroup',
+                'relation_class' => 'CoreShopCustomerGroup',
                 'multiple' => true,
             ])
         ;

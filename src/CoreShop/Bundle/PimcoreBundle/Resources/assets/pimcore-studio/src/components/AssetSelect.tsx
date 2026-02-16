@@ -15,7 +15,7 @@ import {
   ManyToOneRelation,
   type ManyToOneRelationValueType,
 } from '@pimcore/studio-ui-bundle/modules/element'
-import { loadElementDetails } from '@coreshop/resource/src/entities/api/helperApi'
+import { loadElementDetails } from '../api/helperApi'
 
 interface AssetSelectProps {
   value?: number | null

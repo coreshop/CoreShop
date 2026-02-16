@@ -1,5 +1,5 @@
 /**
- * CoreShop ResourceBundle Studio Plugin
+ * CoreShop PimcoreBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -10,7 +10,13 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import type { ManyToManyRelationValueItem } from '../types/relation'
+export interface ElementDetail {
+  id: number
+  type: string
+  fullPath: string
+  subtype: string | null
+  isPublished: boolean
+}
 
 interface NicePathTarget {
   id: number
@@ -19,13 +25,13 @@ interface NicePathTarget {
 
 interface NicePathResponse {
   success: boolean
-  data: Record<string, ManyToManyRelationValueItem>
+  data: Record<string, ElementDetail>
 }
 
 /**
  * Load detailed information for elements by their IDs
  */
-export async function loadElementDetails(ids: string[], type: string = 'object'): Promise<Record<string, ManyToManyRelationValueItem>> {
+export async function loadElementDetails(ids: string[], type: string = 'object'): Promise<Record<string, ElementDetail>> {
   if (ids.length === 0) {
     return {}
   }

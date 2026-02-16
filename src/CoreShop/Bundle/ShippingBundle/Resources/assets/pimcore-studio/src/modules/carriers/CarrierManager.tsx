@@ -69,7 +69,6 @@ export const CarrierManager: React.FC = () => {
         return (
           <CarrierForm
             data={data}
-            config={config}
             onChange={(draft) => setData(draft)}
             currentLocale={ctx?.currentLocale ?? 'en'}
             locales={ctx?.locales}

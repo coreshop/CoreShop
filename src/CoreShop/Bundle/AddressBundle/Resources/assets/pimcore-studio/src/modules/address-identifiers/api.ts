@@ -1,6 +1,6 @@
 import { EntityApi } from '@coreshop/resource/src/entities/api'
 
-export interface AddressIdentifierDetail {
+export interface AddressIdentifierDetail extends Record<string, any> {
   id: number
   name: string
   active: boolean

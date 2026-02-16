@@ -28,7 +28,7 @@ export interface FormSchemaField {
   multiple?: boolean
   /** Whether choices are rendered as expanded (radio/checkbox) */
   expanded?: boolean
-  /** Extra vars from FormView (e.g. autocomplete_class, allow_add) */
+  /** Extra vars from FormView (e.g. relation_class, allow_add) */
   extra?: Record<string, any>
   /** Children for compound fields (like translations) */
   children?: FormSchemaResponse

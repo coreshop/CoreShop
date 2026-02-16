@@ -1,6 +1,6 @@
 import { EntityApi } from '@coreshop/resource/src/entities'
 
-export interface StateDetail {
+export interface StateDetail extends Record<string, any> {
   id: number
   name: string
   active: boolean

@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action;
 
-use CoreShop\Bundle\StudioFormBundle\Form\Type\AutocompleteType;
+use CoreShop\Bundle\StudioFormBundle\Form\Type\PimcoreRelationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -25,9 +25,9 @@ final class GiftProductConfigurationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('product', AutocompleteType::class, [
+        $builder->add('product', PimcoreRelationType::class, [
             'label' => 'coreshop_action_giftProduct',
-            'autocomplete_class' => 'CoreShopProduct',
+            'relation_class' => 'CoreShopProduct',
         ]);
     }
 

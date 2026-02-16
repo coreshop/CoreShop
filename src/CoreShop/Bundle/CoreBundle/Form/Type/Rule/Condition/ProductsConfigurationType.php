@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\StudioFormBundle\Form\Type\AutocompleteType;
+use CoreShop\Bundle\StudioFormBundle\Form\Type\PimcoreRelationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,9 +27,9 @@ final class ProductsConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('products', AutocompleteType::class, [
+            ->add('products', PimcoreRelationType::class, [
                 'label' => 'coreshop_condition_products',
-                'autocomplete_class' => 'CoreShopProduct',
+                'relation_class' => 'CoreShopProduct',
                 'multiple' => true,
             ])
             ->add('include_variants', CheckboxType::class, [

@@ -27,19 +27,7 @@ export const TaxRuleGroupManager: React.FC = () => {
       dragType='coreshop:tax_rule_group'
       leftRootTitle={t('coreshop_tax_rule_group', { defaultValue: 'Tax Rule Groups' })}
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
-      buildSavePayload={(data) => ({
-        id: data.id,
-        name: data.name,
-        active: data.active,
-        taxRules: data.taxRules?.map(rule => ({
-          id: rule.id,
-          taxRuleGroup: data.id,
-          taxRate: rule.taxRate,
-          behavior: rule.behavior,
-          country: rule.country,
-          state: rule.state
-        })) || []
-      })}
+      buildSavePayload={(data) => data}
       onAdd={async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_tax_rule_group', { defaultValue: 'Add Tax Rule Group' }),

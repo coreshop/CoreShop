@@ -11,32 +11,16 @@
  */
 
 import React from 'react'
-import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
+import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { TaxRateDetail } from './api'
-import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
 
-export interface TaxRateFormProps {
-  data?: TaxRateDetail
-  onChange: (draft: Partial<TaxRateDetail>) => void
-  currentLocale?: string
-  locales?: string[]
-}
-
-export const TaxRateForm: React.FC<TaxRateFormProps> = ({
-  data,
-  onChange,
-  currentLocale,
-}) => {
+export const TaxRateForm: React.FC<SchemaFormProps<TaxRateDetail>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<TaxRateDetail>
+        {...props}
         blockPrefix="coreshop_tax_rate"
-        data={data}
-        onChange={onChange}
-        currentLocale={currentLocale}
       />
-
-      {renderEntityFormExtensions('coreshop.taxation.tax_rate.form', { data, onChange, currentLocale })}
     </div>
   )
 }

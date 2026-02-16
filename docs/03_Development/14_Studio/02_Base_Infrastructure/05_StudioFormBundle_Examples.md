@@ -309,9 +309,9 @@ export const CategoryForm: React.FC<{
 
 ## Category 2: Special Field Types
 
-### Example 4 — Pimcore Relations (AutocompleteType)
+### Example 4 — Pimcore Relations (PimcoreRelationType)
 
-Use `AutocompleteType` to create fields that reference Pimcore Data Objects. The widget shows an autocomplete search and renders as a relation/tag widget.
+Use `PimcoreRelationType` to create fields that reference Pimcore Data Objects. The widget renders Pimcore's native ManyToOneRelation / ManyToManyRelation picker.
 
 **PHP — FormType:**
 
@@ -320,7 +320,7 @@ Use `AutocompleteType` to create fields that reference Pimcore Data Objects. The
 
 namespace App\Form\Type;
 
-use CoreShop\Bundle\StudioFormBundle\Form\Type\AutocompleteType;
+use CoreShop\Bundle\StudioFormBundle\Form\Type\PimcoreRelationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -331,10 +331,10 @@ final class FeaturedCategoriesConfigurationType extends AbstractType
     {
         $builder
             // Multiple Pimcore object relations
-            ->add('categories', AutocompleteType::class, [
+            ->add('categories', PimcoreRelationType::class, [
                 'label' => 'app_condition_categories',
-                'autocomplete_class' => 'CoreShopCategory',  // Pimcore class name
-                'multiple' => true,                           // Allow multiple selections
+                'relation_class' => 'CoreShopCategory',  // Pimcore class name
+                'multiple' => true,                       // Allow multiple selections
             ])
             ->add('recursive', CheckboxType::class, [
                 'label' => 'app_condition_recursive',
@@ -349,17 +349,17 @@ final class FeaturedCategoriesConfigurationType extends AbstractType
 }
 ```
 
-The `autocomplete_class` option is exposed through the schema as `extra.autocomplete_class`. The CoreBundle registers a custom widget for the `coreshop_autocomplete` block prefix that renders a `PimcoreRelationWidget`:
+The `relation_class` option is exposed through the schema as `extra.relation_class`. The CoreBundle registers a custom widget for the `coreshop_pimcore_relation` block prefix that renders a `PimcoreRelationWidget`:
 
 ```typescript
 // Already registered by CoreBundle — you don't need to do this yourself.
 // Shown here for understanding:
 const registry = container.get<WidgetRegistry>(widgetRegistryServiceId)
 
-registry.register('coreshop_autocomplete', (field) => ({
+registry.register('coreshop_pimcore_relation', (field) => ({
   component: PimcoreRelationWidget,
   props: {
-    autocompleteClass: field.extra?.autocomplete_class,
+    relationClass: field.extra?.relation_class,
     multiple: field.extra?.multiple ?? false,
   },
 }))
@@ -1148,7 +1148,7 @@ This is especially impactful when a rule has many conditions/actions expanded si
 | Simple entity form | `AbstractResourceType` + `coreshop.studio_form` tag | `<SchemaForm blockPrefix="..." />` |
 | Add choices | `ChoiceType` or entity `ChoiceType` | Automatic |
 | Add translations | `ResourceTranslationsType` | Pass `currentLocale` + `locales` |
-| Add Pimcore relations | `AutocompleteType` | Automatic (widget registered) |
+| Add Pimcore relations | `PimcoreRelationType` | Automatic (widget registered) |
 | Add dynamic lists | `CollectionType` with `allow_add`/`allow_delete` | Automatic |
 | Group fields in sections | `FormSchemaEnricherInterface` + `SectionSchema` | Automatic |
 | Group fields in tabs | `FormSchemaEnricherInterface` + `TabSchema` | Automatic |

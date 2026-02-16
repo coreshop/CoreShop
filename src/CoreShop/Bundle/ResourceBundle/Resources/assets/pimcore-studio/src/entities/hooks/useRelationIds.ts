@@ -12,7 +12,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import type { ManyToManyRelationValue } from '../types/relation'
-import { loadElementDetails } from '../api/helperApi'
+import { loadElementDetails } from '@coreshop/pimcore/src/api/helperApi'
 
 /**
  * Hook to convert between backend format (string IDs) and ManyToManyRelation format

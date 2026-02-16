@@ -267,7 +267,7 @@ class VolumeConditionChecker implements ShippingConditionCheckerInterface
 ## Best Practices
 
 1. **Prefer PHP FormTypes**: Use the schema-driven approach for all new conditions/actions
-2. **Use appropriate Symfony form types**: `ChoiceType` for selects, `NumberType` for numbers, `AutocompleteType` for Pimcore relations
+2. **Use appropriate Symfony form types**: `ChoiceType` for selects, `NumberType` for numbers, `PimcoreRelationType` for Pimcore relations
 3. **Use FormTypeExtensions**: To add cross-bundle fields (e.g., CoreBundle adding stores/currencies to other bundles' forms)
 4. **Only write React for truly special UIs**: Recursive nesting, drag-and-drop, real-time validation that can't be server-driven
 5. **Test with the schema endpoint**: `GET /pimcore-studio/api/coreshop-studio-form/schema/{blockPrefix}` to verify your form generates correctly

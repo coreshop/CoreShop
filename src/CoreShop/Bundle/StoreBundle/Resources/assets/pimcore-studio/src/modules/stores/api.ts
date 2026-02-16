@@ -12,7 +12,7 @@
 
 import { EntityApi } from '@coreshop/resource/src/entities'
 
-export interface StoreDetail {
+export interface StoreDetail extends Record<string, any> {
   id?: number
   name: string
   siteId?: number | null

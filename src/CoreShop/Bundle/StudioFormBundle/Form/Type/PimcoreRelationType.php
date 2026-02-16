@@ -19,42 +19,34 @@ namespace CoreShop\Bundle\StudioFormBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * A form type for server-side autocomplete fields.
+ * A form type for Pimcore Data Object relation fields (ManyToOne / ManyToMany).
  *
- * Instead of loading all choices into memory (like ChoiceType),
- * this type only provides metadata (search URL, class name).
- * The frontend renders a search-based select that fetches results on demand.
+ * Provides metadata (class name) to the frontend which renders
+ * Pimcore's native relation picker components.
  */
-class AutocompleteType extends AbstractType
+class PimcoreRelationType extends AbstractType
 {
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $view->vars['autocomplete_url'] = $options['autocomplete_url'];
-        $view->vars['autocomplete_class'] = $options['autocomplete_class'] ?? null;
+        $view->vars['relation_class'] = $options['relation_class'] ?? null;
         $view->vars['multiple'] = $options['multiple'];
-        $view->vars['min_chars'] = $options['min_chars'];
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'autocomplete_url' => null,
-            'autocomplete_class' => null,
+            'relation_class' => null,
             'multiple' => false,
-            'min_chars' => 1,
             'compound' => false,
         ]);
 
-        $resolver->setAllowedTypes('autocomplete_url', ['string', 'null']);
-        $resolver->setAllowedTypes('autocomplete_class', ['string', 'null']);
+        $resolver->setAllowedTypes('relation_class', ['string', 'null']);
         $resolver->setAllowedTypes('multiple', 'bool');
-        $resolver->setAllowedTypes('min_chars', 'int');
     }
 
     public function getParent(): string
@@ -64,6 +56,6 @@ class AutocompleteType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_autocomplete';
+        return 'coreshop_pimcore_relation';
     }
 }

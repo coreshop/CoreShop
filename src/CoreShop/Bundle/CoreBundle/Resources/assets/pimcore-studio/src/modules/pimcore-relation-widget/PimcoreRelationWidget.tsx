@@ -29,14 +29,14 @@ import type { ManyToManyRelationValue } from '@coreshop/resource/src/entities/ty
 interface PimcoreRelationWidgetProps {
   value?: string | number | Array<string | number>
   onChange?: (value: string | number | Array<string | number> | undefined) => void
-  autocompleteClass?: string
+  relationClass?: string
   multiple?: boolean
 }
 
 export const PimcoreRelationWidget: React.FC<PimcoreRelationWidgetProps> = ({
   value,
   onChange,
-  autocompleteClass,
+  relationClass,
   multiple = false,
 }) => {
   const [allowedClasses, setAllowedClasses] = React.useState<string[] | undefined>(undefined)
@@ -44,14 +44,14 @@ export const PimcoreRelationWidget: React.FC<PimcoreRelationWidgetProps> = ({
   React.useEffect(() => {
     let cancelled = false
 
-    if (!autocompleteClass) {
+    if (!relationClass) {
       setAllowedClasses(undefined)
       return () => {
         cancelled = true
       }
     }
 
-    const resourceType = inferResourceType(autocompleteClass)
+    const resourceType = inferResourceType(relationClass)
     if (!resourceType) {
       setAllowedClasses(undefined)
       return () => {
@@ -79,7 +79,7 @@ export const PimcoreRelationWidget: React.FC<PimcoreRelationWidgetProps> = ({
     return () => {
       cancelled = true
     }
-  }, [autocompleteClass])
+  }, [relationClass])
 
   const stringIds = React.useMemo(() => {
     if (value == null) return undefined
@@ -90,7 +90,7 @@ export const PimcoreRelationWidget: React.FC<PimcoreRelationWidgetProps> = ({
 
   const [relationValue, handleChange, loading] = useRelationIds(
     stringIds,
-    autocompleteClass ?? 'Entity',
+    relationClass ?? 'Entity',
     'object'
   )
 
@@ -167,12 +167,12 @@ export const PimcoreRelationWidget: React.FC<PimcoreRelationWidgetProps> = ({
   )
 }
 
-const inferResourceType = (autocompleteClass: string): string | undefined => {
-  if (!autocompleteClass.startsWith('CoreShop') || autocompleteClass.length <= 'CoreShop'.length) {
+const inferResourceType = (relationClass: string): string | undefined => {
+  if (!relationClass.startsWith('CoreShop') || relationClass.length <= 'CoreShop'.length) {
     return undefined
   }
 
-  const name = autocompleteClass.slice('CoreShop'.length)
+  const name = relationClass.slice('CoreShop'.length)
   const snakeCase = name.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase()
 
   return `coreshop.${snakeCase}`

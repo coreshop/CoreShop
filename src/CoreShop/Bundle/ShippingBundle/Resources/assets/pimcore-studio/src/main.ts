@@ -17,7 +17,7 @@ import { CarrierManager } from './modules/carriers/CarrierManager'
 import { ShippingRuleManager } from './modules/shipping-rules/ShippingRuleManager'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { coreshopShippingServiceIds } from './modules/shipping-rules/service-ids'
-import { NestedCondition } from '@coreshop/core/src/modules/shared/rules/conditions'
+import { NestedCondition } from '@coreshop/rule/src/rules/conditions'
 import type {WidgetRegistry} from "@pimcore/studio-ui-bundle/modules/widget-manager";
 import {serviceIds} from "@pimcore/studio-ui-bundle/app";
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'

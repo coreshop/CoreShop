@@ -13,34 +13,15 @@
  */
 
 import React from 'react'
-import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
+import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { CountryDetail } from './api'
 
-export interface CountryFormProps {
-  data?: CountryDetail
-  onChange: (draft: Partial<CountryDetail>) => void
-  currentLocale?: string
-  locales?: string[]
-}
-
-/**
- * Country Form Component
- *
- * Uses SchemaForm pattern for composable, extensible form configuration.
- * Base form is defined in AddressBundle, extensions added by CoreBundle and others.
- */
-export const CountryForm: React.FC<CountryFormProps> = ({
-  data,
-  onChange,
-  currentLocale,
-}) => {
+export const CountryForm: React.FC<SchemaFormProps<CountryDetail>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<CountryDetail>
+        {...props}
         blockPrefix="coreshop_country"
-        data={data}
-        onChange={onChange}
-        currentLocale={currentLocale}
       />
     </div>
   )

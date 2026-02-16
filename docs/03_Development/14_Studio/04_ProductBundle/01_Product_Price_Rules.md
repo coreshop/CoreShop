@@ -322,7 +322,7 @@ Note: There are no `conditions/` or `actions/` subdirectories — all condition/
 ## Best Practices
 
 1. **Prefer PHP FormTypes**: Use the schema-driven approach for all new conditions/actions
-2. **Use appropriate Symfony form types**: `ChoiceType` for selects, `NumberType` for numbers, `AutocompleteType` for Pimcore relations
+2. **Use appropriate Symfony form types**: `ChoiceType` for selects, `NumberType` for numbers, `PimcoreRelationType` for Pimcore relations
 3. **Test with both rule types**: Ensure your extension works for both Product Price Rules and Product Specific Price Rules
 4. **Only write React for truly special UIs**: Recursive nesting, drag-and-drop, etc.
 5. **Test with the schema endpoint**: `GET /pimcore-studio/api/coreshop-studio-form/schema/{blockPrefix}` to verify your form generates correctly

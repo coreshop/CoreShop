@@ -1,5 +1,5 @@
 /**
- * CoreShop CoreBundle Studio Plugin
+ * CoreShop RuleBundle Studio Plugin
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -10,6 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-// Legacy manual rule conditions were removed in favor of schema-driven rendering.
-// Keep only custom conditions that are still intentionally hand-written.
 export { NestedCondition } from './NestedCondition'

@@ -11,31 +11,16 @@
  */
 
 import React from 'react'
-import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
+import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { ProductUnitDetail } from './api'
-import { renderEntityFormExtensions } from '@coreshop/resource/src/entities'
 
-export interface ProductUnitFormProps {
-  data?: ProductUnitDetail
-  onChange: (draft: Partial<ProductUnitDetail>) => void
-  currentLocale?: string
-  locales?: string[]
-}
-
-export const ProductUnitForm: React.FC<ProductUnitFormProps> = ({
-  data,
-  onChange,
-  currentLocale,
-}) => {
+export const ProductUnitForm: React.FC<SchemaFormProps<ProductUnitDetail>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<ProductUnitDetail>
+        {...props}
         blockPrefix="coreshop_product_unit"
-        data={data}
-        onChange={onChange}
-        currentLocale={currentLocale}
       />
-      {renderEntityFormExtensions('coreshop.product.product_unit.form', { data, onChange, currentLocale })}
     </div>
   )
 }

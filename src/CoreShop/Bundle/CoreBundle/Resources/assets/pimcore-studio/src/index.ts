@@ -10,6 +10,6 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-// All conditions and actions are now schema-generated from backend form types.
-// Only NestedCondition remains as a custom component (recursive structure).
-export { NestedCondition } from './modules/shared/rules/conditions'
+// NestedCondition has been moved to RuleBundle where it belongs.
+// Re-export for backwards compatibility.
+export { NestedCondition } from '@coreshop/rule'

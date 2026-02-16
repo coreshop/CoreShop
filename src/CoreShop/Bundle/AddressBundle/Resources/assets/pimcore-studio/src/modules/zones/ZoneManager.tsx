@@ -14,7 +14,7 @@ export const ZoneManager: React.FC = () => {
       api={ zoneApi }
       dragType='coreshop:zone'
       leftRootTitle={t('coreshop_zones', { defaultValue: 'Zones' })}
-      buildSavePayload={ (data) => ({ id: data.id, name: data.name, active: data.active }) }
+      buildSavePayload={ (data) => data }
       onAdd={ async () => await new Promise<number>((resolve) => {
         modal.input({
           title: t('coreshop_zone_add', { defaultValue: 'Add Zone' }),

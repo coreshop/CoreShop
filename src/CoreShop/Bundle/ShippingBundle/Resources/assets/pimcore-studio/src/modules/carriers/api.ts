@@ -25,7 +25,7 @@ export interface ShippingRuleAssignment {
   stopPropagation: boolean
 }
 
-export interface CarrierDetail {
+export interface CarrierDetail extends Record<string, any> {
   id?: number
   identifier: string
   name?: string // fallback name

@@ -20,6 +20,8 @@
     "react": "18.3.x",
     "react-dom": "18.3.x",
     "react-redux": "^9.0.4",
-    "zustand": "^5.0.7"
+    "zustand": "^5.0.7",
+    "@coreshop/rule": "file:../../../../RuleBundle/Resources/assets/pimcore-studio",
+    "@coreshop/studio-form": "*"
   }
 }

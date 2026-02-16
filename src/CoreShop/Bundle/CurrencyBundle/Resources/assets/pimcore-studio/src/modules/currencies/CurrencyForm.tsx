@@ -13,28 +13,15 @@
  */
 
 import React from 'react'
-import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
+import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { CurrencyDetail } from './api'
 
-export interface CurrencyFormProps {
-  data?: CurrencyDetail
-  onChange: (draft: Partial<CurrencyDetail>) => void
-  currentLocale?: string
-  locales?: string[]
-}
-
-export const CurrencyForm: React.FC<CurrencyFormProps> = ({
-  data,
-  onChange,
-  currentLocale,
-}) => {
+export const CurrencyForm: React.FC<SchemaFormProps<CurrencyDetail>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<CurrencyDetail>
+        {...props}
         blockPrefix="coreshop_currency"
-        data={data}
-        onChange={onChange}
-        currentLocale={currentLocale}
       />
     </div>
   )

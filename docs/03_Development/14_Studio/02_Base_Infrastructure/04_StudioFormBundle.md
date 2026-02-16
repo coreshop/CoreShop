@@ -166,10 +166,10 @@ import { PimcoreRelationWidget } from './PimcoreRelationWidget'
 
 const registry = container.get<WidgetRegistry>(widgetRegistryServiceId)
 
-registry.register('coreshop_autocomplete', (field) => ({
+registry.register('coreshop_pimcore_relation', (field) => ({
     component: PimcoreRelationWidget,
     props: {
-        autocompleteClass: field.extra?.autocomplete_class,
+        relationClass: field.extra?.relation_class,
         multiple: field.extra?.multiple ?? false,
     },
 }))
