@@ -184,13 +184,6 @@ services:
             - { name: form.type }
             - { name: coreshop.studio_form }
 
-    CoreShop\Bundle\IndexBundle\Form\Type\Getter\ObjectPropertyGetterFormType:
-        arguments:
-            - '%coreshop.form.type.index.getter.object_property.validation_groups%'
-        tags:
-            - { name: form.type }
-            - { name: coreshop.studio_form }
-
     CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ExpressionInterpreterFormType:
         arguments:
             - '%coreshop.form.type.index.interpreter.expression.validation_groups%'
