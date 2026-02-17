@@ -15,24 +15,20 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\FormBuilderInterface;
 
-final class TimespanConfigurationType extends AbstractType
+final class TimestampDateType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function getParent(): string
     {
-        $builder
-            ->add('dateFrom', NumberType::class)
-            ->add('dateTo', NumberType::class)
-        ;
+        return NumberType::class;
     }
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_product_quantity_price_rules_rule_condition_timespan';
+        return 'coreshop_timestamp_date';
     }
 }

@@ -26,7 +26,7 @@ import {
 } from './dynamic-types'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
 import { coreshopProductServiceIds } from './modules/product-price-rules/service-ids'
-import { NestedCondition, WeightCondition } from './modules/product-price-rules/conditions'
+import { NestedCondition } from './modules/product-price-rules/conditions'
 import { ProductPriceRuleManager } from './modules/product-price-rules/ProductPriceRuleManager'
 import { ProductUnitManager } from './modules/product-units/ProductUnitManager'
 
@@ -55,7 +55,6 @@ const plugin: IAbstractPlugin = {
 
         // Register Product Price Rule Conditions (ProductBundle-specific)
         conditionRegistry.register('nested', NestedCondition)
-        conditionRegistry.register('weight', WeightCondition)
         void actionRegistry
 
         // Register ProductSpecificPriceRule registries as singleton services
@@ -68,7 +67,6 @@ const plugin: IAbstractPlugin = {
 
         // Register Product Specific Price Rule Conditions (same as ProductPriceRules)
         specificConditionRegistry.register('nested', NestedCondition)
-        specificConditionRegistry.register('weight', WeightCondition)
         void specificActionRegistry
     },
 

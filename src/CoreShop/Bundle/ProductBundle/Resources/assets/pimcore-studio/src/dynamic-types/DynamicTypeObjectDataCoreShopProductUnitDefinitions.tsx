@@ -416,16 +416,39 @@ const UnitDefinitionsInner: React.FC<UnitDefinitionsInnerProps> = ({
           <div style={{ marginTop: 16 }}>
             <Space style={{ marginBottom: 8 }}>
               <Text strong>Additional Units</Text>
-              {!disabled && getAvailableOptions(undefined).length > 0 && (
-                <Button
-                  type="primary"
-                  size="small"
-                  icon={<PlusOutlined />}
-                  onClick={addAdditionalUnit}
-                >
-                  Add Unit
-                </Button>
-              )}
+              {!disabled && (() => {
+                const defaultUnitId = getUnitId(safeValue.defaultUnitDefinition?.unit)
+                const hasDefaultUnit = defaultUnitId !== undefined
+                const hasAvailableOptions = getAvailableOptions(undefined).length > 0
+
+                if (!hasDefaultUnit) {
+                  return (
+                    <Tooltip title="Please select a default unit first">
+                      <Button
+                        type="primary"
+                        size="small"
+                        icon={<PlusOutlined />}
+                        disabled
+                      >
+                        Add Unit
+                      </Button>
+                    </Tooltip>
+                  )
+                }
+
+                if (!hasAvailableOptions) return null
+
+                return (
+                  <Button
+                    type="primary"
+                    size="small"
+                    icon={<PlusOutlined />}
+                    onClick={addAdditionalUnit}
+                  >
+                    Add Unit
+                  </Button>
+                )
+              })()}
             </Space>
 
             {additionalUnits.length > 0 ? (

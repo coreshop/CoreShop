@@ -112,7 +112,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
         $bundles = $container->getParameter('kernel.bundles');
 
         if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
-            // Reuse Pimcore's relation adapters for CoreShop relation field types
             $container->prependExtensionConfig('pimcore_studio_backend', [
                 'data_object_data_adapter_mapping' => [
                     'Pimcore\\Bundle\\StudioBackendBundle\\DataObject\\Data\\Adapter\\ManyToOneRelationAdapter' => [

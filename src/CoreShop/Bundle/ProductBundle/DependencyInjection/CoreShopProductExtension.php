@@ -161,6 +161,9 @@ final class CoreShopProductExtension extends AbstractModelExtension implements P
         if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
             $container->prependExtensionConfig('pimcore_studio_backend', [
                 'data_object_data_adapter_mapping' => [
+                    'CoreShop\\Bundle\\ResourceBundle\\StudioBackend\\DataAdapter\\CoreShopSelectAdapter' => [
+                        'coreShopProductUnit',
+                    ],
                     'CoreShop\\Bundle\\ProductBundle\\StudioBackend\\DataAdapter\\ProductUnitDefinitionsAdapter' => [
                         'coreShopProductUnitDefinitions',
                     ],

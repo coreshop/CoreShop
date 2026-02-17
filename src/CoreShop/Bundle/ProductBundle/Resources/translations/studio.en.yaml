@@ -111,6 +111,7 @@ coreshop.product.attributes: 'Attributes'
 coreshop.product.allowed_attribute_groups: 'Allowed Attribute Groups'
 coreshop.product.store_values: 'Store Values'
 coreshop.product.maximal_quantity_to_order: 'Max to Order'
+coreshop.product.main_variant: 'Main Variant'
 
 # Studio v2
 coreshop_categories: 'Categories'

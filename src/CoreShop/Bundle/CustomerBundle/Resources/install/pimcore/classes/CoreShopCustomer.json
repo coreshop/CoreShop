@@ -314,7 +314,7 @@
                         "name": "groups",
                         "type": null,
                         "region": null,
-                        "title": "Groups",
+                        "title": "coreshop.customer.groups",
                         "width": null,
                         "height": null,
                         "collapsible": false,

@@ -13,12 +13,10 @@ export abstract class DynamicTypeObjectDataCoreShopSelect extends DynamicTypeObj
   getCachedOptions?(): SelectOption[] | null
 
   getObjectDataComponent(props: any): React.ReactElement {
-    const { name, noteditable, defaultFieldWidth, ...rest } = props
+    const { noteditable, defaultFieldWidth } = props
 
     return (
       <EntitySelect
-        value={rest.value}
-        onChange={rest.onChange}
         disabled={noteditable === true}
         style={{ width: defaultFieldWidth?.width ?? '100%' }}
         loadOptions={() => this.loadOptions()}

@@ -16,6 +16,7 @@ import { ActionRegistry, ConditionRegistry, coreshopRuleServiceIds } from './rul
 import { Input } from 'antd'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
+import { TimestampDatePicker } from './widgets/TimestampDatePicker'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-rule',
@@ -47,6 +48,10 @@ const plugin: IAbstractPlugin = {
         collectionPrefixesToHide.forEach((prefix) => {
             formWidgetRegistry.register(prefix, hiddenRuleCollectionWidget)
         })
+
+        formWidgetRegistry.register('coreshop_timestamp_date', () => ({
+            component: TimestampDatePicker,
+        }))
 
         moduleSystem.registerModule(RuleBundleIconModule)
     }

@@ -15,36 +15,28 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition;
 
+use CoreShop\Bundle\RuleBundle\Form\Type\TimestampDateType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class TimespanConfigurationType extends AbstractType
 {
-    /**
-     * @param string[] $validationGroups
-     */
-    public function __construct(
-        protected array $validationGroups,
-    ) {
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateFrom', NumberType::class, [
+            ->add('dateFrom', TimestampDateType::class, [
                 'label' => 'coreshop_condition_timespan_dateFrom',
-            ])//TODO: Mabye DateType?
-            ->add('dateTo', NumberType::class, [
+            ])
+            ->add('dateTo', TimestampDateType::class, [
                 'label' => 'coreshop_condition_timespan_dateTo',
-            ]) //TODO: Mabye DateType?
+            ])
         ;
     }
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_product_price_rule_condition_timespan';
+        return 'coreshop_rule_condition_timespan';
     }
 }

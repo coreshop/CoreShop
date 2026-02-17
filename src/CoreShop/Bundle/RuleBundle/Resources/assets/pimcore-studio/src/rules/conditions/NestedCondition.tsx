@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Form, Select, Button, Dropdown, Space, Empty, Card } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
@@ -34,6 +34,12 @@ export const NestedCondition: React.FC<ConditionComponentProps> = ({
   const conditionData = data as NestedConditionData
   const operator = conditionData.operator || 'and'
   const conditions = conditionData.conditions || []
+
+  useEffect(() => {
+    if (conditionData.operator === undefined) {
+      onChange({ ...conditionData, operator: 'and' })
+    }
+  }, [])
 
   // Use provided registryId or fall back to default
   const effectiveRegistryId = registryId || coreshopRuleServiceIds.conditionRegistry

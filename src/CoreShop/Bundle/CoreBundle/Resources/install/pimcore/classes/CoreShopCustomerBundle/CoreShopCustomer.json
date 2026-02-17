@@ -196,7 +196,7 @@
                                 "regex": "",
                                 "unique": false,
                                 "name": "newsletterToken",
-                                "title": "Newsletter Token",
+                                "title": "coreshop.customer.newsletter_token",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
