@@ -17,6 +17,7 @@ import React from 'react'
 import { Table, Button, Card, Empty, Modal } from 'antd'
 import { createStyles } from 'antd-style'
 import { MailOutlined, FileTextOutlined, MessageOutlined } from '@ant-design/icons'
+import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import { useTranslation } from 'react-i18next'
 import type { ColumnType } from 'antd/es/table'
@@ -35,7 +36,9 @@ interface EmailCorrespondence {
 export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
   const { sale } = useSaleContext()
-  const { styles } = useCorrespondenceTabStyles()
+  const { styles: sharedStyles } = useTableCardStyles()
+  const { styles: localStyles } = useCorrespondenceTabStyles()
+  const styles = { ...sharedStyles, ...localStyles }
   const [emailLogModal, setEmailLogModal] = React.useState<number | null>(null)
   const [iframeKey, setIframeKey] = React.useState(0)
 
@@ -51,9 +54,6 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
 
   // Open email document in Pimcore
   const openEmailDocument = (documentId: number) => {
-    // TODO: Implement Pimcore Document opening in Studio v2
-    // In legacy admin: pimcore.helpers.openDocument(documentId, 'email')
-    // Studio v2 needs API endpoint to open documents in the new editor
     alert(
       `${t('coreshop_mail_correspondence_open_document', { defaultValue: 'Open Email Document' })} (ID: ${documentId})\n\n` +
       t('coreshop_mail_correspondence_open_document_not_supported', {
@@ -65,7 +65,6 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
 
   // Open messaging thread
   const openMessagingThread = (threadId: number) => {
-    // Use CoreShop helper to open messaging thread
     if ((window as any).coreshop?.helpers?.openMessagingThread) {
       (window as any).coreshop.helpers.openMessagingThread(threadId)
     }
@@ -77,13 +76,14 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
       dataIndex: 'date',
       key: 'date',
       width: 180,
-      render: (date) => formatDateTime(date)
+      render: (date) => <span className={styles.dimText}>{formatDateTime(date)}</span>
     },
     {
       title: t('coreshop_mail_correspondence_subject', { defaultValue: 'Subject' }),
       dataIndex: 'subject',
       key: 'subject',
-      ellipsis: true
+      ellipsis: true,
+      render: (value) => <span style={{ fontWeight: 500 }}>{value}</span>
     },
     {
       title: t('coreshop_mail_correspondence_recipient', { defaultValue: 'Recipient' }),
@@ -95,7 +95,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
     {
       title: '',
       key: 'email-log',
-      width: 50,
+      width: 36,
       align: 'center',
       render: (_, record) => {
         if (!record['email-log']) return null
@@ -114,7 +114,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
     {
       title: '',
       key: 'document',
-      width: 50,
+      width: 36,
       align: 'center',
       render: (_, record) => {
         if (!record.document) return null
@@ -133,7 +133,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
     {
       title: '',
       key: 'thread',
-      width: 50,
+      width: 36,
       align: 'center',
       render: (_, record) => {
         if (!record.threadId) return null
@@ -154,7 +154,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
   return (
     <>
       <Card
-        title={t('coreshop_mail_correspondence', { defaultValue: 'Mail correspondence' })}
+        title={t('coreshop_mail_correspondence', { defaultValue: 'Mail Correspondence' })}
         className={styles.card}
       >
         {correspondence.length === 0 ? (
@@ -170,7 +170,6 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
             pagination={false}
             className={styles.table}
             size="small"
-            scroll={{ y: 360 }}
           />
         )}
       </Card>
@@ -201,18 +200,6 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
 }
 
 const useCorrespondenceTabStyles = createStyles(({ css, token }) => ({
-  card: css`
-    .ant-card-head {
-      background: ${token.colorBgContainer};
-      border-bottom: 1px solid ${token.colorBorderSecondary};
-    }
-  `,
-  table: css`
-    .ant-table-thead > tr > th {
-      background: ${token.colorBgContainer};
-      font-weight: 600;
-    }
-  `,
   modal: css`
     .ant-modal-body {
       padding: 0;
@@ -222,6 +209,7 @@ const useCorrespondenceTabStyles = createStyles(({ css, token }) => ({
     width: 100%;
     height: 500px;
     overflow: hidden;
+    border-radius: 0 0 ${token.borderRadiusLG}px ${token.borderRadiusLG}px;
   `,
   iframe: css`
     width: 100%;

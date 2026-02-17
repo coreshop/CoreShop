@@ -25,25 +25,26 @@ export const HeaderTab: React.FC<SaleTabProps> = () => {
 
   const currencyCode = getCurrencyCode(sale.currency)
 
-  // Render state info with color dot
-  const renderStateInfo = (label: string, state?: string | State) => {
+  // Render state pill badge
+  const renderStateBadge = (label: string, state?: string | State) => {
     const stateLabel = typeof state === 'object' ? state.label || state.state : state || 'N/A'
     const stateColor = typeof state === 'object' ? state.color : '#999'
 
     return (
-      <div className={styles.stateInfo}>
+      <div className={styles.stateCard}>
         <div className={styles.stateLabel}>{label}</div>
-        <div className={styles.stateValue}>
-          <span className={styles.colorDot} style={{ backgroundColor: stateColor }} />
+        <span
+          className={styles.statePill}
+          style={{ backgroundColor: stateColor }}
+        >
           {stateLabel}
-        </div>
+        </span>
       </div>
     )
   }
 
   const storeName = typeof sale.store === 'object' ? sale.store?.name : sale.store || '-'
 
-  // Get state info from correct field names (orderPaymentState, orderShippingState, orderInvoiceState)
   const orderStateInfo = (sale as any).orderState
   const paymentStateInfo = (sale as any).orderPaymentState || sale.paymentState
   const shippingStateInfo = (sale as any).orderShippingState || sale.shipmentState
@@ -51,39 +52,31 @@ export const HeaderTab: React.FC<SaleTabProps> = () => {
 
   return (
     <div className={styles.container}>
-      {/* First Row: States - Always shown */}
-      <div className={styles.row}>
-        <div className={styles.cell}>
-          {renderStateInfo('State', orderStateInfo)}
-        </div>
-        <div className={styles.cell}>
-          {renderStateInfo('Payment State', paymentStateInfo)}
-        </div>
-        <div className={styles.cell}>
-          {renderStateInfo('Shipping State', shippingStateInfo)}
-        </div>
-        <div className={styles.cell}>
-          {renderStateInfo('Invoice State', invoiceStateInfo)}
-        </div>
+      {/* States Row */}
+      <div className={styles.statesRow}>
+        {renderStateBadge('Order', orderStateInfo)}
+        {renderStateBadge('Payment', paymentStateInfo)}
+        {renderStateBadge('Shipping', shippingStateInfo)}
+        {renderStateBadge('Invoice', invoiceStateInfo)}
       </div>
 
-      {/* Second Row: Info */}
-      <div className={styles.row}>
-        <div className={styles.cell}>
-          <div className={styles.infoLabel}>Date</div>
-          <div className={styles.infoValueBig}>{formatDateTime(sale.saleDate)}</div>
+      {/* Key Metrics Row */}
+      <div className={styles.metricsRow}>
+        <div className={styles.metricCard}>
+          <div className={styles.metricLabel}>Date</div>
+          <div className={styles.metricValue}>{formatDateTime(sale.saleDate)}</div>
         </div>
-        <div className={styles.cell}>
-          <div className={styles.infoLabel}>Total</div>
-          <div className={styles.infoValueBig}>{formatCurrency(sale.totalGross, currencyCode)}</div>
+        <div className={styles.metricCardHighlight}>
+          <div className={styles.metricLabel}>Total</div>
+          <div className={styles.metricValueLarge}>{formatCurrency(sale.totalGross, currencyCode)}</div>
         </div>
-        <div className={styles.cell}>
-          <div className={styles.infoLabel}>Product(s)</div>
-          <div className={styles.infoValueBig}>{sale.items?.length || 0}</div>
+        <div className={styles.metricCard}>
+          <div className={styles.metricLabel}>Products</div>
+          <div className={styles.metricValue}>{sale.items?.length || 0}</div>
         </div>
-        <div className={styles.cell}>
-          <div className={styles.infoLabel}>Store</div>
-          <div className={styles.infoValueBig}>{storeName}</div>
+        <div className={styles.metricCard}>
+          <div className={styles.metricLabel}>Store</div>
+          <div className={styles.metricValue}>{storeName}</div>
         </div>
       </div>
     </div>
@@ -94,53 +87,94 @@ const useHeaderTabStyles = createStyles(({ css, token }) => ({
   container: css`
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 12px;
   `,
-  row: css`
-    display: flex;
-    gap: 0;
-  `,
-  cell: css`
-    flex: 1;
-    padding: 20px;
-    background: ${token.colorBgContainer};
-    border: 1px solid ${token.colorBorder};
-    border-right-width: 0;
+  statesRow: css`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
 
-    &:last-child {
-      border-right-width: 1px;
+    @container (min-width: 600px) {
+      grid-template-columns: repeat(4, 1fr);
     }
   `,
-  stateInfo: css`
+  stateCard: css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 12px;
+    background: ${token.colorBgContainer};
+    border-radius: ${token.borderRadiusLG}px;
+    border: 1px solid ${token.colorBorderSecondary};
+  `,
+  stateLabel: css`
+    font-size: 11px;
+    font-weight: 500;
+    color: ${token.colorTextTertiary};
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  `,
+  statePill: css`
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+    white-space: nowrap;
+  `,
+  metricsRow: css`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    @container (min-width: 600px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  `,
+  metricCard: css`
     display: flex;
     flex-direction: column;
     gap: 4px;
+    padding: 16px;
+    background: ${token.colorBgContainer};
+    border-radius: ${token.borderRadiusLG}px;
+    border: 1px solid ${token.colorBorderSecondary};
   `,
-  stateLabel: css`
-    font-size: 12px;
-    color: ${token.colorTextSecondary};
-  `,
-  stateValue: css`
+  metricCardHighlight: css`
     display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    background: ${token.colorBgContainer};
+    border-radius: ${token.borderRadiusLG}px;
+    border: 1px solid ${token.colorPrimary}40;
+    box-shadow: 0 0 0 1px ${token.colorPrimary}10;
+  `,
+  metricLabel: css`
+    font-size: 11px;
     font-weight: 500;
+    color: ${token.colorTextTertiary};
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   `,
-  colorDot: css`
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-  `,
-  infoLabel: css`
-    font-size: 12px;
-    color: ${token.colorTextSecondary};
-    margin-bottom: 4px;
-  `,
-  infoValueBig: css`
-    font-size: 18px;
+  metricValue: css`
+    font-size: 16px;
     font-weight: 600;
     color: ${token.colorText};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  `,
+  metricValueLarge: css`
+    font-size: 20px;
+    font-weight: 700;
+    color: ${token.colorText};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   `
 }))

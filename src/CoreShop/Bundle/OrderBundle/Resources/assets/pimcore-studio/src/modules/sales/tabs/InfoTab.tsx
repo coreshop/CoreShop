@@ -11,12 +11,12 @@
  */
 
 import React from 'react'
-import { Card, Table, Button, Space, Modal } from 'antd'
+import { Card, Button, Space, Modal } from 'antd'
 import { createStyles } from 'antd-style'
-import { FolderOpenOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import { FolderOpenOutlined, ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
+import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { SaleTabProps } from '../registry'
-import type { ColumnsType } from 'antd/es/table'
 import { useDataObjectHelper } from "@pimcore/studio-ui-bundle/modules/data-object"
 import { useSaleContext } from '../context/SaleActionsContext'
 
@@ -72,22 +72,6 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
     return String(transition).charAt(0).toUpperCase() + String(transition).slice(1)
   }
 
-  // Table columns
-  const columns: ColumnsType<StateHistoryItem> = [
-    {
-      title: t('coreshop_order_state', { defaultValue: 'Order State' }),
-      dataIndex: 'title',
-      key: 'title',
-      width: '50%'
-    },
-    {
-      title: t('coreshop_date', { defaultValue: 'Date' }),
-      dataIndex: 'date',
-      key: 'date',
-      width: '50%',
-    }
-  ]
-
   return (
     <Card
       title={t('coreshop_order_with_number', {
@@ -96,35 +80,25 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
       })}
       className={styles.card}
       extra={
-        <Space>
+        <Space size={6}>
           {/* Transition Buttons */}
           {availableTransitions.map((transition: any, index: number) => {
             const transitionName = transition.transition
             const transitionColor = typeof transition === 'object' ? transition.color : undefined
             const isCancel = transitionName === 'cancel'
 
-            // Cancel button: red background (#d83a3a)
-            // Other transitions: dark background (#524646) with colored left border
-            const buttonStyle = isCancel
-              ? {
-                  backgroundColor: '#d83a3a',
-                  borderColor: '#d83a3a',
-                  color: '#fff'
-                }
-              : transitionColor
-                ? {
-                    backgroundColor: '#524646',
-                    borderLeft: `10px solid ${transitionColor}`,
-                    color: '#fff'
-                  }
-                : undefined
-
             return (
               <Button
                 key={`${transitionName}-${index}`}
-                type="primary"
-                style={buttonStyle}
-                className={isCancel ? styles.cancelButton : undefined}
+                size="small"
+                className={isCancel ? styles.cancelButton : styles.transitionButton}
+                style={
+                  isCancel
+                    ? undefined
+                    : transitionColor
+                      ? { borderColor: transitionColor, color: transitionColor }
+                      : undefined
+                }
                 onClick={() => handleTransition(transition)}
               >
                 {getTransitionLabel(transition)}
@@ -136,58 +110,127 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
             type="text"
             icon={<FolderOpenOutlined />}
             onClick={handleOpenObject}
+            size="small"
             title={t('coreshop_open_data_object', { defaultValue: 'Open DataObject' })}
           />
         </Space>
       }
     >
-      <Table
-        columns={columns}
-        dataSource={statesHistory}
-        rowKey={(record, index) => `${record.title}-${index}`}
-        pagination={false}
-        size="small"
-        expandable={{
-          expandedRowRender: (record) => (
-            <div className={styles.expandedRow}>
-              {record.description || '-'}
-            </div>
-          ),
-          rowExpandable: (record) => !!record.description
-        }}
-      />
+      {statesHistory.length === 0 ? (
+        <div className={styles.emptyTimeline}>
+          {t('coreshop_no_state_history', { defaultValue: 'No state history available' })}
+        </div>
+      ) : (
+        <div className={styles.timelineContainer}>
+          {statesHistory.map((item, index) => {
+            const dateFormatted = typeof item.date === 'number'
+              ? formatDateTime(item.date)
+              : String(item.date)
+
+            return (
+              <div key={`${item.title}-${index}`} className={styles.timelineItem}>
+                <div className={styles.timelineDot} />
+                {index < statesHistory.length - 1 && <div className={styles.timelineLine} />}
+                <div className={styles.timelineContent}>
+                  <div className={styles.timelineHeader}>
+                    <span className={styles.timelineTitle}>{item.title}</span>
+                    <span className={styles.timelineDate}>{dateFormatted}</span>
+                  </div>
+                  {item.description && item.description !== item.title && (
+                    <div className={styles.timelineDescription}>{item.description}</div>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </Card>
   )
 }
 
 const useInfoTabStyles = createStyles(({ css, token }) => ({
-  card: css`
-    .ant-card-head {
-      background: ${token.colorBgContainer};
-      border-bottom: 1px solid ${token.colorBorderSecondary};
-    }
+  card: css``,
+  transitionButton: css`
+    font-weight: 500;
+    border-width: 1.5px;
 
-    .ant-card-body {
-      padding: 0;
+    &:hover {
+      opacity: 0.85;
     }
-
-    .ant-table {
-      .ant-table-thead > tr > th {
-        background: ${token.colorBgContainer};
-        font-weight: 600;
-      }
-    }
-  `,
-  expandedRow: css`
-    padding: 12px 24px;
-    background: ${token.colorBgLayout};
-    color: ${token.colorTextSecondary};
-    font-size: 13px;
   `,
   cancelButton: css`
+    color: ${token.colorError} !important;
+    border-color: ${token.colorError} !important;
+    font-weight: 500;
+
     &:hover {
-      background-color: #c72a2a !important;
-      border-color: #c72a2a !important;
+      color: #fff !important;
+      background-color: ${token.colorError} !important;
+      border-color: ${token.colorError} !important;
     }
+  `,
+  emptyTimeline: css`
+    padding: 24px;
+    text-align: center;
+    color: ${token.colorTextTertiary};
+    font-size: 13px;
+  `,
+  timelineContainer: css`
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 4px;
+  `,
+  timelineItem: css`
+    position: relative;
+    padding-left: 24px;
+    padding-bottom: 16px;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  `,
+  timelineDot: css`
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${token.colorPrimary};
+    z-index: 1;
+  `,
+  timelineLine: css`
+    position: absolute;
+    left: 3px;
+    top: 18px;
+    bottom: 0;
+    width: 2px;
+    background: ${token.colorBorderSecondary};
+  `,
+  timelineContent: css`
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  `,
+  timelineHeader: css`
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  `,
+  timelineTitle: css`
+    font-size: 13px;
+    font-weight: 500;
+    color: ${token.colorText};
+  `,
+  timelineDescription: css`
+    font-size: 12px;
+    color: ${token.colorTextTertiary};
+  `,
+  timelineDate: css`
+    font-size: 11px;
+    color: ${token.colorTextTertiary};
+    white-space: nowrap;
+    margin-left: auto;
   `
 }))

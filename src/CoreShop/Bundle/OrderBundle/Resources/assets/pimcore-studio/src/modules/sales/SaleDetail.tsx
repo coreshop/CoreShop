@@ -117,40 +117,77 @@ export const SaleDetail: React.FC<SaleDetailProps> = ({
 
 const useSaleDetailStyles = createStyles(({ css, token }) => ({
   container: css`
+    container-type: inline-size;
     display: flex;
     flex-direction: column;
     height: 100%;
     overflow: auto;
-    padding: 24px;
-    background: ${token.colorBgElevated};
+    padding: 8px 12px;
+    background: ${token.colorBgLayout};
+    gap: 16px;
   `,
   topArea: css`
-    margin-bottom: 20px;
+    margin-bottom: 0;
   `,
   columnsArea: css`
     display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
+    flex-direction: column;
+    gap: 16px;
+
+    @container (min-width: 800px) {
+      flex-direction: row;
+    }
   `,
   leftColumn: css`
-    flex: 0 0 50%;
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+
+    @container (min-width: 800px) {
+      flex: 1 1 50%;
+    }
   `,
   rightColumn: css`
-    flex: 0 0 50%;
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+
+    @container (min-width: 800px) {
+      flex: 1 1 50%;
+    }
   `,
   bottomArea: css`
     margin-bottom: 0;
   `,
   block: css`
-    /* Blocks are rendered with their own styling */
+    .ant-card {
+      border-radius: ${token.borderRadiusLG}px;
+      border: 1px solid ${token.colorBorderSecondary};
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+
+      .ant-card-head {
+        border-bottom: 1px solid ${token.colorBorderSecondary};
+        min-height: 44px;
+        padding: 0 16px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
+        color: ${token.colorTextSecondary};
+      }
+
+      .ant-card-head-title {
+        font-size: 13px;
+        padding: 10px 0;
+      }
+
+      .ant-card-extra {
+        padding: 6px 0;
+      }
+    }
   `,
   emptyState: css`
     display: flex;

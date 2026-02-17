@@ -13,7 +13,7 @@
 import React from 'react'
 import { Card, Empty, Button, Modal, Input, Checkbox, Space } from 'antd'
 import { createStyles } from 'antd-style'
-import { PlusOutlined, CloseCircleOutlined, MessageOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
@@ -146,6 +146,10 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
     })
   }
 
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+  }
+
   return (
     <>
       <Card
@@ -155,8 +159,9 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
           (
             <Button
               type="text"
-              icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
+              icon={<PlusOutlined />}
               onClick={() => setIsModalOpen(true)}
+              size="small"
               title={t('coreshop_order_comment_create', { defaultValue: 'Create Comment' })}
             />
           )
@@ -173,29 +178,32 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
           <div className={styles.commentsList}>
             {comments.map((comment) => (
               <div key={comment.id} className={styles.commentItem}>
-                <div className={styles.commentHeader}>
-                  <div className={styles.commentMeta}>
-                    <span className={styles.commentDate}>
-                      {formatDateTime(comment.date)} - {t('coreshop_order_comments_published_by', { defaultValue: 'published by' })} {comment.userName}
-                    </span>
+                <div className={styles.commentAvatar}>
+                  {comment.userName ? getInitials(comment.userName) : <UserOutlined />}
+                </div>
+                <div className={styles.commentBody}>
+                  <div className={styles.commentHeader}>
+                    <span className={styles.commentAuthor}>{comment.userName}</span>
+                    <span className={styles.commentDate}>{formatDateTime(comment.date)}</span>
+                    {!readonly && (
+                      <Button
+                        type="text"
+                        danger
+                        size="small"
+                        icon={<DeleteOutlined style={{ fontSize: 12 }} />}
+                        className={styles.deleteButton}
+                        onClick={() => handleDeleteComment(comment.id)}
+                      />
+                    )}
                   </div>
-                  {!readonly && (
-                    <Button
-                      type="text"
-                      danger
-                      size="small"
-                      icon={<CloseCircleOutlined />}
-                      onClick={() => handleDeleteComment(comment.id)}
-                    />
+                  <div className={styles.commentText}>{comment.text}</div>
+                  {comment.submitAsEmail && (
+                    <div className={styles.commentBadge}>
+                      <MailOutlined style={{ fontSize: 11, marginRight: 4 }} />
+                      {t('coreshop_order_comments_notification_applied', { defaultValue: 'Comment has been submitted to Customer' })}
+                    </div>
                   )}
                 </div>
-                <div className={styles.commentText}>{comment.text}</div>
-                {comment.submitAsEmail && (
-                  <div className={styles.commentBadge}>
-                    <MessageOutlined style={{ fontSize: 12, marginRight: 4 }} />
-                    {t('coreshop_order_comments_notification_applied', { defaultValue: 'Comment has been submitted to Customer' })}
-                  </div>
-                )}
               </div>
             ))}
           </div>
@@ -237,64 +245,97 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
 
 const useCommentsTabStyles = createStyles(({ css, token }) => ({
   card: css`
-    .ant-card-head {
-      background: ${token.colorBgContainer};
-      border-bottom: 1px solid ${token.colorBorderSecondary};
+    .ant-card-body {
+      padding: 0;
     }
   `,
   emptyState: css`
-    padding: 40px 20px;
+    padding: 24px 16px;
     text-align: center;
-    color: ${token.colorTextTertiary};
-    font-style: italic;
+
+    .ant-empty {
+      margin-block: 0;
+    }
   `,
   commentsList: css`
     display: flex;
     flex-direction: column;
     max-height: 400px;
     overflow-y: auto;
+    margin: -24px;
   `,
   commentItem: css`
-    padding: 16px;
-    border-bottom: 1px dashed ${token.colorBorder};
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid ${token.colorBorderSecondary};
+    transition: background 0.15s;
 
     &:last-child {
       border-bottom: none;
     }
+
+    &:hover {
+      background: ${token.colorBgLayout};
+
+      .ant-btn-dangerous {
+        opacity: 1;
+      }
+    }
+  `,
+  commentAvatar: css`
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: ${token.colorPrimary}12;
+    color: ${token.colorPrimary};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  `,
+  commentBody: css`
+    flex: 1;
+    min-width: 0;
   `,
   commentHeader: css`
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
   `,
-  commentMeta: css`
-    flex: 1;
+  commentAuthor: css`
+    font-size: 13px;
+    font-weight: 600;
+    color: ${token.colorText};
   `,
   commentDate: css`
-    font-size: 13px;
-    color: ${token.colorTextSecondary};
-    font-style: italic;
+    font-size: 11px;
+    color: ${token.colorTextTertiary};
+    flex: 1;
+  `,
+  deleteButton: css`
+    opacity: 0;
+    transition: opacity 0.15s;
   `,
   commentText: css`
-    font-size: 14px;
+    font-size: 13px;
     color: ${token.colorText};
-    margin-bottom: 8px;
     white-space: pre-wrap;
     word-wrap: break-word;
+    line-height: 1.5;
   `,
   commentBadge: css`
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    font-size: 12px;
-    color: #722ed1;
-    margin-top: 8px;
-  `,
-  commentBadgeAdmin: css`
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    color: ${token.colorTextSecondary};
-    margin-top: 8px;
+    font-size: 11px;
+    color: ${token.colorPrimary};
+    margin-top: 6px;
+    padding: 2px 8px;
+    background: ${token.colorPrimary}08;
+    border-radius: ${token.borderRadiusSM}px;
   `
 }))

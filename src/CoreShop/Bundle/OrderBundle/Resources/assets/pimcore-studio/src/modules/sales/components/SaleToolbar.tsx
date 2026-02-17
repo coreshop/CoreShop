@@ -30,9 +30,11 @@ export const SaleToolbar: React.FC = () => {
         icon={<ReloadOutlined />}
         onClick={onReload}
         type="default"
+        size="small"
       >
         Reload
       </Button>
+      <div className={styles.spacer} />
       {buttons.map(({ key, component: ButtonComponent }) => (
         <ButtonComponent key={key} />
       ))}
@@ -43,11 +45,18 @@ export const SaleToolbar: React.FC = () => {
 const useToolbarStyles = createStyles(({ css, token }) => ({
   toolbar: css`
     display: flex;
+    align-items: center;
     gap: 8px;
-    margin-bottom: 20px;
-    padding: 12px;
     background: ${token.colorBgContainer};
     border: 1px solid ${token.colorBorderSecondary};
-    border-radius: ${token.borderRadius}px;
+    border-radius: ${token.borderRadiusLG}px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    padding: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  `,
+  spacer: css`
+    flex: 1;
   `
 }))

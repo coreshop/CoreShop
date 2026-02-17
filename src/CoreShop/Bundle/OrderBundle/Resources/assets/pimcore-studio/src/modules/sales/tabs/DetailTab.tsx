@@ -14,9 +14,10 @@
  */
 
 import React from 'react'
-import { Table, Card } from 'antd'
+import { Table, Card, Tag, theme } from 'antd'
 import { createStyles } from 'antd-style'
 import { useTranslation } from 'react-i18next'
+import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
 import type { SaleTabProps } from '../registry'
@@ -56,7 +57,9 @@ interface SummaryItem {
 export const DetailTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
   const { sale } = useSaleContext()
-  const { styles } = useDetailTabStyles()
+  const { styles: sharedStyles } = useTableCardStyles()
+  const { styles: localStyles } = useDetailTabStyles()
+  const styles = { ...sharedStyles, ...localStyles }
 
   if (!sale) return null
 
@@ -75,7 +78,8 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       title: t('coreshop_product', { defaultValue: 'Product' }),
       dataIndex: 'productName',
       key: 'productName',
-      ellipsis: true
+      ellipsis: true,
+      render: (value) => <span style={{ fontWeight: 500 }}>{value}</span>
     },
     {
       title: t('coreshop_price_without_tax', { defaultValue: 'Price (excl.)' }),
@@ -83,7 +87,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'priceNet',
       width: 110,
       align: 'right',
-      render: (value) => formatCurrency(value, baseCurrencyCode)
+      render: (value) => <span className={styles.monoNum}>{formatCurrency(value, baseCurrencyCode)}</span>
     },
     {
       title: t('coreshop_price_with_tax', { defaultValue: 'Price (incl.)' }),
@@ -91,14 +95,15 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'price',
       width: 110,
       align: 'right',
-      render: (value) => formatCurrency(value, baseCurrencyCode)
+      render: (value) => <span className={styles.monoNum}>{formatCurrency(value, baseCurrencyCode)}</span>
     },
     {
-      title: t('coreshop_quantity', { defaultValue: 'Quantity' }),
+      title: t('coreshop_quantity', { defaultValue: 'Qty' }),
       dataIndex: 'quantity',
       key: 'quantity',
-      width: 60,
-      align: 'center'
+      width: 50,
+      align: 'center',
+      render: (value) => <span style={{ fontWeight: 600 }}>{value}</span>
     },
     {
       title: t('coreshop_unit', { defaultValue: 'Unit' }),
@@ -106,14 +111,14 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'unit',
       width: 70,
       align: 'center',
-      render: (value) => value || '–'
+      render: (value) => value || '\u2013'
     },
     {
       title: t('coreshop_total_without_tax', { defaultValue: 'Total (excl.)' }),
       key: 'totalNet',
       width: 110,
       align: 'right',
-      render: (_, record) => formatCurrency(record.total - record.totalTax, baseCurrencyCode)
+      render: (_, record) => <span className={styles.monoNum}>{formatCurrency(record.total - record.totalTax, baseCurrencyCode)}</span>
     },
     {
       title: t('coreshop_total', { defaultValue: 'Total' }),
@@ -121,7 +126,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'total',
       width: 110,
       align: 'right',
-      render: (value) => <strong>{formatCurrency(value, baseCurrencyCode)}</strong>
+      render: (value) => <strong className={styles.monoNum}>{formatCurrency(value, baseCurrencyCode)}</strong>
     }
   ]
 
@@ -133,7 +138,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'convertedPriceNet',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, currencyCode)
+      render: (value) => <span className={styles.monoNum}>{formatCurrency(value, currencyCode)}</span>
     })
 
     itemColumns.splice(4, 0, {
@@ -142,7 +147,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'convertedPrice',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, currencyCode)
+      render: (value) => <span className={styles.monoNum}>{formatCurrency(value, currencyCode)}</span>
     })
 
     itemColumns.splice(8, 0, {
@@ -150,10 +155,10 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'convertedTotalNet',
       width: 150,
       align: 'right',
-      render: (_, record) => formatCurrency(
+      render: (_, record) => <span className={styles.monoNum}>{formatCurrency(
         (record.convertedTotal || 0) - (record.convertedTotalTax || 0),
         currencyCode
-      )
+      )}</span>
     })
 
     itemColumns.splice(10, 0, {
@@ -162,7 +167,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       key: 'convertedTotal',
       width: 150,
       align: 'right',
-      render: (value) => formatCurrency(value, currencyCode)
+      render: (value) => <span className={styles.monoNum}>{formatCurrency(value, currencyCode)}</span>
     })
   }
 
@@ -172,14 +177,14 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       dataIndex: 'name',
       key: 'name',
       render: (value, record) => {
-        if (record.code) {
-          return (
-            <>
-              {value} (<em>{record.code}</em>)
-            </>
-          )
-        }
-        return value
+        return (
+          <span>
+            {value}
+            {record.code && (
+              <Tag color="blue" style={{ marginLeft: 8 }}>{record.code}</Tag>
+            )}
+          </span>
+        )
       }
     },
     {
@@ -188,7 +193,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       width: 150,
       align: 'right',
       render: (value) => (
-        <span style={{ fontWeight: 'bold' }}>
+        <span className={styles.discountValue}>
           {formatCurrency(value, baseCurrencyCode)}
         </span>
       )
@@ -202,7 +207,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       width: 150,
       align: 'right',
       render: (value) => (
-        <span style={{ fontWeight: 'bold' }}>
+        <span className={styles.discountValue}>
           {formatCurrency(value, currencyCode)}
         </span>
       )
@@ -212,76 +217,25 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
   // Format summary key to readable label
   const formatSummaryKey = (key: string, text?: string): string => {
     if (text) return text
-    // Convert snake_case to Title Case
     return key
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
   }
 
-  // Summary table columns
-  const summaryColumns: Array<ColumnType<SummaryItem>> = [
-    {
-      dataIndex: 'key',
-      key: 'key',
-      align: 'right',
-      render: (value, record) => {
-        const label = formatSummaryKey(value, record.text)
-        const isTotal = value === 'total' || value === 'payment_total'
-        return (
-          <span style={{
-            color: isTotal ? undefined : '#666',
-            fontWeight: isTotal ? 600 : 400
-          }}>
-            {label}
-          </span>
-        )
-      }
-    },
-    {
-      dataIndex: 'value',
-      key: 'value',
-      width: 120,
-      align: 'right',
-      render: (value, record) => {
-        const formatted = formatCurrency(value, baseCurrencyCode)
-        const isTotal = record.key === 'total' || record.key === 'payment_total'
-        return (
-          <span style={{
-            fontWeight: isTotal ? 700 : 500,
-            fontSize: isTotal ? 15 : 14
-          }}>
-            {formatted}
-          </span>
-        )
-      }
-    }
-  ]
+  const { token } = theme.useToken()
 
-  if (showConverted) {
-    summaryColumns.push({
-      dataIndex: 'convertedValue',
-      key: 'convertedValue',
-      width: 120,
-      align: 'right',
-      render: (value, record) => {
-        const formatted = formatCurrency(value, currencyCode)
-        const isTotal = record.key === 'total' || record.key === 'payment_total'
-        return (
-          <span style={{
-            fontWeight: isTotal ? 700 : 500,
-            fontSize: isTotal ? 15 : 14
-          }}>
-            {formatted}
-          </span>
-        )
-      }
-    })
-  }
+  const isTotalRow = (key: string) => key === 'total' || key === 'payment_total'
+
+  // Sort summary: regular items first, then totals last
+  const sortedSummary = React.useMemo(() => {
+    const regular = summary.filter(item => !isTotalRow(item.key))
+    const totals = summary.filter(item => isTotalRow(item.key))
+    return [...regular, ...totals]
+  }, [summary])
 
   return (
     <div className={styles.container}>
-      {/* Items Table with Summary */}
       <Card title={t('coreshop_products', { defaultValue: 'Products' })} className={styles.card}>
         <Table
           dataSource={details}
@@ -295,6 +249,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
         {/* Price Rules Section */}
         {priceRules.length > 0 && (
           <div className={styles.priceRulesSection}>
+            <div className={styles.sectionLabel}>{t('coreshop_price_rules', { defaultValue: 'Price Rules' })}</div>
             <Table
               dataSource={priceRules}
               columns={priceRuleColumns}
@@ -309,15 +264,25 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
         {/* Summary Section */}
         <div className={styles.summarySection}>
           <div className={styles.summaryWrapper}>
-            <Table
-              dataSource={summary}
-              columns={summaryColumns}
-              pagination={false}
-              className={styles.summaryTable}
-              size="small"
-              showHeader={false}
-              rowKey="key"
-            />
+            {sortedSummary.map((item) => {
+              const isTotal = isTotalRow(item.key)
+              const label = formatSummaryKey(item.key, item.text)
+              return (
+                <div key={item.key} className={`${styles.summaryRow} ${isTotal ? styles.summaryRowTotal : ''}`}>
+                  <span className={styles.summaryLabel} style={isTotal ? { fontWeight: 600, color: token.colorText } : undefined}>
+                    {label}
+                  </span>
+                  <span className={`${styles.summaryValue} ${styles.monoNum}`} style={isTotal ? { fontWeight: 700, fontSize: 15 } : undefined}>
+                    {formatCurrency(item.value, baseCurrencyCode)}
+                  </span>
+                  {showConverted && (
+                    <span className={`${styles.summaryValue} ${styles.monoNum}`} style={isTotal ? { fontWeight: 700, fontSize: 15 } : undefined}>
+                      {formatCurrency(item.convertedValue, currencyCode)}
+                    </span>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
       </Card>
@@ -326,69 +291,79 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
 }
 
 const useDetailTabStyles = createStyles(({ css, token }) => ({
-  container: css`
-    /* No extra padding needed - Card handles it */
-  `,
-  card: css`
-    .ant-card-head {
-      background: ${token.colorBgContainer};
-      border-bottom: 1px solid ${token.colorBorderSecondary};
-    }
-
-    .ant-card-body {
-      padding: 0;
-    }
-  `,
-  table: css`
-    .ant-table-thead > tr > th {
-      background: ${token.colorBgContainer};
-      font-weight: 600;
-    }
-
-    .ant-table {
-      margin-bottom: 0;
-    }
+  container: css``,
+  monoNum: css`
+    font-variant-numeric: tabular-nums;
   `,
   priceRulesSection: css`
-    margin-top: 16px;
-    padding-top: 16px;
+    padding: 12px 16px;
     border-top: 1px solid ${token.colorBorderSecondary};
+    background: ${token.colorBgLayout};
+  `,
+  sectionLabel: css`
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: ${token.colorTextTertiary};
+    margin-bottom: 8px;
   `,
   priceRulesTable: css`
     .ant-table-tbody > tr > td {
       border-bottom: none;
-      padding: 8px 16px;
+      padding: 6px 0;
+      background: transparent;
+    }
+
+    .ant-table {
+      background: transparent;
     }
   `,
+  discountValue: css`
+    font-weight: 600;
+    color: ${token.colorError};
+    font-variant-numeric: tabular-nums;
+  `,
   summarySection: css`
-    margin-top: 24px;
-    padding: 20px;
+    padding: 20px 24px;
     background: ${token.colorBgLayout};
     border-top: 1px solid ${token.colorBorderSecondary};
     display: flex;
     justify-content: flex-end;
   `,
   summaryWrapper: css`
-    min-width: 320px;
+    min-width: 300px;
     max-width: 400px;
+    width: 100%;
   `,
-  summaryTable: css`
-    background: transparent;
+  summaryRow: css`
+    display: flex;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px dashed ${token.colorBorderSecondary};
 
-    .ant-table {
-      background: transparent;
-    }
-
-    .ant-table-tbody > tr > td {
-      border-bottom: 1px dashed ${token.colorBorderSecondary};
-      padding: 10px 0;
-      background: transparent;
-    }
-
-    .ant-table-tbody > tr:last-child > td {
+    &:last-child {
       border-bottom: none;
-      padding-top: 14px;
-      border-top: 2px solid ${token.colorBorder};
     }
+  `,
+  summaryRowTotal: css`
+    border-bottom: none;
+    border-top: 2px solid ${token.colorBorder};
+    padding-top: 10px;
+    margin-top: 4px;
+  `,
+  summaryLabel: css`
+    flex: 1;
+    text-align: right;
+    padding-right: 20px;
+    font-size: 13px;
+    color: ${token.colorTextSecondary};
+  `,
+  summaryValue: css`
+    text-align: right;
+    font-size: 13px;
+    font-weight: 500;
+    color: ${token.colorText};
+    min-width: 100px;
   `
 }))

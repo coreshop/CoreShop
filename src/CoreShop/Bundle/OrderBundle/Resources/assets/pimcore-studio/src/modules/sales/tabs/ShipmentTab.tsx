@@ -14,6 +14,7 @@ import React from 'react'
 import { Table, Button, Card, Empty } from 'antd'
 import { createStyles } from 'antd-style'
 import { FolderOpenOutlined, PlusOutlined } from '@ant-design/icons'
+import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
@@ -54,7 +55,9 @@ interface Shipment {
 export const ShipmentTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
   const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
-  const { styles } = useShipmentTabStyles()
+  const { styles: sharedStyles } = useTableCardStyles()
+  const { styles: localStyles } = useShipmentTabStyles()
+  const styles = { ...sharedStyles, ...localStyles }
   const [stateChangeShipment, setStateChangeShipment] = React.useState<Shipment | null>(null)
   const [detailShipment, setDetailShipment] = React.useState<Shipment | null>(null)
 
@@ -79,55 +82,48 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
       dataIndex: 'shipmentDate',
       key: 'shipmentDate',
       width: 160,
-      render: (date) => formatDateTime(date)
+      render: (date) => <span className={styles.dimText}>{formatDateTime(date)}</span>
     },
     {
       title: t('coreshop_carrier', { defaultValue: 'Carrier' }),
       dataIndex: 'carrierName',
       key: 'carrierName',
       width: 140,
-      render: (carrier) => carrier || '–'
+      render: (carrier) => <span style={{ fontWeight: 500 }}>{carrier || '\u2013'}</span>
     },
     {
       title: t('coreshop_tracking_code', { defaultValue: 'Tracking' }),
       dataIndex: 'trackingCode',
       key: 'trackingCode',
       ellipsis: true,
-      render: (code) => code || '–'
+      render: (code) => code ? <code className={styles.trackingCode}>{code}</code> : '\u2013'
     },
     {
       title: t('coreshop_status', { defaultValue: 'Status' }),
       key: 'state',
-      width: 120,
+      width: 160,
       align: 'center',
       render: (_, record) => {
         const hasTransitions = record.transitions && record.transitions.length > 0
         return (
-          <Button
-            style={{
-              backgroundColor: record.stateInfo.color,
-              borderColor: record.stateInfo.color,
-              color: '#fff',
-              cursor: hasTransitions ? 'pointer' : 'default',
-              minWidth: 90
-            }}
-            size="small"
+          <span
+            className={`${styles.statusBadge} ${hasTransitions ? styles.statusBadgeClickable : ''}`}
+            style={{ backgroundColor: record.stateInfo.color }}
             onClick={() => {
               if (hasTransitions) {
                 setStateChangeShipment(record)
               }
             }}
-            disabled={!hasTransitions}
           >
             {record.stateInfo.label}
-          </Button>
+          </span>
         )
       }
     },
     {
       title: '',
       key: 'actions',
-      width: 50,
+      width: 40,
       align: 'center',
       render: (_, record) => (
         <Button
@@ -150,7 +146,8 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
           (sale as any).shipmentCreationAllowed && (
             <Button
               type="text"
-              icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
+              icon={<PlusOutlined />}
+              size="small"
               title={t('coreshop_order_add_shipment', { defaultValue: 'Add Shipment' })}
               onClick={() => openAction('createShipment')}
             />
@@ -167,7 +164,6 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
             pagination={false}
             className={styles.table}
             size="small"
-            scroll={{ y: 300 }}
           />
         )}
       </Card>
@@ -223,16 +219,12 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
 }
 
 const useShipmentTabStyles = createStyles(({ css, token }) => ({
-  card: css`
-    .ant-card-head {
-      background: ${token.colorBgContainer};
-      border-bottom: 1px solid ${token.colorBorderSecondary};
-    }
-  `,
-  table: css`
-    .ant-table-thead > tr > th {
-      background: ${token.colorBgContainer};
-      font-weight: 600;
-    }
+  trackingCode: css`
+    font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
+    font-size: 12px;
+    background: ${token.colorBgLayout};
+    padding: 2px 6px;
+    border-radius: ${token.borderRadiusSM}px;
+    color: ${token.colorText};
   `
 }))

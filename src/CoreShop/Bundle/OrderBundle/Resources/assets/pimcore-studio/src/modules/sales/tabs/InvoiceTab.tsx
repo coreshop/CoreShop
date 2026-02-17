@@ -12,8 +12,8 @@
 
 import React from 'react'
 import { Table, Button, Card, Empty } from 'antd'
-import { createStyles } from 'antd-style'
 import { FolderOpenOutlined, PlusOutlined } from '@ant-design/icons'
+import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime, formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
@@ -52,7 +52,7 @@ interface Invoice {
 export const InvoiceTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
   const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
-  const { styles } = useInvoiceTabStyles()
+  const { styles } = useTableCardStyles()
   const [stateChangeInvoice, setStateChangeInvoice] = React.useState<Invoice | null>(null)
   const [detailInvoice, setDetailInvoice] = React.useState<Invoice | null>(null)
 
@@ -76,7 +76,7 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
       dataIndex: 'invoiceDate',
       key: 'invoiceDate',
       width: 160,
-      render: (date) => formatDateTime(date)
+      render: (date) => <span className={styles.dimText}>{formatDateTime(date)}</span>
     },
     {
       title: t('coreshop_total_without_tax', { defaultValue: 'Total (excl.)' }),
@@ -84,7 +84,7 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
       key: 'totalNet',
       width: 130,
       align: 'right',
-      render: (amount) => formatCurrency(amount, currencyCode)
+      render: (amount) => <span style={{ fontVariantNumeric: 'tabular-nums' }}>{formatCurrency(amount, currencyCode)}</span>
     },
     {
       title: t('coreshop_total', { defaultValue: 'Total' }),
@@ -92,41 +92,34 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
       key: 'totalGross',
       width: 130,
       align: 'right',
-      render: (amount) => <strong>{formatCurrency(amount, currencyCode)}</strong>
+      render: (amount) => <strong style={{ fontVariantNumeric: 'tabular-nums' }}>{formatCurrency(amount, currencyCode)}</strong>
     },
     {
       title: t('coreshop_status', { defaultValue: 'Status' }),
       key: 'state',
-      width: 120,
+      width: 160,
       align: 'center',
       render: (_, record) => {
         const hasTransitions = record.transitions && record.transitions.length > 0
         return (
-          <Button
-            style={{
-              backgroundColor: record.stateInfo.color,
-              borderColor: record.stateInfo.color,
-              color: '#fff',
-              cursor: hasTransitions ? 'pointer' : 'default',
-              minWidth: 90
-            }}
-            size="small"
+          <span
+            className={`${styles.statusBadge} ${hasTransitions ? styles.statusBadgeClickable : ''}`}
+            style={{ backgroundColor: record.stateInfo.color }}
             onClick={() => {
               if (hasTransitions) {
                 setStateChangeInvoice(record)
               }
             }}
-            disabled={!hasTransitions}
           >
             {record.stateInfo.label}
-          </Button>
+          </span>
         )
       }
     },
     {
       title: '',
       key: 'actions',
-      width: 50,
+      width: 40,
       align: 'center',
       render: (_, record) => (
         <Button
@@ -149,7 +142,8 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
           (sale as any).invoiceCreationAllowed && (
             <Button
               type="text"
-              icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
+              icon={<PlusOutlined />}
+              size="small"
               title={t('coreshop_invoice_create_short', { defaultValue: 'Create Invoice' })}
               onClick={() => openAction('createInvoice')}
             />
@@ -166,7 +160,6 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
             pagination={false}
             className={styles.table}
             size="small"
-            scroll={{ y: 300 }}
           />
         )}
       </Card>
@@ -219,17 +212,3 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
   )
 }
 
-const useInvoiceTabStyles = createStyles(({ css, token }) => ({
-  card: css`
-    .ant-card-head {
-      background: ${token.colorBgContainer};
-      border-bottom: 1px solid ${token.colorBorderSecondary};
-    }
-  `,
-  table: css`
-    .ant-table-thead > tr > th {
-      background: ${token.colorBgContainer};
-      font-weight: 600;
-    }
-  `
-}))

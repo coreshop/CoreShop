@@ -14,6 +14,7 @@ import React from 'react'
 import { Table, Button, Card, Empty, Modal } from 'antd'
 import { createStyles } from 'antd-style'
 import { PlusOutlined, FolderOpenOutlined } from '@ant-design/icons'
+import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { useTranslation } from 'react-i18next'
 import { formatDate, formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
@@ -47,7 +48,9 @@ interface Payment {
 export const PaymentTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
   const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
-  const { styles } = usePaymentTabStyles()
+  const { styles: sharedStyles } = useTableCardStyles()
+  const { styles: localStyles } = usePaymentTabStyles()
+  const styles = { ...sharedStyles, ...localStyles }
   const [selectedPayment, setSelectedPayment] = React.useState<Payment | null>(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = React.useState(false)
   const [stateChangePayment, setStateChangePayment] = React.useState<Payment | null>(null)
@@ -78,21 +81,22 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
       title: t('coreshop_payment_number', { defaultValue: 'Transaction' }),
       dataIndex: 'paymentNumber',
       key: 'paymentNumber',
-      ellipsis: true
+      ellipsis: true,
+      render: (value) => <span style={{ fontWeight: 500 }}>{value}</span>
     },
     {
       title: t('coreshop_date', { defaultValue: 'Date' }),
       dataIndex: 'datePayment',
       key: 'datePayment',
-      width: 100,
-      render: (date) => formatDate(date)
+      width: 120,
+      render: (date) => <span className={styles.dimText}>{formatDate(date)}</span>
     },
     {
       title: t('coreshop_paymentProvider', { defaultValue: 'Provider' }),
       dataIndex: 'provider',
       key: 'provider',
       width: 120,
-      render: (provider) => provider || '–'
+      render: (provider) => provider || '\u2013'
     },
     {
       title: t('coreshop_amount', { defaultValue: 'Amount' }),
@@ -100,41 +104,34 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
       key: 'amount',
       width: 110,
       align: 'right',
-      render: (amount) => <strong>{formatCurrency(amount, currencyCode)}</strong>
+      render: (amount) => <strong style={{ fontVariantNumeric: 'tabular-nums' }}>{formatCurrency(amount, currencyCode)}</strong>
     },
     {
       title: t('coreshop_status', { defaultValue: 'Status' }),
       key: 'state',
-      width: 110,
+      width: 150,
       align: 'center',
       render: (_, record) => {
         const hasTransitions = record.transitions && record.transitions.length > 0
         return (
-          <Button
-            style={{
-              backgroundColor: record.stateInfo.color,
-              borderColor: record.stateInfo.color,
-              color: '#fff',
-              cursor: hasTransitions ? 'pointer' : 'default',
-              minWidth: 80
-            }}
-            size="small"
+          <span
+            className={`${styles.statusBadge} ${hasTransitions ? styles.statusBadgeClickable : ''}`}
+            style={{ backgroundColor: record.stateInfo.color }}
             onClick={() => {
               if (hasTransitions) {
                 setStateChangePayment(record)
               }
             }}
-            disabled={!hasTransitions}
           >
             {record.stateInfo.label}
-          </Button>
+          </span>
         )
       }
     },
     {
       title: '',
       key: 'actions',
-      width: 50,
+      width: 40,
       align: 'center',
       render: (_, record) => (
         <Button
@@ -151,13 +148,14 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
   return (
     <>
       <Card
-        title={t('coreshop_payments', { defaultValue: 'Payment(s)' })}
+        title={t('coreshop_payments', { defaultValue: 'Payments' })}
         className={styles.card}
         extra={
           (sale as any).paymentCreationAllowed && (
             <Button
               type="text"
-              icon={<PlusOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
+              icon={<PlusOutlined />}
+              size="small"
               title={t('coreshop_order_add_payment', { defaultValue: 'Add Payment' })}
               onClick={() => openAction('createPayment')}
             />
@@ -174,7 +172,6 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
             pagination={false}
             className={styles.table}
             size="small"
-            scroll={{ y: 300 }}
           />
         )}
       </Card>
@@ -197,7 +194,7 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
         {selectedPayment && (
           <div className={styles.detailContent}>
             <div className={styles.detailRow}>
-              <div className={styles.detailLabel}>{t('coreshop_date', { defaultValue: 'Date' })}:</div>
+              <div className={styles.detailLabel}>{t('coreshop_date', { defaultValue: 'Date' })}</div>
               <div className={styles.detailValue}>
                 {new Date(selectedPayment.datePayment * 1000).toLocaleString('de-DE', {
                   day: '2-digit',
@@ -210,17 +207,17 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
             </div>
 
             <div className={styles.detailRow}>
-              <div className={styles.detailLabel}>{t('coreshop_payment_number', { defaultValue: 'Transaction Number' })}:</div>
+              <div className={styles.detailLabel}>{t('coreshop_payment_number', { defaultValue: 'Transaction Number' })}</div>
               <div className={styles.detailValue}>{selectedPayment.paymentNumber}</div>
             </div>
 
             <div className={styles.detailRow}>
-              <div className={styles.detailLabel}>{t('coreshop_paymentProvider', { defaultValue: 'Payment Provider' })}:</div>
+              <div className={styles.detailLabel}>{t('coreshop_paymentProvider', { defaultValue: 'Payment Provider' })}</div>
               <div className={styles.detailValue}>{selectedPayment.provider}</div>
             </div>
 
             <div className={styles.detailRow}>
-              <div className={styles.detailLabel}>{t('coreshop_amount', { defaultValue: 'Amount' })}:</div>
+              <div className={styles.detailLabel}>{t('coreshop_amount', { defaultValue: 'Amount' })}</div>
               <div className={styles.detailValue}>{selectedPayment.amount / 100}</div>
             </div>
 
@@ -302,25 +299,13 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
 }
 
 const usePaymentTabStyles = createStyles(({ css, token }) => ({
-  card: css`
-    .ant-card-head {
-      background: ${token.colorBgContainer};
-      border-bottom: 1px solid ${token.colorBorderSecondary};
-    }
-  `,
-  table: css`
-    .ant-table-thead > tr > th {
-      background: ${token.colorBgContainer};
-      font-weight: 600;
-    }
-  `,
   detailContent: css`
-    padding: 16px 0;
+    padding: 8px 0;
   `,
   detailRow: css`
     display: flex;
-    padding: 12px 0;
-    border-bottom: 1px solid ${token.colorBorder};
+    padding: 10px 0;
+    border-bottom: 1px solid ${token.colorBorderSecondary};
 
     &:last-of-type {
       border-bottom: none;
@@ -328,24 +313,29 @@ const usePaymentTabStyles = createStyles(({ css, token }) => ({
   `,
   detailLabel: css`
     width: 180px;
+    font-size: 13px;
     font-weight: 500;
     color: ${token.colorTextSecondary};
     flex-shrink: 0;
   `,
   detailValue: css`
     flex: 1;
+    font-size: 13px;
     color: ${token.colorText};
   `,
   detailsHeader: css`
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 600;
-    margin: 24px 0 12px 0;
-    color: ${token.colorText};
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 20px 0 10px 0;
+    color: ${token.colorTextSecondary};
   `,
   detailRowBody: css`
     padding: 12px;
     background: ${token.colorBgLayout};
     white-space: normal;
     word-wrap: break-word;
+    border-radius: ${token.borderRadius}px;
   `
 }))

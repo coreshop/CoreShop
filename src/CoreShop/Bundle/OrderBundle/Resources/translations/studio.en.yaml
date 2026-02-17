@@ -587,6 +587,8 @@ coreshop_cart_pricerules: 'Price Rules'
 coreshop_header: 'Header'
 coreshop_name_required: 'Name is required'
 coreshop_order_info: 'Order Information'
+coreshop_status: 'Status'
+coreshop_customer_since: 'Customer since'
 coreshop_prices_are_gross: 'Prices include tax'
 
 # Additional class definition translations
