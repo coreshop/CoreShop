@@ -13,8 +13,10 @@
  */
 
 import React from 'react'
-import { Menu, Modal, message, Spin } from 'antd'
+import { Menu, Modal, Spin } from 'antd'
 import { ExclamationCircleOutlined, FolderOpenOutlined, ThunderboltOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import { useTranslation } from 'react-i18next'
 import type { MenuProps } from 'antd'
 import { useGridActions } from '../hooks'
@@ -57,7 +59,7 @@ export const GridActionsMenu: React.FC<GridActionsMenuProps> = ({
   const { t } = useTranslation()
   const { actions, loading, executing, executeAction } = useGridActions(listType)
   const [modal, contextHolder] = Modal.useModal()
-  const [messageApi, messageHolder] = message.useMessage()
+  const messageApi = useMessage()
 
   const handleOpenSelected = (): void => {
     selectedIds.forEach(id => openHandler(id))
@@ -91,7 +93,7 @@ export const GridActionsMenu: React.FC<GridActionsMenuProps> = ({
           void messageApi.success(result.message || t('coreshop_grid_action_success', { defaultValue: 'Action completed successfully' }))
           onActionComplete()
         } else {
-          void messageApi.error(result.message || t('coreshop_grid_action_error', { defaultValue: 'Action failed' }))
+          void messageApi.error(renderApiError(result.message || t('coreshop_grid_action_error', { defaultValue: 'Action failed' })))
         }
 
         onClose?.()
@@ -161,7 +163,6 @@ export const GridActionsMenu: React.FC<GridActionsMenuProps> = ({
   return (
     <>
       {contextHolder}
-      {messageHolder}
       <Menu
         items={menuItems}
         style={{ minWidth: 200 }}

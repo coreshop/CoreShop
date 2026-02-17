@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { storeApi } from '@coreshop/store/src/modules/stores/api'
 import { settingsApi, type ConfigurationData } from './api'
 import { StoreSettingsForm } from './StoreSettingsForm'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 interface StoreInfo {
   id: number
@@ -50,7 +50,7 @@ export const SettingsManager: React.FC = () => {
         setStores(storeList.map(s => ({ id: s.id!, name: s.name ?? `Store #${s.id}` })))
         setConfigData(config)
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, 'Failed to load settings'))
+        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load settings')))
       } finally {
         setLoading(false)
       }
@@ -77,7 +77,7 @@ export const SettingsManager: React.FC = () => {
       await settingsApi.saveAll(configData)
       void messageApi.success(t('coreshop_settings_save_success', { defaultValue: 'Settings saved successfully' }))
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to save settings'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to save settings')))
     } finally {
       setSaving(false)
     }

@@ -2,7 +2,7 @@ import React from 'react'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import type { EntityListItem } from '../types'
 import { EntityApi } from '../api'
-import { getErrorMessage } from '../../utils/error-handling'
+import { getErrorMessage, renderApiError } from '../../utils/error-handling'
 
 export interface EntityTab<T> {
   id: number
@@ -41,7 +41,7 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
         return { ...tab, title: resolveTitle(li, tab.data) }
       }))
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to load list'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load list')))
     } finally {
       setLoadingList(false)
     }
@@ -92,7 +92,7 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
       const li = list.find(i => i.id === id)
       updateTab(id, { data: res.data, dirty: false, loading: false, title: resolveTitle(li, res.data) })
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to load'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load')))
       updateTab(id, { loading: false })
     }
   }
@@ -108,7 +108,7 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
       await loadList()
       void messageApi.success('Saved successfully')
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to save'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to save')))
     } finally {
       updateTab(id, { loading: false })
     }
@@ -125,7 +125,7 @@ export function useEntityTabs<TDetail extends Record<string, any>>({ api, getTit
       forceCloseTab(id)
       void messageApi.success('Deleted successfully')
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to delete'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to delete')))
     }
   }
 

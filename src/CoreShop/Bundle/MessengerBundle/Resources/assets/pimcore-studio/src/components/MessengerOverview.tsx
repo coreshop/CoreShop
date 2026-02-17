@@ -23,7 +23,6 @@ import {
   Alert,
   Modal,
   Popconfirm,
-  message,
   Typography
 } from 'antd'
 import {
@@ -37,6 +36,8 @@ import {
   RedoOutlined
 } from '@ant-design/icons'
 import { createStyles } from 'antd-style'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import { useTranslation } from 'react-i18next'
 import { ColumnsType } from 'antd/es/table'
 import { messengerService } from '../services/messenger'
@@ -71,6 +72,7 @@ export const MessengerOverview: React.FC = () => {
   const [errorModalOpen, setErrorModalOpen] = useState(false)
   const [processingActions, setProcessingActions] = useState<Set<string>>(new Set())
   const { styles, theme } = useOverviewStyles()
+  const messageApi = useMessage()
   const { t } = useTranslation()
 
   const loadQueues = useCallback(async () => {
@@ -212,11 +214,11 @@ export const MessengerOverview: React.FC = () => {
 
     try {
       await messengerService.deleteFailedMessage(queue.failureReceiver, msg.id)
-      message.success(t('coreshop_messenger_delete_success', { defaultValue: 'Message deleted' }))
+      void messageApi.success(t('coreshop_messenger_delete_success', { defaultValue: 'Message deleted' }))
       loadExpandedData(queue)
       loadQueues()
     } catch {
-      message.error(t('coreshop_messenger_delete_error', { defaultValue: 'Failed to delete' }))
+      void messageApi.error(renderApiError(t('coreshop_messenger_delete_error', { defaultValue: 'Failed to delete' })))
     } finally {
       setProcessingActions(prev => {
         const newSet = new Set(prev)
@@ -234,11 +236,11 @@ export const MessengerOverview: React.FC = () => {
 
     try {
       await messengerService.retryFailedMessage(queue.failureReceiver, msg.id)
-      message.success(t('coreshop_messenger_retry_success', { defaultValue: 'Retry initiated' }))
+      void messageApi.success(t('coreshop_messenger_retry_success', { defaultValue: 'Retry initiated' }))
       loadExpandedData(queue)
       loadQueues()
     } catch {
-      message.error(t('coreshop_messenger_retry_error', { defaultValue: 'Failed to retry' }))
+      void messageApi.error(renderApiError(t('coreshop_messenger_retry_error', { defaultValue: 'Failed to retry' })))
     } finally {
       setProcessingActions(prev => {
         const newSet = new Set(prev)

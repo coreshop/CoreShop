@@ -10,7 +10,6 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
@@ -38,8 +37,6 @@ import {
 import { saleWidgetRestorer } from './modules/sales/SaleWidgetRestorer'
 import { SaleTabRegistry } from './modules/sales/registry'
 import { serviceIds as saleServiceIds } from './modules/sales/service-ids'
-import { ModalFieldExtensionRegistry } from './modules/sales/extensions'
-import { extensionServiceIds } from './modules/sales/extensions/service-ids'
 import {
   HeaderTab,
   CustomerTab,
@@ -109,9 +106,6 @@ const plugin: IAbstractPlugin = {
         // ============================================
         // Create and bind sale tab registry
         container.bind(saleServiceIds.saleTabRegistry).to(SaleTabRegistry).inSingletonScope()
-
-        // Create and bind modal field extension registry
-        container.bind(extensionServiceIds.modalFieldExtensionRegistry).to(ModalFieldExtensionRegistry).inSingletonScope()
 
         // Get registry
         const tabRegistry = container.get<SaleTabRegistry>(saleServiceIds.saleTabRegistry)

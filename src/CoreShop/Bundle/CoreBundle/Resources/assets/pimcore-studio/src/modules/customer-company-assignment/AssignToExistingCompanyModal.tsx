@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import { Modal, Button, Form, Spin, Result, Alert } from 'antd'
+import { Modal, Button, Spin, Result, Alert } from 'antd'
 import { CheckOutlined, UserOutlined, BankOutlined } from '@ant-design/icons'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
@@ -15,9 +15,9 @@ import { container } from '@pimcore/studio-ui-bundle'
 import { useElementSelector, SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
-import { AssignmentForm } from './AssignmentForm'
+import { AssignmentForm, type AssignmentFormValues } from './AssignmentForm'
 import { customerCompanyApi, type EntityDetails, type ValidationData } from './api'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   content: css`
@@ -32,6 +32,11 @@ const useStyles = createStyles(({ css }) => ({
 }))
 
 type Step = 'select-customer' | 'select-company' | 'form' | 'success'
+
+const defaultFormData: AssignmentFormValues = {
+  addressAssignmentType: '',
+  addressAccessType: 'own_only',
+}
 
 export interface AssignToExistingCompanyModalProps {
   open: boolean
@@ -49,7 +54,6 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
   const { t } = useTranslation()
   const { styles } = useStyles()
   const messageApi = useMessage()
-  const [form] = Form.useForm()
 
   const [step, setStep] = React.useState<Step>(initialCustomerId ? 'select-company' : 'select-customer')
   const [loading, setLoading] = React.useState(false)
@@ -60,6 +64,8 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
   const [companyId, setCompanyId] = React.useState<number | null>(null)
   const [companyData, setCompanyData] = React.useState<EntityDetails | null>(null)
   const [validationData, setValidationData] = React.useState<ValidationData | null>(null)
+
+  const [formData, setFormData] = React.useState<AssignmentFormValues>({ ...defaultFormData })
 
   const [allowedCustomerClasses, setAllowedCustomerClasses] = React.useState<string[]>([])
   const [allowedCompanyClasses, setAllowedCompanyClasses] = React.useState<string[]>([])
@@ -80,7 +86,7 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
         setAllowedCustomerClasses(customerClasses)
         setAllowedCompanyClasses(companyClasses)
       } catch (err) {
-        void messageApi.error(getErrorMessage(err, 'Failed to load allowed classes'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed classes')))
         setAllowedCustomerClasses(['CoreShopCustomer'])
         setAllowedCompanyClasses(['CoreShopCompany'])
       }
@@ -107,10 +113,10 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
       setCompanyId(null)
       setCompanyData(null)
       setValidationData(null)
-      form.resetFields()
+      setFormData({ ...defaultFormData })
     }
     previousOpenRef.current = open
-  }, [open, initialCustomerId, form])
+  }, [open, initialCustomerId])
 
   const loadCustomerDetails = async (id: number): Promise<void> => {
     setLoading(true)
@@ -121,10 +127,10 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
         setCustomerData(response.data)
         setStep('select-company')
       } else {
-        void messageApi.error(response.message ?? 'Failed to load customer details')
+        void messageApi.error(renderApiError(response.message ?? 'Failed to load customer details'))
       }
     } catch (error) {
-      void messageApi.error('Failed to load customer details')
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer details')))
     } finally {
       setLoading(false)
     }
@@ -147,10 +153,10 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
         )
         setStep('select-company')
       } else {
-        void messageApi.error(response.message ?? 'Failed to load customer details')
+        void messageApi.error(renderApiError(response.message ?? 'Failed to load customer details'))
       }
     } catch (error) {
-      void messageApi.error('Failed to load customer details')
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer details')))
     } finally {
       setLoading(false)
     }
@@ -168,10 +174,10 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
           await validateAssignment(custId, id)
         }
       } else {
-        void messageApi.error(response.message ?? 'Failed to load company details')
+        void messageApi.error(renderApiError(response.message ?? 'Failed to load company details'))
       }
     } catch (error) {
-      void messageApi.error('Failed to load company details')
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load company details')))
     } finally {
       setLoading(false)
     }
@@ -225,13 +231,18 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
       const response = await customerCompanyApi.validateAssignment(custId, compId)
       if (response.success && response.data) {
         setValidationData(response.data)
+        const hasAddresses = response.data.addresses.length > 0
+        setFormData({
+          ...defaultFormData,
+          addressAssignmentType: hasAddresses ? '' : 'keep',
+        })
         setStep('form')
       } else {
-        void messageApi.error(response.message ?? 'Customer cannot be assigned to this company')
+        void messageApi.error(renderApiError(response.message ?? 'Customer cannot be assigned to this company'))
         resetState()
       }
     } catch (error) {
-      void messageApi.error('Failed to validate assignment')
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to validate assignment')))
       resetState()
     } finally {
       setLoading(false)
@@ -239,15 +250,17 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
   }
 
   const handleSubmit = async (): Promise<void> => {
+    if (!customerId || !companyId) return
+    if (!formData.addressAssignmentType) {
+      void messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
+      return
+    }
+
+    setSubmitting(true)
     try {
-      const values = await form.validateFields()
-      if (!customerId || !companyId) return
-
-      setSubmitting(true)
-
       const response = await customerCompanyApi.dispatchExistingAssignment(customerId, companyId, {
-        addressAssignmentType: values.addressAssignmentType,
-        addressAccessType: values.addressAccessType,
+        addressAssignmentType: formData.addressAssignmentType,
+        addressAccessType: formData.addressAccessType,
       })
 
       if (response.success) {
@@ -272,13 +285,10 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
 
         onSuccess?.()
       } else {
-        void messageApi.error(response.message ?? 'Failed to assign customer to company')
+        void messageApi.error(renderApiError(response.message ?? 'Failed to assign customer to company'))
       }
     } catch (error) {
-      if ((error as any)?.errorFields) {
-        return
-      }
-      void messageApi.error('Failed to submit assignment')
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to submit assignment')))
     } finally {
       setSubmitting(false)
     }
@@ -291,7 +301,7 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
     setCompanyId(null)
     setCompanyData(null)
     setValidationData(null)
-    form.resetFields()
+    setFormData({ ...defaultFormData })
   }
 
   const handleClose = (): void => {
@@ -368,16 +378,16 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
 
     return (
       <div className={styles.content}>
-        <Form form={form} layout="vertical">
-          <AssignmentForm
-            customerId={customerId!}
-            customerName={customerData?.name ?? ''}
-            companyId={companyId!}
-            companyName={companyData?.name ?? ''}
-            addresses={validationData?.addresses ?? []}
-            isNewCompany={false}
-          />
-        </Form>
+        <AssignmentForm
+          customerId={customerId!}
+          customerName={customerData?.name ?? ''}
+          companyId={companyId!}
+          companyName={companyData?.name ?? ''}
+          addresses={validationData?.addresses ?? []}
+          isNewCompany={false}
+          formData={formData}
+          onFormChange={setFormData}
+        />
       </div>
     )
   }

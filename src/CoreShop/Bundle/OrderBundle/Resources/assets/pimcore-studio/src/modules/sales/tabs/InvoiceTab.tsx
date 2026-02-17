@@ -166,6 +166,7 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
             pagination={false}
             className={styles.table}
             size="small"
+            scroll={{ y: 300 }}
           />
         )}
       </Card>

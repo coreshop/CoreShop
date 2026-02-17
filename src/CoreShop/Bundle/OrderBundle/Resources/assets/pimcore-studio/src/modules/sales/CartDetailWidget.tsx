@@ -13,6 +13,7 @@
 import React from 'react'
 import { Spin } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import { SaleDetail } from './SaleDetail'
 import type { Sale } from './types'
 
@@ -67,10 +68,10 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
       if (data) {
         setCart(data)
       } else {
-        void messageApi.error('Failed to load cart data')
+        void messageApi.error(renderApiError('Failed to load cart data'))
       }
     } catch (error) {
-      void messageApi.error('Error loading cart')
+      void messageApi.error(renderApiError('Error loading cart'))
     } finally {
       setLoading(false)
     }
@@ -100,7 +101,7 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
       void messageApi.success('Cart updated successfully')
       await loadCart()
     } catch (error) {
-      void messageApi.error('Failed to save changes')
+      void messageApi.error(renderApiError('Failed to save changes'))
       await loadCart()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

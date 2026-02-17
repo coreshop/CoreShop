@@ -18,7 +18,7 @@ import { Card, Button, Typography, Spin, Space } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { useFormSchema, DynamicForm, sectionFilterDecorator } from '@coreshop/studio-form'
 import type { FormDecorator } from '@coreshop/studio-form'
 import { orderCreationApi } from '@coreshop/order/src/modules/order-creation/api'
@@ -53,7 +53,7 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
         const details = await orderCreationApi.getCustomerDetails(state.customerId)
         dispatch({ type: 'SET_CUSTOMER', payload: { id: state.customerId, details } })
       } catch (err) {
-        void messageApi.error(getErrorMessage(err, 'Failed to reload customer'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to reload customer')))
       }
     }
 

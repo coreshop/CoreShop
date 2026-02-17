@@ -16,7 +16,7 @@ import { EntityList } from './EntityList'
 import type { EntityListItem } from '../types'
 import { EntityApi } from '../api'
 import type { DragAndDropInfo } from '@pimcore/studio-ui-bundle/components'
-import { getErrorMessage } from '../../utils/error-handling'
+import { getErrorMessage, renderApiError } from '../../utils/error-handling'
 
 export interface EntitySplitManagerProps<TDetail extends Record<string, any>> {
   api: EntityApi<TDetail>
@@ -67,7 +67,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
       const items = await api.list()
       setList(items)
     } catch (err) {
-      void messageApi.error(getErrorMessage(err, 'Failed to load list'))
+      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load list')))
       setList([])
     } finally {
       setLoadingList(false)
@@ -85,7 +85,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
       setDetail(response.data)
       setEditingData({ ...response.data })
     } catch (err) {
-      void messageApi.error(getErrorMessage(err, 'Failed to load detail'))
+      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load detail')))
     } finally {
       setLoadingDetail(false)
     }
@@ -113,7 +113,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
         setEditingData(undefined)
       }
     } catch (err) {
-      void messageApi.error(getErrorMessage(err, 'Failed to delete'))
+      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to delete')))
     }
   }, [api, loadList, selectedId])
 
@@ -125,7 +125,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
         await loadDetail(data.id)
       }
     } catch (err) {
-      void messageApi.error(getErrorMessage(err, 'Failed to save'))
+      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to save')))
       throw err
     }
   }, [api, loadList, loadDetail])

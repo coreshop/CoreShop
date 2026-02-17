@@ -11,8 +11,10 @@
  */
 
 import React from 'react'
-import { Button, Table, InputNumber, Select, Popconfirm, Space, message } from 'antd'
+import { Button, Table, InputNumber, Select, Popconfirm, Space } from 'antd'
 import { PlusOutlined, DeleteOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import { useTranslation } from 'react-i18next'
 import { exchangeRateApi, type ExchangeRate } from './api'
 import { currencyApi } from '../currencies/api'
@@ -24,6 +26,7 @@ interface ExchangeRateRow extends ExchangeRate {
 
 export const ExchangeRateManager: React.FC = () => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const [exchangeRates, setExchangeRates] = React.useState<ExchangeRateRow[]>([])
   const [currencies, setCurrencies] = React.useState<Array<{ id: number, name: string }>>([])
   const [loading, setLoading] = React.useState(false)
@@ -49,7 +52,7 @@ export const ExchangeRateManager: React.FC = () => {
         setExchangeRates(list)
       })
       .catch(() => {
-        message.error(t('coreshop_error_loading', { defaultValue: 'Failed to load exchange rates' }))
+        void messageApi.error(renderApiError(t('coreshop_error_loading', { defaultValue: 'Failed to load exchange rates' })))
         setExchangeRates([])
       })
       .finally(() => setLoading(false))
@@ -96,21 +99,21 @@ export const ExchangeRateManager: React.FC = () => {
   // Save changes
   const handleSave = async () => {
     if (!editingData.fromCurrency || !editingData.toCurrency || !editingData.exchangeRate) {
-      message.error(t('coreshop_fill_all_fields', { defaultValue: 'Please fill all fields' }))
+      void messageApi.error(renderApiError(t('coreshop_fill_all_fields', { defaultValue: 'Please fill all fields' })))
       return
     }
 
     try {
       // Always use save endpoint (no separate add endpoint)
       await exchangeRateApi.save(editingData as ExchangeRate)
-      message.success(editingData.id ? t('coreshop_exchange_rate_updated', { defaultValue: 'Exchange rate updated' }) : t('coreshop_exchange_rate_created', { defaultValue: 'Exchange rate created' }))
+      void messageApi.success(editingData.id ? t('coreshop_exchange_rate_updated', { defaultValue: 'Exchange rate updated' }) : t('coreshop_exchange_rate_created', { defaultValue: 'Exchange rate created' }))
 
       // Reload data
       setEditingKey(null)
       setEditingData({})
       loadExchangeRates()
     } catch (error) {
-      message.error(t('coreshop_error_saving', { defaultValue: 'Failed to save exchange rate' }))
+      void messageApi.error(renderApiError(t('coreshop_error_saving', { defaultValue: 'Failed to save exchange rate' })))
     }
   }
 
@@ -123,10 +126,10 @@ export const ExchangeRateManager: React.FC = () => {
   const handleDelete = async (id: number) => {
     try {
       await exchangeRateApi.delete(id)
-      message.success(t('coreshop_exchange_rate_deleted', { defaultValue: 'Exchange rate deleted' }))
+      void messageApi.success(t('coreshop_exchange_rate_deleted', { defaultValue: 'Exchange rate deleted' }))
       loadExchangeRates()
     } catch (error) {
-      message.error(t('coreshop_error_deleting', { defaultValue: 'Failed to delete exchange rate' }))
+      void messageApi.error(renderApiError(t('coreshop_error_deleting', { defaultValue: 'Failed to delete exchange rate' })))
     }
   }
 

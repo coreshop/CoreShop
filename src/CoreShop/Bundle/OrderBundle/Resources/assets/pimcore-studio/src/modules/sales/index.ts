@@ -32,6 +32,3 @@ export * from './types'
 
 // Hooks
 export * from './hooks'
-
-// Extensions
-export * from './extensions'

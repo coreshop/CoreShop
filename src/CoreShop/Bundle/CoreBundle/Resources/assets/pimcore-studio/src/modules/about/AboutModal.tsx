@@ -10,7 +10,7 @@ import { Spin } from 'antd'
 import { Button, Flex, type IWindowModalProps, Modal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css, token }) => ({
   modal: css`
@@ -78,7 +78,7 @@ export const AboutModal: React.FC<AboutModalProps> = (props) => {
           const data: SettingsResponse = await response.json()
           setVersion(data.bundle.version)
         } catch (error) {
-          void messageApi.error(getErrorMessage(error, 'Failed to fetch CoreShop version'))
+          void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch CoreShop version')))
           setVersion('Unknown')
         } finally {
           setLoading(false)

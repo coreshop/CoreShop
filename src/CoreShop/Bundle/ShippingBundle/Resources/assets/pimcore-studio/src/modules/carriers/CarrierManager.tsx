@@ -11,7 +11,7 @@
  */
 
 import React from 'react'
-import { EntityTabbedManager, getErrorMessage } from '@coreshop/resource/src/entities'
+import { EntityTabbedManager, getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { carrierApi, type CarrierDetail, type CarrierConfig } from './api'
 import { CarrierForm } from './CarrierForm'
 import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
@@ -32,7 +32,7 @@ export const CarrierManager: React.FC = () => {
       const cfg = await carrierApi.getConfig()
       setConfig(cfg)
     } catch (err) {
-      void messageApi.error(getErrorMessage(err, 'Failed to load carrier config'))
+      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load carrier config')))
     }
   }
 

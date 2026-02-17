@@ -22,7 +22,7 @@ import { notificationRuleApi } from './api'
 import type { NotificationRule, NotificationRuleConfig, NotificationRuleType } from './types'
 import { SettingsForm } from './components/SettingsForm'
 import { coreshopNotificationServiceIds } from './service-ids'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 export const NotificationRuleManager: React.FC = () => {
   const { t } = useTranslation()
@@ -55,7 +55,7 @@ export const NotificationRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(getErrorMessage(err, 'Failed to load notification config'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load notification config')))
       })
   }, [])
 

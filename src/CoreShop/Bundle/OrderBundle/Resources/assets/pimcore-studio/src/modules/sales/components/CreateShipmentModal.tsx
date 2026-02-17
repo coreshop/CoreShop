@@ -1,8 +1,5 @@
 /**
- * CoreShop OrderBundle Create Shipment Modal (Base Version)
- *
- * This is the base version without carrier selection.
- * CoreBundle extends this by registering an enhanced version with CarrierSelect.
+ * CoreShop OrderBundle Create Shipment Modal
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -13,27 +10,13 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { Modal, Form, Input, InputNumber, Table } from 'antd'
-import { createStyles } from 'antd-style'
+import { useState, useEffect } from 'react'
+import { Modal } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
+import { SchemaForm } from '@coreshop/studio-form'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { formatCurrency } from '@coreshop/pimcore/src/utils'
-import { container } from '@pimcore/studio-ui-bundle'
-import type { ColumnType } from 'antd/es/table'
-import { ModalFieldExtensionRegistry } from '../extensions'
-import { extensionServiceIds } from '../extensions/service-ids'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
-
-interface ShipmentItem {
-  orderItemId: number
-  name: string
-  price: number
-  quantity: number
-  quantityShipped: number
-  maxToShip: number
-  toShip: number
-}
 
 export interface CreateShipmentModalProps {
   open: boolean
@@ -45,10 +28,10 @@ export interface CreateShipmentModalProps {
 }
 
 /**
- * Create Shipment Modal (Base Version)
+ * Create Shipment Modal
  *
- * Pattern from ExtJS: /order/shipment.js (OrderBundle)
- * Note: CoreBundle extends this by adding carrier selection
+ * Form fields and items grid rendered via SchemaForm.
+ * Columns are defined by OrderShipmentCreationItemsType (configurable via form types).
  */
 export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
   open,
@@ -60,25 +43,17 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
 }) => {
   const { t } = useTranslation()
   const messageApi = useMessage()
-  const { styles } = useCreateShipmentModalStyles()
-  const [form] = Form.useForm()
-  const [items, setItems] = React.useState<ShipmentItem[]>([])
-  const [loading, setLoading] = React.useState(false)
-  const [loadingItems, setLoadingItems] = React.useState(false)
+  const [formData, setFormData] = useState<Record<string, unknown>>({})
+  const [loading, setLoading] = useState(false)
+  const [loadingItems, setLoadingItems] = useState(false)
 
-  // Get additional fields from extension registry
-  const extensionRegistry = React.useMemo(
-    () => container.get<ModalFieldExtensionRegistry>(extensionServiceIds.modalFieldExtensionRegistry),
-    []
-  )
-  const additionalFields = React.useMemo(
-    () => extensionRegistry.getFields('create-shipment', { form, orderId, currencyCode, carrierId }),
-    [extensionRegistry, form, orderId, currencyCode, carrierId]
-  )
-
-  // Load processable items
-  React.useEffect(() => {
+  // Set default carrier and load items when modal opens
+  useEffect(() => {
     if (!open) return
+
+    if (carrierId) {
+      setFormData((prev) => ({ ...prev, carrier: carrierId }))
+    }
 
     const loadItems = async () => {
       setLoadingItems(true)
@@ -86,14 +61,27 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
         const response = await fetch(`/pimcore-studio/api/coreshop/order-shipment/get-ship-able-items?id=${orderId}`)
         const data = await response.json()
 
-        if (data.success && data.items && data.items.length > 0) {
-          setItems(data.items)
+        if (data.success && data.items && Object.keys(data.items).length > 0) {
+          // Map API data (keyed by orderItemId) to form field names
+          const items: Record<string, any> = {}
+          for (const [orderItemId, item] of Object.entries(data.items) as Array<[string, any]>) {
+            items[orderItemId] = {
+              orderItemId: item.orderItemId,
+              name: item.name,
+              price: formatCurrency(item.price, currencyCode),
+              orderedQuantity: item.quantity,
+              quantityShipped: item.quantityShipped,
+              quantity: item.toShip,
+              maxQuantity: item.maxToShip,
+            }
+          }
+          setFormData((prev) => ({ ...prev, items }))
         } else {
           void messageApi.warning(t('coreshop_shipment_no_items', { defaultValue: 'No shippable items found' }))
           onCancel()
         }
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, t('coreshop_shipment_load_items_error', { defaultValue: 'Failed to load items' })))
+        void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_shipment_load_items_error', { defaultValue: 'Failed to load items' }))))
         onCancel()
       } finally {
         setLoadingItems(false)
@@ -101,37 +89,36 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
     }
 
     void loadItems()
-  }, [open, orderId, onCancel, t])
-
-  // Handle quantity change
-  const handleQuantityChange = (orderItemId: number, value: number | null) => {
-    setItems(items.map(item =>
-      item.orderItemId === orderItemId
-        ? { ...item, toShip: Math.min(Math.max(value || 0, 0), item.maxToShip) }
-        : item
-    ))
-  }
+  }, [open, orderId, carrierId, onCancel, t])
 
   // Handle save
   const handleSave = async () => {
     try {
-      const values = await form.validateFields()
-      const itemsToShip = items
-        .filter(item => item.toShip > 0)
-        .map(item => ({
-          orderItemId: item.orderItemId,
-          quantity: item.toShip
-        }))
+      const itemsObj = (formData.items && typeof formData.items === 'object' && !Array.isArray(formData.items))
+        ? formData.items as Record<string, any>
+        : {}
+      const itemsToShip: Record<string, any> = {}
+      for (const [key, item] of Object.entries(itemsObj)) {
+        if (item.quantity > 0) {
+          itemsToShip[key] = {
+            orderItemId: item.orderItemId,
+            quantity: item.quantity,
+            maxQuantity: item.maxQuantity
+          }
+        }
+      }
 
-      if (itemsToShip.length === 0) {
+      if (Object.keys(itemsToShip).length === 0) {
         void messageApi.warning(t('coreshop_shipment_select_items', { defaultValue: 'Please select items to ship' }))
         return
       }
 
       setLoading(true)
 
+      const { items: _, ...otherFormData } = formData
+
       const payload = {
-        ...values,
+        ...otherFormData,
         id: orderId,
         items: itemsToShip
       }
@@ -148,63 +135,17 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
 
       if (data.success) {
         void messageApi.success(t('coreshop_shipment_create_success', { defaultValue: 'Shipment created successfully' }))
+        setFormData({})
         onSuccess()
       } else {
-        void messageApi.error(data.message || t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' }))
+        void messageApi.error(renderApiError(data.message || t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' })))
       }
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' })))
+      void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' }))))
     } finally {
       setLoading(false)
     }
   }
-
-  const columns: Array<ColumnType<ShipmentItem>> = [
-    {
-      title: t('coreshop_product', { defaultValue: 'Product' }),
-      dataIndex: 'name',
-      key: 'name',
-      width: '30%'
-    },
-    {
-      title: t('coreshop_price', { defaultValue: 'Price' }),
-      dataIndex: 'price',
-      key: 'price',
-      width: '15%',
-      align: 'right',
-      render: (price) => formatCurrency(price, currencyCode)
-    },
-    {
-      title: t('coreshop_quantity', { defaultValue: 'Quantity' }),
-      dataIndex: 'quantity',
-      key: 'quantity',
-      width: '12%',
-      align: 'right'
-    },
-    {
-      title: t('coreshop_shipped_quantity', { defaultValue: 'Shipped Quantity' }),
-      dataIndex: 'quantityShipped',
-      key: 'quantityShipped',
-      width: '15%',
-      align: 'right'
-    },
-    {
-      title: t('coreshop_to_ship', { defaultValue: 'To Ship' }),
-      dataIndex: 'toShip',
-      key: 'toShip',
-      width: '18%',
-      align: 'right',
-      render: (value, record) => (
-        <InputNumber
-          value={value}
-          min={0}
-          max={record.maxToShip}
-          onChange={(val) => handleQuantityChange(record.orderItemId, val)}
-          style={{ width: '100%' }}
-        />
-      )
-    }
-  ]
 
   return (
     <Modal
@@ -215,70 +156,14 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
       okText={t('coreshop_save', { defaultValue: 'Save' })}
       cancelText={t('coreshop_cancel', { defaultValue: 'Cancel' })}
       width={900}
-      confirmLoading={loading}
+      confirmLoading={loading || loadingItems}
+      destroyOnClose
     >
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={{
-          carrier: carrierId,
-          trackingCode: ''
-        }}
-      >
-        <div className={styles.section}>
-          <div className={styles.sectionHeader}>{t('coreshop_shipment', { defaultValue: 'Shipment' })}</div>
-
-          {/* Extension slot: CoreBundle injects carrier field here */}
-          {additionalFields}
-
-          <Form.Item
-            label={t('coreshop_tracking_code', { defaultValue: 'Tracking Number' })}
-            name="trackingCode"
-          >
-            <Input placeholder={t('coreshop_tracking_code', { defaultValue: 'Tracking Number' })} />
-          </Form.Item>
-        </div>
-
-        <Table
-          dataSource={items}
-          columns={columns}
-          rowKey="orderItemId"
-          pagination={false}
-          loading={loadingItems}
-          size="small"
-          className={styles.table}
-        />
-      </Form>
+      <SchemaForm
+        blockPrefix="coreshop_order_shipment_creation"
+        data={formData}
+        onChange={(draft) => setFormData((prev) => ({ ...prev, ...draft }))}
+      />
     </Modal>
   )
 }
-
-const useCreateShipmentModalStyles = createStyles(({ css, token }) => ({
-  section: css`
-    margin-bottom: 24px;
-  `,
-  sectionHeader: css`
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    color: ${token.colorText};
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    &:before {
-      content: '';
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2352c41a"><path d="M3 13.5L2.25 12H7.5L6 9.5H17L15 12H22L20.5 10V19H22V21H2V19H3.5V13.5H3ZM5.5 19H18.5V12.5H14.5L16.5 10H7.5L9 12.5H5.5V19Z"/></svg>') no-repeat center;
-      background-size: contain;
-    }
-  `,
-  table: css`
-    .ant-table-thead > tr > th {
-      background: ${token.colorBgContainer};
-      font-weight: 600;
-    }
-  `
-}))

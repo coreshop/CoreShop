@@ -2,7 +2,7 @@
  * CoreShop CoreBundle - Shipping Step Component
  *
  * Schema-driven carrier selection step.
- * Uses coreshop_carrier_choice widget to read from OrderCreation preview data.
+ * Uses coreshop_carrier_choice widget (CarrierSelect from ShippingBundle).
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -62,13 +62,6 @@ const ShippingStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispat
   }
 
   const config = builder.build()
-
-  // Inject carriers into widget componentProps (widgets can't use React Context
-  // across module federation boundaries, so we pass data via props instead)
-  config.fields = config.fields.map(f => ({
-    ...f,
-    componentProps: { ...f.componentProps, carriers, currencyCode },
-  }))
 
   return (
     <Card

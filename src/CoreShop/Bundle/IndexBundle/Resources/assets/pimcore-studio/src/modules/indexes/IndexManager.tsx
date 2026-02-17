@@ -16,7 +16,7 @@ import { useFormModal, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { indexApi, type Index, type IndexConfig } from './api'
 import { IndexDetail } from './IndexDetail'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 export const IndexManager: React.FC = () => {
   const { t } = useTranslation()
@@ -29,7 +29,7 @@ export const IndexManager: React.FC = () => {
     indexApi.getConfig()
       .then(setConfig)
       .catch(err => {
-        void messageApi.error(getErrorMessage(err, 'Failed to load index config'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load index config')))
       })
   }, [])
 

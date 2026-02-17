@@ -11,6 +11,7 @@
 import React from 'react'
 import { Modal, Tree, Spin, Alert } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import { useTranslation } from 'react-i18next'
 import { variantGeneratorApi, type AttributeNode } from './api'
 
@@ -161,10 +162,10 @@ export const VariantGeneratorModal: React.FC<Props> = ({ open, objectId, onClose
         void messageApi.success(response.message)
         onClose()
       } else {
-        void messageApi.error(response.message)
+        void messageApi.error(renderApiError(response.message))
       }
     } catch (err) {
-      void messageApi.error('Failed to generate variants')
+      void messageApi.error(renderApiError('Failed to generate variants'))
     } finally {
       setSubmitting(false)
     }

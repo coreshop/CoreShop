@@ -4,7 +4,7 @@
 
 import React from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
-import { EntityTabbedManager, getErrorMessage } from '@coreshop/resource'
+import { EntityTabbedManager, getErrorMessage, renderApiError } from '@coreshop/resource'
 import { RuleForm } from '@coreshop/rule/src/rules'
 import type { RuleConfig } from '@coreshop/rule/src/rules'
 import { ActionRegistry, ConditionRegistry, registerSchemaComponentsFromConfig } from '@coreshop/rule/src/rules/registry'
@@ -31,7 +31,7 @@ export const ShippingRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(getErrorMessage(err, 'Failed to load config'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
       })
   }, [])
 

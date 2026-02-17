@@ -21,6 +21,7 @@ use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class FormSchemaGenerator
 {
@@ -29,6 +30,7 @@ final class FormSchemaGenerator
 
     public function __construct(
         private readonly FormFactoryInterface $formFactory,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -108,7 +110,8 @@ final class FormSchemaGenerator
 
         // Choice fields: serialize choices, multiple, expanded from FormView vars
         if (isset($childView->vars['choices']) && is_array($childView->vars['choices'])) {
-            $field->choices = $this->serializeChoices($childView->vars['choices']);
+            $choiceTranslationDomain = $childView->vars['choice_translation_domain'] ?? $childView->vars['translation_domain'] ?? null;
+            $field->choices = $this->serializeChoices($childView->vars['choices'], $choiceTranslationDomain);
             $field->multiple = $childView->vars['multiple'] ?? false;
             $field->expanded = $childView->vars['expanded'] ?? false;
         }
@@ -184,10 +187,11 @@ final class FormSchemaGenerator
 
     /**
      * @param ChoiceView[]|ChoiceGroupView[] $choices
+     * @param string|false|null              $translationDomain
      *
      * @return array<array{value: string|int, label: string}>
      */
-    private function serializeChoices(array $choices): array
+    private function serializeChoices(array $choices, string|false|null $translationDomain = null): array
     {
         $result = [];
 
@@ -198,20 +202,29 @@ final class FormSchemaGenerator
                     if ($groupedChoice instanceof ChoiceView) {
                         $result[] = [
                             'value' => $this->normalizeChoiceValue($groupedChoice->value),
-                            'label' => (string) $groupedChoice->label,
-                            'group' => $choice->label,
+                            'label' => $this->translateChoiceLabel((string) $groupedChoice->label, $translationDomain),
+                            'group' => $this->translateChoiceLabel($choice->label, $translationDomain),
                         ];
                     }
                 }
             } elseif ($choice instanceof ChoiceView) {
                 $result[] = [
                     'value' => $this->normalizeChoiceValue($choice->value),
-                    'label' => (string) $choice->label,
+                    'label' => $this->translateChoiceLabel((string) $choice->label, $translationDomain),
                 ];
             }
         }
 
         return $result;
+    }
+
+    private function translateChoiceLabel(string $label, string|false|null $translationDomain): string
+    {
+        if ($translationDomain === false) {
+            return $label;
+        }
+
+        return $this->translator->trans($label, [], $translationDomain);
     }
 
     /**

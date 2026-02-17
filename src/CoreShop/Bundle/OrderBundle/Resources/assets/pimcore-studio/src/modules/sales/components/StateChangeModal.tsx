@@ -14,7 +14,7 @@ import React from 'react'
 import { Modal, Button, Space } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { createStyles } from 'antd-style'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 interface Transition {
   transition: string
@@ -79,10 +79,10 @@ export const StateChangeModal: React.FC<StateChangeModalProps> = ({
         void messageApi.success('State changed successfully')
         onSuccess()
       } else {
-        void messageApi.error(data.message || 'Failed to change state')
+        void messageApi.error(renderApiError(data.message || 'Failed to change state'))
       }
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to change state'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to change state')))
     } finally {
       setLoading(null)
     }

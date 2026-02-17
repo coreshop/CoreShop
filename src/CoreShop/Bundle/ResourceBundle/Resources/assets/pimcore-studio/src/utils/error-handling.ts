@@ -10,6 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
+import React from 'react'
 import { trackError, GeneralError } from '@pimcore/studio-ui-bundle/modules/app'
 
 /**
@@ -50,4 +51,22 @@ export const handleCriticalError = (error: unknown, context?: string): void => {
 export const logError = (error: unknown, context?: string): void => {
   const message = getErrorMessage(error)
   console.error(context ?? 'Error:', message, error)
+}
+
+/**
+ * Renders an API error message for use in messageApi.error().
+ * Supports multi-line messages (newline-separated from backend)
+ * by rendering each line as a separate <div>.
+ */
+export const renderApiError = (message: unknown): React.ReactNode => {
+  if (typeof message === 'string' && message.includes('\n')) {
+    return React.createElement(
+      'div',
+      null,
+      ...message.split('\n').map((line, i) =>
+        React.createElement('div', { key: i }, line)
+      )
+    )
+  }
+  return message as React.ReactNode
 }

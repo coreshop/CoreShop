@@ -12,7 +12,7 @@
 
 import React from 'react'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
-import { EntitySplitManager, getErrorMessage } from '@coreshop/resource'
+import { EntitySplitManager, getErrorMessage, renderApiError } from '@coreshop/resource'
 import type { Rule, RuleConfig } from '../types'
 import type { RuleApi } from '../api'
 
@@ -35,7 +35,7 @@ export function RuleManager<T extends Rule>({
     api.getConfig()
       .then(setConfig)
       .catch(err => {
-        void messageApi.error(getErrorMessage(err, 'Failed to load configuration'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load configuration')))
       })
   }, [api])
 

@@ -22,7 +22,7 @@ import { productPriceRuleApi } from './api'
 import type { ProductPriceRule } from './types'
 import { SettingsForm } from './components/SettingsForm'
 import { coreshopProductServiceIds } from './service-ids'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 export const ProductPriceRuleManager: React.FC = () => {
   const { t } = useTranslation()
@@ -40,7 +40,7 @@ export const ProductPriceRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(getErrorMessage(err, 'Failed to load config'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
       })
   }, [])
 

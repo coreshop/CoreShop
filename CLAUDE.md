@@ -40,6 +40,14 @@ bin/console doctrine:migrations:migrate
 bin/console pimcore:install
 ```
 
+## Pricing
+
+CoreShop stores all monetary values as **integers** (cents). For example, `383.12 EUR` is stored as `38312`. The `decimal_factor` is configurable (default `100`).
+
+**Frontend formatting:** Use `formatCurrency(amount, currencyCode)` from `@coreshop/pimcore/src/utils`. It divides by 100 and uses `Intl.NumberFormat` for localized output (e.g. `formatCurrency(38312, 'EUR')` → `"383,12 €"`).
+
+**Frontend conversion hook:** `useCurrencyConfig()` from `CurrencyBundle` provides `toDisplayPrice(int)` and `toIntegerPrice(display)` for form inputs.
+
 ## Architecture
 
 ### CRITICAL: Documentation Requirements
@@ -78,6 +86,12 @@ bin/console pimcore:install
 
 Translation files: `src/CoreShop/Bundle/{BundleName}/Resources/translations/studio.*.yaml`
 Use `studio.en.yml` as the source of truth for English keys.
+
+### CRITICAL: Always Add Translations
+**Every UI-facing string must have a translation key!**
+- When adding new form fields, labels, buttons, messages, or any user-visible text → add translation keys to `studio.en.yaml` in the corresponding bundle
+- Never hardcode user-visible strings — always use translation keys (e.g., `t('coreshop_...')` in React, `'label' => 'coreshop_...'` in FormTypes)
+- Check that all translation keys used in code actually exist in the YAML files
 
 ## Development Workflow
 

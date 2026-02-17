@@ -107,6 +107,60 @@ coreshop_admin_order_find:
     options:
         expose: true
 
+##### STUDIO ORDER DOCUMENTS (pimcore-studio/api only → new Studio FormTypes)
+coreshop_studio_order_payment_add:
+    path: /%coreshop.admin.route.base%/order-payment/add-payment
+    requirements:
+      backend: (pimcore-studio\/api)
+    defaults:
+      backend: pimcore-studio/api
+      _controller: 'CoreShop\Bundle\OrderBundle\Controller\StudioOrderDocumentController::addPaymentAction'
+    methods: POST
+    options:
+        expose: true
+
+coreshop_studio_order_invoice_get_processable_items:
+    path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items
+    requirements:
+      backend: (pimcore-studio\/api)
+    defaults:
+      backend: pimcore-studio/api
+      _controller: 'CoreShop\Bundle\OrderBundle\Controller\StudioOrderDocumentController::getInvoiceAbleItemsAction'
+    options:
+        expose: true
+
+coreshop_studio_order_invoice_create:
+    path: /%coreshop.admin.route.base%/order-invoice/create-invoice
+    requirements:
+      backend: (pimcore-studio\/api)
+    defaults:
+      backend: pimcore-studio/api
+      _controller: 'CoreShop\Bundle\OrderBundle\Controller\StudioOrderDocumentController::createInvoiceAction'
+    methods: POST
+    options:
+        expose: true
+
+coreshop_studio_order_shipment_get_processable_items:
+    path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
+    requirements:
+      backend: (pimcore-studio\/api)
+    defaults:
+      backend: pimcore-studio/api
+      _controller: 'CoreShop\Bundle\OrderBundle\Controller\StudioOrderDocumentController::getShipAbleItemsAction'
+    options:
+        expose: true
+
+coreshop_studio_order_shipment_create:
+    path: /%coreshop.admin.route.base%/order-shipment/create-shipment
+    requirements:
+      backend: (pimcore-studio\/api)
+    defaults:
+      backend: pimcore-studio/api
+      _controller: 'CoreShop\Bundle\OrderBundle\Controller\StudioOrderDocumentController::createShipmentAction'
+    methods: POST
+    options:
+        expose: true
+
 ##### ORDER PAYMENT
 coreshop_admin_order_payment_add:
     path: /%coreshop.admin.route.base%/order-payment/add-payment

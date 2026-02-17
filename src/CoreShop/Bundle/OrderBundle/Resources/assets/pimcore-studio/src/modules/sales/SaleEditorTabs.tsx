@@ -15,7 +15,7 @@ import { Spin } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { SaleDetail } from './SaleDetail'
 import type { SaleType, Sale } from './types'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 interface SaleEditorTabsProps {
   element: any // Pimcore DataObject element
@@ -70,10 +70,10 @@ export const SaleEditorTabs: React.FC<SaleEditorTabsProps> = ({ element, type })
       if (data) {
         setSale(data)
       } else {
-        void messageApi.error('Failed to load sale data')
+        void messageApi.error(renderApiError('Failed to load sale data'))
       }
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Error loading sale'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Error loading sale')))
     } finally {
       setLoading(false)
     }

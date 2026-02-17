@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { SaleTabProps } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 const { TextArea } = Input
 
@@ -53,7 +53,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
         const data = await response.json()
         setComments(data.comments || [])
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, 'Failed to load comments'))
+        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load comments')))
         setComments([])
       } finally {
         setLoading(false)
@@ -99,10 +99,10 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
         const listData = await listResponse.json()
         setComments(listData.comments || [])
       } else {
-        void messageApi.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
+        void messageApi.error(renderApiError(t('coreshop_save_error', { defaultValue: 'Error saving item' })))
       }
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' })))
+      void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' }))))
     }
   }
 
@@ -137,10 +137,10 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
               setComments(listData.comments || [])
             }
           } else {
-            void messageApi.error(t('coreshop_save_error', { defaultValue: 'Error saving item' }))
+            void messageApi.error(renderApiError(t('coreshop_save_error', { defaultValue: 'Error saving item' })))
           }
         } catch (error) {
-          void messageApi.error(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' })))
+          void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' }))))
         }
       }
     })

@@ -18,7 +18,7 @@ import type { RuleCondition, RuleAction } from '@coreshop/rule/src/rules/types'
 import { CartItemConditionsPanel } from '../cart-item/CartItemConditionsPanel'
 import { CartItemActionsPanel } from '../cart-item/CartItemActionsPanel'
 import { cartPriceRuleApi } from '../api'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 interface CartItemConfig {
   conditions: string[]
@@ -44,7 +44,7 @@ export const CartItemAction: React.FC<ActionComponentProps> = ({
         setLoading(false)
       })
       .catch(err => {
-        void messageApi.error(getErrorMessage(err, 'Failed to load cart item config'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load cart item config')))
         setLoading(false)
       })
   }, [])

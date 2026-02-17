@@ -16,7 +16,7 @@ import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { IndexColumn, IndexConfig } from '../api'
 import { InterpreterSchemaProvider } from '../InterpreterSchemaContext'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { mergeFormDraft } from '../mergeFormDraft'
 
 interface ColumnConfigDialogProps {
@@ -87,7 +87,7 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
         interpreterConfig: selectedInterpreter ? interpreterConfig : undefined
       } as IndexColumn)
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Validation failed'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Validation failed')))
     }
   }
 

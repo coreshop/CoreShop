@@ -13,6 +13,7 @@
 import React from 'react'
 import { Spin } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import { SaleDetail } from './SaleDetail'
 import type { Sale } from './types'
 
@@ -67,10 +68,10 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
       if (data) {
         setQuote(data)
       } else {
-        void messageApi.error('Failed to load quote data')
+        void messageApi.error(renderApiError('Failed to load quote data'))
       }
     } catch (error) {
-      void messageApi.error('Error loading quote')
+      void messageApi.error(renderApiError('Error loading quote'))
     } finally {
       setLoading(false)
     }
@@ -100,7 +101,7 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
       void messageApi.success('Quote updated successfully')
       await loadQuote()
     } catch (error) {
-      void messageApi.error('Failed to save changes')
+      void messageApi.error(renderApiError('Failed to save changes'))
       await loadQuote()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

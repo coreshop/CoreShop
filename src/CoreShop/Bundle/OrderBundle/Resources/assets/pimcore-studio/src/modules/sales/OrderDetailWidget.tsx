@@ -13,6 +13,7 @@
 import React from 'react'
 import { Spin } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import { SaleDetail } from './SaleDetail'
 import type { Sale } from './types'
 
@@ -78,10 +79,10 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
       if (data) {
         setOrder(data)
       } else {
-        void messageApi.error('Failed to load order data')
+        void messageApi.error(renderApiError('Failed to load order data'))
       }
     } catch (error) {
-      void messageApi.error('Error loading order')
+      void messageApi.error(renderApiError('Error loading order'))
     } finally {
       setLoading(false)
     }
@@ -116,7 +117,7 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
       // Reload to get fresh data
       await loadOrder()
     } catch (error) {
-      void messageApi.error('Failed to save changes')
+      void messageApi.error(renderApiError('Failed to save changes'))
       // Revert on error
       await loadOrder()
     }

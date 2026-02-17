@@ -21,7 +21,7 @@ import React, {
 } from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import type {
   OrderCreationState,
   OrderCreationAction,
@@ -175,7 +175,7 @@ export const OrderCreationProvider: React.FC<OrderCreationProviderProps> = ({
       const details = await orderCreationApi.getCustomerDetails(customerId)
       dispatch({ type: 'SET_CUSTOMER', payload: { id: customerId, details } })
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to load customer'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer')))
     }
   }, [messageApi])
 

@@ -22,7 +22,7 @@ import { paymentProviderRuleApi } from './api'
 import type { PaymentProviderRule } from './types'
 import { SettingsForm } from './components/SettingsForm'
 import { coreshopPaymentServiceIds } from './service-ids'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 export const PaymentProviderRuleManager: React.FC = () => {
   const { t } = useTranslation()
@@ -40,7 +40,7 @@ export const PaymentProviderRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(getErrorMessage(err, 'Failed to load config'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
       })
   }, [])
 

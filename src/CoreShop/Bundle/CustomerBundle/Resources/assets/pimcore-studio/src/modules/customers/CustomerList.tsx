@@ -18,7 +18,7 @@ import { container } from '@pimcore/studio-ui-bundle'
 import type { ListingBuilder } from '@pimcore/studio-ui-bundle/modules/element'
 import { BaseListing, DataObjectProvider, listingDefaultProps } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
@@ -67,7 +67,7 @@ export const CustomerList: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, 'Failed to fetch customer folder configuration'))
+        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch customer folder configuration')))
       } finally {
         setLoading(false)
       }

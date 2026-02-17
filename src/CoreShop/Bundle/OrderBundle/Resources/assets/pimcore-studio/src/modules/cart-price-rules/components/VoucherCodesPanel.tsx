@@ -11,9 +11,11 @@
  */
 
 import React from 'react'
-import { Button, Table, Space, Popconfirm, message, Modal, Form, Input, InputNumber, Select, Tag } from 'antd'
+import { Button, Table, Space, Popconfirm, Modal, Form, Input, InputNumber, Select, Tag } from 'antd'
 import { PlusOutlined, DeleteOutlined, DownloadOutlined, ThunderboltOutlined } from '@ant-design/icons'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import type { CartPriceRule, VoucherCode } from '../types'
 import { cartPriceRuleApi } from '../api'
 
@@ -27,6 +29,7 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
   disabled = false
 }) => {
   const { t } = useTranslation()
+  const messageApi = useMessage()
   const [vouchers, setVouchers] = React.useState<VoucherCode[]>([])
   const [loading, setLoading] = React.useState(false)
   const [total, setTotal] = React.useState(0)
@@ -48,7 +51,7 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
         setTotal(total)
       })
       .catch(() => {
-        message.error(t('coreshop_voucher_codes_load_error', { defaultValue: 'Failed to load voucher codes' }))
+        void messageApi.error(renderApiError(t('coreshop_voucher_codes_load_error', { defaultValue: 'Failed to load voucher codes' })))
         setVouchers([])
       })
       .finally(() => setLoading(false))
@@ -66,13 +69,13 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
     try {
       const values = await createForm.validateFields()
       await cartPriceRuleApi.createVoucherCode(rule.id, values.code)
-      message.success(t('coreshop_voucher_code_create_success', { defaultValue: 'Voucher code created' }))
+      void messageApi.success(t('coreshop_voucher_code_create_success', { defaultValue: 'Voucher code created' }))
       setCreateModalOpen(false)
       createForm.resetFields()
       loadVouchers()
     } catch (error: any) {
       if (error.errorFields) return // Validation error
-      message.error(error.message || t('coreshop_voucher_code_create_error', { defaultValue: 'Failed to create voucher code' }))
+      void messageApi.error(renderApiError(error.message || t('coreshop_voucher_code_create_error', { defaultValue: 'Failed to create voucher code' })))
     }
   }
 
@@ -85,23 +88,23 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
         cartPriceRule: rule.id,
         ...values
       })
-      message.success(t('coreshop_voucher_codes_generate_success', { defaultValue: 'Voucher codes generated' }))
+      void messageApi.success(t('coreshop_voucher_codes_generate_success', { defaultValue: 'Voucher codes generated' }))
       setGenerateModalOpen(false)
       generateForm.resetFields()
       loadVouchers()
     } catch (error: any) {
       if (error.errorFields) return // Validation error
-      message.error(error.message || t('coreshop_voucher_codes_generate_error', { defaultValue: 'Failed to generate voucher codes' }))
+      void messageApi.error(renderApiError(error.message || t('coreshop_voucher_codes_generate_error', { defaultValue: 'Failed to generate voucher codes' })))
     }
   }
 
   const handleDelete = async (id: number) => {
     try {
       await cartPriceRuleApi.deleteVoucherCode(id)
-      message.success(t('coreshop_voucher_code_delete_success', { defaultValue: 'Voucher code deleted' }))
+      void messageApi.success(t('coreshop_voucher_code_delete_success', { defaultValue: 'Voucher code deleted' }))
       loadVouchers()
     } catch (error) {
-      message.error(t('coreshop_voucher_code_delete_error', { defaultValue: 'Failed to delete voucher code' }))
+      void messageApi.error(renderApiError(t('coreshop_voucher_code_delete_error', { defaultValue: 'Failed to delete voucher code' })))
     }
   }
 

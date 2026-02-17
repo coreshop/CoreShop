@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import type { Rule, RuleConfig } from '../types'
 import { ConditionsPanel } from './ConditionsPanel'
 import { ActionsPanel } from './ActionsPanel'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 export interface RuleFormTab {
   key: string
@@ -65,7 +65,7 @@ export const RuleForm: React.FC<RuleFormProps> = ({
       await onSave(rule)
       void messageApi.success('Rule saved successfully')
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to save rule'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to save rule')))
     } finally {
       setSaving(false)
     }

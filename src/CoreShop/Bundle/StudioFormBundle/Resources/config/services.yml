@@ -6,6 +6,7 @@ services:
     CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator:
         arguments:
             - '@form.factory'
+            - '@translator'
 
     # Block Prefix Registry (auto-populated by RegisterStudioFormTypesPass)
     CoreShop\Bundle\StudioFormBundle\Form\Schema\BlockPrefixFormTypeRegistry:
@@ -17,6 +18,11 @@ services:
     CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector:
         arguments:
             - '@CoreShop\Bundle\StudioFormBundle\Form\Schema\FormSchemaGenerator'
+
+    # Ensure CollectionType always generates a prototype for schema serialization
+    CoreShop\Bundle\StudioFormBundle\Form\Extension\CollectionPrototypeExtension:
+        tags:
+            - { name: form.type_extension }
 
     # Controller
     CoreShop\Bundle\StudioFormBundle\Controller\FormSchemaController:

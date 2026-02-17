@@ -18,7 +18,7 @@ import { createStyles } from 'antd-style'
 import { useElementSelector, SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
 import { container } from '@pimcore/studio-ui-bundle'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { useOrderCreation } from '../context'
@@ -55,7 +55,7 @@ export const CustomerSelector: React.FC = () => {
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedClasses(classes)
       } catch (err) {
-        void messageApi.error(getErrorMessage(err, 'Failed to load allowed customer classes'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
         // Fallback to default
         setAllowedClasses(['CoreShopCustomer'])
       }

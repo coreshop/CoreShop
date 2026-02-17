@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import { Modal, Button, Form, Spin, Result } from 'antd'
+import { Modal, Button, Spin, Result } from 'antd'
 import { CheckOutlined, UserOutlined } from '@ant-design/icons'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
@@ -15,9 +15,9 @@ import { container } from '@pimcore/studio-ui-bundle'
 import { useElementSelector, SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
-import { AssignmentForm } from './AssignmentForm'
+import { AssignmentForm, type AssignmentFormValues } from './AssignmentForm'
 import { customerCompanyApi, type EntityDetails, type ValidationData, type DuplicateCompany } from './api'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 const useStyles = createStyles(({ css }) => ({
   content: css`
@@ -32,6 +32,12 @@ const useStyles = createStyles(({ css }) => ({
 }))
 
 type Step = 'select-customer' | 'form' | 'success'
+
+const defaultFormData: AssignmentFormValues = {
+  addressAssignmentType: '',
+  addressAccessType: 'own_only',
+  newCompanyName: '',
+}
 
 export interface AssignToNewCompanyModalProps {
   open: boolean
@@ -49,7 +55,6 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
   const { t } = useTranslation()
   const { styles } = useStyles()
   const messageApi = useMessage()
-  const [form] = Form.useForm()
 
   const [step, setStep] = React.useState<Step>(initialCustomerId ? 'form' : 'select-customer')
   const [loading, setLoading] = React.useState(false)
@@ -59,7 +64,7 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
   const [customerData, setCustomerData] = React.useState<EntityDetails | null>(null)
   const [validationData, setValidationData] = React.useState<ValidationData | null>(null)
 
-  const [companyName, setCompanyName] = React.useState('')
+  const [formData, setFormData] = React.useState<AssignmentFormValues>({ ...defaultFormData })
   const [duplicates, setDuplicates] = React.useState<DuplicateCompany[]>([])
   const [showDuplicates, setShowDuplicates] = React.useState(false)
   const [checkingDuplicates, setCheckingDuplicates] = React.useState(false)
@@ -76,7 +81,7 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedCustomerClasses(classes)
       } catch (err) {
-        void messageApi.error(getErrorMessage(err, 'Failed to load allowed customer classes'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
         setAllowedCustomerClasses(['CoreShopCustomer'])
       }
     }
@@ -101,17 +106,16 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
       setCustomerId(initialCustomerId ?? null)
       setCustomerData(null)
       setValidationData(null)
-      setCompanyName('')
+      setFormData({ ...defaultFormData })
       setDuplicates([])
       setShowDuplicates(false)
-      form.resetFields()
       hasBeenOpenRef.current = false
     }
     if (open) {
       hasBeenOpenRef.current = true
     }
     previousOpenRef.current = open
-  }, [open, initialCustomerId, form])
+  }, [open, initialCustomerId])
 
   const handleCustomerSelected = React.useCallback(async (id: number) => {
     setLoading(true)
@@ -122,10 +126,10 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
         setCustomerData(response.data)
         await validateAssignment(id)
       } else {
-        void messageApi.error(response.message ?? 'Failed to load customer details')
+        void messageApi.error(renderApiError(response.message ?? 'Failed to load customer details'))
       }
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to load customer details'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer details')))
     } finally {
       setLoading(false)
     }
@@ -158,13 +162,18 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
       const response = await customerCompanyApi.validateAssignment(custId)
       if (response.success && response.data) {
         setValidationData(response.data)
+        const hasAddresses = response.data.addresses.length > 0
+        setFormData({
+          ...defaultFormData,
+          addressAssignmentType: hasAddresses ? '' : 'keep',
+        })
         setStep('form')
       } else {
-        void messageApi.error(response.message ?? 'Customer cannot be assigned to a company')
+        void messageApi.error(renderApiError(response.message ?? 'Customer cannot be assigned to a company'))
         resetState()
       }
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to validate assignment'))
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to validate assignment')))
       resetState()
     } finally {
       setLoading(false)
@@ -172,8 +181,6 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
   }
 
   const handleCompanyNameChange = (name: string): void => {
-    setCompanyName(name)
-
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
@@ -196,7 +203,7 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
           setShowDuplicates(false)
         }
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, 'Failed to check duplicates'))
+        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to check duplicates')))
       } finally {
         setCheckingDuplicates(false)
       }
@@ -204,16 +211,22 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
   }
 
   const handleSubmit = async (): Promise<void> => {
+    if (!customerId) return
+    if (!formData.newCompanyName) {
+      void messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
+      return
+    }
+    if (!formData.addressAssignmentType) {
+      void messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
+      return
+    }
+
+    setSubmitting(true)
     try {
-      const values = await form.validateFields()
-      if (!customerId) return
-
-      setSubmitting(true)
-
       const response = await customerCompanyApi.dispatchNewAssignment(customerId, {
-        addressAssignmentType: values.addressAssignmentType,
-        addressAccessType: values.addressAccessType,
-        newCompanyName: values.newCompanyName,
+        addressAssignmentType: formData.addressAssignmentType,
+        addressAccessType: formData.addressAccessType,
+        newCompanyName: formData.newCompanyName,
       })
 
       if (response.success) {
@@ -238,13 +251,10 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
 
         onSuccess?.()
       } else {
-        void messageApi.error(response.message ?? 'Failed to assign customer to company')
+        void messageApi.error(renderApiError(response.message ?? 'Failed to assign customer to company'))
       }
     } catch (error) {
-      if ((error as any)?.errorFields) {
-        return
-      }
-      void messageApi.error('Failed to submit assignment')
+      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to submit assignment')))
     } finally {
       setSubmitting(false)
     }
@@ -255,10 +265,9 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
     setCustomerId(null)
     setCustomerData(null)
     setValidationData(null)
-    setCompanyName('')
+    setFormData({ ...defaultFormData })
     setDuplicates([])
     setShowDuplicates(false)
-    form.resetFields()
   }
 
   const handleClose = (): void => {
@@ -307,17 +316,17 @@ export const AssignToNewCompanyModal: React.FC<AssignToNewCompanyModalProps> = (
 
     return (
       <div className={styles.content}>
-        <Form form={form} layout="vertical">
-          <AssignmentForm
-            customerId={customerId!}
-            customerName={customerData?.name ?? ''}
-            addresses={validationData?.addresses ?? []}
-            isNewCompany={true}
-            onCompanyNameChange={handleCompanyNameChange}
-            duplicates={duplicates}
-            showDuplicates={showDuplicates}
-          />
-        </Form>
+        <AssignmentForm
+          customerId={customerId!}
+          customerName={customerData?.name ?? ''}
+          addresses={validationData?.addresses ?? []}
+          isNewCompany={true}
+          formData={formData}
+          onFormChange={setFormData}
+          onCompanyNameChange={handleCompanyNameChange}
+          duplicates={duplicates}
+          showDuplicates={showDuplicates}
+        />
       </div>
     )
   }

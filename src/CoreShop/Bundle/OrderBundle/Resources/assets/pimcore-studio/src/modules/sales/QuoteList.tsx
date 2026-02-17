@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
 import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListingBuilder } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { GridToolbar } from '@coreshop/pimcore/src/modules/grid/components/GridToolbar'
 import { PresetFilterProvider, usePresetFilter } from '@coreshop/pimcore/src/modules/grid/context/PresetFilterContext'
 
@@ -77,7 +77,7 @@ const QuoteListInner: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, 'Failed to fetch quote folder configuration'))
+        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch quote folder configuration')))
       } finally {
         setLoading(false)
       }

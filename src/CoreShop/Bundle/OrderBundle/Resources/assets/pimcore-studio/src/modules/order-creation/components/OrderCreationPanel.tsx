@@ -50,7 +50,6 @@ const useStyles = createStyles(({ css, token }) => ({
   content: css`
     flex: 1;
     overflow: auto;
-    padding: 16px;
   `,
   stepsContainer: css`
     display: flex;

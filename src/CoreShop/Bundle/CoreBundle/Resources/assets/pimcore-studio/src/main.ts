@@ -21,14 +21,12 @@ import { CoreBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopStoreValues } from './dynamic-types'
 import { CoreBundleMenuModule } from './modules/menu'
 import { RuleRegistryExtensionModule } from './modules/extension/rule-registry'
-import { SaleTabExtensionModule } from './modules/extension/sale-tab'
 import { OrderCreationExtensionModule } from './modules/extension/order-creation'
 import { ReportsModule } from './modules/reports'
 import { SettingsModule } from './modules/settings'
 import { AssignToNewCompanyPanel, AssignToExistingCompanyPanel } from './modules/customer-company-assignment'
 import { PimcoreRelationWidgetModule } from './modules/pimcore-relation-widget'
 import { CustomerAddressSelectWidget } from './modules/extension/order-creation/widgets/CustomerAddressSelectWidget'
-import { PreviewCarrierSelectWidget } from './modules/extension/order-creation/widgets/PreviewCarrierSelectWidget'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -46,10 +44,6 @@ const plugin: IAbstractPlugin = {
 
         formWidgetRegistry.register('coreshop_customer_address_choice', () => ({
             component: CustomerAddressSelectWidget,
-        }))
-
-        formWidgetRegistry.register('coreshop_carrier_choice', () => ({
-            component: PreviewCarrierSelectWidget,
         }))
     },
 
@@ -73,7 +67,6 @@ const plugin: IAbstractPlugin = {
         // Register extension modules that access other bundles' registries
         // These use lazy initialization to wait for registries to be available
         moduleSystem.registerModule(RuleRegistryExtensionModule)
-        moduleSystem.registerModule(SaleTabExtensionModule)
         moduleSystem.registerModule(OrderCreationExtensionModule)
 
         // Register other extension modules

@@ -20,7 +20,7 @@ import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListingBuilder } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { GridToolbar } from '@coreshop/pimcore/src/modules/grid/components/GridToolbar'
 import { PresetFilterProvider, usePresetFilter } from '@coreshop/pimcore/src/modules/grid/context/PresetFilterContext'
 
@@ -80,7 +80,7 @@ const OrderListInner: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, 'Failed to fetch order folder configuration'))
+        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch order folder configuration')))
       } finally {
         setLoading(false)
       }

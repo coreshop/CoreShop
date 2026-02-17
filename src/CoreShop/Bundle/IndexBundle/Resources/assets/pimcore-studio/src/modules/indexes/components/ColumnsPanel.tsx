@@ -17,7 +17,7 @@ import { indexApi } from '../api'
 import { ClassDefinitionTree } from './ClassDefinitionTree'
 import { SelectedFieldsTree } from './SelectedFieldsTree'
 import { FieldEditModal } from './FieldEditModal'
-import { getErrorMessage } from '@coreshop/resource/src/entities'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 interface ColumnsPanelProps {
   index: Index
@@ -50,7 +50,7 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
     indexApi.getClassDefinition(index.class)
       .then(setClassDefinition)
       .catch(err => {
-        void messageApi.error(getErrorMessage(err, 'Failed to load class definition'))
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load class definition')))
       })
       .finally(() => {
         setLoading(false)

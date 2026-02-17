@@ -19,7 +19,6 @@ import {
   Modal,
   Alert,
   Popconfirm,
-  message,
   Typography,
   Tooltip,
   Tag,
@@ -34,6 +33,8 @@ import {
   WarningOutlined
 } from '@ant-design/icons'
 import { createStyles } from 'antd-style'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { renderApiError } from '@coreshop/resource/src/entities'
 import { useTranslation } from 'react-i18next'
 import { ColumnsType } from 'antd/es/table'
 import { useMessengerReceivers, useMessengerFailedMessages } from '../hooks/useMessenger'
@@ -49,6 +50,7 @@ export const MessengerFailedGrid: React.FC = () => {
   const [selectedMessage, setSelectedMessage] = useState<MessengerFailedMessage | null>(null)
   const [processingActions, setProcessingActions] = useState<Set<string>>(new Set())
   const { styles } = useFailedGridStyles()
+  const messageApi = useMessage()
   const { t } = useTranslation()
 
   const {
@@ -80,9 +82,9 @@ export const MessengerFailedGrid: React.FC = () => {
 
     try {
       await deleteMessage(messageId)
-      message.success(t('coreshop_messenger_delete_success', { defaultValue: 'Message deleted successfully' }))
+      void messageApi.success(t('coreshop_messenger_delete_success', { defaultValue: 'Message deleted successfully' }))
     } catch (err) {
-      message.error(t('coreshop_messenger_delete_error', { defaultValue: 'Failed to delete message' }))
+      void messageApi.error(renderApiError(t('coreshop_messenger_delete_error', { defaultValue: 'Failed to delete message' })))
     } finally {
       setProcessingActions(prev => {
         const newSet = new Set(prev)
@@ -98,9 +100,9 @@ export const MessengerFailedGrid: React.FC = () => {
 
     try {
       await retryMessage(messageId)
-      message.success(t('coreshop_messenger_retry_success', { defaultValue: 'Message retry initiated successfully' }))
+      void messageApi.success(t('coreshop_messenger_retry_success', { defaultValue: 'Message retry initiated successfully' }))
     } catch (err) {
-      message.error(t('coreshop_messenger_retry_error', { defaultValue: 'Failed to retry message' }))
+      void messageApi.error(renderApiError(t('coreshop_messenger_retry_error', { defaultValue: 'Failed to retry message' })))
     } finally {
       setProcessingActions(prev => {
         const newSet = new Set(prev)

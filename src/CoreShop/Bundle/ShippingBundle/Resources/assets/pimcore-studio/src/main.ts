@@ -24,6 +24,7 @@ import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules
 import { Input } from 'antd'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
+import { CarrierSelect } from './components/CarrierSelect'
 import {
     DynamicTypeObjectDataCoreShopCarrier,
     DynamicTypeObjectDataCoreShopCarrierMultiselect
@@ -67,8 +68,14 @@ const plugin: IAbstractPlugin = {
     },
 
     onStartup({ moduleSystem }) {
-        // Hide ShippingBundle-owned rule collection prefixes from generic schema forms
         const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+
+        // Register CarrierSelect for coreshop_carrier_choice block prefix
+        formWidgetRegistry.register('coreshop_carrier_choice', () => ({
+            component: CarrierSelect,
+        }))
+
+        // Hide ShippingBundle-owned rule collection prefixes from generic schema forms
         const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
         ;[
           'coreshop_shipping_rule_condition_collection',
