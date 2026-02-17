@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { SchemaForm } from '@coreshop/studio-form'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { formatCurrency } from '@coreshop/pimcore/src/utils'
+import React from "react"
 
 export interface CreateShipmentModalProps {
   open: boolean

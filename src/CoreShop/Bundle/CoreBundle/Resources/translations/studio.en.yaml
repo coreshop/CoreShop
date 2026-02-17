@@ -1,5 +1,7 @@
+---
 coreshop_loading: 'CoreShop is loading'
 coreshop_about: 'About CoreShop'
+coreshop_studio_form_demos: 'StudioForm Demos'
 coreshop_loaded: 'CoreShop Version {0}'
 coreshop_settings: 'Settings'
 coreshop_category: 'Category'

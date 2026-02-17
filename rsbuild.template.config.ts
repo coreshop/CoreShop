@@ -1,14 +1,15 @@
 /**
  * CoreShop Studio RSBuild Template Configuration
- * 
+ *
  * Template configuration for individual CoreShop Studio bundles.
  * Configured via environment variables for parallel builds.
  */
 
-import { defineConfig } from '@rsbuild/core'
+import { defineConfig, type RsbuildPlugin } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 import { pluginSvgr } from '@rsbuild/plugin-svgr'
 import { pluginGenerateEntrypoints } from '@pimcore/studio-ui-bundle/rsbuild/plugins'
+import { pluginModuleFederation } from '@module-federation/rsbuild-plugin'
 import path from 'path'
 import fs from 'fs'
 import { v4 } from 'uuid'
@@ -79,7 +80,275 @@ if (nodeEnv !== 'production') {
 
 const devPort = DEV_PORT ? parseInt(DEV_PORT) : (3000 + BUNDLE_NAME.charCodeAt(0) % 100)
 
-// Main RSBuild configuration for single bundle (following rsbuild-config-factory.ts.bak pattern)
+/**
+ * Live reload plugin for CoreShop Studio dev mode.
+ *
+ * Since plugins are loaded as Module Federation remotes, the standard rsbuild
+ * dev client (injected into the `main` entry) is never loaded by the browser.
+ * The browser only loads `exposeRemote.js` (via PHP) and `remoteEntry.js`
+ * (via Module Federation), so there is no WebSocket connection for HMR.
+ *
+ * This plugin writes a hash file on every dev recompilation and appends a
+ * lightweight polling script to `exposeRemote.js` that detects changes and
+ * triggers a full page reload.
+ */
+function pluginLiveReload(): RsbuildPlugin {
+  return {
+    name: 'coreshop-live-reload',
+    setup(api) {
+      api.onDevCompileDone(({ environments }) => {
+        const config = environments.web.config
+        const distPath = config.output.distPath.root
+        const assetPrefix = config.output.assetPrefix
+
+        // Write hash file (timestamp changes on every compilation)
+        const hashFile = path.join(distPath, '__hmr_hash__.json')
+        fs.writeFileSync(hashFile, JSON.stringify({ hash: Date.now().toString() }))
+
+        // Append live reload script to exposeRemote.js
+        // (pluginGenerateEntrypoints runs first and writes a fresh exposeRemote.js)
+        const exposeRemotePath = path.join(distPath, 'exposeRemote.js')
+        if (fs.existsSync(exposeRemotePath)) {
+          const content = fs.readFileSync(exposeRemotePath, 'utf8')
+          const liveReloadScript = `
+;(function() {
+  var id = '__coreshop_lr_${bundlePrefix}';
+  if (window[id]) return;
+  window[id] = true;
+  var hash = null;
+  var url = '${assetPrefix}/__hmr_hash__.json';
+  setInterval(function() {
+    fetch(url + '?t=' + Date.now())
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (hash === null) { hash = data.hash; return; }
+        if (data.hash !== hash) {
+          console.log('[CoreShop] Change detected in ${bundlePrefix}, reloading...');
+          window.location.reload();
+        }
+      })
+      .catch(function() {});
+  }, 1000);
+})();`
+          fs.writeFileSync(exposeRemotePath, content + liveReloadScript)
+        }
+      })
+    }
+  }
+}
+
+// Module Federation options (shared between built-in and plugin)
+const moduleFederationOptions: Record<string, any> = {
+  name: bundlePrefix,
+  dts: false, // Disable DTS generation — the promise-based remote can't be resolved at build time
+  filename: 'static/js/remoteEntry.js',
+  exposes: {
+    '.': entryFile
+  },
+  remotes: {
+    '@pimcore/studio-ui-bundle': `promise new Promise(resolve => {
+      const studioUIBundleRemoteUrl = window.StudioUIBundleRemoteUrl
+      const script = document.createElement('script')
+
+      let hasScript = false;
+
+      document.querySelectorAll('script').forEach((el) => {
+        const elPathname = el.src.replace(/https?:\\/\\/[^/]+/, '')
+        const studioUIBundleRemoteUrlPathname = studioUIBundleRemoteUrl.replace(/https?:\\/\\/[^/]+/, '')
+
+        if (elPathname === studioUIBundleRemoteUrlPathname) {
+          hasScript = true;
+          return;
+        }
+      })
+
+      if (hasScript) {
+        resolve({
+          get: (request) => window['pimcore_studio_ui_bundle'].get(request),
+          init: (...arg) => {
+            try {
+              return window['pimcore_studio_ui_bundle'].init(...arg)
+            } catch(e) {
+              console.log('remote container already initialized')
+            }
+          }
+        })
+        return
+      }
+
+      script.src = studioUIBundleRemoteUrl
+      script.onload = () => {
+        const proxy = {
+          get: (request) => window['pimcore_studio_ui_bundle'].get(request),
+          init: (...arg) => {
+            try {
+              return window['pimcore_studio_ui_bundle'].init(...arg)
+            } catch(e) {
+              console.log('remote container already initialized')
+            }
+          }
+        }
+        resolve(proxy)
+      }
+      document.head.appendChild(script);
+    })
+    `
+  },
+  shared: {
+    ...Object.fromEntries(
+      Object.entries(dependencies)
+        .filter(
+          ([name]) =>
+            !name.startsWith('@coreshop/') &&
+            name !== '@coreshop/resource-studio-plugin'
+        )
+        .map(([name, version]) => [
+          name,
+          {
+            singleton: true,
+            eager: false,
+            requiredVersion: false
+          }
+        ])
+    ),
+    // Share CoreShop bundles between all plugins (both internal and external)
+    // This ensures registries and other singletons are shared properly
+    '@coreshop/resource': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/pimcore': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/currency': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/rule': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/order': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/product': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/shipping': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/payment': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/address': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/taxation': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/store': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/customer': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/core': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@coreshop/studio-form': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    react: {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    'react-dom': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    'react/jsx-runtime': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    'react/jsx-dev-runtime': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    'react-i18next': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    'i18next': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@emotion/react': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@emotion/styled': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    }
+  }
+}
+
+// Main RSBuild configuration for single bundle
 export default defineConfig({
   mode: env,
   root: bundleDir,
@@ -103,6 +372,7 @@ export default defineConfig({
     },
     hmr: true,
     lazyCompilation: isDevServer,
+    writeToDisk: isDevServer,
   },
   source: {
     entry: {
@@ -159,223 +429,10 @@ export default defineConfig({
       root: buildPath
     }
   },
-  tools: {
-    bundlerChain: (chain, { env }) => {
-      chain.output.uniqueName(bundlePrefix)
-    }
-  },
-  moduleFederation: {
-    options: {
-      name: bundlePrefix,
-      filename: 'static/js/remoteEntry.js',
-      exposes: {
-        '.': entryFile
-      },
-      remotes: {
-        '@pimcore/studio-ui-bundle': `promise new Promise(resolve => {
-          const studioUIBundleRemoteUrl = window.StudioUIBundleRemoteUrl
-          const script = document.createElement('script')
-
-          let hasScript = false;
-
-          document.querySelectorAll('script').forEach((el) => {
-            const elPathname = el.src.replace(/https?:\\/\\/[^/]+/, '')
-            const studioUIBundleRemoteUrlPathname = studioUIBundleRemoteUrl.replace(/https?:\\/\\/[^/]+/, '')
-
-            if (elPathname === studioUIBundleRemoteUrlPathname) {
-              hasScript = true;
-              return;
-            }
-          })
-
-          if (hasScript) {
-            resolve({
-              get: (request) => window['pimcore_studio_ui_bundle'].get(request),
-              init: (...arg) => {
-                try {
-                  return window['pimcore_studio_ui_bundle'].init(...arg)
-                } catch(e) {
-                  console.log('remote container already initialized')
-                }
-              }
-            })
-            return
-          }
-
-          script.src = studioUIBundleRemoteUrl
-          script.onload = () => {
-            const proxy = {
-              get: (request) => window['pimcore_studio_ui_bundle'].get(request),
-              init: (...arg) => {
-                try {
-                  return window['pimcore_studio_ui_bundle'].init(...arg)
-                } catch(e) {
-                  console.log('remote container already initialized')
-                }
-              }
-            }
-            resolve(proxy)
-          }
-          document.head.appendChild(script);
-        })
-        `
-      },
-      shared: {
-        ...Object.fromEntries(
-          Object.entries(dependencies)
-            .filter(
-              ([name]) =>
-                !name.startsWith('@coreshop/') &&
-                name !== '@coreshop/resource-studio-plugin'
-            )
-            .map(([name, version]) => [
-              name,
-              {
-                singleton: true,
-                eager: false,
-                requiredVersion: false
-              }
-            ])
-        ),
-        // Share CoreShop bundles between all plugins (both internal and external)
-        // This ensures registries and other singletons are shared properly
-        '@coreshop/resource': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/pimcore': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/currency': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/rule': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/order': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/product': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/shipping': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/payment': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/address': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/taxation': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/store': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/customer': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/core': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@coreshop/studio-form': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        react: {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        'react-dom': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        'react/jsx-runtime': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        'react/jsx-dev-runtime': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        'react-i18next': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        'i18next': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@emotion/react': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        },
-        '@emotion/styled': {
-          singleton: true,
-          eager: false,
-          requiredVersion: false,
-          strictVersion: false
-        }
-      }
-    }
-  },
   plugins: [
+    pluginModuleFederation(moduleFederationOptions),
     pluginGenerateEntrypoints(),
+    pluginLiveReload(),
     pluginReact(),
     pluginSvgr({
       svgrOptions: {

@@ -6,4 +6,4 @@
  */
 
 export { AboutModal } from './AboutModal'
-export { AboutButton } from './AboutButton'
+export { openAboutModal } from './AboutButton'

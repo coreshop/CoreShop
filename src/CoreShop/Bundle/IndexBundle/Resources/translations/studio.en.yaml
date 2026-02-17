@@ -1,3 +1,4 @@
+---
 coreshop_save_error: 'Error saving item'
 coreshop_index_field_type: 'Type'
 coreshop_index_field_getter: 'Getter Class'

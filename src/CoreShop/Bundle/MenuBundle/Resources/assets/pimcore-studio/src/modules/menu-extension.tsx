@@ -136,19 +136,14 @@ export const CoreShopMenuExtension = {
 
             mainNavRegistry.registerMainNavItem(navItem)
 
-            if (!item.widgetId || !widgetRegistry.getWidget(item.widgetId)) {
+            // Only register a fallback widget if one isn't already registered
+            // (e.g. StudioForm Demos registers its own widget)
+            if (!widgetRegistry.getWidget(widgetId)) {
                 widgetRegistry.registerWidget({
                     name: widgetId,
                     component: props => CoreShopWidget({item}),
                 })
-
-                return;
             }
-
-            widgetRegistry.registerWidget({
-                name: widgetId,
-                component: props => CoreShopWidget({item}),
-            })
         }
     }
 }

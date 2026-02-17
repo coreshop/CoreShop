@@ -37,7 +37,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: '[CS] Refactor'
-          author: CoreShop <info@coreshop.org>
+          author: CoreShop <info@coreshop.com>
           title: '[CS] Refactor'
           body: |
             This PR has been generated automatically to fix code-styles

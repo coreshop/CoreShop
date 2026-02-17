@@ -15,7 +15,6 @@
 import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
-import type { MainNavRegistry } from '@pimcore/studio-ui-bundle/modules/app/base-layout/main-nav/services/main-nav-registry'
 import { DemoShowcase } from './DemoShowcase'
 
 const WIDGET_ID = 'coreshop-studio-form-demos'
@@ -27,25 +26,6 @@ export const DemoModule: AbstractModule = {
     widgetRegistry.registerWidget({
       name: WIDGET_ID,
       component: DemoShowcase,
-    })
-
-    const mainNavRegistry = container.get<MainNavRegistry>(serviceIds.mainNavRegistry)
-
-    mainNavRegistry.registerMainNavItem({
-      path: 'coreshop/coreshop_studio_form_demos',
-      label: 'StudioForm Demos',
-      icon: 'coreshop_nav_icon_settings',
-      widgetConfig: {
-        name: 'StudioForm Demos',
-        id: WIDGET_ID,
-        component: WIDGET_ID,
-        config: {
-          icon: {
-            type: 'name',
-            value: 'coreshop_nav_icon_settings',
-          },
-        },
-      },
     })
   },
 }

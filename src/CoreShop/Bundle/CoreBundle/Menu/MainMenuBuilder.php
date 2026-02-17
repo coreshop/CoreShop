@@ -23,6 +23,11 @@ use Knp\Menu\ItemInterface;
 
 class MainMenuBuilder implements MenuBuilderInterface
 {
+    public function __construct(
+        private readonly bool $debug,
+    ) {
+    }
+
     public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void
     {
         $menuItem->setLabel('coreshop');
@@ -44,7 +49,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_order')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'open_order_by_number')
-            ->setAttribute('widgetButton', 'coreShopOpenOrderByNumberModal')
+            ->setAttribute('widgetEvent', 'coreshop.order-by-number.open')
             ->setExtra('order', 10)
         ;
 
@@ -442,8 +447,17 @@ class MainMenuBuilder implements MenuBuilderInterface
         $menuItem->addChild('coreshop_about')
             ->setLabel('coreshop_about')
             ->setAttribute('iconCls', 'coreshop_nav_icon_logo')
-            ->setAttribute('widgetButton', 'coreShopAbout')
+            ->setAttribute('widgetEvent', 'coreshop.about.open')
             ->setExtra('order', 1000)
         ;
+
+        if ($this->debug) {
+            $menuItem->addChild('coreshop_studio_form_demos')
+                ->setLabel('coreshop_studio_form_demos')
+                ->setAttribute('iconCls', 'coreshop_nav_icon_settings')
+                ->setAttribute('widgetId', 'coreshop-studio-form-demos')
+                ->setExtra('order', 999)
+            ;
+        }
     }
 }

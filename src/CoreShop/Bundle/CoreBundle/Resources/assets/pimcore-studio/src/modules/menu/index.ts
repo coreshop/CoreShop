@@ -10,28 +10,20 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import {container, AbstractModule} from '@pimcore/studio-ui-bundle'
-import {OrderByNumberButton} from "../../components/OrderByNumberButton";
-import {AboutButton} from "../about";
-
-// @ts-ignore
-import MenuButtonRegistry from '@coreshop/menu';
+import {AbstractModule} from '@pimcore/studio-ui-bundle'
+import {openOrderByNumberModal} from "../../components/OrderByNumberButton";
+import {openAboutModal} from "../about/AboutButton";
 
 export {orderService} from '../../services/OrderService'
-export {OrderByNumberButton} from '../../components/OrderByNumberButton'
 
 export const CoreBundleMenuModule: AbstractModule = {
     onInit(): void {
-        const buttonRegistry = container.get<MenuButtonRegistry>('CoreShopMenuButtons')
-
-        buttonRegistry.add({
-            button: OrderByNumberButton,
-            name: 'coreShopOpenOrderByNumberModal',
+        window.addEventListener('coreshop.order-by-number.open', () => {
+            openOrderByNumberModal()
         })
 
-        buttonRegistry.add({
-            button: AboutButton,
-            name: 'coreShopAbout',
+        window.addEventListener('coreshop.about.open', () => {
+            openAboutModal()
         })
     }
 }

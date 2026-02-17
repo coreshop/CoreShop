@@ -1,7 +1,7 @@
 /**
- * CoreShop About Button Component
+ * CoreShop About Modal Opener
  *
- * Menu button that opens the About CoreShop modal.
+ * Opens the About CoreShop modal via a custom event listener.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
  * @license    CoreShop Commercial License (CCL)
@@ -9,16 +9,13 @@
 
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { Icon } from '@pimcore/studio-ui-bundle/components'
-import { useTranslation } from 'react-i18next'
-import { type MenuButtonProps } from '@coreshop/menu/src'
 import { AboutModal } from './AboutModal'
 
 // Container for the modal
 let modalContainer: HTMLDivElement | null = null
 let modalRoot: ReturnType<typeof createRoot> | null = null
 
-const openAboutModal = (): void => {
+export const openAboutModal = (): void => {
   // Create container if it doesn't exist
   if (!modalContainer) {
     modalContainer = document.createElement('div')
@@ -49,27 +46,4 @@ const openAboutModal = (): void => {
       />
     )
   }
-}
-
-export const AboutButton = ({ icon, closeMainNav }: MenuButtonProps): React.JSX.Element => {
-  const { t } = useTranslation()
-
-  const handleClick = (): void => {
-    closeMainNav?.()
-
-    // Small delay to ensure menu animation completes
-    setTimeout(() => {
-      openAboutModal()
-    }, 50)
-  }
-
-  return (
-    <button
-      className="main-nav__list-btn"
-      onClick={handleClick}
-    >
-      <Icon value={icon ?? 'coreshop_nav_icon_logo'} />
-      {t('coreshop_about', { defaultValue: 'About' })}
-    </button>
-  )
 }

@@ -3,5 +3,7 @@ services:
         public: true
 
     CoreShop\Bundle\CoreBundle\Menu\MainMenuBuilder:
+        arguments:
+            $debug: '%kernel.debug%'
         tags:
             - { name: 'coreshop.menu', type: main, menu: main }
