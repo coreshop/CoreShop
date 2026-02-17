@@ -164,6 +164,7 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
             pagination={false}
             className={styles.table}
             size="small"
+            scroll={{ x: 'max-content' }}
           />
         )}
       </Card>

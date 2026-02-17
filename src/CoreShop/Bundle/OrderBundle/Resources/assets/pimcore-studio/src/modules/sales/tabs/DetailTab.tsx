@@ -244,6 +244,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
           pagination={false}
           className={styles.table}
           size="small"
+          scroll={{ x: 'max-content' }}
         />
 
         {/* Price Rules Section */}

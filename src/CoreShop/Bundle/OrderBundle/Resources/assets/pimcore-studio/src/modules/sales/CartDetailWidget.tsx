@@ -11,10 +11,10 @@
  */
 
 import React from 'react'
-import { Spin } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { renderApiError } from '@coreshop/resource/src/entities'
 import { SaleDetail } from './SaleDetail'
+import { SaleDetailSkeleton } from './SaleDetailSkeleton'
 import type { Sale } from './types'
 
 interface CartDetailWidgetProps {
@@ -108,18 +108,7 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
   }, [cartId, loadCart])
 
   if (loading) {
-    return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        width: '100%',
-        minHeight: 400
-      }}>
-        <Spin size="large" tip="Loading cart details..." />
-      </div>
-    )
+    return <SaleDetailSkeleton />
   }
 
   if (!cart) {

@@ -11,10 +11,10 @@
  */
 
 import React from 'react'
-import { Spin } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { renderApiError } from '@coreshop/resource/src/entities'
 import { SaleDetail } from './SaleDetail'
+import { SaleDetailSkeleton } from './SaleDetailSkeleton'
 import type { Sale } from './types'
 
 interface OrderDetailWidgetProps {
@@ -125,18 +125,7 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
   }, [orderId, loadOrder])
 
   if (loading) {
-    return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        width: '100%',
-        minHeight: 400
-      }}>
-        <Spin size="large" tip="Loading order details..." />
-      </div>
-    )
+    return <SaleDetailSkeleton />
   }
 
   if (!order) {

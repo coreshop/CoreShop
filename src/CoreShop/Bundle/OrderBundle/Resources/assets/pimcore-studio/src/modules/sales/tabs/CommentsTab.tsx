@@ -262,7 +262,6 @@ const useCommentsTabStyles = createStyles(({ css, token }) => ({
     flex-direction: column;
     max-height: 400px;
     overflow-y: auto;
-    margin: -24px;
   `,
   commentItem: css`
     display: flex;
