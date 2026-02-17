@@ -16,6 +16,7 @@
 import React from 'react'
 import { Table, Card } from 'antd'
 import { createStyles } from 'antd-style'
+import { useTranslation } from 'react-i18next'
 import { formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
 import type { SaleTabProps } from '../registry'
@@ -53,6 +54,7 @@ interface SummaryItem {
 }
 
 export const DetailTab: React.FC<SaleTabProps> = () => {
+  const { t } = useTranslation()
   const { sale } = useSaleContext()
   const { styles } = useDetailTabStyles()
 
@@ -70,13 +72,13 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
   // Items table columns
   const itemColumns: Array<ColumnType<DetailItem>> = [
     {
-      title: 'Product',
+      title: t('coreshop_product', { defaultValue: 'Product' }),
       dataIndex: 'productName',
       key: 'productName',
       ellipsis: true
     },
     {
-      title: 'Price (excl.)',
+      title: t('coreshop_price_without_tax', { defaultValue: 'Price (excl.)' }),
       dataIndex: 'priceNet',
       key: 'priceNet',
       width: 110,
@@ -84,7 +86,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       render: (value) => formatCurrency(value, baseCurrencyCode)
     },
     {
-      title: 'Price (incl.)',
+      title: t('coreshop_price_with_tax', { defaultValue: 'Price (incl.)' }),
       dataIndex: 'price',
       key: 'price',
       width: 110,
@@ -92,14 +94,14 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       render: (value) => formatCurrency(value, baseCurrencyCode)
     },
     {
-      title: 'Qty',
+      title: t('coreshop_quantity', { defaultValue: 'Quantity' }),
       dataIndex: 'quantity',
       key: 'quantity',
       width: 60,
       align: 'center'
     },
     {
-      title: 'Unit',
+      title: t('coreshop_unit', { defaultValue: 'Unit' }),
       dataIndex: 'unit',
       key: 'unit',
       width: 70,
@@ -107,14 +109,14 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       render: (value) => value || '–'
     },
     {
-      title: 'Total (excl.)',
+      title: t('coreshop_total_without_tax', { defaultValue: 'Total (excl.)' }),
       key: 'totalNet',
       width: 110,
       align: 'right',
       render: (_, record) => formatCurrency(record.total - record.totalTax, baseCurrencyCode)
     },
     {
-      title: 'Total (incl.)',
+      title: t('coreshop_total', { defaultValue: 'Total' }),
       dataIndex: 'total',
       key: 'total',
       width: 110,
@@ -126,7 +128,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
   // Add converted columns if needed
   if (showConverted) {
     itemColumns.splice(2, 0, {
-      title: `Price (excl.) ${currencyCode || ''}`,
+      title: `${t('coreshop_converted_price_without_tax', { defaultValue: 'Conv. Price (excl.)' })} ${currencyCode || ''}`.trim(),
       dataIndex: 'convertedPriceNet',
       key: 'convertedPriceNet',
       width: 150,
@@ -135,7 +137,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
     })
 
     itemColumns.splice(4, 0, {
-      title: `Price (incl.) ${currencyCode || ''}`,
+      title: `${t('coreshop_converted_price_with_tax', { defaultValue: 'Conv. Price (incl.)' })} ${currencyCode || ''}`.trim(),
       dataIndex: 'convertedPrice',
       key: 'convertedPrice',
       width: 150,
@@ -144,7 +146,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
     })
 
     itemColumns.splice(8, 0, {
-      title: `Total (excl.) ${currencyCode || ''}`,
+      title: `${t('coreshop_converted_total_without_tax', { defaultValue: 'Conv. Total (excl.)' })} ${currencyCode || ''}`.trim(),
       key: 'convertedTotalNet',
       width: 150,
       align: 'right',
@@ -155,7 +157,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
     })
 
     itemColumns.splice(10, 0, {
-      title: `Total (incl.) ${currencyCode || ''}`,
+      title: `${t('coreshop_converted_total', { defaultValue: 'Conv. Total' })} ${currencyCode || ''}`.trim(),
       dataIndex: 'convertedTotal',
       key: 'convertedTotal',
       width: 150,
@@ -280,7 +282,7 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
   return (
     <div className={styles.container}>
       {/* Items Table with Summary */}
-      <Card title="Items" className={styles.card}>
+      <Card title={t('coreshop_products', { defaultValue: 'Products' })} className={styles.card}>
         <Table
           dataSource={details}
           columns={itemColumns}

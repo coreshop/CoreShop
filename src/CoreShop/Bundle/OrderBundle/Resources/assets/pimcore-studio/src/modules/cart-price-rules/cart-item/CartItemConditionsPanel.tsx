@@ -14,6 +14,7 @@ import React from 'react'
 import { Button, Dropdown, Space, Empty } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { RuleCondition } from '@coreshop/rule/src/rules/types'
 import { CartItemConditionItem } from './CartItemConditionItem'
 
@@ -28,6 +29,8 @@ export const CartItemConditionsPanel: React.FC<CartItemConditionsPanelProps> = (
   availableTypes,
   onChange
 }) => {
+  const { t } = useTranslation()
+
   const handleAdd = (type: string) => {
     const newCondition: RuleCondition = {
       type,
@@ -64,7 +67,7 @@ export const CartItemConditionsPanel: React.FC<CartItemConditionsPanelProps> = (
 
   const menuItems: MenuProps['items'] = availableTypes.map(type => ({
     key: type,
-    label: `Condition: ${type}`,
+    label: type,
     onClick: () => handleAdd(type)
   }))
 
@@ -74,14 +77,14 @@ export const CartItemConditionsPanel: React.FC<CartItemConditionsPanelProps> = (
         <div>
           <Dropdown menu={{ items: menuItems }} placement="bottomLeft">
             <Button type="primary" icon={<PlusOutlined />}>
-              Add Condition
+              {t('coreshop_cart_item_add_condition', { defaultValue: 'Add Condition' })}
             </Button>
           </Dropdown>
         </div>
 
         {conditions.length === 0 ? (
           <Empty
-            description="No conditions defined"
+            description={t('coreshop_cart_item_no_conditions', { defaultValue: 'No conditions defined' })}
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         ) : (

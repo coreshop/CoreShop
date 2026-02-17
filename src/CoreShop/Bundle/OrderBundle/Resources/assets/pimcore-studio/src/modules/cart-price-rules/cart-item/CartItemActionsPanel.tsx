@@ -14,6 +14,7 @@ import React from 'react'
 import { Button, Dropdown, Space, Empty } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { RuleAction } from '@coreshop/rule/src/rules/types'
 import { CartItemActionItem } from './CartItemActionItem'
 
@@ -28,6 +29,8 @@ export const CartItemActionsPanel: React.FC<CartItemActionsPanelProps> = ({
   availableTypes,
   onChange
 }) => {
+  const { t } = useTranslation()
+
   const handleAdd = (type: string) => {
     const newAction: RuleAction = {
       type,
@@ -64,7 +67,7 @@ export const CartItemActionsPanel: React.FC<CartItemActionsPanelProps> = ({
 
   const menuItems: MenuProps['items'] = availableTypes.map(type => ({
     key: type,
-    label: `Action: ${type}`,
+    label: type,
     onClick: () => handleAdd(type)
   }))
 
@@ -74,14 +77,14 @@ export const CartItemActionsPanel: React.FC<CartItemActionsPanelProps> = ({
         <div>
           <Dropdown menu={{ items: menuItems }} placement="bottomLeft">
             <Button type="primary" icon={<PlusOutlined />}>
-              Add Action
+              {t('coreshop_cart_item_add_action', { defaultValue: 'Add Action' })}
             </Button>
           </Dropdown>
         </div>
 
         {actions.length === 0 ? (
           <Empty
-            description="No actions defined"
+            description={t('coreshop_cart_item_no_actions', { defaultValue: 'No actions defined' })}
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         ) : (

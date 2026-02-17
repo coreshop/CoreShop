@@ -89,11 +89,11 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
         if (data.success && data.items && data.items.length > 0) {
           setItems(data.items)
         } else {
-          void messageApi.info('No items available to invoice')
+          void messageApi.info(t('coreshop_invoice_no_items', { defaultValue: 'No invoiceable items found' }))
           onCancel()
         }
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, 'Failed to load invoiceable items'))
+        void messageApi.error(getErrorMessage(error, t('coreshop_invoice_load_items_error', { defaultValue: 'Failed to load invoiceable items' })))
         onCancel()
       } finally {
         setLoadingItems(false)
@@ -101,7 +101,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
     }
 
     void loadItems()
-  }, [open, orderId, onCancel])
+  }, [open, orderId, onCancel, t])
 
   // Handle quantity change
   const handleQuantityChange = (index: number, value: number | null) => {
@@ -161,14 +161,14 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       const result = await response.json()
 
       if (result.success) {
-        void messageApi.success('Invoice created successfully')
+        void messageApi.success(t('coreshop_invoice_create_success', { defaultValue: 'Invoice created successfully' }))
         form.resetFields()
         onSuccess()
       } else {
-        void messageApi.error(result.message || 'Failed to create invoice')
+        void messageApi.error(result.message || t('coreshop_invoice_create_error', { defaultValue: 'Failed to create invoice' }))
       }
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to create invoice'))
+      void messageApi.error(getErrorMessage(error, t('coreshop_invoice_create_error', { defaultValue: 'Failed to create invoice' })))
     } finally {
       setLoading(false)
     }
@@ -239,12 +239,12 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
 
   return (
     <Modal
-      title={`Create Invoice for Order (${orderId})`}
+      title={`${t('coreshop_invoice_create_new', { defaultValue: 'Create Invoice for Order' })} (${orderId})`}
       open={open}
       onCancel={onCancel}
       onOk={handleSave}
-      okText="Save"
-      cancelText="Cancel"
+      okText={t('coreshop_save', { defaultValue: 'Save' })}
+      cancelText={t('coreshop_cancel', { defaultValue: 'Cancel' })}
       width={1200}
       confirmLoading={loading}
       className={styles.modal}
@@ -259,7 +259,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
           items={[
             {
               key: 'invoice',
-              label: 'Invoice',
+              label: t('coreshop_invoice', { defaultValue: 'Invoice' }),
               children: (
                 <div className={styles.content}>
                   {/* Extension slot: CoreBundle can inject payment provider field here */}
@@ -278,7 +278,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
                       <Table.Summary fixed>
                         <Table.Summary.Row>
                           <Table.Summary.Cell index={0} colSpan={5} align="right">
-                            <strong>Subtotal:</strong>
+                            <strong>{t('coreshop_subtotal', { defaultValue: 'Subtotal' })}:</strong>
                           </Table.Summary.Cell>
                           <Table.Summary.Cell index={1} align="right" />
                           <Table.Summary.Cell index={2} align="right">
@@ -287,7 +287,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
                         </Table.Summary.Row>
                         <Table.Summary.Row>
                           <Table.Summary.Cell index={0} colSpan={5} align="right">
-                            <strong>Tax:</strong>
+                            <strong>{t('coreshop_tax', { defaultValue: 'Tax' })}:</strong>
                           </Table.Summary.Cell>
                           <Table.Summary.Cell index={1} align="right">
                             <strong>{formatCurrency(totals.tax, currencyCode)}</strong>
@@ -296,7 +296,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
                         </Table.Summary.Row>
                         <Table.Summary.Row>
                           <Table.Summary.Cell index={0} colSpan={5} align="right">
-                            <strong>Total:</strong>
+                            <strong>{t('coreshop_total', { defaultValue: 'Total' })}:</strong>
                           </Table.Summary.Cell>
                           <Table.Summary.Cell index={1} align="right" />
                           <Table.Summary.Cell index={2} align="right">

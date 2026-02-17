@@ -18,6 +18,7 @@ import { Table, Button, Card, Empty, Modal } from 'antd'
 import { createStyles } from 'antd-style'
 import { MailOutlined, FileTextOutlined, MessageOutlined } from '@ant-design/icons'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
+import { useTranslation } from 'react-i18next'
 import type { ColumnType } from 'antd/es/table'
 import type { SaleTabProps } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
@@ -32,6 +33,7 @@ interface EmailCorrespondence {
 }
 
 export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
+  const { t } = useTranslation()
   const { sale } = useSaleContext()
   const { styles } = useCorrespondenceTabStyles()
   const [emailLogModal, setEmailLogModal] = React.useState<number | null>(null)
@@ -52,7 +54,12 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
     // TODO: Implement Pimcore Document opening in Studio v2
     // In legacy admin: pimcore.helpers.openDocument(documentId, 'email')
     // Studio v2 needs API endpoint to open documents in the new editor
-    alert(`TODO: Open Pimcore Email Document (ID: ${documentId})\n\nStudio v2 does not yet support opening Pimcore Documents.\nThis feature needs to be implemented similar to DataObject opening.`)
+    alert(
+      `${t('coreshop_mail_correspondence_open_document', { defaultValue: 'Open Email Document' })} (ID: ${documentId})\n\n` +
+      t('coreshop_mail_correspondence_open_document_not_supported', {
+        defaultValue: 'Studio v2 does not yet support opening Pimcore Documents.'
+      })
+    )
     console.warn('[CorrespondenceTab] TODO: Implement document opening for Studio v2', { documentId })
   }
 
@@ -66,20 +73,20 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
 
   const columns: Array<ColumnType<EmailCorrespondence>> = [
     {
-      title: 'Date',
+      title: t('coreshop_date', { defaultValue: 'Date' }),
       dataIndex: 'date',
       key: 'date',
       width: 180,
       render: (date) => formatDateTime(date)
     },
     {
-      title: 'Subject',
+      title: t('coreshop_mail_correspondence_subject', { defaultValue: 'Subject' }),
       dataIndex: 'subject',
       key: 'subject',
       ellipsis: true
     },
     {
-      title: 'Recipient',
+      title: t('coreshop_mail_correspondence_recipient', { defaultValue: 'Recipient' }),
       dataIndex: 'recipient',
       key: 'recipient',
       width: 250,
@@ -98,7 +105,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
             type="text"
             size="small"
             icon={<MailOutlined />}
-            title="Show Email Log"
+            title={t('coreshop_mail_correspondence_mail_log_show', { defaultValue: 'Show sent mail log' })}
             onClick={() => openEmailLog(record['email-log']!)}
           />
         )
@@ -117,7 +124,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
             type="text"
             size="small"
             icon={<FileTextOutlined />}
-            title="Open Email Document"
+            title={t('coreshop_mail_correspondence_open_document', { defaultValue: 'Open Email Document' })}
             onClick={() => openEmailDocument(record.document!)}
           />
         )
@@ -136,7 +143,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
             type="text"
             size="small"
             icon={<MessageOutlined />}
-            title="Open Messaging Thread"
+            title={t('coreshop_mail_correspondence_open_thread', { defaultValue: 'Open Messaging Thread' })}
             onClick={() => openMessagingThread(record.threadId!)}
           />
         )
@@ -147,12 +154,12 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
   return (
     <>
       <Card
-        title="Mail Correspondence"
+        title={t('coreshop_mail_correspondence', { defaultValue: 'Mail correspondence' })}
         className={styles.card}
       >
         {correspondence.length === 0 ? (
           <Empty
-            description="No email correspondence"
+            description={t('coreshop_mail_correspondence_none', { defaultValue: 'No email correspondence' })}
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         ) : (
@@ -171,7 +178,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
       {/* Email Log Modal */}
       {emailLogModal !== null && (
         <Modal
-          title="Mail Correspondence"
+          title={t('coreshop_mail_correspondence', { defaultValue: 'Mail correspondence' })}
           open={true}
           onCancel={() => setEmailLogModal(null)}
           footer={null}
@@ -183,7 +190,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
               key={iframeKey}
               src={`/admin/email/show-email-log?id=${emailLogModal}&type=html`}
               className={styles.iframe}
-              title="Email Log"
+              title={t('coreshop_mail_correspondence_mail_log', { defaultValue: 'Mail Log' })}
               sandbox="allow-same-origin allow-scripts"
             />
           </div>

@@ -17,6 +17,7 @@ import { Modal, Form, DatePicker, InputNumber } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { createStyles } from 'antd-style'
 import dayjs, { type Dayjs } from 'dayjs'
+import { useTranslation } from 'react-i18next'
 import { PaymentProviderSelect } from '@coreshop/payment/src/components'
 import { getErrorMessage } from '@coreshop/resource/src/entities'
 
@@ -40,6 +41,7 @@ export const CreatePaymentModal: React.FC<CreatePaymentModalProps> = ({
   onSuccess,
   onCancel
 }) => {
+  const { t } = useTranslation()
   const { styles } = useCreatePaymentModalStyles()
   const messageApi = useMessage()
   const [form] = Form.useForm()
@@ -84,15 +86,15 @@ export const CreatePaymentModal: React.FC<CreatePaymentModalProps> = ({
       const result = await response.json()
 
       if (result.success) {
-        void messageApi.success('Payment created successfully')
+        void messageApi.success(t('coreshop_payment_create_success', { defaultValue: 'Payment created successfully' }))
         form.resetFields()
         onSuccess()
       } else {
-        void messageApi.error(result.message || 'Failed to create payment')
+        void messageApi.error(result.message || t('coreshop_payment_create_error', { defaultValue: 'Failed to create payment' }))
       }
     } catch (error) {
       if (error instanceof Error && error.message !== 'Validation failed') {
-        void messageApi.error(getErrorMessage(error, 'Failed to create payment'))
+        void messageApi.error(getErrorMessage(error, t('coreshop_payment_create_error', { defaultValue: 'Failed to create payment' })))
       }
     } finally {
       setLoading(false)
@@ -101,12 +103,12 @@ export const CreatePaymentModal: React.FC<CreatePaymentModalProps> = ({
 
   return (
     <Modal
-      title="Add Payment"
+      title={t('coreshop_order_add_payment', { defaultValue: 'Add Payment' })}
       open={open}
       onCancel={onCancel}
       onOk={handleSave}
-      okText="Save"
-      cancelText="Cancel"
+      okText={t('coreshop_save', { defaultValue: 'Save' })}
+      cancelText={t('coreshop_cancel', { defaultValue: 'Cancel' })}
       confirmLoading={loading}
       className={styles.modal}
     >
@@ -116,9 +118,9 @@ export const CreatePaymentModal: React.FC<CreatePaymentModalProps> = ({
         className={styles.form}
       >
         <Form.Item
-          label="Date"
+          label={t('coreshop_date', { defaultValue: 'Date' })}
           name="date"
-          rules={[{ required: true, message: 'Please select a date' }]}
+          rules={[{ required: true, message: t('coreshop_required', { defaultValue: 'Required' }) }]}
         >
           <DatePicker
             style={{ width: '100%' }}
@@ -127,19 +129,19 @@ export const CreatePaymentModal: React.FC<CreatePaymentModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          label="Payment Provider"
+          label={t('coreshop_paymentProvider', { defaultValue: 'Payment Provider' })}
           name="paymentProvider"
-          rules={[{ required: true, message: 'Please select a payment provider' }]}
+          rules={[{ required: true, message: t('coreshop_required', { defaultValue: 'Required' }) }]}
         >
-          <PaymentProviderSelect placeholder="Select a payment provider" />
+          <PaymentProviderSelect placeholder={t('coreshop_select_payment_provider', { defaultValue: 'Select Payment Provider' })} />
         </Form.Item>
 
         <Form.Item
-          label="Amount"
+          label={t('coreshop_amount', { defaultValue: 'Amount' })}
           name="amount"
           rules={[
-            { required: true, message: 'Please enter an amount' },
-            { type: 'number', min: 0, message: 'Amount must be positive' }
+            { required: true, message: t('coreshop_required', { defaultValue: 'Required' }) },
+            { type: 'number', min: 0, message: t('coreshop_amount_must_be_positive', { defaultValue: 'Amount must be positive' }) }
           ]}
         >
           <InputNumber

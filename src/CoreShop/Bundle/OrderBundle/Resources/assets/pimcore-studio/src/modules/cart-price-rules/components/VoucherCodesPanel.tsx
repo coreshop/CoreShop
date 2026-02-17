@@ -13,6 +13,7 @@
 import React from 'react'
 import { Button, Table, Space, Popconfirm, message, Modal, Form, Input, InputNumber, Select, Tag } from 'antd'
 import { PlusOutlined, DeleteOutlined, DownloadOutlined, ThunderboltOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
 import type { CartPriceRule, VoucherCode } from '../types'
 import { cartPriceRuleApi } from '../api'
 
@@ -25,6 +26,7 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
   rule,
   disabled = false
 }) => {
+  const { t } = useTranslation()
   const [vouchers, setVouchers] = React.useState<VoucherCode[]>([])
   const [loading, setLoading] = React.useState(false)
   const [total, setTotal] = React.useState(0)
@@ -46,11 +48,11 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
         setTotal(total)
       })
       .catch(() => {
-        message.error('Failed to load voucher codes')
+        message.error(t('coreshop_voucher_codes_load_error', { defaultValue: 'Failed to load voucher codes' }))
         setVouchers([])
       })
       .finally(() => setLoading(false))
-  }, [rule.id, page, pageSize])
+  }, [rule.id, page, pageSize, t])
 
   React.useEffect(() => {
     if (!disabled) {
@@ -64,13 +66,13 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
     try {
       const values = await createForm.validateFields()
       await cartPriceRuleApi.createVoucherCode(rule.id, values.code)
-      message.success('Voucher code created')
+      message.success(t('coreshop_voucher_code_create_success', { defaultValue: 'Voucher code created' }))
       setCreateModalOpen(false)
       createForm.resetFields()
       loadVouchers()
     } catch (error: any) {
       if (error.errorFields) return // Validation error
-      message.error(error.message || 'Failed to create voucher code')
+      message.error(error.message || t('coreshop_voucher_code_create_error', { defaultValue: 'Failed to create voucher code' }))
     }
   }
 
@@ -83,23 +85,23 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
         cartPriceRule: rule.id,
         ...values
       })
-      message.success('Voucher codes generated')
+      message.success(t('coreshop_voucher_codes_generate_success', { defaultValue: 'Voucher codes generated' }))
       setGenerateModalOpen(false)
       generateForm.resetFields()
       loadVouchers()
     } catch (error: any) {
       if (error.errorFields) return // Validation error
-      message.error(error.message || 'Failed to generate voucher codes')
+      message.error(error.message || t('coreshop_voucher_codes_generate_error', { defaultValue: 'Failed to generate voucher codes' }))
     }
   }
 
   const handleDelete = async (id: number) => {
     try {
       await cartPriceRuleApi.deleteVoucherCode(id)
-      message.success('Voucher code deleted')
+      message.success(t('coreshop_voucher_code_delete_success', { defaultValue: 'Voucher code deleted' }))
       loadVouchers()
     } catch (error) {
-      message.error('Failed to delete voucher code')
+      message.error(t('coreshop_voucher_code_delete_error', { defaultValue: 'Failed to delete voucher code' }))
     }
   }
 
@@ -112,30 +114,32 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
 
   const columns = [
     {
-      title: 'Code',
+      title: t('coreshop_cart_pricerule_voucher_code', { defaultValue: 'Code' }),
       dataIndex: 'code',
       key: 'code'
     },
     {
-      title: 'Creation Date',
+      title: t('coreshop_cart_pricerule_creation_date', { defaultValue: 'Creation Date' }),
       dataIndex: 'creationDate',
       key: 'creationDate',
       width: 180,
       render: (date: string) => date ? new Date(date).toLocaleString() : '-'
     },
     {
-      title: 'Used',
+      title: t('coreshop_cart_pricerule_used', { defaultValue: 'Used' }),
       dataIndex: 'used',
       key: 'used',
       width: 100,
       render: (used: boolean) => (
         <Tag color={used ? 'red' : 'green'}>
-          {used ? 'Yes' : 'No'}
+          {used
+            ? t('yes', { defaultValue: 'Yes' })
+            : t('no', { defaultValue: 'No' })}
         </Tag>
       )
     },
     {
-      title: 'Uses',
+      title: t('coreshop_cart_pricerule_uses', { defaultValue: 'Uses' }),
       dataIndex: 'uses',
       key: 'uses',
       width: 80
@@ -146,10 +150,10 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
       width: 60,
       render: (_: any, record: VoucherCode) => (
         <Popconfirm
-          title="Delete voucher code?"
+          title={t('coreshop_voucher_code_delete_confirm', { defaultValue: 'Delete voucher code?' })}
           onConfirm={() => handleDelete(record.id)}
-          okText="Yes"
-          cancelText="No"
+          okText={t('yes', { defaultValue: 'Yes' })}
+          cancelText={t('no', { defaultValue: 'No' })}
           disabled={record.used}
         >
           <Button
@@ -173,21 +177,21 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
             onClick={() => setCreateModalOpen(true)}
             disabled={disabled}
           >
-            Create Voucher
+            {t('coreshop_cart_pricerule_create_voucher', { defaultValue: 'Create Voucher Code' })}
           </Button>
           <Button
             icon={<ThunderboltOutlined />}
             onClick={() => setGenerateModalOpen(true)}
             disabled={disabled}
           >
-            Generate Vouchers
+            {t('coreshop_cart_pricerule_generate_vouchers', { defaultValue: 'Generate Voucher Codes' })}
           </Button>
           <Button
             icon={<DownloadOutlined />}
             onClick={handleExport}
             disabled={disabled || vouchers.length === 0}
           >
-            Export
+            {t('coreshop_cart_pricerule_vouchers_export', { defaultValue: 'Export Voucher Codes (CSV)' })}
           </Button>
         </Space>
 
@@ -212,36 +216,38 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
 
       {/* Create Modal */}
       <Modal
-        title="Create Voucher Code"
+        title={t('coreshop_cart_pricerule_create_voucher', { defaultValue: 'Create Voucher Code' })}
         open={createModalOpen}
         onOk={handleCreate}
         onCancel={() => {
           setCreateModalOpen(false)
           createForm.resetFields()
         }}
-        okText="Create"
+        okText={t('coreshop_create', { defaultValue: 'Create' })}
+        cancelText={t('coreshop_cancel', { defaultValue: 'Cancel' })}
       >
         <Form form={createForm} layout="vertical">
           <Form.Item
             name="code"
-            label="Code"
-            rules={[{ required: true, message: 'Please enter code' }]}
+            label={t('coreshop_cart_pricerule_voucher_code', { defaultValue: 'Code' })}
+            rules={[{ required: true, message: t('coreshop_required', { defaultValue: 'Required' }) }]}
           >
-            <Input placeholder="Enter voucher code" />
+            <Input placeholder={t('coreshop_cart_pricerule_voucher_code', { defaultValue: 'Code' })} />
           </Form.Item>
         </Form>
       </Modal>
 
       {/* Generate Modal */}
       <Modal
-        title="Generate Voucher Codes"
+        title={t('coreshop_cart_pricerule_generate_vouchers', { defaultValue: 'Generate Voucher Codes' })}
         open={generateModalOpen}
         onOk={handleGenerate}
         onCancel={() => {
           setGenerateModalOpen(false)
           generateForm.resetFields()
         }}
-        okText="Generate"
+        okText={t('coreshop_generate', { defaultValue: 'Generate' })}
+        cancelText={t('coreshop_cancel', { defaultValue: 'Cancel' })}
       >
         <Form
           form={generateForm}
@@ -252,42 +258,42 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
         >
           <Form.Item
             name="amount"
-            label="Amount"
-            rules={[{ required: true, message: 'Please enter amount' }]}
+            label={t('coreshop_cart_pricerule_amount', { defaultValue: 'Amount' })}
+            rules={[{ required: true, message: t('coreshop_required', { defaultValue: 'Required' }) }]}
           >
-            <InputNumber min={1} style={{ width: '100%' }} placeholder="Number of codes to generate" />
+            <InputNumber min={1} style={{ width: '100%' }} placeholder={t('coreshop_cart_pricerule_amount', { defaultValue: 'Amount' })} />
           </Form.Item>
 
           <Form.Item
             name="length"
-            label="Length"
-            rules={[{ required: true, message: 'Please enter length' }]}
+            label={t('coreshop_cart_pricerule_length', { defaultValue: 'Length' })}
+            rules={[{ required: true, message: t('coreshop_required', { defaultValue: 'Required' }) }]}
           >
-            <InputNumber min={1} style={{ width: '100%' }} placeholder="Code length" />
+            <InputNumber min={1} style={{ width: '100%' }} placeholder={t('coreshop_cart_pricerule_length', { defaultValue: 'Length' })} />
           </Form.Item>
 
           <Form.Item
             name="format"
-            label="Format"
+            label={t('coreshop_cart_pricerule_format', { defaultValue: 'Format' })}
             rules={[{ required: true }]}
           >
             <Select>
-              <Select.Option value="alphanumeric">Alphanumeric</Select.Option>
-              <Select.Option value="alphabetic">Alphabetic</Select.Option>
-              <Select.Option value="numeric">Numeric</Select.Option>
+              <Select.Option value="alphanumeric">{t('coreshop_cart_pricerule_alphanumeric', { defaultValue: 'Alphanumeric' })}</Select.Option>
+              <Select.Option value="alphabetic">{t('coreshop_cart_pricerule_alphabetic', { defaultValue: 'Alphabetic' })}</Select.Option>
+              <Select.Option value="numeric">{t('coreshop_cart_pricerule_numeric', { defaultValue: 'Numeric' })}</Select.Option>
             </Select>
           </Form.Item>
 
-          <Form.Item name="prefix" label="Prefix">
-            <Input placeholder="Optional prefix" />
+          <Form.Item name="prefix" label={t('coreshop_cart_pricerule_prefix', { defaultValue: 'Prefix' })}>
+            <Input placeholder={t('coreshop_cart_pricerule_prefix', { defaultValue: 'Prefix' })} />
           </Form.Item>
 
-          <Form.Item name="suffix" label="Suffix">
-            <Input placeholder="Optional suffix" />
+          <Form.Item name="suffix" label={t('coreshop_cart_pricerule_suffix', { defaultValue: 'Suffix' })}>
+            <Input placeholder={t('coreshop_cart_pricerule_suffix', { defaultValue: 'Suffix' })} />
           </Form.Item>
 
-          <Form.Item name="hyphensOn" label="Hyphens On">
-            <InputNumber min={0} style={{ width: '100%' }} placeholder="Insert hyphens every N characters" />
+          <Form.Item name="hyphensOn" label={t('coreshop_cart_pricerule_hyphensOn', { defaultValue: 'Hyphens all X characters' })}>
+            <InputNumber min={0} style={{ width: '100%' }} placeholder={t('coreshop_cart_pricerule_hyphensOn', { defaultValue: 'Hyphens all X characters' })} />
           </Form.Item>
         </Form>
       </Modal>

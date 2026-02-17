@@ -89,11 +89,11 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
         if (data.success && data.items && data.items.length > 0) {
           setItems(data.items)
         } else {
-          void messageApi.warning('No items to ship')
+          void messageApi.warning(t('coreshop_shipment_no_items', { defaultValue: 'No shippable items found' }))
           onCancel()
         }
       } catch (error) {
-        void messageApi.error(getErrorMessage(error, 'Failed to load items'))
+        void messageApi.error(getErrorMessage(error, t('coreshop_shipment_load_items_error', { defaultValue: 'Failed to load items' })))
         onCancel()
       } finally {
         setLoadingItems(false)
@@ -101,7 +101,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
     }
 
     void loadItems()
-  }, [open, orderId, onCancel])
+  }, [open, orderId, onCancel, t])
 
   // Handle quantity change
   const handleQuantityChange = (orderItemId: number, value: number | null) => {
@@ -124,7 +124,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
         }))
 
       if (itemsToShip.length === 0) {
-        void messageApi.warning('Please select items to ship')
+        void messageApi.warning(t('coreshop_shipment_select_items', { defaultValue: 'Please select items to ship' }))
         return
       }
 
@@ -147,13 +147,13 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
       const data = await response.json()
 
       if (data.success) {
-        void messageApi.success('Shipment created successfully')
+        void messageApi.success(t('coreshop_shipment_create_success', { defaultValue: 'Shipment created successfully' }))
         onSuccess()
       } else {
-        void messageApi.error(data.message || 'Failed to create shipment')
+        void messageApi.error(data.message || t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' }))
       }
     } catch (error) {
-      void messageApi.error(getErrorMessage(error, 'Failed to create shipment'))
+      void messageApi.error(getErrorMessage(error, t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' })))
     } finally {
       setLoading(false)
     }
@@ -209,11 +209,11 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
   return (
     <Modal
       open={open}
-      title={`Create Shipment for Order (${orderId})`}
+      title={`${t('coreshop_shipment_create_new', { defaultValue: 'Create Shipment for Order' })} (${orderId})`}
       onCancel={onCancel}
       onOk={handleSave}
-      okText="Save"
-      cancelText="Cancel"
+      okText={t('coreshop_save', { defaultValue: 'Save' })}
+      cancelText={t('coreshop_cancel', { defaultValue: 'Cancel' })}
       width={900}
       confirmLoading={loading}
     >
@@ -226,16 +226,16 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
         }}
       >
         <div className={styles.section}>
-          <div className={styles.sectionHeader}>Shipment</div>
+          <div className={styles.sectionHeader}>{t('coreshop_shipment', { defaultValue: 'Shipment' })}</div>
 
           {/* Extension slot: CoreBundle injects carrier field here */}
           {additionalFields}
 
           <Form.Item
-            label="Tracking-Number"
+            label={t('coreshop_tracking_code', { defaultValue: 'Tracking Number' })}
             name="trackingCode"
           >
-            <Input placeholder="Enter tracking number" />
+            <Input placeholder={t('coreshop_tracking_code', { defaultValue: 'Tracking Number' })} />
           </Form.Item>
         </div>
 
