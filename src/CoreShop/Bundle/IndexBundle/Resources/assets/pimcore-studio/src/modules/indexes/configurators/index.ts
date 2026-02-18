@@ -10,4 +10,4 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { InterpreterConfigRenderer } from './InterpreterConfigRenderer'
+export {}

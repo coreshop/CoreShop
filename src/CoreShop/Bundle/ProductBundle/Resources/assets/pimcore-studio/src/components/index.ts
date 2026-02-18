@@ -10,8 +10,5 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-export { ProductMultiSelect } from './ProductMultiSelect'
 export { ProductMultiSelectField } from './ProductMultiSelectField'
-export { CategoryMultiSelect } from './CategoryMultiSelect'
 export { CategoryMultiSelectField } from './CategoryMultiSelectField'
-export { ProductUnitSelect } from './ProductUnitSelect'

@@ -12,5 +12,4 @@
 
 export { ConditionsPanel } from './ConditionsPanel'
 export { ConditionItem } from './ConditionItem'
-export { EmptyCondition } from './EmptyCondition'
 export { SettingsForm } from './SettingsForm'

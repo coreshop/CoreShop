@@ -13,4 +13,3 @@
 export { zoneApi } from './api'
 export { ZoneManager } from './ZoneManager'
 export { ZoneForm } from './ZoneForm'
-export { ZoneSelect } from './ZoneSelect'
