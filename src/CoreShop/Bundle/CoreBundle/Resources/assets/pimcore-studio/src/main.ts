@@ -17,6 +17,7 @@ import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-ma
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
+import { registerMenuButton } from '@coreshop/menu/src'
 import { CoreBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopStoreValues } from './dynamic-types'
 import { CoreBundleMenuModule } from './modules/menu'
@@ -24,9 +25,17 @@ import { RuleRegistryExtensionModule } from './modules/extension/rule-registry'
 import { OrderCreationExtensionModule } from './modules/extension/order-creation'
 import { ReportsModule } from './modules/reports'
 import { SettingsModule } from './modules/settings'
-import { AssignToNewCompanyPanel, AssignToExistingCompanyPanel } from './modules/customer-company-assignment'
 import { PimcoreRelationWidgetModule } from './modules/pimcore-relation-widget'
 import { CustomerAddressSelectWidget } from './modules/extension/order-creation/widgets/CustomerAddressSelectWidget'
+import { AssignToNewCompanyButton } from './components/AssignToNewCompanyButton'
+import { AssignToExistingCompanyButton } from './components/AssignToExistingCompanyButton'
+import { AssignToNewCompanyLauncher } from './modules/customer-company-assignment/AssignToNewCompanyLauncher'
+import { AssignToExistingCompanyLauncher } from './modules/customer-company-assignment/AssignToExistingCompanyLauncher'
+import {
+  AssignToNewCompanyPanel,
+  AssignToExistingCompanyPanel,
+  customerCompanyAssignmentWidgetRestorer,
+} from './modules/customer-company-assignment'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -45,31 +54,52 @@ const plugin: IAbstractPlugin = {
         formWidgetRegistry.register('coreshop_customer_address_choice', () => ({
             component: CustomerAddressSelectWidget,
         }))
+
+        registerMenuButton({
+          name: 'coreshopAssignCustomerToNewCompany',
+          button: AssignToNewCompanyButton,
+        })
+
+        registerMenuButton({
+          name: 'coreshopAssignCustomerToExistingCompany',
+          button: AssignToExistingCompanyButton,
+        })
     },
 
     onStartup({ moduleSystem }) {
-        // Register Customer-to-Company Assignment widgets
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
 
+        // Transient launcher widgets (open Element Selector, close themselves)
         widgets.registerWidget({
             name: 'coreshop-customer-to-company-assign-to-new',
-            component: AssignToNewCompanyPanel,
+            component: AssignToNewCompanyLauncher,
         })
-
         widgets.registerWidget({
             name: 'coreshop-customer-to-company-assign-to-existing',
+            component: AssignToExistingCompanyLauncher,
+        })
+
+        // Persistent detail widgets (one per customer/company selection)
+        widgets.registerWidget({
+            name: 'coreshop-customer-to-company-assign-to-new-detail',
+            component: AssignToNewCompanyPanel,
+        })
+        widgets.registerWidget({
+            name: 'coreshop-customer-to-company-assign-to-existing-detail',
             component: AssignToExistingCompanyPanel,
         })
+
+        // Register widget restorer for browser reload persistence
+        const widgetRestorerRegistry = container.get<any>((serviceIds as any).widgetRestorerRegistry)
+        if (widgetRestorerRegistry) {
+          widgetRestorerRegistry.register(customerCompanyAssignmentWidgetRestorer)
+        }
 
         // ============================================
         // Module Registration
         // ============================================
-        // Register extension modules that access other bundles' registries
-        // These use lazy initialization to wait for registries to be available
         moduleSystem.registerModule(RuleRegistryExtensionModule)
         moduleSystem.registerModule(OrderCreationExtensionModule)
-
-        // Register other extension modules
         moduleSystem.registerModule(CoreBundleIconModule)
         moduleSystem.registerModule(CoreBundleMenuModule)
         moduleSystem.registerModule(PimcoreRelationWidgetModule)

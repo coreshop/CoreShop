@@ -1,20 +1,19 @@
 /**
  * CoreShop Customer to New Company Assignment Panel
  *
+ * Detail widget that receives customerId from widget config.
+ * Loads customer details and validation on mount, then shows the form.
+ *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
  * @license    CoreShop Commercial License (CCL)
  */
 
 import React from 'react'
 import { Button, Spin, Result } from 'antd'
-import { CheckOutlined, UserOutlined } from '@ant-design/icons'
+import { CheckOutlined } from '@ant-design/icons'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
-import { container } from '@pimcore/studio-ui-bundle'
-import { useElementSelector, SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
-import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
-import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { AssignmentForm, type AssignmentFormValues } from './AssignmentForm'
 import { customerCompanyApi, type EntityDetails, type ValidationData, type DuplicateCompany } from './api'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
@@ -33,9 +32,6 @@ const useStyles = createStyles(({ css }) => ({
     flex: 1;
     overflow: auto;
   `,
-  selectButton: css`
-    margin-top: 16px;
-  `,
   centered: css`
     display: flex;
     align-items: center;
@@ -44,7 +40,7 @@ const useStyles = createStyles(({ css }) => ({
   `
 }))
 
-type Step = 'select-customer' | 'form' | 'success'
+type Step = 'loading' | 'form' | 'success' | 'error'
 
 const defaultFormData: AssignmentFormValues = {
   addressAssignmentType: '',
@@ -52,16 +48,18 @@ const defaultFormData: AssignmentFormValues = {
   newCompanyName: '',
 }
 
-export const AssignToNewCompanyPanel: React.FC = () => {
+interface AssignToNewCompanyPanelProps {
+  customerId?: number
+}
+
+export const AssignToNewCompanyPanel: React.FC<AssignToNewCompanyPanelProps> = ({ customerId }) => {
   const { t } = useTranslation()
   const { styles } = useStyles()
   const messageApi = useMessage()
 
-  const [step, setStep] = React.useState<Step>('select-customer')
-  const [loading, setLoading] = React.useState(false)
+  const [step, setStep] = React.useState<Step>('loading')
   const [submitting, setSubmitting] = React.useState(false)
 
-  const [customerId, setCustomerId] = React.useState<number | null>(null)
   const [customerData, setCustomerData] = React.useState<EntityDetails | null>(null)
   const [validationData, setValidationData] = React.useState<ValidationData | null>(null)
 
@@ -70,87 +68,45 @@ export const AssignToNewCompanyPanel: React.FC = () => {
   const [showDuplicates, setShowDuplicates] = React.useState(false)
   const [checkingDuplicates, setCheckingDuplicates] = React.useState(false)
 
-  const [allowedCustomerClasses, setAllowedCustomerClasses] = React.useState<string[]>([])
-
   const debounceRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Load allowed customer classes from config
   React.useEffect(() => {
-    const loadAllowedClasses = async () => {
+    if (!customerId) {
+      setStep('error')
+      return
+    }
+
+    const loadData = async () => {
       try {
-        const configProvider = container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider)
-        const classes = await configProvider.getAllowedClasses('coreshop.customer')
-        setAllowedCustomerClasses(classes)
-      } catch (err) {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
-        setAllowedCustomerClasses(['CoreShopCustomer'])
-      }
-    }
-    void loadAllowedClasses()
-  }, [])
+        const [customerResponse, validationResponse] = await Promise.all([
+          customerCompanyApi.getEntityDetails('customer', customerId),
+          customerCompanyApi.validateAssignment(customerId),
+        ])
 
-  const handleCustomerSelected = React.useCallback(async (id: number) => {
-    setLoading(true)
-    try {
-      const response = await customerCompanyApi.getEntityDetails('customer', id)
-      if (response.success && response.data) {
-        setCustomerId(id)
-        setCustomerData(response.data)
-        await validateAssignment(id)
-      } else {
-        void messageApi.error(renderApiError(response.message ?? 'Failed to load customer details'))
-      }
-    } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer details')))
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+        if (customerResponse.success && customerResponse.data) {
+          setCustomerData(customerResponse.data)
+        }
 
-  const { open: openCustomerSelector } = useElementSelector({
-    selectionType: SelectionType.Single,
-    areas: {
-      asset: false,
-      document: false,
-      object: true
-    },
-    config: {
-      objects: {
-        allowedTypes: ['object'],
-        allowedClasses: allowedCustomerClasses.length > 0 ? allowedCustomerClasses : undefined
-      }
-    },
-    onFinish: (event) => {
-      if (event.items.length > 0) {
-        const selected = event.items[0]
-        void handleCustomerSelected(selected.data.id)
+        if (validationResponse.success && validationResponse.data) {
+          setValidationData(validationResponse.data)
+          const hasAddresses = validationResponse.data.addresses.length > 0
+          setFormData({
+            ...defaultFormData,
+            addressAssignmentType: hasAddresses ? '' : 'keep',
+          })
+          setStep('form')
+        } else {
+          void messageApi.error(renderApiError(validationResponse.message ?? 'Customer cannot be assigned to a company'))
+          setStep('error')
+        }
+      } catch (error) {
+        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer details')))
+        setStep('error')
       }
     }
-  })
 
-  const validateAssignment = async (custId: number): Promise<void> => {
-    setLoading(true)
-    try {
-      const response = await customerCompanyApi.validateAssignment(custId)
-      if (response.success && response.data) {
-        setValidationData(response.data)
-        const hasAddresses = response.data.addresses.length > 0
-        setFormData({
-          ...defaultFormData,
-          addressAssignmentType: hasAddresses ? '' : 'keep',
-        })
-        setStep('form')
-      } else {
-        void messageApi.error(renderApiError(response.message ?? 'Customer cannot be assigned to a company'))
-        resetState()
-      }
-    } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to validate assignment')))
-      resetState()
-    } finally {
-      setLoading(false)
-    }
-  }
+    void loadData()
+  }, [customerId])
 
   const handleCompanyNameChange = (name: string): void => {
     if (debounceRef.current) {
@@ -209,7 +165,6 @@ export const AssignToNewCompanyPanel: React.FC = () => {
         )
         setStep('success')
 
-        // Refresh Pimcore tree and open objects
         const pimcore = (window as any).pimcore
         if (pimcore) {
           pimcore.elementservice?.refreshRootNodeAllTrees?.('object')
@@ -230,17 +185,7 @@ export const AssignToNewCompanyPanel: React.FC = () => {
     }
   }
 
-  const resetState = (): void => {
-    setStep('select-customer')
-    setCustomerId(null)
-    setCustomerData(null)
-    setValidationData(null)
-    setFormData({ ...defaultFormData })
-    setDuplicates([])
-    setShowDuplicates(false)
-  }
-
-  if (loading) {
+  if (step === 'loading') {
     return (
       <div className={styles.centered}>
         <Spin size="large" />
@@ -256,32 +201,22 @@ export const AssignToNewCompanyPanel: React.FC = () => {
           title={t('coreshop_customer_transformer_assignment_form_success', {
             defaultValue: 'Customer successfully assigned to company',
           })}
-          extra={
-            <Button type="primary" onClick={resetState}>
-              {t('assign_another', { defaultValue: 'Assign Another Customer' })}
-            </Button>
-          }
         />
       </div>
     )
   }
 
-  if (step === 'select-customer') {
+  if (step === 'error') {
     return (
       <div className={styles.container}>
         <Result
-          icon={<UserOutlined />}
-          title={t('coreshop_customer_transformer_select_customer', {
-            defaultValue: 'Select a Customer',
+          status="error"
+          title={t('coreshop_customer_transformer_error', {
+            defaultValue: 'Error',
           })}
-          subTitle={t('coreshop_customer_transformer_select_customer_description', {
-            defaultValue: 'Please select a customer to assign to a new company.',
+          subTitle={t('coreshop_customer_transformer_error_description', {
+            defaultValue: 'Could not load customer data. Please close this tab and try again.',
           })}
-          extra={
-            <Button type="primary" icon={<UserOutlined />} onClick={openCustomerSelector}>
-              {t('select_customer', { defaultValue: 'Select Customer' })}
-            </Button>
-          }
         />
       </div>
     )

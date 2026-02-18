@@ -18,11 +18,15 @@ import { useTranslation } from 'react-i18next'
 import { container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
+import { useElementSelector, SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
 import { BaseListing, DataObjectProvider, listingDefaultProps, type ObjectListingBuilder } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { createStyles } from 'antd-style'
+import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
+import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { GridToolbar } from '@coreshop/pimcore/src/modules/grid/components/GridToolbar'
 import { PresetFilterProvider, usePresetFilter } from '@coreshop/pimcore/src/modules/grid/context/PresetFilterContext'
+import { orderCreationApi } from '../order-creation/api'
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
@@ -65,6 +69,8 @@ const CartListInner: React.FC = () => {
   const [folderId, setFolderId] = React.useState<number | null>(null)
   const [loading, setLoading] = React.useState(true)
   const [listingKey, setListingKey] = React.useState(0)
+  const [allowedClasses, setAllowedClasses] = React.useState<string[]>([])
+  const [classesLoaded, setClassesLoaded] = React.useState(false)
   const listingBuilder = container.get<ObjectListingBuilder>('CoreShop/Cart/Listing/Builder')
 
   // Use the preset filter context
@@ -89,12 +95,62 @@ const CartListInner: React.FC = () => {
     void fetchFolderConfig()
   }, [])
 
+  React.useEffect(() => {
+    const loadClasses = async (): Promise<void> => {
+      try {
+        const configProvider = container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider)
+        const classes = await configProvider.getAllowedClasses('coreshop.customer')
+        setAllowedClasses(classes)
+      } catch (error) {
+        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load allowed customer classes')))
+        setAllowedClasses(['CoreShopCustomer'])
+      } finally {
+        setClassesLoaded(true)
+      }
+    }
+
+    void loadClasses()
+  }, [messageApi])
+
+  const { open: openCustomerSelector } = useElementSelector({
+    selectionType: SelectionType.Single,
+    areas: {
+      asset: false,
+      document: false,
+      object: true
+    },
+    config: {
+      objects: {
+        allowedTypes: ['object'],
+        allowedClasses: allowedClasses.length > 0 ? allowedClasses : undefined
+      }
+    },
+    onFinish: (event) => {
+      if (event.items.length > 0) {
+        const selected = event.items[0]
+        const customerId = selected.data.id
+
+        void orderCreationApi.getCustomerDetails(customerId).then((details) => {
+          const customerName = [details.firstname, details.lastname].filter(Boolean).join(' ') || `Customer #${customerId}`
+          const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)
+
+          widgetManager.openMainWidget({
+            name: `New Order - ${customerName}`,
+            id: `coreshop-order-creation-${customerId}`,
+            component: 'coreshop-order-creation-detail',
+            config: { customerId }
+          })
+        }).catch((error) => {
+          void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer')))
+        })
+      }
+    }
+  })
+
   const handleCreateCart = (): void => {
-    const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)
-    ;(widgetManager as any).openWidget({
-      name: 'coreshop-order-creation',
-      config: {}
-    })
+    if (classesLoaded) {
+      openCustomerSelector()
+    }
   }
 
   const handleFilterChange = (filterId: string | null): void => {
@@ -135,6 +191,7 @@ const CartListInner: React.FC = () => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={handleCreateCart}
+            disabled={!classesLoaded}
           >
             {t('coreshop_create_cart', { defaultValue: 'Create Cart' })}
           </Button>

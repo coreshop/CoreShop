@@ -41,6 +41,7 @@ const defaultFormData: AssignmentFormValues = {
 export interface AssignToExistingCompanyModalProps {
   open: boolean
   customerId?: number
+  companyId?: number
   onSuccess?: () => void
   onCancel: () => void
 }
@@ -48,6 +49,7 @@ export interface AssignToExistingCompanyModalProps {
 export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModalProps> = ({
   open,
   customerId: initialCustomerId,
+  companyId: initialCompanyId,
   onSuccess,
   onCancel
 }) => {
@@ -55,13 +57,19 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
   const { styles } = useStyles()
   const messageApi = useMessage()
 
-  const [step, setStep] = React.useState<Step>(initialCustomerId ? 'select-company' : 'select-customer')
+  const getInitialStep = (): Step => {
+    if (initialCustomerId && initialCompanyId) return 'form'
+    if (initialCustomerId) return 'select-company'
+    return 'select-customer'
+  }
+
+  const [step, setStep] = React.useState<Step>(getInitialStep())
   const [loading, setLoading] = React.useState(false)
   const [submitting, setSubmitting] = React.useState(false)
 
   const [customerId, setCustomerId] = React.useState<number | null>(initialCustomerId ?? null)
   const [customerData, setCustomerData] = React.useState<EntityDetails | null>(null)
-  const [companyId, setCompanyId] = React.useState<number | null>(null)
+  const [companyId, setCompanyId] = React.useState<number | null>(initialCompanyId ?? null)
   const [companyData, setCompanyData] = React.useState<EntityDetails | null>(null)
   const [validationData, setValidationData] = React.useState<ValidationData | null>(null)
 
@@ -94,12 +102,40 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
     void loadAllowedClasses()
   }, [])
 
-  // Load customer details if initialCustomerId is provided
+  // Load customer (and optionally company) details when modal opens with initial IDs
   React.useEffect(() => {
     if (open && initialCustomerId && !customerData) {
-      void loadCustomerDetails(initialCustomerId)
+      if (initialCompanyId) {
+        // Both provided — load customer, company, and validate in one go
+        void (async () => {
+          setLoading(true)
+          try {
+            const [custResponse, compResponse] = await Promise.all([
+              customerCompanyApi.getEntityDetails('customer', initialCustomerId),
+              customerCompanyApi.getEntityDetails('company', initialCompanyId),
+            ])
+            if (custResponse.success && custResponse.data) {
+              setCustomerId(initialCustomerId)
+              setCustomerData(custResponse.data)
+            }
+            if (compResponse.success && compResponse.data) {
+              setCompanyId(initialCompanyId)
+              setCompanyData(compResponse.data)
+            }
+            if (custResponse.success && compResponse.success) {
+              await validateAssignment(initialCustomerId, initialCompanyId)
+            }
+          } catch (error) {
+            void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load details')))
+          } finally {
+            setLoading(false)
+          }
+        })()
+      } else {
+        void loadCustomerDetails(initialCustomerId)
+      }
     }
-  }, [open, initialCustomerId])
+  }, [open, initialCustomerId, initialCompanyId])
 
   // Track previous open state to only reset when actually closing
   const previousOpenRef = React.useRef(open)
@@ -107,16 +143,16 @@ export const AssignToExistingCompanyModal: React.FC<AssignToExistingCompanyModal
   React.useEffect(() => {
     // Only reset when transitioning from open to closed (not on initial mount or re-renders)
     if (previousOpenRef.current === true && open === false) {
-      setStep(initialCustomerId ? 'select-company' : 'select-customer')
+      setStep(getInitialStep())
       setCustomerId(initialCustomerId ?? null)
       setCustomerData(null)
-      setCompanyId(null)
+      setCompanyId(initialCompanyId ?? null)
       setCompanyData(null)
       setValidationData(null)
       setFormData({ ...defaultFormData })
     }
     previousOpenRef.current = open
-  }, [open, initialCustomerId])
+  }, [open, initialCustomerId, initialCompanyId])
 
   const loadCustomerDetails = async (id: number): Promise<void> => {
     setLoading(true)

@@ -5,7 +5,7 @@
  * Configured via environment variables for parallel builds.
  */
 
-import { defineConfig, type RsbuildPlugin } from '@rsbuild/core'
+import { defineConfig } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 import { pluginSvgr } from '@rsbuild/plugin-svgr'
 import { pluginGenerateEntrypoints } from '@pimcore/studio-ui-bundle/rsbuild/plugins'
@@ -79,63 +79,6 @@ if (nodeEnv !== 'production') {
 }
 
 const devPort = DEV_PORT ? parseInt(DEV_PORT) : (3000 + BUNDLE_NAME.charCodeAt(0) % 100)
-
-/**
- * Live reload plugin for CoreShop Studio dev mode.
- *
- * Since plugins are loaded as Module Federation remotes, the standard rsbuild
- * dev client (injected into the `main` entry) is never loaded by the browser.
- * The browser only loads `exposeRemote.js` (via PHP) and `remoteEntry.js`
- * (via Module Federation), so there is no WebSocket connection for HMR.
- *
- * This plugin writes a hash file on every dev recompilation and appends a
- * lightweight polling script to `exposeRemote.js` that detects changes and
- * triggers a full page reload.
- */
-function pluginLiveReload(): RsbuildPlugin {
-  return {
-    name: 'coreshop-live-reload',
-    setup(api) {
-      api.onDevCompileDone(({ environments }) => {
-        const config = environments.web.config
-        const distPath = config.output.distPath.root
-        const assetPrefix = config.output.assetPrefix
-
-        // Write hash file (timestamp changes on every compilation)
-        const hashFile = path.join(distPath, '__hmr_hash__.json')
-        fs.writeFileSync(hashFile, JSON.stringify({ hash: Date.now().toString() }))
-
-        // Append live reload script to exposeRemote.js
-        // (pluginGenerateEntrypoints runs first and writes a fresh exposeRemote.js)
-        const exposeRemotePath = path.join(distPath, 'exposeRemote.js')
-        if (fs.existsSync(exposeRemotePath)) {
-          const content = fs.readFileSync(exposeRemotePath, 'utf8')
-          const liveReloadScript = `
-;(function() {
-  var id = '__coreshop_lr_${bundlePrefix}';
-  if (window[id]) return;
-  window[id] = true;
-  var hash = null;
-  var url = '${assetPrefix}/__hmr_hash__.json';
-  setInterval(function() {
-    fetch(url + '?t=' + Date.now())
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (hash === null) { hash = data.hash; return; }
-        if (data.hash !== hash) {
-          console.log('[CoreShop] Change detected in ${bundlePrefix}, reloading...');
-          window.location.reload();
-        }
-      })
-      .catch(function() {});
-  }, 1000);
-})();`
-          fs.writeFileSync(exposeRemotePath, content + liveReloadScript)
-        }
-      })
-    }
-  }
-}
 
 // Module Federation options (shared between built-in and plugin)
 const moduleFederationOptions: Record<string, any> = {
@@ -365,12 +308,9 @@ export default defineConfig({
   },
   dev: {
     ...(!isDevServer ? { assetPrefix: `/bundles/${bundlePrefix}/studio/${buildId}` } : {}),
-    client: {
-      host: 'localhost',
-      port: devPort,
-      protocol: 'ws'
-    },
-    hmr: true,
+    hmr: false,
+    client: false,
+    liveReload: false,
     lazyCompilation: isDevServer,
     writeToDisk: isDevServer,
   },
@@ -432,7 +372,6 @@ export default defineConfig({
   plugins: [
     pluginModuleFederation(moduleFederationOptions),
     pluginGenerateEntrypoints(),
-    pluginLiveReload(),
     pluginReact(),
     pluginSvgr({
       svgrOptions: {

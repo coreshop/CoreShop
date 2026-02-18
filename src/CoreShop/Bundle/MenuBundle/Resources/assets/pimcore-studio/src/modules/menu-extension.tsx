@@ -12,7 +12,7 @@ import {type IconLibrary} from '@pimcore/studio-ui-bundle/modules/icon-library'
 import {menuService} from '../services/MenuService'
 import {CoreShopMenuItem} from '../types'
 import {CoreShopWidget} from '../components/CoreShopWidget'
-import {MenuButtonRegistry} from "../services/button-registry";
+import {MenuButtonRegistry, consumeQueuedMenuButtons} from "../services/button-registry";
 import React from "react";
 
 export const CoreShopMenuExtension = {
@@ -21,6 +21,8 @@ export const CoreShopMenuExtension = {
         const widgetRegistryService = container.get<WidgetRegistry>(serviceIds.widgetManager)
 
         container.bind('CoreShopMenuButtons').to(MenuButtonRegistry).inSingletonScope()
+        const buttonRegistry = container.get<MenuButtonRegistry>('CoreShopMenuButtons')
+        consumeQueuedMenuButtons().forEach((item) => buttonRegistry.add(item))
 
         // Load and register menu items dynamically
         this.loadAndRegisterMenuItems(mainNavRegistryService, widgetRegistryService)
@@ -123,13 +125,13 @@ export const CoreShopMenuExtension = {
                 if (buttonConfig) {
                     navItem.button = (({ closeMainNav }: { closeMainNav: () => void }) => React.createElement(buttonConfig.button, {
                         icon: item.icon!,
+                        label: item.label,
                         closeMainNav,
                     })) as any
 
                     mainNavRegistry.registerMainNavItem(navItem)
+                    return;
                 }
-
-                return;
             }
 
             navItem.widgetConfig.component = widgetId;

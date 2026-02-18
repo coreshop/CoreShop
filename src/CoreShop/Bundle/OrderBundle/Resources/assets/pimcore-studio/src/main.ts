@@ -18,6 +18,7 @@ import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules
 import { Input } from 'antd'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
+import { registerMenuButton } from '@coreshop/menu/src'
 import i18n from 'i18next'
 import { OrderBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopCartPriceRule } from './dynamic-types'
@@ -51,6 +52,7 @@ import {
 import { OrderCreationStepRegistry } from './modules/order-creation/registry'
 import { orderCreationServiceIds } from './modules/order-creation/service-ids'
 import { OrderCreationPanel, OrderCreationLauncher } from './modules/order-creation/components'
+import { OrderCreationButton } from './modules/order-creation/components/OrderCreationButton'
 import { orderCreationWidgetRestorer } from './modules/order-creation/OrderCreationWidgetRestorer'
 import { BaseStepConfig, ProductsStepConfig, TotalsStepConfig } from './modules/order-creation/steps'
 
@@ -223,6 +225,11 @@ const plugin: IAbstractPlugin = {
         orderCreationStepRegistry.register('base', BaseStepConfig)
         orderCreationStepRegistry.register('products', ProductsStepConfig)
         orderCreationStepRegistry.register('totals', TotalsStepConfig)
+
+        registerMenuButton({
+          name: 'coreshopCreateOrder',
+          button: OrderCreationButton,
+        })
     },
 
     onStartup({ moduleSystem }) {
