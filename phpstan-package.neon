@@ -15,6 +15,11 @@ parameters:
         - '**/EventListener/PimcoreAdminListener.php'
         # Optional admin-ui-classic-bundle GridColumnConfig (causes internal error)
         - '**/Pimcore/GridColumnConfig/ResourceFieldGetter.php'
+        - '**/AdminClass/Pimcore/GridColumnConfig/*.php'
+        # Optional studio bundles
+        - '**/Studio/*.php'
+        - '**/Studio/**/*.php'
+        - '**/StudioBackend/**/*.php'
         # StorageListBundle Core files depend on optional CoreBundle/StoreComponent/CustomerComponent
         - '**/Core/EventListener/SessionStoreStorageListSubscriber.php'
         - '**/Core/EventListener/SessionStoreStorageListLogoutSubscriber.php'
@@ -56,11 +61,9 @@ parameters:
         - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Access to undefined constant PackageVersions\\Versions::VERSIONS/'
 
-        # Optional pimcore/admin-ui-classic-bundle dependency
-        - '/class Pimcore\\Bundle\\AdminBundle\\/'
-
-        # Optional pimcore/studio-backend-bundle dependency
-        - '/class Pimcore\\Bundle\\StudioBackendBundle\\/'
+        # Optional dependencies
+        - identifier: class.notFound
+          message: '/Pimcore\\Bundle\\(AdminBundle|StudioBackendBundle|StudioUiBundle|GoogleMarketingBundle|NewsletterBundle)\\/'
 
 includes:
     - ./vendor/phpstan/phpstan-doctrine/extension.neon

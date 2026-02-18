@@ -186,11 +186,10 @@ const useMessengerChartStyles = createStyles(({ css, token }) => ({
     height: 100%;
     gap: 6px;
     padding: 0 4px;
-    min-width: min-content;
   `,
   barWrapper: css`
-    flex: 0 0 auto;
-    width: 60px;
+    flex: 1 1 0;
+    min-width: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;

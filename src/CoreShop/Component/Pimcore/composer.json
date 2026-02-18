@@ -31,12 +31,6 @@
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0"
     },
-    "suggest": {
-        "pimcore/admin-ui-classic-bundle": "If you wanna use the Classic Admin UI",
-        "pimcore/elasticsearch-client": "Allows to use ElasticSearch as your index engine.",
-        "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine.",
-        "pimcore/studio-ui-bundle": "^0.6.30 - Modern React-based Studio UI for Pimcore (recommended)"
-    },
     "autoload": {
         "psr-4": {
             "CoreShop\\Component\\Pimcore\\": ""

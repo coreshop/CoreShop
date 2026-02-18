@@ -36,11 +36,10 @@
         "pimcore/pimcore": "^12.0"
     },
     "require-dev": {
+        "pimcore/studio-ui-bundle": "^0.6.30",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
-        "phpstan/phpstan-webmozart-assert": "^2.0",
-        "pimcore/studio-backend-bundle": "^0.6.30",
-        "pimcore/studio-ui-bundle": "^0.6.30"
+        "phpstan/phpstan-webmozart-assert": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -65,9 +64,9 @@
         "sort-packages": true
     },
     "suggest": {
+        "pimcore/studio-ui-bundle": "^0.6.30 - Modern React-based Studio UI for Pimcore (recommended)",
         "pimcore/admin-ui-classic-bundle": "^2.0 - Classic ExtJS-based admin interface for Pimcore (legacy)",
         "pimcore/elasticsearch-client": "Allows to use ElasticSearch as your index engine.",
-        "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine.",
-        "pimcore/studio-ui-bundle": "^0.6.30 - Modern React-based Studio UI for Pimcore (recommended)"
+        "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine."
     }
 }

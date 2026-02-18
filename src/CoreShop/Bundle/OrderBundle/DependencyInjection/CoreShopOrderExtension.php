@@ -96,6 +96,10 @@ final class CoreShopOrderExtension extends AbstractModelExtension implements Pre
             $loader->load('services/studio.yml');
         }
 
+        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
+            $loader->load('services/classic_admin.yml');
+        }
+
         $loader->load('services.yml');
 
         Autoconfiguration::registerForAutoConfiguration(

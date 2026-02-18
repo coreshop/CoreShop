@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
@@ -98,11 +99,12 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
         ;
     }
 
-    /**
-     * @param string        $configurationType
-     */
-    protected function addConfigurationFields(FormInterface|FormBuilderInterface $form, $configurationType): void
+    protected function addConfigurationFields(FormInterface|FormBuilderInterface $form, ?string $configurationType): void
     {
+        if ($configurationType === null || !is_a($configurationType, FormTypeInterface::class, true)) {
+            return;
+        }
+
         $form->add('configuration', $configurationType);
     }
 

@@ -66,6 +66,10 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
 
         $bundles = $container->getParameter('kernel.bundles');
 
+        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
+            $loader->load('services/classic_admin.yml');
+        }
+
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
         }

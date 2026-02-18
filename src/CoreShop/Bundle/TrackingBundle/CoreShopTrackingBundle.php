@@ -19,7 +19,6 @@ namespace CoreShop\Bundle\TrackingBundle;
 
 use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackerPass;
 use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingExtractorPass;
-use Pimcore\Bundle\GoogleMarketingBundle\PimcoreGoogleMarketingBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,10 +28,12 @@ final class CoreShopTrackingBundle extends Bundle implements DependentBundleInte
 {
     public static function registerDependentBundles(BundleCollection $collection): void
     {
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $collection->addBundle(new PimcoreGoogleMarketingBundle(), 1000);
+        if (class_exists(\Pimcore\Bundle\GoogleMarketingBundle\PimcoreGoogleMarketingBundle::class)) {
+            /**
+             * @psalm-suppress DeprecatedClass
+             */
+            $collection->addBundle(new \Pimcore\Bundle\GoogleMarketingBundle\PimcoreGoogleMarketingBundle(), 1000);
+        }
     }
 
     public function build(ContainerBuilder $container): void

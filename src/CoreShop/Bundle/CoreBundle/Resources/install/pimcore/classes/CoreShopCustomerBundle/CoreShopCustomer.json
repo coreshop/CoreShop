@@ -162,7 +162,7 @@
                                 "locked": false,
                                 "style": "",
                                 "permissions": null,
-                                "fieldtype": "newsletterActive",
+                                "fieldtype": "checkbox",
                                 "relationType": false,
                                 "invisible": false,
                                 "visibleGridView": false,
@@ -172,7 +172,7 @@
                                 "datatype": "data"
                             },
                             {
-                                "fieldtype": "newsletterConfirmed",
+                                "fieldtype": "checkbox",
                                 "defaultValue": 0,
                                 "name": "newsletterConfirmed",
                                 "title": "coreshop.customer.newsletter_confirmed",

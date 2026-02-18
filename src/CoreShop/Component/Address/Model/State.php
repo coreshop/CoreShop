@@ -110,7 +110,7 @@ class State extends AbstractResource implements StateInterface, \Stringable
         try {
             return $this->getCountry()->getName();
         } catch (\RuntimeException) {
-            return $this->getCountry()->getIsoCode() ?? '';
+            return $this->getCountry()->getIsoCode();
         }
     }
 

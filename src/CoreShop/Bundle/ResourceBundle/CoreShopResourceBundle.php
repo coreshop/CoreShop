@@ -28,14 +28,13 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ValidatorAutoMappingFixPass;
 use JMS\SerializerBundle\JMSSerializerBundle;
-use Pimcore\Bundle\AdminBundle\PimcoreAdminBundle;
 use Pimcore\Bundle\ApplicationLoggerBundle\PimcoreApplicationLoggerBundle;
 use Pimcore\Bundle\SimpleBackendSearchBundle\PimcoreSimpleBackendSearchBundle;
-use Pimcore\Bundle\StaticRoutesBundle\PimcoreStaticRoutesBundle;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
@@ -72,8 +71,11 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
 
         $collection->addBundle(new PimcoreApplicationLoggerBundle(), 10);
-        /** @psalm-suppress DeprecatedClass */
-        $collection->addBundle(new PimcoreStaticRoutesBundle(), 10);
+        $staticRoutesBundleClass = self::getStaticRoutesBundleClass();
+        if (null !== $staticRoutesBundleClass) {
+            /** @psalm-suppress DeprecatedClass */
+            $collection->addBundle(new $staticRoutesBundleClass(), 10);
+        }
         /** @psalm-suppress DeprecatedClass */
         $collection->addBundle(new PimcoreSimpleBackendSearchBundle(), 10);
     }
@@ -118,5 +120,18 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         return [
             self::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    /**
+     * @return class-string<BundleInterface>|null
+     */
+    private static function getStaticRoutesBundleClass(): ?string
+    {
+        $staticRoutesBundleClass = sprintf('Pimcore\\Bundle\\%s\\PimcoreStaticRoutesBundle', 'StaticRoutesBundle');
+        if (!class_exists($staticRoutesBundleClass) || !is_subclass_of($staticRoutesBundleClass, BundleInterface::class)) {
+            return null;
+        }
+
+        return $staticRoutesBundleClass;
     }
 }

@@ -73,20 +73,6 @@ services:
         tags:
            - { name: coreshop.resource.installer, type: sql, priority: 400}
 
-    coreshop.resource.installer.grid_config:
-        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller'
-        public: true
-
-    CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller:
-        arguments:
-            - '@kernel'
-            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
-            - '@CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager'
-            - '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
-            - '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller'
-        tags:
-            - { name: coreshop.resource.installer, type: grid_config, priority: 200}
-
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreDependantBundleInstaller:
         arguments:
             - '@kernel'
@@ -102,4 +88,3 @@ services:
     CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller:
         arguments:
             - '@coreshop.registry.resource.installers'
-

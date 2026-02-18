@@ -45,7 +45,3 @@ services:
             - '@translator'
         tags:
             - { name: controller.service_arguments }
-
-    CoreShop\Bundle\MenuBundle\EventListener\PimcoreAdminListener:
-        tags:
-            - { name: kernel.event_subscriber }

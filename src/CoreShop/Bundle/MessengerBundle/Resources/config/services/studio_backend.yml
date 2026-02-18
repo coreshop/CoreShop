@@ -1,0 +1,6 @@
+services:
+  CoreShop\Bundle\MessengerBundle\EventListener\MercureMessengerSubscriber:
+    arguments:
+      - '@Pimcore\Bundle\StudioBackendBundle\Mercure\Service\PublishServiceInterface'
+    tags:
+      - { name: kernel.event_subscriber }

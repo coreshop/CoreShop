@@ -112,7 +112,7 @@ class StudioOrderDocumentController extends AdminController
         $allowedData = [
             'id' => $orderId,
             'items' => array_combine(
-                array_map(static fn ($item) => $item['item']->getId(), $processableItems),
+                array_map(static fn ($item): mixed => $item['item']->getId(), $processableItems),
                 array_map(static fn ($item) => [
                     'orderItemId' => $item['item']->getId(),
                     'maxQuantity' => $item['quantity'],
@@ -217,7 +217,7 @@ class StudioOrderDocumentController extends AdminController
         $allowedData = [
             'id' => $orderId,
             'items' => array_combine(
-                array_map(static fn ($item) => $item['item']->getId(), $processableItems),
+                array_map(static fn ($item): mixed => $item['item']->getId(), $processableItems),
                 array_map(static fn ($item) => [
                     'orderItemId' => $item['item']->getId(),
                     'maxQuantity' => $item['quantity'],

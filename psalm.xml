@@ -15,13 +15,27 @@
             <directory name="src/CoreShop/Component/Resource/DataHub" />
             <directory name="src/CoreShop/Bundle/*/DataHub" />
             <directory name="src/CoreShop/Bundle/*/CoreExtension" />
-            <directory name="src/CoreShop/Bundle/*/Pimcore/GridColumnConfig" />
+            <directory name="src/CoreShop/Bundle/*/AdminClass" />
+            <directory name="src/CoreShop/Bundle/*/Studio" />
+            <directory name="src/CoreShop/Bundle/*/StudioBackend" />
+            <directory name="src/CoreShop/Bundle/StudioFormBundle" />
+            <directory name="src/CoreShop/Bundle/*/AdminClass/Pimcore/GridColumnConfig" />
             <directory name="src/CoreShop/Bundle/*/Migrations" />
             <directory name="src/CoreShop/Bundle/*/Fixtures" />
             <directory name="src/CoreShop/Behat" />
 
             <directory name="src/CoreShop/Bundle/FrontendBundle" />
             <directory name="vendor" />
+
+            <file name="src/CoreShop/Bundle/TrackingBundle/EventListener/GtmDataLayerBlockListener.php" />
+            <file name="src/CoreShop/Bundle/TrackingBundle/Resolver/ConfigResolver.php" />
+            <directory name="src/CoreShop/Bundle/TrackingBundle/Tracker/Google" />
+            <file name="src/CoreShop/Bundle/MessengerBundle/EventListener/MercureMessengerSubscriber.php" />
+            <file name="src/CoreShop/Bundle/MessengerBundle/Messenger/FailedMessageRejecter.php" />
+            <file name="src/CoreShop/Bundle/MessengerBundle/Messenger/FailedMessageRetryer.php" />
+            <file name="src/CoreShop/Bundle/TestBundle/Context/Setup/DocumentContext.php" />
+            <file name="src/CoreShop/Bundle/TestBundle/Context/Transform/DocumentContext.php" />
+            <file name="src/CoreShop/Component/Pimcore/DataObject/GridConfigInstaller.php" />
 
             <file name="src/CoreShop/Component/Pimcore/SplPriorityQueue.php" />
             <file name="src/CoreShop/Component/Pimcore/PriorityQueue.php" />
