@@ -11,4 +11,5 @@
  */
 
 export { OrderCreationPanel } from './OrderCreationPanel'
-export { CustomerSelector, CustomerInfoCard } from './CustomerSelector'
+export { OrderCreationLauncher } from './OrderCreationLauncher'
+export { CustomerInfoCard } from './CustomerSelector'

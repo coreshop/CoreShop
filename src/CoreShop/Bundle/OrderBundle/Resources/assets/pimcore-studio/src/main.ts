@@ -50,7 +50,8 @@ import {
 } from './modules/sales/tabs'
 import { OrderCreationStepRegistry } from './modules/order-creation/registry'
 import { orderCreationServiceIds } from './modules/order-creation/service-ids'
-import { OrderCreationPanel } from './modules/order-creation/components'
+import { OrderCreationPanel, OrderCreationLauncher } from './modules/order-creation/components'
+import { orderCreationWidgetRestorer } from './modules/order-creation/OrderCreationWidgetRestorer'
 import { BaseStepConfig, ProductsStepConfig, TotalsStepConfig } from './modules/order-creation/steps'
 
 const plugin: IAbstractPlugin = {
@@ -73,6 +74,7 @@ const plugin: IAbstractPlugin = {
         const widgetRestorerRegistry = container.get<any>((serviceIds as any).widgetRestorerRegistry)
         if (widgetRestorerRegistry) {
           widgetRestorerRegistry.register(saleWidgetRestorer)
+          widgetRestorerRegistry.register(orderCreationWidgetRestorer)
         }
 
         // ============================================
@@ -278,9 +280,15 @@ const plugin: IAbstractPlugin = {
             component: QuoteDetailWidget,
         })
 
-        // Register Order Creation widget
+        // Register Order Creation launcher (opens element selector, then detail tab)
         widgets.registerWidget({
             name: 'coreshop-order-creation',
+            component: OrderCreationLauncher
+        })
+
+        // Register Order Creation detail widget (persistent tab per customer)
+        widgets.registerWidget({
+            name: 'coreshop-order-creation-detail',
             component: OrderCreationPanel
         })
     }

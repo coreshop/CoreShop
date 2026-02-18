@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useCallback } from 'react'
-import { Card, Button, Typography, Spin, Space } from 'antd'
+import { Card, Button, Spin, Space, Typography } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
@@ -29,6 +29,11 @@ import type {
 } from '@coreshop/order/src/modules/order-creation/types'
 import { AddressCreationModal } from './AddressCreationModal'
 
+const hideSectionTitleDecorator: FormDecorator = (config) => ({
+  ...config,
+  sections: config.sections?.map((s) => ({ ...s, title: '', description: undefined })),
+})
+
 const twoColumnDecorator: FormDecorator = (config) => ({
   ...config,
   columns: 2,
@@ -42,6 +47,7 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
 
   const { builder, loading } = useFormSchema('coreshop_cart_creation', [
     { name: 'section-filter', decorator: sectionFilterDecorator('address') },
+    { name: 'hide-section-title', decorator: hideSectionTitleDecorator },
     { name: 'two-columns', decorator: twoColumnDecorator },
   ])
 
@@ -74,7 +80,7 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
 
   if (loading || !builder) {
     return (
-      <Card title={t('coreshop_order_creation_address', { defaultValue: 'Addresses' })} size="small">
+      <Card title={t('coreshop_order_creation_address', { defaultValue: 'Addresses' })}>
         <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
           <Spin />
         </div>
@@ -95,7 +101,6 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
   return (
     <Card
       title={t('coreshop_order_creation_address', { defaultValue: 'Addresses' })}
-      size="small"
       extra={
         <Space>
           {state.formData.shippingAddress && (
@@ -128,18 +133,6 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
           triggerPreview()
         }}
       />
-
-      {state.preview?.address_shipping_formatted && (
-        <Typography.Paragraph type="secondary" style={{ fontSize: 12 }}>
-          <div dangerouslySetInnerHTML={{ __html: state.preview.address_shipping_formatted }} />
-        </Typography.Paragraph>
-      )}
-
-      {state.preview?.address_billing_formatted && (
-        <Typography.Paragraph type="secondary" style={{ fontSize: 12 }}>
-          <div dangerouslySetInnerHTML={{ __html: state.preview.address_billing_formatted }} />
-        </Typography.Paragraph>
-      )}
 
       {addresses.length === 0 && (
         <Typography.Text type="secondary">

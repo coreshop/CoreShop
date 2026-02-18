@@ -274,9 +274,11 @@ export const DynamicForm = <T extends Record<string, any> = any>({
 
     return (
       <div key={section.key} style={{ marginBottom: 24 }}>
-        <h3 style={{ marginBottom: 16 }}>
-          {section.icon} {title}
-        </h3>
+        {title && (
+          <h3 style={{ marginBottom: 16 }}>
+            {section.icon} {title}
+          </h3>
+        )}
         {description && (
           <div style={{ marginBottom: 16, color: 'var(--ant-color-text-secondary)' }}>
             {description}

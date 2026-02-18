@@ -11,7 +11,7 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
-import { Card, Button, Space, Typography, Spin, Alert } from 'antd'
+import { Card, Button, Space, Typography, Spin, Alert, Avatar } from 'antd'
 import { UserOutlined, SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
@@ -142,30 +142,67 @@ interface CustomerInfoCardProps {
   onChangeCustomer: () => void
 }
 
+const useInfoCardStyles = createStyles(({ css, token }) => ({
+  customerRow: css`
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  `,
+  avatar: css`
+    flex-shrink: 0;
+    background: ${token.colorPrimary};
+    font-weight: 600;
+  `,
+  info: css`
+    flex: 1;
+    min-width: 0;
+  `,
+  name: css`
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.3;
+  `,
+  email: css`
+    font-size: 12px;
+    color: ${token.colorTextSecondary};
+    line-height: 1.3;
+  `
+}))
+
 export const CustomerInfoCard: React.FC<CustomerInfoCardProps> = ({
   customer,
   onChangeCustomer
 }) => {
   const { t } = useTranslation()
+  const { styles } = useInfoCardStyles()
+
+  const initials = [customer.firstname, customer.lastname]
+    .filter(Boolean)
+    .map(n => n!.charAt(0).toUpperCase())
+    .join('')
 
   return (
-    <Card size="small" style={{ marginBottom: 16 }}>
-      <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-        <Space>
-          <UserOutlined />
-          <span>
-            <strong>
-              {customer.firstname} {customer.lastname}
-            </strong>
-            {customer.email && (
-              <Typography.Text type="secondary"> ({customer.email})</Typography.Text>
-            )}
-          </span>
-        </Space>
+    <Card
+      title={t('coreshop_customer', { defaultValue: 'Customer' })}
+      extra={
         <Button size="small" onClick={onChangeCustomer}>
           {t('coreshop_order_creation_change_customer', { defaultValue: 'Change' })}
         </Button>
-      </Space>
+      }
+    >
+      <div className={styles.customerRow}>
+        <Avatar size={40} className={styles.avatar}>
+          {initials || <UserOutlined />}
+        </Avatar>
+        <div className={styles.info}>
+          <div className={styles.name}>
+            {customer.firstname} {customer.lastname}
+          </div>
+          {customer.email && (
+            <div className={styles.email}>{customer.email}</div>
+          )}
+        </div>
+      </div>
     </Card>
   )
 }

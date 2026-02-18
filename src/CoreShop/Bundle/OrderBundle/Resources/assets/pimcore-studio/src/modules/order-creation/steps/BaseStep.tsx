@@ -25,17 +25,23 @@ const columnsDecorator: FormDecorator = (config) => ({
   fields: config.fields.map((f) => ({ ...f, span: 8 })),
 })
 
+const hideSectionTitleDecorator: FormDecorator = (config) => ({
+  ...config,
+  sections: config.sections?.map((s) => ({ ...s, title: '', description: undefined })),
+})
+
 const BaseStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatch, triggerPreview }) => {
   const { t } = useTranslation()
 
   const { builder, loading } = useFormSchema('coreshop_cart_creation', [
     { name: 'section-filter', decorator: sectionFilterDecorator('base') },
+    { name: 'hide-section-title', decorator: hideSectionTitleDecorator },
     { name: 'columns', decorator: columnsDecorator },
   ])
 
   if (loading || !builder) {
     return (
-      <Card title={t('coreshop_order_creation_base', { defaultValue: 'Base Settings' })} size="small">
+      <Card title={t('coreshop_order_creation_base', { defaultValue: 'Base Settings' })}>
         <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
           <Spin />
         </div>
@@ -48,7 +54,6 @@ const BaseStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatch, 
   return (
     <Card
       title={t('coreshop_order_creation_base', { defaultValue: 'Base Settings' })}
-      size="small"
     >
       <DynamicForm
         config={config}

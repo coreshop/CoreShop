@@ -53,7 +53,8 @@ const initialState: OrderCreationState = {
   previewError: null,
   stepValidation: {},
   creating: false,
-  createError: null
+  createError: null,
+  resetKey: 0
 }
 
 // Reducer
@@ -112,7 +113,8 @@ function orderCreationReducer(
       return {
         ...initialState,
         customerId: state.customerId,
-        customerDetails: state.customerDetails
+        customerDetails: state.customerDetails,
+        resetKey: state.resetKey + 1
       }
 
     case 'FULL_RESET':

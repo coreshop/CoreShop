@@ -100,6 +100,22 @@ final class FormSchemaGenerator
             $label = null;
         }
 
+        // Translate label server-side so the frontend always receives human-readable text
+        if ($label !== null) {
+            $translationDomain = $childView->vars['translation_domain'] ?? null;
+            $translated = $this->translator->trans($label, [], $translationDomain);
+            // If the form's own domain didn't resolve, try the 'studio' domain
+            if ($translated === $label && $translationDomain !== 'studio') {
+                $studioTranslated = $this->translator->trans($label, [], 'studio');
+                if ($studioTranslated !== $label) {
+                    $translated = $studioTranslated;
+                }
+            }
+            if ($translated !== $label) {
+                $label = $translated;
+            }
+        }
+
         $field = new FieldSchema(
             name: $childView->vars['name'],
             blockPrefixes: $blockPrefixes,

@@ -11,8 +11,9 @@
  */
 
 import React from 'react'
-import { Card, Table, Typography, Space } from 'antd'
+import { Card, Typography, Space, theme } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { createStyles } from 'antd-style'
 import type { OrderCreationStepConfig, OrderCreationState, OrderCreationStepProps, SummaryItem } from '../types'
 
 /**
@@ -52,77 +53,73 @@ const summaryLabelKeys: Record<string, { key: string; defaultValue: string }> = 
   total_tax: { key: 'coreshop_total_tax', defaultValue: 'Total Tax' }
 }
 
+const useTotalsStyles = createStyles(({ css, token }) => ({
+  summaryWrapper: css`
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  `,
+  summaryRow: css`
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid ${token.colorBorderSecondary};
+  `,
+  summaryRowTotal: css`
+    border-bottom: none;
+    border-top: 2px solid ${token.colorBorder};
+    padding-top: 10px;
+    margin-top: 4px;
+  `,
+  summaryLabel: css`
+    font-size: 13px;
+    color: ${token.colorTextSecondary};
+  `,
+  summaryValues: css`
+    display: flex;
+    gap: 16px;
+  `,
+  summaryValue: css`
+    text-align: right;
+    font-size: 13px;
+    font-weight: 500;
+    color: ${token.colorText};
+    min-width: 90px;
+    font-variant-numeric: tabular-nums;
+  `
+}))
+
 const TotalsStepComponent: React.FC<OrderCreationStepProps> = ({ state }) => {
   const { t } = useTranslation()
+  const { styles } = useTotalsStyles()
+  const { token } = theme.useToken()
 
   const summary = state.preview?.summary || []
   const currencyCode = state.preview?.baseCurrency?.isoCode
   const convertedCurrencyCode = state.preview?.currency?.isoCode
+  const showConverted = currencyCode !== convertedCurrencyCode
 
   // Filter out zero values and tax-related items for cleaner display
   const displayItems = summary.filter((item) => {
-    // Always show total
     if (item.key === 'total') return true
-    // Show subtotal
     if (item.key === 'subtotal') return true
-    // Show other items only if they have a value
     return item.value !== 0
   })
 
-  const columns = [
-    {
-      title: t('coreshop_description', { defaultValue: 'Description' }),
-      dataIndex: 'key',
-      render: (key: string) => {
-        const isTotal = key === 'total'
-        const labelConfig = summaryLabelKeys[key]
-        const label = labelConfig
-          ? t(labelConfig.key, { defaultValue: labelConfig.defaultValue })
-          : key
-        return (
-          <Typography.Text strong={isTotal}>{label}</Typography.Text>
-        )
-      }
-    },
-    {
-      title: t('coreshop_value', { defaultValue: 'Value' }),
-      dataIndex: 'value',
-      width: 150,
-      align: 'right' as const,
-      render: (value: number, record: SummaryItem) => {
-        const isTotal = record.key === 'total'
-        return (
-          <Typography.Text strong={isTotal}>
-            {formatCurrency(value, currencyCode)}
-          </Typography.Text>
-        )
-      }
-    }
-  ]
+  const isTotalRow = (key: string) => key === 'total'
 
-  // Add converted value column if currencies differ
-  if (currencyCode !== convertedCurrencyCode) {
-    columns.push({
-      title: t('coreshop_converted_value', { defaultValue: 'Converted' }),
-      dataIndex: 'convertedValue',
-      width: 150,
-      align: 'right' as const,
-      render: (value: number, record: SummaryItem) => {
-        const isTotal = record.key === 'total'
-        return (
-          <Typography.Text strong={isTotal} type="secondary">
-            {formatCurrency(value, convertedCurrencyCode)}
-          </Typography.Text>
-        )
-      }
-    })
-  }
+  // Sort: regular items first, then total last
+  const sortedItems = React.useMemo(() => {
+    const regular = displayItems.filter(item => !isTotalRow(item.key))
+    const totals = displayItems.filter(item => isTotalRow(item.key))
+    return [...regular, ...totals]
+  }, [displayItems])
 
   if (!state.preview || displayItems.length === 0) {
     return (
       <Card
         title={t('coreshop_order_creation_totals', { defaultValue: 'Order Summary' })}
-        size="small"
       >
         <Space direction="vertical" style={{ width: '100%', textAlign: 'center', padding: 24 }}>
           <Typography.Text type="secondary">
@@ -138,17 +135,33 @@ const TotalsStepComponent: React.FC<OrderCreationStepProps> = ({ state }) => {
   return (
     <Card
       title={t('coreshop_order_creation_totals', { defaultValue: 'Order Summary' })}
-      size="small"
     >
-      <Table
-        dataSource={displayItems}
-        columns={columns}
-        rowKey="key"
-        pagination={false}
-        size="small"
-        showHeader={false}
-        rowClassName={(record) => (record.key === 'total' ? 'totals-row-highlight' : '')}
-      />
+      <div className={styles.summaryWrapper}>
+        {sortedItems.map((item) => {
+          const isTotal = isTotalRow(item.key)
+          const labelConfig = summaryLabelKeys[item.key]
+          const label = labelConfig
+            ? t(labelConfig.key, { defaultValue: labelConfig.defaultValue })
+            : item.key
+          return (
+            <div key={item.key} className={`${styles.summaryRow} ${isTotal ? styles.summaryRowTotal : ''}`}>
+              <span className={styles.summaryLabel} style={isTotal ? { fontWeight: 600, color: token.colorText } : undefined}>
+                {label}
+              </span>
+              <div className={styles.summaryValues}>
+                <span className={styles.summaryValue} style={isTotal ? { fontWeight: 700, fontSize: 15 } : undefined}>
+                  {formatCurrency(item.value, currencyCode)}
+                </span>
+                {showConverted && (
+                  <span className={styles.summaryValue} style={isTotal ? { fontWeight: 700, fontSize: 15 } : undefined}>
+                    {formatCurrency(item.convertedValue ?? item.value, convertedCurrencyCode)}
+                  </span>
+                )}
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </Card>
   )
 }

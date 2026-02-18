@@ -155,6 +155,7 @@ export interface OrderCreationState {
   // UI state
   creating: boolean
   createError: string | null
+  resetKey: number
 }
 
 // ============================================

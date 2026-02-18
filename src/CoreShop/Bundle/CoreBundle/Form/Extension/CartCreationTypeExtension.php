@@ -30,14 +30,19 @@ final class CartCreationTypeExtension extends AbstractTypeExtension
     {
         $builder->add('shippingAddress', AddressChoiceType::class, [
             'customer' => $options['customer'],
+            'label' => 'coreshop_shipping_address',
         ]);
 
         $builder->add('invoiceAddress', AddressChoiceType::class, [
             'customer' => $options['customer'],
+            'label' => 'coreshop_invoice_address',
         ]);
-        $builder->add('carrier', CarrierChoiceType::class);
+        $builder->add('carrier', CarrierChoiceType::class, [
+            'label' => 'coreshop_carrier',
+        ]);
         $builder->add('paymentProvider', PaymentProviderChoiceType::class, [
             'required' => false,
+            'label' => 'coreshop_payment_provider',
         ]);
     }
 

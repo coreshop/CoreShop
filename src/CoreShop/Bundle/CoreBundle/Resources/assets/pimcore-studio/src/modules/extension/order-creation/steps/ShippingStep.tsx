@@ -17,6 +17,12 @@ import React from 'react'
 import { Card, Typography, Spin } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useFormSchema, DynamicForm, sectionFilterDecorator } from '@coreshop/studio-form'
+import type { FormDecorator } from '@coreshop/studio-form'
+
+const hideSectionTitleDecorator: FormDecorator = (config) => ({
+  ...config,
+  sections: config.sections?.map((s) => ({ ...s, title: '', description: undefined })),
+})
 import type {
   OrderCreationStepConfig,
   OrderCreationState,
@@ -45,6 +51,7 @@ const ShippingStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispat
 
   const { builder, loading } = useFormSchema('coreshop_cart_creation', [
     { name: 'section-filter', decorator: sectionFilterDecorator('shipping') },
+    { name: 'hide-section-title', decorator: hideSectionTitleDecorator },
   ])
 
   const carriers = state.preview?.carriers ?? []
@@ -53,7 +60,7 @@ const ShippingStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispat
 
   if (loading || !builder) {
     return (
-      <Card title={t('coreshop_order_creation_shipping', { defaultValue: 'Shipping' })} size="small">
+      <Card title={t('coreshop_order_creation_shipping', { defaultValue: 'Shipping' })}>
         <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
           <Spin />
         </div>
@@ -66,7 +73,6 @@ const ShippingStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispat
   return (
     <Card
       title={t('coreshop_order_creation_shipping', { defaultValue: 'Shipping' })}
-      size="small"
     >
       <DynamicForm
         config={config}

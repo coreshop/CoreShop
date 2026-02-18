@@ -21,6 +21,7 @@ import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
+import { useTableCardStyles } from '../../sales/styles/useTableCardStyles'
 import type {
   OrderCreationStepConfig,
   OrderCreationState,
@@ -62,6 +63,7 @@ const formatCurrency = (value: number, isoCode?: string): string => {
 const ProductsStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatch, triggerPreview }) => {
   const { t } = useTranslation()
   const { styles } = useStyles()
+  const { styles: tableStyles } = useTableCardStyles()
   const messageApi = useMessage()
   const [allowedClasses, setAllowedClasses] = useState<string[]>([])
 
@@ -274,7 +276,7 @@ const ProductsStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispat
   return (
     <Card
       title={t('coreshop_order_creation_products', { defaultValue: 'Products' })}
-      size="small"
+      className={tableStyles.card}
       extra={
         state.formData.items.length > 0 && (
           <Button
@@ -295,6 +297,8 @@ const ProductsStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispat
           rowKey={(_, index) => `item-${index}`}
           pagination={false}
           size="small"
+          className={tableStyles.table}
+          scroll={{ x: 'max-content' }}
         />
       ) : (
         <div className={styles.emptyState}>

@@ -39,7 +39,7 @@ export { OrderCreationStepRegistry } from './registry'
 export { OrderCreationProvider, useOrderCreation } from './context'
 
 // Components
-export { OrderCreationPanel, CustomerSelector, CustomerInfoCard } from './components'
+export { OrderCreationPanel, OrderCreationLauncher, CustomerInfoCard } from './components'
 
 // Steps
 export { BaseStepConfig, ProductsStepConfig, TotalsStepConfig } from './steps'

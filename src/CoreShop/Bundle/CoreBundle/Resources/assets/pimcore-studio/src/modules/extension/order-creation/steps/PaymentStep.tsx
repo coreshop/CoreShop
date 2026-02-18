@@ -16,6 +16,12 @@ import React from 'react'
 import { Card, Spin } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useFormSchema, DynamicForm, sectionFilterDecorator } from '@coreshop/studio-form'
+import type { FormDecorator } from '@coreshop/studio-form'
+
+const hideSectionTitleDecorator: FormDecorator = (config) => ({
+  ...config,
+  sections: config.sections?.map((s) => ({ ...s, title: '', description: undefined })),
+})
 import type {
   OrderCreationStepConfig,
   OrderCreationState,
@@ -27,11 +33,12 @@ const PaymentStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
 
   const { builder, loading } = useFormSchema('coreshop_cart_creation', [
     { name: 'section-filter', decorator: sectionFilterDecorator('payment') },
+    { name: 'hide-section-title', decorator: hideSectionTitleDecorator },
   ])
 
   if (loading || !builder) {
     return (
-      <Card title={t('coreshop_order_creation_payment', { defaultValue: 'Payment' })} size="small">
+      <Card title={t('coreshop_order_creation_payment', { defaultValue: 'Payment' })}>
         <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
           <Spin />
         </div>
@@ -44,7 +51,6 @@ const PaymentStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
   return (
     <Card
       title={t('coreshop_order_creation_payment', { defaultValue: 'Payment' })}
-      size="small"
     >
       <DynamicForm
         config={config}

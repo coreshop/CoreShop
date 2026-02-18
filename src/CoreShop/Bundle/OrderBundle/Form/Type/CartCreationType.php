@@ -39,9 +39,15 @@ final class CartCreationType extends AbstractResourceType
                 'required' => false,
             ])
             ->add('customer', CustomerSelectionType::class)
-            ->add('store', StoreChoiceType::class)
-            ->add('currency', CurrencyChoiceType::class)
-            ->add('localeCode', LocaleChoiceType::class)
+            ->add('store', StoreChoiceType::class, [
+                'label' => 'coreshop_store',
+            ])
+            ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_currency',
+            ])
+            ->add('localeCode', LocaleChoiceType::class, [
+                'label' => 'coreshop_locale',
+            ])
             ->add('items', CollectionType::class, [
                 'entry_type' => CartCreationCartItemType::class,
                 'allow_add' => true,
