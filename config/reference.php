@@ -125,19 +125,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     ...<string, DefinitionType|AliasType|PrototypeType|StackType|ArgumentsType|null>
  * }
  * @psalm-type ExtensionType = array<string, mixed>
- * @psalm-type PimcoreSeoConfig = array{
- *     sitemaps?: array{
- *         generators?: array<string, bool|string|array{ // Default: []
- *             enabled?: bool|Param, // Default: true
- *             generator_id?: scalar|Param|null,
- *             priority?: int|Param, // Default: 0
- *         }>,
- *     },
- *     redirects?: array{
- *         status_codes?: list<scalar|Param|null>,
- *         auto_create_redirects?: bool|Param, // Auto create redirects on moving documents & changing pretty url, updating Url slugs in Data Objects. // Default: false
- *     },
- * }
  * @psalm-type PimcoreStaticRoutesConfig = array{
  *     definitions?: list<array{ // Default: []
  *         name?: scalar|Param|null,
@@ -160,23 +147,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- * }
- * @psalm-type PimcoreNewsletterConfig = array{
- *     sender?: array{
- *         name?: scalar|Param|null,
- *         email?: scalar|Param|null,
- *     },
- *     return?: array{
- *         name?: scalar|Param|null,
- *         email?: scalar|Param|null,
- *     },
- *     method?: scalar|Param|null, // Default: null
- *     debug?: array{
- *         email_addresses?: scalar|Param|null, // Default: ""
- *     },
- *     use_specific?: bool|Param, // Default: false
- *     source_adapters?: array<string, scalar|Param|null>,
- *     default_url_prefix?: scalar|Param|null, // Default: null
  * }
  * @psalm-type PimcoreOpenSearchClientConfig = array{
  *     clients?: array<string, array{ // Default: []
@@ -428,103 +398,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         translations_domain?: scalar|Param|null, // Translation domain which should be used by the job run. Default value is "admin". // Default: "admin"
  *         error_handling?: "continue_on_error"|"stop_on_first_error"|Param, // Error handling behavior which should be used by the job run. Overrides the global value.
  *     }>,
- * }
- * @psalm-type PimcoreAdminConfig = array{
- *     gdpr_data_extractor?: array{
- *         dataObjects?: array{ // Settings for DataObjects DataProvider
- *             classes?: list<array{ // MY_CLASS_NAME: include: true allowDelete: false includedRelations: - manualSegemens - calculatedSegments // Default: []
- *                 include?: bool|Param, // Set if class should be considered in export. // Default: true
- *                 allowDelete?: bool|Param, // Allow delete of objects directly in preview grid. // Default: false
- *                 includedRelations?: list<scalar|Param|null>,
- *             }>,
- *         },
- *         assets?: array{ // Settings for Assets DataProvider
- *             types?: list<array{ // asset types // Default: []
- *             }>,
- *         },
- *     },
- *     objects?: array{
- *         notes_events?: array{
- *             types?: list<scalar|Param|null>,
- *         },
- *     },
- *     assets?: array{
- *         notes_events?: array{
- *             types?: list<scalar|Param|null>,
- *         },
- *         hide_edit_image?: bool|Param, // Default: false
- *         disable_tree_preview?: bool|Param, // Default: true
- *     },
- *     documents?: array{
- *         notes_events?: array{
- *             types?: list<scalar|Param|null>,
- *         },
- *         email_search?: list<scalar|Param|null>,
- *     },
- *     notifications?: bool|array{
- *         enabled?: bool|Param, // Default: true
- *         check_new_notification?: bool|array{ // Can be used to enable or disable the check of new notifications (url: /admin/notification/find-last-unread).
- *             enabled?: bool|Param, // Default: true
- *             interval?: int|Param, // Interval in seconds to check new notifications // Default: 30
- *         },
- *     },
- *     user?: array{
- *         default_key_bindings?: list<array{ // Default: []
- *             key: scalar|Param|null,
- *             action: scalar|Param|null,
- *             alt?: scalar|Param|null, // Default: false
- *             ctrl?: scalar|Param|null, // Default: false
- *             shift?: scalar|Param|null, // Default: false
- *         }>,
- *     },
- *     admin_languages?: list<scalar|Param|null>,
- *     csrf_protection?: array{
- *         excluded_routes?: list<scalar|Param|null>,
- *     },
- *     admin_csp_header?: bool|array{ // Can be used to enable or disable the Content Security Policy headers.
- *         enabled?: bool|Param, // Default: true
- *         exclude_paths?: list<scalar|Param|null>,
- *         additional_urls?: array{
- *             default-src?: list<scalar|Param|null>,
- *             img-src?: list<scalar|Param|null>,
- *             script-src?: list<scalar|Param|null>,
- *             style-src?: list<scalar|Param|null>,
- *             connect-src?: list<scalar|Param|null>,
- *             font-src?: list<scalar|Param|null>,
- *             media-src?: list<scalar|Param|null>,
- *             frame-src?: list<scalar|Param|null>,
- *         },
- *     },
- *     custom_admin_path_identifier?: scalar|Param|null, // Default: null
- *     custom_admin_route_name?: scalar|Param|null, // Default: "my_custom_admin_entry_point"
- *     branding?: array{
- *         login_screen_invert_colors?: bool|Param, // Default: false
- *         color_login_screen?: scalar|Param|null, // Default: null
- *         color_admin_interface?: scalar|Param|null, // Default: null
- *         color_admin_interface_background?: scalar|Param|null, // Default: null
- *         login_screen_custom_image?: scalar|Param|null, // Default: ""
- *     },
- *     session?: array{
- *         attribute_bags?: array<string, array{ // Default: []
- *             storage_key?: scalar|Param|null, // Default: null
- *         }>,
- *     },
- *     translations?: array{
- *         path?: scalar|Param|null, // Default: null
- *     },
- *     security_firewall?: mixed,
- *     config_location?: array{
- *         admin_system_settings?: array{
- *             write_target?: array{
- *                 type?: "symfony-config"|"settings-store"|"disabled"|Param, // Default: "symfony-config"
- *                 options?: list<mixed>,
- *             },
- *             read_target?: array{
- *                 type?: "symfony-config"|"settings-store"|Param, // Default: null
- *                 options?: list<mixed>,
- *             },
- *         },
- *     },
  * }
  * @psalm-type PimcoreCustomReportsConfig = array{
  *     definitions?: list<array{ // Default: []
@@ -3890,6 +3763,16 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *     }>,
  * }
+ * @psalm-type WebpackEncoreConfig = array{
+ *     output_path: scalar|Param|null, // The path where Encore is building the assets - i.e. Encore.setOutputPath()
+ *     crossorigin?: false|"anonymous"|"use-credentials"|Param, // crossorigin value when Encore.enableIntegrityHashes() is used, can be false (default), anonymous or use-credentials // Default: false
+ *     preload?: bool|Param, // preload all rendered script and link tags automatically via the http2 Link header. // Default: false
+ *     cache?: bool|Param, // Enable caching of the entry point file(s) // Default: false
+ *     strict_mode?: bool|Param, // Throw an exception if the entrypoints.json file is missing or an entry is missing from the data // Default: true
+ *     builds?: array<string, scalar|Param|null>,
+ *     script_attributes?: array<string, scalar|Param|null>,
+ *     link_attributes?: array<string, scalar|Param|null>,
+ * }
  * @psalm-type DebugConfig = array{
  *     max_items?: int|Param, // Max number of displayed items past the first level, -1 means no limit. // Default: 2500
  *     min_depth?: int|Param, // Minimum tree depth to clone all the items, 1 is default. // Default: 1
@@ -3904,27 +3787,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  *     intercept_redirects?: bool|Param, // Default: false
  *     excluded_ajax_paths?: scalar|Param|null, // Default: "^/((index|app(_[\\w]+)?)\\.php/)?_wdt"
- * }
- * @psalm-type PrestaSitemapConfig = array{
- *     generator?: scalar|Param|null, // Default: "presta_sitemap.generator_default"
- *     dumper?: scalar|Param|null, // Default: "presta_sitemap.dumper_default"
- *     timetolive?: int|Param, // Default: 3600
- *     sitemap_file_prefix?: scalar|Param|null, // Sets sitemap filename prefix defaults to "sitemap" -> sitemap.xml (for index); sitemap.<section>.xml(.gz) (for sitemaps) // Default: "sitemap"
- *     items_by_set?: int|Param, // The maximum number of items allowed in single sitemap. // Default: 50000
- *     route_annotation_listener?: scalar|Param|null, // Default: true
- *     dump_directory?: scalar|Param|null, // The directory to which the sitemap will be dumped. It can be either absolute, or relative (to the place where the command will be triggered). Default to Symfony's public dir. // Default: "%kernel.project_dir%/public"
- *     defaults?: array{
- *         priority?: scalar|Param|null, // Default: 0.5
- *         changefreq?: scalar|Param|null, // Default: "daily"
- *         lastmod?: scalar|Param|null, // Default: "now"
- *     },
- *     default_section?: scalar|Param|null, // The default section in which static routes are registered. // Default: "default"
- *     alternate?: bool|array{ // Automatically generate alternate (hreflang) urls with static routes. Requires route_annotation_listener config to be enabled.
- *         enabled?: bool|Param, // Default: false
- *         default_locale?: scalar|Param|null, // The default locale of your routes. // Default: "en"
- *         locales?: list<scalar|Param|null>,
- *         i18n?: "symfony"|"jms"|Param, // Strategy used to create your i18n routes. // Default: "symfony"
- *     },
  * }
  * @psalm-type PimcoreElasticsearchClientConfig = array{
  *     es_clients?: array<string, array{ // Default: []
@@ -3963,16 +3825,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     default_hub?: scalar|Param|null,
  *     default_cookie_lifetime?: int|Param, // Default lifetime of the cookie containing the JWT, in seconds. Defaults to the value of "framework.session.cookie_lifetime". // Default: null
  *     enable_profiler?: bool|Param, // Deprecated: The child node "enable_profiler" at path "mercure.enable_profiler" is deprecated. // Enable Symfony Web Profiler integration.
- * }
- * @psalm-type WebpackEncoreConfig = array{
- *     output_path: scalar|Param|null, // The path where Encore is building the assets - i.e. Encore.setOutputPath()
- *     crossorigin?: false|"anonymous"|"use-credentials"|Param, // crossorigin value when Encore.enableIntegrityHashes() is used, can be false (default), anonymous or use-credentials // Default: false
- *     preload?: bool|Param, // preload all rendered script and link tags automatically via the http2 Link header. // Default: false
- *     cache?: bool|Param, // Enable caching of the entry point file(s) // Default: false
- *     strict_mode?: bool|Param, // Throw an exception if the entrypoints.json file is missing or an entry is missing from the data // Default: true
- *     builds?: array<string, scalar|Param|null>,
- *     script_attributes?: array<string, scalar|Param|null>,
- *     link_attributes?: array<string, scalar|Param|null>,
  * }
  * @psalm-type KnpMenuConfig = array{
  *     providers?: array{
@@ -4627,15 +4479,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
  *     services?: ServicesConfig,
- *     pimcore_seo?: PimcoreSeoConfig,
  *     pimcore_static_routes?: PimcoreStaticRoutesConfig,
- *     pimcore_newsletter?: PimcoreNewsletterConfig,
  *     pimcore_open_search_client?: PimcoreOpenSearchClientConfig,
  *     pimcore_studio_ui?: PimcoreStudioUiConfig,
  *     pimcore_studio_backend?: PimcoreStudioBackendConfig,
  *     pimcore_generic_data_index?: PimcoreGenericDataIndexConfig,
  *     pimcore_generic_execution_engine?: PimcoreGenericExecutionEngineConfig,
- *     pimcore_admin?: PimcoreAdminConfig,
  *     pimcore_custom_reports?: PimcoreCustomReportsConfig,
  *     core_shop_menu?: CoreShopMenuConfig,
  *     jms_serializer?: JmsSerializerConfig,
@@ -4689,27 +4538,23 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     knp_paginator?: KnpPaginatorConfig,
  *     core_shop_core?: CoreShopCoreConfig,
  *     core_shop_storage_list?: CoreShopStorageListConfig,
+ *     webpack_encore?: WebpackEncoreConfig,
  *     debug?: DebugConfig,
  *     web_profiler?: WebProfilerConfig,
- *     presta_sitemap?: PrestaSitemapConfig,
  *     pimcore_elasticsearch_client?: PimcoreElasticsearchClientConfig,
  *     mercure?: MercureConfig,
- *     webpack_encore?: WebpackEncoreConfig,
  *     knp_menu?: KnpMenuConfig,
  *     pimcore?: PimcoreConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
- *         pimcore_seo?: PimcoreSeoConfig,
  *         pimcore_static_routes?: PimcoreStaticRoutesConfig,
- *         pimcore_newsletter?: PimcoreNewsletterConfig,
  *         pimcore_open_search_client?: PimcoreOpenSearchClientConfig,
  *         pimcore_studio_ui?: PimcoreStudioUiConfig,
  *         pimcore_studio_backend?: PimcoreStudioBackendConfig,
  *         pimcore_generic_data_index?: PimcoreGenericDataIndexConfig,
  *         pimcore_generic_execution_engine?: PimcoreGenericExecutionEngineConfig,
- *         pimcore_admin?: PimcoreAdminConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,
