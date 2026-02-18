@@ -127,3 +127,8 @@ services:
     CoreShop\Bundle\CoreBundle\Form\Extension\StudioOrderShipmentCreationTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\Studio\OrderShipmentCreationType }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Demo\EntityChoiceDemoType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }

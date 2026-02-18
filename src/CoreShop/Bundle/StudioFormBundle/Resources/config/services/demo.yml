@@ -24,11 +24,6 @@ services:
             - { name: form.type }
             - { name: coreshop.studio_form }
 
-    CoreShop\Bundle\StudioFormBundle\Form\Type\Demo\EntityChoiceDemoType:
-        tags:
-            - { name: form.type }
-            - { name: coreshop.studio_form }
-
     # Schema Enricher
     CoreShop\Bundle\StudioFormBundle\Form\Schema\FieldTypesDemoSchemaEnricher:
         tags:

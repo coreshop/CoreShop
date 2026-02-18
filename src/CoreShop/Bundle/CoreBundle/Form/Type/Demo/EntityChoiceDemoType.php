@@ -15,7 +15,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\StudioFormBundle\Form\Type\Demo;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\Demo;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType;
 use CoreShop\Bundle\AddressBundle\Form\Type\StateChoiceType;

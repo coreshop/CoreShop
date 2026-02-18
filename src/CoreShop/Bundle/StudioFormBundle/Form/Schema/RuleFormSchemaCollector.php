@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StudioFormBundle\Form\Schema;
 
-use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use Psr\Log\LoggerInterface;
 
 final class RuleFormSchemaCollector
@@ -39,7 +38,7 @@ final class RuleFormSchemaCollector
      *
      * @return array<string, FormSchema> Map of block prefix to FormSchema
      */
-    public function collectSchemas(FormTypeRegistryInterface $formTypeRegistry, array $typeNames): array
+    public function collectSchemas(object $formTypeRegistry, array $typeNames): array
     {
         return $this->collectSchemasWithTypeMap($formTypeRegistry, $typeNames)['schemas'];
     }
@@ -54,17 +53,23 @@ final class RuleFormSchemaCollector
      *   schemaByType: array<string, string>
      * }
      */
-    public function collectSchemasWithTypeMap(FormTypeRegistryInterface $formTypeRegistry, array $typeNames): array
+    public function collectSchemasWithTypeMap(object $formTypeRegistry, array $typeNames): array
     {
+        $hasTypeCallable = \Closure::fromCallable([$formTypeRegistry, 'has']);
+        $getTypeCallable = \Closure::fromCallable([$formTypeRegistry, 'get']);
+
         $schemas = [];
         $schemaByType = [];
 
         foreach ($typeNames as $typeName) {
-            if (!$formTypeRegistry->has($typeName, 'default')) {
+            if (!(bool) $hasTypeCallable($typeName, 'default')) {
                 continue;
             }
 
-            $formTypeClass = $formTypeRegistry->get($typeName, 'default');
+            $formTypeClass = $getTypeCallable($typeName, 'default');
+            if (!is_string($formTypeClass)) {
+                continue;
+            }
 
             try {
                 $schema = $this->generator->generate($formTypeClass);
