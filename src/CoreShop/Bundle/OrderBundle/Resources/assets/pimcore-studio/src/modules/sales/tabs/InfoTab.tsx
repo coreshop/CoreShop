@@ -13,10 +13,12 @@
 import React from 'react'
 import { Card, Button, Space, Modal } from 'antd'
 import { createStyles } from 'antd-style'
-import { FolderOpenOutlined, ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons'
+import { FolderOpenOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { SaleTabProps } from '../registry'
+import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { useDataObjectHelper } from "@pimcore/studio-ui-bundle/modules/data-object"
 import { useSaleContext } from '../context/SaleActionsContext'
 
@@ -28,9 +30,11 @@ interface StateHistoryItem {
 
 export const InfoTab: React.FC<SaleTabProps> = () => {
   const { t } = useTranslation()
-  const { sale } = useSaleContext()
+  const messageApi = useMessage()
+  const { sale, onReload } = useSaleContext()
   const { styles } = useInfoTabStyles()
   const { openDataObject } = useDataObjectHelper()
+  const [loadingTransition, setLoadingTransition] = React.useState<string | null>(null)
 
   if (!sale) return null
 
@@ -43,10 +47,22 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
     void openDataObject({ config: { id: sale.id } })
   }
 
+  const getTransitionName = (transition: any): string => {
+    if (typeof transition === 'object') {
+      return transition.transition || transition.name || ''
+    }
+
+    return String(transition)
+  }
+
   // Handle state transition
   const handleTransition = async (transition: any) => {
-    const transitionName = transition.transition
+    const transitionName = getTransitionName(transition)
     const transitionLabel = transition.label || transitionName
+
+    if (!transitionName) {
+      return
+    }
 
     // Show confirmation dialog for all transitions
     Modal.confirm({
@@ -59,7 +75,34 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
       okText: t('yes', { defaultValue: 'Yes' }),
       cancelText: t('no', { defaultValue: 'No' }),
       onOk: async () => {
-        // TODO: Implement state transition API call
+        setLoadingTransition(transitionName)
+
+        try {
+          const payload = new URLSearchParams()
+          payload.append('id', String(sale.id))
+          payload.append('transition', transitionName)
+
+          const response = await fetch('/pimcore-studio/api/coreshop/order/update-order-state', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: payload.toString()
+          })
+
+          const result = await response.json()
+
+          if (result.success) {
+            void messageApi.success(t('coreshop_change_state_success', { defaultValue: 'State changed successfully' }))
+            onReload()
+          } else {
+            void messageApi.error(renderApiError(result.message || t('coreshop_change_state_error', { defaultValue: 'Failed to change state' })))
+          }
+        } catch (error) {
+          void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_change_state_error', { defaultValue: 'Failed to change state' }))))
+        } finally {
+          setLoadingTransition(null)
+        }
       }
     })
   }
@@ -83,7 +126,7 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
         <Space size={6}>
           {/* Transition Buttons */}
           {availableTransitions.map((transition: any, index: number) => {
-            const transitionName = transition.transition
+            const transitionName = getTransitionName(transition)
             const transitionColor = typeof transition === 'object' ? transition.color : undefined
             const isCancel = transitionName === 'cancel'
 
@@ -92,6 +135,8 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
                 key={`${transitionName}-${index}`}
                 size="small"
                 className={isCancel ? styles.cancelButton : styles.transitionButton}
+                loading={loadingTransition === transitionName}
+                disabled={loadingTransition !== null && loadingTransition !== transitionName}
                 style={
                   isCancel
                     ? undefined

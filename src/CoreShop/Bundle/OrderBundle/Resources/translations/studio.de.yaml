@@ -643,6 +643,8 @@ coreshop_mail_correspondence_open_document_not_supported: 'Studio v2 unterstütz
 coreshop_converted_total_without_tax: 'Basis Gesamt (exkl.)'
 coreshop_confirm_transition: 'Statuswechsel bestätigen'
 coreshop_confirm_transition_content: 'Möchten Sie den Übergang "{{transition}}" wirklich anwenden?'
+coreshop_change_state_success: 'Status wurde erfolgreich geändert'
+coreshop_change_state_error: 'Status konnte nicht geändert werden'
 coreshop_transition: 'Übergang'
 coreshop_order_with_number: 'Bestellung: {{number}}'
 coreshop_open_data_object: 'DataObject öffnen'

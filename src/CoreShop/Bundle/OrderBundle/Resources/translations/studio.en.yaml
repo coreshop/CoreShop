@@ -649,6 +649,8 @@ coreshop_mail_correspondence_open_document_not_supported: 'Studio v2 does not ye
 coreshop_converted_total_without_tax: 'Conv. Total (excl.)'
 coreshop_confirm_transition: 'Confirm Transition'
 coreshop_confirm_transition_content: 'Are you sure you want to apply transition "{{transition}}"?'
+coreshop_change_state_success: 'State changed successfully'
+coreshop_change_state_error: 'Failed to change state'
 coreshop_transition: 'Transition'
 coreshop_order_with_number: 'Order: {{number}}'
 coreshop_open_data_object: 'Open DataObject'
