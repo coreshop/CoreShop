@@ -27,6 +27,7 @@ final class StateTransitionConfigurationType extends AbstractType
     {
         $builder
             ->add('transition', TextType::class, [
+                'label' => 'coreshop_select_transition',
             ])
         ;
     }

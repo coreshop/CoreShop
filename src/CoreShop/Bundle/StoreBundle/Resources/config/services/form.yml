@@ -17,3 +17,4 @@ services:
             - '%coreshop.form.type.store.validation_groups%'
         tags:
             -  { name: form.type }
+            -  { name: coreshop.studio_form }

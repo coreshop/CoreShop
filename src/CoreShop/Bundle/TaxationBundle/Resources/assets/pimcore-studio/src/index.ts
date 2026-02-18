@@ -1,0 +1,18 @@
+/**
+ * CoreShop TaxationBundle Studio Plugin
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+// Public API for external plugins
+export * from './modules/tax-rates'
+export * from './modules/tax-rule-groups'
+export { TaxRateSelect, loadTaxRates, getTaxRateCache, clearTaxRateCache } from './components/TaxRateSelect'
+export { TaxRateMultiSelectField } from './components/TaxRateMultiSelectField'
+export { TaxRuleGroupSelect, loadTaxRuleGroups, getTaxRuleGroupCache, clearTaxRuleGroupCache } from './components/TaxRuleGroupSelect'

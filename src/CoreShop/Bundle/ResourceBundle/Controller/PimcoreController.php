@@ -51,7 +51,7 @@ class PimcoreController extends AdminController
              *
              * @psalm-suppress InternalMethod
              */
-            $user = $this->getAdminUser();
+            $user = $this->getPimcoreUser();
 
             if ($user->isAllowed($this->getPermission())) {
                 return;

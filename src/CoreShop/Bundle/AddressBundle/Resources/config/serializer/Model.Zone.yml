@@ -14,7 +14,7 @@ CoreShop\Component\Address\Model\Zone:
         active:
             expose: true
             type: boolean
-            groups: [Detailed]
+            groups: [List, Detailed]
         countries:
             expose: true
             type: relation

@@ -1,0 +1,76 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ *
+ */
+
+namespace CoreShop\Bundle\CoreBundle\AdminClass\EventListener;
+
+use CoreShop\Component\Core\Model\ProductInterface;
+use Pimcore\Bundle\AdminBundle\Event\AdminEvents;
+use Pimcore\Model\DataObject\ClassDefinition;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+
+final class ProductStoreValuesAdminGetListener implements EventSubscriberInterface
+{
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            AdminEvents::OBJECT_GET_PRE_SEND_DATA => 'prepareData',
+        ];
+    }
+
+    public function prepareData(GenericEvent $event): void
+    {
+        $object = $event->getArgument('object');
+        if (!$object instanceof ProductInterface) {
+            return;
+        }
+
+        $classDefinition = ClassDefinition::getById($object->getClassId());
+
+        if (!$classDefinition) {
+            return;
+        }
+
+        //No inheritance enabled, no need to check then
+        if (!$classDefinition->getAllowInherit()) {
+            return;
+        }
+
+        //Since the parent is not set, not data will be inherited anyway
+        if (!$object->getParent() instanceof $object) {
+            return;
+        }
+
+        $data = $event->getArgument('data');
+
+        foreach ($data['data']['storeValues'] as &$storeValues) {
+            $values = $storeValues['values'] ?? [];
+
+            if (!isset($values['product'])) {
+                continue;
+            }
+
+            if ($values['product'] !== $object->getId()) {
+                $storeValues['inherited'] = true;
+            }
+        }
+
+        unset($storeValues);
+
+        $event->setArgument('data', $data);
+    }
+}

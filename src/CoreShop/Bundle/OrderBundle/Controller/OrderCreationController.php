@@ -90,7 +90,7 @@ class OrderCreationController extends PimcoreController
 
             $cart = $handledForm->getData();
 
-            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart): void {
+            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart) {
                 $cartProcessor->process($cart);
             });
 
@@ -145,23 +145,26 @@ class OrderCreationController extends PimcoreController
 
             $cartManager->persistCart($cart);
 
-            $workflow = $manager->get($cart, OrderSaleTransitions::IDENTIFIER);
-            $orderWorkflow = $manager->get($cart, OrderTransitions::IDENTIFIER);
+            // Only apply workflow transitions for order and quote, not for cart
+            if ($type !== OrderSaleTransitions::TRANSITION_CART) {
+                $workflow = $manager->get($cart, OrderSaleTransitions::IDENTIFIER);
+                $orderWorkflow = $manager->get($cart, OrderTransitions::IDENTIFIER);
 
-            if (!$workflow->can($cart, $type)) {
-                throw new HttpException(500);
-            }
-
-            InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager, $orderWorkflow): void {
-                $workflow->apply($cart, $type);
-
-                if ($type === OrderSaleTransitions::TRANSITION_ORDER) {
-                    //confirm order
-                    $orderWorkflow->apply($cart, OrderTransitions::TRANSITION_CONFIRM);
+                if (!$workflow->can($cart, $type)) {
+                    throw new HttpException(500);
                 }
 
-                $cartManager->persistCart($cart);
-            });
+                InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager, $orderWorkflow) {
+                    $workflow->apply($cart, $type);
+
+                    if ($type === OrderSaleTransitions::TRANSITION_ORDER) {
+                        //confirm order
+                        $orderWorkflow->apply($cart, OrderTransitions::TRANSITION_CONFIRM);
+                    }
+
+                    $cartManager->persistCart($cart);
+                });
+            }
 
             return $this->viewHandler->handle([
                 'success' => true,

@@ -19,6 +19,7 @@ namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,14 +37,21 @@ final class FilterConditionCategoryMultiSelectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('field', TextType::class)
+            ->add('field', TextType::class, ['label' => 'coreshop_filters_field'])
             ->add('preSelects', CollectionType::class, [
+                'label' => 'coreshop_filters_preselect',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'entry_type' => TextType::class,
             ])
-            ->add('includeSubCategories', CheckboxType::class)
-            ->add('concatenator', TextType::class)
+            ->add('includeSubCategories', CheckboxType::class, ['label' => 'coreshop_filters_include_subcategories'])
+            ->add('concatenator', ChoiceType::class, [
+                'label' => 'coreshop_filters_search_patterns_concatenator',
+                'choices' => [
+                    'OR' => 'OR',
+                    'AND' => 'AND',
+                ],
+            ])
         ;
     }
 

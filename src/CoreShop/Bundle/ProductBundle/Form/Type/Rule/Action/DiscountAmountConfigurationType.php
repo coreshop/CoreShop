@@ -41,6 +41,7 @@ final class DiscountAmountConfigurationType extends AbstractType
     {
         $builder
             ->add('amount', MoneyType::class, [
+                'label' => 'coreshop_action_discountAmount_amount',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
@@ -48,6 +49,7 @@ final class DiscountAmountConfigurationType extends AbstractType
                 ],
             ])
             ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_currency',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                 ],

@@ -1,67 +1,67 @@
 {
-  "name": "coreshop/workflow-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Workflow Bundle",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce",
-    "workflow"
-  ],
-  "homepage": "https://www.coreshop.com",
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "CoreShop Team",
-      "email": "info@coreshop.com",
-      "homepage": "https://www.coreshop.com/",
-      "role": "Developer"
+    "name": "coreshop/workflow-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Workflow Bundle",
+    "keywords": [
+        "coreshop",
+        "pimcore",
+        "ecommerce",
+        "workflow"
+    ],
+    "homepage": "https://www.coreshop.com",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "CoreShop Team",
+            "email": "info@coreshop.com",
+            "homepage": "https://www.coreshop.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        },
+        {
+            "name": "Stefan Hagspiel",
+            "email": "shagspiel@dachcom.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "coreshop/pimcore": "^5.0",
+        "coreshop/registry": "^5.0",
+        "symfony/config": "^6.4.14 || ^7.2",
+        "symfony/workflow": "^6.4.14 || ^7.2",
+        "symfony/yaml": "^6.4.14 || ^7.2",
+        "pimcore/pimcore": "^12.0"
     },
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "require-dev": {
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-webmozart-assert": "^2.0"
     },
-    {
-      "name": "Stefan Hagspiel",
-      "email": "shagspiel@dachcom.com",
-      "role": "Developer"
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\WorkflowBundle\\": ""
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../*/*"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "5.0-dev",
+            "dev-master": "5.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  ],
-  "require": {
-    "coreshop/pimcore": "^5.0",
-    "coreshop/registry": "^5.0",
-    "symfony/config": "^6.3 || ^7.0",
-    "symfony/workflow": "^6.3 || ^7.0",
-    "symfony/yaml": "^6.3 || ^7.0",
-    "pimcore/pimcore": "^12.3"
-  },
-  "require-dev": {
-    "phpstan/phpstan": "^2.1",
-    "phpstan/phpstan-doctrine": "^2.0",
-    "phpstan/phpstan-webmozart-assert": "^2.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\WorkflowBundle\\": ""
-    }
-  },
-  "repositories": [
-      {
-          "type": "path",
-          "url": "../../*/*"
-      }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-main": "5.0-dev",
-      "dev-master": "5.0-dev"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }

@@ -1,0 +1,8 @@
+services:
+    CoreShop\Bundle\RuleBundle\Form\Type\TimestampDateType:
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType:
+        tags:
+            - { name: form.type }

@@ -31,10 +31,29 @@ use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessor
 use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopPaymentExtension extends AbstractModelExtension
+final class CoreShopPaymentExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
+    public function prepend(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
+            $container->prependExtensionConfig('pimcore_studio_backend', [
+                'data_object_data_adapter_mapping' => [
+                    'CoreShop\\Bundle\\ResourceBundle\\StudioBackend\\DataAdapter\\CoreShopSelectAdapter' => [
+                        'coreShopPaymentProvider',
+                    ],
+                    'CoreShop\\Bundle\\ResourceBundle\\StudioBackend\\DataAdapter\\CoreShopMultiSelectAdapter' => [
+                        'coreShopPaymentProviderMultiselect',
+                    ],
+                ],
+            ]);
+        }
+    }
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
@@ -51,6 +70,10 @@ final class CoreShopPaymentExtension extends AbstractModelExtension
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
+        }
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
         }
 
         $loader->load('services.yml');

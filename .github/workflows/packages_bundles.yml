@@ -53,7 +53,7 @@ jobs:
   test-packages:
     needs: list
     runs-on: ubuntu-latest
-    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}"
+    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}, Deps ${{ matrix.dependencies }}"
     strategy:
       fail-fast: false
       matrix:

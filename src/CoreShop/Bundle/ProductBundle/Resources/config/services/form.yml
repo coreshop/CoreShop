@@ -4,7 +4,6 @@ parameters:
     coreshop.form.type.product_price_rule.action.price.validation_groups: [coreshop]
     coreshop.form.type.product_price_rule.condition.nested.validation_groups: [coreshop]
     coreshop.form.type.product_specific_price_rule.condition.nested.validation_groups: [coreshop]
-    coreshop.form.type.product_price_rule.condition.timespan.validation_groups: [coreshop]
 
 services:
     _defaults:
@@ -46,8 +45,3 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType:
-        arguments:
-            - '%coreshop.form.type.product_price_rule.condition.timespan.validation_groups%'
-        tags:
-            - { name: form.type }

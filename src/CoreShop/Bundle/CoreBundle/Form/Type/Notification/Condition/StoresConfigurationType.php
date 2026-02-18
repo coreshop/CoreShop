@@ -27,6 +27,7 @@ final class StoresConfigurationType extends AbstractType
     {
         $builder
             ->add('stores', CollectionType::class, [
+                'label' => 'coreshop_condition_stores',
                 'allow_add' => true,
                 'allow_delete' => true,
             ])

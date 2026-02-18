@@ -115,3 +115,84 @@ core_shop_product:
     js:
       custom_action: '/coreshop/js/custom_action.js'
 ```
+
+## Pimcore Studio (React)
+
+### Schema-Driven (Recommended — No Custom JS Needed)
+
+**The service registration above is all you need for Pimcore Studio.** The `form-type` attribute in the service tag automatically makes the configuration form available in Studio. No React/TypeScript code is required.
+
+The StudioFormBundle renders the PHP FormType (`CustomActionType`) as a React form at runtime. The `get-config` endpoint returns a `actionSchemaByType` mapping, and `registerSchemaComponentsFromConfig()` auto-generates the React component from the schema.
+
+For details, see [StudioFormBundle — Rule Engine Integration](../14_Studio/02_Base_Infrastructure/05_StudioFormBundle_Examples.md#example-13--rule-conditionaction-as-schema-form).
+
+### Hand-Written React Component (Only for Special UIs)
+
+If your action needs custom interactive behavior that cannot be expressed as a Symfony FormType (e.g., complex multi-step wizards, drag-and-drop), you can still create a hand-written React component:
+
+```typescript
+// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/product-price-rules/actions/CustomAction.tsx
+
+import React from 'react'
+import { Form, InputNumber } from 'antd'
+import type { ActionComponentProps } from '@coreshop/rule/src/rules'
+
+interface CustomActionData {
+  some_value?: number
+}
+
+export const CustomAction: React.FC<ActionComponentProps> = ({
+  data,
+  onChange
+}) => {
+  const actionData = data as CustomActionData
+  const someValue = actionData.some_value || 0
+
+  const handleChange = (value: number | null) => {
+    onChange({
+      ...actionData,
+      some_value: value || 0
+    })
+  }
+
+  return (
+    <Form layout="vertical">
+      <Form.Item label="Custom Value">
+        <InputNumber
+          value={someValue}
+          onChange={handleChange}
+          precision={2}
+          style={{ width: '100%' }}
+        />
+      </Form.Item>
+    </Form>
+  )
+}
+```
+
+Register the hand-written action in your bundle's main plugin file. Hand-written components take priority over schema-generated ones:
+
+```typescript
+// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
+
+import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
+import type { ActionRegistry } from '@coreshop/rule/src/rules/registry'
+import { coreshopProductServiceIds } from '@coreshop/product/src/modules/product-price-rules/service-ids'
+import { CustomAction } from './modules/product-price-rules/actions/CustomAction'
+
+const plugin: IAbstractPlugin = {
+    name: 'your-bundle',
+
+    onInit() {
+        // Get the ProductPriceRule action registry from the container
+        const actionRegistry = container.get<ActionRegistry>(
+            coreshopProductServiceIds.productPriceRuleActionRegistry
+        )
+
+        // Register the custom action
+        actionRegistry.register('custom', CustomAction)
+    }
+}
+
+export default plugin
+```

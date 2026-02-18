@@ -1,65 +1,65 @@
 {
-  "name": "coreshop/product-quantity-price-rules",
-  "type": "library",
-  "description": "CoreShop Product Quantity Price Rules Component.",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "https://www.coreshop.com",
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "Stefan Hagspiel",
-      "email": "shagspiel@dachcom.com",
-      "homepage": "https://www.dachcom.com/",
-      "role": "Developer"
+    "name": "coreshop/product-quantity-price-rules",
+    "type": "library",
+    "description": "CoreShop Product Quantity Price Rules Component.",
+    "keywords": [
+        "coreshop",
+        "pimcore",
+        "ecommerce"
+    ],
+    "homepage": "https://www.coreshop.com",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Stefan Hagspiel",
+            "email": "shagspiel@dachcom.com",
+            "homepage": "https://www.dachcom.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "CoreShop Team",
+            "email": "info@coreshop.com",
+            "homepage": "https://www.coreshop.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "coreshop/resource": "^5.0",
+        "coreshop/registry": "^5.0",
+        "coreshop/rule": "^5.0",
+        "pimcore/pimcore": "^12.0"
     },
-    {
-      "name": "CoreShop Team",
-      "email": "info@coreshop.com",
-      "homepage": "https://www.coreshop.com/",
-      "role": "Developer"
+    "require-dev": {
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-webmozart-assert": "^2.0"
     },
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Component\\ProductQuantityPriceRules\\": ""
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../*/*"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "5.0-dev",
+            "dev-master": "5.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  ],
-  "require": {
-    "coreshop/resource": "^5.0",
-    "coreshop/registry": "^5.0",
-    "coreshop/rule": "^5.0",
-    "pimcore/pimcore": "^12.3"
-  },
-  "require-dev": {
-    "phpstan/phpstan": "^2.1",
-    "phpstan/phpstan-doctrine": "^2.0",
-    "phpstan/phpstan-webmozart-assert": "^2.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Component\\ProductQuantityPriceRules\\": ""
-    }
-  },
-  "repositories": [
-      {
-          "type": "path",
-          "url": "../../*/*"
-      }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-   "extra": {
-    "branch-alias": {
-      "dev-main": "5.0-dev",
-      "dev-master": "5.0-dev"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }

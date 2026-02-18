@@ -5,7 +5,6 @@ imports:
     - { resource: services/commands.yml }
     - { resource: services/validators.yml }
     - { resource: services/form.yml }
-    - { resource: services/grid.yml }
 
 services:
     _defaults:
@@ -68,8 +67,6 @@ services:
 
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
         parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
-        calls:
-            - [ 'setPimcoreSerializer', [ '@pimcore.serializer' ] ]
         tags:
             - { name: container.service_subscriber }
 

@@ -20,9 +20,13 @@ namespace CoreShop\Bundle\CoreBundle;
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
 use CoreShop\Bundle\ClassDefinitionPatchBundle\CoreShopClassDefinitionPatchBundle;
 use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
+use CoreShop\Bundle\StudioFormBundle\CoreShopStudioFormBundle;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesActionPass;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesConditionPass;
+use CoreShop\Bundle\StudioFormBundle\DependencyInjection\Compiler\RegisterFormTypesFromTagsPass;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
@@ -47,7 +51,6 @@ use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
 use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
-use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -67,6 +70,8 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterIndexProductExtensionPass());
         $container->addCompilerPass(new RegisterReportsPass());
         $container->addCompilerPass(new RegisterPortletsPass());
+        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(ProductQuantityPriceRulesConditionPass::PRODUCT_QUANTITY_PRICE_RULE_CONDITION_TAG));
+        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(ProductQuantityPriceRulesActionPass::PRODUCT_QUANTITY_PRICE_RULE_ACTION_TAG));
     }
 
     public static function registerDependentBundles(BundleCollection $collection): void
@@ -97,11 +102,8 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
+        $collection->addBundle(new CoreShopStudioFormBundle(), 3900);
         $collection->addBundle(new PimcoreCustomReportsBundle(), 20000);
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $collection->addBundle(new PimcoreNewsletterBundle(), 20000);
     }
 
     public function getPackageName(): string

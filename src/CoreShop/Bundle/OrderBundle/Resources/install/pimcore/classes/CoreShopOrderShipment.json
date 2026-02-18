@@ -140,7 +140,7 @@
                                 "columnLength": 190,
                                 "regex": "",
                                 "name": "trackingCode",
-                                "title": "Tracking Code",
+                                "title": "coreshop.order_shipment.tracking_code",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,

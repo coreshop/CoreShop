@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    public: true
+    autowire: true
+    autoconfigure: true
+
+  CoreShop\Bundle\OrderBundle\Studio\WebpackEntryPointProvider:
+    tags:
+      - { name: pimcore_studio_ui.webpack_entry_point_provider }

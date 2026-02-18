@@ -30,6 +30,7 @@ final class ResourceLoader extends Loader
     public function __construct(
         private RegistryInterface $modelRegistry,
         private RouteFactoryInterface $routeFactory,
+        private string $backendRequirement,
         ?string $env = null,
     ) {
         parent::__construct($env);
@@ -90,8 +91,7 @@ final class ResourceLoader extends Loader
         //$rootPath = sprintf('/%s/', isset($configuration['path']) ? $configuration['path'] : Urlizer::urlize($metadata->getPluralName()));
         //$identifier = sprintf('{%s}', $configuration['identifier']);
 
-        $rootPath = '/admin/' . $metadata->getApplicationName();
-        $rootPath .= '/' . $metadata->getPluralName() . '/';
+        $rootPath = sprintf('/{backend}/%s/%s/', $metadata->getApplicationName(), $metadata->getPluralName());
 
         foreach ($routesToGenerate as $route) {
             $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $route['path'], $route['action'], $route['methods'], $route['options'] ?? []);
@@ -110,9 +110,14 @@ final class ResourceLoader extends Loader
     {
         $defaults = [
             '_controller' => $metadata->getServiceId('admin_controller') . sprintf('::%sAction', $actionName),
+            'backend' => 'admin',
         ];
 
-        return $this->routeFactory->createRoute($path, $defaults, [], $options, '', [], $methods);
+        $requirements = [
+            'backend' => $this->backendRequirement,
+        ];
+
+        return $this->routeFactory->createRoute($path, $defaults, $requirements, $options, '', [], $methods);
     }
 
     private function getRouteName(MetadataInterface $metadata, array $configuration, $actionName): string

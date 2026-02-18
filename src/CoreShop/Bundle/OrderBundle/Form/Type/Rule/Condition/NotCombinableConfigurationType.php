@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition;
 
+use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleChoiceType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class NotCombinableConfigurationType extends AbstractType
@@ -34,10 +34,15 @@ final class NotCombinableConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('price_rules', CollectionType::class, [
-                'allow_add' => true,
-                'allow_delete' => true,
+            ->add('price_rules', CartPriceRuleChoiceType::class, [
+                'label' => 'coreshop_cart_pricerules',
+                'multiple' => true,
             ])
         ;
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_cart_price_rule_condition_not_combinable';
     }
 }

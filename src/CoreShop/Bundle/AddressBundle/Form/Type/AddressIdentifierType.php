@@ -27,8 +27,12 @@ final class AddressIdentifierType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('active', CheckboxType::class)
+            ->add('name', TextType::class, [
+                'label' => 'coreshop_name',
+            ])
+            ->add('active', CheckboxType::class, [
+                'label' => 'coreshop_active',
+            ])
         ;
     }
 

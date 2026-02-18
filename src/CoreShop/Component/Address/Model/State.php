@@ -103,7 +103,15 @@ class State extends AbstractResource implements StateInterface, \Stringable
 
     public function getCountryName()
     {
-        return $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : '';
+        if (!$this->getCountry() instanceof CountryInterface) {
+            return '';
+        }
+
+        try {
+            return $this->getCountry()->getName();
+        } catch (\RuntimeException) {
+            return $this->getCountry()->getIsoCode();
+        }
     }
 
     public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): StateTranslationInterface

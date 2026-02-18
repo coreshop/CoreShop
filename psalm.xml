@@ -15,13 +15,27 @@
             <directory name="src/CoreShop/Component/Resource/DataHub" />
             <directory name="src/CoreShop/Bundle/*/DataHub" />
             <directory name="src/CoreShop/Bundle/*/CoreExtension" />
-            <directory name="src/CoreShop/Bundle/*/Pimcore/GridColumnConfig" />
+            <directory name="src/CoreShop/Bundle/*/AdminClass" />
+            <directory name="src/CoreShop/Bundle/*/Studio" />
+            <directory name="src/CoreShop/Bundle/*/StudioBackend" />
+            <directory name="src/CoreShop/Bundle/StudioFormBundle" />
+            <directory name="src/CoreShop/Bundle/*/AdminClass/Pimcore/GridColumnConfig" />
             <directory name="src/CoreShop/Bundle/*/Migrations" />
             <directory name="src/CoreShop/Bundle/*/Fixtures" />
             <directory name="src/CoreShop/Behat" />
 
             <directory name="src/CoreShop/Bundle/FrontendBundle" />
             <directory name="vendor" />
+
+            <file name="src/CoreShop/Bundle/TrackingBundle/EventListener/GtmDataLayerBlockListener.php" />
+            <file name="src/CoreShop/Bundle/TrackingBundle/Resolver/ConfigResolver.php" />
+            <directory name="src/CoreShop/Bundle/TrackingBundle/Tracker/Google" />
+            <file name="src/CoreShop/Bundle/MessengerBundle/EventListener/MercureMessengerSubscriber.php" />
+            <file name="src/CoreShop/Bundle/MessengerBundle/Messenger/FailedMessageRejecter.php" />
+            <file name="src/CoreShop/Bundle/MessengerBundle/Messenger/FailedMessageRetryer.php" />
+            <file name="src/CoreShop/Bundle/TestBundle/Context/Setup/DocumentContext.php" />
+            <file name="src/CoreShop/Bundle/TestBundle/Context/Transform/DocumentContext.php" />
+            <file name="src/CoreShop/Component/Pimcore/DataObject/GridConfigInstaller.php" />
 
             <file name="src/CoreShop/Component/Pimcore/SplPriorityQueue.php" />
             <file name="src/CoreShop/Component/Pimcore/PriorityQueue.php" />
@@ -69,6 +83,8 @@
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver" />
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Controller\AdminController" />
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Security\User\User" />
+                <referencedClass name="Pimcore\Bundle\StaticRoutesBundle\PimcoreStaticRoutesBundle" />
+                <referencedClass name="Pimcore\Bundle\SimpleBackendSearchBundle\PimcoreSimpleBackendSearchBundle" />
             </errorLevel>
         </DeprecatedClass>
         <DeprecatedInterface>
@@ -97,6 +113,7 @@
                 <referencedMethod name="Pimcore\Bundle\AdminBundle\Controller\AdminController::decodeJson" />
                 <referencedMethod name="Pimcore\Bundle\AdminBundle\Controller\AdminController::getAdminUser" />
                 <referencedMethod name="Doctrine\DBAL\Query\QueryBuilder::getQueryPart" />
+                <referencedMethod name="Symfony\Component\HttpFoundation\Request::get" />
             </errorLevel>
         </DeprecatedMethod>
         <UndefinedInterfaceMethod>
@@ -119,6 +136,7 @@
                 <referencedMethod name="Pimcore\File::getValidFilename" />
                 <referencedMethod name="Doctrine\DBAL\Schema\Column::__construct" />
                 <referencedMethod name="Pimcore\File::getLocalTempFilePath" />
+                <referencedMethod name="Pimcore\Bundle\StudioBackendBundle\MappedParameter\Filter\ColumnFiltersParameterInterface::getColumnFilters" />
             </errorLevel>
         </InternalMethod>
 

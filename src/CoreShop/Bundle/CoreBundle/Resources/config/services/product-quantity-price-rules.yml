@@ -37,7 +37,7 @@ services:
     coreshop.product_quantity_price_rules.condition.timespan:
         class: CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker
         tags:
-            - { name: coreshop.product_quantity_price_rules.condition, type: timespan, form-type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+            - { name: coreshop.product_quantity_price_rules.condition, type: timespan, form-type: CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
     CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountDecreaseAction:
         arguments:

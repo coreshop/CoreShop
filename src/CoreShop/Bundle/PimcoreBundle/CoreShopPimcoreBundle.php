@@ -23,6 +23,7 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\LinkGeneratorPass
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActionPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagImplementationLoaderPass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterStudioGridFilterPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterTypeHintRegistriesPass;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
@@ -72,6 +73,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
 
         $container->addCompilerPass(new RegisterGridActionPass());
         $container->addCompilerPass(new RegisterGridFilterPass());
+        $container->addCompilerPass(new RegisterStudioGridFilterPass());
         $container->addCompilerPass(new RegisterPimcoreDocumentTagImplementationLoaderPass());
         $container->addCompilerPass(new RegisterPimcoreDocumentTagPass());
         $container->addCompilerPass(new ExpressionLanguageServicePass());

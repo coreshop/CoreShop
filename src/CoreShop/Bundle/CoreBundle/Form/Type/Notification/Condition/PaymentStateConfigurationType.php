@@ -27,6 +27,7 @@ final class PaymentStateConfigurationType extends AbstractType
     {
         $builder
             ->add('paymentState', TextType::class, [
+                'label' => 'coreshop_select_state',
             ])
         ;
     }

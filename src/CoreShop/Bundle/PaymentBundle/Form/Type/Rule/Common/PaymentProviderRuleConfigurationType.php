@@ -38,6 +38,7 @@ final class PaymentProviderRuleConfigurationType extends AbstractType
     {
         $builder
             ->add('paymentProviderRule', PaymentProviderRuleChoiceType::class, [
+                'label' => 'coreshop_payment_provider_rule',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                 ],

@@ -21,7 +21,6 @@ use CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler\CompositeCustome
 use CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -37,11 +36,6 @@ final class CoreShopCustomerBundle extends AbstractResourceBundle
     public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
-
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $collection->addBundle(new PimcoreNewsletterBundle(), 10);
     }
 
     public function build(ContainerBuilder $container): void

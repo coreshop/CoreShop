@@ -58,7 +58,7 @@
                         ],
                         "pathFormatterClass": "",
                         "name": "product",
-                        "title": "Product",
+                        "title": "coreshop.wishlist_item.product",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,

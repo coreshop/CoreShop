@@ -171,6 +171,8 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     {
         if (!$this->hasPaymentProviderRule($paymentProviderRuleGroup)) {
             $this->paymentProviderRules->add($paymentProviderRuleGroup);
+
+            $paymentProviderRuleGroup->setPaymentProvider($this);
         }
     }
 

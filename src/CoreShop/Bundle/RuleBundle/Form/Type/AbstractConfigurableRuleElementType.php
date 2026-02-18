@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
@@ -38,6 +39,18 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
+
+        // For prototypes: add configuration fields from the configuration_type option
+        // (prototypes have no data, so the PRE_SET_DATA listener below won't fire)
+        if (
+            $options['configuration_type'] !== null
+            && $this->formTypeRegistry->has($options['configuration_type'], 'default')
+        ) {
+            $this->addConfigurationFields(
+                $builder,
+                $this->formTypeRegistry->get($options['configuration_type'], 'default'),
+            );
+        }
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
@@ -86,11 +99,12 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
         ;
     }
 
-    /**
-     * @param string        $configurationType
-     */
-    protected function addConfigurationFields(FormInterface $form, $configurationType): void
+    protected function addConfigurationFields(FormInterface|FormBuilderInterface $form, ?string $configurationType): void
     {
+        if ($configurationType === null || !is_a($configurationType, FormTypeInterface::class, true)) {
+            return;
+        }
+
         $form->add('configuration', $configurationType);
     }
 
