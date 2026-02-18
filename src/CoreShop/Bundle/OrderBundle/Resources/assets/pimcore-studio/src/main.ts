@@ -51,7 +51,7 @@ import {
 } from './modules/sales/tabs'
 import { OrderCreationStepRegistry } from './modules/order-creation/registry'
 import { orderCreationServiceIds } from './modules/order-creation/service-ids'
-import { OrderCreationPanel, OrderCreationLauncher } from './modules/order-creation/components'
+import { OrderCreationPanel } from './modules/order-creation/components'
 import { OrderCreationButton } from './modules/order-creation/components/OrderCreationButton'
 import { orderCreationWidgetRestorer } from './modules/order-creation/OrderCreationWidgetRestorer'
 import { BaseStepConfig, ProductsStepConfig, TotalsStepConfig } from './modules/order-creation/steps'
@@ -285,12 +285,6 @@ const plugin: IAbstractPlugin = {
         widgets.registerWidget({
             name: 'coreshop-quote-detail',
             component: QuoteDetailWidget,
-        })
-
-        // Register Order Creation launcher (opens element selector, then detail tab)
-        widgets.registerWidget({
-            name: 'coreshop-order-creation',
-            component: OrderCreationLauncher
         })
 
         // Register Order Creation detail widget (persistent tab per customer)

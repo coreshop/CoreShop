@@ -215,7 +215,6 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'create_order')
             ->setAttribute('widgetButton', 'coreshopCreateOrder')
-            ->setAttribute('widgetId', 'coreshop-order-creation')
             ->setExtra('order', 20)
         ;
 
@@ -370,7 +369,6 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'customer_to_company_assign_to_new')
             ->setAttribute('widgetButton', 'coreshopAssignCustomerToNewCompany')
-            ->setAttribute('widgetId', 'coreshop-customer-to-company-assign-to-new')
             ->setExtra('order', 30)
         ;
 
@@ -382,7 +380,6 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'customer_to_company_assign_to_existing')
             ->setAttribute('widgetButton', 'coreshopAssignCustomerToExistingCompany')
-            ->setAttribute('widgetId', 'coreshop-customer-to-company-assign-to-existing')
             ->setExtra('order', 40)
         ;
 

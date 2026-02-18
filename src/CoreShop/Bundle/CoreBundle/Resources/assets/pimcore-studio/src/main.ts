@@ -29,8 +29,6 @@ import { PimcoreRelationWidgetModule } from './modules/pimcore-relation-widget'
 import { CustomerAddressSelectWidget } from './modules/extension/order-creation/widgets/CustomerAddressSelectWidget'
 import { AssignToNewCompanyButton } from './components/AssignToNewCompanyButton'
 import { AssignToExistingCompanyButton } from './components/AssignToExistingCompanyButton'
-import { AssignToNewCompanyLauncher } from './modules/customer-company-assignment/AssignToNewCompanyLauncher'
-import { AssignToExistingCompanyLauncher } from './modules/customer-company-assignment/AssignToExistingCompanyLauncher'
 import {
   AssignToNewCompanyPanel,
   AssignToExistingCompanyPanel,
@@ -68,16 +66,6 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
-
-        // Transient launcher widgets (open Element Selector, close themselves)
-        widgets.registerWidget({
-            name: 'coreshop-customer-to-company-assign-to-new',
-            component: AssignToNewCompanyLauncher,
-        })
-        widgets.registerWidget({
-            name: 'coreshop-customer-to-company-assign-to-existing',
-            component: AssignToExistingCompanyLauncher,
-        })
 
         // Persistent detail widgets (one per customer/company selection)
         widgets.registerWidget({
