@@ -1,3 +1,10 @@
+## 4.1.10
+* Fix outdated Menu Bundle docs for ExtJs event handling by @Copilot in https://github.com/coreshop/CoreShop/pull/2966
+* Add multi-select drag & drop support for objectMultihref condition lists by @Copilot in https://github.com/coreshop/CoreShop/pull/2960
+* Add CLI command for setting up states/regions for additional countries by @Copilot in https://github.com/coreshop/CoreShop/pull/2959
+* [MessengerBundle] Add auto-refresh and chart tooltip by @Copilot in https://github.com/coreshop/CoreShop/pull/2965
+* Fix information exposure in OrderInvoiceController and OrderShipmentController by @Copilot in https://github.com/coreshop/CoreShop/pull/2962
+
 ## 4.1.9
 * Fix Injection in CustomerTransformerController by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2945
 
