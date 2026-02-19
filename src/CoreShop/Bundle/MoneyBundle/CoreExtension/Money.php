@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -187,7 +186,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return 'bigint(20)';
     }
 
-    public function getDataForResource(mixed $data, Concrete $object = null, array $params = []): mixed
+    public function getDataForResource(mixed $data, ?Concrete $object = null, array $params = []): mixed
     {
         if (is_numeric($data) && !is_int($data)) {
             $data = (int) $data;
@@ -546,7 +545,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getDataFromResource(mixed $data, Concrete $object = null, array $params = []): mixed
+    public function getDataFromResource(mixed $data, ?Concrete $object = null, array $params = []): mixed
     {
         if (is_numeric($data)) {
             return $this->toNumeric($data);
@@ -559,12 +558,12 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    public function getDataForQueryResource(mixed $data, Concrete $object = null, array $params = []): mixed
+    public function getDataForQueryResource(mixed $data, ?Concrete $object = null, array $params = []): mixed
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    public function getDataForEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
+    public function getDataForEditmode(mixed $data, ?Concrete $object = null, array $params = []): mixed
     {
         if (null === $data) {
             return $this->nullable ? null : 0;
@@ -573,7 +572,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return round($data / $this->getDecimalFactor(), $this->getDecimalPrecision());
     }
 
-    public function getDataFromEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
+    public function getDataFromEditmode(mixed $data, ?Concrete $object = null, array $params = []): mixed
     {
         if (is_numeric($data)) {
             return (int) round((round((float) $data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
@@ -586,7 +585,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
+    public function getVersionPreview(mixed $data, ?Concrete $object = null, array $params = []): string
     {
         return (string) $data;
     }
@@ -630,7 +629,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return false;
     }
 
-    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
+    public function getDiffDataForEditMode(mixed $data, ?Concrete $object = null, array $params = []): ?array
     {
         return [];
     }

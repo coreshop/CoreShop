@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -21,8 +20,8 @@ namespace CoreShop\Bundle\ResourceBundle\EventListener;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\Mapping\AssociationMapping;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Webmozart\Assert\Assert;
 
@@ -37,9 +36,6 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
-        /**
-         * @var ClassMetadataInfo $metadata
-         */
         $metadata = $eventArgs->getClassMetadata();
 
         if (!$metadata->isMappedSuperclass) {
@@ -49,17 +45,20 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         }
     }
 
-    private function setAssociationMappings(ClassMetadataInfo $metadata, Configuration $configuration): void
+    private function setAssociationMappings(ClassMetadata $metadata, Configuration $configuration): void
     {
         $class = $metadata->getName();
         if (!class_exists($class)) {
             return;
         }
 
+        /** @psalm-suppress DeprecatedClass */
         $metadataDriver = $configuration->getMetadataDriverImpl();
         Assert::isInstanceOf($metadataDriver, MappingDriver::class);
 
-        foreach (class_parents($class) as $parent) {
+        $parents = class_parents($class) ?: [];
+
+        foreach ($parents as $parent) {
             if (false === in_array($parent, $metadataDriver->getAllClassNames(), true)) {
                 continue;
             }
@@ -70,33 +69,47 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
             );
 
             // Wakeup Reflection
+            /** @psalm-suppress ArgumentTypeCoercion */
             $parentMetadata->wakeupReflection($this->getReflectionService());
 
             // Load Metadata
             $metadataDriver->loadMetadataForClass($parent, $parentMetadata);
 
+            /** @psalm-suppress InvalidArgument */
             if (false === $this->isResource($parentMetadata)) {
                 continue;
             }
 
             if ($parentMetadata->isMappedSuperclass) {
+                /**
+                 * @var AssociationMapping|array{type: int} $value
+                 */
                 foreach ($parentMetadata->getAssociationMappings() as $key => $value) {
-                    if ($this->isRelation($value['type']) && !isset($metadata->associationMappings[$key])) {
-                        $metadata->associationMappings[$key] = $value;
+                    $type = \is_array($value) ? $value['type'] : $value->type();
+                    if ($this->isRelation($type) && !isset($metadata->associationMappings[$key])) {
+                        /**
+                         * @psalm-suppress InvalidPropertyAssignmentValue
+                         */
+                        $metadata->associationMappings[$key] = $value; /** @phpstan-ignore-line */
                     }
                 }
             }
         }
     }
 
-    private function unsetAssociationMappings(ClassMetadataInfo $metadata): void
+    private function unsetAssociationMappings(ClassMetadata $metadata): void
     {
+        /** @psalm-suppress InvalidArgument */
         if (false === $this->isResource($metadata)) {
             return;
         }
 
+        /**
+         * @var AssociationMapping|array{type: int} $value
+         */
         foreach ($metadata->getAssociationMappings() as $key => $value) {
-            if ($this->isRelation($value['type'])) {
+            $type = \is_array($value) ? $value['type'] : $value->type();
+            if ($this->isRelation($type)) {
                 unset($metadata->associationMappings[$key]);
             }
         }
@@ -107,9 +120,9 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         return in_array(
             $type,
             [
-                ClassMetadataInfo::MANY_TO_MANY,
-                ClassMetadataInfo::ONE_TO_MANY,
-                ClassMetadataInfo::ONE_TO_ONE,
+                ClassMetadata::MANY_TO_MANY,
+                ClassMetadata::ONE_TO_MANY,
+                ClassMetadata::ONE_TO_ONE,
             ],
             true,
         );

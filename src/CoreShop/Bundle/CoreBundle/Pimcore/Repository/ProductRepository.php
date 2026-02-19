@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -28,11 +27,12 @@ use Doctrine\DBAL\ArrayParameterType;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
+use Pimcore\Model\DataObject\Listing\Concrete\Dao;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
-    public const VARIANT_RECURSIVE_QUERY_CACHE_TAG = 'coreshop_variant_recursive';
+    public const string VARIANT_RECURSIVE_QUERY_CACHE_TAG = 'coreshop_variant_recursive';
 
     public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
@@ -65,6 +65,10 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         if (false === $variantIds = Cache::load($cacheKey)) {
             $list = $this->getList();
+
+            /**
+             * @var Dao $dao
+             */
             $dao = $list->getDao();
 
             /** @psalm-suppress InternalMethod */
@@ -107,6 +111,10 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         $list = $this->getList();
+
+        /**
+         * @var Dao $dao
+         */
         $dao = $list->getDao();
 
         /** @psalm-suppress InternalMethod */

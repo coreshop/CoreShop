@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -39,15 +38,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    public const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
+    public const string DRIVER_DOCTRINE_ORM = 'doctrine/orm';
 
-    public const DRIVER_PIMCORE = 'pimcore';
+    public const string DRIVER_PIMCORE = 'pimcore';
 
-    public const PIMCORE_MODEL_TYPE_OBJECT = 'object';
+    public const string PIMCORE_MODEL_TYPE_OBJECT = 'object';
 
-    public const PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
+    public const string PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
 
-    public const PIMCORE_MODEL_TYPE_BRICK = 'brick';
+    public const string PIMCORE_MODEL_TYPE_BRICK = 'brick';
 
     public function build(ContainerBuilder $container): void
     {
@@ -70,9 +69,20 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $collection->addBundle(new \CoreShop\Bundle\OptimisticEntityLockBundle\CoreShopOptimisticEntityLockBundle(), 3800);
         $collection->addBundle(new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(), 3850);
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $collection->addBundle(new PimcoreAdminBundle(), 10);
         $collection->addBundle(new PimcoreApplicationLoggerBundle(), 10);
+
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $collection->addBundle(new PimcoreStaticRoutesBundle(), 10);
+
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $collection->addBundle(new PimcoreSimpleBackendSearchBundle(), 10);
     }
 

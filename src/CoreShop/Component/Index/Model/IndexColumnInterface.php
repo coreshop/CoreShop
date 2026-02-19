@@ -5,75 +5,31 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
 namespace CoreShop\Component\Index\Model;
 
-use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 
 interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
 {
-    /**
-     * Field Type Integer for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_INTEGER = MysqlWorkerInterface::FIELD_TYPE_INTEGER;
-
-    /**
-     * Field Type Double for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_DOUBLE = MysqlWorkerInterface::FIELD_TYPE_DOUBLE;
-
-    /**
-     * Field Type String for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_STRING = MysqlWorkerInterface::FIELD_TYPE_STRING;
-
-    /**
-     * Field Type Text for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_TEXT = MysqlWorkerInterface::FIELD_TYPE_TEXT;
-
-    /**
-     * Field Type Boolean for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_BOOLEAN = MysqlWorkerInterface::FIELD_TYPE_BOOLEAN;
-
-    /**
-     * Field Type Date for Index.
-     *
-     * @deprecated will be removed with 5.0: Field Types move to the Worker
-     */
-    public const FIELD_TYPE_DATE = MysqlWorkerInterface::FIELD_TYPE_DATE;
-
     public function getId(): ?int;
 
     /**
-     * @return IndexInterface
+     * @return IndexInterface|null
      */
     public function getIndex();
 
-    public function setIndex(IndexInterface $index = null);
+    public function setIndex(?IndexInterface $index);
 
     /**
      * @return string

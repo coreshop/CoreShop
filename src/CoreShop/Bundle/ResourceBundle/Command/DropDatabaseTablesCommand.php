@@ -5,35 +5,32 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class DropDatabaseTablesCommand extends Command
+final class DropDatabaseTablesCommand extends AbstractDatabaseTablesCommand
 {
     public function __construct(
         private array $coreShopResources,
         private EntityManagerInterface $entityManager,
     ) {
-        parent::__construct();
+        parent::__construct($this->entityManager);
     }
 
     protected function configure(): void
@@ -82,8 +79,7 @@ EOT
             }
         }
 
-        $schemaTool = new SchemaTool($em);
-        $sqls = $schemaTool->getDropSchemaSQL($metadatas);
+        $sqls = $this->createDiffSchemaSqls($metadatas, true);
 
         $dumpSql = true === $input->getOption('dump-sql');
         $force = true === $input->getOption('force');
@@ -104,7 +100,9 @@ EOT
             $ui->text('Drop database schema...');
             $ui->newLine();
 
-            $schemaTool->dropSchema($metadatas);
+            foreach ($sqls as $sql) {
+                $em->getConnection()->executeStatement($sql);
+            }
 
             $pluralization = (1 === count($sqls)) ? 'query was' : 'queries were';
 

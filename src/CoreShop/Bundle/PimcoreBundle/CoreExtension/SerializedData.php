@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -59,27 +58,27 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
         return false;
     }
 
-    public function getDiffDataForEditMode(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): ?array
+    public function getDiffDataForEditMode(mixed $data, ?Model\DataObject\Concrete $object = null, array $params = []): ?array
     {
         return [];
     }
 
-    public function getDataForResource(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
+    public function getDataForResource(mixed $data, ?Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
         return serialize($data);
     }
 
-    public function getDataFromResource(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
+    public function getDataFromResource(mixed $data, ?Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
         return (is_string($data) ? unserialize($data) : $data) ?: null;
     }
 
-    public function getDataForEditmode(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
+    public function getDataForEditmode(mixed $data, ?Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
         return $data;
     }
 
-    public function getDataFromEditmode(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
+    public function getDataFromEditmode(mixed $data, ?Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
         return $this->getDataFromResource($data, $object, $params);
     }
@@ -108,12 +107,12 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
         return null === $data;
     }
 
-    public function getDataForGrid(mixed $data, Model\DataObject\Concrete $object = null, array $params = [])
+    public function getDataForGrid(mixed $data, ?Model\DataObject\Concrete $object = null, array $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    public function getVersionPreview(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): string
+    public function getVersionPreview(mixed $data, ?Model\DataObject\Concrete $object = null, array $params = []): string
     {
         $data = $this->getDataFromResource($data, $object, $params);
 

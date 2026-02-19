@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -20,9 +19,9 @@ namespace CoreShop\Component\Registry;
 
 class PriorityMap implements \Iterator, \Countable
 {
-    public const ORDER_ASC = 'asc';
+    public const string ORDER_ASC = 'asc';
 
-    public const ORDER_DESC = 'desc';
+    public const string ORDER_DESC = 'desc';
 
     private int $lastSequence = 0;
 
@@ -198,6 +197,9 @@ class PriorityMap implements \Iterator, \Countable
     {
         $item = current($this->list);
 
+        /**
+         * @psalm-suppress InvalidPropertyFetch
+         */
         return $item->value;
     }
 

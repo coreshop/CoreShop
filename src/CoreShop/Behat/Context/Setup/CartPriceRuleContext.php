@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -161,7 +160,7 @@ final class CartPriceRuleContext implements Context
      * @Given /^the (cart rule) is a voucher rule$/
      * @Given /^the (cart rule) is a voucher rule with code "([^"]+)"$/
      */
-    public function theCartPriceRuleIsVoucherRule(CartPriceRuleInterface $rule, $code = null): void
+    public function theCartPriceRuleIsVoucherRule(CartPriceRuleInterface $rule, ?string $code = null): void
     {
         $rule->setIsVoucherRule(true);
 
@@ -356,7 +355,7 @@ final class CartPriceRuleContext implements Context
      * @Given /^the (cart rule) has a condition products with (product "[^"]+")$/
      * @Given /^the (cart rule) has a condition products with (product "[^"]+") and (product "[^"]+")$/
      */
-    public function theCartPriceRuleHasAProductCondition(CartPriceRuleInterface $rule, ProductInterface $product, ProductInterface $product2 = null): void
+    public function theCartPriceRuleHasAProductCondition(CartPriceRuleInterface $rule, ProductInterface $product, ?ProductInterface $product2 = null): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
@@ -379,7 +378,7 @@ final class CartPriceRuleContext implements Context
      * @Given /^the (cart rule) has a condition products with (product "[^"]+") which includes variants$/
      * @Given /^the (cart rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/
      */
-    public function theCartPriceRuleHasAProductWithVariantsCondition(CartPriceRuleInterface $rule, ProductInterface $product, ProductInterface $product2 = null): void
+    public function theCartPriceRuleHasAProductWithVariantsCondition(CartPriceRuleInterface $rule, ProductInterface $product, ?ProductInterface $product2 = null): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
@@ -403,7 +402,7 @@ final class CartPriceRuleContext implements Context
      * @Given /^the (cart rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
      * @Given /^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
      */
-    public function theCartPriceRuleHasANotCombinableCondition(CartPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, CartPriceRuleInterface $notCombinable2 = null): void
+    public function theCartPriceRuleHasANotCombinableCondition(CartPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, ?CartPriceRuleInterface $notCombinable2 = null): void
     {
         $this->assertConditionForm(NotCombinableConfigurationType::class, 'not_combinable');
 
@@ -514,7 +513,7 @@ final class CartPriceRuleContext implements Context
      * @Given /^the voucher code "([^"]+)" is a credit voucher with credit "([^"]+)" in (currency "[^"]+")$/
      * @Given /^the voucher code "([^"]+)" is a credit voucher with credit "([^"]+)" in (currency "[^"]+") and credit used "([^"]+)"$/
      */
-    public function theVoucherCodeIsACreditCodeWithCreditInCurrency($voucherCode, int $credit, CurrencyInterface $currency, int $used = null): void
+    public function theVoucherCodeIsACreditCodeWithCreditInCurrency($voucherCode, int $credit, CurrencyInterface $currency, ?int $used = null): void
     {
         $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
 
@@ -569,7 +568,7 @@ final class CartPriceRuleContext implements Context
      * @Given /^the (cart item action) has a condition products with (product "[^"]+")$/
      * @Given /^the (cart item action) has a condition products with (product "[^"]+") and (product "[^"]+")$/
      */
-    public function theCartItemActionHasAProductCondition(ActionInterface $action, ProductInterface $product, ProductInterface $product2 = null): void
+    public function theCartItemActionHasAProductCondition(ActionInterface $action, ProductInterface $product, ?ProductInterface $product2 = null): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 

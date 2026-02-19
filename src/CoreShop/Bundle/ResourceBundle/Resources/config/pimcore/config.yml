@@ -39,6 +39,10 @@ doctrine:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreSite
             bigintInteger:
                 class: CoreShop\Component\Resource\Doctrine\Type\BigIntIntegerType
+            object:
+                class: CoreShop\Component\Resource\Doctrine\Type\DeprecatedObjectType
+            cs_object:
+                class: CoreShop\Component\Resource\Doctrine\Type\DeprecatedObjectType
         mapping_types:
             enum: string
     orm:
