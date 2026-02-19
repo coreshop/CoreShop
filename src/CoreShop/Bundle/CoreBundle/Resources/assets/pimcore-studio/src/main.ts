@@ -34,11 +34,14 @@ import {
   AssignToExistingCompanyPanel,
   customerCompanyAssignmentWidgetRestorer,
 } from './modules/customer-company-assignment'
+import { registerCoreStudioFormDemoTabs } from './modules/studio-form-demos/registerDemoTabs'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
 
     onInit() {
+        registerCoreStudioFormDemoTabs()
+
         // Register DynamicTypes
         const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
             serviceIds['DynamicTypes/ObjectDataRegistry']

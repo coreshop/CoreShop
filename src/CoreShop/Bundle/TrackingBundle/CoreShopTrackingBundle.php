@@ -23,16 +23,15 @@ use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 final class CoreShopTrackingBundle extends Bundle implements DependentBundleInterface
 {
     public static function registerDependentBundles(BundleCollection $collection): void
     {
-        if (class_exists(\Pimcore\Bundle\GoogleMarketingBundle\PimcoreGoogleMarketingBundle::class)) {
-            /**
-             * @psalm-suppress DeprecatedClass
-             */
-            $collection->addBundle(new \Pimcore\Bundle\GoogleMarketingBundle\PimcoreGoogleMarketingBundle(), 1000);
+        $googleMarketingBundleClass = self::getGoogleMarketingBundleClass();
+        if (null !== $googleMarketingBundleClass) {
+            $collection->addBundle(new $googleMarketingBundleClass(), 1000);
         }
     }
 
@@ -40,5 +39,19 @@ final class CoreShopTrackingBundle extends Bundle implements DependentBundleInte
     {
         $container->addCompilerPass(new TrackerPass());
         $container->addCompilerPass(new TrackingExtractorPass());
+    }
+
+    /**
+     * @return class-string<BundleInterface>|null
+     */
+    private static function getGoogleMarketingBundleClass(): ?string
+    {
+        $googleMarketingBundleClass = sprintf('Pimcore\\Bundle\\%s\\PimcoreGoogleMarketingBundle', 'GoogleMarketingBundle');
+
+        if (!class_exists($googleMarketingBundleClass) || !is_subclass_of($googleMarketingBundleClass, BundleInterface::class)) {
+            return null;
+        }
+
+        return $googleMarketingBundleClass;
     }
 }
