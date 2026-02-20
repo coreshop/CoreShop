@@ -39,14 +39,12 @@ final class CartItemActionConfigurationType extends AbstractType
             ->add('conditions', CartItemPriceRuleConditionCollectionType::class, [
                 'constraints' => new Valid(groups: $this->conditionsValidationGroups),
                 'nested' => true,
-                'entry_options' => ['data_class' => null],
             ])
         ;
         $builder
             ->add('actions', CartItemPriceRuleActionCollectionType::class, [
                 'constraints' => new Valid(groups: $this->actionsValidationGroups),
                 'nested' => true,
-                'entry_options' => ['data_class' => null],
             ])
         ;
 

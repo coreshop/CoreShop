@@ -40,7 +40,6 @@ final class FilterUserConditionNestedType extends AbstractType
             ->add('conditions', FilterUserConditionCollectionType::class, [
                 'constraints' => [new Valid(groups: $this->validationGroups)],
                 'nested' => true,
-                'entry_options' => ['data_class' => null],
             ])
         ;
 
