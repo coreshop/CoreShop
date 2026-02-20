@@ -134,7 +134,7 @@ const OrderListInner: React.FC = () => {
           const customerName = [details.firstname, details.lastname].filter(Boolean).join(' ') || `Customer #${customerId}`
           const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)
 
-          widgetManager.openMainWidget({
+          ;(widgetManager as any).openMainWidget({
             name: `New Order - ${customerName}`,
             id: `coreshop-order-creation-${customerId}`,
             component: 'coreshop-order-creation-detail',

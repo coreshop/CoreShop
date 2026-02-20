@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class CurrenciesConfigurationType extends AbstractType
@@ -26,9 +26,11 @@ final class CurrenciesConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('currencies', CurrencyChoiceType::class, [
+            ->add('currencies', CollectionType::class, [
                 'label' => 'coreshop_condition_currencies',
-                'multiple' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'block_prefix' => 'coreshop_currency_choice',
             ])
         ;
     }

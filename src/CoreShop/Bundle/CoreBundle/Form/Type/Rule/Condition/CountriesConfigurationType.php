@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class CountriesConfigurationType extends AbstractType
@@ -26,9 +26,11 @@ final class CountriesConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('countries', CountryChoiceType::class, [
+            ->add('countries', CollectionType::class, [
                 'label' => 'coreshop_condition_countries',
-                'multiple' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'block_prefix' => 'coreshop_country_choice',
             ])
         ;
     }

@@ -19,7 +19,7 @@ namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Bundle\ResourceBundle\Form\DataTransformer\CollectionToArrayTransformer;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

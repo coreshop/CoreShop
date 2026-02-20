@@ -12,7 +12,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'

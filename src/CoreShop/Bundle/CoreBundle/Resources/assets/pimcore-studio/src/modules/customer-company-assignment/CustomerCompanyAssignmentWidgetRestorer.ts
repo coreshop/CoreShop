@@ -25,7 +25,7 @@ const SUPPORTED_COMPONENTS = [
 export class CustomerCompanyAssignmentWidgetRestorer implements WidgetRestorer {
   supports(config: WidgetManagerTabConfig): boolean {
     return (
-      SUPPORTED_COMPONENTS.includes(config.component) &&
+      config.component !== undefined && SUPPORTED_COMPONENTS.includes(config.component) &&
       typeof config.config?.customerId === 'number'
     )
   }
