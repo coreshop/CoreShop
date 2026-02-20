@@ -20,6 +20,8 @@ namespace CoreShop\Component\Rule\Model;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Doctrine\Common\Collections\Collection;
+use CoreShop\Component\Rule\Model\ActionInterface;
+use CoreShop\Component\Rule\Model\ConditionInterface;
 
 /**
  * @psalm-suppress MissingConstructor
@@ -90,7 +92,9 @@ class Action implements ActionInterface
     private function normalizeConfiguration(array $configuration): array
     {
         foreach ($configuration as $key => $value) {
-            if ($value instanceof Collection) {
+            if ($value instanceof ConditionInterface || $value instanceof ActionInterface) {
+                continue;
+            } elseif ($value instanceof Collection) {
                 $configuration[$key] = $this->normalizeConfiguration($value->toArray());
             } elseif ($value instanceof ResourceInterface) {
                 $configuration[$key] = $value->getId();
