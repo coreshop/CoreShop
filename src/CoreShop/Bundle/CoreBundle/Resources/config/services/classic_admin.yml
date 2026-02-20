@@ -19,9 +19,3 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    CoreShop\Bundle\CoreBundle\AdminClass\EventListener\CustomerOrderDeletionListener:
-        arguments:
-            - '@coreshop.repository.order'
-        tags:
-            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
-            - { name: kernel.event_listener, event: pimcore.dataobject.deleteInfo, method: checkCustomerDeletionAllowed }
