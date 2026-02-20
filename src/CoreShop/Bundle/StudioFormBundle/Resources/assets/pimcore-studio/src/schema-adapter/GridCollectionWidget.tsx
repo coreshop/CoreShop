@@ -126,7 +126,7 @@ export const GridCollectionWidget: React.FC<GridCollectionWidgetProps> = ({
           return <Component {...props} />
         },
       }
-    }).filter(Boolean)
+    }).filter((col): col is NonNullable<typeof col> => col != null)
 
     // Add actions column only when deletion is allowed
     if (allowDelete) {

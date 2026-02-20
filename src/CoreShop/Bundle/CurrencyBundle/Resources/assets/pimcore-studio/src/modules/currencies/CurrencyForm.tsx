@@ -16,7 +16,7 @@ import React from 'react'
 import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { CurrencyDetail } from './api'
 
-export const CurrencyForm: React.FC<SchemaFormProps<CurrencyDetail>> = (props) => {
+export const CurrencyForm: React.FC<Omit<SchemaFormProps<CurrencyDetail>, 'blockPrefix'>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<CurrencyDetail>

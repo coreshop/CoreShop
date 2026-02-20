@@ -16,7 +16,7 @@ import React from 'react'
 import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { CountryDetail } from './api'
 
-export const CountryForm: React.FC<SchemaFormProps<CountryDetail>> = (props) => {
+export const CountryForm: React.FC<Omit<SchemaFormProps<CountryDetail>, 'blockPrefix'>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<CountryDetail>

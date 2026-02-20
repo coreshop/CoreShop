@@ -16,7 +16,7 @@ import React from 'react'
 import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { ZoneDetail } from './api'
 
-export const ZoneForm: React.FC<SchemaFormProps<ZoneDetail>> = (props) => {
+export const ZoneForm: React.FC<Omit<SchemaFormProps<ZoneDetail>, 'blockPrefix'>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<ZoneDetail>

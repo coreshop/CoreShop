@@ -32,7 +32,6 @@ final class ProductQuantityPriceRuleNestedConfigurationType extends AbstractNest
         $builder
             ->add('conditions', ProductQuantityPriceRuleConditionCollectionType::class, [
                 'nested' => true,
-                'entry_options' => ['data_class' => null],
             ])
         ;
 

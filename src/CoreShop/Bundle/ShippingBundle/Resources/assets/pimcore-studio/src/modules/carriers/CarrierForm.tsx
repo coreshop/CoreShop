@@ -14,7 +14,7 @@ import React from 'react'
 import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { CarrierDetail } from './api'
 
-export const CarrierForm: React.FC<SchemaFormProps<CarrierDetail>> = (props) => {
+export const CarrierForm: React.FC<Omit<SchemaFormProps<CarrierDetail>, 'blockPrefix'>> = (props) => {
   return (
     <div style={{ padding: 24 }}>
       <SchemaForm<CarrierDetail>

@@ -14,7 +14,7 @@ import React from 'react'
 import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { PaymentProvider } from './api'
 
-export const PaymentProviderForm: React.FC<SchemaFormProps<PaymentProvider>> = (props) => {
+export const PaymentProviderForm: React.FC<Omit<SchemaFormProps<PaymentProvider>, 'blockPrefix'>> = (props) => {
   return (
     <div style={{ padding: 24 }}>
       <SchemaForm<PaymentProvider>

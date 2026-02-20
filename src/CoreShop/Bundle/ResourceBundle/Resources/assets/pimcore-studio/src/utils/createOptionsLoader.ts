@@ -1,4 +1,5 @@
-export type SelectOption = { value: number; label: string }
+import type { SelectOption } from '../entities/hooks/useEntitySelect'
+export type { SelectOption }
 
 export function createOptionsLoader(
   fetchFn: () => Promise<SelectOption[]>

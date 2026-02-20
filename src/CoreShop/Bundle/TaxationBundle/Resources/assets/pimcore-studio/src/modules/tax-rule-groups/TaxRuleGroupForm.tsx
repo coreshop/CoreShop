@@ -14,7 +14,7 @@ import React from 'react'
 import { SchemaForm, type SchemaFormProps } from '@coreshop/studio-form/src/schema-adapter'
 import type { TaxRuleGroupDetail } from './api'
 
-export const TaxRuleGroupForm: React.FC<SchemaFormProps<TaxRuleGroupDetail>> = (props) => {
+export const TaxRuleGroupForm: React.FC<Omit<SchemaFormProps<TaxRuleGroupDetail>, 'blockPrefix'>> = (props) => {
   return (
     <div style={{ padding: 12 }}>
       <SchemaForm<TaxRuleGroupDetail>
