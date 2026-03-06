@@ -149,7 +149,7 @@
     "phpstan/phpstan-webmozart-assert": "^2.0",
     "phpunit/phpunit": "^10.0",
     "pimcore/opensearch-client": "^2.1",
-    "pimcore/generic-data-index-bundle": "2.x-dev",
+    "pimcore/generic-data-index-bundle": "^2.3",
     "pimcore/google-marketing-bundle": "^2.0",
     "pimcore/studio-backend-bundle": "^0.12.18",
     "pimcore/studio-ui-bundle": "^0.12.18",
