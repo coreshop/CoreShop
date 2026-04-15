@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use Carbon\Carbon;
 use CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
 use CoreShop\Bundle\UserBundle\Event\RequestPasswordChangeEvent;
@@ -95,7 +96,7 @@ class RegisterController extends FrontendController
                     $user->setPasswordResetHash($tokenHash);
 
                     // Set token creation time for TTL enforcement (CWE-613)
-                    $user->setPasswordResetHashCreatedAt(new \DateTimeImmutable());
+                    $user->setPasswordResetHashCreatedAt(Carbon::now());
                     $user->save();
 
                     // Use the raw token in the reset link (not the hash)
