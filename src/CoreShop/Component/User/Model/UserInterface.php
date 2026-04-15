@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\User\Model;
 
+use Carbon\Carbon;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -42,4 +43,8 @@ interface UserInterface extends ResourceInterface, PimcoreModelInterface, Symfon
     public function getPasswordResetHash(): ?string;
 
     public function setPasswordResetHash(?string $passwordResetHash);
+
+    public function getPasswordResetHashCreatedAt(): ?Carbon;
+
+    public function setPasswordResetHashCreatedAt(?Carbon $passwordResetHashCreatedAt);
 }
