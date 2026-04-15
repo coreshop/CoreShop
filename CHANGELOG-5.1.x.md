@@ -2,8 +2,10 @@
 
 ### Pimcore Studio v2
 
-CoreShop 5.1 introduces support for Pimcore Studio v2 (the React-based admin UI) alongside the existing
-ExtJS-based Classic Admin. Both UIs work in parallel — no migration required for existing installations.
+CoreShop 5.1 introduces support for Pimcore Studio v2 (the React-based admin UI). Both Studio v2 and
+the ExtJS-based Classic Admin are now supported as **optional, independent installations** — install
+either, or both side-by-side. Existing Classic-Admin-only installations continue to work without
+changes.
 
 ### Classic-Admin internals moved to `AdminClass/` subnamespace
 
