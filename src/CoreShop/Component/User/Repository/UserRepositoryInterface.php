@@ -23,7 +23,20 @@ use CoreShop\Component\User\Model\UserInterface;
 
 interface UserRepositoryInterface extends PimcoreRepositoryInterface
 {
+    /**
+     * @deprecated Use findByResetTokenSecure() instead for proper token validation with hashing
+     */
     public function findByResetToken(string $resetToken): ?UserInterface;
+
+    /**
+     * Find a user by validating the reset token against the stored hash.
+     *
+     * @param string $resetToken The raw token provided by the user
+     * @param int $ttlSeconds The maximum age of the token in seconds (default: 3600 = 1 hour)
+     *
+     * @return UserInterface|null The user if token is valid and not expired, null otherwise
+     */
+    public function findByResetTokenSecure(string $resetToken, int $ttlSeconds = 3600): ?UserInterface;
 
     public function findByLoginIdentifier(string $value): ?UserInterface;
 }
