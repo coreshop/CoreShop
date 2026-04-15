@@ -46,7 +46,7 @@ class StorageListFactory implements StorageListFactoryInterface
 
         if ($storageList instanceof TokenAwareStorageListInterface) {
             $tokenGenerator = new UniqueTokenGenerator();
-            $storageList->setToken($tokenGenerator->generate(10));
+            $storageList->setToken($tokenGenerator->generate(32));
         }
 
         return $storageList;

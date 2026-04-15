@@ -211,7 +211,7 @@ class CheckoutController extends FrontendController
         //@Todo: remove with CoreShop 5.0
         if (!$order->getToken()) {
             $tokenGenerator = new UniqueTokenGenerator();
-            $order->setToken($tokenGenerator->generate(10));
+            $order->setToken($tokenGenerator->generate(32));
             $order->save();
         }
 
