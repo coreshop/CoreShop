@@ -48,6 +48,9 @@ jobs:
         php: [ 8.3, 8.4 ]
         pimcore: [ ^12.3 ]
         dependencies: [ highest, lowest ]
+        exclude:
+          - php: 8.4
+            dependencies: lowest
     services:
       database:
         image: "mysql:8"
