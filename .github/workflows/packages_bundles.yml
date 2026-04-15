@@ -61,6 +61,9 @@ jobs:
         pimcore: [ ^12.3 ]
         dependencies: [ highest, lowest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
+        exclude:
+          - php: 8.4
+            dependencies: lowest
 
     steps:
       - name: Checkout PR head (only for pull_request_target)
