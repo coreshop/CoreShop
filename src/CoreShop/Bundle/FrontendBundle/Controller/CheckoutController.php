@@ -203,7 +203,6 @@ class CheckoutController extends FrontendController
          * If everything is valid, we continue with Order-Creation.
          */
         $order = $this->getCart();
-´
         $workflow = $this->container->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
 
         if ($order->getSaleState() !== OrderSaleStates::STATE_ORDER) {
