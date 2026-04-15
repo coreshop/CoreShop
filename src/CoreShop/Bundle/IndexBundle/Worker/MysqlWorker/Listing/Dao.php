@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -56,7 +55,7 @@ class Dao
             $queryBuilder->distinct();
         } else {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                if (null !== $queryBuilder->getQueryPart('orderBy')) {
+                if (null !== $this->queryBuilderOrderBy($queryBuilder)) {
                     $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
                     $queryBuilder->addGroupBy('q.o_virtualObjectId');
                 } else {
@@ -136,7 +135,7 @@ class Dao
             $subQueryBuilder = new QueryBuilder($this->database);
             $subQueryBuilder->select($this->quoteIdentifier('o_id'));
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
-            $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
+            $subQueryBuilder->where($this->queryBuilderGetWhere($queryBuilder));
 
             if ($this->model->getVariantMode() === ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(DISTINCT src_virtualObjectId) AS ' . $this->quoteIdentifier('count'));
@@ -170,7 +169,7 @@ class Dao
         $subQueryBuilder = new QueryBuilder($this->database);
         $subQueryBuilder->select('o_id');
         $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
-        $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
+        $subQueryBuilder->where($this->queryBuilderGetWhere($queryBuilder));
         $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
         $queryBuilder->groupBy('dest');
 
@@ -315,5 +314,23 @@ class Dao
     public function getLastRecordCount(): int
     {
         return $this->lastRecordCount;
+    }
+
+    private function queryBuilderGetWhere(QueryBuilder $queryBuilder)
+    {
+        $reflection = new \ReflectionClass($queryBuilder);
+        $property = $reflection->getProperty('where');
+        $property->setAccessible(true);
+
+        return $property->getValue($queryBuilder);
+    }
+
+    private function queryBuilderOrderBy(QueryBuilder $queryBuilder)
+    {
+        $reflection = new \ReflectionClass($queryBuilder);
+        $property = $reflection->getProperty('orderBy');
+        $property->setAccessible(true);
+
+        return $property->getValue($queryBuilder);
     }
 }

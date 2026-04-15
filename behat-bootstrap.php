@@ -25,10 +25,5 @@ error_reporting(E_ALL);
 
 require_once __DIR__ .'/src/BehatKernel.php';
 
-if (file_exists(PIMCORE_PROJECT_ROOT.'/pimcore/config/bootstrap.php')) {
-    require_once PIMCORE_PROJECT_ROOT.'/pimcore/config/bootstrap.php';
-}
-else {
-    \Pimcore\Bootstrap::setProjectRoot();
-    \Pimcore\Bootstrap::bootstrap();
-}
+\Pimcore\Bootstrap::setProjectRoot();
+\Pimcore\Bootstrap::bootstrap();

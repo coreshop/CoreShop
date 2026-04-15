@@ -11,7 +11,7 @@
         <field name="class" column="class"/>
         <field name="name" column="name"/>
         <field name="worker" column="worker" nullable="true"/>
-        <field name="configuration" column="configuration" type="array"/>
+        <field name="configuration" column="configuration" type="json"/>
         <field name="indexLastVersion" column="indexLastVersion" type="boolean">
             <options>
                 <option name="default">0</option>

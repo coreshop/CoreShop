@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -159,7 +158,7 @@ final class CartContext implements Context
      */
     public function iShouldBeNotifiedThatItHasBeenSuccessfullyAdded(): void
     {
-        $this->notificationChecker->checkNotification('ITEM ADDED', NotificationType::success());
+        $this->notificationChecker->checkNotification('Item added', NotificationType::success());
     }
 
     /**
@@ -167,7 +166,7 @@ final class CartContext implements Context
      */
     public function iShouldBeNotifiedThatTheVoucherHasBeenApplied(): void
     {
-        $this->notificationChecker->checkNotification('VOUCHER HAS BEEN SUCCESSFULLY APPLIED', NotificationType::success());
+        $this->notificationChecker->checkNotification('Voucher has been successfully applied', NotificationType::success());
     }
 
     /**
@@ -175,7 +174,7 @@ final class CartContext implements Context
      */
     public function iShouldBeNotifiedThatTheVoucherIsInvalid(): void
     {
-        $this->notificationChecker->checkNotification('THIS VOUCHER IS INVALID', NotificationType::error());
+        $this->notificationChecker->checkNotification('This voucher is invalid', NotificationType::error());
     }
 
     /**
@@ -184,7 +183,7 @@ final class CartContext implements Context
     public function iShouldBeNotifiedThatItNeedToOrderAtLeastOf(string $quantity, string $productName): void
     {
         $this->notificationChecker->checkNotification(
-            sprintf('YOU NEED TO ORDER AT LEAST %s UNITS OF %s.', $quantity, $productName),
+            sprintf('You need to order at least %s units of %s.', $quantity, $productName),
             NotificationType::error(),
         );
     }
@@ -195,7 +194,7 @@ final class CartContext implements Context
     public function iShouldBeNotifiedThatICanOnlyOrderAMaximumQuantityOf(string $quantity, string $productName): void
     {
         $this->notificationChecker->checkNotification(
-            sprintf('YOU CAN ORDER A MAXIMUM OF %s UNITS OF %s.', $quantity, $productName),
+            sprintf('You can order a maximum of %s units of %s.', $quantity, $productName),
             NotificationType::error(),
         );
     }
@@ -206,7 +205,7 @@ final class CartContext implements Context
     public function iShouldBeNotifiedThatDoesNotHaveSufficientStock(string $productName): void
     {
         $this->notificationChecker->checkNotification(
-            sprintf('%s DOES NOT HAVE SUFFICIENT STOCK.', $productName),
+            sprintf('%s does not have sufficient stock.', $productName),
             NotificationType::error(),
         );
     }

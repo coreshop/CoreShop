@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -194,7 +193,7 @@ class OrderShipmentController extends PimcoreController
 
     protected function getOrderDocumentRenderer(): OrderDocumentRendererInterface
     {
-        return $this->container->get('coreshop.renderer.order.pdf');
+        return $this->container->get(OrderDocumentRendererInterface::class);
     }
 
     protected function getOrderShipmentRepository(): OrderShipmentRepositoryInterface
@@ -232,7 +231,7 @@ class OrderShipmentController extends PimcoreController
         return array_merge(parent::getSubscribedServices(), [
                 new SubscribedService('coreshop.state_machine_manager', StateMachineManagerInterface::class),
                 new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
-                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire(service: 'coreshop.renderer.order.pdf')),
+                new SubscribedService(OrderDocumentRendererInterface::class, OrderDocumentRendererInterface::class),
                 new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_shipment')),
                 new SubscribedService('coreshop.order.shipment.processable', ProcessableInterface::class, attributes: new Autowire(service: 'coreshop.order.shipment.processable')),
                 new SubscribedService('coreshop.factory.order_shipment', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.order_shipment')),

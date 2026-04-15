@@ -1,34 +1,121 @@
-# License
-Copyright (C) CoreShop GmbH
+# CoreShop Commercial License – CCL
 
-This software is available under two different licenses:
-* GNU General Public License version 3 (GPLv3) as Pimcore Community Edition
-* CoreShop Commercial License (CCL)
+PLEASE READ THIS LICENSE AGREEMENT CAREFULLY AS IT CONSTITUTES A LEGALLY BINDING AGREEMENT. BY INSTALLING OR USING THE SOFTWARE, YOU ACCEPT AND AGREE TO ALL TERMS AND CONDITIONS OF THIS AGREEMENT, AND CONFIRM THAT YOUR STATEMENT – IF APPLICABLE – ON THE RELEVANT GLOBAL REVENUE IS CORRECT AND COMPLETE. IF YOU REPRESENT A LEGAL ENTITY, YOU REPRESENT AND WARRANT THAT YOU HAVE FULL LEGAL AUTHORITY TO ENTER INTO THIS AGREEMENT TO BIND THAT LEGAL ENTITY. IF YOU DO NOT AGREE TO THESE TERMS AND CONDITIONS, YOU MAY NOT INSTALL OR USE THE SOFTWARE!
 
-The default CoreShop license, without a valid CoreShop Commercial License agreement, is the Open-Source GPLv3 license.
-
-## GNU General Public License version 3 (GPLv3)
-If you decide to choose the GPLv3 license, you must comply with the following terms:
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-## CoreShop Commercial License (CCL)
-Alternatively, commercial and supported versions of the program - also known as
-Commercial Distributions - must be used in accordance with the terms and conditions
-contained in a separate written agreement between you and CoreShop GmbH.
-For more information about the CoreShop Commercial License (CCL) please contact info@coreshop.com.
+##  1. Subject matter and acceptance
+1.1. This open core software license agreement (“CCL”) is between CoreShop GmbH, registered in the commercial register of the Wels Regional Court under no. FN 559687w, with its business address at Zeileisstraße 6, 4600 Wels, Austria, as the sole licensor ("CoreShop"), and the user of the software as the licensee ("Customer"). CoreShop and Customer may be referred to herein collectively as the "Parties" or individually as a "Party".
+1.2. Subject of the CCL is the usage of the CoreShop software, offered by CoreShop (“Software“). The Software is a set of extensions (such extension “Bundle”) for Pimcore software. Usage of the Software therefore requires the Customer to having entered into a Pimcore Commercial License (“PCL”) with Pimcore GmbH, Söllheimer Straße 16, 5020 Salzburg, Austria, or a Pimcore entity authorized by Pimcore GmbH, related to the Pimcore software. The Bundles are offered separately or as a suite, containing all available Bundles (“Suite”). In each case, the source code of each Bundle is publicly available but is not licensed out as open-source software (thus, the Software is “Open Core Software“). Each single Bundle, except from the CoreBundle, may be used free of charge, whereas the right to use the Suite costs license fees.
+1.3. he Bundles are defined in the additional contractual documents or by inclusion of, or referral to, this CCL within the source code or within the source code repositories. CoreShop may provide the Customer with minor updates and improvements to a Module or the Bundle at CoreShop’s free discretion. The Software is protected by copyright worldwide.
+1.4. By installing or starting to use any Software (the day of such installation or starting of usage being the “**Effective Day**”), the Customer agrees to all terms and conditions of the CCL and confirms that
+a) Currently a valid PCL does exist between Customer and Pimcore and has not yet been terminated,
+b) The Customer comprehensively complies with such PCL, and
+c) The Customer’s statement – if such statement is provided – on the relevant total global revenue is correct and complete.
 
 
-Please see also (files in this directory):  
-[GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 - gpl-3.0.txt](gpl-3.0.txt)  
+## 2. License
+2.1. Scope of License
+
+CoreShop GmbH grants the Customer a non-exclusive, non-transferable, non-sublicensable, geographically unlimited right, limited in time to the term of the CCL, to use the Software subject to the terms of the CCL. This license includes the right to modify, adapt, and customize the Software (such modification, adaptation, and customization each a “**Derivative**”) for the Customer’s internal non-commercial and commercial purposes, strictly in accordance with the following conditions. Unless if required by CoreShop GmbH for compliance with applicable laws or any order of a governmental authority, the Customer is not obliged to share a Derivative with CoreShop GmbH or anyone else.
+
+2.1.1. ### Solution Development and Production Use (Suite)
+“**Production Use**” means the usage of a software for development of solutions and productions within a business operation.
+
+a) An organization with total global revenue not exceeding €5 million (€5M) or equivalent amount in other currency annually (“**Threshold**”) may qualify for a free license for Production Use of the Bundle, provided such organization is not a part, subsidiary, affiliate, or shell company to another organization, entity, or company group whose total combined revenue exceeds the Threshold. Eligibility must be self-certified by the Customer at starting the use of the Suite entering the agreement and is subject to periodic review and audit by CoreShop GmbH.
+
+If at any time the Customer’s revenue exceeds the Threshold, a paid commercial license will be required for continued Production Use of the Suite. The Customer is obliged to inform CoreShop GmbH about relevant changes in revenues.
+
+CoreShop GmbH is entitled to charge license fees retroactively from the date on which Customer exceeded the Threshold.
+
+b) Non-profit and educational organizations are eligible for a free license for Production Use of the Bundle, subject to CoreShop GmbH Non-Profit criteria. For this purpose, “**Non-Profit**” refers to entities that are legally recognized as non-profit or tax-exempt under applicable law and operate exclusively for charitable, educational, or scientific purposes without profit distribution. Government bodies, municipalities, political parties, and public institutions are excluded unless explicitly approved by CoreShop GmbH.
+
+YOUR COMPANY NAME] shall decide at its own reasonable discretion whether (a) the Threshold is exceeded or (b) the requirements for non-profit or educational usage of the Bundle are met. Legal recourse is excluded with regard to such decision of CoreShop GmbH.
+
+2.2.2. ### Non-Production Use and Transition to Production Use (Bundle)
+For non-production purposes, such as demonstrations, prototype design, proofs of concept, and sales presentations (collectively referred to as “**Non-Production Use**”), the use of the Suite is free of charge.
+
+If the Customer or a Partner or any other third person acting on the Customer’s behalf initiates development of a solution with the intention or foreseeable or actual effect of deploying it into production, such use from its beginning shall be deemed Production Use of the Bundle for which the Threshold applies from the outset. Individual transition periods to Production Use may be agreed between CoreShop GmbH and Customer in writing.
+
+CoreShop GmbH reserves the right to audit, verify and enforce compliance with these terms, including restricting or terminating access to the Bundle.
+
+2.2. Restrictions on Use
+2.2.1. The Customer may not offer the Software as a hosted or managed service by granting third parties’ access to a significant part of its features or functions. Additionally, the Customer may not fork, modify, or redistribute the Software, or any Derivative, in a manner that results in a competing or functionally comparable product that is offered as a free or commercial alternative to CoreShop GmbH’s official offerings.
+2.2.1.  The Customer shall also refrain from incorporating the Software, or any Derivative, into a commercial product or service offering materially deriving its economic value from the Software, even if it is not directly exposed or obvious.
+2.2.1. The Customer is also prohibited from representing, implying, or otherwise suggesting that its use, distribution, or customization of the Software is endorsed, certified, or supported by CoreShop GmbH, unless such authorization has been explicitly granted in writing.
+2.2.1. The Customer may only use the Software for its own enterprise. The Customer may not use the Software simultaneously in more instances than Customer has acquired usage licences for. The Customer is only permitted to copy the Software to the extent that this is necessary for the intended use, including the correction of errors. The creation of a backup copy is permitted if it is necessary to secure the contractual use.
+2.2.1. The Customer must not, at any time, (i) rent, lease, lend, sell, license, assign, distribute, publish, transfer, or otherwise make available the Software; (ii) use the Software in any manner or for any purpose that infringes, misappropriate, or otherwise wireless any intellectual property ride or other ride of any person, or that violates any applicable law.
+
+2.3. If the Customer violates any of the provisions sect. 2.1 and 2.2, all rights of usage granted under the CCL shall immediately become invalid and shall automatically revert to CoreShop GmbH. In this case, the Customer must immediately and completely cease using the Software, delete all copies of the Software installed on its systems and delete any backup copies made or hand them over to CoreShop GmbH. In addition, CoreShop GmbH reserves the right to inform Pimcore GmbH and to take all legal steps.
+
+2.4. Sect. 2.3 applies accordingly if a Derivative of the Customer infringe upon patents.
+2.5. The parties may agree on expanded usage rights, arrangements for enterprise customers, and special OEM provisions separately.
+2.6. Upon request, the Customer shall enable CoreShop GmbH to verify the proper usage of the Software, in particular whether the Customer is using the Software as agreed. For this purpose, the Customer shall provide CoreShop GmbH with information, grant access to relevant documents and records and enable an audit of the hardware and software environment by CoreShop GmbH or an auditing company named by CoreShop GmbH and acceptable to the Customer. CoreShop GmbH may carry out the audit on the Customer's premises during the Customer's regular business hours or have it carried out by third parties bound to secrecy. CoreShop GmbH shall ensure that the Customer's business operations are disturbed as little as possible by the on-site audit. If the inspection reveals a licence violation by the Customer that is not merely minimal, the Customer shall bear the costs of the inspection, otherwise CoreShop GmbH shall bear them. CoreShop GmbH reserves all other rights.
+
+## 3. Contribution and distribution of Derivatives
+3.1. If the Customer wishes to contribute to the Software or to distribute a Derivative, both must be made in accordance with the CoreShop GmbH Contributors License Agreement (“**CLA**”), available at https://github.com/CoreShop GmbH/CoreShop GmbH/blob/5.0/CLA.md. The CLA stipulates the terms under which intellectual contributions are managed, ensuring that all parties' rights are protected. Acceptance of the CLA is mandatory for all contributors and can be reviewed on the source-code repository. Contributions without adherence to the CLA will not be accepted.
+3.2. Any contribution to the Software by a Derivative must be clearly documented, in order to maintain transparency and integrity of the source code.
+3.3. Any Derivative distributed must prominently be specified as “Derivative”, comply with the terms of the CCL, include copyright notices, and be licensed as a whole under the terms of the CCL, with the proviso that the recipient (licensee) of the out-licensed Derivative gets the role of the “Customer” regarding rights and obligations. Upon distribution of any Derivative, recipient must be provided with a copy of this CCL.
+
+## 4. Collateral obligations of the Customer
+4.1. The Customer shall not manipulate, in particular modify, move, remove, suppress, switch off or circumvent licence keys and technical protection mechanisms in the Software, e. g. directly, or through the use of intermediaries, white-labelling, or segmentation of services designed to avoid licensing obligations.
+4.2. The Customer shall not alter or obfuscate any of the CoreShop GmbH's licensing, copyright, or other proprietary notices within the Software. Any use of CoreShop GmbH’s trademarks must comply with applicable laws.
+4.3. The Customer shall not modify, relocate, disable, or bypass any functionalities associated with the Pimcore Store or any other platform from which the Customer has received the Software or access to it.
+4.4. The Customer shall not (a) use GPLv3-licensed CoreShop GmbH software alongside CCL licensed Software, and shall not (b) revert from CCL to GPLv3, to protect the Customer’s rights in Derivatives.
+4.5. The Customer must ensure that the access data to the user accounts is not passed on to unauthorized third parties and is protected against unauthorized access by third parties. The authorized users shall be instructed accordingly. The Customer shall inform CoreShop GmbH immediately if there is a suspicion of misuse of the Software.
+4.6. If the Customer infringes upon any of its obligations resulting from sect. 4.1 through 4.5, sect. 2.3 applies accordingly.
+
+## 5. Confidentiality
+
+5.1. From time to time during the Term, either Party may disclose or make available to the other Party information about its business affairs, products, confidential intellectual property, trade secrets, third-party confidential information, and other sensitive or proprietary information, whether orally or in written, electronic, or other form or media, and whether or not marked, designated or otherwise identified as "confidential" (collectively, "**Confidential Information**"). Confidential Information does not include information that, at the time of disclosure is: (a) in the public domain; (b) known to the receiving Party at the time of disclosure; (c) rightfully obtained by the receiving Party on a non-confidential basis from a third party; or (d) independently developed by the receiving Party. The receiving Party shall not disclose the disclosing Party's Confidential Information to any person or entity, except to the receiving Party's employees who have a need to know the Confidential Information for the receiving Party to exercise its rights or perform its obligations hereunder. Notwithstanding the foregoing, each Party may disclose Confidential Information to the limited extent required (i) in order to comply with the order of a court or other governmental body, or as otherwise necessary to comply with applicable law, provided that the Party making the disclosure pursuant to the order shall first have given written notice to the other Party and made a reasonable effort to obtain a protective order; or (ii) to establish a Party's rights under this Agreement, including to make required court filings. On the expiration or termination of this Agreement, the receiving Party shall promptly return to the disclosing Party all copies, whether in written, electronic, or other form or media, of the disclosing Party's Confidential Information, or destroy all such copies and certify in writing to the disclosing Party that such Confidential Information has been destroyed. Each Party's obligations of nondisclosure with regard to Confidential Information are effective as of the Effective Date and will expire five years from the date first disclosed to the receiving Party; provided, however, with respect to any Confidential Information that constitutes a trade secret (as determined under applicable law), such obligations of non-disclosure will survive the termination or expiration of this Agreement for as long as such Confidential Information remains subject to trade secret protection under applicable law.
+
+## 6. Limited warranty and warranty disclaimer
+
+6.1. CoreShop GmbH warrants that, at the time of delivery, the Software does not contain any virus or other malicious code that would cause the Software to become inoperable or incapable of being used in accordance with its documentation. The warranties set forth herein do not apply and become null and void if Customer breaches any material provision of this Agreement or any instrument related hereto, or if Customer, or any person provided access to the Software by Customer whether or not in violation of this Agreement: (i) installs or uses the Software on or in connection with any hardware or software not specified in the documentation or expressly authorized by CoreShop GmbH in writing; (ii) illicitly modifies or damages the Software; or (iii) misuses the Software, including any use of the Software other than as specified in the documentation or expressly authorized by CoreShop GmbH in writing. If any Software fails to comply with the warranty set forth hereinbefore, and such failure is not excluded from warranty pursuant to this provision, CoreShop GmbH shall, subject to Customer's promptly notifying CoreShop GmbH in writing of such failure, at its sole option, either: (i) repair or replace the Software, provided that Customer provides CoreShop GmbH with all information CoreShop GmbH reasonably requests to resolve the reported failure, including sufficient information to enable CoreShop GmbH to recreate such failure; or (ii) refund the fees paid for such Software, subject to Customer's ceasing all use of and, if requested by CoreShop GmbH, returning to CoreShop GmbH all copies of the Software. If CoreShop GmbH repairs or replaces the Software, the warranty will continue to run from the Effective Date and not from Customer's receipt of the repair or replacement. The remedies set forth in this sect. 6 are Customer's sole remedies and CoreShop GmbH's sole liability under the limited warranty set forth in this sect. 6.
+
+EXCEPT FOR THE LIMITED WARRANTY SET FORTH IN THIS SECT. 6, THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" AND CoreShop GmbH HEREBY DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE. CoreShop GmbH SPECIFICALLY DISCLAIMS ALL IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT, AND ALL WARRANTIES ARISING FROM COURSE OF DEALING, USAGE, OR TRADE PRACTICE. CoreShop GmbH MAKES NO WARRANTY OF ANY KIND THAT THE SOFTWARE AND DOCUMENTATION, OR ANY PRODUCTS OR RESULTS OF THE USE THEREOF, WILL MEET CUSTOMER'S OR ANY OTHER PERSON'S REQUIREMENTS, OPERATE WITHOUT INTERRUPTION, ACHIEVE ANY INTENDED RESULT, BE COMPATIBLE OR WORK WITH ANY SOFTWARE, SYSTEM OR OTHER SERVICES, OR BE SECURE, ACCURATE, COMPLETE, FREE OF HARMFUL CODE, OR ERROR FREE.
+
+## 7. Defects
+7.1. The Customer is obliged to notify CoreShop GmbH of any defect or error in the Software immediately after its occurrence.
+
+7.2. Before reporting any defect or error, the Customer must carry out an analysis of the system environment as far as possible to ensure that the defect or error is not due to system components that are not covered by this CCL.
+
+7.3. The Customer shall immediately install or carry out updates or other troubleshooting measures provided by CoreShop GmbH.
+
+7.4. Violations of the obligations to co-operate may result in additional costs for CoreShop GmbH. The Customer must reimburse CoreShop GmbH for such costs, unless it is not responsible for them.
+
+## 8. Limitation of liability
+8.1. IN NO EVENT WILL CoreShop GmbH BE LIABLE UNDER OR IN CONNECTION WITH THIS AGREEMENT UNDER ANY LEGAL OR EQUITABLE THEORY, INCLUDING BREACH OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, AND OTHERWISE, FOR ANY: (a) CONSEQUENTIAL, INCIDENTAL, INDIRECT, EXEMPLARY, SPECIAL, ENHANCED, OR PUNITIVE DAMAGES; (b) INCREASED COSTS, DIMINUTION IN VALUE OR LOST BUSINESS, PRODUCTION, REVENUES, OR PROFITS; (c) LOSS OF GOODWILL OR REPUTATION; (d) USE, INABILITY TO USE, LOSS, INTERRUPTION, DELAY OR RECOVERY OF ANY DATA, OR BREACH OF DATA OR SYSTEM SECURITY; OR (e) COST OF REPLACEMENT GOODS OR SERVICES, IN EACH CASE REGARDLESS OF WHETHER CoreShop GmbH WAS ADVISED OF THE POSSIBILITY OF SUCH LOSSES OR DAMAGES OR SUCH LOSSES OR DAMAGES WERE OTHERWISE FORESEEABLE.
+
+8.2. IN NO EVENT WILL CoreShop GmbH’S AGGREGATE LIABILITY ARISING OUT OF OR RELATED TO THIS AGREEMENT UNDER ANY LEGAL OR EQUITABLE THEORY, INCLUDING BREACH OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, AND OTHERWISE EXCEED THE TOTAL AMOUNTS PAID TO CoreShop GmbH UNDER THIS AGREEMENT IN THE TWELVE (12) MONTH PERIOD PRECEDING THE EVENT GIVING RISE TO THE CLAIM.
+
+## 9. Indemnification
+
+The Customer shall indemnify CoreShop GmbH against all third-party claims (in particular claims arising from infringement of copyright, patent, competition, trademark or data protection law) asserted against CoreShop GmbH in connection with the Customer’s use of the Software or any Derivative, unless these claims are based on intentional or grossly negligent behaviour on the part of CoreShop GmbH or CoreShop GmbH's legal representatives or vicarious agents.
+
+## 10. Termination
+10.1. Term and termination will be regulated separately.
+10.2. If Customer uses the Software in violation of this Agreement or otherwise violates the use rights or prohibitions contained in this Agreement, Customer’s License shall automatically terminate.
+10.3. Upon termination of this CCL, the Customer must uninstall the Software, including all copies, and delete any remaining recognisable Software residues from its IT system. The Customer must destroy any backup copies made. At CoreShop GmbH's request, the Customer must confirm that it has fulfilled these obligations.
+
+## 11. Remuneration
+
+The remuneration for the use of the Software shall be agreed separately.
+
+## 12. Miscellaneous
+12.1. The Software may automatically collect and transmit non-personal statistical data related to its installation and use, including but not limited to the number of records in the database, installed modules, system configuration, and usage metrics ("**Usage Data**"). Such data is collected solely for the purposes of product improvement, support, and analytics. Customer agrees not to interfere with the collection and transmission of Usage Data.
+
+12.2. Customer may not assign or transfer any of its rights or delegate any of its obligations hereunder, in each case whether voluntarily, involuntarily, by operation of law or otherwise, without the prior written consent of CoreShop GmbH. Any purported assignment, transfer, or delegation in violation of this section is null and void. No assignment, transfer, or delegation will relieve the assigning or delegating Party of any of its obligations hereunder. This Agreement is binding upon and inures to the benefit of the Parties hereto and their respective permitted successors and assigns.
+
+12.3. Each Party acknowledges and agrees that a breach or threatened breach by such Party of any of its contractual obligations may cause the other Party irreparable harm for which monetary damages would not be an adequate remedy and agrees that, in the event of such breach or threatened breach, the other Party will be entitled to equitable relief, including a restraining order, an injunction, specific performance, and any other relief that may be available from any court, without any requirement to post a bond or other security, or to prove actual damages or that monetary damages are not an adequate remedy. Such remedies are not exclusive and are in addition to all other remedies that may be available at law, in equity, or otherwise.
+
+12.4. No amendment to or modification of this Agreement is effective unless it is in writing and signed by an authorized representative of each Party. No waiver by any Party of any of the provisions hereof will be effective unless explicitly set forth in writing and signed by the Party so waiving. Except as otherwise set forth in this Agreement, (i) no failure to exercise, or delay in exercising, any rights, remedy, power, or privilege arising from this Agreement will operate or be construed as a waiver thereof, and (ii) no single or partial exercise of any right, remedy, power, or privilege hereunder will preclude any other or further exercise thereof or the exercise of any other right, remedy, power, or privilege.
+
+12.5. If any provision of this Agreement is invalid, illegal, or unenforceable in any jurisdiction, such invalidity, illegality, or unenforceability will not affect any other term or provision of this Agreement or invalidate or render unenforceable such term or provision in any other jurisdiction. Upon such determination that any term or other provision is invalid, illegal, or unenforceable, the Parties hereto shall negotiate in good faith to modify this Agreement so as to effect the original intent of the Parties as closely as possible in a mutually acceptable manner in order that the transactions contemplated hereby be consummated as originally contemplated to the greatest extent possible.
+
+12.6. In all relevant respects that are not regulated by this CCL, the following documents shall apply, as far as applicable:
+a) CoreShop GmbH Terms & Conditions (AGB), available at https://coreshop.com/agb
+b) CoreShop GmbH Data Processing Agreement (CDPA), available at https://coreshop.com/cdpa
+c) CoreShop GmbH Privacy Statement (CPS), available at https://coreshop.com/cps.
+
+12.7. Specifications originating from the Customer regarding the service content and legal elements, such as GTC or contractual clauses, do not apply.
+
+12.8. Support, maintenance and other services remain subject to separate agreements.

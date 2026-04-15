@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -30,6 +29,7 @@ use CoreShop\Component\Order\QuoteTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
@@ -70,7 +70,7 @@ class QuoteCommitter implements QuoteCommitterInterface
         $originalShippingAddress = $order->hasShippableItems() === false ? $order->getInvoiceAddress() : $order->getShippingAddress();
 
         /**
-         * @var AddressInterface $shippingAddress
+         * @var AddressInterface&Concrete $shippingAddress
          *
          * @psalm-suppress InvalidArgument
          */
@@ -81,7 +81,7 @@ class QuoteCommitter implements QuoteCommitterInterface
             false,
         );
         /**
-         * @var AddressInterface $invoiceAddress
+         * @var AddressInterface&Concrete $invoiceAddress
          *
          * @psalm-suppress InvalidArgument
          */
@@ -92,7 +92,7 @@ class QuoteCommitter implements QuoteCommitterInterface
             false,
         );
 
-        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress) {
+        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress): void {
             $shippingAddress->save();
             $invoiceAddress->save();
         }, false);

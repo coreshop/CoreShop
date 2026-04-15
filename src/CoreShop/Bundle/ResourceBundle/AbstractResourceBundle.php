@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -107,7 +106,7 @@ abstract class AbstractResourceBundle extends Bundle implements PimcoreBundleInt
 
     protected function getBundlePrefix(): string
     {
-        return Container::underscore(substr(strrchr($this::class, '\\'), 1, -6));
+        return Container::underscore(substr((string) strrchr($this::class, '\\'), 1, -6));
     }
 
     protected function getDoctrineMappingDirectory(): string

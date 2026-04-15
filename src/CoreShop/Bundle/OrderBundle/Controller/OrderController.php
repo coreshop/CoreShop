@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -56,7 +55,7 @@ use JMS\Serializer\SerializerInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -256,7 +255,7 @@ class OrderController extends PimcoreController
             $changedOrderItems = [];
 
             InheritanceHelper::useInheritedValues(
-                function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository, &$changedOrderItems) {
+                function () use ($cartManager, $cartProcessor, $previewOnly, $order, $orderItemRepository, &$changedOrderItems): void {
                     if ($previewOnly) {
                         $cartProcessor->process($order);
                     } else {
@@ -518,7 +517,7 @@ class OrderController extends PimcoreController
         $list = [];
 
         /**
-         * @var DataObject\Concrete $order
+         * @var DataObject\Concrete&OrderInterface $order
          */
         $notes = $this->container->get(NoteServiceInterface::class)->getObjectNotes($order, Notes::NOTE_EMAIL);
 
@@ -677,7 +676,7 @@ class OrderController extends PimcoreController
     protected function getStatesHistory(OrderInterface $order): array
     {
         /**
-         * @var DataObject\Concrete $order
+         * @var DataObject\Concrete&OrderInterface $order
          */
         $history = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateHistory($order);
 
@@ -847,7 +846,7 @@ class OrderController extends PimcoreController
                 new SubscribedService(
                     'workflows',
                     'iterable',
-                    attributes: new TaggedIterator('workflow.state_machine'),
+                    attributes: new AutowireIterator('workflow.state_machine'),
                 ),
                 new SubscribedService('jms_serializer', SerializerInterface::class),
                 AddressFormatterInterface::class,

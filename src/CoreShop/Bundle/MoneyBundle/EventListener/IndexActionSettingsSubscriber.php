@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -33,17 +32,29 @@ class IndexActionSettingsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            /**
+             * @phpstan-ignore-next-line
+             */
             AdminEvents::INDEX_ACTION_SETTINGS => 'onIndexActionSettings',
         ];
     }
 
+    /**
+     * @phpstan-ignore-next-line
+     */
     public function onIndexActionSettings(IndexActionSettingsEvent $event): void
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         $settings = $event->getSettings();
         $settings['coreshop_money'] = [
             'decimal_precision' => $this->decimalPrecision,
             'decimal_factor' => $this->decimalFactor,
         ];
+        /**
+         * @phpstan-ignore-next-line
+         */
         $event->setSettings($settings);
     }
 }

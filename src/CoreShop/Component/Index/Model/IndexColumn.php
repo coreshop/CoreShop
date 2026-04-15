@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -28,70 +27,31 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
 {
     use TimestampableTrait;
 
-    /**
-     * @var int
-     */
-    public $id;
+    public ?int $id = null;
 
-    /**
-     * @var string
-     */
-    public $type;
+    public ?string $type = null;
 
-    /**
-     * @var string
-     */
-    public $objectKey;
+    public ?string $objectKey = null;
 
-    /**
-     * @var string
-     */
-    public $name;
+    public ?string $name = null;
 
-    /**
-     * @var string
-     */
-    public $objectType;
+    public ?string $objectType = null;
 
-    /**
-     * @var string
-     */
-    public $getter;
+    public ?string $getter = null;
 
-    /**
-     * @var array
-     */
-    public $getterConfig = [];
+    public array $getterConfig = [];
 
-    /**
-     * @var string
-     */
-    public $dataType;
+    public ?string $dataType = null;
 
-    /**
-     * @var string
-     */
-    public $interpreter;
+    public ?string $interpreter = null;
 
-    /**
-     * @var array
-     */
-    public $interpreterConfig = [];
+    public array $interpreterConfig = [];
 
-    /**
-     * @var string
-     */
-    public $columnType;
+    public ?string $columnType = null;
 
-    /**
-     * @var array
-     */
-    public $configuration = [];
+    public array $configuration = [];
 
-    /**
-     * @var IndexInterface
-     */
-    public $index;
+    public ?IndexInterface $index;
 
     public function __toString(): string
     {
@@ -248,7 +208,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->index;
     }
 
-    public function setIndex(IndexInterface $index = null)
+    public function setIndex(?IndexInterface $index)
     {
         $this->index = $index;
     }

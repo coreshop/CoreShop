@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -23,7 +22,8 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Index\Worker\MysqlWorkerInterface;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Types\Type;
 
 final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
@@ -40,9 +40,9 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
     public function getSystemColumns(): array
     {
         return [
-            'categoryIds' => MysqlWorkerInterface::FIELD_TYPE_STRING,
-            'parentCategoryIds' => MysqlWorkerInterface::FIELD_TYPE_STRING,
-            'stores' => MysqlWorkerInterface::FIELD_TYPE_STRING,
+            (new Column('categoryIds', Type::getType('string')))->setLength(255),
+            (new Column('parentCategoryIds', Type::getType('string')))->setLength(255),
+            (new Column('stores', Type::getType('string')))->setLength(255),
         ];
     }
 
