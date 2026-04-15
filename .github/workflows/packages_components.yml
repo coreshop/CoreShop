@@ -5,7 +5,7 @@ on:
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
-  pull_request_target:
+  pull_request:
     branches: [ '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Component/**'
@@ -32,16 +32,7 @@ jobs:
     name: "Create a list of packages"
 
     steps:
-      - name: Checkout PR head (only for pull_request_target)
-        if: github.event_name == 'pull_request_target'
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-
-      - name: Checkout PR head (for push or other events)
-        if: github.event_name != 'pull_request_target'
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: "List Packages"
         id: create-list
@@ -64,16 +55,7 @@ jobs:
         package: "${{ fromJson(needs.list.outputs.packages) }}"
 
     steps:
-      - name: Checkout PR head (only for pull_request_target)
-        if: github.event_name == 'pull_request_target'
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-
-      - name: Checkout PR head (for push or other events)
-        if: github.event_name != 'pull_request_target'
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
