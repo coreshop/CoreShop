@@ -21,12 +21,6 @@ interface Plugin {
   color: string
 }
 
-interface BuildResult {
-  plugin: string
-  success: boolean
-  error?: string
-}
-
 /**
  * Get the list of bundles changed since the base branch.
  * Returns null if all bundles should be built (e.g. root config changed).
@@ -55,11 +49,10 @@ function getChangedBundles(plugins: Plugin[]): Plugin[] | null {
   // If root build config changed, rebuild everything
   const rootConfigFiles = [
     'rsbuild.template.config.ts',
-    'rsbuild.studio.config.ts',
-    'rsbuild.config.ts',
     'package.json',
     'package-lock.json',
     'tsconfig.json',
+    'tsconfig.studio.json',
     'studio-build.ts'
   ]
   if (changedFiles.some(f => rootConfigFiles.includes(f))) {
@@ -90,7 +83,7 @@ function getChangedBundles(plugins: Plugin[]): Plugin[] | null {
       const deps = Object.values({ ...pkg.dependencies, ...pkg.devDependencies }) as string[]
       const fileDeps: string[] = []
       for (const dep of deps) {
-        if (typeof dep === 'string' && dep.startsWith('file:')) {
+        if (dep.startsWith('file:')) {
           // Extract bundle name from file: path like "file:../../ResourceBundle/Resources/assets/pimcore-studio"
           const depMatch = dep.match(/(\w+Bundle)\/Resources\/assets\/pimcore-studio/)
           if (depMatch) {
@@ -171,7 +164,7 @@ function discoverPlugins(): Plugin[] {
 const plugins = discoverPlugins();
 
 // Fixed port mapping for each bundle to avoid conflicts
-const bundlePortMap = {
+const bundlePortMap: Record<string, number> = {
   'address': 3001,
   'core': 3002,
   'currency': 3003,
@@ -195,19 +188,23 @@ const bundlePortMap = {
   'variant': 3021
 };
 
-function log(message, color = colors.reset) {
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
+function log(message: string, color: string = colors.reset): void {
   console.log(`${color}${message}${colors.reset}`);
 }
 
-function logPlugin(plugin, message, color = plugin.color) {
+function logPlugin(plugin: Plugin, message: string, color: string = plugin.color): void {
   log(`[${plugin.name}] ${message}`, color);
 }
 
-async function runCommand(command, cwd, silent = false, env = undefined) {
-  return new Promise((resolve, reject) => {
+async function runCommand(command: string, cwd: string, silent: boolean = false, env?: NodeJS.ProcessEnv): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
     try {
-      const result = execSync(command, { 
-        cwd, 
+      const result = execSync(command, {
+        cwd,
         stdio: silent ? 'pipe' : 'inherit',
         encoding: 'utf8',
         env: env || process.env
@@ -219,101 +216,36 @@ async function runCommand(command, cwd, silent = false, env = undefined) {
   });
 }
 
-async function checkPluginExists(plugin) {
+async function checkPluginExists(plugin: Plugin): Promise<boolean> {
   const pluginPath = path.resolve(__dirname, plugin.path);
   const packageJsonPath = path.join(pluginPath, 'package.json');
-  
+
   if (!fs.existsSync(pluginPath)) {
     logPlugin(plugin, 'Directory does not exist!', colors.red);
     return false;
   }
-  
+
   if (!fs.existsSync(packageJsonPath)) {
     logPlugin(plugin, 'package.json not found!', colors.red);
     return false;
   }
-  
+
   return true;
 }
 
-async function installDependencies(plugin) {
+async function installDependencies(plugin: Plugin): Promise<void> {
   const pluginPath = path.resolve(__dirname, plugin.path);
   const nodeModulesPath = path.join(pluginPath, 'node_modules');
-  
+
   // Check if dependencies are already installed
   if (fs.existsSync(nodeModulesPath)) {
     logPlugin(plugin, 'Dependencies already installed, skipping...');
     return;
   }
-  
+
   logPlugin(plugin, 'Installing dependencies...');
-  try {
-    // await runCommand('npm install', pluginPath);
-    logPlugin(plugin, 'Dependencies installed successfully!', colors.green);
-  } catch (error) {
-    logPlugin(plugin, `Failed to install dependencies: ${error.message}`, colors.red);
-    throw error;
-  }
-}
-
-async function buildPlugin(plugin) {
-  const bundleName = plugin.name.replace(/Bundle$/, '').toLowerCase();
-  
-  logPlugin(plugin, 'Building plugin...');
-  try {
-    // Use the template config with environment variables
-    const buildEnv = {
-      ...process.env,
-      CORESHOP_BUNDLE_NAME: bundleName,
-      CORESHOP_BUNDLE_DIR: plugin.name.replace(/Bundle$/, ''),
-      CORESHOP_BUILD_ID: require('uuid').v4()
-    };
-    
-    await runCommand('rsbuild build --config rsbuild.studio.config.ts', __dirname, false, buildEnv);
-    logPlugin(plugin, 'Build completed successfully!', colors.green);
-  } catch (error) {
-    logPlugin(plugin, `Build failed: ${error.message}`, colors.red);
-    throw error;
-  }
-}
-
-async function lintPlugin(plugin) {
-  const pluginPath = path.resolve(__dirname, plugin.path);
-  
-  logPlugin(plugin, 'Running type check...');
-  try {
-    await runCommand('npm run check-types', pluginPath, true);
-    logPlugin(plugin, 'Type check passed!', colors.green);
-  } catch (error) {
-    logPlugin(plugin, `Type check failed: ${error.message}`, colors.yellow);
-    // Don't throw error for type check failures, just warn
-  }
-}
-
-async function processPlugin(plugin) {
-  logPlugin(plugin, 'Starting processing...');
-  
-  try {
-    // Check if plugin exists
-    if (!(await checkPluginExists(plugin))) {
-      throw new Error('Plugin validation failed');
-    }
-    
-    // Install dependencies
-    await installDependencies(plugin);
-    
-    // Run type check (optional)
-    await lintPlugin(plugin);
-    
-    // Build plugin
-    await buildPlugin(plugin);
-    
-    logPlugin(plugin, 'Processing completed successfully!', colors.green);
-    return true;
-  } catch (error) {
-    logPlugin(plugin, `Processing failed: ${error.message}`, colors.red);
-    return false;
-  }
+  // await runCommand('npm install', pluginPath);
+  logPlugin(plugin, 'Dependencies installed successfully!', colors.green);
 }
 
 async function main() {
@@ -324,21 +256,16 @@ async function main() {
   log(`Command: ${command}`, colors.cyan);
   log('═'.repeat(60), colors.cyan);
   
-  const results = [];
-  
   if (command === 'install') {
     log('Installing dependencies for all plugins...', colors.yellow);
-    
+
     for (const plugin of plugins) {
       try {
         if (await checkPluginExists(plugin)) {
           await installDependencies(plugin);
-          results.push({ plugin: plugin.name, success: true });
-        } else {
-          results.push({ plugin: plugin.name, success: false });
         }
       } catch (error) {
-        results.push({ plugin: plugin.name, success: false, error: error.message });
+        logPlugin(plugin, `Install failed: ${errorMessage(error)}`, colors.red);
       }
     }
   } else if (command === 'build') {
@@ -367,9 +294,9 @@ async function main() {
     const commands = buildPlugins.map(plugin => {
       const bundleName = plugin.name.replace(/Bundle$/, '').toLowerCase();
       const bundleDir = plugin.name.replace(/Bundle$/, '');
-      const buildId = require('uuid').v4();
+      const buildId = uuidv4();
 
-      return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_BUILD_ID=${buildId} rsbuild build --config rsbuild.studio.config.ts`;
+      return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_BUILD_ID=${buildId} rsbuild build --config rsbuild.template.config.ts`;
     });
 
     const names = buildPlugins.map(plugin => plugin.name.replace('Bundle', '')).join(',');
@@ -385,7 +312,7 @@ async function main() {
       log('\n🎉 All bundles built successfully!', colors.green);
       process.exit(0);
     } catch (error) {
-      log(`\nBuild failed: ${error.message}`, colors.red);
+      log(`\nBuild failed: ${errorMessage(error)}`, colors.red);
       process.exit(1);
     }
   } else if (command === 'dev') {
@@ -408,7 +335,7 @@ async function main() {
       log('Starting all development servers...', colors.yellow);
       log(`Found ${plugins.length} bundles:`, colors.cyan);
       
-      const validPlugins = [];
+      const validPlugins: Plugin[] = [];
       for (const plugin of plugins) {
         if (await checkPluginExists(plugin)) {
           await installDependencies(plugin);
@@ -431,7 +358,7 @@ async function main() {
         const bundleDir = plugin.name.replace(/Bundle$/, '');
         const port = bundlePortMap[bundleName] || 3000;
 
-        return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_DEV_PORT=${port} NODE_ENV=dev-server rsbuild dev --config rsbuild.studio.config.ts`;
+        return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_DEV_PORT=${port} NODE_ENV=dev-server rsbuild dev --config rsbuild.template.config.ts`;
       });
       
       const names = validPlugins.map(plugin => plugin.name.replace('Bundle', '')).join(',');
@@ -445,7 +372,7 @@ async function main() {
       try {
         await runCommand(concurrentlyCmd, __dirname);
       } catch (error) {
-        log(`Dev servers failed: ${error.message}`, colors.red);
+        log(`Dev servers failed: ${errorMessage(error)}`, colors.red);
         process.exit(1);
       }
       
@@ -483,9 +410,9 @@ async function main() {
           NODE_ENV: 'dev-server'
         };
         
-        await runCommand('rsbuild dev --config rsbuild.studio.config.ts', __dirname, false, devEnv);
+        await runCommand('rsbuild dev --config rsbuild.template.config.ts', __dirname, false, devEnv);
       } catch (error) {
-        logPlugin(plugin, `Dev server failed: ${error.message}`, colors.red);
+        logPlugin(plugin, `Dev server failed: ${errorMessage(error)}`, colors.red);
         process.exit(1);
       }
     }
@@ -513,6 +440,6 @@ process.on('SIGINT', () => {
 
 // Run the script
 main().catch((error) => {
-  log(`\\n💥 Unexpected error: ${error.message}`, colors.red);
+  log(`\\n💥 Unexpected error: ${errorMessage(error)}`, colors.red);
   process.exit(1);
 });

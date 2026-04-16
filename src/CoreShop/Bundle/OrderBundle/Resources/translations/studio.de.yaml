@@ -1,4 +1,18 @@
 ---
+# Grid Advanced-Column Transformers (Label im Dropdown)
+grid.advanced-column.advancedColumns.coreshop_order_state: 'CoreShop Order State'
+grid.advanced-column.advancedColumns.coreshop_price_formatter: 'CoreShop Preis-Formatierer'
+coreshop_grid_transformer_order_state_workflow: 'Workflow'
+coreshop_grid_transformer_order_state_workflow_required: 'Bitte einen Workflow auswählen.'
+coreshop_grid_transformer_order_state_workflow_order: 'Bestellung'
+coreshop_grid_transformer_order_state_workflow_payment: 'Zahlung'
+coreshop_grid_transformer_order_state_workflow_shipment: 'Versand'
+coreshop_grid_transformer_order_state_workflow_invoice: 'Rechnung'
+coreshop_grid_transformer_order_state_highlight_label: 'Label hervorheben'
+coreshop_grid_transformer_price_formatter_currency_iso_code: 'Statischer Währungs-ISO-Code'
+coreshop_grid_transformer_price_formatter_currency_iso_code_help: 'ISO-4217-Währungscode (z. B. "EUR"). Wird verwendet, wenn kein Währungsfeld gesetzt ist.'
+coreshop_grid_transformer_price_formatter_currency_field: 'Name des Währungsfelds'
+coreshop_grid_transformer_price_formatter_currency_field_help: 'Name eines Geschwister-Source-Fields (in derselben Advanced Column), das den Währungs-ISO-Code enthält. Überschreibt den statischen Code. Das Geschwisterfeld wird konsumiert und nicht im Output angezeigt.'
 coreshop_save_error: 'Fehler beim speichern des Elements'
 coreshop_cart_price_rule: 'Warenkorb Preisregel'
 coreshop_product: 'Produkt'

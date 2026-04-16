@@ -14,12 +14,13 @@
 import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
-import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import { DynamicTypeObjectDataRegistry, type DynamicTypePipelineRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { registerMenuButton } from '@coreshop/menu/src'
 import { CoreBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopStoreValues } from './dynamic-types'
+import { DynamicTypePipelineGridTransformersStoreValuesField } from './grid-transformers'
 import { CoreBundleMenuModule } from './modules/menu'
 import { RuleRegistryExtensionModule } from './modules/extension/rule-registry'
 import { OrderCreationExtensionModule } from './modules/extension/order-creation'
@@ -48,6 +49,14 @@ const plugin: IAbstractPlugin = {
         )
 
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStoreValues())
+
+        // ============================================
+        // Grid Advanced-Column Transformers Registration
+        // ============================================
+        const transformersRegistry = container.get<DynamicTypePipelineRegistry>(
+            serviceIds['DynamicTypes/Grid/TransformersRegistry']
+        )
+        transformersRegistry.registerDynamicType(new DynamicTypePipelineGridTransformersStoreValuesField())
 
         // Register custom widgets for order creation schema forms
         const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)

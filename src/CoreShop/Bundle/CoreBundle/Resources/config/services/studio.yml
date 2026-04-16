@@ -50,3 +50,34 @@ services:
     tags:
       - { name: pimcore.studio_backend.search_index.data_object.filter }
       - { name: coreshop.studio.grid.filter, type: coreshop_created_last_year }
+
+  # Studio v2 Grid: Column Definition for coreShopStoreValues.
+  # Without this, the field type is unknown to ResolverTypeGuesser and any Advanced Column
+  # picking storeValues as Source Field crashes ("Key with Column Key: storeValues not found").
+  CoreShop\Bundle\CoreBundle\Grid\Column\Definition\StoreValuesColumnDefinition:
+    tags:
+      - { name: pimcore.studio_backend.grid_column_definition }
+
+  # Studio v2 Grid: Store Price custom column.
+  # Emits one "Store Price (Store Name)" column per store in the column picker.
+  # The resolver reads ProductInterface::getStoreValuesOfType('price', $store) and formats it.
+  CoreShop\Bundle\CoreBundle\Grid\Column\Definition\StorePriceDefinition:
+    tags:
+      - { name: pimcore.studio_backend.grid_column_definition }
+
+  CoreShop\Bundle\CoreBundle\Grid\Column\Resolver\StorePriceResolver:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.grid_column_resolver }
+
+  CoreShop\Bundle\CoreBundle\Grid\Column\Collector\StorePriceCollector:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.grid_column_collector }
+
+  # Studio v2 Grid Transformers
+  CoreShop\Bundle\CoreBundle\Grid\Column\Transformer\StoreValuesField:
+    arguments:
+      - '%coreshop.currency.decimal_factor%'
+    tags:
+      - { name: pimcore.studio_backend.grid_transformer }
