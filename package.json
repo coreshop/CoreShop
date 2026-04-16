@@ -4,13 +4,8 @@
   "description": "CoreShop Studio UI Plugins Build System - npm Workspaces + Rsbuild Environments",
   "scripts": {
     "build": "tsx studio-build.ts build",
-    "build:legacy": "rsbuild build", 
-    "rsbuild": "rsbuild",
-    "build:env": "rsbuild build --environment",
     "dev": "tsx studio-build.ts dev all",
     "dev:single": "tsx studio-build.ts dev",
-    "dev:legacy": "rsbuild dev",
-    "dev:env": "rsbuild dev --environment",
     "install-deps": "npm install",
     "clean": "rm -rf dist && npm run clean:workspaces",
     "clean:workspaces": "npm run clean --workspaces --if-present",

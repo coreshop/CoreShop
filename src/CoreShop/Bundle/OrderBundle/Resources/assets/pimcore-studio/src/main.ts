@@ -14,7 +14,11 @@ import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 // Widget restorer registry import removed - type not exported
-import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
+import {
+  DynamicTypeObjectDataRegistry,
+  type DynamicTypePipelineRegistry,
+  type DynamicTypeGridCellRegistry
+} from '@pimcore/studio-ui-bundle/modules/element'
 import { Input } from 'antd'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
@@ -22,6 +26,11 @@ import { registerMenuButton } from '@coreshop/menu/src'
 import i18n from 'i18next'
 import { OrderBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopCartPriceRule } from './dynamic-types'
+import {
+  DynamicTypePipelineGridTransformersOrderState,
+  DynamicTypePipelineGridTransformersPriceFormatter
+} from './grid-transformers'
+import { DynamicTypeGridCellOrderState } from './grid-cell-types/order-state/dynamic-type-grid-cell-order-state'
 import { SalesListingBuildersModule } from './modules/sales/listing-builders'
 import { CartPriceRuleManager } from './modules/cart-price-rules/CartPriceRuleManager'
 import { ConditionRegistry, ActionRegistry } from '@coreshop/rule/src/rules/registry'
@@ -67,6 +76,23 @@ const plugin: IAbstractPlugin = {
             serviceIds['DynamicTypes/ObjectDataRegistry']
         )
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCartPriceRule())
+
+        // ============================================
+        // Grid Cell Types Registration
+        // ============================================
+        const gridCellRegistry = container.get<DynamicTypeGridCellRegistry>(
+            serviceIds['DynamicTypes/GridCellRegistry']
+        )
+        gridCellRegistry.registerDynamicType(new DynamicTypeGridCellOrderState())
+
+        // ============================================
+        // Grid Advanced-Column Transformers Registration
+        // ============================================
+        const transformersRegistry = container.get<DynamicTypePipelineRegistry>(
+            serviceIds['DynamicTypes/Grid/TransformersRegistry']
+        )
+        transformersRegistry.registerDynamicType(new DynamicTypePipelineGridTransformersOrderState())
+        transformersRegistry.registerDynamicType(new DynamicTypePipelineGridTransformersPriceFormatter())
 
         // ============================================
         // Widget Restorer Registration

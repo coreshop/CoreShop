@@ -1,4 +1,10 @@
 ---
+# Grid Advanced-Column Transformers
+grid.advanced-column.advancedColumns.coreshop_store_values_field: 'CoreShop Store Values Field'
+coreshop_grid_transformer_store_values_field_store: 'Store'
+coreshop_grid_transformer_store_values_field_store_required: 'Bitte einen Store auswählen.'
+coreshop_grid_transformer_store_values_field_field: 'Feld'
+coreshop_grid_transformer_store_values_field_field_help: 'Eigenschaft aus dem Store-Values-Block (z. B. "price"). Bei "price" ist das Ergebnis Integer-Cents — verkette mit "CoreShop Price Formatter", um es als Währung anzuzeigen.'
 coreshop_loading: 'CoreShop lädt'
 coreshop_about: 'Über CoreShop'
 coreshop_studio_form_demos: 'StudioForm Demos'

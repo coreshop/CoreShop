@@ -1,4 +1,18 @@
 ---
+# Grid Advanced-Column Transformers (label shown in dropdown)
+grid.advanced-column.advancedColumns.coreshop_order_state: 'CoreShop Order State'
+grid.advanced-column.advancedColumns.coreshop_price_formatter: 'CoreShop Price Formatter'
+coreshop_grid_transformer_order_state_workflow: 'Workflow'
+coreshop_grid_transformer_order_state_workflow_required: 'Please select a workflow.'
+coreshop_grid_transformer_order_state_workflow_order: 'Order'
+coreshop_grid_transformer_order_state_workflow_payment: 'Payment'
+coreshop_grid_transformer_order_state_workflow_shipment: 'Shipment'
+coreshop_grid_transformer_order_state_workflow_invoice: 'Invoice'
+coreshop_grid_transformer_order_state_highlight_label: 'Highlight Label'
+coreshop_grid_transformer_price_formatter_currency_iso_code: 'Static Currency ISO Code'
+coreshop_grid_transformer_price_formatter_currency_iso_code_help: 'ISO 4217 currency code (e.g. "EUR"). Used when no currency field is set.'
+coreshop_grid_transformer_price_formatter_currency_field: 'Currency Field Name'
+coreshop_grid_transformer_price_formatter_currency_field_help: 'Name of a sibling source field (in the same advanced column) containing the currency ISO code. Overrides the static code. The sibling field is consumed and not shown in the output.'
 coreshop_save_error: 'Error saving item'
 coreshop_cart_price_rule: 'Cart Price Rule'
 coreshop_product: 'Product'
