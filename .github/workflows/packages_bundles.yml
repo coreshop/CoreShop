@@ -55,6 +55,9 @@ jobs:
         pimcore: [ ^12.3 ]
         dependencies: [ highest, lowest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
+        exclude:
+          - php: 8.4
+            dependencies: lowest
 
     steps:
       - uses: actions/checkout@v4

@@ -129,6 +129,28 @@
                                 "visibleSearch": false
                             },
                             {
+                                "fieldtype": "datetime",
+                                "queryColumnType": "bigint",
+                                "columnType": "bigint",
+                                "phpdocType": "\\Carbon\\Carbon",
+                                "defaultValue": null,
+                                "useCurrentDate": false,
+                                "name": "passwordResetHashCreatedAt",
+                                "title": "Reset Password Hash Created At",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": true,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
+                            {
                                 "fieldtype": "coreShopRelation",
                                 "stack": "coreshop.customer",
                                 "relationType": true,
