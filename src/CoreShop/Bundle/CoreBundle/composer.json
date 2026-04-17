@@ -57,10 +57,10 @@
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "fakerphp/faker": "^1.16",
         "rinvex/countries": "^9.0",
-        "pimcore/pimcore": "^12.0"
+        "pimcore/pimcore": "^2026.1"
     },
     "require-dev": {
-        "pimcore/studio-ui-bundle": "^2025.4",
+        "pimcore/studio-ui-bundle": "^2026.1",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0"
@@ -88,8 +88,6 @@
         "sort-packages": true
     },
     "suggest": {
-        "pimcore/studio-ui-bundle": "^0.6.30 - Modern React-based Studio UI for Pimcore (recommended)",
-        "pimcore/admin-ui-classic-bundle": "^2.0 - Classic ExtJS-based admin interface for Pimcore (legacy)",
         "pimcore/elasticsearch-client": "Allows to use ElasticSearch as your index engine.",
         "pimcore/newsletter-bundle": "^2.0 - Enables Pimcore Newsletter document type and field integrations",
         "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine."

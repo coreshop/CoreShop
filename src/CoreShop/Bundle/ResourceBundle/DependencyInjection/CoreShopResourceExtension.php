@@ -52,10 +52,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             $container->setAlias('coreshop.translation_locale_provider', $configs['translation']['locale_provider']);
         }
 
-        if (array_key_exists('pimcore_admin', $configs)) {
-            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
-        }
-
         if (!$container->hasParameter('coreshop.all.pimcore_classes')) {
             $container->setParameter('coreshop.all.pimcore_classes', []);
         }
@@ -65,10 +61,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
         }
 
         $bundles = $container->getParameter('kernel.bundles');
-
-        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
-            $loader->load('services/classic_admin.yml');
-        }
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');

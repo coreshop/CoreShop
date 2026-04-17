@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "pimcore/pimcore": "^12.0",
+        "pimcore/pimcore": "^2026.1",
         "coreshop/pimcore": "^5.0",
         "behat/behat": "^3.8",
         "robertfausk/behat-panther-extension": "^1.0",
@@ -68,7 +68,6 @@
         "sort-packages": true
     },
     "suggest": {
-        "pimcore/admin-ui-classic-bundle": "^2.0 - Classic ExtJS-based admin interface for Pimcore (legacy)",
         "pimcore/newsletter-bundle": "^2.0 - Enables Pimcore Newsletter document type and field integrations"
     }
 }

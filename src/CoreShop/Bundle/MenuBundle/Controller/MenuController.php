@@ -21,29 +21,13 @@ use CoreShop\Bundle\MenuBundle\Renderer\StudioRenderer;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class MenuController
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
     ) {
-    }
-    public function menuAction(string $type, Environment $twig): Response
-    {
-        $result = $twig->render('@CoreShopMenu/menu.js.twig', [
-            'type' => $type,
-            'typeId' => str_replace('.', '_', $type),
-        ]);
-
-        $response = new Response($result);
-        $response->headers->set('Content-Type', 'application/javascript');
-        $response->headers->set('Pragma', 'no-cache');
-        $response->headers->set('Expires', '0');
-
-        return $response;
     }
 
     public function jsonAction(

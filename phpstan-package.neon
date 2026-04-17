@@ -10,12 +10,6 @@ parameters:
         - '**/ProcessManager/IndexProcess.php'
         - '**/DataHub/*.php'
         - 'vendor/***'
-        # Optional admin-ui-classic-bundle listeners
-        - '**/EventListener/MenuAdminListener.php'
-        - '**/EventListener/PimcoreAdminListener.php'
-        # Optional admin-ui-classic-bundle GridColumnConfig (causes internal error)
-        - '**/Pimcore/GridColumnConfig/ResourceFieldGetter.php'
-        - '**/AdminClass/Pimcore/GridColumnConfig/*.php'
         # Optional studio bundles
         - '**/Studio/*.php'
         - '**/Studio/**/*.php'

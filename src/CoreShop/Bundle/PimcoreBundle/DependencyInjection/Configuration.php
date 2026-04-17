@@ -33,36 +33,7 @@ final class Configuration implements ConfigurationInterface
             ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
             ->end()
         ;
-        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
-    }
-
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
-    {
-        $node->children()
-            ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                ->end()
-            ->end()
-        ->end()
-        ;
     }
 }

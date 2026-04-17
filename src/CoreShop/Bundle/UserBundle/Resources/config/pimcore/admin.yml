@@ -1,6 +1,0 @@
-core_shop_user:
-    pimcore_admin:
-        js:
-            resource: '/bundles/coreshopuser/pimcore/js/resource.js'
-        css:
-            usre: '/bundles/coreshopuser/pimcore/css/user.css'

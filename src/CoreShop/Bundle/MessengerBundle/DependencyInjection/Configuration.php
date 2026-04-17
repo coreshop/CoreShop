@@ -33,8 +33,6 @@ final class Configuration implements ConfigurationInterface
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
-        $this->addPimcoreResourcesSection($rootNode);
-
         /** @psalm-suppress PossiblyUndefinedMethod */
         $rootNode
             ->children()
@@ -50,35 +48,4 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
-    {
-        $node->children()
-            ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('js')
-                            ->useAttributeAsKey('name')
-                            ->prototype('scalar')->end()
-                        ->end()
-                    ->arrayNode('css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->scalarNode('permissions')
-                        ->cannotBeOverwritten()
-                        ->defaultValue(['messenger'])
-                    ->end()
-                ->end()
-            ->end()
-        ->end()
-        ;
-    }
 }

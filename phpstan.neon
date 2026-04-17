@@ -12,8 +12,6 @@ parameters:
         - '**/DependencyInjection/Configuration.php'
         - '**/Migrations/Version*.php'
         - '**/DataHub/*.php'
-        # Optional admin-ui-classic-bundle GridColumnConfig
-        - '**/AdminClass/Pimcore/GridColumnConfig/*.php'
         # Optional studio bundles
         - '**/Studio/*.php'
         - '**/Studio/**/*.php'

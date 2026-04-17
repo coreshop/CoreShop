@@ -30,7 +30,7 @@
         "coreshop/locale": "^5.0",
         "doctrine/orm": "^3.0",
         "webmozart/assert": "^1.10",
-        "pimcore/pimcore": "^12.0",
+        "pimcore/pimcore": "^2026.1",
         "symfony/finder": "^6.4.14 || ^7.2"
     },
     "require-dev": {

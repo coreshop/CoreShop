@@ -492,7 +492,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         datetime?: array{
  *             default_format?: scalar|Param|null, // Default: "Y-m-d\\TH:i:sP"
  *             default_deserialization_formats?: list<scalar|Param|null>,
- *             default_timezone?: scalar|Param|null, // Default: "Europe/Berlin"
+ *             default_timezone?: scalar|Param|null, // Default: "UTC"
  *             cdata?: scalar|Param|null, // Default: true
  *         },
  *         array_collection?: array{
@@ -592,7 +592,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             datetime?: array{
  *                 default_format?: scalar|Param|null, // Default: "Y-m-d\\TH:i:sP"
  *                 default_deserialization_formats?: list<scalar|Param|null>,
- *                 default_timezone?: scalar|Param|null, // Default: "Europe/Berlin"
+ *                 default_timezone?: scalar|Param|null, // Default: "UTC"
  *                 cdata?: scalar|Param|null, // Default: true
  *             },
  *             array_collection?: array{
@@ -688,12 +688,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * }
  * @psalm-type CoreShopPimcoreConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *     },
  * }
  * @psalm-type CoreShopLocaleConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
@@ -746,26 +740,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         locale_provider?: scalar|Param|null, // Default: "CoreShop\\Component\\Resource\\Translation\\Provider\\TranslationLocaleProviderInterface"
  *     },
  *     drivers?: list<"doctrine/orm"|Param>,
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *     },
  *     orm_cascade_merge_associations?: array<string, array{ // Default: []
  *         associations?: list<scalar|Param|null>,
  *     }>,
  * }
  * @psalm-type CoreShopSeoConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
- * }
- * @psalm-type CoreShopMoneyConfig = array{
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *     },
  * }
  * @psalm-type CoreShopWorkflowConfig = array{
  *     state_machine?: array<string, array{ // Default: []
@@ -804,13 +784,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     }>,
  * }
  * @psalm-type CoreShopMessengerConfig = array{
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["messenger"]
- *     },
  *     doctrine?: array{
  *         table_name?: scalar|Param|null, // Default: null
  *         connection?: scalar|Param|null, // Default: null
@@ -839,12 +812,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 repository?: scalar|Param|null,
  *             },
  *         },
- *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
  *     },
  * }
  * @psalm-type CoreShopConfigurationConfig = array{
@@ -1052,16 +1019,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["cart_price_rule","order_list","order_detail","order_create","quote_list","quote_detail","quote_create","cart_list","cart_detail","cart_create"]
- *         install?: array{
- *             grid_config?: list<scalar|Param|null>,
- *         },
- *     },
  *     stack?: array{
  *         purchasable?: scalar|Param|null, // Default: "CoreShop\\Component\\Order\\Model\\PurchasableInterface"
  *         order?: scalar|Param|null, // Default: "CoreShop\\Component\\Order\\Model\\OrderInterface"
@@ -1124,16 +1081,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["customer_list","customer_group_list"]
- *         install?: array{
- *             grid_config?: list<scalar|Param|null>,
- *         },
- *     },
  * }
  * @psalm-type CoreShopUserConfig = array{
  *     driver?: scalar|Param|null, // Default: "doctrine/orm"
@@ -1153,12 +1100,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 type?: scalar|Param|null, // Default: "object"
  *             },
  *         },
- *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
  *     },
  * }
  * @psalm-type CoreShopInventoryConfig = array{
@@ -1204,12 +1145,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 type?: scalar|Param|null, // Default: "object"
  *             },
  *         },
- *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
  *     },
  *     redirect_to_main_variant?: scalar|Param|null, // Default: true
  * }
@@ -1380,13 +1315,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["product_price_rule","product_unit"]
- *     },
  *     stack?: array{
  *         product?: scalar|Param|null, // Default: "CoreShop\\Component\\Product\\Model\\ProductInterface"
  *         category?: scalar|Param|null, // Default: "CoreShop\\Component\\Product\\Model\\CategoryInterface"
@@ -1505,13 +1433,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["country","state","zone"]
- *     },
  * }
  * @psalm-type CoreShopCurrencyConfig = array{
  *     money_decimal_factor?: int|Param, // Default: 100
@@ -1545,13 +1466,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 form?: scalar|Param|null, // Default: "CoreShop\\Bundle\\CurrencyBundle\\Form\\Type\\ExchangeRateType"
  *             },
  *         },
- *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["currency","exchange_rate"]
  *     },
  * }
  * @psalm-type CoreShopTaxationConfig = array{
@@ -1617,13 +1531,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["tax_rate","tax_rule_group"]
- *     },
  * }
  * @psalm-type CoreShopStoreConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
@@ -1643,13 +1550,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 form?: scalar|Param|null, // Default: "CoreShop\\Bundle\\StoreBundle\\Form\\Type\\StoreType"
  *             },
  *         },
- *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["store"]
  *     },
  * }
  * @psalm-type CoreShopIndexConfig = array{
@@ -1703,13 +1603,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 form?: scalar|Param|null, // Default: "CoreShop\\Bundle\\IndexBundle\\Form\\Type\\FilterConditionType"
  *             },
  *         },
- *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["index","filter"]
  *     },
  *     mapping_types?: array<string, scalar|Param|null>,
  *     worker_mapping_types?: array<string, array<string, scalar|Param|null>>,
@@ -1768,13 +1661,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 form?: scalar|Param|null, // Default: "CoreShop\\Bundle\\ShippingBundle\\Form\\Type\\ShippingRuleGroupType"
  *             },
  *         },
- *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["carrier","shipping_rule"]
  *     },
  * }
  * @psalm-type CoreShopPaymentConfig = array{
@@ -1855,13 +1741,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["payment_provider","payment_provider_rule"]
- *     },
  * }
  * @psalm-type CoreShopSequenceConfig = array{
  *     resources?: array{
@@ -1913,13 +1792,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["notification"]
- *     },
  * }
  * @psalm-type CoreShopTrackingConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
@@ -1935,13 +1807,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         valid_sort_options?: list<scalar|Param|null>,
  *         default_sort_name?: scalar|Param|null, // Default: "name"
  *         default_sort_direction?: scalar|Param|null, // Default: "asc"
- *     },
- *     pimcore_admin?: array{
- *         install?: array{
- *             routes?: list<scalar|Param|null>,
- *             documents?: list<scalar|Param|null>,
- *             image_thumbnails?: list<scalar|Param|null>,
- *         },
  *     },
  *     controllers?: array{
  *         index?: scalar|Param|null, // Default: "CoreShop\\Bundle\\FrontendBundle\\Controller\\IndexController"
@@ -1992,13 +1857,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 form?: scalar|Param|null, // Default: "CoreShop\\Bundle\\ProductQuantityPriceRulesBundle\\Form\\Type\\ProductQuantityPriceRuleType"
  *             },
  *         },
- *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array<string, scalar|Param|null>,
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *         permissions?: scalar|Param|null, // Default: ["notification"]
  *     },
  * }
  * @psalm-type CoreShopWishlistConfig = array{
@@ -3725,16 +3583,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
- *     pimcore_admin?: array{
- *         js?: array<string, scalar|Param|null>,
- *         css?: array{
- *             core?: scalar|Param|null, // Default: "/bundles/coreshopcore/pimcore/css/core.css"
- *             ...<string, mixed>
- *         },
- *         permissions?: scalar|Param|null, // Default: ["settings","ctc_assign_to_new","ctc_assign_to_existing"]
- *         editmode_js?: array<string, scalar|Param|null>,
- *         editmode_css?: array<string, scalar|Param|null>,
- *     },
  *     checkout?: array<string, array{ // Default: []
  *         steps?: array<string, array{ // Default: []
  *             step?: scalar|Param|null,
@@ -4538,7 +4386,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     core_shop_locale?: CoreShopLocaleConfig,
  *     core_shop_resource?: CoreShopResourceConfig,
  *     core_shop_seo?: CoreShopSeoConfig,
- *     core_shop_money?: CoreShopMoneyConfig,
  *     core_shop_workflow?: CoreShopWorkflowConfig,
  *     core_shop_messenger?: CoreShopMessengerConfig,
  *     core_shop_rule?: CoreShopRuleConfig,
