@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\InstallProfile;
 
 use Pimcore\Bundle\InstallBundle\EnvVarDefinition\Definitions\DatabaseEnvVarDefinition;
+use Pimcore\Bundle\InstallBundle\EnvVarDefinition\Definitions\DoctrineMessengerEnvVarDefinition;
+use Pimcore\Bundle\InstallBundle\EnvVarDefinition\Definitions\OpenSearchEnvVarDefinition;
 use Pimcore\Bundle\InstallBundle\Profile\DataSource\DataSourceInterface;
 use Pimcore\Bundle\InstallBundle\Profile\InstallProfileInterface;
 
@@ -60,6 +62,12 @@ final readonly class CoreShopInstallProfile implements InstallProfileInterface
     {
         return [
             new DatabaseEnvVarDefinition(),
+            // Pimcore 2026.1 requires exactly one SearchEngineDefinitionInterface and one
+            // MessengerTransportDefinitionInterface per profile. OpenSearch is the default search
+            // backend for CoreShop; the Doctrine transport reuses the app database so no separate
+            // broker is needed.
+            new OpenSearchEnvVarDefinition(),
+            new DoctrineMessengerEnvVarDefinition(),
         ];
     }
 

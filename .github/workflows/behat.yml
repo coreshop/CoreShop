@@ -28,6 +28,7 @@ env:
   CORESHOP_SKIP_DB_SETUP: "1"
   PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
   DATABASE_URL: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+  PIMCORE_OPENSEARCH_DSN: "opensearch://127.0.0.1:9200?ssl=false&ssl_verify=false"
   PIMCORE_ADMIN_USER: "admin"
   PIMCORE_ADMIN_PASSWORD: "admin"
   PIMCORE_KERNEL_CLASS: 'Kernel'

@@ -110,6 +110,12 @@
                 <referencedMethod name="Pimcore\Bundle\AdminBundle\Controller\AdminController::getAdminUser" />
                 <referencedMethod name="Doctrine\DBAL\Query\QueryBuilder::getQueryPart" />
                 <referencedMethod name="Symfony\Component\HttpFoundation\Request::get" />
+                <referencedMethod name="Doctrine\DBAL\Connection::quoteIdentifier" />
+                <referencedMethod name="Doctrine\DBAL\Schema\AbstractAsset::getName" />
+                <referencedMethod name="Doctrine\DBAL\Schema\AbstractSchemaManager::introspectTable" />
+                <referencedMethod name="Doctrine\DBAL\Schema\AbstractSchemaManager::listTableNames" />
+                <referencedMethod name="Doctrine\DBAL\Schema\AbstractSchemaManager::listViews" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Table::setPrimaryKey" />
             </errorLevel>
         </DeprecatedMethod>
         <UndefinedInterfaceMethod>
