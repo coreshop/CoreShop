@@ -119,8 +119,8 @@ CoreShop:
         --skip-validation \
         --no-interaction
     ```
-    The profile expects `PIMCORE_INSTALL_MYSQL_*` env vars (host, user, password, database, port)
-    plus `PIMCORE_ADMIN_USER` / `PIMCORE_ADMIN_PASSWORD`. See
+    The profile expects `DATABASE_URL` (a Doctrine DBAL DSN, e.g.
+    `mysql://user:pass@host:3306/dbname`) plus `PIMCORE_ADMIN_USER` / `PIMCORE_ADMIN_PASSWORD`. See
     `CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile` for the env var definitions
     it registers. All CoreShop-specific install steps (Pimcore classes, permissions, documents,
     fixtures) run in the next step.
