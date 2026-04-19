@@ -17,11 +17,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\InstallProfile;
 
+use Pimcore\Bundle\GenericDataIndexBundle\PimcoreGenericDataIndexBundle;
+use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
 use Pimcore\Bundle\InstallBundle\EnvVarDefinition\Definitions\DatabaseEnvVarDefinition;
 use Pimcore\Bundle\InstallBundle\EnvVarDefinition\Definitions\DoctrineMessengerEnvVarDefinition;
 use Pimcore\Bundle\InstallBundle\EnvVarDefinition\Definitions\OpenSearchEnvVarDefinition;
 use Pimcore\Bundle\InstallBundle\Profile\DataSource\DataSourceInterface;
 use Pimcore\Bundle\InstallBundle\Profile\InstallProfileInterface;
+use Pimcore\Bundle\StudioBackendBundle\PimcoreStudioBackendBundle;
+use Pimcore\Bundle\StudioUiBundle\PimcoreStudioUiBundle;
 
 /**
  * Minimal CoreShop install profile.
@@ -51,11 +55,17 @@ final readonly class CoreShopInstallProfile implements InstallProfileInterface
 
     public function getBundles(): array
     {
-        // CoreShop pulls all its bundles in via composer requirements and dependent-bundle
-        // registration (see CoreShopResourceBundle::registerDependentBundles). Nothing to
-        // add here — the installer only needs Pimcore's own core bundles, which it always
-        // enables regardless of this list.
-        return [];
+        // The Studio UI, Studio Backend, Generic Data Index and Generic Execution Engine bundles
+        // have their own installers (schema, permissions, search indexes) that must run during the
+        // Pimcore install step. CoreShop's own bundles are registered via composer / dependent-
+        // bundle chains (see CoreShopResourceBundle::registerDependentBundles) and install their
+        // resources via the dedicated `coreshop:install` command afterwards.
+        return [
+            PimcoreGenericDataIndexBundle::class,
+            PimcoreGenericExecutionEngineBundle::class,
+            PimcoreStudioBackendBundle::class,
+            PimcoreStudioUiBundle::class,
+        ];
     }
 
     public function getEnvVarDefinitions(): array
