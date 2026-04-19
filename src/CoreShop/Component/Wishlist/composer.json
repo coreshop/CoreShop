@@ -24,12 +24,12 @@
         }
     ],
     "require": {
-        "coreshop/resource": "^5.0",
-        "coreshop/store": "^5.0",
-        "coreshop/pimcore": "^5.0",
-        "coreshop/customer": "^5.0",
-        "coreshop/product": "^5.0",
-        "coreshop/storage-list": "^5.0",
+        "coreshop/resource": "^2026.1",
+        "coreshop/store": "^2026.1",
+        "coreshop/pimcore": "^2026.1",
+        "coreshop/customer": "^2026.1",
+        "coreshop/product": "^2026.1",
+        "coreshop/storage-list": "^2026.1",
         "pimcore/pimcore": "^2026.1"
     },
     "require-dev": {

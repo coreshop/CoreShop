@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "coreshop/user": "^5.0",
-        "coreshop/resource-bundle": "^5.0",
+        "coreshop/user": "^2026.1",
+        "coreshop/resource-bundle": "^2026.1",
         "pimcore/pimcore": "^2026.1"
     },
     "require-dev": {

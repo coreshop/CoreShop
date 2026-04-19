@@ -24,10 +24,10 @@
         }
     ],
     "require": {
-        "coreshop/order-bundle": "^5.0",
-        "coreshop/payment-bundle": "^5.0",
-        "coreshop/payum-payment-bundle": "^5.0",
-        "coreshop/core": "^5.0",
+        "coreshop/order-bundle": "^2026.1",
+        "coreshop/payment-bundle": "^2026.1",
+        "coreshop/payum-payment-bundle": "^2026.1",
+        "coreshop/core": "^2026.1",
         "payum/payum-bundle": "^2.6.2",
         "payum/payum": "^1.7",
         "php-http/message-factory": "^1.0",

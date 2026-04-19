@@ -24,10 +24,10 @@
         }
     ],
     "require": {
-        "coreshop/resource-bundle": "^5.0",
-        "coreshop/currency-bundle": "^5.0",
-        "coreshop/theme-bundle": "^5.0",
-        "coreshop/store": "^5.0",
+        "coreshop/resource-bundle": "^2026.1",
+        "coreshop/currency-bundle": "^2026.1",
+        "coreshop/theme-bundle": "^2026.1",
+        "coreshop/store": "^2026.1",
         "pimcore/pimcore": "^2026.1"
     },
     "require-dev": {

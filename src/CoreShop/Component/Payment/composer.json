@@ -25,9 +25,9 @@
     ],
     "require": {
         "php": "~8.4.0 || ~8.5.0",
-        "coreshop/resource": "^5.0",
-        "coreshop/registry": "^5.0",
-        "coreshop/rule": "^5.0"
+        "coreshop/resource": "^2026.1",
+        "coreshop/registry": "^2026.1",
+        "coreshop/rule": "^2026.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",

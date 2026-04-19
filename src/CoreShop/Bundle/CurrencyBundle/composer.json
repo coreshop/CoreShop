@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "coreshop/currency": "^5.0",
-        "coreshop/resource-bundle": "^5.0",
+        "coreshop/currency": "^2026.1",
+        "coreshop/resource-bundle": "^2026.1",
         "pimcore/pimcore": "^2026.1",
         "symfony/intl": "^6.4.14 || ^7.2"
     },

@@ -24,9 +24,9 @@
         }
     ],
     "require": {
-        "coreshop/taxation": "^5.0",
-        "coreshop/resource-bundle": "^5.0",
-        "coreshop/money-bundle": "^5.0",
+        "coreshop/taxation": "^2026.1",
+        "coreshop/resource-bundle": "^2026.1",
+        "coreshop/money-bundle": "^2026.1",
         "pimcore/pimcore": "^2026.1"
     },
     "require-dev": {

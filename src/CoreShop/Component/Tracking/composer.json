@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "coreshop/registry": "^5.0"
+        "coreshop/registry": "^2026.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",

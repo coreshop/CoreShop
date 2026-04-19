@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "coreshop/registry": "^5.0",
-        "coreshop/pimcore-bundle": "^5.0",
+        "coreshop/registry": "^2026.1",
+        "coreshop/pimcore-bundle": "^2026.1",
         "sylius/theme-bundle": "^2.2",
         "pimcore/pimcore": "^2026.1"
     },

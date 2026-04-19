@@ -24,9 +24,9 @@
         }
     ],
     "require": {
-        "coreshop/resource-bundle": "^5.0",
-        "coreshop/storage-list-bundle": "^5.0",
-        "coreshop/wishlist": "^5.0"
+        "coreshop/resource-bundle": "^2026.1",
+        "coreshop/storage-list-bundle": "^2026.1",
+        "coreshop/wishlist": "^2026.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",

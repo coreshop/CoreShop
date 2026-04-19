@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "coreshop/resource-bundle": "^5.0",
-        "coreshop/variant": "^5.0"
+        "coreshop/resource-bundle": "^2026.1",
+        "coreshop/variant": "^2026.1"
     },
     "require-dev": {
         "pimcore/studio-ui-bundle": "^2026.1",

@@ -24,9 +24,9 @@
         }
     ],
     "require": {
-        "coreshop/locale": "^5.0",
-        "coreshop/pimcore-bundle": "^5.0",
-        "coreshop/resource-bundle": "^5.0",
+        "coreshop/locale": "^2026.1",
+        "coreshop/pimcore-bundle": "^2026.1",
+        "coreshop/resource-bundle": "^2026.1",
         "pimcore/pimcore": "^2026.1"
     },
     "require-dev": {

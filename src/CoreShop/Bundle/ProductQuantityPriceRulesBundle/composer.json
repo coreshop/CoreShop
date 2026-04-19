@@ -30,9 +30,9 @@
         }
     ],
     "require": {
-        "coreshop/product-quantity-price-rules": "^5.0",
-        "coreshop/rule-bundle": "^5.0",
-        "coreshop/money-bundle": "^5.0",
+        "coreshop/product-quantity-price-rules": "^2026.1",
+        "coreshop/rule-bundle": "^2026.1",
+        "coreshop/money-bundle": "^2026.1",
         "pimcore/pimcore": "^2026.1"
     },
     "require-dev": {
