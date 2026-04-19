@@ -74,31 +74,6 @@ class CustomConditionType extends AbstractType
 }
 ```
 
-Create a corresponding Pimcore Backend UI JavaScript file:
-
-```javascript
-pimcore.registerNS('coreshop.product.pricerules.conditions.custom');
-coreshop.product.pricerule.conditions.custom = Class.create(coreshop.rules.conditions.abstract, {
-    type: 'custom',
-
-    getForm: function () {
-        var textFieldValue = this.data && this.data.textField ? this.data.textField : null;
-
-        this.textField = new Ext.create({
-            xtype: 'textfield',
-            name: 'text-field',
-            value: textFieldValue
-        });
-
-        this.form = new Ext.form.Panel({
-            items: [this.textField]
-        });
-
-        return this.form;
-    }
-});
-```
-
 Extend the service definition to include your form type:
 
 ```yaml
@@ -108,6 +83,10 @@ services:
         tags:
             - { name: coreshop.product_price_rule.condition, type: custom, form-type: App\CoreShop\Form\Type\PriceRules\Condition\CustomCondition\CustomConditionType }
 ```
+
+The Studio UI renders the configuration form automatically from the registered Symfony `FormType`. See
+[Extending Rule Conditions — Pimcore Studio](../../../01_Extending_Guide/05_Extending_Rule_Conditions.md#rendering-the-condition-in-pimcore-studio)
+for the schema-driven and hand-written React variants.
 
 ## Resolving Autowiring Issues with Custom Conditions
 

@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "~8.4.0 || ~8.5.0",
         "coreshop/payment": "^5.0",
         "payum/payum": "^1.7",
         "symfony/http-client": "^6.4.14 || ^7.2"
@@ -49,8 +49,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {

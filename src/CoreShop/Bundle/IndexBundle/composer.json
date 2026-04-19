@@ -40,7 +40,7 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
-        "pimcore/opensearch-client": "^2.0"
+        "pimcore/opensearch-client": "^2026.1"
     },
     "autoload": {
         "psr-4": {
@@ -57,8 +57,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "2026.x-dev"
         },
         "pimcore": {
             "bundles": [

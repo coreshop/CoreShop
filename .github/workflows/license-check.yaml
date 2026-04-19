@@ -1,13 +1,13 @@
 name: License Check
 on:
   push:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '2026.x' ]
     paths:
       - 'composer.json'
       - '*/**/composer.json'
       - '.github/workflows/license-check.yaml'
   pull_request_target:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '2026.x' ]
     paths:
       - 'composer.json'
       - '*/**/composer.json'
@@ -35,8 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ 8.3, 8.4 ]
-        pimcore: [ ^12.3 ]
+        php: [ 8.4, 8.5 ]
+        pimcore: [ ^2026.1 ]
         dependencies: [ highest ]
     services:
       database:

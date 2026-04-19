@@ -26,7 +26,7 @@
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "~8.4.0 || ~8.5.0",
         "symfony/form": "^6.3 || ^7.0",
         "symfony/http-kernel": "^6.3 || ^7.0",
         "symfony/framework-bundle": "^6.3 || ^7.0",
@@ -54,8 +54,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {

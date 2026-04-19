@@ -1,7 +1,7 @@
 name: Behat
 on:
   push:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '2026.x' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -10,7 +10,7 @@ on:
       - 'src/**'
       - '.github/workflows/behat.yml'
   pull_request_target:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '2026.x' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -53,12 +53,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - php: 8.3
-            pimcore: ^12.3
+          - php: 8.4
+            pimcore: ^2026.1
             dependencies: highest
             allow-failure: false
-          - php: 8.4
-            pimcore: ^12.3
+          - php: 8.5
+            pimcore: ^2026.1
             dependencies: highest
             allow-failure: true
 

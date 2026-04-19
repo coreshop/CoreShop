@@ -31,7 +31,7 @@ jobs:
             target_branch: "5.0"
           -
             base_branch: "5.0"
-            target_branch: "next"
+            target_branch: "2026.x"
 
     steps:
       -

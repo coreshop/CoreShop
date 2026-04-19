@@ -4,4 +4,8 @@ coreshop_payment_after:
     defaults:
         _controller: CoreShop\Bundle\PayumBundle\Controller\PaymentController::afterCaptureAction
 
+coreshop_frontend_shop:
+    resource: routes/shop.yaml
 
+coreshop_frontend_partial:
+    resource: routes/partial.yaml

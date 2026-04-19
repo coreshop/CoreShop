@@ -65,25 +65,30 @@ public function registerBundlesToCollection(BundleCollection $collection)
            - { name: coreshop.menu, type: my_menu, menu: my_menu }
    ```
 
-### Implementing the ExtJs JavaScript Part
+### Wiring the Menu into Pimcore Studio
 
-1. **Add a JavaScript File**:
-   In your bundle's `Bundle.php` file, add the JavaScript file to the `jsPaths`
-   array: `/admin/coreshop/coreshop.my_menu/menu.js`
-2. **Instantiate the Menu**:
-   In your `startup.js` file, instantiate the menu:
+The Menu Bundle exposes menu definitions to Pimcore Studio via the JSON API at
+`/{backend}/coreshop/menus`. Studio fetches the serialized menu tree and renders it through its own React
+navigation shell — no additional JavaScript is required on your side.
 
-   ```javascript
-    new coreshop.menu.coreshop.my_menu();
+To react to a menu item click from a Studio plugin, subscribe to the menu event:
 
-    document.addEventListener(coreshop.events.menu.open, (e) => {
-        var item = e.detail.item;
+```typescript
+// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/main.ts
 
-        if (item.id === 'my-menu-item') {
-            alert('My Menu Item has been clicked');
-        }
-    });
-   ```
+import { IAbstractPlugin } from '@pimcore/studio-ui-bundle'
 
+const plugin: IAbstractPlugin = {
+    name: 'your-bundle',
 
+    onInit() {
+        document.addEventListener('coreshop.menu.open', (e: CustomEventInit) => {
+            if (e.detail?.item?.id === 'my-menu-item') {
+                // open your widget / tab / modal here
+            }
+        })
+    },
+}
 
+export default plugin
+```

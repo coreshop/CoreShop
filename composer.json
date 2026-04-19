@@ -86,7 +86,7 @@
     "coreshop/workflow-bundle": "self.version"
   },
   "require": {
-    "php": "^8.3",
+    "php": "~8.4.0 || ~8.5.0",
     "ext-json": "*",
     "doctrine/data-fixtures": "^1.8",
     "doctrine/dbal": "^4.2",
@@ -119,14 +119,12 @@
     "symfony/webpack-encore-bundle": "^2.4",
     "webmozart/assert": "^1.12"
   },
-    "suggest": {
-      "pimcore/newsletter-bundle": "^2.0 - Enables Pimcore Newsletter document type and field integrations",
-      "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine.",
-      "pimcore/elasticsearch-client": "Allows to use ElasticSearch as your index engine.",
-      "pimcore/generic-data-index-bundle": "^2.0 - Generic Data Index support for Pimcore Studio UI",
-      "pimcore/studio-ui-bundle": "^1.0 - Modern React-based Studio UI for Pimcore (recommended)",
-      "pimcore/google-marketing-bundle": "^2.0"
-    },
+  "suggest": {
+    "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine.",
+    "pimcore/elasticsearch-client": "Allows to use ElasticSearch as your index engine.",
+    "pimcore/generic-data-index-bundle": "^2.0 - Generic Data Index support for Pimcore Studio UI",
+    "pimcore/studio-ui-bundle": "^1.0 - Modern React-based Studio UI for Pimcore (recommended)"
+  },
   "conflict": {
     "ezimuel/ringphp": "<1.4",
     "symfony/error-handler": "<6.4.14"
@@ -148,9 +146,8 @@
     "phpstan/phpstan-symfony": "^2.0",
     "phpstan/phpstan-webmozart-assert": "^2.0",
     "phpunit/phpunit": "^10.0",
-    "pimcore/opensearch-client": "^2.1",
+    "pimcore/opensearch-client": "^2026.1",
     "pimcore/generic-data-index-bundle": "^2026.1",
-    "pimcore/google-marketing-bundle": "^2.0",
     "pimcore/studio-backend-bundle": "^2026.1",
     "pimcore/studio-ui-bundle": "^2026.1",
     "robertfausk/behat-panther-extension": "^1.2",

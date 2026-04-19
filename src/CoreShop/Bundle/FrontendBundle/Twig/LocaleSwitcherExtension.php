@@ -85,37 +85,7 @@ final class LocaleSwitcherExtension extends AbstractExtension
                 continue;
             }
 
-            $link = '';
-            if ($this->getMainRequest()->attributes->get('pimcore_request_source') === 'staticroute') {
-                $route = $this->getMainRequest()->attributes->get('_route');
-                if (!is_string($route)) {
-                    continue;
-                }
-
-                $staticRoute = null;
-                $staticRouteClass = self::getStaticRouteClass();
-                if (null !== $staticRouteClass) {
-                    $staticRoute = call_user_func([$staticRouteClass, 'getByName'], $route);
-                }
-
-                if ($staticRoute) {
-                    $params = [];
-                    if (str_contains((string) $staticRoute->getVariables(), '_locale')) {
-                        $params = ['_locale' => $language];
-                    }
-                    $link = $this->router->generate($route, $params);
-                }
-            } else {
-                if (isset($translations[$language])) {
-                    $localizedDocument = Document::getById($translations[$language]);
-                } else {
-                    $localizedDocument = Document::getByPath($target);
-                }
-
-                if ($localizedDocument instanceof Document && $localizedDocument->getPublished()) {
-                    $link = $localizedDocument->getFullPath();
-                }
-            }
+            $link = $this->resolveLocalizedLink($language, $target, $translations);
 
             if (!empty($link)) {
                 $links[] = [
@@ -129,6 +99,40 @@ final class LocaleSwitcherExtension extends AbstractExtension
         return $links;
     }
 
+    private function resolveLocalizedLink(string $language, string $target, array $translations): string
+    {
+        $request = $this->getMainRequest();
+        $route = $request->attributes->get('_route');
+
+        if (is_string($route) && $this->routeAcceptsLocale($route)) {
+            $params = $request->attributes->get('_route_params', []);
+            $params['_locale'] = $language;
+
+            return $this->router->generate($route, $params);
+        }
+
+        $localizedDocument = isset($translations[$language])
+            ? Document::getById($translations[$language])
+            : Document::getByPath($target);
+
+        if ($localizedDocument instanceof Document && $localizedDocument->getPublished()) {
+            return $localizedDocument->getFullPath();
+        }
+
+        return '';
+    }
+
+    private function routeAcceptsLocale(string $routeName): bool
+    {
+        $route = $this->router->getRouteCollection()->get($routeName);
+
+        if (null === $route) {
+            return false;
+        }
+
+        return in_array('_locale', $route->compile()->getVariables(), true);
+    }
+
     private function getMainRequest(): Request
     {
         $mainRequest = $this->requestStack->getMainRequest();
@@ -138,18 +142,5 @@ final class LocaleSwitcherExtension extends AbstractExtension
         }
 
         return $mainRequest;
-    }
-
-    /**
-     * @return class-string|null
-     */
-    private static function getStaticRouteClass(): ?string
-    {
-        $staticRouteClass = sprintf('Pimcore\\Bundle\\%s\\Model\\Staticroute', 'StaticRoutesBundle');
-        if (!class_exists($staticRouteClass)) {
-            return null;
-        }
-
-        return $staticRouteClass;
     }
 }

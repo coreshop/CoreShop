@@ -36,7 +36,7 @@ The build system auto-discovers all bundles with Studio assets under `src/CoreSh
 
 # Requirements
 
-- Pimcore `^12.3`
+- Pimcore `^2026.1`
 
 # Installation
 

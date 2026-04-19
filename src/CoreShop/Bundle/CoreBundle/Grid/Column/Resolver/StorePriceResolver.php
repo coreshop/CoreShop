@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\CoreBundle\Grid\Column\Resolver;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Bundle\StudioBackendBundle\Grid\Column\ColumnResolverInterface;
 use Pimcore\Bundle\StudioBackendBundle\Grid\Column\CoreElementColumnResolverInterface;
@@ -50,6 +51,7 @@ final class StorePriceResolver implements ColumnResolverInterface, CoreElementCo
 
         $config = $column->getConfig();
         $storeId = (int) ($config['storeId'] ?? 0);
+        /** @var StoreInterface|null $store */
         $store = $this->storeRepository->find($storeId);
 
         if ($store === null) {

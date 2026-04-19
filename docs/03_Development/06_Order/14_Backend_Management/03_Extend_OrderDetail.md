@@ -1,153 +1,74 @@
 # Extending Order Detail
 
-CoreShop's Order Detail Page is a custom-designed interface built with ExtJs, offering straightforward ways to extend
-and customize it according to your specific needs.
+CoreShop's Order Detail view in Pimcore Studio is composed of React blocks that can be extended or replaced via the
+Studio Extension System.
 
 ## UI Overview
 
-The Order Detail UI consists of various blocks strategically positioned for optimal user experience. There are four main
-positions for these blocks:
+The Studio Order Detail page is assembled from registered tab, action, and form extensions around the core sale data.
+Extensions are attached through the entity key `coreshop.order.sale` (and related order-bundle keys). See the
+[Extension System overview](../../14_Studio/02_Base_Infrastructure/04_Extensions.md) for the full slot/extension-type
+table.
 
-- **Top**: At the top of the page.
-- **Left**: On the left side of the page.
-- **Right**: On the right side of the page.
-- **Bottom**: At the bottom of the page.
+## Adding a Custom Tab to the Order Detail
 
-![Order Detail Positions](img/order_detail_positions.jpg)
+Register a `TabExtension` targeting the sale entity to add a new React tab next to the default ones (Items, Payments,
+Invoices, Shipments, Correspondence, Details):
 
-## Default Blocks
+```typescript
+// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/order-tabs/CustomTab.tsx
 
-The following are the default blocks provided by CoreShop:
+import React from 'react'
+import { Card } from 'antd'
+import type { EntityTabComponentProps } from '@coreshop/resource/src/entities'
 
-- **Top**
-    - Header
-- **Left**
-    - Payments
-    - Invoices
-    - Shipments
-    - Correspondence
-- **Right**
-    - Customer Details
-    - Comments
-- **Bottom**
-    - Details
-
-## Creating a New Block
-
-To introduce a new block, you'll need to create a new Pimcore Backend Javascript File, following the
-namespace `coreshop.order.order.detail.blocks`.
-
-### Example
-
-Below is a sample JavaScript code to demonstrate how to add a custom block:
-
-```javascript
-pimcore.registerNS('coreshop.order.order.detail.blocks.custom');
-coreshop.order.order.detail.blocks.custom = Class.create(coreshop.order.order.detail.abstractBlock, {
-    saleInfo: null,
-
-    initBlock: function () {
-        var me = this;
-
-        me.deliveryPhone = Ext.create({
-            xtype: 'panel',
-            style: 'display:block'
-        });
-
-        me.purchaseOrderNumber = Ext.create({
-            xtype: 'panel',
-            style: 'display:block'
-        });
-
-        me.trackingMail = Ext.create({
-            xtype: 'panel',
-            style: 'display:block'
-        });
-
-        me.packagingType = Ext.create({
-            xtype: 'panel',
-            style: 'display:block'
-        });
-
-        me.packagingAmount = Ext.create({
-            xtype: 'panel',
-            style: 'display:block'
-        });
-
-        var items = [];
-
-        items.push({
-            xtype: 'panel',
-            layout: 'hbox',
-            items: [
-                {
-                    xtype: 'panel',
-                    flex: 1,
-                    items: [
-                        me.purchaseOrderNumber,
-                        me.deliveryPhone,
-                        me.trackingMail
-                    ]
-                },
-                {
-                    xtype: 'panel',
-                    flex: 1,
-                    items: [
-                        me.packagingType,
-                        me.packagingAmount
-                    ]
-                }
-            ]
-        });
-
-        this.details = Ext.create('Ext.panel.Panel', {
-            title: t('zeroridge_order_informations'),
-            margin: '0 20 20 0',
-            border: true,
-            flex: 6,
-            iconCls: 'coreshop_icon_order',
-            items: items
-        });
-    },
-
-    getPriority: function () {
-        return 1;
-    },
-
-    getPosition: function () {
-        return 'left';
-    },
-
-    getPanel: function () {
-        return this.details;
-    },
-
-    updateSale: function () {
-        var me = this;
-
-        me.deliveryPhone.setHtml('<span style="font-weight:bold;">' + t('zeroridge_delivery_phone') + ': </span>' + me.sale.deliveryPhone);
-        me.purchaseOrderNumber.setHtml('<span style="font-weight:bold;">' + t('zeroridge_purchase_order_number') + ': </span>' + me.sale.purchaseOrderNumber);
-        me.trackingMail.setHtml('<span style="font-weight:bold;">' + t('zeroridge_tracking_mail') + ': </span>' + me.sale.trackingEmail);
-
-        if (me.sale.packagingType) {
-            me.packagingType.setHtml('<span style="font-weight:bold;">' + t('zeroridge_packaging_type') + ': </span>' + me.sale.packagingType.localizedfields.data.en.name);
-        } else {
-            me.packagingType.setHtml('<span style="font-weight:bold;">' + t('zeroridge_packaging_type') + ': </span> Unknown');
-        }
-
-        me.packagingAmount.setHtml('<span style="font-weight:bold;">' + t('zeroridge_packaging_amount') + ': </span>' + me.sale.packagingAmount);
-    }
-});
-
+export const CustomOrderTab: React.FC<EntityTabComponentProps> = ({ entity }) => {
+  return (
+    <Card title="Custom Information">
+      <div>Purchase Order Number: {entity.purchaseOrderNumber}</div>
+      <div>Delivery Phone: {entity.deliveryPhone}</div>
+    </Card>
+  )
+}
 ```
 
-In this custom block, the following methods must be implemented:
+Register the tab in your module's `onInit()`:
 
-- **initBlock**: Initializes the block upon creation.
-- **getPriority**: Determines the display priority of the block. Higher values mean higher placement.
-- **getPosition**: Specifies the position of the block (top, left, right, or bottom).
-- **getPanel**: Returns the ExtJs Panel representing the content of the block.
-- **updateSale**: Updates the block's content when the sale is refreshed
+```typescript
+// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/order-tabs/index.ts
+
+import { AbstractModule, moduleSystem } from '@pimcore/studio-ui-bundle'
+import { serviceIds as resourceServiceIds } from '@coreshop/resource/src/entities'
+import { CustomOrderTab } from './CustomTab'
+
+export class CustomOrderTabsModule extends AbstractModule {
+  onInit(): void {
+    const tabExtensions = this.serviceContainer.get(
+      resourceServiceIds.entityTabExtensionsServiceId
+    )
+
+    tabExtensions.register({
+      entityKey: 'coreshop.order.sale',
+      tab: {
+        id: 'custom-info',
+        label: 'Custom Info',
+        component: CustomOrderTab,
+        priority: 50,
+      },
+    })
+  }
+}
+```
+
+Activate the module from the bundle's `main.ts` via `onStartup({ moduleSystem })`.
+
+## Adding Toolbar / Context-Menu Actions
+
+Use an `ActionExtension` registered against the `coreshop.order.sale` entity to add buttons to the toolbar, context
+menu, or footer. A complete example of all seven extension types (form, column, save decorator, tab, action,
+validation, lifecycle) is shipped with the `CoreBundle`:
+
+`src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src/modules/extension/comprehensive-example/index.tsx`
 
 ## Customizing Order Serialization
 
@@ -155,4 +76,6 @@ CoreShop uses JMS Serializer for order serialization. You can extend its seriali
 Configuration or by registering an event handler for the `CoreShop\Bundle\OrderBundle\Events::SALE_DETAIL_PREPARE`
 event.
 
-If that isn't enough, you can create a Custom Controller and query that with Ext.Ajax and your own parameters.
+If that isn't enough, expose a custom Studio API controller (one action per controller, see
+[Studio Controllers](../../14_Studio/03_Backend/01_Controllers.md)) and call it from your React component with
+`fetch('/pimcore-studio/api/...')` or an RTK Query hook.

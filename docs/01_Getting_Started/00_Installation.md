@@ -70,8 +70,49 @@ CoreShop:
          - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
          - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
       ```
-5. Run Install Command `php bin/console coreshop:install`
-6. Optional: Install Demo Data `php bin/console coreshop:install:demo`
+5. **Activate Frontend Routes (opt-in).**
+   CoreShop's `FrontendBundle` does **not** auto-register its storefront URLs — you decide whether your project wants
+   them. Add the import to `config/routes.yaml`:
+    ```yaml
+    # config/routes.yaml
+    _pimcore:
+        resource: "@PimcoreCoreBundle/config/routing.yaml"
+
+    coreshop_frontend:
+        resource: "@CoreShopFrontendBundle/Resources/config/routes.yaml"
+    ```
+   This loads the full route tree:
+    - `coreshop_payment_after` (`/cs/after-pay`) — Payum return URL
+    - `coreshop_frontend_shop` — ~35 locale-prefixed shop routes under `/{_locale}/shop/…` (index, cart, catalog,
+      checkout, customer, wishlist)
+    - `coreshop_frontend_partial` — ESI/ajax fragments under `/{_locale}/_partial/…`
+
+   **Need only a subset?** Import the sub-files directly instead of the top-level file. Example — a headless project
+   that still needs the payment callback but no storefront:
+    ```yaml
+    # config/routes.yaml
+    coreshop_payment_after:
+        path: /cs/after-pay
+        methods: [GET, POST]
+        defaults:
+            _controller: CoreShop\Bundle\PayumBundle\Controller\PaymentController::afterCaptureAction
+    ```
+   Example — shop with custom checkout pages (skip CoreShop's `/shop/checkout/*`):
+    ```yaml
+    coreshop_frontend_shop_index:
+        resource: "@CoreShopFrontendBundle/Resources/config/routes/shop/index.yaml"
+        prefix:   /{_locale}/shop
+        requirements: { _locale: '[a-z]{2}(_[A-Z]{2})?' }
+
+    coreshop_frontend_shop_cart:
+        resource: "@CoreShopFrontendBundle/Resources/config/routes/shop/cart.yaml"
+        prefix:   /{_locale}/shop
+        requirements: { _locale: '[a-z]{2}(_[A-Z]{2})?' }
+
+    # …skipped: shop/checkout.yaml — your project defines its own
+    ```
+6. Run Install Command `php bin/console coreshop:install`
+7. Optional: Install Demo Data `php bin/console coreshop:install:demo`
 
 ## Messenger
 
