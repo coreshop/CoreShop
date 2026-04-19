@@ -40,8 +40,6 @@ doctrine:
                 class: CoreShop\Component\Resource\Doctrine\Type\DeprecatedObjectType
             cs_object:
                 class: CoreShop\Component\Resource\Doctrine\Type\DeprecatedObjectType
-        mapping_types:
-            enum: string
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         default_entity_manager: default
