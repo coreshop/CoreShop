@@ -32,9 +32,9 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use Pimcore\Bundle\GoogleMarketingBundle\Code\CodeCollector;
-use Pimcore\Bundle\GoogleMarketingBundle\Tracker\AbstractTracker;
-use Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Code\CodeCollector;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\AbstractTracker;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker;
 use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context

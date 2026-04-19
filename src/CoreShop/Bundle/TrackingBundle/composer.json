@@ -54,8 +54,5 @@
     },
     "config": {
         "sort-packages": true
-    },
-    "suggest": {
-        "pimcore/google-marketing-bundle": "^2.0 - Enables Google Marketing tracking integrations"
     }
 }
