@@ -34,6 +34,7 @@ parameters:
 
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)/'
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface/'
+        - '/Call to method (arrayNode|scalarNode|booleanNode|integerNode|floatNode|enumNode|variableNode)\(\) on an unknown class Symfony\\Component\\Config\\Definition\\Builder\\NodeBuilder/'
         - '/Call to an undefined method Pimcore\\Model\\\(.*\)::save\(\)./'
         - '/Call to an undefined method Pimcore\\Model\\\(.*\)::delete\(\)./'
         - '/Method Pimcore\\Model\\DataObject\\Concrete::getLatestVersion\(\)(.*)/'

@@ -111,8 +111,21 @@ CoreShop:
 
     # …skipped: shop/checkout.yaml — your project defines its own
     ```
-6. Run Install Command `php bin/console coreshop:install`
-7. Optional: Install Demo Data `php bin/console coreshop:install:demo`
+6. Install Pimcore using the CoreShop install profile — sets up the database only. CoreShop's own
+   classes, permissions, and fixtures follow in step 7.
+    ```bash
+    vendor/bin/pimcore-install \
+        --install-profile 'CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile' \
+        --skip-validation \
+        --no-interaction
+    ```
+    The profile expects `PIMCORE_INSTALL_MYSQL_*` env vars (host, user, password, database, port)
+    plus `PIMCORE_ADMIN_USER` / `PIMCORE_ADMIN_PASSWORD`. See
+    `CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile` for the env var definitions
+    it registers. All CoreShop-specific install steps (Pimcore classes, permissions, documents,
+    fixtures) run in the next step.
+7. Run CoreShop install: `php bin/console coreshop:install`
+8. Optional: Install Demo Data `php bin/console coreshop:install:demo`
 
 ## Messenger
 

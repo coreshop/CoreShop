@@ -143,7 +143,7 @@ jobs:
           EOF
 
       - name: Install Pimcore
-        run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
+        run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --install-profile 'CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile' --skip-validation --no-interaction
 
       - name: Install Pimcore Bundles
         run: |
