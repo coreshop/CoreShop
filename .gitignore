@@ -68,4 +68,5 @@ settings.local.json
 .rsbuild
 
 # CoreShop Studio Build Output
-src/CoreShop/Bundle/*/Resources/public/studio/*/
+src/CoreShop/Bundle/*/Resources/public/studio/*/.aim/
+TODO.md
