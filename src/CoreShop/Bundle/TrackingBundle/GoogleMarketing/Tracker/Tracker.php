@@ -23,19 +23,19 @@ use CoreShop\Bundle\TrackingBundle\GoogleMarketing\SiteId\SiteId;
 
 class Tracker extends AbstractTracker
 {
-    public const BLOCK_BEFORE_SCRIPT_TAG = 'beforeScriptTag';
+    public const string BLOCK_BEFORE_SCRIPT_TAG = 'beforeScriptTag';
 
-    public const BLOCK_BEFORE_SCRIPT = 'beforeScript';
+    public const string BLOCK_BEFORE_SCRIPT = 'beforeScript';
 
-    public const BLOCK_BEFORE_INIT = 'beforeInit';
+    public const string BLOCK_BEFORE_INIT = 'beforeInit';
 
-    public const BLOCK_BEFORE_TRACK = 'beforeTrack';
+    public const string BLOCK_BEFORE_TRACK = 'beforeTrack';
 
-    public const BLOCK_AFTER_TRACK = 'afterTrack';
+    public const string BLOCK_AFTER_TRACK = 'afterTrack';
 
-    public const BLOCK_AFTER_SCRIPT = 'afterScript';
+    public const string BLOCK_AFTER_SCRIPT = 'afterScript';
 
-    public const BLOCK_AFTER_SCRIPT_TAG = 'afterScriptTag';
+    public const string BLOCK_AFTER_SCRIPT_TAG = 'afterScriptTag';
 
     /**
      * @var array<int, string>

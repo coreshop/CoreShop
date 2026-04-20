@@ -38,7 +38,7 @@ final class VersionContext implements Context
     {
         $concrete->saveVersion();
 
-        $this->sharedStorage->set('data_object_version_' . $concrete->getId(), $concrete->getLatestVersion(true)->getId());
+        $this->sharedStorage->set('data_object_version_' . $concrete->getId(), $concrete->getLatestVersion(null, true)->getId());
     }
 
     /**

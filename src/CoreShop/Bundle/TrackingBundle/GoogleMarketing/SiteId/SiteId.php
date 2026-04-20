@@ -22,7 +22,7 @@ use Pimcore\Model\Site;
 
 class SiteId
 {
-    public const CONFIG_KEY_MAIN_DOMAIN = 'site_0';
+    public const string CONFIG_KEY_MAIN_DOMAIN = 'site_0';
 
     private function __construct(
         private readonly string $configKey,

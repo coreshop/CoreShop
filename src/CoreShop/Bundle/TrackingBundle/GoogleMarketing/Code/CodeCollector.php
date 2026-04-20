@@ -22,11 +22,11 @@ use CoreShop\Bundle\TrackingBundle\GoogleMarketing\SiteId\SiteId;
 
 class CodeCollector
 {
-    public const CONFIG_KEY_GLOBAL = '__global';
+    public const string CONFIG_KEY_GLOBAL = '__global';
 
-    public const ACTION_PREPEND = 'prepend';
+    public const string ACTION_PREPEND = 'prepend';
 
-    public const ACTION_APPEND = 'append';
+    public const string ACTION_APPEND = 'append';
 
     private string $defaultBlock;
 
@@ -112,12 +112,14 @@ class CodeCollector
         }
 
         foreach ([self::ACTION_PREPEND, self::ACTION_APPEND] as $position) {
-            if (isset($blockParts[$position])) {
-                if (self::ACTION_PREPEND === $position) {
-                    $codeBlock->prepend($blockParts[$position]);
-                } else {
-                    $codeBlock->append($blockParts[$position]);
-                }
+            if (!isset($blockParts[$position])) {
+                continue;
+            }
+            $parts = $blockParts[$position];
+            if (self::ACTION_PREPEND === $position) {
+                $codeBlock->prepend($parts);
+            } else {
+                $codeBlock->append($parts);
             }
         }
     }

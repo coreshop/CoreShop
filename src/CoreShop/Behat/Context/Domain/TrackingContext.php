@@ -181,20 +181,16 @@ final class TrackingContext implements Context
         ) {
             $trackerReflector = new \ReflectionClass(AbstractTracker::class);
             $codeCollectorMethod = $trackerReflector->getMethod('getCodeCollector');
-            $codeCollectorMethod->setAccessible(true);
 
             $codeCollector = $codeCollectorMethod->getClosure($tracker->tracker)();
 
-            $codeCollectorMethod->setAccessible(false);
 
             $codeCollectorReflector = new \ReflectionClass(CodeCollector::class);
 
             $codePartsProperty = $codeCollectorReflector->getProperty('codeParts');
-            $codePartsProperty->setAccessible(true);
 
             $blocks = $codePartsProperty->getValue($codeCollector);
 
-            $codePartsProperty->setAccessible(false);
 
             if (!isset($blocks[CodeCollector::CONFIG_KEY_GLOBAL])) {
                 $blocks[CodeCollector::CONFIG_KEY_GLOBAL] = [
