@@ -1,0 +1,29 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/async/76.f8f58475.js",
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/async/375.10b3469b.js",
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/async/695.84ce99c6.js",
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/main.fd4cc5cf.js"
+      ],
+      "css": []
+    },
+    "coreshopmoney": {
+      "js": [
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/async/__federation_expose_default_export.b50c33d5.js",
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/async/76.f8f58475.js",
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/async/375.10b3469b.js",
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/async/695.84ce99c6.js",
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshopmoney/studio/69ef1715-950a-42a5-a977-aa18779c9cf1/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}

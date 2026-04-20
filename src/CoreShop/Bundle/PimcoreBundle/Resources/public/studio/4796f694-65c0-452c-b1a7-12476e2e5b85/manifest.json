@@ -1,0 +1,62 @@
+{
+  "allFiles": [
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/main.b645e879.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/remoteEntry.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/695.9ac86472.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/375.b85dd5f6.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/127.6da28206.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/76.2fda308f.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/__federation_expose_default_export.168f0662.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/63.c9d93c7c.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/920.0770e17a.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/923.b686aa01.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/26.b3afe440.js",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/mf-stats.json",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/mf-manifest.json",
+    "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/main.b645e879.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/26.b3afe440.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/923.b686aa01.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/920.0770e17a.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/63.c9d93c7c.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/76.2fda308f.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/127.6da28206.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/375.b85dd5f6.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/695.9ac86472.js"
+        ]
+      }
+    },
+    "coreshoppimcore": {
+      "initial": {
+        "js": [
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/26.b3afe440.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/923.b686aa01.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/920.0770e17a.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/63.c9d93c7c.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/__federation_expose_default_export.168f0662.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/76.2fda308f.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/127.6da28206.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/375.b85dd5f6.js",
+          "/bundles/coreshoppimcore/studio/4796f694-65c0-452c-b1a7-12476e2e5b85/static/js/async/695.9ac86472.js"
+        ]
+      }
+    }
+  }
+}
