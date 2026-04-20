@@ -1,7 +1,7 @@
 name: Behat
 on:
   push:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -10,7 +10,7 @@ on:
       - 'src/**'
       - '.github/workflows/behat.yml'
   pull_request_target:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'composer.json'
       - 'features/**'
