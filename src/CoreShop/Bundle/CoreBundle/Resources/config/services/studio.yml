@@ -55,6 +55,10 @@ services:
   # Without this, the field type is unknown to ResolverTypeGuesser and any Advanced Column
   # picking storeValues as Source Field crashes ("Key with Column Key: storeValues not found").
   CoreShop\Bundle\CoreBundle\Grid\Column\Definition\StoreValuesColumnDefinition:
+    # autowire forces Symfony to reflect (and therefore autoload) the class during DI compile,
+    # so Pimcore's GridColumnDefinitionPass — which calls class_implements(..., autoload: false) —
+    # finds it loaded. Otherwise it bails with "Class does not exist".
+    autowire: true
     tags:
       - { name: pimcore.studio_backend.grid_column_definition }
 
@@ -62,6 +66,7 @@ services:
   # Emits one "Store Price (Store Name)" column per store in the column picker.
   # The resolver reads ProductInterface::getStoreValuesOfType('price', $store) and formats it.
   CoreShop\Bundle\CoreBundle\Grid\Column\Definition\StorePriceDefinition:
+    autowire: true
     tags:
       - { name: pimcore.studio_backend.grid_column_definition }
 
