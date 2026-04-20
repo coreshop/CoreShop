@@ -1,2 +1,8 @@
 tests/ export-ignore
 docs/ export-ignore
+
+# Built Studio assets — generated per build with a fresh UUID directory.
+# Collapse diff view, treat as binary (minified JS), always take the incoming version on merge.
+src/CoreShop/Bundle/*/Resources/public/studio/** linguist-generated=true linguist-vendored=true
+src/CoreShop/Bundle/*/Resources/public/studio/** binary
+src/CoreShop/Bundle/*/Resources/public/studio/** merge=ours
