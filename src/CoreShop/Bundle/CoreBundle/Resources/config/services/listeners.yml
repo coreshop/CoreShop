@@ -82,3 +82,9 @@ services:
     CoreShop\Bundle\CoreBundle\EventListener\RecursiveVariantCacheInvalidationEventListener:
         tags:
             - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\CoreBundle\EventListener\CustomerOrderDeletionListener:
+        arguments:
+            - '@coreshop.repository.order'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
