@@ -34,7 +34,7 @@ abstract class SymfonyPage extends BaseSymfonyPage implements SymfonyPageInterfa
     public function verifyRoute(array $requiredUrlParameters = []): void
     {
         $url = $this->getDriver()->getCurrentUrl();
-        $path = $this->stripFrontController(parse_url($url)['path']);
+        $path = $this->stripFrontController((string) parse_url($url, PHP_URL_PATH));
 
         $matchedRoute = $this->router->match($path);
 
@@ -62,7 +62,7 @@ abstract class SymfonyPage extends BaseSymfonyPage implements SymfonyPageInterfa
     protected function verifyUrl(array $urlParameters = []): void
     {
         $url = $this->getDriver()->getCurrentUrl();
-        $path = $this->stripFrontController(parse_url($url)['path']);
+        $path = $this->stripFrontController((string) parse_url($url, PHP_URL_PATH));
 
         $matchedRoute = $this->router->match($path);
 
