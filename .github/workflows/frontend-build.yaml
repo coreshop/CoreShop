@@ -1,8 +1,6 @@
 name: CoreShop Studio Frontend Build
 
 on:
-  push:
-    branches: [ '5.1', '2026.x' ]
   pull_request_target:
     branches: [ '5.1', '2026.x' ]
   workflow_dispatch:
