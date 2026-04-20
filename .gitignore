@@ -67,6 +67,5 @@ docker-compose.override.yaml
 settings.local.json
 .rsbuild
 
-# CoreShop Studio Build Output
-src/CoreShop/Bundle/*/Resources/public/studio/*/.aim/
+.aim/
 TODO.md
