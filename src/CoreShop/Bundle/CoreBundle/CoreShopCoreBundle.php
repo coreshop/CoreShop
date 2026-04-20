@@ -142,31 +142,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         return $this->container->get(Installer::class);
     }
 
-    public function getAdminIframePath(): ?string
-    {
-        return null;
-    }
-
-    public function getJsPaths(): array
-    {
-        return [];
-    }
-
-    public function getCssPaths(): array
-    {
-        return [];
-    }
-
-    public function getEditmodeJsPaths(): array
-    {
-        return [];
-    }
-
-    public function getEditmodeCssPaths(): array
-    {
-        return [];
-    }
-
     private static function isStudioUiBundleAvailable(): bool
     {
         $studioUiBundleClass = sprintf('Pimcore\\Bundle\\%s\\PimcoreStudioUiBundle', 'StudioUiBundle');
