@@ -137,12 +137,15 @@
                 <referencedMethod name="Doctrine\DBAL\Schema\Column::__construct" />
                 <referencedMethod name="Pimcore\File::getLocalTempFilePath" />
                 <referencedMethod name="Pimcore\Bundle\StudioBackendBundle\MappedParameter\Filter\ColumnFiltersParameterInterface::getColumnFilters" />
+                <referencedMethod name="Pimcore\Bundle\StudioBackendBundle\Exception\Api\TransformerException::__construct" />
             </errorLevel>
         </InternalMethod>
 
         <InternalClass>
             <errorLevel type="info">
                 <referencedClass name="Pimcore\File" />
+                <referencedClass name="Pimcore\Bundle\StudioBackendBundle\Grid\Column\FrontendType" />
+                <referencedClass name="Pimcore\Bundle\StudioBackendBundle\Exception\Api\TransformerException" />
             </errorLevel>
         </InternalClass>
 
