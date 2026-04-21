@@ -1,20 +1,19 @@
-name: Packages Bundles
+name: Packages Components [5.x]
 on:
   push:
-    branches: [ '2026.x' ]
+    branches: [ '5.0', '5.1' ]
     paths:
-      - 'src/CoreShop/Bundle/**'
-      - '.github/workflows/packages_bundles.yml'
+      - 'src/CoreShop/Component/**'
+      - '.github/workflows/packages_components-5x.yml'
   pull_request_target:
-    branches: [ '2026.x' ]
+    branches: [ '5.0', '5.1' ]
     paths:
-      - 'src/CoreShop/Bundle/**'
-      - '.github/workflows/packages_bundles.yml'
+      - 'src/CoreShop/Component/**'
+      - '.github/workflows/packages_components-5x.yml'
   release:
     types: [ created ]
   schedule:
     - cron: "0 1 * * 1"
-
 env:
   PIMCORE_SECRET: ${{ secrets.PIMCORE_SECRET }}
   PIMCORE_INSTALL_ENCRYPTION_SECRET: ${{ secrets.PIMCORE_SECRET }}
@@ -28,6 +27,7 @@ permissions:
 
 jobs:
   list:
+    if: github.repository == 'coreshop/CoreShop'
     runs-on: ubuntu-latest
     name: "Create a list of packages"
 
@@ -39,24 +39,25 @@ jobs:
 
       - name: "List Packages"
         id: create-list
-        run: echo "packages=$(find src/CoreShop/Bundle -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)" >> $GITHUB_OUTPUT
+        run: echo "packages=$(find src/CoreShop/Component -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)" >> $GITHUB_OUTPUT
 
     outputs:
       packages: "${{ steps.create-list.outputs.packages }}"
 
   test-packages:
     needs: list
+    if: github.repository == 'coreshop/CoreShop'
     runs-on: ubuntu-latest
     name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}, Deps ${{ matrix.dependencies }}"
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.4, 8.5 ]
-        pimcore: [ ^2026.1 ]
+        php: [ 8.3, 8.4 ]
+        pimcore: [ ^12.3 ]
         dependencies: [ highest, lowest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
         exclude:
-          - php: 8.5
+          - php: 8.4
             dependencies: lowest
 
     steps:
@@ -79,7 +80,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-pimcore-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
           restore-keys: |
             ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-
             ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-
@@ -91,21 +92,21 @@ jobs:
       - name: pimcore/pimcore
         run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
         env:
-          COMPOSER_ROOT_VERSION: dev-main
+          COMPOSER_ROOT_VERSION: dev-master
         working-directory: "src/CoreShop/${{ matrix.package }}"
 
       - if: matrix.dependencies == 'highest'
         name: Install dependencies highest
         run: composer update --no-progress --prefer-dist --optimize-autoloader
         env:
-          COMPOSER_ROOT_VERSION: dev-main
+          COMPOSER_ROOT_VERSION: dev-master
         working-directory: "src/CoreShop/${{ matrix.package }}"
 
       - if: matrix.dependencies == 'lowest'
         name: Install dependencies lowest
         run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
         env:
-          COMPOSER_ROOT_VERSION: dev-main
+          COMPOSER_ROOT_VERSION: dev-master
         working-directory: "src/CoreShop/${{ matrix.package }}"
 
       - name: STAN
