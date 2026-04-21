@@ -1,7 +1,7 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ '5.0', '2026.x' ]
+    branches: [ '5.0', '5.1', '2026.x' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'
@@ -12,7 +12,7 @@ on:
       - 'composer.json'
       - '.github/workflows/static.yml'
   pull_request_target:
-    branches: [ '5.0', '2026.x' ]
+    branches: [ '5.0', '5.1', '2026.x' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'
