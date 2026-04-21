@@ -82,6 +82,10 @@ services:
 
   # Studio v2 Grid Transformers
   CoreShop\Bundle\CoreBundle\Grid\Column\Transformer\StoreValuesField:
+    # autowire forces Symfony to reflect (and therefore autoload) the class during DI compile,
+    # so Pimcore's TransformerPass — which calls class_implements(..., autoload: false) —
+    # finds it loaded. Otherwise it bails with "Class does not exist".
+    autowire: true
     arguments:
       - '%coreshop.currency.decimal_factor%'
     tags:
