@@ -10,3 +10,9 @@ CoreShop\Component\Core\Model\Carrier:
             expose: true
             type: relation
             groups: [Detailed]
+    virtual_properties:
+      name:
+        serialized_name: name
+        exp: object.getIdentifier()
+        type: string
+        groups: [List]

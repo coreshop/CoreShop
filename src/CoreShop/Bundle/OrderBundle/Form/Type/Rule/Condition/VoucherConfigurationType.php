@@ -35,9 +35,15 @@ final class VoucherConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('maxUsagePerCode', NumberType::class)
-            ->add('maxUsagePerUser', NumberType::class)
-            ->add('onlyOnePerCart', CheckboxType::class)
+            ->add('maxUsagePerCode', NumberType::class, [
+                'label' => 'coreshop_action_voucher_max_usage_per_code',
+            ])
+            ->add('maxUsagePerUser', NumberType::class, [
+                'label' => 'coreshop_action_voucher_max_usage_per_user',
+            ])
+            ->add('onlyOnePerCart', CheckboxType::class, [
+                'label' => 'coreshop_action_voucher_only_one_per_cart',
+            ])
         ;
     }
 

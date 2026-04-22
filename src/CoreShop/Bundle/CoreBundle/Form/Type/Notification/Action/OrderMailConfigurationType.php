@@ -30,12 +30,19 @@ class OrderMailConfigurationType extends AbstractType
 
         $builder
             ->add('mails', CollectionType::class, [
+                'label' => 'coreshop_email_document',
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('sendInvoices', CheckboxType::class)
-            ->add('sendShipments', CheckboxType::class)
-            ->add('doNotSendToDesignatedRecipient', CheckboxType::class)
+            ->add('sendInvoices', CheckboxType::class, [
+                'label' => 'coreshop_mail_rule_send_invoices',
+            ])
+            ->add('sendShipments', CheckboxType::class, [
+                'label' => 'coreshop_mail_rule_send_shipments',
+            ])
+            ->add('doNotSendToDesignatedRecipient', CheckboxType::class, [
+                'label' => 'coreshop_mail_rule_do_not_send_to_designated_recipient',
+            ])
         ;
     }
 

@@ -12,3 +12,8 @@ CoreShop\Component\Order\Model\OrderInvoiceItem:
             exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null' # TODO: add interface check when upgrading to JMS Serializer > 3.0
             type: string
             groups: [Detailed]
+        quantity:
+          serialized_name: quantity
+          exp: 'object.getQuantity()'
+          type: float
+          groups: [Detailed]

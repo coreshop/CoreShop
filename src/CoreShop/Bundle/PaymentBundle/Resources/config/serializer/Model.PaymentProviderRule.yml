@@ -14,7 +14,7 @@ CoreShop\Component\Payment\Model\PaymentProviderRule:
         active:
             expose: true
             type: boolean
-            groups: [Detailed]
+            groups: [List, Detailed]
         conditions:
             expose: true
             type: ArrayCollection

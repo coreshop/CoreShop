@@ -27,6 +27,7 @@ use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\CompositeShippab
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingPriceCalculatorsPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleActionPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleConditionPass;
+use CoreShop\Bundle\StudioFormBundle\DependencyInjection\Compiler\RegisterFormTypesFromTagsPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingTaxCalculationStrategyPass;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -49,6 +50,9 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ShippingPriceCalculatorsPass());
         $container->addCompilerPass(new CompositeShippableValidatorPass());
         $container->addCompilerPass(new ShippingTaxCalculationStrategyPass());
+
+        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(ShippingRuleConditionPass::SHIPPING_RULE_CONDITION_TAG));
+        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(ShippingRuleActionPass::SHIPPING_RULE_ACTION_TAG));
     }
 
     public static function registerDependentBundles(BundleCollection $collection): void

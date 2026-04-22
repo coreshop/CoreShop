@@ -23,6 +23,11 @@ use Knp\Menu\ItemInterface;
 
 class MainMenuBuilder implements MenuBuilderInterface
 {
+    public function __construct(
+        private readonly bool $debug,
+    ) {
+    }
+
     public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void
     {
         $menuItem->setLabel('coreshop');
@@ -44,17 +49,19 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_order')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'open_order_by_number')
+            ->setAttribute('widgetEvent', 'coreshop.order-by-number.open')
             ->setExtra('order', 10)
         ;
 
-        $menuItem->addChild('coreshop_quote_by_number')
-            ->setLabel('coreshop_quote_by_number')
-            ->setAttribute('permission', 'coreshop_permission_quote_detail')
-            ->setAttribute('iconCls', 'coreshop_nav_icon_quote')
-            ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'coreshop_quote_by_number')
-            ->setExtra('order', 20)
-        ;
+//        $menuItem->addChild('coreshop_quote_by_number')
+//            ->setLabel('coreshop_quote_by_number')
+//            ->setAttribute('permission', 'coreshop_permission_quote_detail')
+//            ->setAttribute('iconCls', 'coreshop_nav_icon_quote')
+//            ->setAttribute('resource', 'coreshop.order')
+//            ->setAttribute('function', 'open_quote_by_number')
+//            ->setAttribute('widgetButton', 'coreShopOpenQuoteByNumberModal')
+//            ->setExtra('order', 20)
+//        ;
 
         $menuItem->addChild('coreshop_settings')
             ->setLabel('coreshop_settings')
@@ -62,6 +69,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_settings')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'settings')
+            ->setAttribute('widgetId', 'coreshop-settings-widget')
             ->setExtra('order', 30)
         ;
 
@@ -80,6 +88,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_price_rule')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'cart_price_rule')
+            ->setAttribute('widgetId', 'coreshop-order-cart-price-rules')
             ->setExtra('order', 10)
         ;
 
@@ -90,6 +99,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_price_rule')
             ->setAttribute('resource', 'coreshop.product')
             ->setAttribute('function', 'product_price_rule')
+            ->setAttribute('widgetId', 'coreshop-product-product-price-rules')
             ->setExtra('order', 20)
         ;
 
@@ -108,6 +118,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_country')
             ->setAttribute('resource', 'coreshop.address')
             ->setAttribute('function', 'country')
+            ->setAttribute('widgetId', 'coreshop-address-countries')
             ->setExtra('order', 10)
         ;
 
@@ -118,6 +129,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_state')
             ->setAttribute('resource', 'coreshop.address')
             ->setAttribute('function', 'state')
+            ->setAttribute('widgetId', 'coreshop-address-states')
             ->setExtra('order', 20)
         ;
 
@@ -128,6 +140,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_currency')
             ->setAttribute('resource', 'coreshop.currency')
             ->setAttribute('function', 'currency')
+            ->setAttribute('widgetId', 'coreshop-currency-currencies')
             ->setExtra('order', 30)
         ;
 
@@ -138,6 +151,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_exchange_rate')
             ->setAttribute('resource', 'coreshop.currency')
             ->setAttribute('function', 'exchange_rate')
+            ->setAttribute('widgetId', 'coreshop-currency-exchange-rates')
             ->setExtra('order', 40)
         ;
 
@@ -148,6 +162,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_zone')
             ->setAttribute('resource', 'coreshop.address')
             ->setAttribute('function', 'zone')
+            ->setAttribute('widgetId', 'coreshop-address-zones')
             ->setExtra('order', 50)
         ;
 
@@ -158,6 +173,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_taxes')
             ->setAttribute('resource', 'coreshop.taxation')
             ->setAttribute('function', 'tax_item')
+            ->setAttribute('widgetId', 'coreshop-taxation-tax-rates')
             ->setExtra('order', 60)
         ;
 
@@ -168,6 +184,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_tax_rule_groups')
             ->setAttribute('resource', 'coreshop.taxation')
             ->setAttribute('function', 'tax_rule_group')
+            ->setAttribute('widgetId', 'coreshop-taxation-tax-rule-groups')
             ->setExtra('order', 70)
         ;
 
@@ -186,6 +203,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_orders')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'orders')
+            ->setAttribute('widgetId', 'coreshop-order-manager')
             ->setExtra('order', 10)
         ;
 
@@ -196,6 +214,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_order_create')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'create_order')
+            ->setAttribute('widgetButton', 'coreshopCreateOrder')
             ->setExtra('order', 20)
         ;
 
@@ -206,6 +225,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_quotes')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'quotes')
+            ->setAttribute('widgetId', 'coreshop-quote-manager')
             ->setExtra('order', 30)
         ;
 
@@ -226,6 +246,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_carts')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'carts')
+            ->setAttribute('widgetId', 'coreshop-cart-manager')
             ->setExtra('order', 50)
         ;
 
@@ -254,6 +275,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_carriers')
             ->setAttribute('resource', 'coreshop.shipping')
             ->setAttribute('function', 'carrier')
+            ->setAttribute('widgetId', 'coreshop-shipping-carriers')
             ->setExtra('order', 10)
         ;
 
@@ -264,6 +286,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_carrier_shipping_rule')
             ->setAttribute('resource', 'coreshop.shipping')
             ->setAttribute('function', 'shipping_rules')
+            ->setAttribute('widgetId', 'coreshop-shipping-shipping-rules')
             ->setExtra('order', 20)
         ;
 
@@ -282,6 +305,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_indexes')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'index')
+            ->setAttribute('widgetId', 'coreshop-index-index')
             ->setExtra('order', 10)
         ;
 
@@ -292,6 +316,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_product_units')
             ->setAttribute('resource', 'coreshop.product')
             ->setAttribute('function', 'product_unit')
+            ->setAttribute('widgetId', 'coreshop-product-product-units')
             ->setExtra('order', 30)
         ;
 
@@ -302,6 +327,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_filters')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'filter')
+            ->setAttribute('widgetId', 'coreshop-index-filter')
             ->setExtra('order', 20)
         ;
 
@@ -320,6 +346,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_customers')
             ->setAttribute('resource', 'coreshop.customer')
             ->setAttribute('function', 'customers')
+            ->setAttribute('widgetId', 'coreshop-customer-customers')
             ->setExtra('order', 10)
         ;
 
@@ -330,6 +357,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_customer_groups')
             ->setAttribute('resource', 'coreshop.customer')
             ->setAttribute('function', 'customer_groups')
+            ->setAttribute('widgetId', 'coreshop-customer-customer-groups')
             ->setExtra('order', 20)
         ;
 
@@ -340,6 +368,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_new')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'customer_to_company_assign_to_new')
+            ->setAttribute('widgetButton', 'coreshopAssignCustomerToNewCompany')
             ->setExtra('order', 30)
         ;
 
@@ -350,6 +379,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_existing')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'customer_to_company_assign_to_existing')
+            ->setAttribute('widgetButton', 'coreshopAssignCustomerToExistingCompany')
             ->setExtra('order', 40)
         ;
 
@@ -359,6 +389,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_notification_rule')
             ->setAttribute('resource', 'coreshop.notification')
             ->setAttribute('function', 'notification_rule')
+            ->setAttribute('widgetId', 'coreshop_notification_rules')
             ->setExtra('order', 80)
         ;
 
@@ -377,6 +408,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider')
             ->setAttribute('resource', 'coreshop.payment')
             ->setAttribute('function', 'payment_provider')
+            ->setAttribute('widgetId', 'coreshop_payment_providers')
             ->setExtra('order', 10)
         ;
 
@@ -387,6 +419,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider_rule')
             ->setAttribute('resource', 'coreshop.payment')
             ->setAttribute('function', 'payment_provider_rule')
+            ->setAttribute('widgetId', 'coreshop_payment_provider_rules')
             ->setExtra('order', 20)
         ;
 
@@ -396,9 +429,10 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_store')
             ->setAttribute('resource', 'coreshop.store')
             ->setAttribute('function', 'store')
+            ->setAttribute('widgetId', 'coreshop-store-store')
             ->setExtra('order', 100)
         ;
-
+        
         $menuItem
             ->addChild('coreshop_messenger')
             ->setLabel('coreshop_messenger')
@@ -406,15 +440,24 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_messenger')
             ->setAttribute('resource', 'coreshop.messenger')
             ->setAttribute('function', 'list')
+            ->setAttribute('widgetId', 'coreshop-messenger-widget')
             ->setExtra('order', 110)
         ;
 
         $menuItem->addChild('coreshop_about')
             ->setLabel('coreshop_about')
             ->setAttribute('iconCls', 'coreshop_nav_icon_logo')
-            ->setAttribute('resource', 'coreshop.core')
-            ->setAttribute('function', 'about')
+            ->setAttribute('widgetEvent', 'coreshop.about.open')
             ->setExtra('order', 1000)
         ;
+
+        if ($this->debug) {
+            $menuItem->addChild('coreshop_studio_form_demos')
+                ->setLabel('coreshop_studio_form_demos')
+                ->setAttribute('iconCls', 'coreshop_nav_icon_settings')
+                ->setAttribute('widgetId', 'coreshop-studio-form-demos')
+                ->setExtra('order', 999)
+            ;
+        }
     }
 }

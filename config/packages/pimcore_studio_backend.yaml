@@ -1,0 +1,10 @@
+pimcore_studio_backend:
+    mercure_settings:
+        # Server-seitig: Docker-internes Netzwerk
+        hub_url_server: 'http://mercure/.well-known/mercure'
+        # Client-seitig: Vollständige URL inkl. .well-known/mercure
+        hub_url_client: 'https://coreshop-5.localhost/hub/.well-known/mercure'
+        # Muss mit docker-compose.override.yaml übereinstimmen
+        jwt_key: 'SECRET_MERCURE_KEY_SECRET_MERCURE_KEY'
+        # Cookie-Pfad muss /hub sein, damit es für alle Mercure-Requests gilt
+        jwt_cookie_host: 'coreshop-5.localhost'

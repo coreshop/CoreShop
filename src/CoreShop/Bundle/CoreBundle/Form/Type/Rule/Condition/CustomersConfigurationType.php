@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
+use CoreShop\Bundle\StudioFormBundle\Form\Type\PimcoreRelationType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class CustomersConfigurationType extends AbstractType
@@ -26,9 +26,10 @@ final class CustomersConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('customers', CollectionType::class, [
-                'allow_add' => true,
-                'allow_delete' => true,
+            ->add('customers', PimcoreRelationType::class, [
+                'label' => 'coreshop_condition_customers',
+                'relation_class' => 'CoreShopCustomer',
+                'multiple' => true,
             ])
         ;
     }

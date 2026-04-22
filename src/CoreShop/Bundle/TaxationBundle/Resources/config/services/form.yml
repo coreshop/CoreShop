@@ -27,6 +27,7 @@ services:
             - '%coreshop.form.type.tax_rule_group.validation_groups%'
         tags:
             -  { name: form.type }
+            -  { name: coreshop.studio_form }
 
     CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupChoiceType:
         arguments:
@@ -47,3 +48,4 @@ services:
             - '%coreshop.form.type.tax_rate.validation_groups%'
         tags:
             -  { name: form.type }
+            -  { name: coreshop.studio_form }

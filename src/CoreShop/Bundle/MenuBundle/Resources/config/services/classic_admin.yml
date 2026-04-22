@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\MenuBundle\AdminClass\EventListener\MenuAdminListener:
+        arguments:
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\MenuBundle\AdminClass\EventListener\PimcoreAdminListener:
+        tags:
+            - { name: kernel.event_subscriber }

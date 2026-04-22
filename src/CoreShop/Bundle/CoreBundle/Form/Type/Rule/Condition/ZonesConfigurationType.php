@@ -27,8 +27,10 @@ final class ZonesConfigurationType extends AbstractType
     {
         $builder
             ->add('zones', CollectionType::class, [
+                'label' => 'coreshop_condition_zones',
                 'allow_add' => true,
                 'allow_delete' => true,
+                'block_prefix' => 'coreshop_zone_choice',
             ])
         ;
     }

@@ -1,0 +1,92 @@
+services:
+  _defaults:
+    autowire: false
+    autoconfigure: false
+    public: false
+
+  CoreShop\Bundle\CoreBundle\Studio\WebpackEntryPointProvider:
+    tags:
+      - { name: pimcore_studio_ui.webpack_entry_point_provider }
+
+  # StudioBackend Data Adapters
+  CoreShop\Bundle\CoreBundle\StudioBackend\DataAdapter\StoreValuesAdapter:
+    arguments:
+      - '@jms_serializer'
+      - '@coreshop.repository.store'
+      - '%coreshop.currency.decimal_factor%'
+    tags:
+      - { name: pimcore.studio_backend.data_adapter }
+
+  # Studio v2 Grid Filters
+  # Each filter registers with both:
+  # - pimcore.studio_backend.search_index.data_object.filter (for applying the filter)
+  # - coreshop.studio.grid.filter (for listing available filters in the API)
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedTodayFilter:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_today }
+
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisWeekFilter:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_this_week }
+
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisMonthFilter:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_this_month }
+
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedThisYearFilter:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_this_year }
+
+  CoreShop\Bundle\CoreBundle\StudioBackend\Grid\Filter\CreatedLastYearFilter:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.search_index.data_object.filter }
+      - { name: coreshop.studio.grid.filter, type: coreshop_created_last_year }
+
+  # Studio v2 Grid: Column Definition for coreShopStoreValues.
+  # Without this, the field type is unknown to ResolverTypeGuesser and any Advanced Column
+  # picking storeValues as Source Field crashes ("Key with Column Key: storeValues not found").
+  CoreShop\Bundle\CoreBundle\Grid\Column\Definition\StoreValuesColumnDefinition:
+    # autowire forces Symfony to reflect (and therefore autoload) the class during DI compile,
+    # so Pimcore's GridColumnDefinitionPass — which calls class_implements(..., autoload: false) —
+    # finds it loaded. Otherwise it bails with "Class does not exist".
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.grid_column_definition }
+
+  # Studio v2 Grid: Store Price custom column.
+  # Emits one "Store Price (Store Name)" column per store in the column picker.
+  # The resolver reads ProductInterface::getStoreValuesOfType('price', $store) and formats it.
+  CoreShop\Bundle\CoreBundle\Grid\Column\Definition\StorePriceDefinition:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.grid_column_definition }
+
+  CoreShop\Bundle\CoreBundle\Grid\Column\Resolver\StorePriceResolver:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.grid_column_resolver }
+
+  CoreShop\Bundle\CoreBundle\Grid\Column\Collector\StorePriceCollector:
+    autowire: true
+    tags:
+      - { name: pimcore.studio_backend.grid_column_collector }
+
+  # Studio v2 Grid Transformers
+  CoreShop\Bundle\CoreBundle\Grid\Column\Transformer\StoreValuesField:
+    # autowire forces Symfony to reflect (and therefore autoload) the class during DI compile,
+    # so Pimcore's TransformerPass — which calls class_implements(..., autoload: false) —
+    # finds it loaded. Otherwise it bails with "Class does not exist".
+    autowire: true
+    arguments:
+      - '%coreshop.currency.decimal_factor%'
+    tags:
+      - { name: pimcore.studio_backend.grid_transformer }

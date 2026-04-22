@@ -1,0 +1,7 @@
+---
+CoreShopUser: 'Benutzer'
+coreshop.user.information: 'Information'
+coreshop.user.login_identifier: 'Login-Kennung'
+coreshop.user.password: 'Passwort'
+coreshop.user.reset_password_hash: 'Passwort zurücksetzen Hash'
+coreshop.user.customer: 'Kunde'

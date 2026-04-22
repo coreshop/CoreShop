@@ -32,6 +32,7 @@ class IndexMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_indexes')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'index')
+            ->setAttribute('widgetId', 'coreshop-index-index')
         ;
 
         $menuItem
@@ -41,6 +42,7 @@ class IndexMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_filters')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'filter')
+            ->setAttribute('widgetId', 'coreshop-index-filter')
         ;
     }
 }

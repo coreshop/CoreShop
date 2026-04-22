@@ -111,7 +111,7 @@ final class PaymentType extends AbstractResourceType
     {
         $view->vars['prototypes'] = [];
 
-        foreach ($form->getConfig()->getAttribute('prototypes') as $type => $prototype) {
+        foreach ($form->getConfig()->getAttribute('prototypes') ?? [] as $type => $prototype) {
             /* @var FormInterface $prototype */
             $view->vars['prototypes'][$type] = $prototype->createView($view);
         }

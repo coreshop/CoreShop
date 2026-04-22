@@ -28,8 +28,12 @@ class TaxRuleGroupType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('active', CheckboxType::class)
+            ->add('name', TextType::class, [
+                'label' => 'coreshop_name',
+            ])
+            ->add('active', CheckboxType::class, [
+                'label' => 'coreshop_active',
+            ])
             ->add(
                 'taxRules',
                 CollectionType::class,
@@ -38,6 +42,7 @@ class TaxRuleGroupType extends AbstractResourceType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    'block_prefix' => 'grid_collection',
                 ],
             )
         ;

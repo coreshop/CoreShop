@@ -1,0 +1,42 @@
+---
+coreshop_messenger: 'Messenger'
+coreshop_messenger_list: 'Messenger'
+coreshop_messenger_class: 'Class'
+coreshop_messenger_failed_at: 'Failed At'
+coreshop_messenger_error: 'Error'
+coreshop_messenger_delete_failed_message: 'Delete failed Message'
+coreshop_messenger_retry_failed_message: 'Retry failed Message'
+coreshop_messenger_failure_receivers: 'Select failure receiver'
+coreshop_messenger_failed_messages: 'Failed Messages'
+coreshop_messenger_pending_messages: 'Pending Messages'
+coreshop_messenger_receivers: 'Select receiver'
+coreshop_messenger_info: 'Details'
+coreshop_permission_messenger: 'CoreShop: Messenger'
+
+# Chart
+coreshop_messenger_total_messages: 'Total Messages'
+coreshop_messenger_no_data: 'No pending messages'
+coreshop_messenger_error_loading: 'Error loading data'
+
+# List
+coreshop_messenger_reload_all: 'Reload'
+
+# Grid
+coreshop_messenger_actions: 'Actions'
+coreshop_messenger_reload: 'Reload'
+coreshop_messenger_show_error: 'Show error'
+coreshop_messenger_delete: 'Delete'
+coreshop_messenger_retry: 'Retry'
+coreshop_messenger_cancel: 'Cancel'
+coreshop_messenger_close: 'Close'
+coreshop_messenger_select_receiver: 'Please select a receiver to view failed messages'
+coreshop_messenger_select_receiver_pending: 'Please select a receiver to view pending messages'
+coreshop_messenger_message_info: 'Message Information'
+coreshop_messenger_error_details: 'Error Details'
+coreshop_messenger_delete_confirm: 'Are you sure you want to delete this message?'
+coreshop_messenger_retry_confirm: 'Are you sure you want to retry this message?'
+coreshop_messenger_delete_success: 'Message deleted successfully'
+coreshop_messenger_delete_error: 'Failed to delete message'
+coreshop_messenger_retry_success: 'Message retry initiated successfully'
+coreshop_messenger_retry_error: 'Failed to retry message'
+coreshop_messenger_no_error: 'No error information available'

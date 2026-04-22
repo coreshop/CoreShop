@@ -27,8 +27,10 @@ final class CurrenciesConfigurationType extends AbstractType
     {
         $builder
             ->add('currencies', CollectionType::class, [
+                'label' => 'coreshop_condition_currencies',
                 'allow_add' => true,
                 'allow_delete' => true,
+                'block_prefix' => 'coreshop_currency_choice',
             ])
         ;
     }

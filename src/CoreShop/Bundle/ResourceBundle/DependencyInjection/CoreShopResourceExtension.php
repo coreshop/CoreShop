@@ -33,10 +33,11 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use function Symfony\Component\String\u;
 
-final class CoreShopResourceExtension extends AbstractModelExtension
+final class CoreShopResourceExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -65,8 +66,16 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
         $bundles = $container->getParameter('kernel.bundles');
 
+        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
+            $loader->load('services/classic_admin.yml');
+        }
+
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
+        }
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
         }
 
         $container->setParameter('coreshop.resources', []);
@@ -100,6 +109,24 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             ->registerForAutoconfiguration(ResourceInstallerInterface::class)
             ->addTag(RegisterInstallersPass::INSTALLER_TAG)
         ;
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
+            $container->prependExtensionConfig('pimcore_studio_backend', [
+                'data_object_data_adapter_mapping' => [
+                    'Pimcore\\Bundle\\StudioBackendBundle\\DataObject\\Data\\Adapter\\ManyToOneRelationAdapter' => [
+                        'coreShopRelation',
+                    ],
+                    'Pimcore\\Bundle\\StudioBackendBundle\\DataObject\\Data\\Adapter\\ManyToManyRelationAdapter' => [
+                        'coreShopRelations',
+                    ],
+                ],
+            ]);
+        }
     }
 
     private function autoRegisterPimcoreModels(array &$config, ContainerBuilder $container): void

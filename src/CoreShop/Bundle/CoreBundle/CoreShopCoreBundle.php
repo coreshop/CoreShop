@@ -23,6 +23,8 @@ use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesActionPass;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesConditionPass;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
@@ -47,9 +49,10 @@ use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
 use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
-use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 final class CoreShopCoreBundle extends AbstractResourceBundle
 {
@@ -67,6 +70,12 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterIndexProductExtensionPass());
         $container->addCompilerPass(new RegisterReportsPass());
         $container->addCompilerPass(new RegisterPortletsPass());
+
+        $registerFormTypesFromTagsPassClass = self::getRegisterFormTypesFromTagsPassClass();
+        if (null !== $registerFormTypesFromTagsPassClass) {
+            $container->addCompilerPass(new $registerFormTypesFromTagsPassClass(ProductQuantityPriceRulesConditionPass::PRODUCT_QUANTITY_PRICE_RULE_CONDITION_TAG));
+            $container->addCompilerPass(new $registerFormTypesFromTagsPassClass(ProductQuantityPriceRulesActionPass::PRODUCT_QUANTITY_PRICE_RULE_ACTION_TAG));
+        }
     }
 
     public static function registerDependentBundles(BundleCollection $collection): void
@@ -97,11 +106,15 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
+
+        if (self::isStudioUiBundleAvailable()) {
+            $studioFormBundleClass = self::getStudioFormBundleClass();
+            if (null !== $studioFormBundleClass) {
+                $collection->addBundle(new $studioFormBundleClass(), 3900);
+            }
+        }
+
         $collection->addBundle(new PimcoreCustomReportsBundle(), 20000);
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $collection->addBundle(new PimcoreNewsletterBundle(), 20000);
     }
 
     public function getPackageName(): string
@@ -152,5 +165,42 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
     public function getEditmodeCssPaths(): array
     {
         return [];
+    }
+
+    private static function isStudioUiBundleAvailable(): bool
+    {
+        $studioUiBundleClass = sprintf('Pimcore\\Bundle\\%s\\PimcoreStudioUiBundle', 'StudioUiBundle');
+
+        return class_exists($studioUiBundleClass) && is_subclass_of($studioUiBundleClass, BundleInterface::class);
+    }
+
+    /**
+     * @return class-string<BundleInterface>|null
+     */
+    private static function getStudioFormBundleClass(): ?string
+    {
+        $studioFormBundleClass = sprintf('CoreShop\\Bundle\\%s\\CoreShopStudioFormBundle', 'StudioFormBundle');
+        if (!class_exists($studioFormBundleClass) || !is_subclass_of($studioFormBundleClass, BundleInterface::class)) {
+            return null;
+        }
+
+        return $studioFormBundleClass;
+    }
+
+    /**
+     * @return class-string<CompilerPassInterface>|null
+     */
+    private static function getRegisterFormTypesFromTagsPassClass(): ?string
+    {
+        $registerFormTypesFromTagsPassClass = sprintf(
+            'CoreShop\\Bundle\\%s\\DependencyInjection\\Compiler\\RegisterFormTypesFromTagsPass',
+            'StudioFormBundle',
+        );
+
+        if (!class_exists($registerFormTypesFromTagsPassClass) || !is_subclass_of($registerFormTypesFromTagsPassClass, CompilerPassInterface::class)) {
+            return null;
+        }
+
+        return $registerFormTypesFromTagsPassClass;
     }
 }

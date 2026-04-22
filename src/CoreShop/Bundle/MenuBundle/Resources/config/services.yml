@@ -22,6 +22,13 @@ services:
         tags:
             - { name: knp_menu.renderer, alias: json }
 
+    CoreShop\Bundle\MenuBundle\Renderer\StudioRenderer:
+        arguments:
+            - '@knp_menu.matcher'
+            - '@CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard'
+        tags:
+            - { name: knp_menu.renderer, alias: studio }
+
     CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard:
         arguments:
             - '@security.token_storage'
@@ -34,9 +41,7 @@ services:
             - { name: knp_menu.provider }
 
     CoreShop\Bundle\MenuBundle\Controller\MenuController:
+        arguments:
+            - '@translator'
         tags:
             - { name: controller.service_arguments }
-
-    CoreShop\Bundle\MenuBundle\EventListener\PimcoreAdminListener:
-        tags:
-            - { name: kernel.event_subscriber }

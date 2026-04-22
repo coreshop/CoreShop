@@ -1,12 +1,12 @@
 name: Packages Components
 on:
   push:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
   pull_request_target:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
@@ -48,7 +48,7 @@ jobs:
     needs: list
     if: github.repository == 'coreshop/CoreShop'
     runs-on: ubuntu-latest
-    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}"
+    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}, Deps ${{ matrix.dependencies }}"
     strategy:
       fail-fast: false
       matrix:

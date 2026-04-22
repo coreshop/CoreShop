@@ -1,0 +1,11 @@
+---
+CoreShopWishlist: 'Wishlist'
+CoreShopWishlistItem: 'Wishlist Item'
+coreshop.wishlist.name: 'Name'
+coreshop.wishlist_item.quantity: 'Quantity'
+coreshop.wishlist_item.wishlist: 'Wishlist'
+coreshop.wishlist_item.product: 'Product'
+coreshop.wishlist.token: 'Token'
+coreshop.wishlist.items: 'Items'
+coreshop.wishlist.customer: 'Customer'
+coreshop.wishlist.store: 'Store'

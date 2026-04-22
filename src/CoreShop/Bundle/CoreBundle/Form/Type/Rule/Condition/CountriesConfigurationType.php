@@ -27,8 +27,10 @@ final class CountriesConfigurationType extends AbstractType
     {
         $builder
             ->add('countries', CollectionType::class, [
+                'label' => 'coreshop_condition_countries',
                 'allow_add' => true,
                 'allow_delete' => true,
+                'block_prefix' => 'coreshop_country_choice',
             ])
         ;
     }
