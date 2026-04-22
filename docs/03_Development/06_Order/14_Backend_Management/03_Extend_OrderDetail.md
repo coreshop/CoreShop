@@ -7,7 +7,7 @@ Studio Extension System.
 
 The Studio Order Detail page is assembled from registered tab, action, and form extensions around the core sale data.
 Extensions are attached through the entity key `coreshop.order.sale` (and related order-bundle keys). See the
-[Extension System overview](../../14_Studio/02_Base_Infrastructure/04_Extensions.md) for the full slot/extension-type
+[Extension System overview](../../14_Studio/index.md#3-extension-system) for the full slot/extension-type
 table.
 
 ## Adding a Custom Tab to the Order Detail
@@ -76,6 +76,5 @@ CoreShop uses JMS Serializer for order serialization. You can extend its seriali
 Configuration or by registering an event handler for the `CoreShop\Bundle\OrderBundle\Events::SALE_DETAIL_PREPARE`
 event.
 
-If that isn't enough, expose a custom Studio API controller (one action per controller, see
-[Studio Controllers](../../14_Studio/03_Backend/01_Controllers.md)) and call it from your React component with
-`fetch('/pimcore-studio/api/...')` or an RTK Query hook.
+If that isn't enough, expose a custom Studio API controller (one action per controller) and call it from your React
+component with `fetch('/pimcore-studio/api/...')` or an RTK Query hook.

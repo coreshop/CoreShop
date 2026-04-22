@@ -54,7 +54,7 @@ final class StorePriceResolver implements ColumnResolverInterface, CoreElementCo
         /** @var StoreInterface|null $store */
         $store = $this->storeRepository->find($storeId);
 
-        if ($store === null) {
+        if (!$store instanceof StoreInterface) {
             return new ColumnData(
                 key: $column->getKey(),
                 locale: $column->getLocale(),

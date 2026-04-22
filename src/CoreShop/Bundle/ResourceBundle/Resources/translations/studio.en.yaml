@@ -12,6 +12,12 @@ coreshop_stacks: 'Stacks'
 coreshop_allowed_stack: 'Stack'
 coreshop_return_concrete: 'Return Type Concrete'
 
+toolbar.delete: 'Delete'
+toolbar.new: 'New'
+toolbar.reload: 'Reload'
+toolbar.reload.confirmation: 'Discard changes and reload?'
+toolbar.save-and-publish: 'Save & Publish'
+
 # ManyToManyRelation column headers
 relations.id: 'ID'
 relations.reference: 'Reference'
