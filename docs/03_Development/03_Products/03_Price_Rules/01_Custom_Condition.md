@@ -85,7 +85,7 @@ services:
 ```
 
 The Studio UI renders the configuration form automatically from the registered Symfony `FormType`. See
-[Extending Rule Conditions — Pimcore Studio](../../../01_Extending_Guide/05_Extending_Rule_Conditions.md#rendering-the-condition-in-pimcore-studio)
+[Extending Rule Conditions — Pimcore Studio](../../01_Extending_Guide/05_Extending_Rule_Conditions.md#rendering-the-condition-in-pimcore-studio)
 for the schema-driven and hand-written React variants.
 
 ## Resolving Autowiring Issues with Custom Conditions

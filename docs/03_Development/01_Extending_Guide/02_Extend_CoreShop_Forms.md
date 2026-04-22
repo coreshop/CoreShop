@@ -85,5 +85,5 @@ asset build is needed.
 
 If the field requires a custom widget that cannot be expressed through the default schema renderers, register a
 `FormExtension` against the `coreshop.store.store.form` slot — see
-[Extension System](../../14_Studio/02_Base_Infrastructure/04_Extensions.md#form-extensions) for the slot naming and a
+[Extension System](../14_Studio/index.md#3-extension-system) for the slot naming and a
 complete example.
