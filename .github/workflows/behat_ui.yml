@@ -22,6 +22,10 @@ on:
   schedule:
     - cron: "0 1 * * 1"
 
+env:
+  # all 11.5.x pimcore versions are flagged with security advisories; 11.6 will not be released
+  COMPOSER_NO_SECURITY_BLOCKING: "1"
+
 jobs:
   behat_ui:
     runs-on: ubuntu-latest
