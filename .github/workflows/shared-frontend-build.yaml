@@ -98,4 +98,5 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: 'src/CoreShop/Bundle/*/Resources/public/studio/*/**'
+          add_options: '-f'
           commit_message: "Build CoreShop Studio bundles [skip ci]"
