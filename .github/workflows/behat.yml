@@ -60,7 +60,7 @@ jobs:
           - php: 8.4
             pimcore: ^12.3
             dependencies: highest
-            allow-failure: true
+            allow-failure: false
 
     services:
       database:
