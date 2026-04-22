@@ -124,7 +124,8 @@
     "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine."
   },
   "conflict": {
-    "ezimuel/ringphp": "<1.4"
+    "ezimuel/ringphp": "<1.4",
+    "react/promise": "<3"
   },
   "require-dev": {
     "behat/behat": "^3.27",
