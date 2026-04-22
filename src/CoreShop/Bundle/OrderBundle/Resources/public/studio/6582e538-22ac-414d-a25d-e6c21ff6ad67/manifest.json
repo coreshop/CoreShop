@@ -1,0 +1,114 @@
+{
+  "allFiles": [
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/main.b4dac3a7.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/remoteEntry.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/44.9ebe8e4c.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/695.7797e0e3.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/375.6ddedbe1.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/760.d7eae9df.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/63.204cfe8f.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/460.3338a81f.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/232.b56ee2e3.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/851.0e532413.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/903.22aa6349.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/79.65fd18db.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/613.b62c7641.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/76.c1e9f242.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/__federation_expose_default_export.d48e0cec.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/920.b1a3d2d7.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/448.38ec1e04.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/923.595735be.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/174.90bd671d.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/254.38ca8f8d.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/655.b2d2cab3.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/931.f2e0fbd0.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/499.24625b68.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/459.3a3e45d3.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/398.bea38e3a.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/200.044bc8fa.js",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/mf-stats.json",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/mf-manifest.json",
+    "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/448.38ec1e04.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/923.595735be.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/174.90bd671d.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/254.38ca8f8d.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/931.f2e0fbd0.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/459.3a3e45d3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/398.bea38e3a.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/200.044bc8fa.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/main.b4dac3a7.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/200.044bc8fa.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/398.bea38e3a.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/459.3a3e45d3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/931.f2e0fbd0.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/655.b2d2cab3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/254.38ca8f8d.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/174.90bd671d.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/923.595735be.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/448.38ec1e04.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/920.b1a3d2d7.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/76.c1e9f242.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/613.b62c7641.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/79.65fd18db.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/903.22aa6349.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/851.0e532413.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/232.b56ee2e3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/460.3338a81f.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/63.204cfe8f.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/760.d7eae9df.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/375.6ddedbe1.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/695.7797e0e3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/44.9ebe8e4c.js"
+        ]
+      }
+    },
+    "coreshoporder": {
+      "initial": {
+        "js": [
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/200.044bc8fa.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/398.bea38e3a.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/459.3a3e45d3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/499.24625b68.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/931.f2e0fbd0.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/655.b2d2cab3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/254.38ca8f8d.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/174.90bd671d.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/923.595735be.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/448.38ec1e04.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/920.b1a3d2d7.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/__federation_expose_default_export.d48e0cec.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/76.c1e9f242.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/613.b62c7641.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/79.65fd18db.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/903.22aa6349.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/851.0e532413.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/232.b56ee2e3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/460.3338a81f.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/63.204cfe8f.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/760.d7eae9df.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/375.6ddedbe1.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/695.7797e0e3.js",
+          "/bundles/coreshoporder/studio/6582e538-22ac-414d-a25d-e6c21ff6ad67/static/js/async/44.9ebe8e4c.js"
+        ]
+      }
+    }
+  }
+}
