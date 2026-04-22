@@ -34,10 +34,12 @@ final class MysqlWorkerTableIndexType extends AbstractType
                     TableIndex::TABLE_INDEX_TYPE_INDEX,
                     TableIndex::TABLE_INDEX_TYPE_UNIQUE,
                 ],
+                'required' => false,
             ])
             ->add('columns', CollectionType::class, [
                 'allow_delete' => true,
                 'allow_add' => true,
+                'required' => false,
             ])
         ;
     }

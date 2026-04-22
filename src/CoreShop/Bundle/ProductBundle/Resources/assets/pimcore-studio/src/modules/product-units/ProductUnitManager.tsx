@@ -29,7 +29,12 @@ export const ProductUnitManager: React.FC = () => {
       leftRootTitle={t('coreshop_product_units', { defaultValue: 'Product Units' })}
       localizable
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
-      buildSavePayload={(data) => data}
+      buildSavePayload={(data) => {
+        // Strip virtual serializer property — backend form only accepts name + translations
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { fullLabel, ...payload } = data as any
+        return payload
+      }}
       onAdd={async () =>
         await new Promise<number>((resolve) => {
           modal.input({
@@ -68,20 +73,21 @@ export const ProductUnitManager: React.FC = () => {
           <ProductUnitForm
             data={mergedData}
             onChange={(draft) => {
-              // Merge changed fields back into translations structure
-              const updatedTranslations = {
-                ...(data.translations ?? {}),
-                [currentLocale]: {
-                  locale: currentLocale,
-                  fullLabel: draft.fullLabel,
-                  fullPluralLabel: draft.fullPluralLabel,
-                  shortLabel: draft.shortLabel,
-                  shortPluralLabel: draft.shortPluralLabel
-                }
-              }
+              const prevTranslations = (data.translations as Record<string, any>) ?? {}
+              const updatedTranslations = draft.translations
+                ? Object.entries(draft.translations as Record<string, any>).reduce(
+                    (acc, [locale, changes]) => ({
+                      ...acc,
+                      [locale]: { ...(acc[locale] ?? {}), ...changes },
+                    }),
+                    { ...prevTranslations }
+                  )
+                : prevTranslations
+
               setData({
+                ...data,
                 ...draft,
-                translations: updatedTranslations
+                translations: updatedTranslations as any,
               } as Partial<ProductUnitDetail>)
             }}
             currentLocale={currentLocale}

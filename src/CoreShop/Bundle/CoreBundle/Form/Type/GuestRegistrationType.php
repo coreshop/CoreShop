@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Bundle\AddressBundle\Form\Type\SalutationChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
@@ -52,6 +53,9 @@ class GuestRegistrationType extends AbstractResourceType
         $builder->setDataMapper($this->dataMapper);
 
         $builder
+            ->add('salutation', SalutationChoiceType::class, [
+                'label' => 'coreshop.form.customer.salutation',
+            ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'coreshop.form.customer.gender',
                 'choices' => [
