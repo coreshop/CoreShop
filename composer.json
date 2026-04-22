@@ -129,6 +129,7 @@
     },
   "conflict": {
     "ezimuel/ringphp": "<1.4",
+    "react/promise": "<3",
     "symfony/error-handler": "<6.4.14"
   },
   "require-dev": {
