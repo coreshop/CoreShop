@@ -21,8 +21,8 @@ use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class MysqlWorkerTableIndexType extends AbstractType
 {
@@ -37,18 +37,12 @@ final class MysqlWorkerTableIndexType extends AbstractType
                 'required' => false,
             ])
             ->add('columns', CollectionType::class, [
+                'entry_type' => TextType::class,
                 'allow_delete' => true,
                 'allow_add' => true,
                 'required' => false,
             ])
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefault('data_class', TableIndex::class);
-
-        parent::configureOptions($resolver);
     }
 
     public function getBlockPrefix(): string

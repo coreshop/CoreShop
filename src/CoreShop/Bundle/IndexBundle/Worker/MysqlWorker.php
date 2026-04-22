@@ -207,14 +207,15 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         }
 
         if (array_key_exists('indexes', $index->getConfiguration())) {
-            /**
-             * @var TableIndex $tableIndex
-             */
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
-                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
-                    $table->addUniqueIndex($tableIndex->getColumns());
+                if (!is_array($tableIndex) || empty($tableIndex['columns'])) {
+                    continue;
+                }
+
+                if (($tableIndex['type'] ?? null) === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                    $table->addUniqueIndex(array_values($tableIndex['columns']));
                 } else {
-                    $table->addIndex($tableIndex->getColumns());
+                    $table->addIndex(array_values($tableIndex['columns']));
                 }
             }
         }
@@ -269,14 +270,15 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         }
 
         if (array_key_exists('localizedIndexes', $index->getConfiguration())) {
-            /**
-             * @var TableIndex $tableIndex
-             */
             foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
-                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
-                    $table->addUniqueIndex($tableIndex->getColumns());
+                if (!is_array($tableIndex) || empty($tableIndex['columns'])) {
+                    continue;
+                }
+
+                if (($tableIndex['type'] ?? null) === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                    $table->addUniqueIndex(array_values($tableIndex['columns']));
                 } else {
-                    $table->addIndex($tableIndex->getColumns());
+                    $table->addIndex(array_values($tableIndex['columns']));
                 }
             }
         }
