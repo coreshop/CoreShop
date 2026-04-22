@@ -1,23 +1,23 @@
-name: Behat [5.x]
+name: Behat UI [5.1]
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '5.1' ]
     paths:
       - 'composer.json'
       - 'features/**'
       - 'behat.yml.dist'
       - '*.php'
       - 'src/**'
-      - '.github/workflows/behat-5x.yml'
+      - '.github/workflows/behat_ui-5.1.yml'
   pull_request_target:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '5.1' ]
     paths:
       - 'composer.json'
       - 'features/**'
       - 'behat.yml.dist'
       - '*.php'
       - 'src/**'
-      - '.github/workflows/behat-5x.yml'
+      - '.github/workflows/behat_ui-5.1.yml'
   release:
     types: [ created ]
   schedule:
@@ -34,6 +34,7 @@ env:
   PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
   PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
   PIMCORE_INSTALL_MYSQL_PORT: "3306"
+  PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/index_test.php"
   PIMCORE_KERNEL_CLASS: 'Kernel'
   PIMCORE_SECRET: "${{ secrets.PIMCORE_SECRET }}"
   PIMCORE_INSTALL_ENCRYPTION_SECRET: "${{ secrets.PIMCORE_SECRET }}"
@@ -46,7 +47,7 @@ permissions:
   contents: read
 
 jobs:
-  behat:
+  behat_ui:
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.allow-failure }}
 
@@ -89,12 +90,17 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
           extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
+          tools: symfony
 
       - name: Check PHP Version
         run: php -v
@@ -157,6 +163,23 @@ jobs:
       - name: Install CoreShop
         run: |
           bin/console coreshop:install
+          composer dump-autoload
+
+      - name: Install Browser Drivers
+        run: vendor/bin/bdi detect drivers
+
+      - name: Run Symfony Webserver
+        run: symfony server:start --port=9080 --dir=public --daemon --no-tls
 
       - name: Run Behat
-        run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default
+        run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: "Logs (PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
+          path: |
+            var/log/
+            etc/build/
+          if-no-files-found: ignore

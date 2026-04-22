@@ -1,28 +1,40 @@
-name: License Check [5.x]
+name: Behat [5.0]
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '5.0' ]
     paths:
       - 'composer.json'
-      - '*/**/composer.json'
-      - '.github/workflows/license-check-5x.yaml'
+      - 'features/**'
+      - 'behat.yml.dist'
+      - '*.php'
+      - 'src/**'
+      - '.github/workflows/behat-5.0.yml'
   pull_request_target:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '5.0' ]
     paths:
       - 'composer.json'
-      - '*/**/composer.json'
-      - '.github/workflows/license-check-5x.yaml'
+      - 'features/**'
+      - 'behat.yml.dist'
+      - '*.php'
+      - 'src/**'
+      - '.github/workflows/behat-5.0.yml'
   release:
     types: [ created ]
   schedule:
     - cron: "0 1 * * 1"
 
-permissions:
-  contents: read
-
 env:
   APP_ENV: "test"
+  CORESHOP_SKIP_DB_SETUP: "1"
   PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+  PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
+  PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
+  PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "127.0.0.1"
+  PIMCORE_INSTALL_MYSQL_USERNAME: "root"
+  PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
+  PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
+  PIMCORE_INSTALL_MYSQL_PORT: "3306"
+  PIMCORE_KERNEL_CLASS: 'Kernel'
   PIMCORE_SECRET: "${{ secrets.PIMCORE_SECRET }}"
   PIMCORE_INSTALL_ENCRYPTION_SECRET: "${{ secrets.PIMCORE_SECRET }}"
   PIMCORE_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
@@ -30,20 +42,31 @@ env:
   PIMCORE_INSTALL_PRODUCT_KEY: "${{ secrets.PIMCORE_PRODUCT_KEY }}"
   PIMCORE_PRODUCT_KEY: "${{ secrets.PIMCORE_PRODUCT_KEY }}"
 
+permissions:
+  contents: read
+
 jobs:
-  lint:
+  behat:
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.allow-failure }}
+
     strategy:
       matrix:
-        php: [ 8.3, 8.4 ]
-        pimcore: [ ^12.3 ]
-        dependencies: [ highest ]
+        include:
+          - php: 8.3
+            pimcore: ^12.3
+            dependencies: highest
+            allow-failure: false
+          - php: 8.4
+            pimcore: ^12.3
+            dependencies: highest
+            allow-failure: true
+
     services:
       database:
         image: "mysql:8"
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: coreshop_test
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -62,8 +85,12 @@ jobs:
           ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
           extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate
+      - name: Check PHP Version
+        run: php -v
+
+      - name: Setup DB
+        run: |
+          mysql --host 127.0.0.1 --port ${{ job.services.database.ports['3306'] }} -uroot -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
       - name: Get composer cache directory
         id: composer-cache
@@ -87,6 +114,18 @@ jobs:
         name: Install dependencies lowest
         run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
-      - name: Check Licenses
-        run: vendor/bin/composer-license-checker
+      - name: Cache clear
+        run: bin/console cache:clear
 
+      - name: Assets Install
+        run: bin/console assets:install --symlink
+
+      - name: Install Pimcore
+        run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
+
+      - name: Install CoreShop
+        run: |
+          bin/console coreshop:install
+
+      - name: Run Behat
+        run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default

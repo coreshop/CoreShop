@@ -1,15 +1,15 @@
-name: Packages Bundles [5.x]
+name: Packages Bundles [5.1]
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '5.1' ]
     paths:
       - 'src/CoreShop/Bundle/**'
-      - '.github/workflows/packages_bundles-5x.yml'
+      - '.github/workflows/packages_bundles-5.1.yml'
   pull_request_target:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '5.1' ]
     paths:
       - 'src/CoreShop/Bundle/**'
-      - '.github/workflows/packages_bundles-5x.yml'
+      - '.github/workflows/packages_bundles-5.1.yml'
   release:
     types: [ created ]
   schedule:

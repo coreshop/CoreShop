@@ -1,27 +1,17 @@
-name: Static Tests (Lint, Stan) [5.x]
+name: License Check [5.1]
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '5.1' ]
     paths:
-      - 'features/**'
-      - 'behat.yml.dist'
-      - 'src/**'
-      - '*.php'
-      - '*.neon'
-      - '*.xml'
       - 'composer.json'
-      - '.github/workflows/static-5x.yml'
+      - '*/**/composer.json'
+      - '.github/workflows/license-check-5.1.yaml'
   pull_request_target:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '5.1' ]
     paths:
-      - 'features/**'
-      - 'behat.yml.dist'
-      - 'src/**'
-      - '*.php'
-      - '*.neon'
-      - '*.xml'
       - 'composer.json'
-      - '.github/workflows/static-5x.yml'
+      - '*/**/composer.json'
+      - '.github/workflows/license-check-5.1.yaml'
   release:
     types: [ created ]
   schedule:
@@ -47,10 +37,7 @@ jobs:
       matrix:
         php: [ 8.3, 8.4 ]
         pimcore: [ ^12.3 ]
-        dependencies: [ highest, lowest ]
-        exclude:
-          - php: 8.4
-            dependencies: lowest
+        dependencies: [ highest ]
     services:
       database:
         image: "mysql:8"
@@ -100,24 +87,6 @@ jobs:
         name: Install dependencies lowest
         run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
-      - name: Validate YAML
-        run: bin/console lint:yaml src
+      - name: Check Licenses
+        run: vendor/bin/composer-license-checker
 
-      - name: Validate TWIG
-        run: bin/console lint:twig src
-
-      - name: Validate Container
-        run: bin/console lint:container
-
-      - name: Validate Doctrine Settings
-        run: bin/console doctrine:schema:validate --skip-sync
-
-      - name: STAN
-        run: |
-          cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
-          bin/console cache:clear --env=dev
-          vendor/bin/phpstan
-
-      - name: PSALM
-        run: |
-          vendor/bin/psalm
