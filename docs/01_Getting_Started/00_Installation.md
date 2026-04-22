@@ -5,7 +5,7 @@ CoreShop:
 
 ## Initial Setup
 
-1. Install with composer: `composer require coreshop/core-shop ^4.0`
+1. Install with composer: `composer require coreshop/core-shop ^2026.0`
 2. Enable the bundle in `config/bundles.php` and the `CoreShopCoreBundle` to the list of Bundles to load:
     ```php
     <?php
@@ -121,11 +121,15 @@ CoreShop:
         --admin-username admin \
         --admin-password admin
     ```
-    The profile expects `DATABASE_URL` (a Doctrine DBAL DSN, e.g.
-    `mysql://user:pass@host:3306/dbname`) plus `PIMCORE_ADMIN_USER` / `PIMCORE_ADMIN_PASSWORD`. See
-    `CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile` for the env var definitions
-    it registers. All CoreShop-specific install steps (Pimcore classes, permissions, documents,
-    fixtures) run in the next step.
+    The profile expects the following env vars (either in `.env.local` or exported):
+    - `DATABASE_URL` — Doctrine DBAL DSN, e.g. `mysql://user:pass@host:3306/dbname`
+    - `PIMCORE_OPENSEARCH_DSN` — OpenSearch DSN, e.g. `opensearch://admin@localhost:9200?ssl=true&ssl_verify=false`
+    - `PIMCORE_MESSENGER_TRANSPORT_DSN_PREFIX` — auto-filled by the profile to `doctrine://default?queue_name=`
+    - `PIMCORE_ADMIN_USER` / `PIMCORE_ADMIN_PASSWORD` — or pass `--admin-username` / `--admin-password` on the CLI as shown
+
+    See `CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile` for the env var
+    definitions it registers. All CoreShop-specific install steps (Pimcore classes, permissions,
+    documents, fixtures) run in the next step.
 7. Run CoreShop install: `php bin/console coreshop:install`
 8. Optional: Install Demo Data `php bin/console coreshop:install:demo`
 
