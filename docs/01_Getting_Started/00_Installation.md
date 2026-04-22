@@ -117,7 +117,9 @@ CoreShop:
     vendor/bin/pimcore-install \
         --install-profile 'CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile' \
         --skip-validation \
-        --no-interaction
+        --no-interaction \
+        --admin-username admin \
+        --admin-password admin
     ```
     The profile expects `DATABASE_URL` (a Doctrine DBAL DSN, e.g.
     `mysql://user:pass@host:3306/dbname`) plus `PIMCORE_ADMIN_USER` / `PIMCORE_ADMIN_PASSWORD`. See

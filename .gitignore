@@ -69,3 +69,7 @@ settings.local.json
 
 .aim/
 TODO.md
+
+# Studio frontend build artifacts — locally ignored, force-added in CI (see .github/workflows/shared-frontend-build.yaml)
+src/CoreShop/Bundle/*/Resources/public/studio/*/
+supervisord.pid

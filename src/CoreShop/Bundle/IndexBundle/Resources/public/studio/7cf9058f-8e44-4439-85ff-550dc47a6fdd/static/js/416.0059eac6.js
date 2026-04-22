@@ -1,2 +1,0 @@
-/*! For license information please see 416.0059eac6.js.LICENSE.txt */
-"use strict";(self.webpackChunkcoreshopindex=self.webpackChunkcoreshopindex||[]).push([["416"],{5062:function(e,n,c){c(2855),c(5168),c(8701),c(2696),c(7579),c(6697),c(910)},761:function(e,n,c){c(2855),c(5168),c(8701),c(2696)}}]);

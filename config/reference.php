@@ -125,55 +125,65 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     ...<string, DefinitionType|AliasType|PrototypeType|StackType|ArgumentsType|null>
  * }
  * @psalm-type ExtensionType = array<string, mixed>
- * @psalm-type PimcoreOpenSearchClientConfig = array{
- *     clients?: array<string, array{ // Default: []
- *         dsn?: scalar|Param|null, // DSN string: opensearch://user:pass@host:port?ssl_verify=bool. When set, overrides hosts/username/password/ssl_verification. // Default: null
- *         name?: scalar|Param|null,
- *         hosts?: list<scalar|Param|null>,
- *         logger_channel?: scalar|Param|null, // Logger channel to be used for opensearch client logs // Default: "pimcore.opensearch.default"
- *         log_404_errors?: bool|Param, // Enables logging of 404 errors (default: false) // Default: false
- *         username?: scalar|Param|null, // Username for opensearch authentication // Default: "admin"
- *         password?: scalar|Param|null, // Password for opensearch authentication // Default: "admin"
- *         ssl_key?: scalar|Param|null, // Path to private SSL key file (.key)
- *         ssl_cert?: scalar|Param|null, // Path to PEM formatted SSL cert file (.cert)
- *         ssl_password?: scalar|Param|null, // If private key and certificate require a password (default: null)
- *         ssl_verification?: bool|Param, // Enable or disable the SSL verification (default: true)
- *         aws_region?: scalar|Param|null, // Will set the setSigV4Region()
- *         aws_service?: scalar|Param|null, // Will set the setSigV4ServicesetSigV4Service()
- *         aws_key?: scalar|Param|null, // Will set the setSigV4CredentialProvider() key
- *         aws_secret?: scalar|Param|null, // Will set the setSigV4CredentialProvider() key
- *     }>,
+ * @psalm-type PimcoreGenericDataIndexConfig = array{
+ *     index_service?: array{
+ *         client_params?: array{
+ *             client_name?: scalar|Param|null, // Name of search client from to be used. // Default: "default"
+ *             client_type?: "openSearch"|"elasticsearch"|Param, // Type of search client to be used. // Default: "openSearch"
+ *             index_prefix?: scalar|Param|null, // Default: "pimcore_"
+ *         },
+ *         search_settings?: array{
+ *             list_page_size?: scalar|Param|null, // Default: 60
+ *             list_max_filter_options?: scalar|Param|null, // Default: 500
+ *             max_synchronous_children_rename_limit?: scalar|Param|null, // Maximum number of direct/synchronous children path updates if asset folders get renamed. If more then the given number of children need an path update the process will be done by the asynchronous index update command. This mechanismn is needed to be able to see directly the new paths in the folder navigation. // Default: 500
+ *             search_analyzer_attributes?: array<string, array{ // Default: []
+ *                 fields?: mixed, // Default: []
+ *             }>,
+ *         },
+ *         index_settings?: mixed, // Default: []
+ *         queue_settings?: array{
+ *             worker_count?: scalar|Param|null, // Default: 1
+ *             min_batch_size?: scalar|Param|null, // Default: 5
+ *             max_batch_size?: scalar|Param|null, // Default: 400
+ *         },
+ *         system_fields_settings?: array{
+ *             general?: array<string, array{ // Default: []
+ *                 type?: scalar|Param|null,
+ *                 analyzer?: scalar|Param|null,
+ *                 ignore_above?: scalar|Param|null,
+ *                 properties?: mixed, // Default: []
+ *                 fields?: mixed, // Default: []
+ *             }>,
+ *             document?: array<string, array{ // Default: []
+ *                 type?: scalar|Param|null,
+ *                 analyzer?: scalar|Param|null,
+ *                 ignore_above?: scalar|Param|null,
+ *                 properties?: mixed, // Default: []
+ *                 fields?: mixed, // Default: []
+ *             }>,
+ *             data_object?: array<string, array{ // Default: []
+ *                 type?: scalar|Param|null,
+ *                 analyzer?: scalar|Param|null,
+ *                 ignore_above?: scalar|Param|null,
+ *                 properties?: mixed, // Default: []
+ *                 fields?: mixed, // Default: []
+ *             }>,
+ *             asset?: array<string, array{ // Default: []
+ *                 type?: scalar|Param|null,
+ *                 analyzer?: scalar|Param|null,
+ *                 ignore_above?: scalar|Param|null,
+ *                 properties?: mixed, // Default: []
+ *                 fields?: mixed, // Default: []
+ *             }>,
+ *         },
+ *     },
  * }
- * @psalm-type PimcoreStudioUiConfig = array{
- *     url_path?: scalar|Param|null, // Default: "/pimcore-studio"
- *     static_resources?: array{
- *         css?: list<scalar|Param|null>,
- *         js?: list<scalar|Param|null>,
- *         editmode?: array{
- *             css?: list<scalar|Param|null>,
- *             js?: list<scalar|Param|null>,
- *         },
- *     },
- *     wysiwyg?: array{
- *         defaultEditorConfig?: array{
- *             document?: mixed, // Default: []
- *             dataObject?: mixed, // Default: []
- *         },
- *     },
- *     csp_header?: bool|array{ // Can be used to enable or disable the Content Security Policy headers.
- *         enabled?: bool|Param, // Default: true
- *         exclude_paths?: list<scalar|Param|null>,
- *         additional_urls?: array{
- *             default-src?: list<scalar|Param|null>,
- *             img-src?: list<scalar|Param|null>,
- *             script-src?: list<scalar|Param|null>,
- *             style-src?: list<scalar|Param|null>,
- *             connect-src?: list<scalar|Param|null>,
- *             font-src?: list<scalar|Param|null>,
- *             media-src?: list<scalar|Param|null>,
- *             frame-src?: list<scalar|Param|null>,
- *         },
- *     },
+ * @psalm-type PimcoreGenericExecutionEngineConfig = array{
+ *     error_handling?: "continue_on_error"|"stop_on_first_error"|Param, // Specifies how errors should be handled for all job run executions. // Default: "continue_on_error"
+ *     execution_context?: list<array{ // Default: []
+ *         translations_domain?: scalar|Param|null, // Translation domain which should be used by the job run. Default value is "admin". // Default: "admin"
+ *         error_handling?: "continue_on_error"|"stop_on_first_error"|Param, // Error handling behavior which should be used by the job run. Overrides the global value.
+ *     }>,
  * }
  * @psalm-type PimcoreStudioBackendConfig = array{
  *     url_prefix?: scalar|Param|null, // Default: "/pimcore-studio/api"
@@ -363,64 +373,54 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *     },
  * }
- * @psalm-type PimcoreGenericDataIndexConfig = array{
- *     index_service?: array{
- *         client_params?: array{
- *             client_name?: scalar|Param|null, // Name of search client from to be used. // Default: "default"
- *             client_type?: "openSearch"|"elasticsearch"|Param, // Type of search client to be used. // Default: "openSearch"
- *             index_prefix?: scalar|Param|null, // Default: "pimcore_"
+ * @psalm-type PimcoreStudioUiConfig = array{
+ *     url_path?: scalar|Param|null, // Default: "/pimcore-studio"
+ *     static_resources?: array{
+ *         css?: list<scalar|Param|null>,
+ *         js?: list<scalar|Param|null>,
+ *         editmode?: array{
+ *             css?: list<scalar|Param|null>,
+ *             js?: list<scalar|Param|null>,
  *         },
- *         search_settings?: array{
- *             list_page_size?: scalar|Param|null, // Default: 60
- *             list_max_filter_options?: scalar|Param|null, // Default: 500
- *             max_synchronous_children_rename_limit?: scalar|Param|null, // Maximum number of direct/synchronous children path updates if asset folders get renamed. If more then the given number of children need an path update the process will be done by the asynchronous index update command. This mechanismn is needed to be able to see directly the new paths in the folder navigation. // Default: 500
- *             search_analyzer_attributes?: array<string, array{ // Default: []
- *                 fields?: mixed, // Default: []
- *             }>,
+ *     },
+ *     wysiwyg?: array{
+ *         defaultEditorConfig?: array{
+ *             document?: mixed, // Default: []
+ *             dataObject?: mixed, // Default: []
  *         },
- *         index_settings?: mixed, // Default: []
- *         queue_settings?: array{
- *             worker_count?: scalar|Param|null, // Default: 1
- *             min_batch_size?: scalar|Param|null, // Default: 5
- *             max_batch_size?: scalar|Param|null, // Default: 400
- *         },
- *         system_fields_settings?: array{
- *             general?: array<string, array{ // Default: []
- *                 type?: scalar|Param|null,
- *                 analyzer?: scalar|Param|null,
- *                 ignore_above?: scalar|Param|null,
- *                 properties?: mixed, // Default: []
- *                 fields?: mixed, // Default: []
- *             }>,
- *             document?: array<string, array{ // Default: []
- *                 type?: scalar|Param|null,
- *                 analyzer?: scalar|Param|null,
- *                 ignore_above?: scalar|Param|null,
- *                 properties?: mixed, // Default: []
- *                 fields?: mixed, // Default: []
- *             }>,
- *             data_object?: array<string, array{ // Default: []
- *                 type?: scalar|Param|null,
- *                 analyzer?: scalar|Param|null,
- *                 ignore_above?: scalar|Param|null,
- *                 properties?: mixed, // Default: []
- *                 fields?: mixed, // Default: []
- *             }>,
- *             asset?: array<string, array{ // Default: []
- *                 type?: scalar|Param|null,
- *                 analyzer?: scalar|Param|null,
- *                 ignore_above?: scalar|Param|null,
- *                 properties?: mixed, // Default: []
- *                 fields?: mixed, // Default: []
- *             }>,
+ *     },
+ *     csp_header?: bool|array{ // Can be used to enable or disable the Content Security Policy headers.
+ *         enabled?: bool|Param, // Default: true
+ *         exclude_paths?: list<scalar|Param|null>,
+ *         additional_urls?: array{
+ *             default-src?: list<scalar|Param|null>,
+ *             img-src?: list<scalar|Param|null>,
+ *             script-src?: list<scalar|Param|null>,
+ *             style-src?: list<scalar|Param|null>,
+ *             connect-src?: list<scalar|Param|null>,
+ *             font-src?: list<scalar|Param|null>,
+ *             media-src?: list<scalar|Param|null>,
+ *             frame-src?: list<scalar|Param|null>,
  *         },
  *     },
  * }
- * @psalm-type PimcoreGenericExecutionEngineConfig = array{
- *     error_handling?: "continue_on_error"|"stop_on_first_error"|Param, // Specifies how errors should be handled for all job run executions. // Default: "continue_on_error"
- *     execution_context?: list<array{ // Default: []
- *         translations_domain?: scalar|Param|null, // Translation domain which should be used by the job run. Default value is "admin". // Default: "admin"
- *         error_handling?: "continue_on_error"|"stop_on_first_error"|Param, // Error handling behavior which should be used by the job run. Overrides the global value.
+ * @psalm-type PimcoreOpenSearchClientConfig = array{
+ *     clients?: array<string, array{ // Default: []
+ *         dsn?: scalar|Param|null, // DSN string: opensearch://user:pass@host:port?ssl_verify=bool. When set, overrides hosts/username/password/ssl_verification. // Default: null
+ *         name?: scalar|Param|null,
+ *         hosts?: list<scalar|Param|null>,
+ *         logger_channel?: scalar|Param|null, // Logger channel to be used for opensearch client logs // Default: "pimcore.opensearch.default"
+ *         log_404_errors?: bool|Param, // Enables logging of 404 errors (default: false) // Default: false
+ *         username?: scalar|Param|null, // Username for opensearch authentication // Default: "admin"
+ *         password?: scalar|Param|null, // Password for opensearch authentication // Default: "admin"
+ *         ssl_key?: scalar|Param|null, // Path to private SSL key file (.key)
+ *         ssl_cert?: scalar|Param|null, // Path to PEM formatted SSL cert file (.cert)
+ *         ssl_password?: scalar|Param|null, // If private key and certificate require a password (default: null)
+ *         ssl_verification?: bool|Param, // Enable or disable the SSL verification (default: true)
+ *         aws_region?: scalar|Param|null, // Will set the setSigV4Region()
+ *         aws_service?: scalar|Param|null, // Will set the setSigV4ServicesetSigV4Service()
+ *         aws_key?: scalar|Param|null, // Will set the setSigV4CredentialProvider() key
+ *         aws_secret?: scalar|Param|null, // Will set the setSigV4CredentialProvider() key
  *     }>,
  * }
  * @psalm-type PimcoreCustomReportsConfig = array{
@@ -4463,11 +4463,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
  *     services?: ServicesConfig,
- *     pimcore_open_search_client?: PimcoreOpenSearchClientConfig,
- *     pimcore_studio_ui?: PimcoreStudioUiConfig,
- *     pimcore_studio_backend?: PimcoreStudioBackendConfig,
  *     pimcore_generic_data_index?: PimcoreGenericDataIndexConfig,
  *     pimcore_generic_execution_engine?: PimcoreGenericExecutionEngineConfig,
+ *     pimcore_studio_backend?: PimcoreStudioBackendConfig,
+ *     pimcore_studio_ui?: PimcoreStudioUiConfig,
+ *     pimcore_open_search_client?: PimcoreOpenSearchClientConfig,
  *     pimcore_custom_reports?: PimcoreCustomReportsConfig,
  *     core_shop_menu?: CoreShopMenuConfig,
  *     jms_serializer?: JmsSerializerConfig,
@@ -4530,11 +4530,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
- *         pimcore_open_search_client?: PimcoreOpenSearchClientConfig,
- *         pimcore_studio_ui?: PimcoreStudioUiConfig,
- *         pimcore_studio_backend?: PimcoreStudioBackendConfig,
  *         pimcore_generic_data_index?: PimcoreGenericDataIndexConfig,
  *         pimcore_generic_execution_engine?: PimcoreGenericExecutionEngineConfig,
+ *         pimcore_studio_backend?: PimcoreStudioBackendConfig,
+ *         pimcore_studio_ui?: PimcoreStudioUiConfig,
+ *         pimcore_open_search_client?: PimcoreOpenSearchClientConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

@@ -1,49 +1,41 @@
 /**
- * CoreShop Assign to New Company Button Component
+ * CoreShop Assign to New Company Nav-Item
  *
- * Menu button that opens the Element Selector for customer selection,
- * then opens a detail widget tab with the assignment form.
+ * Opens the Element Selector for customer selection and, after selection,
+ * opens a detail widget tab with the assignment form.
+ *
+ * The factory intentionally avoids React hooks — Pimcore calls it via an
+ * IIFE during MainNav render, so any hooks inside would be attributed to
+ * MainNav and break when menu items are added asynchronously (React #310).
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
  * @license    CoreShop Commercial License (CCL)
  */
 
-import React from 'react'
-import { Icon } from '@pimcore/studio-ui-bundle/components'
-import { useMessage } from '@pimcore/studio-ui-bundle/components'
-import { useTranslation } from 'react-i18next'
+import { message } from 'antd'
 import { container } from '@pimcore/studio-ui-bundle'
-import { store } from '@pimcore/studio-ui-bundle/app'
-import { useElementSelector, SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
+import { store, getPimcoreStudioApi } from '@pimcore/studio-ui-bundle/app'
+import { SelectionType } from '@pimcore/studio-ui-bundle/modules/element'
 import type { ResourceConfigProvider } from '@coreshop/resource/src/config'
 import { coreshopResourceServiceIds } from '@coreshop/resource/src/config'
-import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
-import { type MenuButtonProps } from '@coreshop/menu/src'
+import { getErrorMessage } from '@coreshop/resource/src/entities'
+import type { CustomNavItem } from '@coreshop/menu/src'
 import { customerCompanyApi } from '../modules/customer-company-assignment'
 
-export const AssignToNewCompanyButton = ({ icon, label, closeMainNav }: MenuButtonProps): React.JSX.Element => {
-  const { t } = useTranslation()
-  const messageApi = useMessage()
-  const [allowedClasses, setAllowedClasses] = React.useState<string[]>([])
-  const [classesLoaded, setClassesLoaded] = React.useState(false)
+const loadAllowedCustomerClasses = async (): Promise<string[]> => {
+  try {
+    const configProvider = container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider)
+    const classes = await configProvider.getAllowedClasses('coreshop.customer')
+    return classes.length > 0 ? classes : ['CoreShopCustomer']
+  } catch {
+    return ['CoreShopCustomer']
+  }
+}
 
-  React.useEffect(() => {
-    const loadClasses = async () => {
-      try {
-        const configProvider = container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider)
-        const classes = await configProvider.getAllowedClasses('coreshop.customer')
-        setAllowedClasses(classes)
-      } catch (err) {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
-        setAllowedClasses(['CoreShopCustomer'])
-      } finally {
-        setClassesLoaded(true)
-      }
-    }
-    void loadClasses()
-  }, [])
+const openAssignToNewCompanyFlow = async (): Promise<void> => {
+  const allowedClasses = await loadAllowedCustomerClasses()
 
-  const { open: openCustomerSelector } = useElementSelector({
+  getPimcoreStudioApi().element.openElementSelector({
     selectionType: SelectionType.Single,
     areas: {
       asset: false,
@@ -53,47 +45,37 @@ export const AssignToNewCompanyButton = ({ icon, label, closeMainNav }: MenuButt
     config: {
       objects: {
         allowedTypes: ['object'],
-        allowedClasses: allowedClasses.length > 0 ? allowedClasses : undefined
+        allowedClasses
       }
     },
     onFinish: (event) => {
-      if (event.items.length > 0) {
-        const selected = event.items[0]
-        const customerId = selected.data.id
-
-        void customerCompanyApi.getEntityDetails('customer', customerId).then((response) => {
-          const customerName = response.success && response.data ? response.data.name : `#${customerId}`
-
-          store.dispatch({
-            type: 'widget-manager/openMainWidget',
-            payload: {
-              name: 'Assign to New Company - ' + customerName,
-              id: 'coreshop-assign-new-company-' + customerId,
-              component: 'coreshop-customer-to-company-assign-to-new-detail',
-              config: { customerId },
-            },
-          })
-        })
+      if (event.items.length === 0) {
+        return
       }
+
+      const customerId = event.items[0].data.id
+
+      customerCompanyApi.getEntityDetails('customer', customerId).then((response) => {
+        const customerName = response.success && response.data ? response.data.name : `#${customerId}`
+
+        store.dispatch({
+          type: 'widget-manager/openMainWidget',
+          payload: {
+            name: 'Assign to New Company - ' + customerName,
+            id: 'coreshop-assign-new-company-' + customerId,
+            component: 'coreshop-customer-to-company-assign-to-new-detail',
+            config: { customerId },
+          },
+        })
+      }).catch((error) => {
+        void message.error(getErrorMessage(error, 'Failed to load customer'))
+      })
     }
   })
-
-  const handleClick = (e: React.MouseEvent): void => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (classesLoaded) {
-      closeMainNav?.()
-      openCustomerSelector()
-    }
-  }
-
-  return (
-    <button
-      className="main-nav__list-btn"
-      onClick={handleClick}
-    >
-      <Icon value={icon ?? ''} />
-      {label || t('coreshop_customer_to_company_assign_to_new', { defaultValue: 'Assign to New Company' })}
-    </button>
-  )
 }
+
+export const useAssignToNewCompanyNavItem = (): CustomNavItem => ({
+  onClick: () => {
+    void openAssignToNewCompanyFlow()
+  }
+})
