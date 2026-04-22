@@ -14,7 +14,7 @@
 
         <field name="isoCode" column="isoCode" type="string" length="2" nullable="true"/>
         <field name="active" column="active" type="boolean" />
-        <field name="addressFormat" column="addressFormat" type="string" />
+        <field name="addressFormat" column="addressFormat" type="string" length="255" />
         <field name="salutations" column="salutations" type="simple_array" nullable="true" />
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
