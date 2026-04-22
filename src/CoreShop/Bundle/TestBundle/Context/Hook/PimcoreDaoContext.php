@@ -218,7 +218,6 @@ class PimcoreDaoContext implements Context
 
         if ($reflection->hasProperty('cache')) {
             $cacheProperty = $reflection->getProperty('cache');
-            $cacheProperty->setAccessible(true);
             $reflection->setStaticPropertyValue('cache', []);
         }
     }

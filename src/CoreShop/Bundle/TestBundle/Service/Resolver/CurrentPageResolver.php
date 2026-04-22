@@ -35,10 +35,14 @@ final class CurrentPageResolver implements CurrentPageResolverInterface
      */
     public function getCurrentPageWithForm(array $pages): SymfonyPageInterface
     {
-        /**
-         * @psalm-suppress PossiblyFalseArgument
-         */
-        $routeParameters = $this->urlMatcher->match(parse_url($this->session->getCurrentUrl(), \PHP_URL_PATH));
+        $path = (string) parse_url($this->session->getCurrentUrl(), \PHP_URL_PATH);
+        $path = preg_replace(
+            '#^/(app(_dev|_test|_test_cached)?|index(_test|_test_precision)?)\.php/#',
+            '/',
+            $path,
+        );
+
+        $routeParameters = $this->urlMatcher->match($path);
 
         Assert::allIsInstanceOf($pages, SymfonyPageInterface::class);
 

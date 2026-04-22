@@ -1,2 +1,8 @@
 _pimcore:
     resource: "@PimcoreCoreBundle/config/routing.yaml"
+
+# CoreShop FrontendBundle routes are opt-in. Comment out individual imports
+# (or the whole block) if your project has its own storefront and doesn't need
+# the default shop URLs.
+coreshop_frontend:
+    resource: "@CoreShopFrontendBundle/Resources/config/routes.yaml"

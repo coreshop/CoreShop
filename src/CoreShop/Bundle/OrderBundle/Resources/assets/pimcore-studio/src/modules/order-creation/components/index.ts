@@ -11,5 +11,5 @@
  */
 
 export { OrderCreationPanel } from './OrderCreationPanel'
-export { OrderCreationButton } from './OrderCreationButton'
+export { useOrderCreationNavItem } from './OrderCreationButton'
 export { CustomerInfoCard } from './CustomerSelector'

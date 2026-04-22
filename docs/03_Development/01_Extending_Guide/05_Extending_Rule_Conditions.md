@@ -6,11 +6,11 @@ tag you use and Interface you need to implement for them.
 
 | Action Type            | Tag                                            | Interface/AbstractClass                                                                                                                                                                                           |
 |------------------------|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Cart Price Rule        | coreshop.cart_price_rule.condition             | [```CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Cart/Rule/Condition/AbstractConditionChecker.php)     |
-| Product Price Rule     | coreshop.product_price_rule.condition          | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php)                         |
-| Product Specific Price | coreshop.product_specific_price_rule.condition | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php)                         |
-| Shipping Rule          | coreshop.shipping_rule.condition               | [```CoreShop\Component\Shipping\Rule\Condition\CategoriesConditionChecker```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Shipping/Rule/Condition/AbstractConditionChecker.php)       |
-| Notification Rule      | coreshop.notification_rule.condition           | [```CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Notification/Rule/Condition/AbstractConditionChecker.php) |
+| Cart Price Rule        | coreshop.cart_price_rule.condition             | [```CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Order/Cart/Rule/Condition/AbstractConditionChecker.php)     |
+| Product Price Rule     | coreshop.product_price_rule.condition          | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php)                         |
+| Product Specific Price | coreshop.product_specific_price_rule.condition | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php)                         |
+| Shipping Rule          | coreshop.shipping_rule.condition               | [```CoreShop\Component\Shipping\Rule\Condition\CategoriesConditionChecker```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Shipping/Rule/Condition/AbstractConditionChecker.php)       |
+| Notification Rule      | coreshop.notification_rule.condition           | [```CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Notification/Rule/Condition/AbstractConditionChecker.php) |
 
 ## Example Adding a new Condition
 
@@ -18,7 +18,7 @@ Now, lets add a new Condition for Product Price Rules.
 
 To do so, we first need to create a new class and implement the interface listed in the table above. For Product Price
 Rules, we need to use
-[```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php)
+[```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php)
 
 ```php
 //src/App/CoreShop/CustomCondition.php
@@ -51,45 +51,9 @@ final class CustomConditionType extends AbstractType
 }
 ```
 
-With configuration, comes a Javascript file as well:
+## Registering the Custom Condition
 
-```javascript
-//public/coreshop/js/custom_condition.js
-
-pimcore.registerNS('coreshop.product.pricerule.conditions.custom');
-coreshop.product.pricerule.conditions.custom = Class.create(coreshop.rules.conditions.abstract, {
-
-    type: 'custom',
-
-    getForm: function () {
-        var some_value = 0;
-        var me = this;
-
-        if (this.data) {
-            some_value = this.data.some_value / 100;
-        }
-
-        var some_valueField = new Ext.form.NumberField({
-            fieldLabel: t('custom'),
-            name: 'some_value',
-            value: some_value,
-            decimalPrecision: 2
-        });
-
-        this.form = new Ext.form.Panel({
-            items: [
-                some_valueField
-            ]
-        });
-
-        return this.form;
-    }
-});
-```
-
-## Registering the Custom Condition to the Container and load the Javascript File
-
-We now need to create our Service Definition for our Custom Condition:
+Create a service definition for the custom condition:
 
 ```yaml
 App\CoreShop\CustomCondition:
@@ -97,16 +61,7 @@ App\CoreShop\CustomCondition:
     - { name: coreshop.product_price_rule.condition, type: custom, form-type: App\CoreShop\Form\Type\CustomConditionType }
 ```
 
-and add this to your config.yml:
-
-```yaml
-core_shop_product:
-    pimcore_admin:
-        js:
-            custom_condition: '/coreshop/js/custom_condition.js'
-```
-
-## Pimcore Studio (React)
+## Rendering the Condition in Pimcore Studio
 
 ### Schema-Driven (Recommended — No Custom JS Needed)
 

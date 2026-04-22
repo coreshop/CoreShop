@@ -2,7 +2,7 @@ name: CoreShop Studio Frontend Build
 
 on:
   pull_request_target:
-    branches: [ '5.1' ]
+    branches: [ '5.1', '2026.x' ]
   workflow_dispatch:
 
 permissions:

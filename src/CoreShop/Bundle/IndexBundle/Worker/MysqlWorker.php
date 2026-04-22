@@ -212,9 +212,9 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
              */
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
                 if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
-                    $table->addUniqueIndex($tableIndex->getColumns());
+                    $table->addUniqueIndex(array_values($tableIndex->getColumns()));
                 } else {
-                    $table->addIndex($tableIndex->getColumns());
+                    $table->addIndex(array_values($tableIndex->getColumns()));
                 }
             }
         }
@@ -274,9 +274,9 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
              */
             foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
                 if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
-                    $table->addUniqueIndex($tableIndex->getColumns());
+                    $table->addUniqueIndex(array_values($tableIndex->getColumns()));
                 } else {
-                    $table->addIndex($tableIndex->getColumns());
+                    $table->addIndex(array_values($tableIndex->getColumns()));
                 }
             }
         }

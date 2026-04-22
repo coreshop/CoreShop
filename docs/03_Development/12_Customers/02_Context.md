@@ -10,7 +10,7 @@ methods of determining customer context.
 CoreShop includes specific contexts for customer identification, such as:
 
 - **Security Token Based**: A method that uses security tokens for customer identification. More details can be
-  found [here](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Customer/Context/RequestBased/TokenBasedRequestResolver.php).
+  found [here](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Customer/Context/RequestBased/TokenBasedRequestResolver.php).
 
 ## Creating a Custom Resolver
 

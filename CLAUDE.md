@@ -96,8 +96,8 @@ Use `studio.en.yml` as the source of truth for English keys.
 ## Development Workflow
 
 - PHP 8.3+, PSR-12 via ECS, PHPStan level 3
-- Pimcore ^12.0, Symfony 6.3+ or 7.0+
-- Branch strategy: `4.0`, `4.1`, `5.0`, `next` — PRs target `master`
+- Pimcore ^2026.1, Symfony 6.3+ or 7.0+
+- Branch strategy: `4.0`, `4.1`, `5.0`, `2026.x` — no `master`; PRs target the lowest affected version branch, changes flow upward via automated upmerge (see `.github/workflows/upmerge.yaml`).
 
 ### Before Committing
 ```bash

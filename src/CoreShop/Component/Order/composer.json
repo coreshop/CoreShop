@@ -24,20 +24,20 @@
         }
     ],
     "require": {
-        "coreshop/address": "^5.0",
-        "coreshop/rule": "^5.0",
-        "coreshop/registry": "^5.0",
-        "coreshop/resource": "^5.0",
-        "coreshop/sequence": "^5.0",
-        "coreshop/store": "^5.0",
-        "coreshop/currency": "^5.0",
-        "coreshop/taxation": "^5.0",
-        "coreshop/payment": "^5.0",
-        "coreshop/pimcore": "^5.0",
-        "coreshop/customer": "^5.0",
-        "coreshop/storage-list": "^5.0",
-        "coreshop/workflow-bundle": "^5.0",
-        "pimcore/pimcore": "^12.0"
+        "coreshop/address": "^2026.1",
+        "coreshop/rule": "^2026.1",
+        "coreshop/registry": "^2026.1",
+        "coreshop/resource": "^2026.1",
+        "coreshop/sequence": "^2026.1",
+        "coreshop/store": "^2026.1",
+        "coreshop/currency": "^2026.1",
+        "coreshop/taxation": "^2026.1",
+        "coreshop/payment": "^2026.1",
+        "coreshop/pimcore": "^2026.1",
+        "coreshop/customer": "^2026.1",
+        "coreshop/storage-list": "^2026.1",
+        "coreshop/workflow-bundle": "^2026.1",
+        "pimcore/pimcore": "^2026.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
@@ -59,8 +59,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {
