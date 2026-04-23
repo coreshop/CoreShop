@@ -56,7 +56,7 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
         name: field.name || '',
         getter: field.getter || undefined,
         interpreter: field.interpreter || undefined,
-        columnType: field.columnType || 'INTEGER'
+        columnType: field.columnType || undefined
       })
       setSelectedGetter(field.getter)
       setSelectedInterpreter(field.interpreter)
