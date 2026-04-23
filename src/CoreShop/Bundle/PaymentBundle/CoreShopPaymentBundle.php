@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\PaymentBundle;
 use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentCalculatorsPass;
 use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleActionPass;
 use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleConditionPass;
+use CoreShop\Bundle\StudioFormBundle\DependencyInjection\Compiler\RegisterFormTypesFromTagsPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
@@ -51,6 +52,9 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
         $container->addCompilerPass(new PaymentProviderRuleConditionPass());
         $container->addCompilerPass(new PaymentProviderRuleActionPass());
         $container->addCompilerPass(new PaymentCalculatorsPass());
+
+        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(PaymentProviderRuleConditionPass::PAYMENT_PROVIDER_RULE_CONDITION_TAG));
+        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(PaymentProviderRuleActionPass::PAYMENT_PROVIDER_RULE_ACTION_TAG));
     }
 
     protected function getModelNamespace(): string

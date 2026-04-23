@@ -24,6 +24,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use CoreShop\Component\Order\OrderSaleStates;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -34,10 +35,19 @@ final class CartCreationType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name', TextType::class, [
+                'required' => false,
+            ])
             ->add('customer', CustomerSelectionType::class)
-            ->add('store', StoreChoiceType::class)
-            ->add('currency', CurrencyChoiceType::class)
-            ->add('localeCode', LocaleChoiceType::class)
+            ->add('store', StoreChoiceType::class, [
+                'label' => 'coreshop_store',
+            ])
+            ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_currency',
+            ])
+            ->add('localeCode', LocaleChoiceType::class, [
+                'label' => 'coreshop_locale',
+            ])
             ->add('items', CollectionType::class, [
                 'entry_type' => CartCreationCartItemType::class,
                 'allow_add' => true,
@@ -57,5 +67,10 @@ final class CartCreationType extends AbstractResourceType
             'customer' => null,
             'sales_state' => OrderSaleStates::STATE_CART,
         ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_cart_creation';
     }
 }

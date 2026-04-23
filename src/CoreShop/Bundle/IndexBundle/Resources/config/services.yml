@@ -339,6 +339,10 @@ services:
             - '@coreshop.repository.index'
             - '@coreshop.registry.index.worker'
 
+    # Indexable Classes Provider
+    CoreShop\Component\Index\Service\IndexableClassesProviderInterface: '@CoreShop\Bundle\IndexBundle\Service\IndexableClassesProvider'
+    CoreShop\Bundle\IndexBundle\Service\IndexableClassesProvider: ~
+
     CoreShop\Component\Index\Extension\DecimalIndexColumnTypeConfigExtension:
         tags:
             - { name: coreshop.index.extension }

@@ -50,7 +50,7 @@ final class MessageRepository implements MessageRepositoryInterface
             $messageDetails = new MessageDetails(
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
-                '<pre>' . print_r($envelope->getMessage(), true) . '</pre>',
+                print_r($envelope->getMessage(), true),
             );
 
             /** @var MessageDetailsEvent $event */

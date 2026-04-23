@@ -26,7 +26,9 @@ final class OrderSaleStateConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('saleState', TextType::class, [])
+            ->add('saleState', TextType::class, [
+                'label' => 'coreshop_select_state',
+            ])
         ;
     }
 }

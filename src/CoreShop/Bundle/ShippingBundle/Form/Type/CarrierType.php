@@ -29,15 +29,31 @@ class CarrierType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('identifier', TextType::class)
-            ->add('trackingUrl', TextType::class)
-            ->add('hideFromCheckout', CheckboxType::class)
-            ->add('logo', PimcoreAssetChoiceType::class)
-            ->add('taxCalculationStrategy', ShippingTaxCalculationStrategyChoiceType::class)
-            ->add('shippingRules', ShippingRuleGroupCollectionType::class)
+            ->add('identifier', TextType::class, [
+                'label' => 'coreshop_identifier',
+                'priority' => 100,
+            ])
+            ->add('trackingUrl', TextType::class, [
+                'label' => 'coreshop_carrier_trackingUrl',
+                'priority' => 90,
+            ])
+            ->add('logo', PimcoreAssetChoiceType::class, [
+                'label' => 'coreshop_logo',
+                'priority' => 80,
+            ])
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => CarrierTranslationType::class,
+                'priority' => 70,
             ])
+            ->add('taxCalculationStrategy', ShippingTaxCalculationStrategyChoiceType::class, [
+                'label' => 'coreshop_shipping_tax_calc_strategy',
+                'priority' => 60,
+            ])
+            ->add('hideFromCheckout', CheckboxType::class, [
+                'label' => 'coreshop_carrier_hideFromCheckout',
+                'priority' => 50,
+            ])
+            ->add('shippingRules', ShippingRuleGroupCollectionType::class)
         ;
     }
 

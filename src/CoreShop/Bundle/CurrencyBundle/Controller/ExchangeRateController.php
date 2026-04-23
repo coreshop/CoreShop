@@ -26,7 +26,12 @@ class ExchangeRateController extends ResourceController
 {
     public function saveAction(Request $request): JsonResponse
     {
-        $resource = $this->repository->find($this->getParameterFromRequest($request, 'id'));
+        $id = $this->getParameterFromRequest($request, 'id');
+        $resource = null;
+        
+        if ($id) {
+            $resource = $this->repository->find($this->getParameterFromRequest($request, 'id'));
+        }
 
         if (!$resource instanceof ResourceInterface) {
             $resource = $this->factory->createNew();

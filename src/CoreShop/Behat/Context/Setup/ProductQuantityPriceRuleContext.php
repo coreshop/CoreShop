@@ -26,7 +26,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductSpecificPriceNestedConfigurationType;
-use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;

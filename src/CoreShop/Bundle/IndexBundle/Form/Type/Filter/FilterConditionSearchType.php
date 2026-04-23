@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,15 +36,29 @@ class FilterConditionSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, ['label' => 'coreshop_filters_search_condition_name'])
             ->add('fields', CollectionType::class, [
+                'label' => 'coreshop_filters_fields',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'entry_type' => TextType::class,
             ])
-            ->add('searchTerm', TextType::class)
-            ->add('concatenator', TextType::class)
-            ->add('pattern', TextType::class)
+            ->add('searchTerm', TextType::class, ['label' => 'coreshop_filters_search_term'])
+            ->add('concatenator', ChoiceType::class, [
+                'label' => 'coreshop_filters_search_patterns_concatenator',
+                'choices' => [
+                    'OR' => 'OR',
+                    'AND' => 'AND',
+                ],
+            ])
+            ->add('pattern', ChoiceType::class, [
+                'label' => 'coreshop_filters_search_patterns_label',
+                'choices' => [
+                    'Contains' => 'both',
+                    'Begins with' => 'left',
+                    'Ends with' => 'right',
+                ],
+            ])
         ;
     }
 

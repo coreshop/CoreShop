@@ -4,7 +4,6 @@ Feature: In order to allow better menu structures
 
   Scenario: Default Menu structure
     Then the menu "coreshop.main" should have a child with ID "coreshop_order_by_number"
-    And the menu "coreshop.main" should have a child with ID "coreshop_quote_by_number"
     And the menu "coreshop.main" should have a child with ID "coreshop_settings"
     And the menu "coreshop.main" should have a child with ID "coreshop_pricerules"
     And the menu "coreshop.main" child with id "coreshop_pricerules" should have a child with ID "coreshop_cart_pricerules"

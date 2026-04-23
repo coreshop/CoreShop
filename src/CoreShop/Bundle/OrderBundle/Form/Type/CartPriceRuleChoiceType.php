@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,6 +30,13 @@ final class CartPriceRuleChoiceType extends AbstractType
     public function __construct(
         private RepositoryInterface $cartPriceRuleRepository,
     ) {
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        if ($options['multiple']) {
+            $builder->addModelTransformer(new CollectionToArrayTransformer());
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

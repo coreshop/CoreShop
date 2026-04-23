@@ -36,8 +36,11 @@ final class PostcodeConfigurationType extends AbstractType
     {
         $builder
             ->add('postcodes', TextType::class, [
+                'label' => 'coreshop_condition_postcodes',
             ])
-            ->add('exclusion', CheckboxType::class)
+            ->add('exclusion', CheckboxType::class, [
+                'label' => 'coreshop_condition_postcodes_exclusion',
+            ])
         ;
     }
 

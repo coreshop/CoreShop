@@ -1,0 +1,12 @@
+services:
+  CoreShop\Bundle\ResourceBundle\Studio\WebpackEntryPointProvider:
+    tags:
+      - { name: pimcore_studio_ui.webpack_entry_point_provider }
+
+  CoreShop\Bundle\ResourceBundle\StudioBackend\DataAdapter\CoreShopSelectAdapter:
+    tags:
+      - { name: pimcore.studio_backend.data_adapter }
+
+  CoreShop\Bundle\ResourceBundle\StudioBackend\DataAdapter\CoreShopMultiSelectAdapter:
+    tags:
+      - { name: pimcore.studio_backend.data_adapter }

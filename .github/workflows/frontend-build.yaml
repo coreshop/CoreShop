@@ -1,0 +1,15 @@
+name: CoreShop Studio Frontend Build
+
+on:
+  pull_request_target:
+    branches: [ '5.1' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/shared-frontend-build.yaml

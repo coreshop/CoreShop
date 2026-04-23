@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es2017",
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "strictNullChecks": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@coreshop/resource/src/*": ["src/CoreShop/Bundle/ResourceBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/resource": ["src/CoreShop/Bundle/ResourceBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/pimcore/src/*": ["src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/pimcore": ["src/CoreShop/Bundle/PimcoreBundle/Resources/assets/pimcore-studio/src/main.ts"],
+      "@coreshop/currency/src/*": ["src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/currency": ["src/CoreShop/Bundle/CurrencyBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/rule/src/*": ["src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/rule": ["src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/order/src/*": ["src/CoreShop/Bundle/OrderBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/order": ["src/CoreShop/Bundle/OrderBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/product/src/*": ["src/CoreShop/Bundle/ProductBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/product": ["src/CoreShop/Bundle/ProductBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/shipping/src/*": ["src/CoreShop/Bundle/ShippingBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/shipping": ["src/CoreShop/Bundle/ShippingBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/payment/src/*": ["src/CoreShop/Bundle/PaymentBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/payment": ["src/CoreShop/Bundle/PaymentBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/address/src/*": ["src/CoreShop/Bundle/AddressBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/address": ["src/CoreShop/Bundle/AddressBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/taxation/src/*": ["src/CoreShop/Bundle/TaxationBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/taxation": ["src/CoreShop/Bundle/TaxationBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/store/src/*": ["src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/store": ["src/CoreShop/Bundle/StoreBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/customer/src/*": ["src/CoreShop/Bundle/CustomerBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/customer": ["src/CoreShop/Bundle/CustomerBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/core/src/*": ["src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/core": ["src/CoreShop/Bundle/CoreBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "@coreshop/studio-form/src/*": ["src/CoreShop/Bundle/StudioFormBundle/Resources/assets/pimcore-studio/src/*"],
+      "@coreshop/studio-form": ["src/CoreShop/Bundle/StudioFormBundle/Resources/assets/pimcore-studio/src/index.ts"],
+      "*": ["src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/@mf-types/*"]
+    }
+  },
+  "include": [
+    "src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/src/**/*",
+    "src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/@mf-types/*",
+    "assets/js/custom.d.ts"
+  ]
+}

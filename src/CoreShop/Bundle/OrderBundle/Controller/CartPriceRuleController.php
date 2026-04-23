@@ -20,6 +20,8 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherGeneratorType;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
@@ -28,6 +30,7 @@ use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,19 +49,44 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
-    public function getConfigAction(Request $request): JsonResponse
-    {
+    public function getConfigAction(
+        Request $request,
+        RuleFormSchemaCollector $schemaCollector,
+        #[Autowire(service: 'coreshop.form_registry.cart_price_rule.conditions')]
+        FormTypeRegistryInterface $conditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_price_rule.actions')]
+        FormTypeRegistryInterface $actionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_item_price_rule.conditions')]
+        FormTypeRegistryInterface $itemConditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_item_price_rule.actions')]
+        FormTypeRegistryInterface $itemActionFormRegistry,
+    ): JsonResponse {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
         $itemActions = $this->getCartItemConfigActions();
         $itemConditions = $this->getCartItemConfigConditions();
 
+        $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
+        $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
+        $itemConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($itemConditionFormRegistry, array_keys($itemConditions));
+        $itemActionSchemas = $schemaCollector->collectSchemasWithTypeMap($itemActionFormRegistry, array_keys($itemActions));
+
         return $this->viewHandler->handle([
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
             'itemActions' => array_keys($itemActions),
             'itemConditions' => array_keys($itemConditions),
+            'schemas' => array_merge(
+                $conditionSchemas['schemas'],
+                $actionSchemas['schemas'],
+                $itemConditionSchemas['schemas'],
+                $itemActionSchemas['schemas'],
+            ),
+            'conditionSchemaByType' => $conditionSchemas['schemaByType'],
+            'actionSchemaByType' => $actionSchemas['schemaByType'],
+            'itemConditionSchemaByType' => $itemConditionSchemas['schemaByType'],
+            'itemActionSchemaByType' => $itemActionSchemas['schemaByType'],
         ]);
     }
 

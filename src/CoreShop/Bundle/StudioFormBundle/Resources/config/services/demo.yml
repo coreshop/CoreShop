@@ -1,0 +1,30 @@
+services:
+    # Demo FormTypes
+    CoreShop\Bundle\StudioFormBundle\Form\Type\Demo\BasicDemoType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\StudioFormBundle\Form\Type\Demo\ChoiceDemoType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\StudioFormBundle\Form\Type\Demo\FieldTypesDemoType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\StudioFormBundle\Form\Type\Demo\CollectionEntryDemoType:
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\StudioFormBundle\Form\Type\Demo\CollectionDemoType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    # Schema Enricher
+    CoreShop\Bundle\StudioFormBundle\Form\Schema\FieldTypesDemoSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }

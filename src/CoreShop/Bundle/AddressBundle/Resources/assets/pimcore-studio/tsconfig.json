@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es2017",
+    "moduleResolution": "bundler",
+    "baseUrl": "./src/",
+    "strictNullChecks": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "paths": {
+      "*": ["./@mf-types/*"]
+    }
+  },
+
+  "include": [
+    "./src/**/*",
+    "./@mf-types/*",
+    "../../../../../../../assets/js/custom.d.ts"
+  ],
+}

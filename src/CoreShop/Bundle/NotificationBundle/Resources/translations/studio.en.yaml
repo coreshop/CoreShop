@@ -1,0 +1,18 @@
+---
+coreshop_email_document: 'Email Document'
+coreshop_notification_rule: 'Notification Rule'
+coreshop_notification_rule_type: 'Rule Type'
+coreshop_mail_rule_do_not_send_to_designated_recipient: 'Do not send to designated recipient'
+
+# Studio v2 - Notification Rules
+coreshop_active: 'Active'
+coreshop_notification_rule_add: 'Add Notification Rule'
+coreshop_notification_rule_select: 'Select a notification rule to view details.'
+coreshop_select_email_document: 'Select email document'
+coreshop_select_state: 'Select state'
+coreshop_select_type: 'Select type'
+coreshop_mail_action_description: 'Sends an email notification'
+coreshop_mail_attachments: 'Attachments'
+coreshop_order_mail_action_description: 'Sends an order-related email notification'
+coreshop_store_mail_action_description: 'Sends a store-based email notification'
+coreshop_store_order_mail_action_description: 'Sends a store-based order email notification'

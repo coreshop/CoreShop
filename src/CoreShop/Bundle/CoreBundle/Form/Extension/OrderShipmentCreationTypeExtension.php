@@ -26,7 +26,9 @@ final class OrderShipmentCreationTypeExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('carrier', CarrierChoiceType::class);
+        $builder->add('carrier', CarrierChoiceType::class, [
+            'priority' => 400
+        ]);
     }
 
     public static function getExtendedTypes(): iterable

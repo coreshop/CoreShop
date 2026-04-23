@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
+use CoreShop\Bundle\StudioFormBundle\Form\Type\PimcoreRelationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class ProductsConfigurationType extends AbstractType
@@ -27,11 +27,14 @@ final class ProductsConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('products', CollectionType::class, [
-                'allow_add' => true,
-                'allow_delete' => true,
+            ->add('products', PimcoreRelationType::class, [
+                'label' => 'coreshop_condition_products',
+                'relation_class' => 'CoreShopProduct',
+                'multiple' => true,
             ])
-            ->add('include_variants', CheckboxType::class)
+            ->add('include_variants', CheckboxType::class, [
+                'label' => 'coreshop_condition_include_variants',
+            ])
         ;
     }
 

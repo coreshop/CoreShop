@@ -26,12 +26,14 @@ use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
 
 final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
     public static function registerDependentBundles(BundleCollection $collection): void
     {
         $collection->addBundle(new CoreShopCoreBundle(), 100);
+        $collection->addBundle(new WebpackEncoreBundle(), 100);
     }
 
     public function build(ContainerBuilder $container): void

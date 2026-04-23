@@ -98,10 +98,13 @@ class PimcoreDaoContext implements Context
         $this->connection->executeQuery('DELETE FROM documents_email WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_hardlink WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_link WHERE id <> 1');
-        $this->connection->executeQuery('DELETE FROM documents_newsletter WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_page WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_snippet WHERE id <> 1');
         $this->connection->executeQuery('DELETE FROM documents_translations WHERE id <> 1');
+
+        if ($this->connection->createSchemaManager()->tableExists('documents_newsletter')) {
+            $this->connection->executeQuery('DELETE FROM documents_newsletter WHERE id <> 1');
+        }
     }
 
     /**

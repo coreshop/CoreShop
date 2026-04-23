@@ -1,5 +1,5 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
-{% form_theme guestForm 'bootstrap_4_layout.html.twig' %}
+{% form_theme guestForm 'bootstrap_5_layout.html.twig' %}
 
 {% block checkout_title %}
     {{ 'coreshop.ui.customer'|trans }}
@@ -20,6 +20,9 @@
                         <div class="card-body">
                             {{ form_start(guestForm, {'method': 'POST', attr: {'novalidate': 'novalidate'}}) }}
                                 <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        {{ form_row(guestForm.salutation, coreshop_test_form_attribute('guest-salutation'), {attr:{class:'form-select'}}) }}
+                                    </div>
                                     <div class="col-12 col-lg-6">
                                         {{ form_row(guestForm.gender, coreshop_test_form_attribute('guest-gender'), {attr:{class:'form-select'}}) }}
                                     </div>

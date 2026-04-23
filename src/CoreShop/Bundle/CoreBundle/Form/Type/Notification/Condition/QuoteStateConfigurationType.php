@@ -25,6 +25,8 @@ final class QuoteStateConfigurationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('quoteState', TextType::class);
+        $builder->add('quoteState', TextType::class, [
+            'label' => 'coreshop_select_state',
+        ]);
     }
 }

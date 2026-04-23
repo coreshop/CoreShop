@@ -29,7 +29,6 @@ use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\DefaultCheckoutManagerFactory;
 use CoreShop\Component\Registry\Autoconfiguration;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
-use Pimcore\Bundle\SimpleBackendSearchBundle\PimcoreSimpleBackendSearchBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -71,7 +70,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         /**
          * @psalm-suppress DeprecatedClass
          */
-        $this->registerDependantBundles('coreshop', [PimcoreSimpleBackendSearchBundle::class, PimcoreCustomReportsBundle::class], $container);
+        $this->registerDependantBundles('coreshop', [PimcoreCustomReportsBundle::class], $container);
 
         if (array_key_exists('pimcore_admin', $configs)) {
             $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
@@ -83,6 +82,14 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
+        }
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
+        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
+            $loader->load('services/classic_admin.yml');
         }
 
         $loader->load('services.yml');
@@ -134,6 +141,18 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
                     'autoconfigure_with_attributes' => $config['autoconfigure_with_attributes'] ?? false,
                 ]);
             }
+        }
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
+            $container->prependExtensionConfig('pimcore_studio_backend', [
+                'data_object_data_adapter_mapping' => [
+                    'CoreShop\\Bundle\\CoreBundle\\StudioBackend\\DataAdapter\\StoreValuesAdapter' => [
+                        'coreShopStoreValues',
+                    ],
+                ],
+            ]);
         }
     }
 

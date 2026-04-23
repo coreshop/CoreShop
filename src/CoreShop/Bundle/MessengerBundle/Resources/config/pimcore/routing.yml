@@ -1,43 +1,71 @@
 coreshop_admin_messenger_count:
-  path: /admin/messenger/count
-  defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listReceiverMessageCountAction }
+  path: /%coreshop.admin.route.base%/messenger/count
+  requirements:
+    backend: '%coreshop.admin.route.backend_requirement%'
+  defaults:
+    backend: admin
+    _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listReceiverMessageCountAction
   options:
     expose: true
 
 coreshop_admin_messenger_list_receivers:
-  path: /admin/messenger/list-receivers
-  defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listListableReceiversAction }
+  path: /%coreshop.admin.route.base%/messenger/list-receivers
+  requirements:
+    backend: '%coreshop.admin.route.backend_requirement%'
+  defaults:
+    backend: admin
+    _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listListableReceiversAction
   options:
     expose: true
 
 coreshop_admin_messenger_list_failed:
-  path: /admin/messenger/list-failed/{receiverName}
-  defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listFailedMessagesAction }
+  path: /%coreshop.admin.route.base%/messenger/list-failed/{receiverName}
+  requirements:
+    backend: '%coreshop.admin.route.backend_requirement%'
+  defaults:
+    backend: admin
+    _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listFailedMessagesAction
   options:
     expose: true
 
 coreshop_admin_messenger_list:
-  path: /admin/messenger/list/{receiverName}
-  defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listMessagesAction }
+  path: /%coreshop.admin.route.base%/messenger/list/{receiverName}
+  requirements:
+    backend: '%coreshop.admin.route.backend_requirement%'
+  defaults:
+    backend: admin
+    _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listMessagesAction
   options:
     expose: true
 
 coreshop_admin_messenger_list_failure_receivers:
-  path: /admin/messenger/list-failure-receivers
-  defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listFailureReceiversAction }
+  path: /%coreshop.admin.route.base%/messenger/list-failure-receivers
+  requirements:
+    backend: '%coreshop.admin.route.backend_requirement%'
+  defaults:
+    backend: admin
+    _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listFailureReceiversAction
   options:
     expose: true
 
 coreshop_admin_messenger_delete:
-  path: /admin/messenger/delete/{receiverName}
-  defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\MessageController::deleteStoredMessageAction }
+  path: /%coreshop.admin.route.base%/messenger/delete/{receiverName}
+  requirements:
+    backend: '%coreshop.admin.route.backend_requirement%'
+  defaults:
+    backend: admin
+    _controller: CoreShop\Bundle\MessengerBundle\Controller\MessageController::deleteStoredMessageAction
   methods: 'DELETE'
   options:
     expose: true
 
 coreshop_admin_messenger_retry:
-  path: /admin/messenger/retry/{receiverName}
-  defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\MessageController::retryFailedMessageAction }
+  path: /%coreshop.admin.route.base%/messenger/retry/{receiverName}
+  requirements:
+    backend: '%coreshop.admin.route.backend_requirement%'
+  defaults:
+    backend: admin
+    _controller: CoreShop\Bundle\MessengerBundle\Controller\MessageController::retryFailedMessageAction
   methods: 'POST'
   options:
     expose: true

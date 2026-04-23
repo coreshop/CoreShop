@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle;
 
 use Composer\InstalledVersions;
+use CoreShop\Bundle\ResourceBundle\Helper\AdminUIDetector;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreRepositoriesPass;
@@ -27,14 +28,15 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ValidatorAutoMappingFixPass;
 use JMS\SerializerBundle\JMSSerializerBundle;
-use Pimcore\Bundle\AdminBundle\PimcoreAdminBundle;
 use Pimcore\Bundle\ApplicationLoggerBundle\PimcoreApplicationLoggerBundle;
 use Pimcore\Bundle\SimpleBackendSearchBundle\PimcoreSimpleBackendSearchBundle;
-use Pimcore\Bundle\StaticRoutesBundle\PimcoreStaticRoutesBundle;
+use Pimcore\Bundle\StudioBackendBundle\PimcoreStudioBackendBundle;
+use Pimcore\Bundle\StudioUiBundle\PimcoreStudioUiBundle;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
@@ -69,23 +71,14 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $collection->addBundle(new \CoreShop\Bundle\OptimisticEntityLockBundle\CoreShopOptimisticEntityLockBundle(), 3800);
         $collection->addBundle(new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(), 3850);
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $collection->addBundle(new PimcoreAdminBundle(), 10);
+
         $collection->addBundle(new PimcoreApplicationLoggerBundle(), 10);
-
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $collection->addBundle(new PimcoreStaticRoutesBundle(), 10);
-
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $collection->addBundle(new PimcoreSimpleBackendSearchBundle(), 10);
+        $staticRoutesBundleClass = self::getStaticRoutesBundleClass();
+        if (null !== $staticRoutesBundleClass) {
+            /** @psalm-suppress DeprecatedClass */
+            $collection->addBundle(new $staticRoutesBundleClass(), 10);
+        }
     }
-
     public function getNiceName(): string
     {
         return 'CoreShop - Resource';
@@ -127,5 +120,18 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         return [
             self::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    /**
+     * @return class-string<BundleInterface>|null
+     */
+    private static function getStaticRoutesBundleClass(): ?string
+    {
+        $staticRoutesBundleClass = sprintf('Pimcore\\Bundle\\%s\\PimcoreStaticRoutesBundle', 'StaticRoutesBundle');
+        if (!class_exists($staticRoutesBundleClass) || !is_subclass_of($staticRoutesBundleClass, BundleInterface::class)) {
+            return null;
+        }
+
+        return $staticRoutesBundleClass;
     }
 }

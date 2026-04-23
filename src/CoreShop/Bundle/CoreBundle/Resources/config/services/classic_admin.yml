@@ -1,0 +1,21 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\CoreBundle\AdminClass\Pimcore\GridColumnConfig\Operator\Factory\StorePriceFactory:
+        arguments:
+            - '@coreshop.repository.store'
+            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
+        tags:
+            - { name: pimcore.data_object.grid_column_config.operator_factory, id: StorePrice }
+
+    CoreShop\Bundle\CoreBundle\AdminClass\EventListener\ProductStoreValuesAdminGetListener:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\CoreBundle\AdminClass\EventListener\AdminJavascriptListener:
+        arguments:
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }
+
