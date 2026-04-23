@@ -207,14 +207,17 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         }
 
         if (array_key_exists('indexes', $index->getConfiguration())) {
-            /**
-             * @var TableIndex $tableIndex
-             */
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
-                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
-                    $table->addUniqueIndex(array_values($tableIndex->getColumns()));
+                $normalized = $this->normalizeTableIndex($tableIndex);
+
+                if (null === $normalized) {
+                    continue;
+                }
+
+                if ($normalized['type'] === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                    $table->addUniqueIndex($normalized['columns']);
                 } else {
-                    $table->addIndex(array_values($tableIndex->getColumns()));
+                    $table->addIndex($normalized['columns']);
                 }
             }
         }
@@ -269,19 +272,58 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
         }
 
         if (array_key_exists('localizedIndexes', $index->getConfiguration())) {
-            /**
-             * @var TableIndex $tableIndex
-             */
             foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
-                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
-                    $table->addUniqueIndex(array_values($tableIndex->getColumns()));
+                $normalized = $this->normalizeTableIndex($tableIndex);
+
+                if (null === $normalized) {
+                    continue;
+                }
+
+                if ($normalized['type'] === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                    $table->addUniqueIndex($normalized['columns']);
                 } else {
-                    $table->addIndex(array_values($tableIndex->getColumns()));
+                    $table->addIndex($normalized['columns']);
                 }
             }
         }
 
         return $tableSchema;
+    }
+
+    /**
+     * Accept both {@see TableIndex} objects (legacy programmatic setup) and plain arrays
+     * (the form + JSON-stored configuration format). Returns null for empty/invalid entries.
+     *
+     * @return array{type: string|null, columns: non-empty-list<string>}|null
+     */
+    private function normalizeTableIndex(mixed $tableIndex): ?array
+    {
+        if ($tableIndex instanceof TableIndex) {
+            $rawColumns = $tableIndex->getColumns();
+            $type = $tableIndex->getType();
+        } elseif (is_array($tableIndex) && isset($tableIndex['columns']) && is_array($tableIndex['columns'])) {
+            $rawColumns = $tableIndex['columns'];
+            $type = isset($tableIndex['type']) ? (string) $tableIndex['type'] : null;
+        } else {
+            return null;
+        }
+
+        $columns = [];
+        foreach ($rawColumns as $column) {
+            $column = (string) $column;
+            if ('' !== $column) {
+                $columns[] = $column;
+            }
+        }
+
+        if ([] === $columns) {
+            return null;
+        }
+
+        return [
+            'type' => $type,
+            'columns' => $columns,
+        ];
     }
 
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)

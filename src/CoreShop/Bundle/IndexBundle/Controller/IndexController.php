@@ -22,7 +22,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
-use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Service\IndexableClassesProviderInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -49,6 +49,7 @@ class IndexController extends ResourceController
 
     public function getConfigAction(
         RuleFormSchemaCollector $schemaCollector,
+        IndexableClassesProviderInterface $indexableClassesProvider,
         #[Autowire(service: 'coreshop.form_registry.index.getter')]
         FormTypeRegistryInterface $getterFormTypeRegistry,
         #[Autowire(service: 'coreshop.form_registry.index.interpreter')]
@@ -118,22 +119,10 @@ class IndexController extends ResourceController
             }
         }
 
-        $classes = new DataObject\ClassDefinition\Listing();
-        $classes = $classes->load();
-        $availableClasses = [];
-
-        foreach ($classes as $class) {
-            if ($class instanceof DataObject\ClassDefinition) {
-                $pimcoreClass = 'Pimcore\Model\DataObject\\' . ucfirst($class->getName());
-                $implements = class_implements($pimcoreClass) ?: [];
-
-                if (in_array(IndexableInterface::class, $implements, true)) {
-                    $availableClasses[] = [
-                        'name' => $class->getName(),
-                    ];
-                }
-            }
-        }
+        $availableClasses = array_map(
+            static fn (string $name) => ['name' => $name],
+            $indexableClassesProvider->getIndexableClassNames(),
+        );
 
         $workersResult = [];
 

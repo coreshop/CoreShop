@@ -69,13 +69,16 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
       return
     }
 
-    // Create new column with defaults
-    const newColumn: IndexColumn = {
+    // `field.dataType` is the Pimcore ClassDefinition fieldtype (e.g. 'input', 'numeric'),
+    // not a valid index column type. Open the edit modal with the draft column and let the
+    // user pick a valid index column type (STRING, INTEGER, …). The column is only appended
+    // once the user clicks Apply (see handleSaveField with editingIndex === null).
+    const draftColumn: IndexColumn = {
       name: field.name || field.objectKey || '',
       objectKey: field.objectKey || '',
       objectType: field.objectType,
       dataType: field.dataType,
-      columnType: field.dataType || 'TEXT',
+      columnType: undefined,
       getter: field.getter,
       getterConfig: field.configuration,
       interpreter: field.interpreter,
@@ -83,10 +86,9 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
       configuration: field.configuration
     }
 
-    onChange({
-      ...index,
-      columns: [...columns, newColumn]
-    })
+    setEditingColumn(draftColumn)
+    setEditingIndex(null)
+    setDialogVisible(true)
   }
 
   const handleDrop = (info: DragAndDropInfo) => {
@@ -102,14 +104,21 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
   }
 
   const handleSaveField = (updatedColumn: IndexColumn) => {
-    if (editingIndex !== null) {
-      const newColumns = [...columns]
-      newColumns[editingIndex] = updatedColumn
+    if (editingIndex === null) {
+      // New field — append
       onChange({
         ...index,
-        columns: newColumns
+        columns: [...columns, updatedColumn]
       })
+      return
     }
+
+    const newColumns = [...columns]
+    newColumns[editingIndex] = updatedColumn
+    onChange({
+      ...index,
+      columns: newColumns
+    })
   }
 
   const handleCloseModal = () => {
