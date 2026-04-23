@@ -33,14 +33,20 @@ final class IndexableClassesProvider implements IndexableClassesProviderInterfac
                 continue;
             }
 
-            $pimcoreClass = 'Pimcore\\Model\\DataObject\\' . ucfirst($class->getName());
+            $name = $class->getName();
+
+            if (null === $name || '' === $name) {
+                continue;
+            }
+
+            $pimcoreClass = 'Pimcore\\Model\\DataObject\\' . ucfirst($name);
 
             if (!class_exists($pimcoreClass)) {
                 continue;
             }
 
             if (in_array(IndexableInterface::class, class_implements($pimcoreClass) ?: [], true)) {
-                $result[] = $class->getName();
+                $result[] = $name;
             }
         }
 
