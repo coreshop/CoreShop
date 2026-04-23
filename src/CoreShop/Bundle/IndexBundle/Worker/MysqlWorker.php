@@ -208,7 +208,6 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
 
         if (array_key_exists('indexes', $index->getConfiguration())) {
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
-<<<<<<< upmerge/5.1_2026.x
                 $normalized = $this->normalizeTableIndex($tableIndex);
 
                 if (null === $normalized) {
