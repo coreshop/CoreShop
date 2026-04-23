@@ -1,0 +1,29 @@
+coreshop_frontend_shop_cart:
+    resource: shop/cart.yaml
+    prefix:   /{_locale}/shop
+    requirements: { _locale: '[a-z]{2}(_[A-Z]{2})?' }
+
+coreshop_frontend_shop_catalog:
+    resource: shop/catalog.yaml
+    prefix:   /{_locale}/shop
+    requirements: { _locale: '[a-z]{2}(_[A-Z]{2})?' }
+
+coreshop_frontend_shop_checkout:
+    resource: shop/checkout.yaml
+    prefix:   /{_locale}/shop
+    requirements: { _locale: '[a-z]{2}(_[A-Z]{2})?' }
+
+coreshop_frontend_shop_customer:
+    resource: shop/customer.yaml
+    prefix:   /{_locale}/shop
+    requirements: { _locale: '[a-z]{2}(_[A-Z]{2})?' }
+
+coreshop_frontend_shop_wishlist:
+    resource: shop/wishlist.yaml
+    prefix:   /{_locale}/shop
+    requirements: { _locale: '[a-z]{2}(_[A-Z]{2})?' }
+
+coreshop_frontend_shop_index:
+    resource: shop/index.yaml
+    prefix:   /{_locale}/shop
+    requirements: { _locale: '[a-z]{2}(_[A-Z]{2})?' }

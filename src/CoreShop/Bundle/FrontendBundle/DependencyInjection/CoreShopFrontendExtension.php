@@ -28,10 +28,6 @@ final class CoreShopFrontendExtension extends AbstractModelExtension
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        if (array_key_exists('pimcore_admin', $configs)) {
-            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
-        }
-
         if (array_key_exists('controllers', $configs)) {
             $container->setParameter('coreshop.frontend.controllers', $configs['controllers']);
 

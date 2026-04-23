@@ -24,8 +24,6 @@ security:
             provider: pimcore_admin
             http_basic: ~
 
-        # Pimcore Admin Bundle firewall
-#        pimcore_admin: '%pimcore_admin_bundle.firewall_settings%'
         pimcore_studio: '%pimcore_studio_backend.firewall_settings%'
 
 
@@ -52,14 +50,6 @@ security:
                 invalidate_session: false
 
     access_control:
-        # Pimcore admin ACl  // DO NOT CHANGE!
-#        - { path: ^/admin/settings/display-custom-logo, roles: PUBLIC_ACCESS }
-#        - { path: ^/admin/login/2fa-verify, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
-#        - { path: ^/admin/login/2fa-setup, roles: ROLE_PIMCORE_USER }
-#        - { path: ^/admin/login/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
-#        - { path: ^/admin/login$, roles: PUBLIC_ACCESS }
-#        - { path: ^/admin/login/(login|lostpassword|deeplink|csrf-token)$, roles: PUBLIC_ACCESS }
-#        - { path: ^/admin, roles: ROLE_PIMCORE_USER }
         - { path: ^/asset/webdav, roles: ROLE_PIMCORE_USER }
         - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
         - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
@@ -67,5 +57,4 @@ security:
         - { path: ^/pimcore-studio/api, roles: ROLE_PIMCORE_USER }
 
     role_hierarchy:
-        # Pimcore admin  // DO NOT CHANGE!
         ROLE_PIMCORE_ADMIN: [ROLE_PIMCORE_USER]

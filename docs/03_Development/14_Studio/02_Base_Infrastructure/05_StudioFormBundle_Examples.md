@@ -88,7 +88,7 @@ export const BrandForm: React.FC<{
 
 That's it. `SchemaForm` fetches the schema from `GET /pimcore-studio/api/coreshop-studio-form/schema/app_brand`, resolves widgets for `TextType` and `CheckboxType` automatically, and renders an Ant Design form.
 
-**Real-world reference:** [ZoneType.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/AddressBundle/Form/Type/ZoneType.php)
+**Real-world reference:** [ZoneType.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/AddressBundle/Form/Type/ZoneType.php)
 
 ---
 
@@ -175,7 +175,7 @@ The widget registry handles this mapping automatically — no frontend code need
 
 **Dynamic choices from the database** work the same way. CoreShop entity ChoiceTypes (like `CountryChoiceType`, `StoreChoiceType`, `CurrencyChoiceType`) resolve their options server-side and pass them through the schema as `choices`.
 
-**Real-world reference:** [CountriesConfigurationType.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/CoreBundle/Form/Type/Rule/Condition/CountriesConfigurationType.php) — uses `CountryChoiceType` with `multiple => true`
+**Real-world reference:** [CountriesConfigurationType.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/CoreBundle/Form/Type/Rule/Condition/CountriesConfigurationType.php) — uses `CountryChoiceType` with `multiple => true`
 
 ---
 
@@ -303,7 +303,7 @@ export const CategoryForm: React.FC<{
 }
 ```
 
-**Real-world reference:** [CountryType.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/AddressBundle/Form/Type/CountryType.php)
+**Real-world reference:** [CountryType.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/AddressBundle/Form/Type/CountryType.php)
 
 ---
 
@@ -367,7 +367,7 @@ registry.register('coreshop_pimcore_relation', (field) => ({
 
 **No frontend code needed** — just use `<SchemaForm blockPrefix="app_featured_categories" />` and the relation widget appears automatically.
 
-**Real-world reference:** [CategoriesConfigurationType.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/CoreBundle/Form/Type/Rule/Condition/CategoriesConfigurationType.php)
+**Real-world reference:** [CategoriesConfigurationType.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/CoreBundle/Form/Type/Rule/Condition/CategoriesConfigurationType.php)
 
 ---
 
@@ -428,7 +428,7 @@ For more complex entries, use a custom sub-type as `entry_type`:
 ])
 ```
 
-**Real-world reference:** [CountryType.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/AddressBundle/Form/Type/CountryType.php) — uses `CollectionType` for `salutations`
+**Real-world reference:** [CountryType.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/AddressBundle/Form/Type/CountryType.php) — uses `CollectionType` for `salutations`
 
 ---
 
@@ -478,7 +478,7 @@ final class ExchangeRateType extends AbstractResourceType
 
 The `required` option translates to an Ant Design validation rule. The `scale` option is passed through to control decimal precision.
 
-**Real-world reference:** [ExchangeRateType.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/CurrencyBundle/Form/Type/ExchangeRateType.php)
+**Real-world reference:** [ExchangeRateType.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/CurrencyBundle/Form/Type/ExchangeRateType.php)
 
 ---
 
@@ -595,7 +595,7 @@ services:
 
 The frontend renders collapsible `<Collapse>` panels for each section, with fields grouped accordingly.
 
-**Real-world reference:** [StoreSettingsSchemaEnricher.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/CoreBundle/Form/Schema/StoreSettingsSchemaEnricher.php)
+**Real-world reference:** [StoreSettingsSchemaEnricher.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/CoreBundle/Form/Schema/StoreSettingsSchemaEnricher.php)
 
 ---
 
@@ -725,7 +725,7 @@ public function enrich(FormSchema $schema, string $formTypeClass): FormSchema
 ```
 
 **Real-world references:**
-- [CarrierSchemaEnricher.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ShippingBundle/Form/Schema/CarrierSchemaEnricher.php) — removes `shippingRules`
+- [CarrierSchemaEnricher.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/ShippingBundle/Form/Schema/CarrierSchemaEnricher.php) — removes `shippingRules`
 - `NotificationRuleSchemaEnricher` — removes `conditions`, `actions`, `type`
 - `FilterSchemaEnricher` — removes `preConditions`, `conditions`
 
@@ -997,8 +997,8 @@ The key attributes:
 **Result:** A fully functional condition form rendered from the PHP FormType — no React component needed.
 
 **Real-world references:**
-- [createSchemaRuleComponent.tsx](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/rules/components/createSchemaRuleComponent.tsx)
-- [registerSchemaComponents.ts](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/rules/registry/registerSchemaComponents.ts)
+- [createSchemaRuleComponent.tsx](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/rules/components/createSchemaRuleComponent.tsx)
+- [registerSchemaComponents.ts](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/RuleBundle/Resources/assets/pimcore-studio/src/rules/registry/registerSchemaComponents.ts)
 
 ---
 
@@ -1068,7 +1068,7 @@ services:
             - { name: form.type_extension }
 ```
 
-**Real-world reference:** [CarrierTypeExtension.php](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/CoreBundle/Form/Extension/CarrierTypeExtension.php)
+**Real-world reference:** [CarrierTypeExtension.php](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/CoreBundle/Form/Extension/CarrierTypeExtension.php)
 
 ---
 
