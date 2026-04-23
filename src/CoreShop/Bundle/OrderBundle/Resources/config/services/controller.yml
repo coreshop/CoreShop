@@ -4,3 +4,8 @@ services:
         autoconfigure: true
         autowire: true
 
+    CoreShop\Bundle\OrderBundle\Controller\StudioOrderDocumentController:
+        public: true
+        autoconfigure: true
+        autowire: true
+

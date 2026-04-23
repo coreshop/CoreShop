@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -34,8 +35,14 @@ final class FilterConditionBooleanType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('field', TextType::class)
-            ->add('preSelect', TextType::class)
+            ->add('field', TextType::class, ['label' => 'coreshop_filters_field'])
+            ->add('preSelect', ChoiceType::class, [
+                'label' => 'coreshop_filters_preselect',
+                'choices' => [
+                    'yes' => '1',
+                    'no' => '0',
+                ],
+            ])
         ;
     }
 

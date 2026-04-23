@@ -1,0 +1,4 @@
+# Grid Filter Translations
+coreshop.grid.filter.created_today: 'Created Today'
+coreshop.grid.filter.created_this_week: 'Created This Week'
+coreshop.grid.filter.created_this_month: 'Created This Month'

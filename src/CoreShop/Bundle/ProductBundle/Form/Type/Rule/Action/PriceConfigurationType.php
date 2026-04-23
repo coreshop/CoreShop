@@ -40,12 +40,14 @@ final class PriceConfigurationType extends AbstractType
     {
         $builder
             ->add('price', MoneyType::class, [
+                'label' => 'coreshop_action_price',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_currency',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                 ],

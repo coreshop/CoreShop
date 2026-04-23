@@ -26,10 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 
-/**
- * @psalm-suppress InternalClass
- */
-class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController
+class ListMessagesController extends \Pimcore\Controller\UserAwareController
 {
     public function listReceiverMessageCountAction(ReceiversRepositoryInterface $receiverLocator): Response
     {

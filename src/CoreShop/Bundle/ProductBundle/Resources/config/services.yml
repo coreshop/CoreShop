@@ -78,8 +78,8 @@ services:
 
     CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker:
         tags:
-            - { name: coreshop.product_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
-            - { name: coreshop.product_specific_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+            - { name: coreshop.product_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+            - { name: coreshop.product_specific_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
     # Product Price Rule ACTIONS
     CoreShop\Component\Product\Rule\Action\PriceActionProcessor:

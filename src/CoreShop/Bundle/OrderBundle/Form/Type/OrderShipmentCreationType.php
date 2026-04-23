@@ -29,7 +29,9 @@ final class OrderShipmentCreationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('trackingCode', TextType::class)
+            ->add('trackingCode', TextType::class, [
+                'priority' => 200
+            ])
             ->add('id', IntegerType::class)
             ->add('items', CollectionType::class, [
                 'entry_type' => OrderShipmentCreationItemsType::class,

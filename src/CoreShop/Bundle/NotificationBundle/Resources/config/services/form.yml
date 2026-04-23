@@ -15,6 +15,7 @@ services:
             - '%coreshop.form.type.notification_rule.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleActionType:
         arguments:
@@ -61,3 +62,11 @@ services:
             - '%coreshop.notification_rule.actions.types%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\NotificationBundle\Form\Schema\MailActionSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\NotificationBundle\Form\Schema\NotificationRuleSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }

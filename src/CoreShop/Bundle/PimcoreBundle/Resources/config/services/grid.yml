@@ -7,12 +7,10 @@ services:
         tags:
             - { name: controller.service_arguments }
             - { name: container.service_subscriber }
-
-    CoreShop\Bundle\PimcoreBundle\EventListener\Grid\ObjectListFilterListener:
-        arguments:
-            - '@coreshop.registry.grid.filter'
-        tags:
-            - { name: kernel.event_listener, event: pimcore.admin.object.list.beforeListLoad, method: checkObjectList }
+        bind:
+            $gridFilterServiceRegistry: '@coreshop.registry.grid.filter'
+            $gridActionServiceRegistry: '@coreshop.registry.grid.action'
+            $studioGridFilterServiceRegistry: '@coreshop.registry.studio.grid.filter'
 
     coreshop.registry.grid.filter:
         class: CoreShop\Component\Registry\ServiceRegistry
@@ -31,3 +29,14 @@ services:
             - 'coreshop-grid-action'
         tags:
             - { name: coreshop.registry, type_hint: gridActions }
+
+    # Studio v2 Grid Filter Registry
+    # Registers StudioGridFilterInterface implementations for listing available filters
+    coreshop.registry.studio.grid.filter:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        public: true
+        arguments:
+            - 'CoreShop\Component\Pimcore\DataObject\Grid\StudioGridFilterInterface'
+            - 'coreshop-studio-grid-filter'
+        tags:
+            - { name: coreshop.registry, type_hint: studioGridFilters }

@@ -43,6 +43,12 @@ final class CoreShopNotificationExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         }
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         $loader->load('services.yml');
 
         Autoconfiguration::registerForAutoConfiguration(

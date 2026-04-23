@@ -38,6 +38,7 @@ class AdditionPercentActionConfigurationType extends AbstractType
     {
         $builder
             ->add('percent', NumberType::class, [
+                'label' => 'coreshop_action_additionPercent_percent',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),

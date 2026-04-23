@@ -29,6 +29,7 @@ services:
             - '%coreshop.form.type.country.validation_groups%'
         tags:
             -  { name: form.type }
+            -  { name: coreshop.studio_form }
 
     CoreShop\Bundle\AddressBundle\Form\Type\CountryTranslationType:
         arguments:
@@ -49,6 +50,7 @@ services:
             - '%coreshop.form.type.state.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\AddressBundle\Form\Type\StateTranslationType:
         arguments:
@@ -69,6 +71,7 @@ services:
             - '%coreshop.form.type.zone.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\AddressBundle\Form\Type\AddressType:
         arguments:

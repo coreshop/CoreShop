@@ -20,6 +20,7 @@ services:
             - '%coreshop.form.type.cart.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     coreshop.form.data_mapper.cart_item_quantity.property_mapper:
         class: Symfony\Component\Form\Extension\Core\DataMapper\DataMapper
@@ -54,11 +55,6 @@ services:
     CoreShop\Bundle\OrderBundle\Form\Type\QuantityType:
         tags:
             - { name: form.type }
-
-    CoreShop\Bundle\OrderBundle\EventListener\Grid\CartFilterListener:
-        tags:
-            - { name: kernel.event_listener, event: pimcore.admin.object.list.beforeListLoad, method: checkObjectList }
-
 
     CoreShop\Bundle\OrderBundle\Form\Type\CartListChoiceType:
         arguments:

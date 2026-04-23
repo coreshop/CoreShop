@@ -168,7 +168,7 @@
                         "decimalSize": null,
                         "decimalPrecision": null,
                         "name": "sorting",
-                        "title": "Sorting",
+                        "title": "coreshop.attribute.sorting",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,

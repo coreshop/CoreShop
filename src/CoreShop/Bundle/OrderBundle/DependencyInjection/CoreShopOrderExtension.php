@@ -46,10 +46,26 @@ use CoreShop\Component\Order\Cart\Rule\Condition\CartRuleConditionCheckerInterfa
 use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopOrderExtension extends AbstractModelExtension
+final class CoreShopOrderExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
+    public function prepend(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
+            $container->prependExtensionConfig('pimcore_studio_backend', [
+                'data_object_data_adapter_mapping' => [
+                    'CoreShop\\Bundle\\ResourceBundle\\StudioBackend\\DataAdapter\\CoreShopSelectAdapter' => [
+                        'coreShopCartPriceRule',
+                    ],
+                ],
+            ]);
+        }
+    }
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
@@ -74,6 +90,14 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
+        }
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
+        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
+            $loader->load('services/classic_admin.yml');
         }
 
         $loader->load('services.yml');

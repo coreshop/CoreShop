@@ -18,24 +18,44 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class FilterController extends ResourceController
 {
-    public function getConfigAction(): Response
-    {
+    public function getConfigAction(
+        RuleFormSchemaCollector $schemaCollector,
+        #[Autowire(service: 'coreshop.form_registry.filter.pre_condition_types')]
+        FormTypeRegistryInterface $preConditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.filter.user_condition_types')]
+        FormTypeRegistryInterface $userConditionFormRegistry,
+    ): Response {
+        $preConditionTypes = array_keys($this->getPreConditionTypes());
+        $userConditionTypes = array_keys($this->getUserConditionTypes());
+
+        $preConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($preConditionFormRegistry, $preConditionTypes);
+        $userConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($userConditionFormRegistry, $userConditionTypes);
+
         return $this->viewHandler->handle(
             [
                 'success' => true,
-                'pre_conditions' => array_keys($this->getPreConditionTypes()),
-                'user_conditions' => array_keys($this->getUserConditionTypes()),
+                'pre_conditions' => $preConditionTypes,
+                'user_conditions' => $userConditionTypes,
+                'schemas' => array_merge(
+                    $preConditionSchemas['schemas'],
+                    $userConditionSchemas['schemas'],
+                ),
+                'preConditionSchemaByType' => $preConditionSchemas['schemaByType'],
+                'userConditionSchemaByType' => $userConditionSchemas['schemaByType'],
             ],
         );
     }
