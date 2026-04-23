@@ -294,31 +294,36 @@ class MysqlWorker extends AbstractWorker implements MysqlWorkerInterface, Worker
      * Accept both {@see TableIndex} objects (legacy programmatic setup) and plain arrays
      * (the form + JSON-stored configuration format). Returns null for empty/invalid entries.
      *
-     * @return array{type: string|null, columns: array<int, string>}|null
+     * @return array{type: string|null, columns: non-empty-list<string>}|null
      */
     private function normalizeTableIndex(mixed $tableIndex): ?array
     {
         if ($tableIndex instanceof TableIndex) {
-            $columns = $tableIndex->getColumns();
+            $rawColumns = $tableIndex->getColumns();
+            $type = $tableIndex->getType();
+        } elseif (is_array($tableIndex) && isset($tableIndex['columns']) && is_array($tableIndex['columns'])) {
+            $rawColumns = $tableIndex['columns'];
+            $type = isset($tableIndex['type']) ? (string) $tableIndex['type'] : null;
+        } else {
+            return null;
+        }
 
-            if (empty($columns)) {
-                return null;
+        $columns = [];
+        foreach ($rawColumns as $column) {
+            $column = (string) $column;
+            if ('' !== $column) {
+                $columns[] = $column;
             }
-
-            return [
-                'type' => $tableIndex->getType(),
-                'columns' => array_values($columns),
-            ];
         }
 
-        if (is_array($tableIndex) && !empty($tableIndex['columns']) && is_array($tableIndex['columns'])) {
-            return [
-                'type' => $tableIndex['type'] ?? null,
-                'columns' => array_values($tableIndex['columns']),
-            ];
+        if ([] === $columns) {
+            return null;
         }
 
-        return null;
+        return [
+            'type' => $type,
+            'columns' => $columns,
+        ];
     }
 
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
