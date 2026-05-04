@@ -162,12 +162,17 @@ class OpenSearchWorker extends AbstractWorker implements OpenSearchWorkerInterfa
      */
     public function deleteFromIndexById(IndexInterface $index, int $id): void
     {
-        $this->getClient($index)
-            ->delete([
-                'index' => $this->getIndexName($index->getName()),
-                'id' => (string) $id,
-            ])
-        ;
+        $client = $this->getClient($index);
+        $indexName = $this->getIndexName($index->getName());
+
+        if (!$client->exists(['index' => $indexName, 'id' => (string) $id])) {
+            return;
+        }
+
+        $client->delete([
+            'index' => $indexName,
+            'id' => (string) $id,
+        ]);
     }
 
     /**
@@ -175,12 +180,13 @@ class OpenSearchWorker extends AbstractWorker implements OpenSearchWorkerInterfa
      */
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object): void
     {
-        $this->getClient($index)
-            ->delete([
-                'index' => $this->getIndexName($index->getName()),
-                'id' => (string) $object->getId(),
-            ])
-        ;
+        $id = $object->getId();
+
+        if (!is_int($id)) {
+            return;
+        }
+
+        $this->deleteFromIndexById($index, $id);
     }
 
     /**
