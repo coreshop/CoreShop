@@ -9,7 +9,7 @@ on:
       - '*.php'
       - 'src/**'
       - '.github/workflows/behat.yml'
-  pull_request:
+  pull_request_target:
     branches: [ '5.0', 'next' ]
     paths:
       - 'composer.json'
@@ -73,16 +73,10 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-      - name: Checkout PR head (only for pull_request_target)
-        if: github.event_name == 'pull_request_target'
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-
-      - name: Checkout PR head (for push or other events)
-        if: github.event_name != 'pull_request_target'
-        uses: actions/checkout@v4
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
