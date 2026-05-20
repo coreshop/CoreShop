@@ -24,9 +24,6 @@ final class BlockPrefixFormTypeRegistry
     /** @var array<string, string>|null */
     private ?array $blockPrefixMap = null;
 
-    /** @var string[] */
-    private array $additionalFormTypeClasses = [];
-
     /**
      * @param string[] $formTypeClasses
      */
@@ -34,15 +31,6 @@ final class BlockPrefixFormTypeRegistry
         private readonly FormRegistryInterface $formRegistry,
         private readonly array $formTypeClasses = [],
     ) {
-    }
-
-    /**
-     * Register an additional form type class (used by compiler passes for rule element form types).
-     */
-    public function addFormTypeClass(string $formTypeClass): void
-    {
-        $this->additionalFormTypeClasses[] = $formTypeClass;
-        $this->blockPrefixMap = null;
     }
 
     public function resolve(string $blockPrefix): ?string
@@ -62,9 +50,8 @@ final class BlockPrefixFormTypeRegistry
     {
         if ($this->blockPrefixMap === null) {
             $this->blockPrefixMap = [];
-            $allClasses = array_unique(array_merge($this->formTypeClasses, $this->additionalFormTypeClasses));
 
-            foreach ($allClasses as $class) {
+            foreach (array_unique($this->formTypeClasses) as $class) {
                 $resolvedType = $this->formRegistry->getType($class);
                 $this->blockPrefixMap[$resolvedType->getBlockPrefix()] = $class;
             }
