@@ -1,4 +1,84 @@
 services:
+    # FormTypes für Notification Conditions/Actions
+    # autoconfigure: true sorgt dafür, dass FormTypeInterface-Implementierungen automatisch
+    # mit `form.type` getaggt werden. RegisterStudioFormTypesPass übernimmt sie dann in die
+    # BlockPrefixFormTypeRegistry, sodass /pimcore-studio-form/schema/{blockPrefix} sie kennt.
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\:
+        resource: '../../Form/Type/Notification/'
+        public: true
+        autoconfigure: true
+
+    # Workflow-aware State/Transition FormTypes — explicit definitions override the glob
+    # to inject the matching `state_machine.*` service. Each FormType lists the workflow's
+    # places (State) or transitions (Transition) as ChoiceType options.
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderStateConfigurationType:
+        arguments: ['@state_machine.coreshop_order']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderInvoiceStateConfigurationType:
+        arguments: ['@state_machine.coreshop_order_invoice']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderPaymentStateConfigurationType:
+        arguments: ['@state_machine.coreshop_order_payment']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderShippingStateConfigurationType:
+        arguments: ['@state_machine.coreshop_order_shipment']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderSaleStateConfigurationType:
+        arguments: ['@state_machine.coreshop_order_sales_type']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\QuoteStateConfigurationType:
+        arguments: ['@state_machine.coreshop_quote']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\InvoiceStateConfigurationType:
+        arguments: ['@state_machine.coreshop_invoice']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\PaymentStateConfigurationType:
+        arguments: ['@state_machine.coreshop_payment']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ShipmentStateConfigurationType:
+        arguments: ['@state_machine.coreshop_shipment']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderTransitionConfigurationType:
+        arguments: ['@state_machine.coreshop_order']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderInvoiceTransitionConfigurationType:
+        arguments: ['@state_machine.coreshop_order_invoice']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderPaymentTransitionConfigurationType:
+        arguments: ['@state_machine.coreshop_order_payment']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderShippingTransitionConfigurationType:
+        arguments: ['@state_machine.coreshop_order_shipment']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\QuoteTransitionConfigurationType:
+        arguments: ['@state_machine.coreshop_quote']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\InvoiceTransitionConfigurationType:
+        arguments: ['@state_machine.coreshop_invoice']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\PaymentTransitionConfigurationType:
+        arguments: ['@state_machine.coreshop_payment']
+        tags: [{ name: form.type }]
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ShipmentTransitionConfigurationType:
+        arguments: ['@state_machine.coreshop_shipment']
+        tags: [{ name: form.type }]
+
     # Notification Rule Conditions
     #### ORDER
     ##### Order Invoice State
@@ -17,7 +97,7 @@ services:
             - 'CoreShop\Component\Order\Model\OrderInterface'
             - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::IDENTIFIER
         tags:
-            - { name: coreshop.notification_rule.condition, type: orderInvoiceTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: orderInvoiceTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderInvoiceTransitionConfigurationType }
 
     ##### Order Payment State
     coreshop.notification_rule.condition.order.order_payment_state:
@@ -35,7 +115,7 @@ services:
             - 'CoreShop\Component\Order\Model\OrderInterface'
             - !php/const CoreShop\Component\Order\OrderPaymentTransitions::IDENTIFIER
         tags:
-            - { name: coreshop.notification_rule.condition, type: orderPaymentTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: orderPaymentTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderPaymentTransitionConfigurationType }
 
 
     ##### Order Shipment State
@@ -54,7 +134,7 @@ services:
             - 'CoreShop\Component\Order\Model\OrderInterface'
             - !php/const CoreShop\Component\Order\OrderShipmentTransitions::IDENTIFIER
         tags:
-            - { name: coreshop.notification_rule.condition, type: orderShippingTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: orderShippingTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderShippingTransitionConfigurationType }
 
     ##### Order State
     coreshop.notification_rule.condition.order.order_state:
@@ -82,7 +162,7 @@ services:
             - 'CoreShop\Component\Order\Model\OrderInterface'
             - !php/const CoreShop\Component\Order\OrderTransitions::IDENTIFIER
         tags:
-            - { name: coreshop.notification_rule.condition, type: orderTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: orderTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderTransitionConfigurationType }
 
     ##### Quote
     coreshop.notification_rule.condition.quote.quote_state:
@@ -100,7 +180,7 @@ services:
             - 'CoreShop\Component\Order\Model\OrderInterface'
             - !php/const CoreShop\Component\Order\QuoteTransitions::IDENTIFIER
         tags:
-            - { name: coreshop.notification_rule.condition, type: quoteTransition, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: quoteTransition, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\QuoteTransitionConfigurationType }
 
     ##### MISC
     CoreShop\Component\Core\Notification\Rule\Condition\Order\CarriersChecker:
@@ -136,7 +216,7 @@ services:
               - 'CoreShop\Component\Payment\Model\PaymentInterface'
               - !php/const CoreShop\Component\Payment\PaymentTransitions::IDENTIFIER
           tags:
-            - { name: coreshop.notification_rule.condition, type: paymentTransition, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: paymentTransition, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\PaymentTransitionConfigurationType }
 
     #### INVOICE
     coreshop.notification_rule.condition.invoice.state:
@@ -154,7 +234,7 @@ services:
               - 'CoreShop\Component\Order\Model\OrderInvoiceInterface'
               - !php/const CoreShop\Component\Order\InvoiceTransitions::IDENTIFIER
           tags:
-            - { name: coreshop.notification_rule.condition, type: invoiceTransition, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: invoiceTransition, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\InvoiceTransitionConfigurationType }
 
     #### SHIPMENT
     coreshop.notification_rule.condition.shipment.state:
@@ -172,7 +252,7 @@ services:
               - 'CoreShop\Component\Order\Model\OrderShipmentInterface'
               - !php/const CoreShop\Component\Order\ShipmentTransitions::IDENTIFIER
           tags:
-            - { name: coreshop.notification_rule.condition, type: shipmentTransition, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: shipmentTransition, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ShipmentTransitionConfigurationType }
 
     #### USER
     coreshop.notification_rule.condition.user.user_type:

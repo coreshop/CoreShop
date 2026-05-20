@@ -24,7 +24,6 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartItemPriceRuleAc
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartItemPriceRuleConditionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleConditionPass;
-use CoreShop\Bundle\StudioFormBundle\DependencyInjection\Compiler\RegisterFormTypesFromTagsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableCustomAttributesCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountPriceCalculatorsPass;
@@ -68,11 +67,6 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $container->addCompilerPass(new PurchasableRetailPriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableWholesalePriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableCustomAttributesCalculatorsPass());
-
-        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(CartPriceRuleConditionPass::CART_PRICE_RULE_CONDITION_TAG));
-        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(CartPriceRuleActionPass::CART_PRICE_RULE_ACTION_TAG));
-        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(CartItemPriceRuleConditionPass::CART_ITEM_PRICE_RULE_CONDITION_TAG));
-        $container->addCompilerPass(new RegisterFormTypesFromTagsPass(CartItemPriceRuleActionPass::CART_ITEM_PRICE_RULE_ACTION_TAG));
     }
 
     public static function registerDependentBundles(BundleCollection $collection): void

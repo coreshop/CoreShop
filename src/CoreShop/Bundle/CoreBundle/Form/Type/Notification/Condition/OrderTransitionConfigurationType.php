@@ -17,15 +17,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
-final class OrderPaymentStateConfigurationType extends AbstractWorkflowPlaceConfigurationType
+final class OrderTransitionConfigurationType extends AbstractStateTransitionConfigurationType
 {
-    protected function getFieldName(): string
-    {
-        return 'orderPaymentState';
-    }
-
     public function getBlockPrefix(): string
     {
-        return 'coreshop_notification_condition_order_payment_state';
+        return 'coreshop_notification_condition_order_transition';
     }
 }
