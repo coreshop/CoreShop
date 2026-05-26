@@ -62,8 +62,8 @@ export const DetailTab: React.FC = () => {
   const { token } = theme.useToken()
 
   const summary = ((sale as any)?.summary || []) as SummaryItem[]
+  const isTotalRow = (key: string) => key === 'total' || key === 'payment_total'
   const sortedSummary = React.useMemo(() => {
-    const isTotalRow = (key: string) => key === 'total' || key === 'payment_total'
     const regular = summary.filter(item => !isTotalRow(item.key))
     const totals = summary.filter(item => isTotalRow(item.key))
     return [...regular, ...totals]
