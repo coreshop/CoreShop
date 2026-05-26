@@ -35,7 +35,7 @@ export const TaxRateManager: React.FC = () => {
           label: t('coreshop_name', { defaultValue: 'Name' }),
           onOk: async (value: string) => {
             const res = await taxRateApi.add({ name: value })
-            resolve(res.data.id)
+            resolve(res.data.id!)
           }
         })
       }) }

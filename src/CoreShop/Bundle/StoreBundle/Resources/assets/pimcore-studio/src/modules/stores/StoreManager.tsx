@@ -36,7 +36,7 @@ export const StoreManager: React.FC = () => {
           onOk: async (nameValue: string) => {
             const res = await storeApi.add({ name: nameValue })
             if (res.data.id !== undefined) {
-              resolve(res.data.id)
+              resolve(res.data.id!)
             }
           }
         })

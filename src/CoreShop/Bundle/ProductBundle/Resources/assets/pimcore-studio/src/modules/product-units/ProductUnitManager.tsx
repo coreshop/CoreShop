@@ -46,7 +46,7 @@ export const ProductUnitManager: React.FC = () => {
             },
             onOk: async (nameValue: string) => {
               const res = await productUnitApi.add({ name: nameValue })
-              resolve(res.data.id)
+              resolve(res.data.id!)
             }
           })
         })

@@ -94,7 +94,7 @@ export const IndexManager: React.FC = () => {
           },
           onOk: async (nameValue: string) => {
             const res = await indexApi.add({ name: nameValue })
-            resolve(res.data.id)
+            resolve(res.data.id!)
           }
         })
       })}
