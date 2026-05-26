@@ -30,10 +30,10 @@ final class UserTypeConfigurationType extends AbstractType
             ->add('userType', ChoiceType::class, [
                 'label' => 'coreshop_condition_userType',
                 'choices' => [
-                    UserTypeChecker::TYPE_PASSWORD_RESET,
-                    UserTypeChecker::TYPE_REGISTER,
-                    UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
-                    UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
+                    'coreshop_condition_userType_password_reset' => UserTypeChecker::TYPE_PASSWORD_RESET,
+                    'coreshop_condition_userType_register' => UserTypeChecker::TYPE_REGISTER,
+                    'coreshop_condition_userType_newsletter_double_opt_in' => UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
+                    'coreshop_condition_userType_newsletter_confirmed' => UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
                 ],
             ])
         ;
