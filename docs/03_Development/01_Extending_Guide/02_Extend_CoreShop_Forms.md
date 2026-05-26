@@ -40,7 +40,7 @@ $ php bin/console debug:container coreshop.form.type.store
 ```
 
 As a result you will get
-the [```CoreShop\Bundle\StoreBundle\Form\Type\StoreType```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Form/Type/StoreType.php) -
+the [```CoreShop\Bundle\StoreBundle\Form\Type\StoreType```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/StoreBundle/Form/Type/StoreType.php) -
 this is the class that you need to be extending.
 
 ```php
@@ -79,36 +79,11 @@ services:
       - { name: form.type_extension, extended_type: CoreShop\Bundle\StoreBundle\Form\Type\StoreType }
 ```
 
-In our case you will need to extend the ExtJs Form as well: `public/coreshop/js/store.js`.
+Pimcore Studio picks the new field up automatically: the StudioFormBundle introspects the (extended) Symfony `StoreType`
+and regenerates the React form from the JSON schema on the next request. No additional JavaScript, registration, or
+asset build is needed.
 
-In **ExtJs** your new store file need to look like this:
-
-```javascript
-coreshop.store.item = Class.create(coreshop.store.item, {
-
-    getFormPanel: function ($super) {
-        var panel = $super();
-
-        panel.down("fieldset").add(
-            [
-                {
-                    xtype: 'textfield',
-                    fieldLabel: 'Contact Hours',
-                    name: 'contactHours'
-                }
-            ]
-        );
-
-        return this.formPanel;
-    }
-});
-```
-
-And you need to configure it to be loaded as well:
-
-```yaml
-core_shop_store:
-  pimcore_admin:
-    js:
-      custom_store: '/coreshop/js/store.js'
-```
+If the field requires a custom widget that cannot be expressed through the default schema renderers, register a
+`FormExtension` against the `coreshop.store.store.form` slot — see
+[Extension System](../14_Studio/index.md#3-extension-system) for the slot naming and a
+complete example.

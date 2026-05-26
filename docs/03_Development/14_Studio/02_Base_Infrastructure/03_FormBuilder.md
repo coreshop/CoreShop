@@ -923,4 +923,4 @@ The FormBuilder pattern provides:
 
 - [ResourceBundle](01_ResourceBundle.md) - Entity APIs and managers
 - [RuleBundle](02_RuleBundle.md) - Rule system infrastructure
-- [Extension System](../04_Extension_System/) - Other extension points
+- [Extension System](../index.md#3-extension-system) - Other extension points

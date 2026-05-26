@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
-    "@module-federation/rsbuild-plugin": "^0.13.1",
+    "@module-federation/rsbuild-plugin": "^2.4.0",
     "@rsbuild/core": "^1.3.16",
     "@rsbuild/plugin-node-polyfill": "^1.4.1",
     "@rsbuild/plugin-react": "^1.3.1",
@@ -63,7 +63,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@pimcore/studio-ui-bundle": "1.0.0-canary.20251119-143005-1b35b01",
+    "@pimcore/studio-ui-bundle": "2026.1.0",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",
     "immer": "^10.1.1",

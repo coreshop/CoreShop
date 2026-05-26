@@ -34,6 +34,7 @@ final class ProportionalIntegerDistributor implements ProportionalIntegerDistrib
 
         $missingAmount = $amount - array_sum($distributedAmounts);
         for ($i = 0, $iMax = abs($missingAmount); $i < $iMax; ++$i) {
+            /** @psalm-suppress InvalidArrayOffset — $i is always >= 0, abs() never returns negative */
             $distributedAmounts[$i] += $missingAmount >= 0 ? 1 : -1;
         }
 

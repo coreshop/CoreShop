@@ -26,7 +26,6 @@ use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Reflection\ClassReflection;
-use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -52,10 +51,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             $container->setAlias('coreshop.translation_locale_provider', $configs['translation']['locale_provider']);
         }
 
-        if (array_key_exists('pimcore_admin', $configs)) {
-            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
-        }
-
         if (!$container->hasParameter('coreshop.all.pimcore_classes')) {
             $container->setParameter('coreshop.all.pimcore_classes', []);
         }
@@ -65,10 +60,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
         }
 
         $bundles = $container->getParameter('kernel.bundles');
-
-        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
-            $loader->load('services/classic_admin.yml');
-        }
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
@@ -87,14 +78,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
         $this->loadPersistence($configs['drivers'], $configs['resources'], $loader);
         $this->loadResources($configs['resources'], $container);
         $this->loadPimcoreModels($configs['pimcore'], $container);
-
-        $this->registerDependantBundles(
-            'coreshop',
-            [
-                PimcoreGenericExecutionEngineBundle::class,
-            ],
-            $container,
-        );
 
         $bodyListener = new Definition(BodyListener::class);
         $bodyListener->addTag('kernel.event_listener', [

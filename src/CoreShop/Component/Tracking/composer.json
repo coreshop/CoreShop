@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "coreshop/registry": "^5.0"
+        "coreshop/registry": "^2026.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
@@ -46,8 +46,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {

@@ -13,7 +13,7 @@
   "license": "CCL",
   "private": true,
   "dependencies": {
-    "@pimcore/studio-ui-bundle": "1.0.0-canary.20251119-143005-1b35b01",
+    "@pimcore/studio-ui-bundle": "2026.1.0",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",
     "immer": "^10.1.1",

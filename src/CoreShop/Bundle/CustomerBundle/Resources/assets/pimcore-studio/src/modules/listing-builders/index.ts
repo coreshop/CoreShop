@@ -19,10 +19,14 @@ import { type AbstractModule, container } from '@pimcore/studio-ui-bundle'
 import type { ListingBuilder } from '@pimcore/studio-ui-bundle/modules/element'
 import type { ClassDefinitionSelectionDecoratorConfig } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { ResourceConfigProvider } from '@coreshop/resource/src/config/ConfigProvider'
+import { waitForAuthentication } from '@coreshop/pimcore/src/utils'
 
 export const CustomerListingBuildersModule: AbstractModule = {
   async onInit(): Promise<void> {
     try {
+      // onInit runs before login; the resource/config endpoint requires an authenticated session.
+      await waitForAuthentication()
+
       // Get the standard DataObject listing builder
       const dataObjectListingBuilder = container.get<ListingBuilder>('DataObject/Listing/Builder')
 
