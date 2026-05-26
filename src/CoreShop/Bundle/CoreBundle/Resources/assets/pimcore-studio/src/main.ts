@@ -28,8 +28,8 @@ import { ReportsModule } from './modules/reports'
 import { SettingsModule } from './modules/settings'
 import { PimcoreRelationWidgetModule } from './modules/pimcore-relation-widget'
 import { CustomerAddressSelectWidget } from './modules/extension/order-creation/widgets/CustomerAddressSelectWidget'
-import { AssignToNewCompanyButton } from './components/AssignToNewCompanyButton'
-import { AssignToExistingCompanyButton } from './components/AssignToExistingCompanyButton'
+import { useAssignToNewCompanyNavItem } from './components/AssignToNewCompanyButton'
+import { useAssignToExistingCompanyNavItem } from './components/AssignToExistingCompanyButton'
 import {
   AssignToNewCompanyPanel,
   AssignToExistingCompanyPanel,
@@ -67,12 +67,12 @@ const plugin: IAbstractPlugin = {
 
         registerMenuButton({
           name: 'coreshopAssignCustomerToNewCompany',
-          button: AssignToNewCompanyButton,
+          useCustomMainNavItem: useAssignToNewCompanyNavItem,
         })
 
         registerMenuButton({
           name: 'coreshopAssignCustomerToExistingCompany',
-          button: AssignToExistingCompanyButton,
+          useCustomMainNavItem: useAssignToExistingCompanyNavItem,
         })
     },
 

@@ -10,15 +10,14 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import * as React from 'react'
-
-export interface ButtonConfig {
-  button: React.ComponentType<MenuButtonProps>
-  name: string
+export interface CustomNavItem {
+  onClick: () => void
+  name?: string
+  icon?: string | { type: string, value: string }
+  translationKey?: string
 }
 
-export interface MenuButtonProps {
-  icon?: string
-  label?: string
-  closeMainNav?: () => void
+export interface ButtonConfig {
+  name: string
+  useCustomMainNavItem: () => CustomNavItem
 }

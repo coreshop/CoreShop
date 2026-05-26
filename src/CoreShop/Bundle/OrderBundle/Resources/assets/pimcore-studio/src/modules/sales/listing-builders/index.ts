@@ -24,6 +24,7 @@ import { ResourceConfigProvider } from '@coreshop/resource/src/config/ConfigProv
 import { useWidgetManager } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { type AbstractDecorator, type AbstractDecoratorProps } from '@pimcore/studio-ui-bundle/modules/element'
 import { createPresetFilterDecorator } from '@coreshop/pimcore/src/modules/grid/decorators/PresetFilterDecorator'
+import { waitForAuthentication } from '@coreshop/pimcore/src/utils'
 import { openSaleWidget } from '../hooks'
 import type { SaleType } from '../types'
 
@@ -64,6 +65,9 @@ const createRowDoubleClickDecorator = (saleType: SaleType): AbstractDecorator =>
 export const SalesListingBuildersModule: AbstractModule = {
   async onInit(): Promise<void> {
     try {
+      // onInit runs before login; the resource/config endpoint requires an authenticated session.
+      await waitForAuthentication()
+
       // Get the standard DataObject listing builder
       const dataObjectListingBuilder = container.get<ListingBuilder>('DataObject/Listing/Builder')
 
