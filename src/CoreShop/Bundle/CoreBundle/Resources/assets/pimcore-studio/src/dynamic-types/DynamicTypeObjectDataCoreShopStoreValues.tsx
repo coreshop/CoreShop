@@ -309,8 +309,8 @@ const StoreValuesInner: React.FC<StoreValuesInnerProps> = ({
                         }
                         return (
                           <InputNumber
-                            value={getUnitPrice(store.id!, unitDef.id)}
-                            onChange={(v) => handleUnitPriceChange(store.id!, unitDef.id, v)}
+                            value={getUnitPrice(store.id!, unitDef.id!)}
+                            onChange={(v) => handleUnitPriceChange(store.id!, unitDef.id!, v)}
                             disabled={disabled || isInherited}
                             precision={decimalPrecision}
                             style={{ width: 150 }}
