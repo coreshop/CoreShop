@@ -11,5 +11,5 @@
  */
 
 export { MenuButtonRegistry, registerMenuButton } from './services/button-registry'
-export { type ButtonConfig, type MenuButtonProps } from './types/ButtonConfig'
+export { type ButtonConfig, type CustomNavItem } from './types/ButtonConfig'
 export { CoreShopMenuExtension } from './modules/menu-extension'

@@ -9,6 +9,7 @@ import {serviceIds} from '@pimcore/studio-ui-bundle/app'
 import {IMainNavItem, type MainNavRegistry} from '@pimcore/studio-ui-bundle/modules/app'
 import {type WidgetRegistry} from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import {type IconLibrary} from '@pimcore/studio-ui-bundle/modules/icon-library'
+import {waitForAuthentication} from '@coreshop/pimcore/src/utils'
 import {menuService} from '../services/MenuService'
 import {CoreShopMenuItem} from '../types'
 import {CoreShopWidget} from '../components/CoreShopWidget'
@@ -33,6 +34,9 @@ export const CoreShopMenuExtension = {
         widgetRegistry: WidgetRegistry
     ): Promise<void> {
         try {
+            // onInit runs before login; the menus endpoint requires an authenticated session.
+            await waitForAuthentication()
+
             // Load ALL CoreShop menu structures from backend
             const menuItems = await menuService.getAllMenuStructures()
 
@@ -96,9 +100,32 @@ export const CoreShopMenuExtension = {
             // Leaf item - register with widget
             const widgetId = item.widgetId || `coreshop-${item.id}`
 
+            if (item.widgetEvent) {
+                const eventName = item.widgetEvent
+                navItem.useCustomMainNavItem = () => ({
+                    onClick: () => {
+                        window.dispatchEvent(new CustomEvent(eventName))
+                    }
+                })
+                mainNavRegistry.registerMainNavItem(navItem)
+                return
+            }
+
+            if (item.widgetButton) {
+                const buttonRegistry = container.get<MenuButtonRegistry>('CoreShopMenuButtons')
+                const buttonConfig = buttonRegistry.get(item.widgetButton)
+
+                if (buttonConfig) {
+                    navItem.useCustomMainNavItem = buttonConfig.useCustomMainNavItem
+                    mainNavRegistry.registerMainNavItem(navItem)
+                    return
+                }
+            }
+
             navItem.widgetConfig = {
                 name: item.label,
                 id: widgetId,
+                component: widgetId,
                 config: {
                     icon: {
                         type: 'name',
@@ -107,35 +134,6 @@ export const CoreShopMenuExtension = {
                 }
             }
 
-            if (item.widgetEvent) {
-                navItem.onClick = () => {
-                    const event = new CustomEvent(item.widgetEvent!)
-                    globalThis.dispatchEvent(event)
-                }
-
-                mainNavRegistry.registerMainNavItem(navItem)
-
-                return;
-            }
-
-            if (item.widgetButton) {
-                const buttonRegistry = container.get<MenuButtonRegistry>('CoreShopMenuButtons');
-                const buttonConfig = buttonRegistry.get(item.widgetButton);
-
-                if (buttonConfig) {
-                    navItem.button = (({ closeMainNav }: { closeMainNav: () => void }) => React.createElement(buttonConfig.button, {
-                        icon: item.icon!,
-                        label: item.label,
-                        closeMainNav,
-                    })) as any
-
-                    mainNavRegistry.registerMainNavItem(navItem)
-                    return;
-                }
-            }
-
-            navItem.widgetConfig.component = widgetId;
-
             mainNavRegistry.registerMainNavItem(navItem)
 
             // Only register a fallback widget if one isn't already registered
@@ -143,7 +141,7 @@ export const CoreShopMenuExtension = {
             if (!widgetRegistry.getWidget(widgetId)) {
                 widgetRegistry.registerWidget({
                     name: widgetId,
-                    component: props => CoreShopWidget({item}),
+                    component: () => CoreShopWidget({item}),
                 })
             }
         }

@@ -41,26 +41,26 @@ export const CustomerSelector: React.FC = () => {
   const { loadCustomer } = useOrderCreation()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [allowedClasses, setAllowedClasses] = useState<string[]>([])
+  // null = still loading from CoreShop stack config. Never fall back to a hardcoded
+  // class name — the allowed classes are authoritative from the backend resource config.
+  const [allowedClasses, setAllowedClasses] = useState<string[] | null>(null)
 
   const configProvider = useMemo(
     () => container.get<ResourceConfigProvider>(coreshopResourceServiceIds.configProvider),
     []
   )
 
-  // Load allowed customer classes from config
   useEffect(() => {
     const loadAllowedClasses = async () => {
       try {
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedClasses(classes)
       } catch (err) {
-        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
-        // Fallback to default
-        setAllowedClasses(['CoreShopCustomer'])
+        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
+        setAllowedClasses([])
       }
     }
-    loadAllowedClasses()
+    void loadAllowedClasses()
   }, [configProvider, messageApi])
 
   const handleCustomerSelected = useCallback(async (customerId: number) => {
@@ -75,6 +75,8 @@ export const CustomerSelector: React.FC = () => {
     }
   }, [loadCustomer])
 
+  const classesReady = allowedClasses !== null && allowedClasses.length > 0
+
   const { open: openSelector } = useElementSelector({
     selectionType: SelectionType.Single,
     areas: {
@@ -85,13 +87,13 @@ export const CustomerSelector: React.FC = () => {
     config: {
       objects: {
         allowedTypes: ['object'],
-        allowedClasses: allowedClasses.length > 0 ? allowedClasses : undefined
+        allowedClasses: classesReady ? allowedClasses : undefined
       }
     },
     onFinish: (event) => {
       if (event.items.length > 0) {
         const selected = event.items[0]
-        handleCustomerSelected(selected.data.id)
+        void handleCustomerSelected(selected.data.id)
       }
     }
   })
@@ -118,13 +120,24 @@ export const CustomerSelector: React.FC = () => {
             <Alert type="error" message={error} showIcon closable onClose={() => setError(null)} />
           )}
 
-          <Spin spinning={loading}>
+          {allowedClasses !== null && allowedClasses.length === 0 && (
+            <Alert
+              type="error"
+              showIcon
+              message={t('coreshop_order_creation_no_customer_class', {
+                defaultValue: 'No customer class is configured for the CoreShop stack (coreshop.customer).'
+              })}
+            />
+          )}
+
+          <Spin spinning={loading || allowedClasses === null}>
             <div style={{ textAlign: 'center' }}>
               <Button
                 type="primary"
                 size="large"
                 icon={<SearchOutlined />}
                 onClick={openSelector}
+                disabled={!classesReady}
                 className={styles.selectButton}
               >
                 {t('coreshop_order_creation_browse_customers', { defaultValue: 'Browse Customers' })}
