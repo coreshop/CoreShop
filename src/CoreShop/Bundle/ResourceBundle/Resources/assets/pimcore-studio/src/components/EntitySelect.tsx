@@ -18,7 +18,7 @@ export const EntitySelect: React.FC<EntitySelectProps> = ({
   const [loading, setLoading] = React.useState(!cached)
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       if (!getCachedOptions?.()) setLoading(true)
       try {
         const opts = await loadOptions()
@@ -55,7 +55,7 @@ export const EntityMultiSelect: React.FC<EntityMultiSelectProps> = ({
   const [loading, setLoading] = React.useState(!cached)
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       if (!getCachedOptions?.()) setLoading(true)
       try {
         const opts = await loadOptions()

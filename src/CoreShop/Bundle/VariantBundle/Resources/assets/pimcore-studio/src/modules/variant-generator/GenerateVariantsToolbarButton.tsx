@@ -58,7 +58,7 @@ export const GenerateVariantsToolbarButton: React.FC = () => {
       return
     }
 
-    void (async () => {
+    (async () => {
       const classes = await loadVariantAwareClasses()
       setIsVariantAware(classes.includes(className))
     })()

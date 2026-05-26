@@ -34,13 +34,13 @@ export const AssignToNewCompanyButton = ({ icon, label, closeMainNav }: MenuButt
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedClasses(classes)
       } catch (err) {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
         setAllowedClasses(['CoreShopCustomer'])
       } finally {
         setClassesLoaded(true)
       }
     }
-    void loadClasses()
+    loadClasses()
   }, [])
 
   const { open: openCustomerSelector } = useElementSelector({
@@ -61,7 +61,7 @@ export const AssignToNewCompanyButton = ({ icon, label, closeMainNav }: MenuButt
         const selected = event.items[0]
         const customerId = selected.data.id
 
-        void customerCompanyApi.getEntityDetails('customer', customerId).then((response) => {
+        customerCompanyApi.getEntityDetails('customer', customerId).then((response) => {
           const customerName = response.success && response.data ? response.data.name : `#${customerId}`
 
           store.dispatch({
@@ -73,6 +73,8 @@ export const AssignToNewCompanyButton = ({ icon, label, closeMainNav }: MenuButt
               config: { customerId },
             },
           })
+        }).catch((err) => {
+          messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load customer')))
         })
       }
     }

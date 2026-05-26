@@ -50,13 +50,13 @@ export const SettingsManager: React.FC = () => {
         setStores(storeList.map(s => ({ id: s.id!, name: s.name ?? `Store #${s.id}` })))
         setConfigData(config)
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load settings')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load settings')))
       } finally {
         setLoading(false)
       }
     }
 
-    void load()
+    load()
   }, [])
 
   // Update a specific store's config value
@@ -64,7 +64,7 @@ export const SettingsManager: React.FC = () => {
     setConfigData(prev => ({
       ...prev,
       [storeId]: {
-        ...(prev[storeId] ?? {}),
+        ...prev[storeId],
         [key]: value
       }
     }))
@@ -75,9 +75,9 @@ export const SettingsManager: React.FC = () => {
     setSaving(true)
     try {
       await settingsApi.saveAll(configData)
-      void messageApi.success(t('coreshop_settings_save_success', { defaultValue: 'Settings saved successfully' }))
+      messageApi.success(t('coreshop_settings_save_success', { defaultValue: 'Settings saved successfully' }))
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to save settings')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Failed to save settings')))
     } finally {
       setSaving(false)
     }

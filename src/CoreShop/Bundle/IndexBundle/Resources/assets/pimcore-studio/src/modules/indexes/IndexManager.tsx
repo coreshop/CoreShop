@@ -29,7 +29,7 @@ export const IndexManager: React.FC = () => {
     indexApi.getConfig()
       .then(setConfig)
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load index config')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load index config')))
       })
   }, [])
 

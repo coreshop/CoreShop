@@ -24,7 +24,7 @@ export const CarrierManager: React.FC = () => {
   const modal = useFormModal()
 
   React.useEffect(() => {
-    void loadConfig()
+    loadConfig()
   }, [])
 
   const loadConfig = async (): Promise<void> => {
@@ -32,7 +32,7 @@ export const CarrierManager: React.FC = () => {
       const cfg = await carrierApi.getConfig()
       setConfig(cfg)
     } catch (err) {
-      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load carrier config')))
+      messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load carrier config')))
     }
   }
 

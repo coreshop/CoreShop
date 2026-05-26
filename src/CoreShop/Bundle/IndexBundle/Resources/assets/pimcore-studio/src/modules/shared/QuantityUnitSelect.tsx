@@ -98,7 +98,7 @@ export const QuantityUnitSelect: React.FC<QuantityUnitSelectProps> = (props) => 
   const [loading, setLoading] = React.useState(!cachedOptions)
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       if (!cachedOptions) {
         setLoading(true)
       }

@@ -2,7 +2,7 @@ import { DynamicTypeObjectDataCoreShopSelect } from '@coreshop/resource/src/dyna
 import type { SelectOption } from '@coreshop/resource/src/utils/createOptionsLoader'
 import { loadCurrencies, getCurrencyCache, clearCurrencyCache } from '../components/CurrencySelect'
 
-export { loadCurrencies, clearCurrencyCache }
+export { loadCurrencies, clearCurrencyCache } from '../components/CurrencySelect'
 export type { SelectOption as Option }
 
 export class DynamicTypeObjectDataCoreShopCurrency extends DynamicTypeObjectDataCoreShopSelect {

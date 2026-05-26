@@ -57,7 +57,7 @@ const ProductUnitSelectInner: React.FC<{
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       try {
         const opts = await loadProductUnits()
         setOptions(opts)

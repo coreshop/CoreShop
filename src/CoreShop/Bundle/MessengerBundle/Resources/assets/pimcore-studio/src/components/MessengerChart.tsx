@@ -94,11 +94,17 @@ export const MessengerChart: React.FC<MessengerChartProps> = ({ data, loading, e
 
               return (
                 <Tooltip
-                  key={index}
+                  key={item.receiver}
                   title={`${item.receiver} (${item.count})`}
                   placement="top"
                 >
-                  <div className={styles.barWrapper} onClick={() => onBarClick?.(item.receiver)}>
+                  <div
+                    className={styles.barWrapper}
+                    onClick={() => onBarClick?.(item.receiver)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onBarClick?.(item.receiver) }}
+                    role="button"
+                    tabIndex={0}
+                  >
                     <div className={styles.barOuter}>
                       <div
                         className={styles.bar}

@@ -36,7 +36,7 @@ export const createPresetFilterDecorator = (config: PresetFilterDecoratorConfig)
   return (props: AbstractDecoratorProps): AbstractDecoratorProps => {
     const { useDataQueryHelper, ...defaultProps } = props
 
-    const newUseDataQueryHelper: AbstractDecoratorProps['useDataQueryHelper'] = () => {
+    const useNewDataQueryHelper: AbstractDecoratorProps['useDataQueryHelper'] = () => {
       const baseHelper = useDataQueryHelper()
       const filterContext = usePresetFilterOptional()
 
@@ -76,7 +76,7 @@ export const createPresetFilterDecorator = (config: PresetFilterDecoratorConfig)
 
     return {
       ...defaultProps,
-      useDataQueryHelper: newUseDataQueryHelper
+      useDataQueryHelper: useNewDataQueryHelper
     }
   }
 }

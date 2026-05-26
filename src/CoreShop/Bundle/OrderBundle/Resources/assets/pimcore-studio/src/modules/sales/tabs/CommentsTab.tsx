@@ -17,7 +17,6 @@ import { PlusOutlined, DeleteOutlined, MailOutlined, UserOutlined } from '@ant-d
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
-import type { SaleTabProps } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
@@ -31,7 +30,7 @@ interface Comment {
   submitAsEmail: boolean
 }
 
-export const CommentsTab: React.FC<SaleTabProps> = () => {
+export const CommentsTab: React.FC = () => {
   const { t } = useTranslation()
   const messageApi = useMessage()
   const { sale, readonly } = useSaleContext()
@@ -53,14 +52,14 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
         const data = await response.json()
         setComments(data.comments || [])
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load comments')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load comments')))
         setComments([])
       } finally {
         setLoading(false)
       }
     }
 
-    void loadComments()
+    loadComments()
   }, [sale?.id])
 
   // Handle add comment
@@ -68,7 +67,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
     if (!sale) return
 
     if (!newComment.trim()) {
-      void messageApi.warning(t('coreshop_order_comment', { defaultValue: 'Comment' }))
+      messageApi.warning(t('coreshop_order_comment', { defaultValue: 'Comment' }))
       return
     }
 
@@ -89,7 +88,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
       const data = await response.json()
 
       if (data.success) {
-        void messageApi.success(t('coreshop_order_comment_added', { defaultValue: 'Comment added successfully' }))
+        messageApi.success(t('coreshop_order_comment_added', { defaultValue: 'Comment added successfully' }))
         setIsModalOpen(false)
         setNewComment('')
         setSubmitToCustomer(false)
@@ -99,10 +98,10 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
         const listData = await listResponse.json()
         setComments(listData.comments || [])
       } else {
-        void messageApi.error(renderApiError(t('coreshop_save_error', { defaultValue: 'Error saving item' })))
+        messageApi.error(renderApiError(t('coreshop_save_error', { defaultValue: 'Error saving item' })))
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' }))))
+      messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' }))))
     }
   }
 
@@ -128,7 +127,7 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
           const data = await response.json()
 
           if (data.success) {
-            void messageApi.success(t('coreshop_order_comment', { defaultValue: 'Comment' }))
+            messageApi.success(t('coreshop_order_comment', { defaultValue: 'Comment' }))
 
             // Reload comments
             if (sale) {
@@ -137,10 +136,10 @@ export const CommentsTab: React.FC<SaleTabProps> = () => {
               setComments(listData.comments || [])
             }
           } else {
-            void messageApi.error(renderApiError(t('coreshop_save_error', { defaultValue: 'Error saving item' })))
+            messageApi.error(renderApiError(t('coreshop_save_error', { defaultValue: 'Error saving item' })))
           }
         } catch (error) {
-          void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' }))))
+          messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_save_error', { defaultValue: 'Error saving item' }))))
         }
       }
     })

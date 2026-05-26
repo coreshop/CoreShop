@@ -51,7 +51,7 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
         setTotal(total)
       })
       .catch(() => {
-        void messageApi.error(renderApiError(t('coreshop_voucher_codes_load_error', { defaultValue: 'Failed to load voucher codes' })))
+        messageApi.error(renderApiError(t('coreshop_voucher_codes_load_error', { defaultValue: 'Failed to load voucher codes' })))
         setVouchers([])
       })
       .finally(() => setLoading(false))
@@ -69,13 +69,13 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
     try {
       const values = await createForm.validateFields()
       await cartPriceRuleApi.createVoucherCode(rule.id, values.code)
-      void messageApi.success(t('coreshop_voucher_code_create_success', { defaultValue: 'Voucher code created' }))
+      messageApi.success(t('coreshop_voucher_code_create_success', { defaultValue: 'Voucher code created' }))
       setCreateModalOpen(false)
       createForm.resetFields()
       loadVouchers()
     } catch (error: any) {
       if (error.errorFields) return // Validation error
-      void messageApi.error(renderApiError(error.message || t('coreshop_voucher_code_create_error', { defaultValue: 'Failed to create voucher code' })))
+      messageApi.error(renderApiError(error.message || t('coreshop_voucher_code_create_error', { defaultValue: 'Failed to create voucher code' })))
     }
   }
 
@@ -88,23 +88,23 @@ export const VoucherCodesPanel: React.FC<VoucherCodesPanelProps> = ({
         cartPriceRule: rule.id,
         ...values
       })
-      void messageApi.success(t('coreshop_voucher_codes_generate_success', { defaultValue: 'Voucher codes generated' }))
+      messageApi.success(t('coreshop_voucher_codes_generate_success', { defaultValue: 'Voucher codes generated' }))
       setGenerateModalOpen(false)
       generateForm.resetFields()
       loadVouchers()
     } catch (error: any) {
       if (error.errorFields) return // Validation error
-      void messageApi.error(renderApiError(error.message || t('coreshop_voucher_codes_generate_error', { defaultValue: 'Failed to generate voucher codes' })))
+      messageApi.error(renderApiError(error.message || t('coreshop_voucher_codes_generate_error', { defaultValue: 'Failed to generate voucher codes' })))
     }
   }
 
   const handleDelete = async (id: number) => {
     try {
       await cartPriceRuleApi.deleteVoucherCode(id)
-      void messageApi.success(t('coreshop_voucher_code_delete_success', { defaultValue: 'Voucher code deleted' }))
+      messageApi.success(t('coreshop_voucher_code_delete_success', { defaultValue: 'Voucher code deleted' }))
       loadVouchers()
-    } catch (error) {
-      void messageApi.error(renderApiError(t('coreshop_voucher_code_delete_error', { defaultValue: 'Failed to delete voucher code' })))
+    } catch {
+      messageApi.error(renderApiError(t('coreshop_voucher_code_delete_error', { defaultValue: 'Failed to delete voucher code' })))
     }
   }
 

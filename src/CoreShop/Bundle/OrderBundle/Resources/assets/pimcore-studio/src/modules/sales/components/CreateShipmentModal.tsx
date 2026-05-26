@@ -10,14 +10,13 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal } from 'antd'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { SchemaForm } from '@coreshop/studio-form'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { formatCurrency } from '@coreshop/pimcore/src/utils'
-import React from "react"
 
 export interface CreateShipmentModalProps {
   open: boolean
@@ -78,18 +77,18 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
           }
           setFormData((prev) => ({ ...prev, items }))
         } else {
-          void messageApi.warning(t('coreshop_shipment_no_items', { defaultValue: 'No shippable items found' }))
+          messageApi.warning(t('coreshop_shipment_no_items', { defaultValue: 'No shippable items found' }))
           onCancel()
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_shipment_load_items_error', { defaultValue: 'Failed to load items' }))))
+        messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_shipment_load_items_error', { defaultValue: 'Failed to load items' }))))
         onCancel()
       } finally {
         setLoadingItems(false)
       }
     }
 
-    void loadItems()
+    loadItems()
   }, [open, orderId, carrierId, onCancel, t])
 
   // Handle save
@@ -110,7 +109,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
       }
 
       if (Object.keys(itemsToShip).length === 0) {
-        void messageApi.warning(t('coreshop_shipment_select_items', { defaultValue: 'Please select items to ship' }))
+        messageApi.warning(t('coreshop_shipment_select_items', { defaultValue: 'Please select items to ship' }))
         return
       }
 
@@ -135,14 +134,14 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
       const data = await response.json()
 
       if (data.success) {
-        void messageApi.success(t('coreshop_shipment_create_success', { defaultValue: 'Shipment created successfully' }))
+        messageApi.success(t('coreshop_shipment_create_success', { defaultValue: 'Shipment created successfully' }))
         setFormData({})
         onSuccess()
       } else {
-        void messageApi.error(renderApiError(data.message || t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' })))
+        messageApi.error(renderApiError(data.message || t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' })))
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' }))))
+      messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_shipment_create_error', { defaultValue: 'Failed to create shipment' }))))
     } finally {
       setLoading(false)
     }

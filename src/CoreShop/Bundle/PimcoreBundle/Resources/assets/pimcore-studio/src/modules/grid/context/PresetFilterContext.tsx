@@ -39,15 +39,13 @@ export const PresetFilterProvider: React.FC<PresetFilterProviderProps> = ({
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null)
   const [listType, setListType] = useState<string | null>(initialListType ?? null)
 
+  const value = React.useMemo(
+    () => ({ selectedFilter, listType, setSelectedFilter, setListType }),
+    [selectedFilter, listType]
+  )
+
   return (
-    <PresetFilterContext.Provider
-      value={{
-        selectedFilter,
-        listType,
-        setSelectedFilter,
-        setListType
-      }}
-    >
+    <PresetFilterContext.Provider value={value}>
       {children}
     </PresetFilterContext.Provider>
   )

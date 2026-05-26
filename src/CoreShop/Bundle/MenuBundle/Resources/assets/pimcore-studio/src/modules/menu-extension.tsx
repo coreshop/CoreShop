@@ -110,7 +110,7 @@ export const CoreShopMenuExtension = {
             if (item.widgetEvent) {
                 navItem.onClick = () => {
                     const event = new CustomEvent(item.widgetEvent!)
-                    window.dispatchEvent(event)
+                    globalThis.dispatchEvent(event)
                 }
 
                 mainNavRegistry.registerMainNavItem(navItem)

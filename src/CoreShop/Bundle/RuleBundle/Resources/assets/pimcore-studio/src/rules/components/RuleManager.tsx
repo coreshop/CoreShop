@@ -26,7 +26,7 @@ export function RuleManager<T extends Rule>({
   api,
   renderForm,
   createEmptyRule
-}: RuleManagerProps<T>) {
+}: Readonly<RuleManagerProps<T>>) {
   const messageApi = useMessage()
   const [config, setConfig] = React.useState<RuleConfig>({ conditions: [], actions: [] })
 
@@ -35,7 +35,7 @@ export function RuleManager<T extends Rule>({
     api.getConfig()
       .then(setConfig)
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load configuration')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load configuration')))
       })
   }, [api])
 

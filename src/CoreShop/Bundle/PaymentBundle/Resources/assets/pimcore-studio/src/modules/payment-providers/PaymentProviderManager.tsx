@@ -38,7 +38,7 @@ export const PaymentProviderManager: React.FC = () => {
                         // Backend expects 'name' for validation, but PaymentProvider uses 'identifier'
                         const res = await paymentProviderApi.add({ name: value, identifier: value })
                         if (res.data.id !== undefined) {
-                            resolve(res.data.id)
+                            resolve(res.data.id!)
                         }
                     }
                 })

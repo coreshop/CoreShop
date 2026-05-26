@@ -13,8 +13,7 @@ import { ConfigProvider, Form, Input, message } from 'antd'
 import { Modal } from '@pimcore/studio-ui-bundle/components'
 import i18next from 'i18next'
 import { container } from '@pimcore/studio-ui-bundle'
-import { serviceIds } from '@pimcore/studio-ui-bundle/app'
-import { store } from '@pimcore/studio-ui-bundle/app'
+import { serviceIds, store } from '@pimcore/studio-ui-bundle/app'
 import { orderService } from '../services/OrderService'
 import { getErrorMessage } from '@coreshop/resource/src/entities'
 
@@ -63,10 +62,10 @@ const OrderByNumberModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         setOpen(false)
         onClose()
       } else {
-        void message.error(i18next.t('element_not_found'))
+        message.error(i18next.t('element_not_found'))
       }
     } catch (error) {
-      void message.error(getErrorMessage(error, i18next.t('error') as string))
+      message.error(getErrorMessage(error, i18next.t('error') as string))
     } finally {
       setLoading(false)
     }

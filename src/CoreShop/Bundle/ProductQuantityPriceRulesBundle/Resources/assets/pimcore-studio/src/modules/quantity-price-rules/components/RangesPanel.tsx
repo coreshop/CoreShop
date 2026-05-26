@@ -103,7 +103,7 @@ export const RangesPanel: React.FC<RangesPanelProps> = ({
 
   // Load currency options on mount
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       if (!cachedCurrencyOptions) {
         setCurrencyLoading(true)
       }
@@ -145,7 +145,7 @@ export const RangesPanel: React.FC<RangesPanelProps> = ({
       }
     }
 
-    void loadUnitDefinitions()
+    loadUnitDefinitions()
   }, [objectId])
 
   // Add a key to each range for React rendering

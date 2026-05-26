@@ -52,7 +52,7 @@ export const createFilterSchemaCondition = (blockPrefix: string): React.FC<Condi
       () => ({
         label: data.label ?? '',
         quantityUnit: data.quantityUnit ?? '0',
-        ...(data.configuration ?? {}),
+        ...data.configuration,
       }),
       [data],
     )

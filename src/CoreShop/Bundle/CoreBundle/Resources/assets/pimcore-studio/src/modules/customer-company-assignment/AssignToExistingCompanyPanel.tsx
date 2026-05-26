@@ -97,22 +97,22 @@ export const AssignToExistingCompanyPanel: React.FC<AssignToExistingCompanyPanel
           })
           setStep('form')
         } else {
-          void messageApi.error(renderApiError(validationResponse.message ?? 'Customer cannot be assigned to this company'))
+          messageApi.error(renderApiError(validationResponse.message ?? 'Customer cannot be assigned to this company'))
           setStep('error')
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load details')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load details')))
         setStep('error')
       }
     }
 
-    void loadData()
+    loadData()
   }, [customerId, companyId])
 
   const handleSubmit = async (): Promise<void> => {
     if (!customerId || !companyId) return
     if (!formData.addressAssignmentType) {
-      void messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
+      messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
       return
     }
 
@@ -124,7 +124,7 @@ export const AssignToExistingCompanyPanel: React.FC<AssignToExistingCompanyPanel
       })
 
       if (response.success) {
-        void messageApi.success(
+        messageApi.success(
           t('coreshop_customer_transformer_assignment_form_success', {
             defaultValue: 'Customer successfully assigned to company',
           })
@@ -142,10 +142,10 @@ export const AssignToExistingCompanyPanel: React.FC<AssignToExistingCompanyPanel
           }
         }
       } else {
-        void messageApi.error(renderApiError(response.message ?? 'Failed to assign customer to company'))
+        messageApi.error(renderApiError(response.message ?? 'Failed to assign customer to company'))
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to submit assignment')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Failed to submit assignment')))
     } finally {
       setSubmitting(false)
     }

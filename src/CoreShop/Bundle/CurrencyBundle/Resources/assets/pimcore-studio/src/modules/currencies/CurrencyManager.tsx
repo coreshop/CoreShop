@@ -24,7 +24,7 @@ export const CurrencyManager: React.FC = () => {
           rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (nameValue: string) => {
             const res = await currencyApi.add({ name: nameValue })
-            resolve(res.data.id)
+            resolve(res.data.id!)
           }
         })
       }) }

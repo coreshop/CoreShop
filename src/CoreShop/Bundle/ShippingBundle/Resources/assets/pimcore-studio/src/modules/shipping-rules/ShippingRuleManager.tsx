@@ -31,7 +31,7 @@ export const ShippingRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
       })
   }, [])
 

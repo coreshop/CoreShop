@@ -14,11 +14,10 @@
 
 import React, { useState, useEffect } from 'react'
 import { Modal } from 'antd'
-import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { useMessage, toDayJs, fromDayJs } from '@pimcore/studio-ui-bundle/components'
 import { useTranslation } from 'react-i18next'
 import { SchemaForm } from '@coreshop/studio-form'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
-import { toDayJs, fromDayJs } from '@pimcore/studio-ui-bundle/components'
 
 export interface CreatePaymentModalProps {
   open: boolean
@@ -78,14 +77,14 @@ export const CreatePaymentModal: React.FC<CreatePaymentModalProps> = ({
       const result = await response.json()
 
       if (result.success) {
-        void messageApi.success(t('coreshop_payment_create_success', { defaultValue: 'Payment created successfully' }))
+        messageApi.success(t('coreshop_payment_create_success', { defaultValue: 'Payment created successfully' }))
         setFormData({})
         onSuccess()
       } else {
-        void messageApi.error(renderApiError(result.message || t('coreshop_payment_create_error', { defaultValue: 'Failed to create payment' })))
+        messageApi.error(renderApiError(result.message || t('coreshop_payment_create_error', { defaultValue: 'Failed to create payment' })))
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_payment_create_error', { defaultValue: 'Failed to create payment' }))))
+      messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_payment_create_error', { defaultValue: 'Failed to create payment' }))))
     } finally {
       setLoading(false)
     }

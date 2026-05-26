@@ -59,11 +59,11 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
         const details = await orderCreationApi.getCustomerDetails(state.customerId)
         dispatch({ type: 'SET_CUSTOMER', payload: { id: state.customerId, details } })
       } catch (err) {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to reload customer')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to reload customer')))
       }
     }
 
-    void messageApi.success(
+    messageApi.success(
       t('coreshop_address_created_success', { defaultValue: 'Address created successfully' })
     )
   }, [state.customerId, dispatch, messageApi, t])
@@ -147,7 +147,7 @@ const AddressStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispatc
           open={createModalOpen}
           customerId={state.customerId}
           onClose={() => setCreateModalOpen(false)}
-          onCreated={(addressId) => void handleAddressCreated(addressId)}
+          onCreated={(addressId) => { handleAddressCreated(addressId)} }
         />
       )}
     </Card>

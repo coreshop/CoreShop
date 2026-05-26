@@ -34,14 +34,14 @@ export const OrderCreationButton = ({ icon, label, closeMainNav }: MenuButtonPro
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedClasses(classes)
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load allowed customer classes')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load allowed customer classes')))
         setAllowedClasses(['CoreShopCustomer'])
       } finally {
         setClassesLoaded(true)
       }
     }
 
-    void loadClasses()
+    loadClasses()
   }, [messageApi])
 
   const { open: openCustomerSelector } = useElementSelector({
@@ -62,7 +62,7 @@ export const OrderCreationButton = ({ icon, label, closeMainNav }: MenuButtonPro
         const selected = event.items[0]
         const customerId = selected.data.id
 
-        void orderCreationApi.getCustomerDetails(customerId).then((details) => {
+        orderCreationApi.getCustomerDetails(customerId).then((details) => {
           const customerName = [details.firstname, details.lastname].filter(Boolean).join(' ') || `Customer #${customerId}`
 
           store.dispatch({
@@ -75,7 +75,7 @@ export const OrderCreationButton = ({ icon, label, closeMainNav }: MenuButtonPro
             }
           })
         }).catch((error) => {
-          void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer')))
+          messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer')))
         })
       }
     }

@@ -50,7 +50,7 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
     indexApi.getClassDefinition(index.class)
       .then(setClassDefinition)
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load class definition')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load class definition')))
       })
       .finally(() => {
         setLoading(false)
@@ -65,7 +65,7 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
     )
 
     if (exists) {
-      void messageApi.warning(`Field "${field.objectKey}" already added`)
+      messageApi.warning(`Field "${field.objectKey}" already added`)
       return
     }
 

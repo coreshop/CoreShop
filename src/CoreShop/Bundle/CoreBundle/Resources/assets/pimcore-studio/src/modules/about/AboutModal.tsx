@@ -469,13 +469,13 @@ export const AboutModal: React.FC<AboutModalProps> = (props) => {
           const data: SettingsResponse = await response.json()
           setVersion(data.bundle.version)
         } catch (error) {
-          void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch CoreShop version')))
+          messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch CoreShop version')))
           setVersion('Unknown')
         } finally {
           setLoading(false)
         }
       }
-      void fetchVersion()
+      fetchVersion()
     }
   }, [props.open, version])
 

@@ -147,7 +147,7 @@ export const SelectedFieldsTree: React.FC<SelectedFieldsTreeProps> = ({
     // Find the column index from the key
     const keyMatch = node.key?.toString().match(/^field-(\d+)$/)
     if (keyMatch) {
-      const index = parseInt(keyMatch[1], 10)
+      const index = Number.parseInt(keyMatch[1], 10)
       const column = columns[index]
       if (column) {
         onEdit(column, index)

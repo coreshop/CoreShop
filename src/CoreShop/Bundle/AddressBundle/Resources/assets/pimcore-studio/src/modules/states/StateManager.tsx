@@ -46,7 +46,7 @@ export const StateManager: React.FC = () => {
           rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (value: string) => {
             const res = await stateApi.add({ name: value, ...(groupId ? { country: groupId } : {}) })
-            resolve(res.data.id)
+            resolve(res.data.id!)
           }
         })
       })}

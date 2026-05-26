@@ -76,13 +76,13 @@ export const StateChangeModal: React.FC<StateChangeModalProps> = ({
       const data = await response.json()
 
       if (data.success) {
-        void messageApi.success('State changed successfully')
+        messageApi.success('State changed successfully')
         onSuccess()
       } else {
-        void messageApi.error(renderApiError(data.message || 'Failed to change state'))
+        messageApi.error(renderApiError(data.message || 'Failed to change state'))
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to change state')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Failed to change state')))
     } finally {
       setLoading(null)
     }

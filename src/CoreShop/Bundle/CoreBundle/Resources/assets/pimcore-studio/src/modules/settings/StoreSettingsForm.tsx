@@ -85,8 +85,8 @@ export const StoreSettingsForm: React.FC<StoreSettingsFormProps> = ({
         if ((field === 'category_list_per_page' || field === 'category_grid_per_page') && typeof value === 'string') {
           const parsed = value
             .split(',')
-            .map(s => parseInt(s.trim(), 10))
-            .filter(n => !isNaN(n) && n > 0)
+            .map(s => Number.parseInt(s.trim(), 10))
+            .filter(n => !Number.isNaN(n) && n > 0)
             .sort((a, b) => a - b)
           onChange(key, parsed)
         } else {
