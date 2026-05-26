@@ -68,10 +68,10 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
       if (data) {
         setCart(data)
       } else {
-        void messageApi.error(renderApiError('Failed to load cart data'))
+        messageApi.error(renderApiError('Failed to load cart data'))
       }
-    } catch (error) {
-      void messageApi.error(renderApiError('Error loading cart'))
+    } catch {
+      messageApi.error(renderApiError('Error loading cart'))
     } finally {
       setLoading(false)
     }
@@ -79,7 +79,7 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
   }, [cartId])
 
   React.useEffect(() => {
-    void loadCart()
+    loadCart()
   }, [loadCart])
 
   const handleChange = React.useCallback(async (updates: Partial<Sale>) => {
@@ -98,10 +98,10 @@ export const CartDetailWidget: React.FC<CartDetailWidgetProps> = (props) => {
         throw new Error('Failed to save')
       }
 
-      void messageApi.success('Cart updated successfully')
+      messageApi.success('Cart updated successfully')
       await loadCart()
-    } catch (error) {
-      void messageApi.error(renderApiError('Failed to save changes'))
+    } catch {
+      messageApi.error(renderApiError('Failed to save changes'))
       await loadCart()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

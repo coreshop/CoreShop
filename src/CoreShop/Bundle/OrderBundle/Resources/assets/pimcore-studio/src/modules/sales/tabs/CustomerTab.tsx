@@ -17,7 +17,6 @@ import { FolderOpenOutlined, UserOutlined, EnvironmentOutlined } from '@ant-desi
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import { useDataObjectHelper } from '@pimcore/studio-ui-bundle/modules/data-object'
-import type { SaleTabProps } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
 
 interface Address {
@@ -33,7 +32,7 @@ interface Customer {
   creationDate?: number
 }
 
-export const CustomerTab: React.FC<SaleTabProps> = () => {
+export const CustomerTab: React.FC = () => {
   const { t } = useTranslation()
   const { sale } = useSaleContext()
   const { styles } = useCustomerTabStyles()
@@ -48,14 +47,14 @@ export const CustomerTab: React.FC<SaleTabProps> = () => {
   // Open customer DataObject
   const handleOpenCustomer = () => {
     if (customer?.id) {
-      void openDataObject({ config: { id: customer.id } })
+      openDataObject({ config: { id: customer.id } })
     }
   }
 
   // Open address DataObject
   const handleOpenAddress = (addressId?: number) => {
     if (addressId) {
-      void openDataObject({ config: { id: addressId } })
+      openDataObject({ config: { id: addressId } })
     }
   }
 

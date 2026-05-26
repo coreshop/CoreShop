@@ -197,7 +197,7 @@ export const EntityList: React.FC<EntityListProps> = ({
           selectable
           treeData={ buildTreeData }
           onSelect={ (keys) => {
-            const key = Array.isArray(keys) ? keys[0] : keys as any
+            const key = Array.isArray(keys) ? keys[0] : keys
             if (typeof key === 'number') onSelect(key)
           } }
         />

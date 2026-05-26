@@ -16,8 +16,7 @@ import { EditOutlined, DeleteOutlined, DragOutlined } from '@ant-design/icons'
 import {
   ContentLayout,
   Toolbar,
-  IconButton,
-  Icon
+  IconButton
 } from '@pimcore/studio-ui-bundle/components'
 import type { IndexColumn } from '../api'
 

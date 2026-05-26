@@ -86,13 +86,13 @@ const OrderListInner: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch order folder configuration')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch order folder configuration')))
       } finally {
         setLoading(false)
       }
     }
 
-    void fetchFolderConfig()
+    fetchFolderConfig()
   }, [])
 
   React.useEffect(() => {
@@ -102,14 +102,14 @@ const OrderListInner: React.FC = () => {
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedClasses(classes)
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load allowed customer classes')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load allowed customer classes')))
         setAllowedClasses(['CoreShopCustomer'])
       } finally {
         setClassesLoaded(true)
       }
     }
 
-    void loadClasses()
+    loadClasses()
   }, [messageApi])
 
   const { open: openCustomerSelector } = useElementSelector({
@@ -130,7 +130,7 @@ const OrderListInner: React.FC = () => {
         const selected = event.items[0]
         const customerId = selected.data.id
 
-        void orderCreationApi.getCustomerDetails(customerId).then((details) => {
+        orderCreationApi.getCustomerDetails(customerId).then((details) => {
           const customerName = [details.firstname, details.lastname].filter(Boolean).join(' ') || `Customer #${customerId}`
           const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)
 
@@ -141,7 +141,7 @@ const OrderListInner: React.FC = () => {
             config: { customerId }
           })
         }).catch((error) => {
-          void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer')))
+          messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer')))
         })
       }
     }

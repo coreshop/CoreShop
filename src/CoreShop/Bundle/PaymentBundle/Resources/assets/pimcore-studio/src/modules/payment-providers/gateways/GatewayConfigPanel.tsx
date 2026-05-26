@@ -96,7 +96,7 @@ export const GatewayConfigPanel: React.FC<GatewayConfigPanelProps> = ({
   }, [gatewayConfig, initialFactory])
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       if (!cachedConfig) {
         setLoading(true)
       }

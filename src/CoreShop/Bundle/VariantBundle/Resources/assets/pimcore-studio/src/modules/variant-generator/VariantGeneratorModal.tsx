@@ -49,7 +49,7 @@ export const VariantGeneratorModal: React.FC<Props> = ({ open, objectId, onClose
 
   React.useEffect(() => {
     if (open && objectId) {
-      void loadAttributes()
+      loadAttributes()
     }
     if (!open) {
       setTreeData([])
@@ -109,7 +109,7 @@ export const VariantGeneratorModal: React.FC<Props> = ({ open, objectId, onClose
       groupIdsRef.current = groups
       attributeGroupMapRef.current = attrGroupMap
       setTreeData(nodes)
-    } catch (err) {
+    } catch {
       setError('Failed to load attributes')
     } finally {
       setLoading(false)
@@ -146,8 +146,8 @@ export const VariantGeneratorModal: React.FC<Props> = ({ open, objectId, onClose
       const groupId = attributeGroupMapRef.current.get(keyStr)
       if (groupId === undefined) continue
       // Extract attribute ID from key (format: "attr-123")
-      const attrId = parseInt(keyStr.replace('attr-', ''), 10)
-      if (isNaN(attrId)) continue
+      const attrId = Number.parseInt(keyStr.replace('attr-', ''), 10)
+      if (Number.isNaN(attrId)) continue
 
       if (!groupedAttributes[groupId]) {
         groupedAttributes[groupId] = []
@@ -159,13 +159,13 @@ export const VariantGeneratorModal: React.FC<Props> = ({ open, objectId, onClose
     try {
       const response = await variantGeneratorApi.generateVariants(objectId, groupedAttributes)
       if (response.success) {
-        void messageApi.success(response.message)
+        messageApi.success(response.message)
         onClose()
       } else {
-        void messageApi.error(renderApiError(response.message))
+        messageApi.error(renderApiError(response.message))
       }
-    } catch (err) {
-      void messageApi.error(renderApiError('Failed to generate variants'))
+    } catch {
+      messageApi.error(renderApiError('Failed to generate variants'))
     } finally {
       setSubmitting(false)
     }

@@ -44,7 +44,7 @@ export const CartItemAction: React.FC<ActionComponentProps> = ({
         setLoading(false)
       })
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load cart item config')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load cart item config')))
         setLoading(false)
       })
   }, [])

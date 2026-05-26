@@ -96,16 +96,16 @@ export const AssignToNewCompanyPanel: React.FC<AssignToNewCompanyPanelProps> = (
           })
           setStep('form')
         } else {
-          void messageApi.error(renderApiError(validationResponse.message ?? 'Customer cannot be assigned to a company'))
+          messageApi.error(renderApiError(validationResponse.message ?? 'Customer cannot be assigned to a company'))
           setStep('error')
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer details')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer details')))
         setStep('error')
       }
     }
 
-    void loadData()
+    loadData()
   }, [customerId])
 
   const handleCompanyNameChange = (name: string): void => {
@@ -131,7 +131,7 @@ export const AssignToNewCompanyPanel: React.FC<AssignToNewCompanyPanelProps> = (
           setShowDuplicates(false)
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to check duplicates')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to check duplicates')))
       } finally {
         setCheckingDuplicates(false)
       }
@@ -141,11 +141,11 @@ export const AssignToNewCompanyPanel: React.FC<AssignToNewCompanyPanelProps> = (
   const handleSubmit = async (): Promise<void> => {
     if (!customerId) return
     if (!formData.newCompanyName) {
-      void messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
+      messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
       return
     }
     if (!formData.addressAssignmentType) {
-      void messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
+      messageApi.error(renderApiError(t('field_required', { defaultValue: 'This field is required' })))
       return
     }
 
@@ -158,7 +158,7 @@ export const AssignToNewCompanyPanel: React.FC<AssignToNewCompanyPanelProps> = (
       })
 
       if (response.success) {
-        void messageApi.success(
+        messageApi.success(
           t('coreshop_customer_transformer_assignment_form_success', {
             defaultValue: 'Customer successfully assigned to company',
           })
@@ -176,10 +176,10 @@ export const AssignToNewCompanyPanel: React.FC<AssignToNewCompanyPanelProps> = (
           }
         }
       } else {
-        void messageApi.error(renderApiError(response.message ?? 'Failed to assign customer to company'))
+        messageApi.error(renderApiError(response.message ?? 'Failed to assign customer to company'))
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to submit assignment')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Failed to submit assignment')))
     } finally {
       setSubmitting(false)
     }

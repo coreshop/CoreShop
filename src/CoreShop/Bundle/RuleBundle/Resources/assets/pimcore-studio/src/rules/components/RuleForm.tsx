@@ -63,9 +63,9 @@ export const RuleForm: React.FC<RuleFormProps> = ({
     setSaving(true)
     try {
       await onSave(rule)
-      void messageApi.success('Rule saved successfully')
+      messageApi.success('Rule saved successfully')
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to save rule')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Failed to save rule')))
     } finally {
       setSaving(false)
     }

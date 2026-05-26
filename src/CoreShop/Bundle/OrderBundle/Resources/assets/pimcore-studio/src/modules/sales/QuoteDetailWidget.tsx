@@ -68,10 +68,10 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
       if (data) {
         setQuote(data)
       } else {
-        void messageApi.error(renderApiError('Failed to load quote data'))
+        messageApi.error(renderApiError('Failed to load quote data'))
       }
-    } catch (error) {
-      void messageApi.error(renderApiError('Error loading quote'))
+    } catch {
+      messageApi.error(renderApiError('Error loading quote'))
     } finally {
       setLoading(false)
     }
@@ -79,7 +79,7 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
   }, [quoteId])
 
   React.useEffect(() => {
-    void loadQuote()
+    loadQuote()
   }, [loadQuote])
 
   const handleChange = React.useCallback(async (updates: Partial<Sale>) => {
@@ -98,10 +98,10 @@ export const QuoteDetailWidget: React.FC<QuoteDetailWidgetProps> = (props) => {
         throw new Error('Failed to save')
       }
 
-      void messageApi.success('Quote updated successfully')
+      messageApi.success('Quote updated successfully')
       await loadQuote()
-    } catch (error) {
-      void messageApi.error(renderApiError('Failed to save changes'))
+    } catch {
+      messageApi.error(renderApiError('Failed to save changes'))
       await loadQuote()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

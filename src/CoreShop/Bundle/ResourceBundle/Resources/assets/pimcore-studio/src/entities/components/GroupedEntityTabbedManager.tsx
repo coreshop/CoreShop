@@ -21,7 +21,7 @@ export interface GroupedEntityTabbedManagerProps<TDetail extends Record<string, 
   leafIcon?: string
 }
 
-export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>({ api, loadGroups, resolveGroupId, getTitle, buildSavePayload, onAdd, renderDetail, leftExtras, localizable, applyGroup, buildDragInfo, dragType, leafIcon }: GroupedEntityTabbedManagerProps<TDetail>): React.JSX.Element {
+export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>({ api, loadGroups, resolveGroupId, getTitle, buildSavePayload, onAdd, renderDetail, leftExtras, localizable, applyGroup, buildDragInfo, dragType, leafIcon }: Readonly<GroupedEntityTabbedManagerProps<TDetail>>): React.JSX.Element {
   const [groups, setGroups] = React.useState<GroupItem[]>([])
   const didInitialLoad = React.useRef(false)
   const computedBuildDragInfo = React.useMemo(() => {
@@ -43,7 +43,7 @@ export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>(
 
   // Load groups only on mount (entity list is loaded by useEntityTabs)
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       if (!didInitialLoad.current) {
         didInitialLoad.current = true
         const gs = await loadGroups()
@@ -71,7 +71,7 @@ export function GroupedEntityTabbedManager<TDetail extends Record<string, any>>(
           onMove={ async (id, targetGroupId) => {
             if (!applyGroup) return
             const detail = await api.get(id)
-            const updated = applyGroup(detail.data as TDetail, targetGroupId)
+            const updated = applyGroup(detail.data, targetGroupId)
             const payload = buildSavePayload ? buildSavePayload(updated) : (updated as unknown as Record<string, any>)
             await api.save(payload)
             await loadList()

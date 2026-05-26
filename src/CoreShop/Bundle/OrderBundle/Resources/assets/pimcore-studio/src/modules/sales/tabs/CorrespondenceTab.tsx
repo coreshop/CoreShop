@@ -21,7 +21,6 @@ import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import { useTranslation } from 'react-i18next'
 import type { ColumnType } from 'antd/es/table'
-import type { SaleTabProps } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
 
 interface EmailCorrespondence {
@@ -33,7 +32,7 @@ interface EmailCorrespondence {
   threadId?: number
 }
 
-export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
+export const CorrespondenceTab: React.FC = () => {
   const { t } = useTranslation()
   const { sale } = useSaleContext()
   const { styles: sharedStyles } = useTableCardStyles()
@@ -106,7 +105,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
             size="small"
             icon={<MailOutlined />}
             title={t('coreshop_mail_correspondence_mail_log_show', { defaultValue: 'Show sent mail log' })}
-            onClick={() => openEmailLog(record['email-log']!)}
+            onClick={() => openEmailLog(record['email-log'])}
           />
         )
       }
@@ -125,7 +124,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
             size="small"
             icon={<FileTextOutlined />}
             title={t('coreshop_mail_correspondence_open_document', { defaultValue: 'Open Email Document' })}
-            onClick={() => openEmailDocument(record.document!)}
+            onClick={() => openEmailDocument(record.document)}
           />
         )
       }
@@ -144,7 +143,7 @@ export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
             size="small"
             icon={<MessageOutlined />}
             title={t('coreshop_mail_correspondence_open_thread', { defaultValue: 'Open Messaging Thread' })}
-            onClick={() => openMessagingThread(record.threadId!)}
+            onClick={() => openMessagingThread(record.threadId)}
           />
         )
       }

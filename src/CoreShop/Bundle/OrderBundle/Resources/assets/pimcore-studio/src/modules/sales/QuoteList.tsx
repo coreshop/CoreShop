@@ -77,13 +77,13 @@ const QuoteListInner: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch quote folder configuration')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch quote folder configuration')))
       } finally {
         setLoading(false)
       }
     }
 
-    void fetchFolderConfig()
+    fetchFolderConfig()
   }, [])
 
   const handleFilterChange = (filterId: string | null): void => {

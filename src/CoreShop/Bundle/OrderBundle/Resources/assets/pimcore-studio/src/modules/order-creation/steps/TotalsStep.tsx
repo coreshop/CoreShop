@@ -14,7 +14,7 @@ import React from 'react'
 import { Card, Typography, Space, theme } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { createStyles } from 'antd-style'
-import type { OrderCreationStepConfig, OrderCreationState, OrderCreationStepProps, SummaryItem } from '../types'
+import type { OrderCreationStepConfig, OrderCreationStepProps } from '../types'
 
 /**
  * Format currency value (cents to display)

@@ -78,7 +78,7 @@ export const ProductUnitManager: React.FC = () => {
                 ? Object.entries(draft.translations as Record<string, any>).reduce(
                     (acc, [locale, changes]) => ({
                       ...acc,
-                      [locale]: { ...(acc[locale] ?? {}), ...changes },
+                      [locale]: { ...acc[locale], ...changes },
                     }),
                     { ...prevTranslations }
                   )

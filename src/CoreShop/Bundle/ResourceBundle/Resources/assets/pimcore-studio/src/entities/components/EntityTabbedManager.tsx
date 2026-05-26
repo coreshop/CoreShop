@@ -19,7 +19,7 @@ export interface EntityTabbedManagerProps<TDetail extends Record<string, any>> {
   leafIcon?: string
 }
 
-export function EntityTabbedManager<TDetail extends Record<string, any>>({ api, getTitle, buildSavePayload, onAdd, renderDetail, leftExtras, localizable, buildDragInfo, dragType, leftRootTitle, leafIcon }: EntityTabbedManagerProps<TDetail>): React.JSX.Element {
+export function EntityTabbedManager<TDetail extends Record<string, any>>({ api, getTitle, buildSavePayload, onAdd, renderDetail, leftExtras, localizable, buildDragInfo, dragType, leftRootTitle, leafIcon }: Readonly<EntityTabbedManagerProps<TDetail>>): React.JSX.Element {
   const computedBuildDragInfo = React.useMemo(() => {
     if (buildDragInfo) return buildDragInfo
     if (!dragType) return undefined

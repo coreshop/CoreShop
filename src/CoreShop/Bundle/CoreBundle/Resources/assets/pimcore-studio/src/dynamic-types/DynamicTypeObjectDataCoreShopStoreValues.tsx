@@ -104,7 +104,7 @@ const StoreValuesInner: React.FC<StoreValuesInnerProps> = ({
   const [availableUnitDefinitions, setAvailableUnitDefinitions] = React.useState<UnitDefinitionInfo[]>([])
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       try {
         const loadedStores = await loadStores()
         setStores(loadedStores)
@@ -235,7 +235,7 @@ const StoreValuesInner: React.FC<StoreValuesInnerProps> = ({
   }
 
   const items = stores.map(store => {
-    const storeValue = safeValue[store.id!] || {}
+    const storeValue = safeValue[store.id] || {}
     const isInherited = storeValue.inherited === true
     const canRestoreInheritance = !isInherited && storeValue.inheritable
 
@@ -255,7 +255,7 @@ const StoreValuesInner: React.FC<StoreValuesInnerProps> = ({
               <Tooltip title="Restore inheritance from parent object">
                 <Button
                   icon={<UndoOutlined />}
-                  onClick={() => handleRestoreInheritance(store.id!)}
+                  onClick={() => handleRestoreInheritance(store.id)}
                   disabled={disabled}
                   size="small"
                 >
@@ -269,7 +269,7 @@ const StoreValuesInner: React.FC<StoreValuesInnerProps> = ({
             <Form.Item label="Price (net)">
               <InputNumber
                 value={storeValue.price ?? storeValue.values?.price}
-                onChange={(val) => handlePriceChange(store.id!, val)}
+                onChange={(val) => handlePriceChange(store.id, val)}
                 disabled={disabled || isInherited}
                 precision={decimalPrecision}
                 style={{ width: '100%' }}
@@ -309,8 +309,8 @@ const StoreValuesInner: React.FC<StoreValuesInnerProps> = ({
                         }
                         return (
                           <InputNumber
-                            value={getUnitPrice(store.id!, unitDef.id)}
-                            onChange={(v) => handleUnitPriceChange(store.id!, unitDef.id!, v)}
+                            value={getUnitPrice(store.id, unitDef.id)}
+                            onChange={(v) => handleUnitPriceChange(store.id!, unitDef.id, v)}
                             disabled={disabled || isInherited}
                             precision={decimalPrecision}
                             style={{ width: 150 }}

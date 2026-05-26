@@ -26,8 +26,7 @@ import type {
   OrderCreationState,
   OrderCreationAction,
   OrderCreationFormData,
-  CustomerDetails,
-  OrderCreationRequest
+    OrderCreationRequest
 } from '../types'
 import { orderCreationApi } from '../api'
 import type { OrderCreationStepRegistry } from '../registry/OrderCreationStepRegistry'
@@ -177,14 +176,14 @@ export const OrderCreationProvider: React.FC<OrderCreationProviderProps> = ({
       const details = await orderCreationApi.getCustomerDetails(customerId)
       dispatch({ type: 'SET_CUSTOMER', payload: { id: customerId, details } })
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Failed to load customer')))
     }
   }, [messageApi])
 
   // Load initial customer if provided
   useEffect(() => {
     if (initialCustomerId && !state.customerId) {
-      void loadCustomer(initialCustomerId)
+      loadCustomer(initialCustomerId)
     }
   }, [initialCustomerId, state.customerId, loadCustomer])
 
@@ -308,19 +307,13 @@ export const OrderCreationProvider: React.FC<OrderCreationProviderProps> = ({
     }
   }, [])
 
+  const value = React.useMemo(
+    () => ({ state, dispatch, triggerPreview, loadCustomer, createSale, reset, fullReset, isValid }),
+    [state, dispatch, triggerPreview, loadCustomer, createSale, reset, fullReset, isValid]
+  )
+
   return (
-    <OrderCreationContext.Provider
-      value={{
-        state,
-        dispatch,
-        triggerPreview,
-        loadCustomer,
-        createSale,
-        reset,
-        fullReset,
-        isValid
-      }}
-    >
+    <OrderCreationContext.Provider value={value}>
       {children}
     </OrderCreationContext.Provider>
   )

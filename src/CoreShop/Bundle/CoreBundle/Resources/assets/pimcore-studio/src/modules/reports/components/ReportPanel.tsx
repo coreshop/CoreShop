@@ -18,7 +18,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import type { ColumnsType } from 'antd/es/table'
 import { ReportFilters } from './ReportFilters'
 import { reportsApi } from '../api'
-import type { ReportConfig, ReportType, GroupBy, ReportDataItem, ReportFilterParams } from '../types'
+import type { ReportConfig, GroupBy, ReportDataItem, ReportFilterParams } from '../types'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 interface ReportPanelProps {
@@ -87,7 +87,7 @@ export const ReportPanel: React.FC<ReportPanelProps> = ({
         setTotal(response.total ?? response.data.length)
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch report data')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch report data')))
       setData([])
     } finally {
       setLoading(false)

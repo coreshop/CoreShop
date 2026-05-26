@@ -54,7 +54,7 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
 
   // Open invoice DataObject
   const handleOpenInvoice = () => {
-    void openDataObject({ config: { id: invoice.id } })
+    openDataObject({ config: { id: invoice.id } })
     onClose()
   }
 

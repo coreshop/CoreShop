@@ -18,7 +18,6 @@ import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
-import type { SaleTabProps, SaleTab } from '../registry'
 import { StateChangeModal, ShipmentDetailModal, CreateShipmentModal as BaseCreateShipmentModal, CreateShipmentButton } from '../components'
 import { getComponent } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
@@ -52,7 +51,7 @@ interface Shipment {
   items: ShipmentItem[]
 }
 
-export const ShipmentTab: React.FC<SaleTabProps> = () => {
+export const ShipmentTab: React.FC = () => {
   const { t } = useTranslation()
   const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
   const { styles: sharedStyles } = useTableCardStyles()
@@ -61,13 +60,6 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
   const [stateChangeShipment, setStateChangeShipment] = React.useState<Shipment | null>(null)
   const [detailShipment, setDetailShipment] = React.useState<Shipment | null>(null)
 
-  if (!sale) return null
-
-  // Get CreateShipmentModal from registry (CoreBundle may have registered an extended version)
-  const CreateShipmentModal = getComponent('CreateShipmentModal', BaseCreateShipmentModal)
-
-  const shipments = ((sale as any).shipments || []) as Shipment[]
-
   // Register button in toolbar
   React.useEffect(() => {
     if ((sale as any)?.shipmentCreationAllowed) {
@@ -75,6 +67,13 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
       return () => buttonRegistry.remove('createShipment')
     }
   }, [buttonRegistry, sale])
+
+  if (!sale) return null
+
+  // Get CreateShipmentModal from registry (CoreBundle may have registered an extended version)
+  const CreateShipmentModal = getComponent('CreateShipmentModal', BaseCreateShipmentModal)
+
+  const shipments = ((sale as any).shipments || []) as Shipment[]
 
   const columns: Array<ColumnType<Shipment>> = [
     {
@@ -114,6 +113,13 @@ export const ShipmentTab: React.FC<SaleTabProps> = () => {
                 setStateChangeShipment(record)
               }
             }}
+            onKeyDown={(e) => {
+              if (hasTransitions && (e.key === 'Enter' || e.key === ' ')) {
+                setStateChangeShipment(record)
+              }
+            }}
+            role={hasTransitions ? 'button' : undefined}
+            tabIndex={hasTransitions ? 0 : -1}
           >
             {record.stateInfo.label}
           </span>

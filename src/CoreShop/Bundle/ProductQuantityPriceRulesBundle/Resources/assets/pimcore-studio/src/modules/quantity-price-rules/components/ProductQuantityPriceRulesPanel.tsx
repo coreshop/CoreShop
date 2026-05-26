@@ -12,7 +12,7 @@
 
 import React from 'react'
 import { Tabs, Modal, Input, Form, Switch, Select, InputNumber, Button, Typography, Space } from 'antd'
-import { PlusOutlined, SettingOutlined, SearchOutlined, TagOutlined, CloseOutlined } from '@ant-design/icons'
+import { PlusOutlined, SettingOutlined, SearchOutlined, TagOutlined } from '@ant-design/icons'
 import { container } from '@pimcore/studio-ui-bundle'
 import { useGlobalDataObjectContext } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { ConditionsPanel } from '@coreshop/rule/src/rules/components/ConditionsPanel'

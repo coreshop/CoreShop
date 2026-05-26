@@ -43,14 +43,14 @@ export const AssignToExistingCompanyButton = ({ icon, label }: MenuButtonProps):
         setAllowedCustomerClasses(customerClasses)
         setAllowedCompanyClasses(companyClasses)
       } catch (err) {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed classes')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed classes')))
         setAllowedCustomerClasses(['CoreShopCustomer'])
         setAllowedCompanyClasses(['CoreShopCompany'])
       } finally {
         setClassesLoaded(true)
       }
     }
-    void loadClasses()
+    loadClasses()
   }, [messageApi])
 
   const { open: openCompanySelector } = useElementSelector({
@@ -88,7 +88,7 @@ export const AssignToExistingCompanyButton = ({ icon, label }: MenuButtonProps):
         })
         pendingAssignmentCustomer = null
 
-        void customerCompanyApi.getEntityDetails('company', companyId).then((response) => {
+        customerCompanyApi.getEntityDetails('company', companyId).then((response) => {
           const companyName = response.success && response.data ? response.data.name : `#${companyId}`
           store.dispatch({
             type: 'widget-manager/openMainWidget',
@@ -99,9 +99,11 @@ export const AssignToExistingCompanyButton = ({ icon, label }: MenuButtonProps):
               config: { customerId, companyId },
             },
           })
-        }).catch(() => {})
+        }).catch((err) => {
+          messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load company')))
+        })
       } else if (event.items.length > 0) {
-        void messageApi.error(renderApiError('No customer selected before company selection'))
+        messageApi.error(renderApiError('No customer selected before company selection'))
       }
     }
   })
@@ -124,16 +126,16 @@ export const AssignToExistingCompanyButton = ({ icon, label }: MenuButtonProps):
         const selected = event.items[0]
         const customerId = selected.data.id
 
-        void customerCompanyApi.getEntityDetails('customer', customerId).then((response) => {
+        customerCompanyApi.getEntityDetails('customer', customerId).then((response) => {
           const customerName = response.success && response.data ? response.data.name : `#${customerId}`
           selectedCustomerIdRef.current = customerId
           selectedCustomerNameRef.current = customerName
           pendingAssignmentCustomer = { id: customerId, name: customerName }
-          window.setTimeout(() => {
+          globalThis.setTimeout(() => {
             openCompanySelector()
           }, 0)
         }).catch((err) => {
-          void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load customer')))
+          messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load customer')))
         })
       }
     }

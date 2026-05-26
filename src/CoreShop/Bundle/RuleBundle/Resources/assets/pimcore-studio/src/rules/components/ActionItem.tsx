@@ -16,7 +16,6 @@ import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/
 import { container } from '@pimcore/studio-ui-bundle'
 import type { RuleAction } from '../types'
 import type { ActionRegistry } from '../registry'
-import { coreshopRuleServiceIds } from '../registry'
 import { formatTypeLabel } from './type-label'
 
 interface ActionItemProps {

@@ -13,8 +13,7 @@
 import React from 'react'
 import { container } from '@pimcore/studio-ui-bundle'
 import { EntityTabbedManager, getErrorMessage, renderApiError } from '@coreshop/resource'
-import { RuleForm, type RuleFormTab } from '@coreshop/rule/src/rules'
-import type { RuleConfig } from '@coreshop/rule/src/rules'
+import { RuleForm, type RuleFormTab, type RuleConfig } from '@coreshop/rule/src/rules'
 import {
   ActionRegistry,
   ConditionRegistry,
@@ -63,7 +62,7 @@ export const CartPriceRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
       })
   }, [])
 

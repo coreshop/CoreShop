@@ -60,7 +60,7 @@ export const StoreLocalizedMailDocumentsWidget: React.FC<StoreLocalizedMailDocum
   const [loading, setLoading] = React.useState(!cachedStores)
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       if (!cachedStores) {
         setLoading(true)
       }
@@ -77,7 +77,7 @@ export const StoreLocalizedMailDocumentsWidget: React.FC<StoreLocalizedMailDocum
     onChange?.({
       ...mails,
       [storeId]: {
-        ...(mails[storeId] ?? {}),
+        ...mails[storeId],
         [lang]: documentId,
       },
     })

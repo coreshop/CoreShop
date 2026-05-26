@@ -52,7 +52,7 @@ export const ExchangeRateManager: React.FC = () => {
         setExchangeRates(list)
       })
       .catch(() => {
-        void messageApi.error(renderApiError(t('coreshop_error_loading', { defaultValue: 'Failed to load exchange rates' })))
+        messageApi.error(renderApiError(t('coreshop_error_loading', { defaultValue: 'Failed to load exchange rates' })))
         setExchangeRates([])
       })
       .finally(() => setLoading(false))
@@ -99,21 +99,21 @@ export const ExchangeRateManager: React.FC = () => {
   // Save changes
   const handleSave = async () => {
     if (!editingData.fromCurrency || !editingData.toCurrency || !editingData.exchangeRate) {
-      void messageApi.error(renderApiError(t('coreshop_fill_all_fields', { defaultValue: 'Please fill all fields' })))
+      messageApi.error(renderApiError(t('coreshop_fill_all_fields', { defaultValue: 'Please fill all fields' })))
       return
     }
 
     try {
       // Always use save endpoint (no separate add endpoint)
       await exchangeRateApi.save(editingData as ExchangeRate)
-      void messageApi.success(editingData.id ? t('coreshop_exchange_rate_updated', { defaultValue: 'Exchange rate updated' }) : t('coreshop_exchange_rate_created', { defaultValue: 'Exchange rate created' }))
+      messageApi.success(editingData.id ? t('coreshop_exchange_rate_updated', { defaultValue: 'Exchange rate updated' }) : t('coreshop_exchange_rate_created', { defaultValue: 'Exchange rate created' }))
 
       // Reload data
       setEditingKey(null)
       setEditingData({})
       loadExchangeRates()
-    } catch (error) {
-      void messageApi.error(renderApiError(t('coreshop_error_saving', { defaultValue: 'Failed to save exchange rate' })))
+    } catch {
+      messageApi.error(renderApiError(t('coreshop_error_saving', { defaultValue: 'Failed to save exchange rate' })))
     }
   }
 
@@ -126,10 +126,10 @@ export const ExchangeRateManager: React.FC = () => {
   const handleDelete = async (id: number) => {
     try {
       await exchangeRateApi.delete(id)
-      void messageApi.success(t('coreshop_exchange_rate_deleted', { defaultValue: 'Exchange rate deleted' }))
+      messageApi.success(t('coreshop_exchange_rate_deleted', { defaultValue: 'Exchange rate deleted' }))
       loadExchangeRates()
-    } catch (error) {
-      void messageApi.error(renderApiError(t('coreshop_error_deleting', { defaultValue: 'Failed to delete exchange rate' })))
+    } catch {
+      messageApi.error(renderApiError(t('coreshop_error_deleting', { defaultValue: 'Failed to delete exchange rate' })))
     }
   }
 

@@ -1,6 +1,5 @@
 import React from 'react'
-import { SplitLayout, Content, ContentLayout, Popconfirm } from '@pimcore/studio-ui-bundle/components'
-import { Tabs } from '@pimcore/studio-ui-bundle/components'
+import { SplitLayout, Content, ContentLayout, Popconfirm, Tabs } from '@pimcore/studio-ui-bundle/components'
 import type { EntityListItem } from '../types'
 import { EntityApi } from '../api'
 import { useEntityTabs } from './useEntityTabs'
@@ -49,7 +48,7 @@ export interface EntityTabbedLayoutProps<TDetail extends Record<string, any>> {
   localizable?: boolean
 }
 
-export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, getTitle, buildSavePayload, renderLeft, renderDetail, leftExtras, localizable }: EntityTabbedLayoutProps<TDetail>): React.JSX.Element {
+export function EntityTabbedLayout<TDetail extends Record<string, any>>({ api, getTitle, buildSavePayload, renderLeft, renderDetail, leftExtras, localizable }: Readonly<EntityTabbedLayoutProps<TDetail>>): React.JSX.Element {
   const { styles } = useEntityTabbedLayoutStyles()
   const {
     list,

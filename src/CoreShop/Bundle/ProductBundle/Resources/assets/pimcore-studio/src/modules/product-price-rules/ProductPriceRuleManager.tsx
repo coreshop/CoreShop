@@ -40,7 +40,7 @@ export const ProductPriceRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
       })
   }, [])
 
@@ -59,7 +59,7 @@ export const ProductPriceRuleManager: React.FC = () => {
           rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (nameValue: string) => {
             const res = await productPriceRuleApi.add({ name: nameValue })
-            resolve(res.data.id!)
+            resolve(res.data.id)
           }
         })
       })}

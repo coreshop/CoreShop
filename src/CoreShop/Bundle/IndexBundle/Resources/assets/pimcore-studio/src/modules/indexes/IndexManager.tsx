@@ -29,7 +29,7 @@ export const IndexManager: React.FC = () => {
     indexApi.getConfig()
       .then(setConfig)
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load index config')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load index config')))
       })
   }, [])
 
@@ -94,7 +94,7 @@ export const IndexManager: React.FC = () => {
           },
           onOk: async (nameValue: string) => {
             const res = await indexApi.add({ name: nameValue })
-            resolve(res.data.id!)
+            resolve(res.data.id)
           }
         })
       })}

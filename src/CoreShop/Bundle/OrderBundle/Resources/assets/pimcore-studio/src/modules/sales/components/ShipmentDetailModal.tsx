@@ -53,7 +53,7 @@ export const ShipmentDetailModal: React.FC<ShipmentDetailModalProps> = ({
 
   // Open shipment DataObject
   const handleOpenShipment = () => {
-    void openDataObject({ config: { id: shipment.id } })
+    openDataObject({ config: { id: shipment.id } })
     onClose()
   }
 

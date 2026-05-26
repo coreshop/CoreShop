@@ -82,9 +82,9 @@ export const MessengerFailedGrid: React.FC = () => {
 
     try {
       await deleteMessage(messageId)
-      void messageApi.success(t('coreshop_messenger_delete_success', { defaultValue: 'Message deleted successfully' }))
-    } catch (err) {
-      void messageApi.error(renderApiError(t('coreshop_messenger_delete_error', { defaultValue: 'Failed to delete message' })))
+      messageApi.success(t('coreshop_messenger_delete_success', { defaultValue: 'Message deleted successfully' }))
+    } catch {
+      messageApi.error(renderApiError(t('coreshop_messenger_delete_error', { defaultValue: 'Failed to delete message' })))
     } finally {
       setProcessingActions(prev => {
         const newSet = new Set(prev)
@@ -100,9 +100,9 @@ export const MessengerFailedGrid: React.FC = () => {
 
     try {
       await retryMessage(messageId)
-      void messageApi.success(t('coreshop_messenger_retry_success', { defaultValue: 'Message retry initiated successfully' }))
-    } catch (err) {
-      void messageApi.error(renderApiError(t('coreshop_messenger_retry_error', { defaultValue: 'Failed to retry message' })))
+      messageApi.success(t('coreshop_messenger_retry_success', { defaultValue: 'Message retry initiated successfully' }))
+    } catch {
+      messageApi.error(renderApiError(t('coreshop_messenger_retry_error', { defaultValue: 'Failed to retry message' })))
     } finally {
       setProcessingActions(prev => {
         const newSet = new Set(prev)

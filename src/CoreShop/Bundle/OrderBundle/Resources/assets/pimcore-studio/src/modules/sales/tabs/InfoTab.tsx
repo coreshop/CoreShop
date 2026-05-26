@@ -16,7 +16,6 @@ import { createStyles } from 'antd-style'
 import { FolderOpenOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
-import type { SaleTabProps } from '../registry'
 import { useMessage } from '@pimcore/studio-ui-bundle/components'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { useDataObjectHelper } from "@pimcore/studio-ui-bundle/modules/data-object"
@@ -28,7 +27,7 @@ interface StateHistoryItem {
   date: string | number
 }
 
-export const InfoTab: React.FC<SaleTabProps> = () => {
+export const InfoTab: React.FC = () => {
   const { t } = useTranslation()
   const messageApi = useMessage()
   const { sale, onReload } = useSaleContext()
@@ -44,7 +43,7 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
 
   // Open Pimcore DataObject
   const handleOpenObject = () => {
-    void openDataObject({ config: { id: sale.id } })
+    openDataObject({ config: { id: sale.id } })
   }
 
   const getTransitionName = (transition: any): string => {
@@ -93,13 +92,13 @@ export const InfoTab: React.FC<SaleTabProps> = () => {
           const result = await response.json()
 
           if (result.success) {
-            void messageApi.success(t('coreshop_change_state_success', { defaultValue: 'State changed successfully' }))
+            messageApi.success(t('coreshop_change_state_success', { defaultValue: 'State changed successfully' }))
             onReload()
           } else {
-            void messageApi.error(renderApiError(result.message || t('coreshop_change_state_error', { defaultValue: 'Failed to change state' })))
+            messageApi.error(renderApiError(result.message || t('coreshop_change_state_error', { defaultValue: 'Failed to change state' })))
           }
         } catch (error) {
-          void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_change_state_error', { defaultValue: 'Failed to change state' }))))
+          messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_change_state_error', { defaultValue: 'Failed to change state' }))))
         } finally {
           setLoadingTransition(null)
         }

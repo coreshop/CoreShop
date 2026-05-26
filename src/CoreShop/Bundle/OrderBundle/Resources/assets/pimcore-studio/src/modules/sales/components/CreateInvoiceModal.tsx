@@ -71,18 +71,18 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
           }
           setFormData((prev) => ({ ...prev, items }))
         } else {
-          void messageApi.info(t('coreshop_invoice_no_items', { defaultValue: 'No invoiceable items found' }))
+          messageApi.info(t('coreshop_invoice_no_items', { defaultValue: 'No invoiceable items found' }))
           onCancel()
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_invoice_load_items_error', { defaultValue: 'Failed to load invoiceable items' }))))
+        messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_invoice_load_items_error', { defaultValue: 'Failed to load invoiceable items' }))))
         onCancel()
       } finally {
         setLoadingItems(false)
       }
     }
 
-    void loadItems()
+    loadItems()
   }, [open, orderId, onCancel, t])
 
   // Handle save
@@ -123,14 +123,14 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       const result = await response.json()
 
       if (result.success) {
-        void messageApi.success(t('coreshop_invoice_create_success', { defaultValue: 'Invoice created successfully' }))
+        messageApi.success(t('coreshop_invoice_create_success', { defaultValue: 'Invoice created successfully' }))
         setFormData({})
         onSuccess()
       } else {
-        void messageApi.error(renderApiError(result.message || t('coreshop_invoice_create_error', { defaultValue: 'Failed to create invoice' })))
+        messageApi.error(renderApiError(result.message || t('coreshop_invoice_create_error', { defaultValue: 'Failed to create invoice' })))
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_invoice_create_error', { defaultValue: 'Failed to create invoice' }))))
+      messageApi.error(renderApiError(getErrorMessage(error, t('coreshop_invoice_create_error', { defaultValue: 'Failed to create invoice' }))))
     } finally {
       setLoading(false)
     }

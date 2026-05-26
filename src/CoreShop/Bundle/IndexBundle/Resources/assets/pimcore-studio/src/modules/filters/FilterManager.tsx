@@ -67,7 +67,7 @@ export const FilterManager: React.FC = () => {
           rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (nameValue: string) => {
             const res = await filterApi.add({ name: nameValue })
-            resolve(res.data.id!)
+            resolve(res.data.id)
           }
         })
       })}

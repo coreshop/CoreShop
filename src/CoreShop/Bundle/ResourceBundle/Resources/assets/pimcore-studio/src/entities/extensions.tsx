@@ -27,7 +27,7 @@ export type EntityTableColumnExtensionProvider<T = any> = (ctx: {
 }) => TableColumnExtension[]
 
 export class EntityTableColumnExtensionRegistry {
-  private slots = new Map<string, EntityTableColumnExtensionProvider[]>()
+  private readonly slots = new Map<string, EntityTableColumnExtensionProvider[]>()
 
   add(slotId: string, provider: EntityTableColumnExtensionProvider): void {
     const list = this.slots.get(slotId) ?? []
@@ -46,7 +46,7 @@ export class EntityTableColumnExtensionRegistry {
 }
 
 export class EntityFormExtensionRegistry {
-  private slots = new Map<string, EntityFormExtensionRenderer[]>()
+  private readonly slots = new Map<string, EntityFormExtensionRenderer[]>()
 
   add(slotId: string, renderer: EntityFormExtensionRenderer): void {
     const list = this.slots.get(slotId) ?? []
@@ -62,7 +62,7 @@ export class EntityFormExtensionRegistry {
 export function getEntityFormExtensionRegistry(): EntityFormExtensionRegistry | undefined {
   try {
     return container.get<EntityFormExtensionRegistry>(entityFormExtensionsServiceId)
-  } catch (e) {
+  } catch {
     return undefined
   }
 }
@@ -70,7 +70,7 @@ export function getEntityFormExtensionRegistry(): EntityFormExtensionRegistry | 
 export function getEntityTableColumnExtensionRegistry(): EntityTableColumnExtensionRegistry | undefined {
   try {
     return container.get<EntityTableColumnExtensionRegistry>(entityTableColumnExtensionsServiceId)
-  } catch (e) {
+  } catch {
     return undefined
   }
 }
@@ -119,7 +119,7 @@ export type TabExtensionProvider<T = any> = (ctx: {
 }) => TabExtension<T> | TabExtension<T>[] | null
 
 export class EntityTabExtensionRegistry {
-  private slots = new Map<string, TabExtensionProvider[]>()
+  private readonly slots = new Map<string, TabExtensionProvider[]>()
 
   /**
    * Register a tab extension for a specific entity manager
@@ -153,7 +153,7 @@ export class EntityTabExtensionRegistry {
 export function getEntityTabExtensionRegistry(): EntityTabExtensionRegistry | undefined {
   try {
     return container.get<EntityTabExtensionRegistry>(entityTabExtensionsServiceId)
-  } catch (e) {
+  } catch {
     return undefined
   }
 }
@@ -181,7 +181,7 @@ export type ActionExtensionProvider<T = any> = (ctx: {
 }) => ActionExtension<T> | ActionExtension<T>[] | null
 
 export class EntityActionExtensionRegistry {
-  private slots = new Map<string, ActionExtensionProvider[]>()
+  private readonly slots = new Map<string, ActionExtensionProvider[]>()
 
   /**
    * Register an action extension
@@ -219,7 +219,7 @@ export class EntityActionExtensionRegistry {
 export function getEntityActionExtensionRegistry(): EntityActionExtensionRegistry | undefined {
   try {
     return container.get<EntityActionExtensionRegistry>(entityActionExtensionsServiceId)
-  } catch (e) {
+  } catch {
     return undefined
   }
 }
@@ -241,7 +241,7 @@ export type ValidationFunction<T = any> = (
 ) => ValidationResult | Promise<ValidationResult>
 
 export class EntityValidationExtensionRegistry {
-  private validators = new Map<string, ValidationFunction[]>()
+  private readonly validators = new Map<string, ValidationFunction[]>()
 
   /**
    * Register a validation function
@@ -285,7 +285,7 @@ export class EntityValidationExtensionRegistry {
 export function getEntityValidationExtensionRegistry(): EntityValidationExtensionRegistry | undefined {
   try {
     return container.get<EntityValidationExtensionRegistry>(entityValidationExtensionsServiceId)
-  } catch (e) {
+  } catch {
     return undefined
   }
 }
@@ -310,7 +310,7 @@ export type LifecycleHookFunction<T = any> = (
 ) => T | Promise<T> | void | Promise<void>
 
 export class EntityLifecycleHookRegistry {
-  private hooks = new Map<string, Map<LifecycleHookType, LifecycleHookFunction[]>>()
+  private readonly hooks = new Map<string, Map<LifecycleHookType, LifecycleHookFunction[]>>()
 
   /**
    * Register a lifecycle hook
@@ -357,7 +357,7 @@ export class EntityLifecycleHookRegistry {
 export function getEntityLifecycleHookRegistry(): EntityLifecycleHookRegistry | undefined {
   try {
     return container.get<EntityLifecycleHookRegistry>(entityLifecycleHooksServiceId)
-  } catch (e) {
+  } catch {
     return undefined
   }
 }

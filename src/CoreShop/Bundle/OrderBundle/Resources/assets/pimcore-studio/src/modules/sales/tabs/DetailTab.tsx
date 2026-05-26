@@ -20,7 +20,6 @@ import { useTranslation } from 'react-i18next'
 import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
-import type { SaleTabProps } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
 
 interface DetailItem {
@@ -54,18 +53,26 @@ interface SummaryItem {
   factor?: number
 }
 
-export const DetailTab: React.FC<SaleTabProps> = () => {
+export const DetailTab: React.FC = () => {
   const { t } = useTranslation()
   const { sale } = useSaleContext()
   const { styles: sharedStyles } = useTableCardStyles()
   const { styles: localStyles } = useDetailTabStyles()
   const styles = { ...sharedStyles, ...localStyles }
+  const { token } = theme.useToken()
+
+  const summary = ((sale as any)?.summary || []) as SummaryItem[]
+  const sortedSummary = React.useMemo(() => {
+    const isTotalRow = (key: string) => key === 'total' || key === 'payment_total'
+    const regular = summary.filter(item => !isTotalRow(item.key))
+    const totals = summary.filter(item => isTotalRow(item.key))
+    return [...regular, ...totals]
+  }, [summary])
 
   if (!sale) return null
 
   const details = ((sale as any).details || []) as DetailItem[]
   const priceRules = ((sale as any).priceRule || []) as PriceRule[]
-  const summary = ((sale as any).summary || []) as SummaryItem[]
 
   // Determine if we need converted currency columns
   const showConverted = sale.currency?.id !== (sale as any).baseCurrency?.id
@@ -223,16 +230,6 @@ export const DetailTab: React.FC<SaleTabProps> = () => {
       .join(' ')
   }
 
-  const { token } = theme.useToken()
-
-  const isTotalRow = (key: string) => key === 'total' || key === 'payment_total'
-
-  // Sort summary: regular items first, then totals last
-  const sortedSummary = React.useMemo(() => {
-    const regular = summary.filter(item => !isTotalRow(item.key))
-    const totals = summary.filter(item => isTotalRow(item.key))
-    return [...regular, ...totals]
-  }, [summary])
 
   return (
     <div className={styles.container}>

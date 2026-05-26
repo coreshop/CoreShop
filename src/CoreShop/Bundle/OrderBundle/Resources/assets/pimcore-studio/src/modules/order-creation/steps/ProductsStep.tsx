@@ -79,12 +79,12 @@ const ProductsStepComponent: React.FC<OrderCreationStepProps> = ({ state, dispat
         const classes = await configProvider.getAllowedClasses('coreshop.purchasable')
         setAllowedClasses(classes)
       } catch (err) {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed purchasable classes')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed purchasable classes')))
         // Fallback to default
         setAllowedClasses(['CoreShopProduct'])
       }
     }
-    void loadAllowedClasses()
+    loadAllowedClasses()
   }, [configProvider, messageApi])
 
   const handleAddProducts = useCallback((productIds: number[]): void => {

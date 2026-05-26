@@ -8,7 +8,7 @@
 import { DynamicTypeObjectDataCoreShopSelect } from '@coreshop/resource/src/dynamic-types/DynamicTypeObjectDataCoreShopSelect'
 import { loadTaxRuleGroups, getTaxRuleGroupCache, clearTaxRuleGroupCache } from '../components/TaxRuleGroupSelect'
 
-export { loadTaxRuleGroups, getTaxRuleGroupCache, clearTaxRuleGroupCache }
+export { loadTaxRuleGroups, getTaxRuleGroupCache, clearTaxRuleGroupCache } from '../components/TaxRuleGroupSelect'
 
 export class DynamicTypeObjectDataCoreShopTaxRuleGroup extends DynamicTypeObjectDataCoreShopSelect {
   readonly id = 'coreShopTaxRuleGroup'

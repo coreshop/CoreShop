@@ -13,7 +13,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReportPanel } from './ReportPanel'
-import type { ReportConfig, ProductsReportItem } from '../types'
+import type { ReportConfig } from '../types'
 
 const productsConfig: ReportConfig = {
   type: 'products',

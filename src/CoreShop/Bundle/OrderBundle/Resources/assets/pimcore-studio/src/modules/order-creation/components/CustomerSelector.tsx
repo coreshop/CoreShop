@@ -55,12 +55,12 @@ export const CustomerSelector: React.FC = () => {
         const classes = await configProvider.getAllowedClasses('coreshop.customer')
         setAllowedClasses(classes)
       } catch (err) {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load allowed customer classes')))
         // Fallback to default
         setAllowedClasses(['CoreShopCustomer'])
       }
     }
-    void loadAllowedClasses()
+    loadAllowedClasses()
   }, [configProvider, messageApi])
 
   const handleCustomerSelected = useCallback(async (customerId: number) => {
@@ -91,7 +91,7 @@ export const CustomerSelector: React.FC = () => {
     onFinish: (event) => {
       if (event.items.length > 0) {
         const selected = event.items[0]
-        void handleCustomerSelected(selected.data.id)
+        handleCustomerSelected(selected.data.id)
       }
     }
   })

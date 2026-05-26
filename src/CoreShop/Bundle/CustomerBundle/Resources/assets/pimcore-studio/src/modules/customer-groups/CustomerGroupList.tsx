@@ -67,13 +67,13 @@ export const CustomerGroupList: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch customer group folder configuration')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch customer group folder configuration')))
       } finally {
         setLoading(false)
       }
     }
 
-    void fetchFolderConfig()
+    fetchFolderConfig()
   }, [])
 
   if (loading) {

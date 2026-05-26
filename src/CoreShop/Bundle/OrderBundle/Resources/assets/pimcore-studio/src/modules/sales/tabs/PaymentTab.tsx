@@ -18,7 +18,6 @@ import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { useTranslation } from 'react-i18next'
 import { formatDate, formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
-import type { SaleTabProps } from '../registry'
 import { StateChangeModal, CreatePaymentModal, CreatePaymentButton } from '../components'
 import { useSaleContext } from '../context/SaleActionsContext'
 
@@ -45,7 +44,7 @@ interface Payment {
   transitions: Transition[]
 }
 
-export const PaymentTab: React.FC<SaleTabProps> = () => {
+export const PaymentTab: React.FC = () => {
   const { t } = useTranslation()
   const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
   const { styles: sharedStyles } = useTableCardStyles()
@@ -55,10 +54,6 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = React.useState(false)
   const [stateChangePayment, setStateChangePayment] = React.useState<Payment | null>(null)
 
-  if (!sale) return null
-
-  const payments = ((sale as any).payments || []) as Payment[]
-
   // Register button in toolbar
   React.useEffect(() => {
     // Only add button if payment creation is allowed
@@ -67,6 +62,10 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
       return () => buttonRegistry.remove('createPayment')
     }
   }, [buttonRegistry, sale])
+
+  if (!sale) return null
+
+  const payments = ((sale as any).payments || []) as Payment[]
 
   // Handle open payment detail
   const handleOpenPaymentDetail = (payment: Payment) => {
@@ -122,6 +121,13 @@ export const PaymentTab: React.FC<SaleTabProps> = () => {
                 setStateChangePayment(record)
               }
             }}
+            onKeyDown={(e) => {
+              if (hasTransitions && (e.key === 'Enter' || e.key === ' ')) {
+                setStateChangePayment(record)
+              }
+            }}
+            role={hasTransitions ? 'button' : undefined}
+            tabIndex={hasTransitions ? 0 : -1}
           >
             {record.stateInfo.label}
           </span>

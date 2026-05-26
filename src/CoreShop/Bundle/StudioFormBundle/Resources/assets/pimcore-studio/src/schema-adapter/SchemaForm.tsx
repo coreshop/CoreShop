@@ -98,7 +98,7 @@ export const SchemaForm = <T extends Record<string, any> = any>({
     ? {
         ...builtConfig,
         formProps: {
-          ...(builtConfig.formProps ?? {}),
+          ...builtConfig.formProps,
           component: false,
         },
       }
