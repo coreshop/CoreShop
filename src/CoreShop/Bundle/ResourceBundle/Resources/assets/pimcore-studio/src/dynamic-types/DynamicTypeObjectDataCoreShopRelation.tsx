@@ -17,7 +17,6 @@ import {
   RelationList,
   type ManyToOneRelationValue
 } from '@pimcore/studio-ui-bundle/modules/element'
-import { isNil } from 'lodash'
 
 interface ClassDefinitionProps {
   assetsAllowed?: boolean
@@ -75,7 +74,7 @@ export class DynamicTypeObjectDataCoreShopRelation extends DynamicTypeObjectData
 
   getGridCellPreviewComponent(props: any): React.ReactElement {
     const value: ManyToOneRelationValue | null = props.cellProps.getValue()
-    return isNil(value) ? <></> : <RelationList relations={[value]} />
+    return value == null ? <></> : <RelationList relations={[value]} />
   }
 
   getDefaultGridColumnWidth(): number | undefined {

@@ -7,7 +7,6 @@
 
 import React from 'react'
 import { Tag } from 'antd'
-import { isNil } from 'lodash'
 import { type DefaultCellProps } from '@pimcore/studio-ui-bundle/components'
 
 interface OrderStateValue {
@@ -18,13 +17,13 @@ interface OrderStateValue {
 export const OrderStateCell = (props: DefaultCellProps): React.JSX.Element => {
   const value = props.getValue() as OrderStateValue | null
 
-  if (isNil(value) || isNil(value.label)) {
+  if (value == null || value.label == null) {
     return <div className='default-cell__content' />
   }
 
   const { label, color } = value
 
-  if (isNil(color)) {
+  if (color == null) {
     return (
       <div className='default-cell__content default-cell__content--padded'>
         {label}
