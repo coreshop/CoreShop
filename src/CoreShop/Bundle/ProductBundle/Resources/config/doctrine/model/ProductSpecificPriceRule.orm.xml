@@ -9,7 +9,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="name" column="name"/>
+        <field name="name" column="name" type="string" length="255"/>
         <field name="priority" column="priority" type="integer"/>
         <field name="active" column="active" type="boolean"/>
         <field name="inherit" column="inherit" type="boolean"/>

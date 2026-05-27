@@ -1,0 +1,34 @@
+coreshop_order_revise_pay:
+    path:       /order/revise/{token}/pay
+    controller: CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction
+    requirements: { token: '.+' }
+
+coreshop_order_revise:
+    path:       /order/revise/{token}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\OrderController::reviseAction
+    requirements: { token: '.+' }
+
+coreshop_payment:
+    # Deprecated: this route will be removed in the next major release of CoreShop. Use coreshop_payment_token instead.
+    path:       /pay/{order}
+    controller: CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction
+    requirements: { order: '\d+' }
+
+coreshop_payment_token:
+    path:       /pay/{token}
+    controller: CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction
+    requirements: { token: '.+' }
+
+coreshop_checkout_do:
+    path:       /checkout-do
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CheckoutController::doCheckoutAction
+
+coreshop_checkout_thank_you:
+    path:       /checkout-thank-you/{token}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CheckoutController::thankYouAction
+    requirements: { token: '.+' }
+
+coreshop_checkout:
+    path:       /checkout/{stepIdentifier}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CheckoutController::processAction
+    requirements: { stepIdentifier: '.+' }

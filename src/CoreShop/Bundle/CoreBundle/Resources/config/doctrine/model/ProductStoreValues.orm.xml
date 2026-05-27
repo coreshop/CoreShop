@@ -11,7 +11,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="fieldName" column="fieldName" type="string"/>
+        <field name="fieldName" column="fieldName" type="string" length="255"/>
         <field name="product" column="product" type="pimcoreObject"/>
         <field name="price" column="price" type="bigintInteger"/>
 

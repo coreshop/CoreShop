@@ -21,17 +21,14 @@ jobs:
       matrix:
         include:
           -
-            base_branch: "3.2"
-            target_branch: "4.0"
-          -
-            base_branch: "4.0"
-            target_branch: "4.1"
-          -
             base_branch: "4.1"
             target_branch: "5.0"
           -
             base_branch: "5.0"
-            target_branch: "next"
+            target_branch: "5.1"
+          -
+            base_branch: "5.1"
+            target_branch: "2026.x"
 
     steps:
       -

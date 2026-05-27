@@ -9,11 +9,11 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="identifier" column="identifier" nullable="true"/>
-        <field name="trackingUrl" column="trackingUrl" nullable="true"/>
+        <field name="identifier" column="identifier" nullable="true" type="string" length="255"/>
+        <field name="trackingUrl" column="trackingUrl" nullable="true" type="string" length="255"/>
         <field name="hideFromCheckout" column="hideFromCheckout" type="boolean"/>
         <field name="logo" column="logo" type="pimcoreAsset" nullable="true"/>
-        <field name="taxCalculationStrategy" column="taxCalculationStrategy" nullable="true"/>
+        <field name="taxCalculationStrategy" column="taxCalculationStrategy" nullable="true" type="string" length="255"/>
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

@@ -245,5 +245,5 @@ const plugin: IAbstractPlugin = {
 
 ### See Also
 
-- [ResourceBundle Documentation](../../../../14_Studio/02_Base_Infrastructure/01_ResourceBundle.md) - EntityApi and EntityTabbedManager
+- [ResourceBundle Documentation](../../../14_Studio/02_Base_Infrastructure/01_ResourceBundle.md) - EntityApi and EntityTabbedManager
 - [Tax Rule Groups](../02_Tax_Rule/01_CRUD.md) - Managing tax rule groups (combines tax rates)
