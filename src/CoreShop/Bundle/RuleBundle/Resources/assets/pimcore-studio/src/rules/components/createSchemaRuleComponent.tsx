@@ -38,7 +38,7 @@ export const createSchemaCondition = (blockPrefix: string): React.FC<ConditionCo
     // Some backends can return the wrapper form block prefix instead of the pure
     // configuration form prefix. Provide both shapes so both variants render.
     const schemaData = {
-      ...(data ?? {}),
+      ...data,
       ...(type ? { type } : {}),
       configuration: data ?? {},
     }
@@ -50,7 +50,7 @@ export const createSchemaCondition = (blockPrefix: string): React.FC<ConditionCo
         currentLocale={currentLocale}
         locales={locales}
         onChange={(draft) => {
-          const next = { ...(data ?? {}) }
+          const next = { ...data }
           const wrapperConfiguration = (draft as Record<string, any>).configuration
           if (wrapperConfiguration && typeof wrapperConfiguration === 'object') {
             Object.assign(next, wrapperConfiguration)
@@ -88,7 +88,7 @@ export const createSchemaAction = (blockPrefix: string): React.FC<ActionComponen
   const SchemaAction: React.FC<ActionComponentProps> = ({ data, type, onChange, currentLocale, locales }) => {
     // See createSchemaCondition: support wrapper and pure configuration schemas.
     const schemaData = {
-      ...(data ?? {}),
+      ...data,
       ...(type ? { type } : {}),
       configuration: data ?? {},
     }
@@ -100,7 +100,7 @@ export const createSchemaAction = (blockPrefix: string): React.FC<ActionComponen
         currentLocale={currentLocale}
         locales={locales}
         onChange={(draft) => {
-          const next = { ...(data ?? {}) }
+          const next = { ...data }
           const wrapperConfiguration = (draft as Record<string, any>).configuration
           if (wrapperConfiguration && typeof wrapperConfiguration === 'object') {
             Object.assign(next, wrapperConfiguration)

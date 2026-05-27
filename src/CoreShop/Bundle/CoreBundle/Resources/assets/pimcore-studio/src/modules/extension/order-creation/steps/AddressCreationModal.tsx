@@ -112,7 +112,7 @@ export const AddressCreationModal: React.FC<AddressCreationModalProps> = ({
     <Modal
       title={t('coreshop_address_create', { defaultValue: 'Create Address' })}
       open={open}
-      onOk={() => void handleSubmit()}
+      onOk={() => { handleSubmit()} }
       onCancel={handleCancel}
       confirmLoading={submitting}
       okText={t('coreshop_create', { defaultValue: 'Create' })}

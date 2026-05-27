@@ -13,11 +13,10 @@
 import React from 'react'
 import { createStyles } from 'antd-style'
 import { formatDateTime, formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
-import type { SaleTabProps } from '../registry'
 import type { State } from '../types'
 import { useSaleContext } from '../context/SaleActionsContext'
 
-export const HeaderTab: React.FC<SaleTabProps> = () => {
+export const HeaderTab: React.FC = () => {
   const { sale } = useSaleContext()
   const { styles } = useHeaderTabStyles()
 

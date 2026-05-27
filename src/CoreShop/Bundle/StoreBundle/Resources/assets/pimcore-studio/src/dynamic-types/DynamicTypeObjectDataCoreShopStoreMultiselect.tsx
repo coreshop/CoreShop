@@ -1,7 +1,7 @@
 import { DynamicTypeObjectDataCoreShopMultiSelect } from '@coreshop/resource/src/dynamic-types/DynamicTypeObjectDataCoreShopMultiSelect'
-import { loadStores, getStoreCache, clearStoreCache } from '../components/StoreSelect'
+import { loadStores, getStoreCache } from '../components/StoreSelect'
 
-export { clearStoreCache }
+export { clearStoreCache } from '../components/StoreSelect'
 
 export class DynamicTypeObjectDataCoreShopStoreMultiselect extends DynamicTypeObjectDataCoreShopMultiSelect {
   readonly id = 'coreShopStoreMultiselect'

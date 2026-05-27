@@ -90,10 +90,10 @@ export const GridActionsMenu: React.FC<GridActionsMenuProps> = ({
         })
 
         if (result.success) {
-          void messageApi.success(result.message || t('coreshop_grid_action_success', { defaultValue: 'Action completed successfully' }))
+          messageApi.success(result.message || t('coreshop_grid_action_success', { defaultValue: 'Action completed successfully' }))
           onActionComplete()
         } else {
-          void messageApi.error(renderApiError(result.message || t('coreshop_grid_action_error', { defaultValue: 'Action failed' })))
+          messageApi.error(renderApiError(result.message || t('coreshop_grid_action_error', { defaultValue: 'Action failed' })))
         }
 
         onClose?.()

@@ -57,7 +57,7 @@ export const PaymentProviderRuleSelect: React.FC<SelectProps> = (props) => {
   const [loading, setLoading] = React.useState(!cachedOptions)
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       if (!cachedOptions) {
         setLoading(true)
       }

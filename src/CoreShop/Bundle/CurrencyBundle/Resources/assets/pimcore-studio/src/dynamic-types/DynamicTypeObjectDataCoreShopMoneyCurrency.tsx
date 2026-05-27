@@ -41,7 +41,7 @@ const MoneyCurrencyInner: React.FC<MoneyCurrencyInnerProps> = ({
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       try {
         const opts = await loadCurrencies()
         setOptions(opts)

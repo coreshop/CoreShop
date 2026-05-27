@@ -87,7 +87,7 @@ export const ColumnConfigDialog: React.FC<ColumnConfigDialogProps> = ({
         interpreterConfig: selectedInterpreter ? interpreterConfig : undefined
       } as IndexColumn)
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Validation failed')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Validation failed')))
     }
   }
 

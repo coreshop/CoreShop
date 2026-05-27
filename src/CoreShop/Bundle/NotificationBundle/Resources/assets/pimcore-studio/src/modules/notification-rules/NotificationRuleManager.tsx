@@ -55,7 +55,7 @@ export const NotificationRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load notification config')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load notification config')))
       })
   }, [])
 

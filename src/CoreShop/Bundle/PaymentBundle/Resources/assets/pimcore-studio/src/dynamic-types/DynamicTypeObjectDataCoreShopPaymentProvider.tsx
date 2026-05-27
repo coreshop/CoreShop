@@ -8,7 +8,7 @@
 import { DynamicTypeObjectDataCoreShopSelect } from '@coreshop/resource/src/dynamic-types/DynamicTypeObjectDataCoreShopSelect'
 import { loadPaymentProviders, getPaymentProviderCache, clearPaymentProviderCache } from '../components/PaymentProviderSelect'
 
-export { loadPaymentProviders, clearPaymentProviderCache }
+export { loadPaymentProviders, clearPaymentProviderCache } from '../components/PaymentProviderSelect'
 
 export class DynamicTypeObjectDataCoreShopPaymentProvider extends DynamicTypeObjectDataCoreShopSelect {
   readonly id = 'coreShopPaymentProvider'

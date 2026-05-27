@@ -203,7 +203,7 @@ const OrderCreationPanelContent: React.FC = () => {
         setAllowedClasses(['CoreShopCustomer'])
       }
     }
-    void load()
+    load()
   }, [configProvider])
 
   const handleNewCustomerSelected = useCallback(async (customerId: number) => {
@@ -220,7 +220,7 @@ const OrderCreationPanelContent: React.FC = () => {
         }
       })
     } catch (err) {
-      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load customer')))
+      messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load customer')))
     }
   }, [widgetManager, messageApi])
 
@@ -240,7 +240,7 @@ const OrderCreationPanelContent: React.FC = () => {
     onFinish: (event) => {
       if (event.items.length > 0) {
         const selected = event.items[0]
-        void handleNewCustomerSelected(selected.data.id)
+        handleNewCustomerSelected(selected.data.id)
       }
     }
   })
@@ -347,7 +347,7 @@ const OrderCreationPanelContent: React.FC = () => {
         <Button
           type="primary"
           icon={<FileOutlined />}
-          onClick={() => void handleCreateOrder()}
+          onClick={() => { handleCreateOrder()} }
           disabled={!isValid() || state.creating}
           loading={state.creating}
           size="small"
@@ -454,7 +454,7 @@ const OrderCreationPanelContent: React.FC = () => {
       <Modal
         title={t('coreshop_create_cart', { defaultValue: 'Create Cart' })}
         open={cartNameModalOpen}
-        onOk={() => void handleConfirmCreateCart()}
+        onOk={() => { handleConfirmCreateCart()} }
         onCancel={() => setCartNameModalOpen(false)}
         okText={t('coreshop_create', { defaultValue: 'Create' })}
         cancelText={t('coreshop_cancel', { defaultValue: 'Cancel' })}

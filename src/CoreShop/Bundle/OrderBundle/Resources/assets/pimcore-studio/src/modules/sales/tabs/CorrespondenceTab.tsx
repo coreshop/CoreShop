@@ -21,7 +21,6 @@ import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { formatDateTime } from '@coreshop/pimcore/src/utils'
 import { useTranslation } from 'react-i18next'
 import type { ColumnType } from 'antd/es/table'
-import type { SaleTabProps } from '../registry'
 import { useSaleContext } from '../context/SaleActionsContext'
 
 interface EmailCorrespondence {
@@ -33,7 +32,7 @@ interface EmailCorrespondence {
   threadId?: number
 }
 
-export const CorrespondenceTab: React.FC<SaleTabProps> = () => {
+export const CorrespondenceTab: React.FC = () => {
   const { t } = useTranslation()
   const { sale } = useSaleContext()
   const { styles: sharedStyles } = useTableCardStyles()

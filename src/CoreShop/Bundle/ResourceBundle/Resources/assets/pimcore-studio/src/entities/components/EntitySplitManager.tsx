@@ -11,7 +11,7 @@
  */
 
 import React from 'react'
-import { SplitLayout, Dropdown, Icon, useMessage } from '@pimcore/studio-ui-bundle/components'
+import { SplitLayout, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { EntityList } from './EntityList'
 import type { EntityListItem } from '../types'
 import { EntityApi } from '../api'
@@ -41,7 +41,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
   dragType,
   buildDragInfo,
   leafIcon
-}: EntitySplitManagerProps<TDetail>): React.JSX.Element {
+}: Readonly<EntitySplitManagerProps<TDetail>>): React.JSX.Element {
   const messageApi = useMessage()
   const [list, setList] = React.useState<EntityListItem[]>([])
   const [loadingList, setLoadingList] = React.useState(false)
@@ -67,7 +67,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
       const items = await api.list()
       setList(items)
     } catch (err) {
-      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load list')))
+      messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load list')))
       setList([])
     } finally {
       setLoadingList(false)
@@ -75,7 +75,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
   }, [api])
 
   React.useEffect(() => {
-    void loadList()
+    loadList()
   }, [loadList])
 
   const loadDetail = React.useCallback(async (id: number) => {
@@ -85,7 +85,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
       setDetail(response.data)
       setEditingData({ ...response.data })
     } catch (err) {
-      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load detail')))
+      messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load detail')))
     } finally {
       setLoadingDetail(false)
     }
@@ -93,7 +93,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
 
   const handleSelect = React.useCallback((id: number) => {
     setSelectedId(id)
-    void loadDetail(id)
+    loadDetail(id)
   }, [loadDetail])
 
   const handleAdd = React.useCallback(async () => {
@@ -113,7 +113,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
         setEditingData(undefined)
       }
     } catch (err) {
-      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to delete')))
+      messageApi.error(renderApiError(getErrorMessage(err, 'Failed to delete')))
     }
   }, [api, loadList, selectedId])
 
@@ -125,7 +125,7 @@ export function EntitySplitManager<TDetail extends Record<string, any>>({
         await loadDetail(data.id)
       }
     } catch (err) {
-      void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to save')))
+      messageApi.error(renderApiError(getErrorMessage(err, 'Failed to save')))
       throw err
     }
   }, [api, loadList, loadDetail])

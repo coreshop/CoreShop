@@ -13,7 +13,7 @@ export interface ToolbarButton {
 }
 
 export class ButtonRegistry {
-  private buttons: Map<string, ToolbarButton> = new Map()
+  private readonly buttons: Map<string, ToolbarButton> = new Map()
   private changeCallback?: () => void
 
   /**

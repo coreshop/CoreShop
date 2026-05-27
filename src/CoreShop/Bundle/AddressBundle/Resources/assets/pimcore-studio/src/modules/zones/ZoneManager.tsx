@@ -21,7 +21,7 @@ export const ZoneManager: React.FC = () => {
           label: t('coreshop_name', { defaultValue: 'Name' }),
           onOk: async (value: string) => {
             const res = await zoneApi.add({ name: value })
-            resolve(res.data.id)
+            resolve(res.data.id!)
           }
         })
       }) }

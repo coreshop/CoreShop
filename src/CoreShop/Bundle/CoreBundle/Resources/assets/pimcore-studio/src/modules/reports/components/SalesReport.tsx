@@ -11,7 +11,6 @@
  */
 
 import React from 'react'
-import { Typography } from 'antd'
 import { Line } from '@ant-design/plots'
 import { useTranslation } from 'react-i18next'
 import { ReportPanel } from './ReportPanel'

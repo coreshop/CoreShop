@@ -70,10 +70,10 @@ export const SaleEditorTabs: React.FC<SaleEditorTabsProps> = ({ element, type })
       if (data) {
         setSale(data)
       } else {
-        void messageApi.error(renderApiError('Failed to load sale data'))
+        messageApi.error(renderApiError('Failed to load sale data'))
       }
     } catch (error) {
-      void messageApi.error(renderApiError(getErrorMessage(error, 'Error loading sale')))
+      messageApi.error(renderApiError(getErrorMessage(error, 'Error loading sale')))
     } finally {
       setLoading(false)
     }
@@ -81,7 +81,7 @@ export const SaleEditorTabs: React.FC<SaleEditorTabsProps> = ({ element, type })
 
   // Load on mount and when element/type changes
   React.useEffect(() => {
-    void loadSale()
+    loadSale()
   }, [loadSale])
 
   const handleChange = React.useCallback(async (updates: Partial<Sale>) => {

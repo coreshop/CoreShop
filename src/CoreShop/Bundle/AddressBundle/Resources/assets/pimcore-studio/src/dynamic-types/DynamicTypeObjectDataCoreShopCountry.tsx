@@ -1,7 +1,7 @@
 import { DynamicTypeObjectDataCoreShopSelect } from '@coreshop/resource/src/dynamic-types/DynamicTypeObjectDataCoreShopSelect'
-import { loadCountries, clearCountryCache, getCountryCache } from '../components/CountrySelect'
+import { loadCountries, getCountryCache } from '../components/CountrySelect'
 
-export { clearCountryCache }
+export { clearCountryCache } from '../components/CountrySelect'
 
 export class DynamicTypeObjectDataCoreShopCountry extends DynamicTypeObjectDataCoreShopSelect {
   readonly id = 'coreShopCountry'

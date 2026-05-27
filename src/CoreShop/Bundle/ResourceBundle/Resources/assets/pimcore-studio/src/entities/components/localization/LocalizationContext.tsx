@@ -14,11 +14,16 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [currentLocale, setCurrentLocale] = React.useState<string>(locales[0] ?? 'en')
 
   React.useEffect(() => {
-    if (!locales.includes(currentLocale) && locales.length > 0) setCurrentLocale(locales[0]!)
+    if (!locales.includes(currentLocale) && locales.length > 0) setCurrentLocale(locales[0])
   }, [locales])
 
+  const value = React.useMemo(
+    () => ({ locales, currentLocale, setCurrentLocale }),
+    [locales, currentLocale]
+  )
+
   return (
-    <LocalizationContext.Provider value={{ locales, currentLocale, setCurrentLocale }}>
+    <LocalizationContext.Provider value={value}>
       {children}
     </LocalizationContext.Provider>
   )

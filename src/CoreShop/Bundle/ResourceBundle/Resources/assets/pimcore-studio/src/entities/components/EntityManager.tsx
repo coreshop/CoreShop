@@ -20,7 +20,7 @@ export interface EntityManagerProps<TDetail extends Record<string, any>> {
     renderDetail: (data: TDetail | undefined, setData: (draft: Partial<TDetail>) => void) => React.ReactNode
 }
 
-export function EntityManager<TDetail extends Record<string, any>>(props: EntityManagerProps<TDetail>): React.JSX.Element {
+export function EntityManager<TDetail extends Record<string, any>>(props: Readonly<EntityManagerProps<TDetail>>): React.JSX.Element {
     const left = {
         id: 'entity-list',
         size: 25,

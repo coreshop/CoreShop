@@ -46,7 +46,7 @@ export const ProductUnitManager: React.FC = () => {
             },
             onOk: async (nameValue: string) => {
               const res = await productUnitApi.add({ name: nameValue })
-              resolve(res.data.id)
+              resolve(res.data.id!)
             }
           })
         })
@@ -78,7 +78,7 @@ export const ProductUnitManager: React.FC = () => {
                 ? Object.entries(draft.translations as Record<string, any>).reduce(
                     (acc, [locale, changes]) => ({
                       ...acc,
-                      [locale]: { ...(acc[locale] ?? {}), ...changes },
+                      [locale]: { ...acc[locale], ...changes },
                     }),
                     { ...prevTranslations }
                   )

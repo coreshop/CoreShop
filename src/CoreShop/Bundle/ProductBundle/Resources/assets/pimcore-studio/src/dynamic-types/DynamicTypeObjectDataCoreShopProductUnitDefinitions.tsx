@@ -101,7 +101,7 @@ const UnitDefinitionsInner: React.FC<UnitDefinitionsInnerProps> = ({
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       try {
         const loadedUnits = await loadUnits()
         setUnits(loadedUnits)
@@ -241,7 +241,7 @@ const UnitDefinitionsInner: React.FC<UnitDefinitionsInnerProps> = ({
       unit: undefined,
       conversionRate: 1,
       precision: 0,
-      _tempKey: `new-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      _tempKey: `new-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
     }]
     onChange?.({
       ...safeValue,

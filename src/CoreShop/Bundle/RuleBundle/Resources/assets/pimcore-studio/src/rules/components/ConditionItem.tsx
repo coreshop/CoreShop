@@ -16,7 +16,6 @@ import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/
 import { container } from '@pimcore/studio-ui-bundle'
 import type { RuleCondition } from '../types'
 import type { ConditionRegistry } from '../registry/ConditionRegistry'
-import { coreshopRuleServiceIds } from '../registry'
 import { formatTypeLabel } from './type-label'
 
 interface ConditionItemProps {

@@ -79,10 +79,10 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
       if (data) {
         setOrder(data)
       } else {
-        void messageApi.error(renderApiError('Failed to load order data'))
+        messageApi.error(renderApiError('Failed to load order data'))
       }
-    } catch (error) {
-      void messageApi.error(renderApiError('Error loading order'))
+    } catch {
+      messageApi.error(renderApiError('Error loading order'))
     } finally {
       setLoading(false)
     }
@@ -91,7 +91,7 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
 
   // Load on mount and when orderId changes
   React.useEffect(() => {
-    void loadOrder()
+    loadOrder()
   }, [loadOrder])
 
   const handleChange = React.useCallback(async (updates: Partial<Sale>) => {
@@ -112,12 +112,12 @@ export const OrderDetailWidget: React.FC<OrderDetailWidgetProps> = (config) => {
         throw new Error('Failed to save')
       }
 
-      void messageApi.success('Order updated successfully')
+      messageApi.success('Order updated successfully')
 
       // Reload to get fresh data
       await loadOrder()
-    } catch (error) {
-      void messageApi.error(renderApiError('Failed to save changes'))
+    } catch {
+      messageApi.error(renderApiError('Failed to save changes'))
       // Revert on error
       await loadOrder()
     }

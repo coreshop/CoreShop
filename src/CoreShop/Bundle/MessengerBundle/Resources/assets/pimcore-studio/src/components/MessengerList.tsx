@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react'
-import { Tabs, Button, Space, Badge } from 'antd'
+import { Tabs, Button, Space } from 'antd'
 import { ReloadOutlined, WarningOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { createStyles } from 'antd-style'
 import { useTranslation } from 'react-i18next'

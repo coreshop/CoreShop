@@ -120,7 +120,7 @@ export const GridCollectionWidget: React.FC<GridCollectionWidgetProps> = ({
               updateItem(index, protoField.name, newVal)
             },
             disabled,
-            style: { width: '100%', ...((baseProps.style as any) ?? {}) },
+            style: { width: '100%', ...baseProps.style },
           }
 
           return <Component {...props} />

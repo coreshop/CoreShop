@@ -33,7 +33,7 @@ export const CountryManager: React.FC = () => {
           rule: { required: true, message: t('coreshop_name_required', { defaultValue: 'Name is required' }) },
           onOk: async (value: string) => {
             const res = await countryApi.add({ name: value, ...(groupId ? { zone: groupId } : {}) })
-            resolve(res.data.id)
+            resolve(res.data.id!)
           }
         })
       }) }

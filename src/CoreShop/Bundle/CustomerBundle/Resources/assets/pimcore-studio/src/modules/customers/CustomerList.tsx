@@ -67,13 +67,13 @@ export const CustomerList: React.FC = () => {
           setFolderId(data.folderId)
         }
       } catch (error) {
-        void messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch customer folder configuration')))
+        messageApi.error(renderApiError(getErrorMessage(error, 'Failed to fetch customer folder configuration')))
       } finally {
         setLoading(false)
       }
     }
 
-    void fetchFolderConfig()
+    fetchFolderConfig()
   }, [])
 
   if (loading) {

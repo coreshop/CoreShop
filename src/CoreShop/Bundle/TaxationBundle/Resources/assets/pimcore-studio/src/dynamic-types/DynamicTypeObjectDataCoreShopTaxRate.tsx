@@ -8,7 +8,7 @@
 import { DynamicTypeObjectDataCoreShopSelect } from '@coreshop/resource/src/dynamic-types/DynamicTypeObjectDataCoreShopSelect'
 import { loadTaxRates, getTaxRateCache, clearTaxRateCache } from '../components/TaxRateSelect'
 
-export { loadTaxRates, getTaxRateCache, clearTaxRateCache }
+export { loadTaxRates, getTaxRateCache, clearTaxRateCache } from '../components/TaxRateSelect'
 
 export class DynamicTypeObjectDataCoreShopTaxRate extends DynamicTypeObjectDataCoreShopSelect {
   readonly id = 'coreShopTaxRate'

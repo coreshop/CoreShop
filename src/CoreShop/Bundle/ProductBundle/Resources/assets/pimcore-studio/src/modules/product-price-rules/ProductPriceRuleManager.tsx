@@ -40,7 +40,7 @@ export const ProductPriceRuleManager: React.FC = () => {
         setConfig(cfg)
       })
       .catch(err => {
-        void messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
+        messageApi.error(renderApiError(getErrorMessage(err, 'Failed to load config')))
       })
   }, [])
 

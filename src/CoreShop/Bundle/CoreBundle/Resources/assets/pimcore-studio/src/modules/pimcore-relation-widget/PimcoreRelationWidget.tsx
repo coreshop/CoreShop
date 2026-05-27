@@ -74,7 +74,7 @@ export const PimcoreRelationWidget: React.FC<PimcoreRelationWidgetProps> = ({
       }
     }
 
-    void loadAllowedClasses()
+    loadAllowedClasses()
 
     return () => {
       cancelled = true
@@ -111,6 +111,16 @@ export const PimcoreRelationWidget: React.FC<PimcoreRelationWidgetProps> = ({
     onChange?.(ids)
   }, [handleChange, onChange])
 
+  const handleSingleChange = React.useCallback((newValue: any) => {
+    if (!newValue) {
+      handleChange(null)
+      onChange?.(undefined)
+      return
+    }
+    handleChange([newValue])
+    onChange?.(newValue.id)
+  }, [handleChange, onChange])
+
   if (multiple) {
     return (
       <Spin spinning={loading}>
@@ -138,16 +148,6 @@ export const PimcoreRelationWidget: React.FC<PimcoreRelationWidgetProps> = ({
       subtype: relationValue[0].subtype ?? undefined,
     }
     : undefined
-
-  const handleSingleChange = React.useCallback((newValue: any) => {
-    if (!newValue) {
-      handleChange(null)
-      onChange?.(undefined)
-      return
-    }
-    handleChange([newValue])
-    onChange?.(newValue.id)
-  }, [handleChange, onChange])
 
   return (
     <Spin spinning={loading}>

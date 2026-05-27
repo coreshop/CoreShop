@@ -104,7 +104,7 @@ const StoreValuesInner: React.FC<StoreValuesInnerProps> = ({
   const [availableUnitDefinitions, setAvailableUnitDefinitions] = React.useState<UnitDefinitionInfo[]>([])
 
   React.useEffect(() => {
-    void (async () => {
+    (async () => {
       try {
         const loadedStores = await loadStores()
         setStores(loadedStores)
@@ -309,7 +309,7 @@ const StoreValuesInner: React.FC<StoreValuesInnerProps> = ({
                         }
                         return (
                           <InputNumber
-                            value={getUnitPrice(store.id!, unitDef.id)}
+                            value={getUnitPrice(store.id!, unitDef.id!)}
                             onChange={(v) => handleUnitPriceChange(store.id!, unitDef.id!, v)}
                             disabled={disabled || isInherited}
                             precision={decimalPrecision}

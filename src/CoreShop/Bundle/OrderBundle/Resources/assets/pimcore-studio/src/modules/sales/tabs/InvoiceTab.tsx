@@ -17,7 +17,6 @@ import { useTableCardStyles } from '../styles/useTableCardStyles'
 import { useTranslation } from 'react-i18next'
 import { formatDateTime, formatCurrency, getCurrencyCode } from '@coreshop/pimcore/src/utils'
 import type { ColumnType } from 'antd/es/table'
-import type { SaleTabProps } from '../registry'
 import { StateChangeModal, InvoiceDetailModal, CreateInvoiceModal, CreateInvoiceButton } from '../components'
 import { useSaleContext } from '../context/SaleActionsContext'
 
@@ -49,16 +48,12 @@ interface Invoice {
   items: InvoiceItem[]
 }
 
-export const InvoiceTab: React.FC<SaleTabProps> = () => {
+export const InvoiceTab: React.FC = () => {
   const { t } = useTranslation()
   const { sale, onReload, isActionOpen, openAction, closeAction, buttonRegistry } = useSaleContext()
   const { styles } = useTableCardStyles()
   const [stateChangeInvoice, setStateChangeInvoice] = React.useState<Invoice | null>(null)
   const [detailInvoice, setDetailInvoice] = React.useState<Invoice | null>(null)
-
-  if (!sale) return null
-
-  const invoices = ((sale as any).invoices || []) as Invoice[]
 
   // Register button in toolbar
   React.useEffect(() => {
@@ -67,6 +62,10 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
       return () => buttonRegistry.remove('createInvoice')
     }
   }, [buttonRegistry, sale])
+
+  if (!sale) return null
+
+  const invoices = ((sale as any).invoices || []) as Invoice[]
 
   const currencyCode = getCurrencyCode(sale.currency)
 
@@ -110,6 +109,13 @@ export const InvoiceTab: React.FC<SaleTabProps> = () => {
                 setStateChangeInvoice(record)
               }
             }}
+            onKeyDown={(e) => {
+              if (hasTransitions && (e.key === 'Enter' || e.key === ' ')) {
+                setStateChangeInvoice(record)
+              }
+            }}
+            role={hasTransitions ? 'button' : undefined}
+            tabIndex={hasTransitions ? 0 : -1}
           >
             {record.stateInfo.label}
           </span>
