@@ -13,9 +13,9 @@
   "license": "CCL",
   "private": true,
   "dependencies": {
-    "@pimcore/studio-ui-bundle": "2026.1.0",
-    "antd": "^5.12.0",
-    "react": "18.3.x",
-    "react-dom": "18.3.x"
+    "@pimcore/studio-ui-bundle": "2026.1.3",
+    "antd": "^6.4.3",
+    "react": "19.2.x",
+    "react-dom": "19.2.x"
   }
 }
