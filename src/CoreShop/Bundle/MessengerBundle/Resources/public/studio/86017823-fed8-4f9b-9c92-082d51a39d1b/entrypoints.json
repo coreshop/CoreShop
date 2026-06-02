@@ -1,0 +1,48 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/424.3705fa11.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/691.78dcd107.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/174.10c3b224.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/76.9b0a4664.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/79.405d9073.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/460.600a3125.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/920.6e5f4ec4.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/63.9e39d82e.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/375.70416f83.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/695.f3951c47.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/174.10c3b224.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/691.78dcd107.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/836.67598f3b.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/424.3705fa11.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/main.2552f7a7.js"
+      ],
+      "css": []
+    },
+    "coreshopmessenger": {
+      "js": [
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/424.3705fa11.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/782.4bab03d8.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/691.78dcd107.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/174.10c3b224.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/__federation_expose_default_export.8e95337d.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/76.9b0a4664.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/79.405d9073.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/460.600a3125.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/920.6e5f4ec4.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/63.9e39d82e.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/375.70416f83.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/async/695.f3951c47.js",
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshopmessenger/studio/86017823-fed8-4f9b-9c92-082d51a39d1b/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}
