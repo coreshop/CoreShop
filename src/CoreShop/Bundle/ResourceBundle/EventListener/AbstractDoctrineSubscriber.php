@@ -36,6 +36,8 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber
 
     /**
      * @param ClassMetadata<object> $metadata
+     *
+     * @psalm-suppress UndefinedDocblockClass Psalm misparses the @template-covariant T of doctrine/persistence's ClassMetadata
      */
     protected function isResource(ClassMetadata $metadata): bool
     {
