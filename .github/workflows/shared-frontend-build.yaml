@@ -99,4 +99,5 @@ jobs:
         with:
           file_pattern: 'src/CoreShop/Bundle/*/Resources/public/studio/*/**'
           add_options: '-f'
+          skip_dirty_check: true
           commit_message: "Build CoreShop Studio bundles [skip ci]"
