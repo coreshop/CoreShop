@@ -88,7 +88,7 @@
   "require": {
     "php": "~8.4.0 || ~8.5.0",
     "ext-json": "*",
-    "doctrine/data-fixtures": "^1.8",
+    "doctrine/data-fixtures": "^2.2",
     "doctrine/dbal": "^4.2",
     "doctrine/doctrine-bundle": "^2.4",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
