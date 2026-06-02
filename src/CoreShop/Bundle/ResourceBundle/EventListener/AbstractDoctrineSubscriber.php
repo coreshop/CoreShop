@@ -34,6 +34,9 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber
     ) {
     }
 
+    /**
+     * @param ClassMetadata<object> $metadata
+     */
     protected function isResource(ClassMetadata $metadata): bool
     {
         return $metadata->getReflectionClass()->implementsInterface(ResourceInterface::class);
