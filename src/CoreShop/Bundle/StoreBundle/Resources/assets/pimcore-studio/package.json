@@ -13,16 +13,18 @@
   "license": "CCL",
   "private": true,
   "dependencies": {
+    "zustand": "^5.0.7",
+    "@coreshop/currency": "file:../../../../CurrencyBundle/Resources/assets/pimcore-studio",
+    "@coreshop/resource": "file:../../../../ResourceBundle/Resources/assets/pimcore-studio",
+    "@coreshop/studio-form": "*"
+  },
+  "peerDependencies": {
     "@pimcore/studio-ui-bundle": "2026.1.0",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",
     "immer": "^10.1.1",
     "react": "18.3.x",
     "react-dom": "18.3.x",
-    "react-redux": "^9.0.4",
-    "zustand": "^5.0.7",
-    "@coreshop/currency": "file:../../../../CurrencyBundle/Resources/assets/pimcore-studio",
-    "@coreshop/resource": "file:../../../../ResourceBundle/Resources/assets/pimcore-studio",
-    "@coreshop/studio-form": "*"
+    "react-redux": "^9.0.4"
   }
 }
