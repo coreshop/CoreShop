@@ -117,7 +117,7 @@
     "symfony/serializer": "^6.4.14 || ^7.2",
     "symfony/twig-bundle": "^6.4.14 || ^7.2",
     "symfony/webpack-encore-bundle": "^2.4",
-    "webmozart/assert": "^1.12"
+    "webmozart/assert": "^2.4"
   },
   "suggest": {
     "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine.",
