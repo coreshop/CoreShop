@@ -1,0 +1,43 @@
+/**
+ * CoreShop Schema Adapter
+ *
+ * Exports for the Schema Adapter system.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop Schema Adapter - Widget Registry
+ *
+ * Maps Symfony block prefix names to React component resolvers.
+ * Walks blockPrefixes from most-specific to least-specific,
+ * mirroring Symfony's Twig block rendering strategy.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+/**
+ * CoreShop StudioFormBundle
+ *
+ * Main exports for the StudioFormBundle package.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
