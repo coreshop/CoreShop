@@ -1,0 +1,47 @@
+{
+  "allFiles": [
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/main.83367177.js",
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/remoteEntry.js",
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/695.bff4967f.js",
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/375.8099ad0c.js",
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/76.f72c9b11.js",
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/__federation_expose_default_export.c6ebaa37.js",
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/mf-stats.json",
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/mf-manifest.json",
+    "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/main.83367177.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/76.f72c9b11.js",
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/375.8099ad0c.js",
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/695.bff4967f.js"
+        ]
+      }
+    },
+    "coreshopuser": {
+      "initial": {
+        "js": [
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/__federation_expose_default_export.c6ebaa37.js",
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/76.f72c9b11.js",
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/375.8099ad0c.js",
+          "/bundles/coreshopuser/studio/38da0683-030f-47cc-b33c-eab4536ac80c/static/js/async/695.bff4967f.js"
+        ]
+      }
+    }
+  }
+}
