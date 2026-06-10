@@ -2,6 +2,9 @@ version: 2
 updates:
   - package-ecosystem: "composer"
     directory: "/"
+    # Version updates target 5.1 and get upmerged into 2026.x.
+    # Note: security updates always target the default branch regardless.
+    target-branch: "5.1"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -47,6 +50,7 @@ updates:
 
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: "5.1"
     schedule:
       interval: "weekly"
     groups:
@@ -57,6 +61,7 @@ updates:
   - package-ecosystem: "npm"
     directories:
       - "/src/CoreShop/Bundle/*/Resources/assets/pimcore-studio"
+    target-branch: "5.1"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
