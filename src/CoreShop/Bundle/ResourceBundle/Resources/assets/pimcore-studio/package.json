@@ -14,7 +14,8 @@
   "private": true,
   "dependencies": {
     "zustand": "^5.0.7",
-    "@coreshop/pimcore": "file:../../../../PimcoreBundle/Resources/assets/pimcore-studio"
+    "@coreshop/pimcore": "file:../../../../PimcoreBundle/Resources/assets/pimcore-studio",
+    "@coreshop/studio-form": "*"
   },
   "peerDependencies": {
     "@pimcore/studio-ui-bundle": "2025.4.3",
