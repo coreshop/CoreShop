@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Repository\OrderItemRepositoryInterface;
 
 class OrderItemRepository extends PimcoreRepository implements OrderItemRepositoryInterface
@@ -28,6 +29,11 @@ class OrderItemRepository extends PimcoreRepository implements OrderItemReposito
         $list->setCondition('product__id = ?', [$productId]);
         $list->load();
 
-        return $list->getObjects();
+        /**
+         * @var OrderItemInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 }

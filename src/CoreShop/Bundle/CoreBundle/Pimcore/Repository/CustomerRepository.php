@@ -30,6 +30,9 @@ class CustomerRepository extends BaseCustomerRepository implements CustomerRepos
         $list->setCondition('email = ? AND user__id IS NULL', [$email]);
         $list->load();
 
+        /**
+         * @var CustomerInterface[] $users
+         */
         $users = $list->getObjects();
 
         if (count($users) > 0) {
