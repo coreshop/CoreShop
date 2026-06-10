@@ -1,8 +1,8 @@
 /**
- * CoreShop PimcoreBundle - Asset Select Widget Module
+ * CoreShop ResourceBundle - Asset Select Widget Module
  *
- * Registers the 'pimcore_asset_choice' block prefix to render the AssetSelect
- * component in schema-based forms.
+ * Registers the 'pimcore_asset_choice' block prefix (PimcoreAssetChoiceType)
+ * to render the AssetSelect component in schema-based forms.
  *
  * This source file is available under the terms of the
  * CoreShop Commercial License (CCL)
@@ -17,7 +17,7 @@ import type { AbstractModule } from '@pimcore/studio-ui-bundle'
 import { container } from '@pimcore/studio-ui-bundle'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry } from '@coreshop/studio-form'
-import { AssetSelect } from '../../components/AssetSelect'
+import { AssetSelect } from '@coreshop/pimcore/src/components/AssetSelect'
 
 export const AssetSelectWidgetModule: AbstractModule = {
   onInit(): void {
