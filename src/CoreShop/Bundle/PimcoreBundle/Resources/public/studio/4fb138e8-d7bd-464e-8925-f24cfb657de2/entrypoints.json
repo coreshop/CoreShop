@@ -1,0 +1,34 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/455.1f094fdc.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/76.0b2b665f.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/920.054a7743.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/375.e03d511e.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/695.ece96a73.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/455.1f094fdc.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/main.758d8174.js"
+      ],
+      "css": []
+    },
+    "coreshoppimcore": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/455.1f094fdc.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/__federation_expose_default_export.52ca5b71.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/76.0b2b665f.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/920.054a7743.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/375.e03d511e.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/async/695.ece96a73.js",
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/4fb138e8-d7bd-464e-8925-f24cfb657de2/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}

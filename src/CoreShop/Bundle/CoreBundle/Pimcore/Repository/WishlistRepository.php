@@ -36,7 +36,12 @@ class WishlistRepository extends BaseWishlistRepository implements WishlistRepos
         $list->setOrder('DESC');
         $list->load();
 
-        return $list->getObjects();
+        /**
+         * @var WishlistInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findLatestByStoreAndCustomer(

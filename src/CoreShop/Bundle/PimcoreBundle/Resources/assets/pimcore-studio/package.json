@@ -13,8 +13,7 @@
   "license": "CCL",
   "private": true,
   "dependencies": {
-    "zustand": "^5.0.7",
-    "@coreshop/studio-form": "*"
+    "zustand": "^5.0.7"
   },
   "peerDependencies": {
     "@pimcore/studio-ui-bundle": "2026.1.0",

@@ -1,0 +1,2 @@
+/*! For license information please see 6.5d15bbb2.js.LICENSE.txt */
+"use strict";(self["chunk_coreshoprule "]=self["chunk_coreshoprule "]||[]).push([["6"],{4477:function(e,s,u){u(5120),u(7185),u(2696),u(2382),u(6147),u(2977),u(6222),u(4296)}}]);

@@ -156,7 +156,7 @@
     "symfony/css-selector": "^6.4.14 || ^7.2",
     "symfony/panther": "^2.3",
     "symfony/runtime": "^6.4.14 || ^7.2",
-    "symplify/easy-coding-standard": "^11.1",
+    "symplify/easy-coding-standard": "^13.1",
     "vimeo/psalm": "^6.10"
   },
   "autoload": {

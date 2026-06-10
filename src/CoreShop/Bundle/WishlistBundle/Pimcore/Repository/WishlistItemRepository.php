@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\WishlistBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
 use CoreShop\Component\Wishlist\Repository\WishlistItemRepositoryInterface;
 
 class WishlistItemRepository extends PimcoreRepository implements WishlistItemRepositoryInterface
@@ -28,6 +29,11 @@ class WishlistItemRepository extends PimcoreRepository implements WishlistItemRe
         $list->setCondition('product__id = ?', [$productId]);
         $list->load();
 
-        return $list->getObjects();
+        /**
+         * @var WishlistItemInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 }

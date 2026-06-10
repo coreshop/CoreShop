@@ -11,6 +11,7 @@
  */
 
 import { ResourceBundleIconModule } from './modules/icon-library'
+import { AssetSelectWidgetModule } from './modules/asset-select-widget'
 import { IAbstractPlugin, container } from "@pimcore/studio-ui-bundle";
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
@@ -135,6 +136,7 @@ const plugin: IAbstractPlugin = {
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(ResourceBundleIconModule)
+        moduleSystem.registerModule(AssetSelectWidgetModule)
     }
 }
 
