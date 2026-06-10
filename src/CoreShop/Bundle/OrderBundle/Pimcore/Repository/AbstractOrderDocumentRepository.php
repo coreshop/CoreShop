@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
@@ -33,7 +34,12 @@ abstract class AbstractOrderDocumentRepository extends PimcoreRepository impleme
         $list = $this->getList();
         $list->setCondition('order__id = ? AND state = ?', [$order->getId(), $state]);
 
-        return $list->getObjects();
+        /**
+         * @var OrderDocumentInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function getDocumentsNotInState(OrderInterface $order, string $state): array
@@ -41,6 +47,11 @@ abstract class AbstractOrderDocumentRepository extends PimcoreRepository impleme
         $list = $this->getList();
         $list->setCondition('order__id = ? AND state <> ?', [$order->getId(), $state]);
 
-        return $list->getObjects();
+        /**
+         * @var OrderDocumentInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 }
