@@ -54,6 +54,9 @@ class WishlistRepository extends PimcoreRepository implements WishlistRepository
         $list->load();
 
         if ($list->getTotalCount() === 1) {
+            /**
+             * @var WishlistInterface[] $objects
+             */
             $objects = $list->getObjects();
 
             return $objects[0];
