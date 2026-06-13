@@ -1,0 +1,34 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/455.cf2d2f6e.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/76.f171a4a2.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/920.50caa5f0.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/375.e03d511e.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/695.fe2c78d8.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/455.cf2d2f6e.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/main.d37015a3.js"
+      ],
+      "css": []
+    },
+    "coreshoppimcore": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/455.cf2d2f6e.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/__federation_expose_default_export.56a1d03e.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/76.f171a4a2.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/920.50caa5f0.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/375.e03d511e.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/async/695.fe2c78d8.js",
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/a84078ab-a23b-4270-a919-e152180a956a/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}
