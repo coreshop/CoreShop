@@ -139,7 +139,7 @@
     "dbrekelmans/bdi": "^1.4",
     "friends-of-behat/mink-debug-extension": "^2.1",
     "friends-of-behat/mink-extension": "^2.7",
-    "friends-of-behat/page-object-extension": "^0.3.2",
+    "friends-of-behat/page-object-extension": "^0.4.0",
     "friends-of-behat/symfony-extension": "^2.6",
     "gotenberg/gotenberg-php": "^2.6",
     "lendable/composer-license-checker": "^1.2",
