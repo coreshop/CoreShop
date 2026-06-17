@@ -1,0 +1,54 @@
+{
+  "allFiles": [
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/main.a7e58b76.js",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/remoteEntry.js",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/695.fe2c78d8.js",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/375.e03d511e.js",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/920.50caa5f0.js",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/76.f171a4a2.js",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/__federation_expose_default_export.56a1d03e.js",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/455.cf2d2f6e.js",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/mf-stats.json",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/mf-manifest.json",
+    "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/455.cf2d2f6e.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/main.a7e58b76.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/455.cf2d2f6e.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/76.f171a4a2.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/920.50caa5f0.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/375.e03d511e.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/695.fe2c78d8.js"
+        ]
+      }
+    },
+    "coreshoppimcore": {
+      "initial": {
+        "js": [
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/455.cf2d2f6e.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/__federation_expose_default_export.56a1d03e.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/76.f171a4a2.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/920.50caa5f0.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/375.e03d511e.js",
+          "/bundles/coreshoppimcore/studio/f9b53775-47e3-483a-b8c8-cee3f0316379/static/js/async/695.fe2c78d8.js"
+        ]
+      }
+    }
+  }
+}
