@@ -79,7 +79,7 @@ final class SessionStoreStorageListSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        if (0 !== $storageList->getId() && null !== $storageList->getStore()) {
+        if (0 !== $storageList->getId() && null !== $storageList->getId() && null !== $storageList->getStore()) {
             $this->storageListStorage->setForContext(['store' => $storageList->getStore()], $storageList);
         }
     }
