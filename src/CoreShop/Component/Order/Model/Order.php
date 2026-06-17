@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
+use Carbon\Carbon;
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Model\ImmutableTrait;
@@ -26,7 +27,7 @@ use CoreShop\Component\Store\Model\StoreAwareTrait;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
-abstract class Order extends AbstractPimcoreModel implements OrderInterface
+abstract class Order extends AbstractPimcoreModel implements OrderInterface, ActivatableCartInterface
 {
     use StoreAwareTrait;
     use CurrencyAwareTrait;
@@ -175,6 +176,16 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     public function count(): int
     {
         return count($this->getItems() ?: []);
+    }
+
+    public function getLastActivatedAt(): ?Carbon
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setLastActivatedAt(?Carbon $lastActivatedAt): static
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     public function getTotalNet(): int
