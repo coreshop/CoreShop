@@ -34,7 +34,7 @@
         "doctrine/data-fixtures": "^1.5",
         "friends-of-behat/mink-debug-extension": "^2.0",
         "friends-of-behat/mink-extension": "^2.4",
-        "friends-of-behat/page-object-extension": "^0.3.2",
+        "friends-of-behat/page-object-extension": "^0.4.0",
         "friends-of-behat/symfony-extension": "^2.1",
         "lakion/mink-debug-extension": "^2.0",
         "symfony/panther": "^2.0",
