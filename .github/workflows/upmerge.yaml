@@ -32,7 +32,7 @@ jobs:
 
     steps:
       -
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ matrix.target_branch }}
 

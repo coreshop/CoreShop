@@ -66,3 +66,8 @@ services:
         arguments:
             - '@coreshop.repository.order'
             - '@CoreShop\Component\Order\Context\CartContext'
+
+    CoreShop\Bundle\OrderBundle\StorageList\LastActivatedCartStorage:
+        decorates: coreshop.storage_list.storage.order
+        arguments:
+            $inner: '@.inner'

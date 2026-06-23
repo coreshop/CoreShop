@@ -24,7 +24,7 @@ use CoreShop\Bundle\TestBundle\Page\SymfonyPage;
 
 abstract class AbstractPimcorePage extends SymfonyPage implements PimcorePageInterface
 {
-    protected static $additionalParameters = ['_locale' => 'en'];
+    protected static array $additionalParameters = ['_locale' => 'en'];
 
     protected function findOrThrow($selector, $locator): NodeElement
     {

@@ -117,7 +117,7 @@
     "symfony/serializer": "^6.4.14 || ^7.2",
     "symfony/twig-bundle": "^6.4.14 || ^7.2",
     "symfony/webpack-encore-bundle": "^2.4",
-    "webmozart/assert": "^1.12"
+    "webmozart/assert": "^2.4"
   },
   "suggest": {
     "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine.",
@@ -137,7 +137,7 @@
     "dbrekelmans/bdi": "^1.4",
     "friends-of-behat/mink-debug-extension": "^2.1",
     "friends-of-behat/mink-extension": "^2.7",
-    "friends-of-behat/page-object-extension": "^0.3.2",
+    "friends-of-behat/page-object-extension": "^0.4.0",
     "friends-of-behat/symfony-extension": "^2.6",
     "gotenberg/gotenberg-php": "^2.6",
     "lendable/composer-license-checker": "^1.2",
