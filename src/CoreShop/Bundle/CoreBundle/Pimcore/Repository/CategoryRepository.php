@@ -33,7 +33,12 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         $list->setCondition('stores LIKE ?', ['%,' . $store->getId() . ',%']);
         $this->setSortingForListingWithoutCategory($list);
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findFirstLevelForStore(StoreInterface $store): array
@@ -43,7 +48,12 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $this->setSortingForListingWithoutCategory($list);
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array
@@ -53,7 +63,12 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $this->setSortingForListing($list, $category);
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findRecursiveChildCategoryIdsForStoreByCategories(array $categories, StoreInterface $store): array
@@ -139,7 +154,12 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $this->setSortingForListing($list, $category);
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     protected function setSortingForListing(Listing $list, CategoryInterface $category): void

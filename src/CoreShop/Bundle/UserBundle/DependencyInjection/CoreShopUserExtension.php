@@ -35,5 +35,11 @@ final class CoreShopUserExtension extends AbstractModelExtension
         $this->registerStack('coreshop', $configs['stack'], $container);
 
         $loader->load('services.yml');
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
     }
 }

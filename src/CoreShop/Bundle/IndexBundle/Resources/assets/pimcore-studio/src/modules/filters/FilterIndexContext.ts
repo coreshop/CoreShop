@@ -1,0 +1,23 @@
+/**
+ * CoreShop IndexBundle Filter Index Context
+ *
+ * Provides the current indexId to schema-based filter condition widgets.
+ *
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+import React from 'react'
+
+interface FilterIndexContextValue {
+  indexId?: number
+}
+
+export const FilterIndexContext = React.createContext<FilterIndexContextValue>({})
+
+export const useFilterIndex = (): FilterIndexContextValue => React.useContext(FilterIndexContext)

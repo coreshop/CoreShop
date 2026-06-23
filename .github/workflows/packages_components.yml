@@ -1,12 +1,12 @@
 name: Packages Components
 on:
   push:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
   pull_request_target:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
@@ -32,7 +32,7 @@ jobs:
     name: "Create a list of packages"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
@@ -48,7 +48,7 @@ jobs:
     needs: list
     if: github.repository == 'coreshop/CoreShop'
     runs-on: ubuntu-latest
-    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}"
+    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}, Deps ${{ matrix.dependencies }}"
     strategy:
       fail-fast: false
       matrix:
@@ -61,7 +61,7 @@ jobs:
             dependencies: lowest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
@@ -77,7 +77,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php }}-pimcore-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}

@@ -34,8 +34,8 @@ final class FilterConditionSelectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('field', TextType::class)
-            ->add('preSelect', TextType::class)
+            ->add('field', TextType::class, ['label' => 'coreshop_filters_field'])
+            ->add('preSelect', TextType::class, ['label' => 'coreshop_filters_preselect'])
         ;
     }
 

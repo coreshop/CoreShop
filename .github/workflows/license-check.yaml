@@ -1,13 +1,13 @@
 name: License Check
 on:
   push:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'composer.json'
       - '*/**/composer.json'
       - '.github/workflows/license-check.yaml'
   pull_request_target:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'composer.json'
       - '*/**/composer.json'
@@ -50,7 +50,7 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
@@ -70,7 +70,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}

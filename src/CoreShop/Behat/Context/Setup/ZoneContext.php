@@ -55,6 +55,7 @@ final class ZoneContext implements Context
              */
             $zone = $this->zoneFactory->createNew();
             $zone->setName($name);
+            $zone->setActive(true);
 
             $this->saveZone($zone);
         }

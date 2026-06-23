@@ -6,6 +6,7 @@ twig:
         - '@CoreShopFrontend/Form/fields.html.twig'
 
 webpack_encore:
+    output_path: '%kernel.project_dir%/public/build'
     builds:
         coreshop_frontend: '%coreshop.frontend_dir%'
 

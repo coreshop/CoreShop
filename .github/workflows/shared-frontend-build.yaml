@@ -1,0 +1,103 @@
+name: shared-frontend-build
+
+on:
+  workflow_call:
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run esbuild install script
+        run: npm rebuild esbuild
+
+  check-types:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run esbuild install script
+        run: npm rebuild esbuild
+
+      - name: Run type checks
+        run: npm run check-types
+
+  build:
+    needs: check-types
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Cache Rsbuild build cache
+        uses: actions/cache@v5
+        with:
+          path: node_modules/.cache/rsbuild
+          key: rsbuild-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            rsbuild-${{ hashFiles('package-lock.json') }}-
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run esbuild install script
+        run: npm rebuild esbuild
+
+      - name: Run production build
+        run: npm run build
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          file_pattern: 'src/CoreShop/Bundle/*/Resources/public/studio/*/**'
+          add_options: '-f'
+          skip_dirty_check: true
+          commit_message: "Build CoreShop Studio bundles [skip ci]"

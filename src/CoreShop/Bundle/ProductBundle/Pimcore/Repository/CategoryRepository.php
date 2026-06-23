@@ -28,7 +28,12 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
         $list = $this->getList();
         $list->setCondition('parentCategory__id is null');
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findChildCategories(CategoryInterface $category): array
@@ -48,6 +53,11 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
             );
         }
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 }

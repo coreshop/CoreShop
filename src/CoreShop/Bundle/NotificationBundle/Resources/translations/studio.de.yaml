@@ -1,0 +1,18 @@
+---
+coreshop_email_document: 'Email Dokument'
+coreshop_notification_rule: 'Benachrichtigungsregel'
+coreshop_notification_rule_type: 'Regel-Typ'
+coreshop_mail_rule_do_not_send_to_designated_recipient: 'Nicht an vorgesehenen Empfänger senden'
+
+# Studio v2 - Notification Rules
+coreshop_active: 'Aktiv'
+coreshop_notification_rule_add: 'Benachrichtigungsregel hinzufügen'
+coreshop_notification_rule_select: 'Wählen Sie eine Benachrichtigungsregel aus, um Details anzuzeigen.'
+coreshop_select_email_document: 'E-Mail Dokument auswählen'
+coreshop_select_state: 'Status auswählen'
+coreshop_select_type: 'Typ auswählen'
+coreshop_mail_action_description: 'Sendet eine E-Mail-Benachrichtigung'
+coreshop_mail_attachments: 'Anhänge'
+coreshop_order_mail_action_description: 'Sendet eine bestellbezogene E-Mail-Benachrichtigung'
+coreshop_store_mail_action_description: 'Sendet eine Store-basierte E-Mail-Benachrichtigung'
+coreshop_store_order_mail_action_description: 'Sendet eine Store-basierte Bestell-E-Mail-Benachrichtigung'

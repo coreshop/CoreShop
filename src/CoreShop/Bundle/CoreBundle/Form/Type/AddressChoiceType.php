@@ -36,11 +36,15 @@ final class AddressChoiceType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired('customer');
         $resolver
             ->setDefaults(
                 [
+                    'customer' => null,
                     'choices' => function (Options $options) {
+                        if ($options['customer'] === null) {
+                            return [];
+                        }
+
                         /**
                          * @var CustomerInterface $customer
                          */

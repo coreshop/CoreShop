@@ -42,6 +42,7 @@ final class SurchargeAmountConfigurationType extends AbstractType
     {
         $builder
             ->add('amount', MoneyType::class, [
+                'label' => 'coreshop_action_surcharge_amount',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
@@ -49,8 +50,10 @@ final class SurchargeAmountConfigurationType extends AbstractType
                 ],
             ])
             ->add('gross', CheckboxType::class, [
+                'label' => 'coreshop_action_surchargeAmount_gross',
             ])
             ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_currency',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                 ],

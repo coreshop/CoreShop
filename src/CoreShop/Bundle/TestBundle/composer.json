@@ -1,71 +1,74 @@
 {
-  "name": "coreshop/test-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Test Bundle",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "https://www.coreshop.com",
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "CoreShop Team",
-      "email": "info@coreshop.com",
-      "homepage": "https://www.coreshop.com/",
-      "role": "Developer"
+    "name": "coreshop/test-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Test Bundle",
+    "keywords": [
+        "coreshop",
+        "pimcore",
+        "ecommerce"
+    ],
+    "homepage": "https://www.coreshop.com",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "CoreShop Team",
+            "email": "info@coreshop.com",
+            "homepage": "https://www.coreshop.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "pimcore/pimcore": "^12.0",
+        "coreshop/pimcore": "^5.0",
+        "behat/behat": "^3.8",
+        "robertfausk/behat-panther-extension": "^1.0",
+        "behat/mink": "^1.8",
+        "dbrekelmans/bdi": "^1.0.0",
+        "doctrine/orm": "^3.0",
+        "doctrine/data-fixtures": "^1.5",
+        "friends-of-behat/mink-debug-extension": "^2.0",
+        "friends-of-behat/mink-extension": "^2.4",
+        "friends-of-behat/page-object-extension": "^0.3.2",
+        "friends-of-behat/symfony-extension": "^2.1",
+        "lakion/mink-debug-extension": "^2.0",
+        "symfony/panther": "^2.0",
+        "webmozart/assert": "^1.0"
     },
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "require-dev": {
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-webmozart-assert": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\TestBundle\\": ""
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../*/*"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "5.0-dev",
+            "dev-master": "5.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "suggest": {
+        "pimcore/admin-ui-classic-bundle": "^2.0 - Classic ExtJS-based admin interface for Pimcore (legacy)",
+        "pimcore/newsletter-bundle": "^2.0 - Enables Pimcore Newsletter document type and field integrations"
     }
-  ],
-  "require": {
-    "pimcore/pimcore": "^12.3",
-    "pimcore/newsletter-bundle": "^2.0",
-    "coreshop/pimcore": "^5.0",
-    "behat/behat": "^3.8",
-    "robertfausk/behat-panther-extension": "^1.0",
-    "behat/mink": "^1.8",
-    "dbrekelmans/bdi": "^1.0.0",
-    "doctrine/orm": "^3.0",
-    "doctrine/data-fixtures": "^1.8",
-    "friends-of-behat/mink-debug-extension": "^2.0",
-    "friends-of-behat/mink-extension": "^2.4",
-    "friends-of-behat/page-object-extension": "^0.3.2",
-    "friends-of-behat/symfony-extension": "^2.1",
-    "lakion/mink-debug-extension": "^2.0",
-    "symfony/panther": "^2.0",
-    "webmozart/assert": "^1.0"
-  },
-  "require-dev": {
-    "phpstan/phpstan": "^2.1",
-    "phpstan/phpstan-doctrine": "^2.0",
-    "phpstan/phpstan-webmozart-assert": "^2.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\TestBundle\\": ""
-    }
-  },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../../*/*"
-    }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-main": "5.0-dev",
-      "dev-master": "5.0-dev"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }

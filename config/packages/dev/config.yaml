@@ -1,14 +1,17 @@
 imports:
     - { resource: ../../config.yaml }
 
-payum:
-    gateways:
-        offline:
-            factory: concurrency
+doctrine:
+    dbal:
+        connections:
+            default:
+                url: '%pimcore_test.db.dsn%'
+                host: ''
+                port: ''
+                dbname: ''
+                user: ''
+                password: ''
 
-services:
-    payum.concurrency_gateway_factory:
-        class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
-        arguments: [ CoreShop\Behat\Service\Payum\Concurrency\ConcurrencyGatewayFactory ]
-        tags:
-            - { name: payum.gateway_factory_builder, factory: concurrency }
+parameters:
+    pimcore_test.db.dsn: '%env(PIMCORE_TEST_DB_DSN)%'
+    env(PIMCORE_TEST_DB_DSN): ~

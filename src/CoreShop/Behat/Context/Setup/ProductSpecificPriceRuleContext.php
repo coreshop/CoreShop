@@ -30,7 +30,7 @@ use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurat
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductSpecificPriceNestedConfigurationType;
-use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;

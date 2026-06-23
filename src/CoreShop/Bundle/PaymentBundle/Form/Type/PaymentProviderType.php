@@ -30,17 +30,22 @@ final class PaymentProviderType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('identifier', TextType::class)
+            ->add('identifier', TextType::class, [
+                'label' => 'coreshop_identifier',
+            ])
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => PaymentProviderTranslationType::class,
             ])
             ->add('position', IntegerType::class, [
+                'label' => 'coreshop_position',
                 'required' => false,
             ])
             ->add('logo', PimcoreAssetChoiceType::class, [
+                'label' => 'coreshop_logo',
                 'required' => false,
             ])
             ->add('active', CheckboxType::class, [
+                'label' => 'coreshop_active',
                 'required' => false,
             ])
             ->add('paymentProviderRules', PaymentProviderRuleGroupCollectionType::class)

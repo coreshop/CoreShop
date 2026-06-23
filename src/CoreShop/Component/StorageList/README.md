@@ -6,12 +6,12 @@ CoreShop
 
 ![CoreShop](https://www.coreshop.com/assets/img/logo-full.svg)
 
-CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled components to get highest quality of code. [Read more on coreshop.org](http://www.coreshop.org)
+CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled components to get highest quality of code. [Read more on coreshop.com](http://www.coreshop.com)
 
 Documentation
 -------------
 
-Documentation is available on [**coreshop.org**](https://docs.coreshop.org).
+Documentation is available on [**coreshop.com**](https://docs.coreshop.com).
 
 Bug tracking
 ------------

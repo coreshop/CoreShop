@@ -1,0 +1,21 @@
+services:
+  coreshop.resource.installer.grid_config:
+    alias: 'CoreShop\Bundle\ResourceBundle\AdminClass\Installer\PimcoreGridConfigInstaller'
+    public: true
+
+  CoreShop\Bundle\ResourceBundle\AdminClass\Installer\PimcoreGridConfigInstaller:
+    arguments:
+      - '@kernel'
+      - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+      - '@CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager'
+      - '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
+      - '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller'
+    tags:
+      - { name: coreshop.resource.installer, type: grid_config, priority: 200}
+
+  coreshop.data_object.grid_column_config.operator.factory.resource_field_getter:
+    class: Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\Operator\Factory\DefaultOperatorFactory
+    arguments:
+      $className: CoreShop\Bundle\ResourceBundle\AdminClass\Pimcore\GridColumnConfig\ResourceFieldGetter
+    tags:
+      - { name: pimcore.data_object.grid_column_config.operator_factory, id: coreshop_resource_field_getter }

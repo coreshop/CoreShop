@@ -14,7 +14,7 @@ CoreShop\Component\Taxation\Model\TaxRate:
         active:
             expose: true
             type: boolean
-            groups: [Detailed]
+            groups: [List, Detailed]
         rate:
             expose: true
             type: float

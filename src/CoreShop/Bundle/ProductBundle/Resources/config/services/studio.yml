@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  CoreShop\Bundle\ProductBundle\Studio\WebpackEntryPointProvider:
+    tags:
+      - { name: pimcore_studio_ui.webpack_entry_point_provider }
+
+  # StudioBackend Data Adapters
+  CoreShop\Bundle\ProductBundle\StudioBackend\DataAdapter\ProductUnitDefinitionsAdapter:
+    tags:
+      - { name: pimcore.studio_backend.data_adapter }
+
+  CoreShop\Bundle\ProductBundle\StudioBackend\DataAdapter\ProductSpecificPriceRulesAdapter:
+    tags:
+      - { name: pimcore.studio_backend.data_adapter }

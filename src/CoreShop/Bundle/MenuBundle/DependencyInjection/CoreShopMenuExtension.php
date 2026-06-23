@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MenuBundle\DependencyInjection;
 
 use CoreShop\Bundle\MenuBundle\Attribute\AsMenuBuilder;
+use CoreShop\Bundle\MenuBundle\AdminClass\EventListener\MenuAdminListener;
 use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
 use CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass\MenuBuilderPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
@@ -38,6 +39,18 @@ final class CoreShopMenuExtension extends AbstractPimcoreExtension
 
         if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
             $loader->load('services/menu.yml');
+        }
+
+        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
+            $loader->load('services/classic_admin.yml');
+
+            if (array_key_exists('CoreShopCoreBundle', $bundles)) {
+                $container->removeDefinition(MenuAdminListener::class);
+            }
+        }
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
         }
 
         Autoconfiguration::registerForAutoConfiguration(

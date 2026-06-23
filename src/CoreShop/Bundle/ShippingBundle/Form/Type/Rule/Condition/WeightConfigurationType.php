@@ -37,12 +37,14 @@ final class WeightConfigurationType extends AbstractType
     {
         $builder
             ->add('minWeight', NumberType::class, [
+                'label' => 'coreshop_condition_weight_minWeight',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('maxWeight', NumberType::class, [
+                'label' => 'coreshop_condition_weight_maxWeight',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),

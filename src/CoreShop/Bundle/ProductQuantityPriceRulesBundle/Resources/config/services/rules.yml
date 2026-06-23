@@ -2,6 +2,13 @@ services:
     _defaults:
         public: true
 
+    # FormTypes für QuantityPriceRule Conditions (NestedConfigurationType etc.).
+    # autoconfigure: true taggt sie automatisch mit `form.type`, sodass
+    # RegisterStudioFormTypesPass sie in die BlockPrefixFormTypeRegistry übernimmt.
+    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\:
+        resource: '../../Form/Type/Rule/'
+        autoconfigure: true
+
     coreshop.product_quantity_price_rules.conditions.nested:
         class: CoreShop\Component\Rule\Condition\NestedConditionChecker
         arguments:

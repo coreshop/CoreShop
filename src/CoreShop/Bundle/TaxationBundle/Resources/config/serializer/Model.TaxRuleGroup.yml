@@ -14,7 +14,7 @@ CoreShop\Component\Taxation\Model\TaxRuleGroup:
         active:
             expose: true
             type: boolean
-            groups: [Detailed]
+            groups: [List, Detailed]
         taxRules:
             expose: true
             type: ArrayCollection

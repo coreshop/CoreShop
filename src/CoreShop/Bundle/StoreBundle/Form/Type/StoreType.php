@@ -28,10 +28,18 @@ final class StoreType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('template', TextType::class)
-            ->add('siteId', IntegerType::class)
-            ->add('currency', CurrencyChoiceType::class)
+            ->add('name', TextType::class, [
+                'label' => 'coreshop_name',
+            ])
+            ->add('template', TextType::class, [
+                'label' => 'coreshop_store_template',
+            ])
+            ->add('siteId', IntegerType::class, [
+                'label' => 'coreshop_store_site',
+            ])
+            ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_currency',
+            ])
         ;
     }
 

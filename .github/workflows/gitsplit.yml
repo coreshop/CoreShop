@@ -12,6 +12,7 @@ on:
             - 4.0
             - 4.1
             - 5.0
+            - 5.1
         paths:
             - 'src/CoreShop/Bundle/**'
             - 'src/CoreShop/Component/**'
@@ -31,7 +32,7 @@ jobs:
             -
                 name: Gitsplit Cache
                 id: gitsplit-cache
-                uses: actions/cache@v4
+                uses: actions/cache@v5
                 with:
                     path: cache
                     key: gitsplit-cache

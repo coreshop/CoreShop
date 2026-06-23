@@ -25,6 +25,7 @@ services:
             - '%coreshop.form.type.shipping_rule.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType:
         arguments:
@@ -49,6 +50,7 @@ services:
             - '%coreshop.form.type.carrier.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\ShippingBundle\Form\Type\CarrierTranslationType:
         arguments:
@@ -156,4 +158,8 @@ services:
             - '%coreshop.shipping.tax_calculation_strategies%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Schema\CarrierSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
 

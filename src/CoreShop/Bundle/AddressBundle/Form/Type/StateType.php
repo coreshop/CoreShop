@@ -31,9 +31,14 @@ final class StateType extends AbstractResourceType
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => StateTranslationType::class,
             ])
-            ->add('isoCode', TextType::class)
-            ->add('active', CheckboxType::class)
+            ->add('isoCode', TextType::class, [
+                'label' => 'coreshop_state_isoCode',
+            ])
+            ->add('active', CheckboxType::class, [
+                'label' => 'coreshop_active',
+            ])
             ->add('country', CountryChoiceType::class, [
+                'label' => 'coreshop_country',
                 'active' => null,
             ])
         ;
@@ -41,6 +46,6 @@ final class StateType extends AbstractResourceType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_zone';
+        return 'coreshop_state';
     }
 }

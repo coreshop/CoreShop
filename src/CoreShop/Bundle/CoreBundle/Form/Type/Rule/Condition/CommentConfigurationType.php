@@ -26,7 +26,9 @@ final class CommentConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('commentAction', TextType::class)
+            ->add('commentAction', TextType::class, [
+                'label' => 'coreshop_condition_comment_action',
+            ])
         ;
     }
 

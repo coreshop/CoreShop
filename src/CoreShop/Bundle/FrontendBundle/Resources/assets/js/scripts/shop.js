@@ -73,7 +73,16 @@ const shop = window.shop || {};
             copyText.setSelectionRange(0, 99999); // For mobile devices
 
             navigator.clipboard.writeText(copyText.value).then(() => {
-                console.log(button.dataset.copiedText);
+                const originalText = button.innerHTML;
+                button.innerHTML = button.dataset.copiedText;
+                button.classList.replace('btn-secondary', 'btn-success');
+                button.disabled = true;
+
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.replace('btn-success', 'btn-secondary');
+                    button.disabled = false;
+                }, 2000);
             });
         }
     }
@@ -142,16 +151,25 @@ const shop = window.shop || {};
         const shippingAddress = addressStep.querySelector('select[name="coreshop[shippingAddress]"]');
         const useIasS = addressStep.querySelector('[name="coreshop[useInvoiceAsShipping]"]');
 
+        setupAddressChangeEvents(invoiceAddress, shippingAddress, useIasS);
+
         if (invoiceAddress) {
+            autoSelectFirstAddress(invoiceAddress);
             updateAddress(invoiceAddress, useIasS);
         }
 
         if (shippingAddress) {
-            updateShippingAddress(shippingAddress)
+            autoSelectFirstAddress(shippingAddress);
+            updateShippingAddress(shippingAddress);
         }
-
-        setupAddressChangeEvents(invoiceAddress, shippingAddress, useIasS);
     };
+
+    function autoSelectFirstAddress(select) {
+        if (!select.options[select.selectedIndex]?.dataset.address) {
+            const firstValid = Array.from(select.options).find(o => o.dataset.address);
+            if (firstValid) select.value = firstValid.value;
+        }
+    }
 
     function setupAddressChangeEvents(invoiceAddress, shippingAddress, useIasS) {
         invoiceAddress.addEventListener('change', () => updateAddress(invoiceAddress, useIasS));
@@ -161,6 +179,8 @@ const shop = window.shop || {};
 
     function updateAddress(invoiceAddress, useIasS) {
         const selected = invoiceAddress.options[invoiceAddress.selectedIndex];
+        if (!selected?.dataset.address) return;
+
         const address = JSON.parse(selected.dataset.address).html;
         const invoicePanel = document.querySelector('.panel-invoice-address');
         invoicePanel.innerHTML = address || '';
@@ -180,6 +200,8 @@ const shop = window.shop || {};
 
     function updateShippingAddress(shippingAddress) {
         const selected = shippingAddress.options[shippingAddress.selectedIndex];
+        if (!selected?.dataset.address) return;
+
         const address = JSON.parse(selected.dataset.address).html;
         document.querySelector('.panel-shipping-address').innerHTML = address || '';
     }

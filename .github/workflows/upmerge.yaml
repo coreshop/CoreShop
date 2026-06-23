@@ -35,7 +35,7 @@ jobs:
 
     steps:
       -
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ matrix.target_branch }}
 
@@ -47,7 +47,7 @@ jobs:
 
       -
         name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v8
         with:
           title: '[UPMERGE] ${{ matrix.base_branch }} -> ${{ matrix.target_branch }}'
           body: |

@@ -19,11 +19,14 @@ namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\PimcoreBundle\Attribute\AsGridAction;
 use CoreShop\Bundle\PimcoreBundle\Attribute\AsGridFilter;
+use CoreShop\Bundle\PimcoreBundle\Attribute\AsStudioGridFilter;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActionPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterStudioGridFilterPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
+use CoreShop\Component\Pimcore\DataObject\Grid\StudioGridFilterInterface;
 use CoreShop\Component\Registry\Autoconfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -47,6 +50,10 @@ final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
             $loader->load('services/data_hub.yml');
         }
 
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $loader->load('services.yml');
@@ -64,6 +71,14 @@ final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
             GridFilterInterface::class,
             RegisterGridFilterPass::GRID_FILTER_TAG,
             AsGridFilter::class,
+            $configs['autoconfigure_with_attributes'],
+        );
+
+        Autoconfiguration::registerForAutoConfiguration(
+            $container,
+            StudioGridFilterInterface::class,
+            RegisterStudioGridFilterPass::STUDIO_GRID_FILTER_TAG,
+            AsStudioGridFilter::class,
             $configs['autoconfigure_with_attributes'],
         );
     }
