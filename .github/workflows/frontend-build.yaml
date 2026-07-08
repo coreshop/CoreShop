@@ -9,6 +9,8 @@ on:
 permissions:
   contents: read
 
+# dummy change to trigger frontend build
+
 jobs:
   build:
     permissions:
