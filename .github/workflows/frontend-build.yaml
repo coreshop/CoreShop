@@ -1,5 +1,6 @@
 name: CoreShop Studio Frontend Build
 
+# Rebuild trigger: regenerate Studio bundles via PR to satisfy branch ruleset.
 on:
   pull_request_target:
     branches: [ '5.1' ]
