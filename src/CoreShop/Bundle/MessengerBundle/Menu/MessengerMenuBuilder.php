@@ -30,6 +30,7 @@ class MessengerMenuBuilder implements MenuBuilderInterface
             ->setLabel('coreshop_messenger')
             ->setAttribute('permission', 'coreshop_permission_messenger')
             ->setAttribute('iconCls', 'coreshop_nav_icon_messenger')
+            ->setAttribute('widgetId', 'coreshop-messenger-widget')
             ->setAttribute('resource', 'coreshop.messenger')
             ->setAttribute('function', 'list')
         ;
