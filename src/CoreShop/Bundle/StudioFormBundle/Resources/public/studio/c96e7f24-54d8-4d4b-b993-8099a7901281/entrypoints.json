@@ -1,0 +1,38 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/179.55b2f5fb.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/76.c1bdf220.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/920.380c2a86.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/63.03756cf0.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/375.fb26965d.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/695.e08ba12a.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/179.55b2f5fb.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/624.f7aef46c.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/main.e7e960fe.js"
+      ],
+      "css": []
+    },
+    "coreshopstudioform": {
+      "js": [
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/615.d6a07ed2.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/179.55b2f5fb.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/__federation_expose_default_export.a6a5c396.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/76.c1bdf220.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/920.380c2a86.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/63.03756cf0.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/375.fb26965d.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/async/695.e08ba12a.js",
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshopstudioform/studio/c96e7f24-54d8-4d4b-b993-8099a7901281/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}
