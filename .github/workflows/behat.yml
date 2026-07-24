@@ -9,7 +9,7 @@ on:
       - '*.php'
       - 'src/**'
       - '.github/workflows/behat.yml'
-  pull_request_target:
+  pull_request:
     branches: [ '2026.x' ]
     paths:
       - 'composer.json'
