@@ -17,6 +17,9 @@ import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
+// Deep import (bundled, not a shared remote) so the document editable registration also works
+// inside the reduced document editor iframe app.
+import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
 import { StoreBundleIconModule } from './modules/icon-library'
 import { StoreManager } from './modules/stores/StoreManager'
 import { loadStores, getStoreCache } from './components/StoreSelect'
@@ -29,31 +32,44 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-store',
 
     onInit() {
-        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
-            serviceIds['DynamicTypes/ObjectDataRegistry']
-        )
+        // Register this bundle's document editables. Runs in the main app and in the reduced
+        // document editor iframe; only depends on the core DocumentEditableRegistry.
+        registerCoreShopDocumentEditableSelects(['coreshop_store'])
 
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStore())
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStoreMultiselect())
+        try {
+            const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+                serviceIds['DynamicTypes/ObjectDataRegistry']
+            )
 
-        // Register StudioForm widget for StoreChoiceType
-        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStore())
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStoreMultiselect())
 
-        formWidgetRegistry.register('coreshop_store_choice', (field) => ({
-            component: EntityChoiceWidget,
-            props: { loadOptions: loadStores, getCachedOptions: getStoreCache, droppableAccept: 'coreshop:store', mode: field.multiple ? 'multiple' as const : undefined }
-        }))
+            // Register StudioForm widget for StoreChoiceType
+            const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+
+            formWidgetRegistry.register('coreshop_store_choice', (field) => ({
+                component: EntityChoiceWidget,
+                props: { loadOptions: loadStores, getCachedOptions: getStoreCache, droppableAccept: 'coreshop:store', mode: field.multiple ? 'multiple' as const : undefined }
+            }))
+        } catch {
+            // Main Studio app only — object editor / StudioForm services are absent in the
+            // reduced document editor iframe. The document editables are already registered above.
+        }
     },
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(StoreBundleIconModule)
 
-        // Register Store Manager widget
-        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
-        widgets.registerWidget({
-            name: 'coreshop-store-store',
-            component: StoreManager
-        })
+        try {
+            // Register Store Manager widget
+            const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+            widgets.registerWidget({
+                name: 'coreshop-store-store',
+                component: StoreManager
+            })
+        } catch {
+            // Main Studio app only — widget manager absent in the document editor iframe.
+        }
     }
 }
 

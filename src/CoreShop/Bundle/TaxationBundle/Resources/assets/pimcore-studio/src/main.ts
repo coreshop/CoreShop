@@ -18,6 +18,9 @@ import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
+// Deep import (bundled, not a shared remote) so the document editable registration also works
+// inside the reduced document editor iframe app.
+import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
 import { TaxRateManager } from './modules/tax-rates/TaxRateManager'
 import { TaxRuleGroupManager } from './modules/tax-rule-groups/TaxRuleGroupManager'
 import { loadTaxRates, getTaxRateCache } from './components/TaxRateSelect'
@@ -31,40 +34,53 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-taxation',
 
     onInit() {
-        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
-            serviceIds['DynamicTypes/ObjectDataRegistry']
-        )
+        // Register this bundle's document editables. Runs in the main app and in the reduced
+        // document editor iframe; only depends on the core DocumentEditableRegistry.
+        registerCoreShopDocumentEditableSelects(['coreshop_tax_rate', 'coreshop_tax_rule_group'])
 
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopTaxRate())
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopTaxRuleGroup())
+        try {
+            const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+                serviceIds['DynamicTypes/ObjectDataRegistry']
+            )
 
-        // Register StudioForm widgets for TaxationChoiceTypes
-        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopTaxRate())
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopTaxRuleGroup())
 
-        formWidgetRegistry.register('coreshop_tax_rule_choice', (field) => ({
-            component: EntityChoiceWidget,
-            props: { loadOptions: loadTaxRates, getCachedOptions: getTaxRateCache, droppableAccept: 'coreshop:tax_rate', mode: field.multiple ? 'multiple' as const : undefined }
-        }))
+            // Register StudioForm widgets for TaxationChoiceTypes
+            const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
 
-        formWidgetRegistry.register('coreshop_tax_rule_group_choice', (field) => ({
-            component: EntityChoiceWidget,
-            props: { loadOptions: loadTaxRuleGroups, getCachedOptions: getTaxRuleGroupCache, droppableAccept: 'coreshop:tax_rule_group', mode: field.multiple ? 'multiple' as const : undefined }
-        }))
+            formWidgetRegistry.register('coreshop_tax_rule_choice', (field) => ({
+                component: EntityChoiceWidget,
+                props: { loadOptions: loadTaxRates, getCachedOptions: getTaxRateCache, droppableAccept: 'coreshop:tax_rate', mode: field.multiple ? 'multiple' as const : undefined }
+            }))
+
+            formWidgetRegistry.register('coreshop_tax_rule_group_choice', (field) => ({
+                component: EntityChoiceWidget,
+                props: { loadOptions: loadTaxRuleGroups, getCachedOptions: getTaxRuleGroupCache, droppableAccept: 'coreshop:tax_rule_group', mode: field.multiple ? 'multiple' as const : undefined }
+            }))
+        } catch {
+            // Main Studio app only — object editor / StudioForm services are absent in the
+            // reduced document editor iframe. The document editables are already registered above.
+        }
     },
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(TaxationBundleIconModule)
 
-        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+        try {
+            const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
 
-        widgets.registerWidget({
-            name: 'coreshop-taxation-tax-rates',
-            component: TaxRateManager
-        })
-        widgets.registerWidget({
-            name: 'coreshop-taxation-tax-rule-groups',
-            component: TaxRuleGroupManager
-        })
+            widgets.registerWidget({
+                name: 'coreshop-taxation-tax-rates',
+                component: TaxRateManager
+            })
+            widgets.registerWidget({
+                name: 'coreshop-taxation-tax-rule-groups',
+                component: TaxRuleGroupManager
+            })
+        } catch {
+            // Main Studio app only — widget manager absent in the document editor iframe.
+        }
     }
 }
 

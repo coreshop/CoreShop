@@ -18,6 +18,9 @@ import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
+// Deep import (bundled, not a shared remote) so the document editable registration also works
+// inside the reduced document editor iframe app.
+import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
 import {ZoneManager} from './modules/zones/ZoneManager'
 import { CountryManager } from './modules/countries/CountryManager'
 import { StateManager } from './modules/states/StateManager'
@@ -35,51 +38,64 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-address-plugin',
 
     onInit() {
-        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
-            serviceIds['DynamicTypes/ObjectDataRegistry']
-        )
+        // Register this bundle's document editables. Runs in the main app and in the reduced
+        // document editor iframe; only depends on the core DocumentEditableRegistry.
+        registerCoreShopDocumentEditableSelects(['coreshop_country', 'coreshop_state', 'coreshop_zone'])
 
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountry())
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountryMultiselect())
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopState())
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopAddressIdentifier())
+        try {
+            const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+                serviceIds['DynamicTypes/ObjectDataRegistry']
+            )
 
-        // Register StudioForm widgets for ChoiceTypes
-        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountry())
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountryMultiselect())
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopState())
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopAddressIdentifier())
 
-        formWidgetRegistry.register('coreshop_country_choice', (field) => ({
-            component: EntityChoiceWidget,
-            props: { loadOptions: loadCountries, getCachedOptions: getCountryCache, droppableAccept: 'coreshop:country', mode: field.multiple ? 'multiple' as const : undefined }
-        }))
+            // Register StudioForm widgets for ChoiceTypes
+            const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
 
-        formWidgetRegistry.register('coreshop_state_choice', (field) => ({
-            component: EntityChoiceWidget,
-            props: { loadOptions: loadStates, getCachedOptions: getStateCache, droppableAccept: 'coreshop:state', mode: field.multiple ? 'multiple' as const : undefined }
-        }))
+            formWidgetRegistry.register('coreshop_country_choice', (field) => ({
+                component: EntityChoiceWidget,
+                props: { loadOptions: loadCountries, getCachedOptions: getCountryCache, droppableAccept: 'coreshop:country', mode: field.multiple ? 'multiple' as const : undefined }
+            }))
 
-        formWidgetRegistry.register('coreshop_zone_choice', (field) => ({
-            component: EntityChoiceWidget,
-            props: { loadOptions: loadZones, getCachedOptions: getZoneCache, droppableAccept: 'coreshop:zone', mode: field.multiple ? 'multiple' as const : undefined }
-        }))
+            formWidgetRegistry.register('coreshop_state_choice', (field) => ({
+                component: EntityChoiceWidget,
+                props: { loadOptions: loadStates, getCachedOptions: getStateCache, droppableAccept: 'coreshop:state', mode: field.multiple ? 'multiple' as const : undefined }
+            }))
+
+            formWidgetRegistry.register('coreshop_zone_choice', (field) => ({
+                component: EntityChoiceWidget,
+                props: { loadOptions: loadZones, getCachedOptions: getZoneCache, droppableAccept: 'coreshop:zone', mode: field.multiple ? 'multiple' as const : undefined }
+            }))
+        } catch {
+            // Main Studio app only — object editor / StudioForm services are absent in the
+            // reduced document editor iframe. The document editables are already registered above.
+        }
     },
 
     onStartup({moduleSystem}) {
         moduleSystem.registerModule(AddressBundleIconModule)
 
-        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+        try {
+            const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
 
-        widgets.registerWidget({
-            name:  'coreshop-address-zones',
-            component: ZoneManager
-        })
-        widgets.registerWidget({
-            name: 'coreshop-address-countries',
-            component: CountryManager
-        })
-        widgets.registerWidget({
-            name: 'coreshop-address-states',
-            component: StateManager
-        })
+            widgets.registerWidget({
+                name:  'coreshop-address-zones',
+                component: ZoneManager
+            })
+            widgets.registerWidget({
+                name: 'coreshop-address-countries',
+                component: CountryManager
+            })
+            widgets.registerWidget({
+                name: 'coreshop-address-states',
+                component: StateManager
+            })
+        } catch {
+            // Main Studio app only — widget manager absent in the document editor iframe.
+        }
     }
 }
 

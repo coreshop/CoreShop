@@ -12,3 +12,9 @@
 
 // Export all entities components and types
 export * from './entities'
+
+// Export reusable CoreShop dynamic types (object data + document editables)
+export {
+  DynamicTypeDocumentEditableCoreShopSelect,
+  registerCoreShopDocumentEditableSelects
+} from './dynamic-types'

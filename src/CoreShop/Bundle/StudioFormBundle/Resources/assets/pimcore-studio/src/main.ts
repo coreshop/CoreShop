@@ -21,6 +21,11 @@ import { DemoModule } from './modules/demo'
 const plugin: IAbstractPlugin = {
   name: 'coreshop-studio-form-plugin',
 
+  // Init before the feature bundle plugins (index, address, ...) that resolve the
+  // StudioForm WidgetRegistry in their own onInit. Plugins are ordered ascending by
+  // priority, so a low value guarantees this plugin binds the registry first.
+  priority: -1000,
+
   onInit() {
     // Bind WidgetRegistry as singleton
     container.bind(widgetRegistryServiceId).to(WidgetRegistry).inSingletonScope()
