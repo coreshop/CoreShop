@@ -26,6 +26,9 @@ import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { CarrierSelect, loadCarriers, getCarrierCache } from './components/CarrierSelect'
 import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
+// Deep import (bundled, not a shared remote) so the document editable registration also works
+// inside the reduced document editor iframe app.
+import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
 import {
     DynamicTypeObjectDataCoreShopCarrier,
     DynamicTypeObjectDataCoreShopCarrierMultiselect
@@ -35,48 +38,61 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-shipping',
 
     onInit() {
-        // Register Dynamic Types
-        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
-            serviceIds['DynamicTypes/ObjectDataRegistry']
-        )
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCarrier())
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCarrierMultiselect())
+        // Register this bundle's document editables. Runs in the main app and in the reduced
+        // document editor iframe; only depends on the core DocumentEditableRegistry.
+        registerCoreShopDocumentEditableSelects(['coreshop_carrier'])
 
-        // Register Carrier widget
-        const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)
-        widgetManager.registerWidget({
-            name: 'coreshop-shipping-carriers',
-            component: CarrierManager
-        })
+        try {
+            // Register Dynamic Types
+            const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+                serviceIds['DynamicTypes/ObjectDataRegistry']
+            )
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCarrier())
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCarrierMultiselect())
 
-        // Register ShippingRule widget
-        widgetManager.registerWidget({
-            name: 'coreshop-shipping-shipping-rules',
-            component: ShippingRuleManager
-        })
+            // Register Carrier widget
+            const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)
+            widgetManager.registerWidget({
+                name: 'coreshop-shipping-carriers',
+                component: CarrierManager
+            })
 
-        // Create and bind ShippingRule registries
-        container.bind(coreshopShippingServiceIds.shippingRuleConditionRegistry).to(ConditionRegistry).inSingletonScope()
-        container.bind(coreshopShippingServiceIds.shippingRuleActionRegistry).to(ActionRegistry).inSingletonScope()
+            // Register ShippingRule widget
+            widgetManager.registerWidget({
+                name: 'coreshop-shipping-shipping-rules',
+                component: ShippingRuleManager
+            })
 
-        // Get registries
-        const conditionRegistry = container.get<ConditionRegistry>(coreshopShippingServiceIds.shippingRuleConditionRegistry)
-        container.get<ActionRegistry>(coreshopShippingServiceIds.shippingRuleActionRegistry)
+            // Create and bind ShippingRule registries
+            container.bind(coreshopShippingServiceIds.shippingRuleConditionRegistry).to(ConditionRegistry).inSingletonScope()
+            container.bind(coreshopShippingServiceIds.shippingRuleActionRegistry).to(ActionRegistry).inSingletonScope()
 
-        // Register non-schema custom condition(s).
-        // Schema-based conditions/actions are auto-registered at runtime from backend mappings.
-        conditionRegistry.register('nested', NestedCondition)
+            // Get registries
+            const conditionRegistry = container.get<ConditionRegistry>(coreshopShippingServiceIds.shippingRuleConditionRegistry)
+            container.get<ActionRegistry>(coreshopShippingServiceIds.shippingRuleActionRegistry)
+
+            // Register non-schema custom condition(s).
+            // Schema-based conditions/actions are auto-registered at runtime from backend mappings.
+            conditionRegistry.register('nested', NestedCondition)
+        } catch {
+            // Main Studio app only — object editor / widget manager / rule registries are absent
+            // in the reduced document editor iframe. The document editables are registered above.
+        }
     },
 
     onStartup({ moduleSystem }) {
-        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+        try {
+            const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
 
-        // Hide ShippingBundle-owned rule collection prefixes from generic schema forms
-        const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
-        ;[
-          'coreshop_shipping_rule_condition_collection',
-          'coreshop_product_shipping_action_collection',
-        ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+            // Hide ShippingBundle-owned rule collection prefixes from generic schema forms
+            const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+            ;[
+              'coreshop_shipping_rule_condition_collection',
+              'coreshop_product_shipping_action_collection',
+            ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+        } catch {
+            // Main Studio app only — StudioForm registry absent in the document editor iframe.
+        }
 
         moduleSystem.registerModule(ShippingBundleIconModule)
         moduleSystem.registerModule(CarrierWidgetsModule)

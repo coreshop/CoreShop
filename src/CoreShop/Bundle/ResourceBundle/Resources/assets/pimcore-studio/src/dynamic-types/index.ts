@@ -14,3 +14,7 @@ export { DynamicTypeObjectDataCoreShopRelation } from './DynamicTypeObjectDataCo
 export { DynamicTypeObjectDataCoreShopRelations } from './DynamicTypeObjectDataCoreShopRelations'
 export { DynamicTypeObjectDataCoreShopSelect } from './DynamicTypeObjectDataCoreShopSelect'
 export { DynamicTypeObjectDataCoreShopMultiSelect } from './DynamicTypeObjectDataCoreShopMultiSelect'
+export {
+  DynamicTypeDocumentEditableCoreShopSelect,
+  registerCoreShopDocumentEditableSelects
+} from './DynamicTypeDocumentEditableCoreShopSelect'

@@ -18,6 +18,9 @@ import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
+// Deep import (bundled, not a shared remote) so the document editable registration also works
+// inside the reduced document editor iframe app.
+import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
 import { CurrencyManager } from './modules/currencies/CurrencyManager'
 import { ExchangeRateManager } from './modules/exchange-rates/ExchangeRateManager'
 import { loadCurrencies, getCurrencyCache } from './components/CurrencySelect'
@@ -32,41 +35,54 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-currency',
 
     onInit() {
-        // Load currency config (decimal_factor, decimal_precision) for price formatting
-        void initCurrencyConfig()
+        // Register this bundle's document editables. Runs in the main app and in the reduced
+        // document editor iframe; only depends on the core DocumentEditableRegistry.
+        registerCoreShopDocumentEditableSelects(['coreshop_currency'])
 
-        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
-            serviceIds['DynamicTypes/ObjectDataRegistry']
-        )
+        try {
+            // Load currency config (decimal_factor, decimal_precision) for price formatting
+            void initCurrencyConfig()
 
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrency())
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrencyMultiselect())
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopMoneyCurrency())
+            const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
+                serviceIds['DynamicTypes/ObjectDataRegistry']
+            )
 
-        // Register StudioForm widget for CurrencyChoiceType
-        const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrency())
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrencyMultiselect())
+            objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopMoneyCurrency())
 
-        formWidgetRegistry.register('coreshop_currency_choice', (field) => ({
-            component: EntityChoiceWidget,
-            props: { loadOptions: loadCurrencies, getCachedOptions: getCurrencyCache, droppableAccept: 'coreshop:currency', mode: field.multiple ? 'multiple' as const : undefined }
-        }))
+            // Register StudioForm widget for CurrencyChoiceType
+            const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+
+            formWidgetRegistry.register('coreshop_currency_choice', (field) => ({
+                component: EntityChoiceWidget,
+                props: { loadOptions: loadCurrencies, getCachedOptions: getCurrencyCache, droppableAccept: 'coreshop:currency', mode: field.multiple ? 'multiple' as const : undefined }
+            }))
+        } catch {
+            // Main Studio app only — object editor / StudioForm services are absent in the
+            // reduced document editor iframe. The document editables are already registered above.
+        }
     },
 
     onStartup({ moduleSystem }) {
         moduleSystem.registerModule(CurrencyBundleIconModule)
 
-        // Register Currency entity widget (used by menu)
-        const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
+        try {
+            // Register Currency entity widget (used by menu)
+            const widgets = container.get<WidgetRegistry>(serviceIds.widgetManager)
 
-        widgets.registerWidget({
-            name: 'coreshop-currency-currencies',
-            component: CurrencyManager
-        })
+            widgets.registerWidget({
+                name: 'coreshop-currency-currencies',
+                component: CurrencyManager
+            })
 
-        widgets.registerWidget({
-            name: 'coreshop-currency-exchange-rates',
-            component: ExchangeRateManager
-        })
+            widgets.registerWidget({
+                name: 'coreshop-currency-exchange-rates',
+                component: ExchangeRateManager
+            })
+        } catch {
+            // Main Studio app only — widget manager absent in the document editor iframe.
+        }
     }
 }
 
