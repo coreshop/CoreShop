@@ -103,9 +103,22 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'Build CoreShop Studio bundles'
 
-          # If the branch moved on in the meantime, that newer push runs its own build and
-          # supersedes these assets. Report it and stop rather than failing the job.
-          if ! git push origin HEAD:"${GITHUB_REF_NAME}"; then
+          if git push origin HEAD:"${GITHUB_REF_NAME}"; then
+            exit 0
+          fi
+
+          # A rejected push has two very different causes, and only one of them is benign:
+          # the branch moved on while we were building, in which case the newer push runs its
+          # own build and supersedes these assets. Anything else — a ruleset rejection, a
+          # missing write scope — means the assets never land, and that must not pass as a
+          # green job. HEAD~1 is the commit this build started from.
+          git fetch --quiet origin "${GITHUB_REF_NAME}"
+          if [ "$(git rev-parse "origin/${GITHUB_REF_NAME}")" != "$(git rev-parse HEAD~1)" ]; then
             echo "::notice::${GITHUB_REF_NAME} moved on during the build; the newer push rebuilds the assets."
             echo 'Push skipped: branch moved on during the build.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
+
+          echo "::error::Could not push the built Studio assets to ${GITHUB_REF_NAME}. The branch did not move on, so the push was refused — check that the GitHub Actions app is a bypass actor on the branch ruleset."
+          echo 'Push failed: built assets were not committed.' >> "$GITHUB_STEP_SUMMARY"
+          exit 1
