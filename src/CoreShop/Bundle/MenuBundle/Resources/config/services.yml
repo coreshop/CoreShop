@@ -1,6 +1,3 @@
-parameters:
-    coreshop.menu.json.template: '@@CoreShopMenu/knp_menu.js.twig'
-
 services:
     _defaults:
         public: true
@@ -12,15 +9,6 @@ services:
             - 'menu-builder'
         tags:
             - { name: coreshop.registry, type_hint: menues }
-
-    CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer:
-        arguments:
-            - '@twig'
-            - '%coreshop.menu.json.template%'
-            - '@CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard'
-            - {}
-        tags:
-            - { name: knp_menu.renderer, alias: json }
 
     CoreShop\Bundle\MenuBundle\Renderer\StudioRenderer:
         arguments:

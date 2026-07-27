@@ -1,7 +1,18 @@
 version: 2
 updates:
+  # ---------------------------------------------------------------------------
+  # composer — 5.0
+  # Covers the root manifest AND every split bundle/component manifest so a
+  # shared dependency (e.g. friends-of-behat/page-object-extension) is bumped in
+  # lockstep across all of them. The grouped PR spans every directory, keeping
+  # the root and sub-package constraints compatible.
+  # ---------------------------------------------------------------------------
   - package-ecosystem: "composer"
-    directory: "/"
+    target-branch: "5.0"
+    directories:
+      - "/"
+      - "/src/CoreShop/Bundle/*"
+      - "/src/CoreShop/Component/*"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -45,7 +56,60 @@ updates:
       - dependency-name: "vimeo/psalm"
         update-types: ["version-update:semver-major"]
 
+  # ---------------------------------------------------------------------------
+  # composer — 5.1 (upmerged into 2026.x)
+  # Note: security updates always target the default branch regardless.
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: "composer"
+    target-branch: "5.1"
+    directories:
+      - "/"
+      - "/src/CoreShop/Bundle/*"
+      - "/src/CoreShop/Component/*"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      symfony:
+        patterns:
+          - "symfony/*"
+        update-types:
+          - "minor"
+          - "patch"
+      doctrine:
+        patterns:
+          - "doctrine/*"
+        update-types:
+          - "minor"
+          - "patch"
+      composer:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "symfony/*"
+          - "doctrine/*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "symfony/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "doctrine/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "webmozart/assert"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "symplify/easy-coding-standard"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "phpstan/phpstan"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vimeo/psalm"
+        update-types: ["version-update:semver-major"]
+
+  # ---------------------------------------------------------------------------
+  # github-actions — 5.0 + 5.1
+  # ---------------------------------------------------------------------------
   - package-ecosystem: "github-actions"
+    target-branch: "5.0"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -54,7 +118,21 @@ updates:
         patterns:
           - "*"
 
+  - package-ecosystem: "github-actions"
+    target-branch: "5.1"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # ---------------------------------------------------------------------------
+  # npm — 5.1 only (Studio v2 assets do not exist on 5.0)
+  # ---------------------------------------------------------------------------
   - package-ecosystem: "npm"
+    target-branch: "5.1"
     directories:
       - "/src/CoreShop/Bundle/*/Resources/assets/pimcore-studio"
     schedule:

@@ -8,9 +8,9 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="type" column="type"/>
-        <field name="label" column="label" nullable="true"/>
-        <field name="quantityUnit" column="quantityUnit" type="string" nullable="true"/>
+        <field name="type" column="type" type="string" length="255"/>
+        <field name="label" column="label" type="string" length="255" nullable="true"/>
+        <field name="quantityUnit" column="quantityUnit" type="string" length="255" nullable="true"/>
         <field name="configuration" column="configuration" type="json" nullable="true"/>
         <field name="sort" column="sort" type="integer" nullable="true" />
 

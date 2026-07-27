@@ -42,7 +42,6 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
         $this->addCheckoutConfigurationSection($rootNode);
 
         return $treeBuilder;
@@ -79,41 +78,6 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
-        ;
-    }
-
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
-    {
-        $node->children()
-            ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->addDefaultsIfNotSet()
-                        ->ignoreExtraKeys(false)
-                        ->children()
-                            ->scalarNode('core')->defaultValue('/bundles/coreshopcore/pimcore/css/core.css')->end()
-                        ->end()
-                    ->end()
-                    ->scalarNode('permissions')
-                        ->cannotBeOverwritten()
-                        ->defaultValue(['settings', 'ctc_assign_to_new', 'ctc_assign_to_existing'])
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                ->end()
-            ->end()
-        ->end()
         ;
     }
 

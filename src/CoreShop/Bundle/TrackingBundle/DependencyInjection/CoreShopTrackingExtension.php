@@ -38,12 +38,7 @@ final class CoreShopTrackingExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-
-        $bundles = $container->getParameter('kernel.bundles');
-
-        if (array_key_exists('PimcoreGoogleMarketingBundle', $bundles)) {
-            $loader->load('services/google_marketing.yml');
-        }
+        $loader->load('services/google_marketing.yml');
 
         $this->configureTrackers($configs, $container);
 

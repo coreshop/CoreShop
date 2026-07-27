@@ -128,67 +128,6 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         }
     }
 
-    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container): void
-    {
-        parent::registerPimcoreResources($applicationName, $bundleResources, $container);
-
-        if (array_key_exists('install', $bundleResources)) {
-            foreach ($bundleResources['install'] as $type => $value) {
-                $applicationParameter = sprintf('%s.pimcore.admin.install.%s', $applicationName, $type);
-                //$aliasParameter = sprintf('%s.pimcore.admin.install.%s', $this->getAlias(), $type);
-                $globalParameter = sprintf('coreshop.all.pimcore.admin.install.%s', $type);
-
-                foreach ([$applicationParameter, $globalParameter] as $containerParameter) {
-                    $resources = [];
-
-                    if ($container->hasParameter($containerParameter)) {
-                        $resources = $container->getParameter($containerParameter);
-                    }
-
-                    $container->setParameter($containerParameter, array_merge($resources, array_values($value)));
-                }
-            }
-        }
-
-        if (array_key_exists('permissions', $bundleResources)) {
-            $applicationPermissions = [];
-            $applicationParameter = sprintf('%s.permissions', $applicationName);
-            $resourcePermissions = [];
-            $globalParameter = 'coreshop.all.permissions';
-            $globalPermissions = [];
-
-            if ($container->hasParameter($applicationParameter)) {
-                /**
-                 * @var array $applicationPermissions
-                 */
-                $applicationPermissions = $container->getParameter($applicationParameter);
-            }
-
-            if ($container->hasParameter($globalParameter)) {
-                /**
-                 * @var array $globalPermissions
-                 */
-                $globalPermissions = $container->getParameter($globalParameter);
-            }
-
-            $permissions = [];
-
-            foreach ($bundleResources['permissions'] as $permission) {
-                $identifier = sprintf('%s_permission_%s', $applicationName, $permission);
-
-                $permissions[] = $identifier;
-                $resourcePermissions[] = $identifier;
-            }
-
-            $globalApplicationPermissions = array_key_exists($applicationName, $globalPermissions) ? $globalPermissions[$applicationName] : [];
-            $globalApplicationPermissions = array_merge($globalApplicationPermissions, $resourcePermissions);
-            $globalPermissions[$applicationName] = $globalApplicationPermissions;
-
-            $container->setParameter($globalParameter, $globalPermissions);
-            $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
-        }
-    }
-
     /**
      * @param string           $applicationName
      * @param array            $bundles

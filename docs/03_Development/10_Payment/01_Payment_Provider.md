@@ -62,28 +62,5 @@ services:
          - { name: form.type }
 ```
 
-2. **ExtJs Form for Sofort**:
-
-   Create a JavaScript file for the ExtJs Form:
-
- ```js
-// public/coreshop/js/sofort.js
-pimcore.registerNS('coreshop.provider.gateways.sofort');
-coreshop.provider.gateways.sofort = Class.create(coreshop.provider.gateways.abstract, {
-  getLayout: function (config) {
-      // Form layout logic...
-  }
-});
- ```
-
-Register the new JavaScript file:
-
-```yaml
-core_shop_payment:
-  pimcore_admin:
-    js:
-      sofort_gateway: '/coreshop/js/sofort.js'
-```
-
-After reloading Pimcore, you should see the new Factory available.
+Pimcore Studio renders the gateway configuration form automatically from the registered `SofortGatewayConfigurationType` via the StudioFormBundle schema pipeline — no additional JavaScript or Studio registration is required. After reloading Pimcore, the new gateway appears in the payment provider factory dropdown.
 
