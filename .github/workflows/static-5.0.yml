@@ -11,7 +11,7 @@ on:
       - '*.xml'
       - 'composer.json'
       - '.github/workflows/static-5.0.yml'
-  pull_request_target:
+  pull_request:
     branches: [ '5.0' ]
     paths:
       - 'features/**'
