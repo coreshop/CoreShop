@@ -50,12 +50,29 @@ jobs:
       # a pull request and only bypasses for admins, and GitHub Actions itself is not an app
       # that can be added to the bypass list. The CoreShop Studio Build app is, so the commit is
       # made with its installation token instead.
+      #
+      # Secrets cannot be read in an `if:` condition, so whether the app is configured is
+      # determined in a step that can see them. Without this the workflow would break the
+      # moment it lands on a branch where the credentials are not set up yet.
+      - name: Check whether the build app is configured
+        id: app-config
+        if: ${{ inputs.commit }}
+        env:
+          APP_ID: ${{ secrets.STUDIO_BUILD_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
+        run: |
+          if [ -n "$APP_ID" ] && [ -n "$PRIVATE_KEY" ]; then
+            echo 'configured=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'configured=false' >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Generate a token for the asset commit
         id: app-token
-        if: ${{ inputs.commit && vars.STUDIO_BUILD_APP_ID != '' }}
+        if: ${{ steps.app-config.outputs.configured == 'true' }}
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ vars.STUDIO_BUILD_APP_ID }}
+          app-id: ${{ secrets.STUDIO_BUILD_APP_ID }}
           private-key: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
 
       - name: Checkout code
@@ -149,6 +166,6 @@ jobs:
             exit 0
           fi
 
-          echo "::error::Could not push the built Studio assets to ${GITHUB_REF_NAME}. The branch did not move on, so the push was refused — check that the STUDIO_BUILD_APP_ID variable and STUDIO_BUILD_APP_PRIVATE_KEY secret are set and that the app is a bypass actor on the branch ruleset."
+          echo "::error::Could not push the built Studio assets to ${GITHUB_REF_NAME}. The branch did not move on, so the push was refused — check that the STUDIO_BUILD_APP_ID and STUDIO_BUILD_APP_PRIVATE_KEY secrets are set and that the app is a bypass actor on the branch ruleset."
           echo 'Push failed: built assets were not committed.' >> "$GITHUB_STEP_SUMMARY"
           exit 1
