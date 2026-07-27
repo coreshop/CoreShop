@@ -1,0 +1,47 @@
+{
+  "allFiles": [
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/main.521a8a38.js",
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/remoteEntry.js",
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/695.9f37214d.js",
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/375.9b8078f8.js",
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/76.95d020f2.js",
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/__federation_expose_default_export.7cf0034d.js",
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/mf-stats.json",
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/mf-manifest.json",
+    "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/main.521a8a38.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/76.95d020f2.js",
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/375.9b8078f8.js",
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/695.9f37214d.js"
+        ]
+      }
+    },
+    "coreshopmoney": {
+      "initial": {
+        "js": [
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/__federation_expose_default_export.7cf0034d.js",
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/76.95d020f2.js",
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/375.9b8078f8.js",
+          "/bundles/coreshopmoney/studio/0c5d6202-2097-4b8a-8720-40706998148c/static/js/async/695.9f37214d.js"
+        ]
+      }
+    }
+  }
+}
