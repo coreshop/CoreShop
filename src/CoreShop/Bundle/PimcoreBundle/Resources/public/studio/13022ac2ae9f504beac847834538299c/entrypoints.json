@@ -1,0 +1,41 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/931.b17ef3d7.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/821.f8adb635.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/920.50caa5f0.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/76.f171a4a2.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/536.62477e64.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/51.b0ec0523.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/202.b2c0e91f.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/375.e03d511e.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/695.fe2c78d8.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/main.22d95936.js"
+      ],
+      "css": []
+    },
+    "coreshoppimcore": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/931.b17ef3d7.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/821.f8adb635.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/920.50caa5f0.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/__federation_expose_default_export.38838513.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/76.f171a4a2.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/536.62477e64.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/51.b0ec0523.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/202.b2c0e91f.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/375.e03d511e.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/async/695.fe2c78d8.js",
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshoppimcore/studio/13022ac2ae9f504beac847834538299c/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}

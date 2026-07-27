@@ -1,0 +1,136 @@
+/*!
+ * @antv/g
+ * @description A core module for rendering engine implements DOM API.
+ * @version 6.1.28
+ * @date 7/30/2025, 1:36:29 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-camera-api
+ * @description A simple implementation of Camera API.
+ * @version 2.0.41
+ * @date 7/30/2025, 1:34:37 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-canvas
+ * @description A renderer implemented by Canvas 2D API
+ * @version 2.0.48
+ * @date 7/30/2025, 1:38:18 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-dom-mutation-observer-api
+ * @description A simple implementation of DOM MutationObserver API.
+ * @version 2.0.38
+ * @date 7/30/2025, 1:34:51 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-lite
+ * @description A core module for rendering engine implements DOM API.
+ * @version 2.3.2
+ * @date 7/30/2025, 1:34:19 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-math
+ * @description Geometry util
+ * @version 3.0.1
+ * @date 5/9/2025, 8:18:51 AM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-plugin-canvas-path-generator
+ * @description A G plugin of path generator with Canvas2D API
+ * @version 2.1.22
+ * @date 7/30/2025, 1:35:25 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-plugin-canvas-picker
+ * @description A G plugin for picking in canvas
+ * @version 2.1.27
+ * @date 7/30/2025, 1:37:32 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-plugin-canvas-renderer
+ * @description A G plugin of renderer implementation with Canvas2D API
+ * @version 2.3.3
+ * @date 7/30/2025, 1:36:40 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-plugin-dom-interaction
+ * @description A G plugin
+ * @version 2.1.27
+ * @date 7/30/2025, 1:35:38 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-plugin-dragndrop
+ * @description A G plugin for Drag n Drop implemented with PointerEvents
+ * @version 2.0.38
+ * @date 7/30/2025, 1:35:41 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-plugin-html-renderer
+ * @description A G plugin for rendering HTML
+ * @version 2.1.27
+ * @date 7/30/2025, 1:35:48 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-plugin-image-loader
+ * @description A G plugin for loading image
+ * @version 2.1.26
+ * @date 7/30/2025, 1:35:52 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*!
+ * @antv/g-web-animations-api
+ * @description A simple implementation of Web Animations API.
+ * @version 2.1.28
+ * @date 7/30/2025, 1:36:24 PM
+ * @author AntVis
+ * @docs https://g.antv.antgroup.com/
+ */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */
+
+/**
+ * @license
+ * Lodash <https://lodash.com/>
+ * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
