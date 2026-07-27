@@ -1,0 +1,61 @@
+{
+  "allFiles": [
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/main.ab18c98d.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/remoteEntry.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/695.20dc57d5.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/375.6a43d7ed.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/63.16b207a4.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/920.2c9f9129.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/76.51632edc.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/__federation_expose_default_export.ac6f4c07.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/179.1d6f2a6e.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/615.75344c1f.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/624.08844c93.js",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/mf-stats.json",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/mf-manifest.json",
+    "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/179.1d6f2a6e.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/624.08844c93.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/main.ab18c98d.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/179.1d6f2a6e.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/76.51632edc.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/920.2c9f9129.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/63.16b207a4.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/375.6a43d7ed.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/695.20dc57d5.js"
+        ]
+      }
+    },
+    "coreshopstudioform": {
+      "initial": {
+        "js": [
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/615.75344c1f.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/179.1d6f2a6e.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/__federation_expose_default_export.ac6f4c07.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/76.51632edc.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/920.2c9f9129.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/63.16b207a4.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/375.6a43d7ed.js",
+          "/bundles/coreshopstudioform/studio/f6628c16-50d3-4627-957e-6d85d5038b8c/static/js/async/695.20dc57d5.js"
+        ]
+      }
+    }
+  }
+}
