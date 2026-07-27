@@ -42,6 +42,8 @@ class OrderPaymentController extends PimcoreController
 {
     public function updateStateAction(Request $request): JsonResponse
     {
+        $this->isGrantedOr403();
+
         $payment = $this->getPaymentRepository()->find($this->getParameterFromRequest($request, 'id'));
         $transition = $this->getParameterFromRequest($request, 'transition');
 
@@ -62,6 +64,8 @@ class OrderPaymentController extends PimcoreController
 
     public function addPaymentAction(Request $request): JsonResponse
     {
+        $this->isGrantedOr403();
+
         //TODO: Use Form here
 
         $orderId = $this->getParameterFromRequest($request, 'id');
@@ -168,6 +172,11 @@ class OrderPaymentController extends PimcoreController
     protected function getSaleRepository(): OrderRepositoryInterface
     {
         return $this->container->get('coreshop.repository.order');
+    }
+
+    protected function getPermission(): string
+    {
+        return 'coreshop_permission_order_detail';
     }
 
     public static function getSubscribedServices(): array
