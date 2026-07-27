@@ -27,8 +27,12 @@ final class ShippingRuleType extends RuleType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextareaType::class)
-            ->add('active', CheckboxType::class)
+            ->add('name', TextareaType::class, [
+                'label' => 'coreshop_name',
+            ])
+            ->add('active', CheckboxType::class, [
+                'label' => 'coreshop_active',
+            ])
             ->add('conditions', ShippingRuleConditionCollectionType::class)
             ->add('actions', ShippingRuleActionCollectionType::class)
         ;

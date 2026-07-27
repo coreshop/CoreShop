@@ -36,18 +36,21 @@ final class FilterConditionRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('field', TextType::class)
+            ->add('field', TextType::class, ['label' => 'coreshop_filters_field'])
             ->add('preSelectMin', NumberType::class, [
+                'label' => 'coreshop_filters_value_min',
                 'constraints' => [
                     new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('preSelectMax', NumberType::class, [
+                'label' => 'coreshop_filters_value_max',
                 'constraints' => [
                     new Type(type: 'numeric', groups: $this->validationGroups),
                 ],
             ])
             ->add('stepCount', NumberType::class, [
+                'label' => 'coreshop_filters_step_count',
                 'constraints' => [
                     new Type(type: 'numeric', groups: $this->validationGroups),
                 ],

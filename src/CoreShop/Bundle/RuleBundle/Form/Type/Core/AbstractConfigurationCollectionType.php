@@ -55,7 +55,12 @@ abstract class AbstractConfigurationCollectionType extends AbstractType
     {
         $view->vars['prototypes'] = [];
 
-        foreach ($form->getConfig()->getAttribute('prototypes') as $type => $prototype) {
+        $prototypes = $form->getConfig()->getAttribute('prototypes');
+        if (!is_array($prototypes)) {
+            return;
+        }
+
+        foreach ($prototypes as $type => $prototype) {
             /* @var FormInterface $prototype */
             $view->vars['prototypes'][$type] = $prototype->createView($view);
         }

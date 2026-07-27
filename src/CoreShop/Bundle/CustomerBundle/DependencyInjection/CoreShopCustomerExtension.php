@@ -25,7 +25,6 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelEx
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface;
 use CoreShop\Component\Registry\Autoconfiguration;
-use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -41,14 +40,15 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
         $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         $this->registerStack('coreshop', $configs['stack'], $container);
 
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $this->registerDependantBundles('coreshop', [PimcoreNewsletterBundle::class], $container);
-
         $container->setParameter('coreshop.customer.security.login_identifier', $configs['login_identifier']);
 
         $loader->load('services.yml');
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
 
         Autoconfiguration::registerForAutoConfiguration(
             $container,

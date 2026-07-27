@@ -17,6 +17,23 @@ transcends ordinary transactions.
 - [Documentation](https://docs.coreshop.com/latest)
 - [Pimcore Github](https://github.com/pimcore/pimcore)
 
+# Pimcore Studio UI
+
+CoreShop 5.0 ships with a fully rewritten admin interface built on **Pimcore Studio v2** (React/TypeScript). Each CoreShop bundle provides its own Studio plugin using Module Federation, allowing independent development and deployment.
+
+```bash
+# Install frontend dependencies
+npm ci
+
+# Build all Studio plugins
+npm run build
+
+# Start dev server for a single bundle
+npm run dev -- ResourceBundle
+```
+
+The build system auto-discovers all bundles with Studio assets under `src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/` and builds them in parallel.
+
 # Requirements
 
 - Pimcore `^12.3`

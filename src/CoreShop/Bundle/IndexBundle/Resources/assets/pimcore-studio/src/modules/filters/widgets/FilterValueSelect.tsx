@@ -1,0 +1,56 @@
+/**
+ * CoreShop IndexBundle - Filter Value Select Widget
+ *
+ * Schema widget for selecting a single value for a filter field.
+ * Uses FilterIndexContext for indexId and Form.useWatch for the current field name.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    CoreShop Commercial License (CCL)
+ */
+
+import React from 'react'
+import { Select, Form } from 'antd'
+import { useFilterIndex } from '../FilterIndexContext'
+import { filterApi } from '../api'
+import type { FieldValue } from '../types'
+
+interface FilterValueSelectProps {
+  value?: string | number
+  onChange?: (value: string | number) => void
+}
+
+export const FilterValueSelect: React.FC<FilterValueSelectProps> = ({ value, onChange }) => {
+  const { indexId } = useFilterIndex()
+  const fieldName = Form.useWatch('field')
+  const [options, setOptions] = React.useState<FieldValue[]>([])
+  const [loading, setLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!indexId || !fieldName) {
+      setOptions([])
+      return
+    }
+
+    setLoading(true)
+    filterApi.getValuesForFilterField(indexId, fieldName)
+      .then(setOptions)
+      .catch(err => {
+        console.error('Failed to load field values:', err)
+      })
+      .finally(() => setLoading(false))
+  }, [indexId, fieldName])
+
+  return (
+    <Select
+      value={value}
+      onChange={onChange}
+      options={options.map(v => ({ label: v.value, value: v.key }))}
+      loading={loading}
+      allowClear
+      showSearch
+      filterOption={(input, option) =>
+        String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+      }
+    />
+  )
+}

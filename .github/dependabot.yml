@@ -1,0 +1,66 @@
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      symfony:
+        patterns:
+          - "symfony/*"
+        update-types:
+          - "minor"
+          - "patch"
+      doctrine:
+        patterns:
+          - "doctrine/*"
+        update-types:
+          - "minor"
+          - "patch"
+      composer:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "symfony/*"
+          - "doctrine/*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Symfony major bumps must be coordinated across all symfony/* packages
+      # and aligned with pimcore's symfony constraint.
+      - dependency-name: "symfony/*"
+        update-types: ["version-update:semver-major"]
+      # Doctrine ORM/DBAL/Fixtures majors require coordinated upgrades.
+      - dependency-name: "doctrine/*"
+        update-types: ["version-update:semver-major"]
+      # Known BC-breaking majors — upgrade manually.
+      - dependency-name: "webmozart/assert"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "symplify/easy-coding-standard"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "phpstan/phpstan"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vimeo/psalm"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directories:
+      - "/src/CoreShop/Bundle/*/Resources/assets/pimcore-studio"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      studio-npm:
+        patterns:
+          - "*"

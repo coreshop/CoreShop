@@ -1,0 +1,40 @@
+---
+coreshop: 'CoreShop'
+coreshop_coreshop_relation: 'CoreShop Relation'
+coreshop_coreshop_relations: 'CoreShop Relationen'
+coreshop_save_success: 'Element wurde erfolgreich gespeichert'
+coreshop_enter_the_name: 'Geben Sie den Namen ein'
+coreshop_save_error: 'Fehler beim speichern des Elements'
+coreshop_multistore: 'Multistore'
+coreshop_total_items: 'Gesamt {0}'
+coreshop_permission_group_coreshop: 'CoreShop'
+coreshop_return_concrete: 'Return Type Concrete'
+
+# ManyToManyRelation Spaltenüberschriften
+relations.id: 'ID'
+relations.reference: 'Referenz'
+relations.path: 'Pfad'
+relations.type: 'Typ'
+relations.subtype: 'Untertyp'
+
+# Grid Filter & Action System
+coreshop_grid_filter: 'Filter'
+coreshop_grid_filter_empty: 'Kein Filter'
+coreshop_grid_filter_select: 'Filter auswählen...'
+coreshop_grid_actions: 'Aktionen ({count})'
+coreshop_grid_action_confirm: 'Aktion bestätigen'
+coreshop_grid_action_confirm_message: '"{action}" auf {count} Element(e) anwenden?'
+coreshop_grid_action_execute: 'Ausführen'
+coreshop_grid_action_cancel: 'Abbrechen'
+coreshop_grid_action_success: 'Aktion erfolgreich abgeschlossen'
+coreshop_grid_action_error: 'Aktion fehlgeschlagen'
+coreshop_grid_open: 'Öffnen'
+coreshop_grid_open_selected: 'Ausgewählte öffnen ({count})'
+coreshop_grid_refresh: 'Aktualisieren'
+
+# Grid Preset Filter
+coreshop_grid_filter_created_today: 'Heute erstellt'
+coreshop_grid_filter_created_this_week: 'Diese Woche erstellt'
+coreshop_grid_filter_created_this_month: 'Diesen Monat erstellt'
+coreshop_grid_filter_created_this_year: 'Dieses Jahr erstellt'
+coreshop_grid_filter_created_last_year: 'Letztes Jahr erstellt'

@@ -47,9 +47,9 @@ use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
 use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
-use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 final class CoreShopCoreBundle extends AbstractResourceBundle
 {
@@ -97,11 +97,15 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
+
+        if (self::isStudioUiBundleAvailable()) {
+            $studioFormBundleClass = self::getStudioFormBundleClass();
+            if (null !== $studioFormBundleClass) {
+                $collection->addBundle(new $studioFormBundleClass(), 3900);
+            }
+        }
+
         $collection->addBundle(new PimcoreCustomReportsBundle(), 20000);
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        $collection->addBundle(new PimcoreNewsletterBundle(), 20000);
     }
 
     public function getPackageName(): string
@@ -153,4 +157,25 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
     {
         return [];
     }
+
+    private static function isStudioUiBundleAvailable(): bool
+    {
+        $studioUiBundleClass = sprintf('Pimcore\\Bundle\\%s\\PimcoreStudioUiBundle', 'StudioUiBundle');
+
+        return class_exists($studioUiBundleClass) && is_subclass_of($studioUiBundleClass, BundleInterface::class);
+    }
+
+    /**
+     * @return class-string<BundleInterface>|null
+     */
+    private static function getStudioFormBundleClass(): ?string
+    {
+        $studioFormBundleClass = sprintf('CoreShop\\Bundle\\%s\\CoreShopStudioFormBundle', 'StudioFormBundle');
+        if (!class_exists($studioFormBundleClass) || !is_subclass_of($studioFormBundleClass, BundleInterface::class)) {
+            return null;
+        }
+
+        return $studioFormBundleClass;
+    }
+
 }

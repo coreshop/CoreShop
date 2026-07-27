@@ -49,6 +49,10 @@ final class CoreShopMoneyExtension extends AbstractPimcoreExtension
             $loader->load('services/classic_admin.yml');
         }
 
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
+
         $loader->load('services.yml');
     }
 }

@@ -9,3 +9,7 @@ services:
             - '@CoreShop\Bundle\ResourceBundle\Form\DataTransformer\PimcoreAssetDataTransformer'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\ResourceBundle\Form\Type\TagCollectionType:
+        tags:
+            - { name: form.type }

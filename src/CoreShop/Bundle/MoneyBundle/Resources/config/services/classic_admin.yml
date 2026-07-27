@@ -2,7 +2,7 @@ services:
   _defaults:
     public: true
 
-  CoreShop\Bundle\MoneyBundle\EventListener\IndexActionSettingsSubscriber:
+  CoreShop\Bundle\MoneyBundle\AdminClass\EventListener\IndexActionSettingsSubscriber:
     arguments:
       - '%coreshop.currency.decimal_precision%'
       - '%coreshop.currency.decimal_factor%'

@@ -17,16 +17,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-
-final class OrderSaleStateConfigurationType extends AbstractType
+final class OrderSaleStateConfigurationType extends AbstractWorkflowPlaceConfigurationType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    protected function getFieldName(): string
     {
-        $builder
-            ->add('saleState', TextType::class, [])
-        ;
+        return 'saleState';
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_notification_condition_order_sale_state';
     }
 }

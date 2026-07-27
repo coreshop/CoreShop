@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\RouteConfiguration;
-use Pimcore\Bundle\StaticRoutesBundle\Model\Staticroute;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,6 +33,13 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
 
     public function installResources(OutputInterface $output, ?string $applicationName = null, array $options = []): void
     {
+        $staticRouteClass = self::getStaticRouteClass();
+        if (null === $staticRouteClass) {
+            $output->writeln('  - <comment>Skipping static route installation (Pimcore StaticRoutesBundle not installed)</comment>');
+
+            return;
+        }
+
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.routes', $applicationName) : 'coreshop.all.pimcore.admin.install.routes';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
@@ -80,7 +86,7 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
             foreach ($routesToInstall as $name => $routeData) {
                 $progress->setMessage(sprintf('Install Route %s', $name));
 
-                $this->installRoute($name, $routeData);
+                $this->installRoute($name, $routeData, $staticRouteClass);
 
                 $progress->advance();
             }
@@ -92,12 +98,15 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
         }
     }
 
-    private function installRoute(string $name, array $properties): Staticroute
+    /**
+     * @param class-string $staticRouteClass
+     */
+    private function installRoute(string $name, array $properties, string $staticRouteClass): void
     {
-        $route = Staticroute::getByName($name);
+        $route = call_user_func([$staticRouteClass, 'getByName'], $name);
 
         if (!$route) {
-            $route = new Staticroute();
+            $route = new $staticRouteClass();
             $route->setId($name);
             $route->setName($name);
             $route->setMethods($properties['methods']);
@@ -109,7 +118,18 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
 
             $route->save();
         }
+    }
 
-        return $route;
+    /**
+     * @return class-string|null
+     */
+    private static function getStaticRouteClass(): ?string
+    {
+        $staticRouteClass = sprintf('Pimcore\\Bundle\\%s\\Model\\Staticroute', 'StaticRoutesBundle');
+        if (!class_exists($staticRouteClass)) {
+            return null;
+        }
+
+        return $staticRouteClass;
     }
 }

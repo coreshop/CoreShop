@@ -27,10 +27,18 @@ final class CurrencyType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('isoCode', TextType::class)
-            ->add('numericIsoCode', IntegerType::class)
-            ->add('symbol', TextType::class)
+            ->add('name', TextType::class, [
+                'label' => 'coreshop_name',
+            ])
+            ->add('isoCode', TextType::class, [
+                'label' => 'coreshop_currency_isoCode',
+            ])
+            ->add('numericIsoCode', IntegerType::class, [
+                'label' => 'coreshop_currency_numericIsoCode',
+            ])
+            ->add('symbol', TextType::class, [
+                'label' => 'coreshop_currency_symbol',
+            ])
         ;
     }
 

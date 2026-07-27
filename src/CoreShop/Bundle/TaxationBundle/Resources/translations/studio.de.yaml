@@ -1,0 +1,16 @@
+---
+coreshop_tax_rate: 'Steuerrate'
+coreshop_tax_rule_group: 'Steuerregel'
+coreshop_tax_rule_behavior_disable: 'Nur diese Steuer'
+coreshop_tax_rule_behavior_combine: 'Kombinieren'
+coreshop_tax_rule_behavior_on_after_another: 'Eine nach der anderen'
+coreshop_tax_rule_behavior: 'Verhalten'
+coreshop_all: 'Alle'
+coreshop_permission_tax_rate: 'CoreShop: Steuerrate'
+coreshop_permission_tax_rule_group: 'CoreShop: Steuerregel'
+
+# Studio v2
+coreshop_name: 'Name'
+coreshop_active: 'Aktiv'
+coreshop_tax_rate_select: 'Steuerrate auswählen'
+coreshop_tax_rule_group_select: 'Steuerregel auswählen'

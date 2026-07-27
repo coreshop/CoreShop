@@ -52,4 +52,9 @@ class AdminAddressCreationType extends AbstractType
             'allow_extra_fields' => true,
         ]);
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_admin_address_creation';
+    }
 }

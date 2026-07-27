@@ -5,7 +5,7 @@ CoreShop:
 
 ## Initial Setup
 
-1. Install with composer: `composer require coreshop/core-shop ^5.0`
+1. Install with composer: `composer require coreshop/core-shop ^5.1`
 2. Enable the bundle in `config/bundles.php` and the `CoreShopCoreBundle` to the list of Bundles to load:
     ```php
     <?php

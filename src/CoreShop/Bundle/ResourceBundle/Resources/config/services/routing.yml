@@ -6,6 +6,7 @@ services:
         arguments:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@CoreShop\Bundle\ResourceBundle\Routing\RouteFactoryInterface'
+            - '%coreshop.admin.route.backend_requirement%'
             - '%kernel.environment%'
         tags:
             - { name: routing.loader }

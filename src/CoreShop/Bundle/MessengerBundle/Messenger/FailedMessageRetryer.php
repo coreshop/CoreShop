@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
 use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
+use CoreShop\Bundle\MessengerBundle\Mercure\MessengerUpdate;
 use CoreShop\Bundle\MessengerBundle\Stamp\RetriedByUserStamp;
+use Pimcore\Bundle\StudioBackendBundle\Mercure\Service\PublishServiceInterface;
+use Pimcore\Bundle\StudioBackendBundle\Mercure\Util\Topics;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\BusNameStamp;
@@ -29,6 +32,7 @@ final class FailedMessageRetryer implements FailedMessageRetryerInterface
     public function __construct(
         private FailureReceiversRepositoryInterface $failureReceivers,
         private MessageBusInterface $messageBus,
+        private ?PublishServiceInterface $publishService = null,
     ) {
     }
 
@@ -62,5 +66,32 @@ final class FailedMessageRetryer implements FailedMessageRetryerInterface
         $this->messageBus->dispatch($newEnvelope);
 
         $failureReceiver->reject($envelope);
+
+        $this->publishMercureUpdate($receiver, $envelope, (string) $id);
+    }
+
+    private function publishMercureUpdate(string $receiver, Envelope $envelope, string $messageId): void
+    {
+        if (null === $this->publishService) {
+            return;
+        }
+
+        try {
+            $update = MessengerUpdate::retried(
+                $receiver,
+                \get_class($envelope->getMessage()),
+                $messageId,
+            );
+
+            $this->publishService->publish(
+                Topics::STUDIO->value,
+                $update,
+                true,
+                null,
+                'coreshop.messenger.update',
+            );
+        } catch (\Throwable) {
+            // Silently ignore publish errors
+        }
     }
 }
