@@ -1,7 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tree, Skeleton, Tag } from 'antd'
-import type { DataNode } from 'antd/es/tree'
+import { Skeleton } from 'antd'
 import {
   ContentLayout,
   Dropdown,
@@ -10,6 +9,8 @@ import {
   IconButton,
   Toolbar as PimToolbar,
   Draggable,
+  TreeElement,
+  type TreeDataItem,
   type DragAndDropInfo
 } from '@pimcore/studio-ui-bundle/components'
 import type { EntityListItem } from '../types'
@@ -35,13 +36,18 @@ export interface EntityListProps {
   dragType?: string
 }
 
+interface NodeMeta {
+  item?: EntityListItem
+  group?: GroupItem | { id: null, name: string }
+}
+
 export const EntityList: React.FC<EntityListProps> = ({
   items,
   groups,
   loading,
   rootTitle,
   addLabel,
-  leafIcon = 'widget-default',
+  leafIcon = 'widget',
   resolveGroupId,
   onReload,
   onAdd,
@@ -54,72 +60,39 @@ export const EntityList: React.FC<EntityListProps> = ({
   const { t } = useTranslation()
   const { styles } = useEntityListStyles()
 
-  const leafRow = (it: EntityListItem): React.ReactNode => {
-    const inactive = it.active === false
-
-    const base = (
-      <Dropdown
-        trigger={ ['contextMenu'] }
-        menu={ { items: [
-          { key: 'delete', icon: <Icon value='trash' />, label: t('toolbar.delete', { defaultValue: 'Delete' }), onClick: () => onDelete(it.id) }
-        ] } }
-      >
-          <span className={`${styles.leafNode} ${inactive ? styles.inactive : ''}`}>
-            <span className={styles.leafIcon}><Icon value={leafIcon} /></span>
-            {it.name}
-            {inactive && <Tag className={styles.inactiveTag}>{t('entity.inactive', { defaultValue: 'Inactive' })}</Tag>}
-          </span>
-      </Dropdown>
-    )
-    return buildDragInfo ? (
-      <Draggable info={ buildDragInfo(it) as DragAndDropInfo }>
-        {base}
-      </Draggable>
-    ) : base
-  }
-
-  const groupHeader = (g: GroupItem | { id: null, name: string }, count: number): React.ReactNode => {
-    const content = (
-      <span className={styles.groupNode}>
-        <Icon value='folder' />
-        <span>{g.name}</span>
-        <span className={styles.groupCount}>({count})</span>
-      </span>
-    )
-    if (!dragType || !onMove) return content
-    return (
-      <DroppableEntity
-        className={ styles.droppableInline }
-        accept={ dragType }
-        isValidData={ (info) => typeof info?.data?.id === 'number' }
-        onDrop={ (info) => { const id = info?.data?.id; if (typeof id === 'number') onMove(id, (g.id === null ? null : g.id)) } }
-      >
-        {content}
-      </DroppableEntity>
-    )
-  }
-
-  const buildTreeData = React.useMemo<DataNode[]>(() => {
-    const buildLeafNode = (it: EntityListItem): DataNode => ({
+  const buildTreeData = React.useMemo<TreeDataItem[]>(() => {
+    const buildLeafNode = (it: EntityListItem): TreeDataItem => ({
       key: it.id,
-      title: leafRow(it),
+      title: it.active === false
+        ? `${it.name} (${t('entity.inactive', { defaultValue: 'Inactive' })})`
+        : it.name,
+      icon: <Icon value={ leafIcon } />,
+      // Pimcore's drag wrappers need this class to keep rows at 24px
+      className: `ant-tree-node--has-drag-and-drop ${it.active === false ? styles.inactive : ''}`,
       isLeaf: true,
+      actions: [{ key: 'delete', icon: 'trash' }],
+      meta: { item: it } satisfies NodeMeta,
+    })
+
+    const buildGroupNode = (
+      key: string,
+      group: GroupItem | { id: null, name: string },
+      children: EntityListItem[]
+    ): TreeDataItem => ({
+      key,
+      title: `${group.name} (${children.length})`,
+      icon: <Icon value='folder' />,
+      className: 'ant-tree-node--has-drag-and-drop',
+      meta: { group } satisfies NodeMeta,
+      children: children.map(buildLeafNode)
     })
 
     if (!groups || groups.length === 0 || !resolveGroupId) {
-      return [{
-        key: 'root',
-        title: (
-          <span className={styles.groupNode}>
-            <Icon value='folder' />
-            <span>{rootTitle ?? t('entity.list.all', { defaultValue: 'All' })}</span>
-            <span className={styles.groupCount}>({items.length})</span>
-          </span>
-        ),
-        selectable: false,
-        expanded: true,
-        children: items.map(buildLeafNode)
-      }]
+      return [buildGroupNode(
+        'root',
+        { id: null, name: rootTitle ?? t('entity.list.all', { defaultValue: 'All' }) },
+        items
+      )]
     }
 
     // grouped view
@@ -133,24 +106,19 @@ export const EntityList: React.FC<EntityListProps> = ({
       else ungrouped.push(it)
     }
 
-    const nodes: DataNode[] = groups
+    const nodes: TreeDataItem[] = groups
       .filter(g => (groupedMap[g.id] ?? []).length > 0)
-      .map(g => ({
-        key: `group-${g.id}`,
-        title: groupHeader(g, (groupedMap[g.id] ?? []).length),
-        selectable: false,
-        children: (groupedMap[g.id] ?? []).map(buildLeafNode)
-      }))
+      .map(g => buildGroupNode(`group-${g.id}`, g, groupedMap[g.id] ?? []))
+
     if (ungrouped.length > 0) {
-      nodes.push({
-        key: 'group-unknown',
-        title: groupHeader({ id: null, name: t('entity.group.unknown', { defaultValue: 'unbekannt' }) }, ungrouped.length),
-        selectable: false,
-        children: ungrouped.map(buildLeafNode)
-      })
+      nodes.push(buildGroupNode(
+        'group-unknown',
+        { id: null, name: t('entity.group.unknown', { defaultValue: 'unbekannt' }) },
+        ungrouped
+      ))
     }
     return nodes
-  }, [items, groups, resolveGroupId, t, dragType, onMove, leafIcon])
+  }, [items, groups, resolveGroupId, rootTitle, t, leafIcon])
 
   const initialExpandedKeys = React.useMemo<React.Key[]>(() => {
     const keys: React.Key[] = []
@@ -168,6 +136,36 @@ export const EntityList: React.FC<EntityListProps> = ({
     }
   }, [initialExpandedKeys])
 
+  const toggleExpanded = (key: React.Key): void => {
+    expandedTouchedRef.current = true
+    setExpandedKeys((keys) => keys.includes(key) ? keys.filter(k => k !== key) : [...keys, key])
+  }
+
+  // only wraps the title for drag-and-drop — everything visual comes from TreeElement itself
+  const renderTitle = (node: any, initialComponent: React.ReactElement): React.ReactNode => {
+    const meta = node.meta as NodeMeta | undefined
+
+    if (meta?.item !== undefined && buildDragInfo !== undefined) {
+      return <Draggable info={ buildDragInfo(meta.item) as DragAndDropInfo }>{initialComponent}</Draggable>
+    }
+
+    if (meta?.group !== undefined && dragType !== undefined && onMove !== undefined) {
+      const group = meta.group
+
+      return (
+        <DroppableEntity
+          accept={ dragType }
+          isValidData={ (info) => typeof info?.data?.id === 'number' }
+          onDrop={ (info) => { const id = info?.data?.id; if (typeof id === 'number') onMove(id, group.id) } }
+        >
+          {initialComponent}
+        </DroppableEntity>
+      )
+    }
+
+    return initialComponent
+  }
+
   return (
     <ContentLayout
       renderToolbar={ (
@@ -183,23 +181,27 @@ export const EntityList: React.FC<EntityListProps> = ({
         </PimToolbar>
       ) }
     >
-      {loading ? (
+      {loading === true ? (
         <div className={styles.contentPadding}>
           <Skeleton active title={false} paragraph={{ rows: 8 }} />
         </div>
       ) : (
-        <Tree
+        <TreeElement
           className={ styles.tree }
-          showLine={false}
           defaultExpandedKeys={ expandedKeys }
-          expandedKeys={ expandedKeys }
-          onExpand={ (keys) => { expandedTouchedRef.current = true; setExpandedKeys(keys as React.Key[]) } }
-          selectable
-          treeData={ buildTreeData }
-          onSelect={ (keys) => {
-            const key = Array.isArray(keys) ? keys[0] : keys
-            if (typeof key === 'number') onSelect(key)
+          onExpand={ (keys) => { expandedTouchedRef.current = true; setExpandedKeys(keys) } }
+          onActionsClick={ (key, action) => {
+            if (action === 'delete') {
+              const id = Number.parseInt(key, 10)
+              if (!Number.isNaN(id)) onDelete(id)
+            }
           } }
+          onSelected={ (key) => {
+            if (typeof key === 'number') onSelect(key)
+            else toggleExpanded(key as React.Key)
+          } }
+          titleRender={ renderTitle }
+          treeData={ buildTreeData }
         />
       )}
     </ContentLayout>

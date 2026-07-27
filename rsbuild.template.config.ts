@@ -240,6 +240,44 @@ const moduleFederationOptions: Record<string, any> = {
       requiredVersion: false,
       strictVersion: false
     },
+    // must resolve to the host's instances, otherwise CoreShop components render outside
+    // Pimcore's ConfigProvider/antd-style theme and fall back to antd's default tokens
+    antd: {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    'antd-style': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@ant-design/colors': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    '@ant-design/icons': {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    classnames: {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
+    dayjs: {
+      singleton: true,
+      eager: false,
+      requiredVersion: false,
+      strictVersion: false
+    },
     react: {
       singleton: true,
       eager: false,
