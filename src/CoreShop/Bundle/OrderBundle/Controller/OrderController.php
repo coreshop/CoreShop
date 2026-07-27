@@ -148,6 +148,8 @@ class OrderController extends PimcoreController
         OrderRepositoryInterface $orderRepository,
         StateMachineManagerInterface $stateMachineManager,
     ): Response {
+        $this->isGrantedOr403();
+
         $orderId = $this->getParameterFromRequest($request, 'id');
         $transition = $this->getParameterFromRequest($request, 'transition');
         $order = $orderRepository->find($orderId);
@@ -821,6 +823,11 @@ class OrderController extends PimcoreController
             'value' => htmlentities($data),
             'detail' => $detail,
         ];
+    }
+
+    protected function getPermission(): string
+    {
+        return 'coreshop_permission_order_detail';
     }
 
     public static function getSubscribedServices(): array
