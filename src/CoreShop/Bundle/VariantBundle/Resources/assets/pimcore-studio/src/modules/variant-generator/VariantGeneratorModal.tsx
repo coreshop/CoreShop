@@ -9,8 +9,8 @@
  */
 
 import React from 'react'
-import { Modal, Tree, Spin, Alert } from 'antd'
-import { useMessage } from '@pimcore/studio-ui-bundle/components'
+import { Modal, Spin, Alert } from 'antd'
+import { Icon, TreeElement, useMessage } from '@pimcore/studio-ui-bundle/components'
 import { renderApiError } from '@coreshop/resource/src/entities'
 import { useTranslation } from 'react-i18next'
 import { variantGeneratorApi, type AttributeNode } from './api'
@@ -18,6 +18,7 @@ import { variantGeneratorApi, type AttributeNode } from './api'
 interface TreeDataNode {
   key: string
   title: string
+  icon: React.JSX.Element
   isLeaf: boolean
   checkable: boolean
   children?: TreeDataNode[]
@@ -88,6 +89,7 @@ export const VariantGeneratorModal: React.FC<Props> = ({ open, objectId, onClose
           return {
             key: attrKey,
             title: attr.text,
+            icon: <Icon value='multi-select' />,
             isLeaf: true,
             checkable: true,
             attributeId: attr.id,
@@ -100,6 +102,7 @@ export const VariantGeneratorModal: React.FC<Props> = ({ open, objectId, onClose
         return {
           key: groupKey,
           title: group.text,
+          icon: <Icon value='folder' />,
           isLeaf: false,
           checkable: false,
           children
@@ -204,8 +207,7 @@ export const VariantGeneratorModal: React.FC<Props> = ({ open, objectId, onClose
               style={{ marginBottom: 16 }}
             />
           )}
-          <Tree
-            checkable
+          <TreeElement
             checkStrictly
             defaultExpandAll
             treeData={treeData}

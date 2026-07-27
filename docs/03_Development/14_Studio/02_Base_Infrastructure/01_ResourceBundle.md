@@ -246,6 +246,52 @@ export const TaxRateManager: React.FC = () => {
 - Auto-reloads list after add/delete
 - Save via footer toolbar (managed internally by EntityTabbedLayout)
 
+## Tree Rendering (EntityList)
+
+All CoreShop trees render with Pimcore's `TreeElement` component so they are visually
+identical to Pimcore's own trees (Classes, Thumbnails, Users, …):
+
+```typescript
+import { TreeElement, type TreeDataItem, Icon } from '@pimcore/studio-ui-bundle/components'
+```
+
+Rules for building tree nodes:
+
+- `title` must be a **plain string** — `TreeElement` renders it inside its own
+  `ant-tree-title__btn` button (this is what gives the Pimcore look and keyboard handling).
+- Node icons go into the `icon` property (`icon: <Icon value="folder" />`), not into the title.
+- Context-menu entries go into `actions` (`[{ key: 'delete', icon: 'trash' }]`) and are handled
+  via `onActionsClick(key, action, node)`. Labels resolve from `tree.actions.<key>`; pass
+  `translationKey` for CoreShop-specific labels.
+- Counts, type hints and state markers belong **in the title string** (`Notification Rules (7)`),
+  the way Pimcore does it — not in extra elements. Wrapper elements break the node's line box and
+  then need CSS to repair it.
+- Use `titleRender` only for behaviour that needs a wrapper element: drag-and-drop (`Draggable`,
+  `Droppable`) and double-click. It receives `(node, initialComponent)` — always render
+  `initialComponent` inside the wrapper.
+- Nodes wrapped in a drag container need `className: 'ant-tree-node--has-drag-and-drop'`, plus
+  `.ant-tree-title__btn { height: 24px }` on the tree — Pimcore's drag wrappers render a
+  block-level `div` inside `.ant-tree-title` and fix the same thing for `.hotspot-droppable`.
+- Attach custom payloads to `meta` — it is passed through to `titleRender` and `onActionsClick`.
+- Beyond that, do **not** re-style `.ant-tree-*`; `TreeElement` already carries the Pimcore node
+  paddings, hover/selected colors, chevron switcher icon and icon slot.
+
+```typescript
+const treeData: TreeDataItem[] = [{
+  key: 'root',
+  title: `Notification Rules (${items.length})`,
+  icon: <Icon value="folder" />,
+  children: items.map((item) => ({
+    key: item.id,
+    title: item.name,
+    icon: <Icon value="widget" />,
+    isLeaf: true,
+    actions: [{ key: 'delete', icon: 'trash' }],
+    meta: { item }
+  }))
+}]
+```
+
 ## GroupedEntityTabbedManager
 
 For entities that belong to groups (e.g., Countries grouped by Zone), use `GroupedEntityTabbedManager`. It adds a hierarchical tree view.
