@@ -15,6 +15,9 @@ import { serviceIds as pimcoreServiceIds } from '@pimcore/studio-ui-bundle/app'
 import type { WidgetRegistry as PimcoreWidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { widgetRegistryServiceId, type WidgetRegistry } from '@coreshop/studio-form'
+// Deep import (bundled, not a shared remote) so the document editable registration also works
+// inside the reduced document editor iframe app.
+import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
 import { Input } from 'antd'
 import { IndexBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopFilter } from './dynamic-types'
@@ -30,6 +33,11 @@ const plugin: IAbstractPlugin = {
     name: 'coreshop-index',
 
     onInit() {
+        // Register this bundle's document editables. Runs in the main app and in the reduced
+        // document editor iframe; only depends on the core DocumentEditableRegistry.
+        registerCoreShopDocumentEditableSelects(['coreshop_filter', 'coreshop_index'])
+
+        try {
         // Register Dynamic Types
         const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
             pimcoreServiceIds['DynamicTypes/ObjectDataRegistry']
@@ -80,16 +88,25 @@ const plugin: IAbstractPlugin = {
             component: InterpreterCollectionWidget,
             props: { field },
         }))
+        } catch {
+            // Everything above targets the main Studio app (object editor, widgets, schema
+            // forms). Those services are absent in the reduced document editor iframe app —
+            // skip them there; the document editables are already registered above.
+        }
     },
 
     onStartup({ moduleSystem }) {
-        // Hide IndexBundle-owned rule collection prefixes from generic schema forms
-        const formWidgetRegistry = container.get<WidgetRegistry>(widgetRegistryServiceId)
-        const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
-        ;[
-          'coreshop_filter_pre_condition_collection',
-          'coreshop_filter_user_condition_collection',
-        ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+        try {
+            // Hide IndexBundle-owned rule collection prefixes from generic schema forms
+            const formWidgetRegistry = container.get<WidgetRegistry>(widgetRegistryServiceId)
+            const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+            ;[
+              'coreshop_filter_pre_condition_collection',
+              'coreshop_filter_user_condition_collection',
+            ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+        } catch {
+            // Main Studio app only — StudioForm registry absent in the document editor iframe.
+        }
 
         moduleSystem.registerModule(IndexBundleIconModule)
     }

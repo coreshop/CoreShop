@@ -1,3 +1,7 @@
+## 4.1.12
+* [StorageListBundle] Fix authentication (remember me token) by @breakone in https://github.com/coreshop/CoreShop/pull/3086
+* [OrderBundle] Restore last-opened cart across sessions by @breakone in https://github.com/coreshop/CoreShop/pull/3083
+
 ## 4.1.11
 * Fix order token generator entropy using CSPRNG and 32-char tokens by @Copilot in https://github.com/coreshop/CoreShop/pull/2964
 * Fix password reset security: user enumeration, weak tokens, plaintext storage, missing TTL by @Copilot in https://github.com/coreshop/CoreShop/pull/2961

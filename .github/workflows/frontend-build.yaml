@@ -1,21 +1,42 @@
 name: CoreShop Studio Frontend Build
 
-# Rebuild trigger: regenerate Studio bundles via PR to satisfy branch ruleset.
 on:
+  # Pull requests only verify that the Studio bundles type-check and build. Nothing is committed,
+  # so the diff of a pull request stays limited to the actual source changes.
   pull_request:
-    branches: [ '5.1', '2026.x' ]
+    branches: [ '2026.x' ]
+  # The built assets are committed once per push to the release branch. That commit is what the
+  # monorepo split picks up, so consumers keep getting prebuilt assets.
+  #
+  # The commit itself only touches the built assets, so `paths-ignore` keeps it from triggering
+  # another (no-op) build. It deliberately carries no `[skip ci]` marker: that would skip every
+  # workflow for the push, including the monorepo split that has to pick the assets up.
+  push:
+    branches: [ '2026.x' ]
+    paths-ignore:
+      - 'src/CoreShop/Bundle/*/Resources/public/studio/**'
   workflow_dispatch:
 
 permissions:
   contents: read
 
-# dummy change to trigger frontend build
-
 jobs:
+  # Pull requests and manual runs verify only. Gating on `push` rather than on "not a pull
+  # request" keeps a manual run on a feature branch from committing assets to that branch.
+  verify:
+    if: ${{ github.event_name != 'push' }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/shared-frontend-build.yaml
+    with:
+      commit: false
+
   build:
-    # Only run on same-repo branches. Fork PRs get a read-only token under
-    # `pull_request`, so the auto-commit push would fail anyway.
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.event_name == 'push' }}
     permissions:
       contents: write
     uses: ./.github/workflows/shared-frontend-build.yaml
+    # Needed for STUDIO_BUILD_APP_PRIVATE_KEY: a called workflow gets no secrets by default.
+    secrets: inherit
+    with:
+      commit: true

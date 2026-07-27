@@ -231,4 +231,5 @@ const plugin: IAbstractPlugin = {
 ### See Also
 
 - [ResourceBundle Documentation](../../14_Studio/02_Base_Infrastructure/01_ResourceBundle.md) - EntityApi and EntityTabbedManager
+- [Exchange Rates](../../../02_User_Documentation/04_Localization/04_Currencies.md#exchange-rates) - Managing currency exchange rates
 - [Countries](../02_Countries/01_CRUD.md) - Countries can have default currencies

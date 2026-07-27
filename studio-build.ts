@@ -7,10 +7,10 @@
  */
 
 import { execSync } from 'child_process'
+import crypto from 'crypto'
 import path from 'path'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
-import { v4 as uuidv4 } from 'uuid'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -19,6 +19,49 @@ interface Plugin {
   name: string
   path: string
   color: string
+}
+
+/**
+ * Root files that influence the output of every bundle build.
+ */
+const rootConfigFiles = [
+  'rsbuild.template.config.ts',
+  'package.json',
+  'package-lock.json',
+  'tsconfig.json',
+  'tsconfig.studio.json',
+  'studio-build.ts'
+]
+
+/**
+ * Build a map of bundle -> the bundles it depends on, resolved from the
+ * `file:` entries in its package.json.
+ */
+function buildBundleDepsMap(plugins: Plugin[]): Map<string, string[]> {
+  const bundleDeps = new Map<string, string[]>()
+
+  for (const plugin of plugins) {
+    const pkgPath = path.resolve(__dirname, plugin.path, 'package.json')
+    try {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
+      const deps = Object.values({ ...pkg.dependencies, ...pkg.devDependencies }) as string[]
+      const fileDeps: string[] = []
+      for (const dep of deps) {
+        if (dep.startsWith('file:')) {
+          // Extract bundle name from file: path like "file:../../ResourceBundle/Resources/assets/pimcore-studio"
+          const depMatch = dep.match(/(\w+Bundle)\/Resources\/assets\/pimcore-studio/)
+          if (depMatch) {
+            fileDeps.push(depMatch[1])
+          }
+        }
+      }
+      bundleDeps.set(plugin.name, fileDeps)
+    } catch {
+      // If package.json can't be read, no deps
+    }
+  }
+
+  return bundleDeps
 }
 
 /**
@@ -47,14 +90,6 @@ function getChangedBundles(plugins: Plugin[]): Plugin[] | null {
   }
 
   // If root build config changed, rebuild everything
-  const rootConfigFiles = [
-    'rsbuild.template.config.ts',
-    'package.json',
-    'package-lock.json',
-    'tsconfig.json',
-    'tsconfig.studio.json',
-    'studio-build.ts'
-  ]
   if (changedFiles.some(f => rootConfigFiles.includes(f))) {
     console.log('Root config changed, building all bundles')
     return null
@@ -74,28 +109,7 @@ function getChangedBundles(plugins: Plugin[]): Plugin[] | null {
   }
 
   // Expand dependency graph: if a dependency changed, dependents must rebuild too
-  // Build a map of bundle -> its file: dependencies from package.json
-  const bundleDeps = new Map<string, string[]>()
-  for (const plugin of plugins) {
-    const pkgPath = path.resolve(__dirname, plugin.path, 'package.json')
-    try {
-      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
-      const deps = Object.values({ ...pkg.dependencies, ...pkg.devDependencies }) as string[]
-      const fileDeps: string[] = []
-      for (const dep of deps) {
-        if (dep.startsWith('file:')) {
-          // Extract bundle name from file: path like "file:../../ResourceBundle/Resources/assets/pimcore-studio"
-          const depMatch = dep.match(/(\w+Bundle)\/Resources\/assets\/pimcore-studio/)
-          if (depMatch) {
-            fileDeps.push(depMatch[1])
-          }
-        }
-      }
-      bundleDeps.set(plugin.name, fileDeps)
-    } catch {
-      // If package.json can't be read, no deps
-    }
-  }
+  const bundleDeps = buildBundleDepsMap(plugins)
 
   // Iteratively expand: if any dependency is in changedBundleNames, add the dependent
   let expanded = true
@@ -115,6 +129,96 @@ function getChangedBundles(plugins: Plugin[]): Plugin[] | null {
   }
 
   return plugins.filter(p => changedBundleNames.has(p.name))
+}
+
+/**
+ * Collect the transitive `file:` dependency closure of a bundle, including the bundle itself.
+ */
+function collectDependencyClosure(bundleName: string, bundleDeps: Map<string, string[]>): string[] {
+  const closure = new Set<string>()
+  const queue = [bundleName]
+
+  while (queue.length > 0) {
+    const current = queue.shift()!
+    if (closure.has(current)) {
+      continue
+    }
+    closure.add(current)
+    queue.push(...(bundleDeps.get(current) ?? []))
+  }
+
+  return [...closure].sort()
+}
+
+/**
+ * Recursively collect the source files of a bundle's studio assets, relative to the repo root.
+ */
+function collectSourceFiles(dir: string, files: string[] = []): string[] {
+  const ignored = new Set(['node_modules', 'dist', '.rsbuild', '.turbo'])
+
+  let entries: fs.Dirent[]
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true })
+  } catch {
+    return files
+  }
+
+  for (const entry of entries) {
+    if (ignored.has(entry.name)) {
+      continue
+    }
+
+    const full = path.resolve(dir, entry.name)
+    if (entry.isDirectory()) {
+      collectSourceFiles(full, files)
+    } else if (entry.isFile()) {
+      files.push(full)
+    }
+  }
+
+  return files
+}
+
+/**
+ * Derive a deterministic build id for a bundle from its sources.
+ *
+ * The build id doubles as the output directory name and as the asset prefix, so it has to
+ * change whenever the emitted assets change (cache busting) — but *only* then. Using a random
+ * id per build made every build a full delete/add of all assets in git, which drowned out the
+ * actual changes in pull requests.
+ *
+ * Inputs are the bundle's own sources, the sources of every bundle it depends on (they get
+ * inlined via the aliases in rsbuild.template.config.ts) and the root build configuration.
+ */
+function computeBuildId(plugin: Plugin, plugins: Plugin[], bundleDeps: Map<string, string[]>): string {
+  const hash = crypto.createHash('sha256')
+  const pluginsByName = new Map(plugins.map(p => [p.name, p]))
+
+  for (const file of rootConfigFiles) {
+    const full = path.resolve(__dirname, file)
+    if (fs.existsSync(full)) {
+      hash.update(`${file}\0`)
+      hash.update(fs.readFileSync(full))
+    }
+  }
+
+  for (const bundleName of collectDependencyClosure(plugin.name, bundleDeps)) {
+    const dependency = pluginsByName.get(bundleName)
+    if (!dependency) {
+      continue
+    }
+
+    const root = path.resolve(__dirname, dependency.path)
+    const files = collectSourceFiles(root).sort()
+
+    for (const file of files) {
+      // Hash the path relative to the repo root so the id is independent of the checkout location
+      hash.update(`${path.relative(__dirname, file).split(path.sep).join('/')}\0`)
+      hash.update(fs.readFileSync(file))
+    }
+  }
+
+  return hash.digest('hex').slice(0, 32)
 }
 
 // Color codes for console output
@@ -291,10 +395,11 @@ async function main() {
     log(`Found ${buildPlugins.length} bundles to build concurrently`, colors.cyan);
 
     // Build all plugins in parallel using concurrently for better output management
+    const bundleDeps = buildBundleDepsMap(plugins);
     const commands = buildPlugins.map(plugin => {
       const bundleName = plugin.name.replace(/Bundle$/, '').toLowerCase();
       const bundleDir = plugin.name.replace(/Bundle$/, '');
-      const buildId = uuidv4();
+      const buildId = computeBuildId(plugin, plugins, bundleDeps);
 
       return `CORESHOP_BUNDLE_NAME=${bundleName} CORESHOP_BUNDLE_DIR=${bundleDir} CORESHOP_BUILD_ID=${buildId} rsbuild build --config rsbuild.template.config.ts`;
     });

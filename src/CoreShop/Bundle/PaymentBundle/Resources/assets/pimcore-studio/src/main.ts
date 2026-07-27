@@ -18,6 +18,9 @@ import { Input } from 'antd'
 import { widgetRegistryServiceId } from '@coreshop/studio-form'
 import type { WidgetRegistry as StudioFormWidgetRegistry } from '@coreshop/studio-form'
 import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoiceWidget'
+// Deep import (bundled, not a shared remote) so the document editable registration also works
+// inside the reduced document editor iframe app.
+import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
 import { loadPaymentProviders, getPaymentProviderCache } from './components/PaymentProviderSelect'
 import { PaymentBundleIconModule } from './modules/icon-library'
 import { PaymentProviderWidgetsModule } from './modules/payment-providers/widgets'
@@ -35,6 +38,11 @@ const plugin: IAbstractPlugin = {
   name: 'coreshop-payment',
 
   onInit() {
+    // Register this bundle's document editables. Runs in the main app and in the reduced
+    // document editor iframe; only depends on the core DocumentEditableRegistry.
+    registerCoreShopDocumentEditableSelects(['coreshop_payment_provider'])
+
+    try {
     // ============================================
     // Dynamic Types Registration
     // ============================================
@@ -104,16 +112,24 @@ const plugin: IAbstractPlugin = {
       name: 'coreshop_payment_provider_rules',
       component: PaymentProviderRuleManager
     })
+    } catch {
+      // Main Studio app only — object editor / StudioForm / rule registries are absent in the
+      // reduced document editor iframe. The document editables are already registered above.
+    }
   },
 
   onStartup({ moduleSystem }) {
-    // Hide PaymentBundle-owned rule collection prefixes from generic schema forms
-    const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
-    const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
-    ;[
-      'coreshop_payment_provider_rule_condition_collection',
-      'coreshop_payment_action_collection',
-    ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+    try {
+      // Hide PaymentBundle-owned rule collection prefixes from generic schema forms
+      const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)
+      const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
+      ;[
+        'coreshop_payment_provider_rule_condition_collection',
+        'coreshop_payment_action_collection',
+      ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
+    } catch {
+      // Main Studio app only — StudioForm registry absent in the document editor iframe.
+    }
 
     moduleSystem.registerModule(PaymentBundleIconModule)
     moduleSystem.registerModule(PaymentProviderWidgetsModule)
