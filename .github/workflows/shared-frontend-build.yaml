@@ -2,46 +2,27 @@ name: shared-frontend-build
 
 on:
   workflow_call:
+    inputs:
+      commit:
+        description: >-
+          Commit the built Studio assets back to the branch. Only enabled for pushes to a
+          release branch — pull requests build for verification only, so their diffs stay
+          readable.
+        type: boolean
+        default: false
 
-env:
-  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-
-permissions:
-  contents: read
-
+# No workflow-level `permissions`: it would override what the calling job grants, leaving the
+# build job read-only even on the push build. Jobs declare what they need instead.
 jobs:
-  install:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-        with:
-          ref: ${{ env.BRANCH_NAME }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci --ignore-scripts
-
-      - name: Run esbuild install script
-        run: npm rebuild esbuild
-
   check-types:
-    needs: install
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-        with:
-          ref: ${{ env.BRANCH_NAME }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -58,19 +39,15 @@ jobs:
       - name: Run type checks
         run: npm run check-types
 
+  # No job-level `permissions` block: the job inherits what the calling workflow grants, so the
+  # write scope needed for the commit only exists on the push build.
   build:
     needs: check-types
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-        with:
-          ref: ${{ env.BRANCH_NAME }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -95,9 +72,40 @@ jobs:
       - name: Run production build
         run: npm run build
 
-      - uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          file_pattern: 'src/CoreShop/Bundle/*/Resources/public/studio/*/**'
-          add_options: '-f'
-          skip_dirty_check: true
-          commit_message: "Build CoreShop Studio bundles [skip ci]"
+      # Build ids are derived from the sources, so an unchanged bundle produces an unchanged
+      # output directory and anything reported here is a real asset change.
+      #
+      # `git add --all` also stages deletions of stale build directories. The previous
+      # `file_pattern` glob missed those: the shell expands it against the working tree, so
+      # directories that no longer exist never reached `git add` and piled up in the repository.
+      - name: Stage built assets
+        id: stage
+        run: |
+          git add --all --force -- 'src/CoreShop/Bundle/*/Resources/public/studio/*'
+          if git diff --cached --quiet; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            echo 'Studio assets are up to date.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+            {
+              echo '### Studio assets changed by this build'
+              echo
+              echo '```'
+              git diff --cached --stat
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit built assets
+        if: ${{ inputs.commit && steps.stage.outputs.changed == 'true' }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Build CoreShop Studio bundles'
+
+          # If the branch moved on in the meantime, that newer push runs its own build and
+          # supersedes these assets. Report it and stop rather than failing the job.
+          if ! git push origin HEAD:"${GITHUB_REF_NAME}"; then
+            echo "::notice::${GITHUB_REF_NAME} moved on during the build; the newer push rebuilds the assets."
+            echo 'Push skipped: branch moved on during the build.' >> "$GITHUB_STEP_SUMMARY"
+          fi
