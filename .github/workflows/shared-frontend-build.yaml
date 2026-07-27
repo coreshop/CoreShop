@@ -11,12 +11,14 @@ on:
         type: boolean
         default: false
 
-permissions:
-  contents: read
-
+# No workflow-level `permissions`: it would override what the calling job grants, leaving the
+# build job read-only even on the push build. Jobs declare what they need instead.
 jobs:
   check-types:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code

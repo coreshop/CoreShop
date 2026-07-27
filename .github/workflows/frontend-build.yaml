@@ -21,8 +21,10 @@ permissions:
   contents: read
 
 jobs:
+  # Pull requests and manual runs verify only. Gating on `push` rather than on "not a pull
+  # request" keeps a manual run on a feature branch from committing assets to that branch.
   verify:
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name != 'push' }}
     permissions:
       contents: read
     uses: ./.github/workflows/shared-frontend-build.yaml
@@ -30,7 +32,7 @@ jobs:
       commit: false
 
   build:
-    if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ github.event_name == 'push' }}
     permissions:
       contents: write
     uses: ./.github/workflows/shared-frontend-build.yaml
