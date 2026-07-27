@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -191,7 +190,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
             }
         }
 
-        /** @var AddressesAwareInterface $dependenciesObject */
+        /** @var AddressesAwareInterface&DataObject $dependenciesObject */
         foreach ($dependenciesObjects as $dependenciesObject) {
             $save = false;
             if ($dependenciesObject->hasAddress($address)) {
@@ -242,7 +241,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
 
         if ($element instanceof ElementInterface) {
-            VersionHelper::useVersioning(function () use ($element) {
+            VersionHelper::useVersioning(function () use ($element): void {
                 $element->save();
             }, $useVersioning);
         }

@@ -67,7 +67,7 @@ services:
            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
            - '@coreshop.repository.order_invoice'
            - '@coreshop.repository.order_shipment'
-           - '@coreshop.renderer.order.pdf'
+           - '@CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface'
            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
            - '@CoreShop\Component\Pimcore\Mail\MailProcessorInterface'
 

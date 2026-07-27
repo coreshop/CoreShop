@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -76,7 +75,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (array &$foundField, int $index, array &$parent) {
+            function (array &$foundField, int $index, array &$parent): void {
                 unset($parent[$this->childrenPath][$index]);
             },
         );
@@ -92,7 +91,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition): void {
                 if ($index === 0) {
                     $index = 1;
                 }
@@ -111,7 +110,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition): void {
                 $childs = $parent[$this->childrenPath];
 
                 array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
@@ -126,7 +125,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (array &$foundField, int $index, array &$parent) use ($keyValues) {
+            function (array &$foundField, int $index, array &$parent) use ($keyValues): void {
                 foreach ($keyValues as $key => $value) {
                     $foundField[$key] = $value;
                 }
@@ -139,7 +138,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition): void {
                 $foundField = $jsonFieldDefinition;
             },
         );
@@ -150,7 +149,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition): void {
                 if ($index === 0) {
                     $index = 1;
                 }
@@ -169,7 +168,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition): void {
                 $childs = $parent[$this->childrenPath];
 
                 array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
@@ -184,7 +183,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition): void {
                 $foundField = $jsonFieldDefinition;
             },
         );
@@ -195,7 +194,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (array &$foundField, int $index, array &$parent) use ($keyValues) {
+            function (array &$foundField, int $index, array &$parent) use ($keyValues): void {
                 foreach ($keyValues as $key => $value) {
                     $foundField[$key] = $value;
                 }
@@ -208,7 +207,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (array &$foundField, int $index, array &$parent) {
+            function (array &$foundField, int $index, array &$parent): void {
                 unset($parent[$this->childrenPath][$index]);
             },
         );

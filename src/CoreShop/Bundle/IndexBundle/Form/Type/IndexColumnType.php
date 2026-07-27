@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -49,7 +48,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
             ->add('objectKey', TextType::class)
             ->add('columnType', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => $this->validationGroups]),
+                    new NotBlank(groups: $this->validationGroups),
                 ],
             ])
             ->add('getter', IndexColumnGetterChoiceType::class)
@@ -60,7 +59,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
          * Getter Configurations
          */
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getGetterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -68,7 +67,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $this->addGetterConfigurationFields($event->getForm(), $this->getterTypeRegistry->get($type, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getGetterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -76,7 +75,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $event->getForm()->get('getter')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 if (!isset($data['getter'])) {
@@ -91,7 +90,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
          * Interpreter Configurations
          */
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getInterpreterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -99,7 +98,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $this->addInterpreterConfigurationFields($event->getForm(), $this->interpreterTypeRegistry->get($type, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getInterpreterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -107,7 +106,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $event->getForm()->get('interpreter')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 if (!isset($data['interpreter'])) {

@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -33,7 +32,7 @@ use CoreShop\Component\Resource\DataHub\Type\JsonType;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\IntType;
@@ -45,9 +44,9 @@ use PHPStan\Type\BooleanType;
 
 class DoctrineProvider
 {
-    public const JSON = 'Json';
+    public const string JSON = 'Json';
 
-    public const ARRAY = 'Array';
+    public const string ARRAY = 'Array';
 
     /** @var Type[] */
     private static array|null $standardTypes = null;
@@ -121,7 +120,7 @@ class DoctrineProvider
         $this->initializeResource($this->em->getClassMetadata($className), $niceName);
     }
 
-    public function initializeResource(ClassMetadataInfo $entityMetaType, string $niceName): void
+    public function initializeResource(ClassMetadata $entityMetaType, string $niceName): void
     {
         $config = [];
         $doctrineClass = $entityMetaType->getName();
@@ -214,7 +213,7 @@ class DoctrineProvider
                 if (isset($this->doctrineMetadata[$graphName])) {
                     $resolver = null;
 
-                    if ($association['type'] === ClassMetadataInfo::ONE_TO_ONE || $association['type'] === ClassMetadataInfo::MANY_TO_ONE) {
+                    if ($association['type'] === ClassMetadata::ONE_TO_ONE || $association['type'] === ClassMetadata::MANY_TO_ONE) {
                         $resolver = new DoctrineToOne($this, $fieldName, $graphName);
                     } else {
                         $resolver = new DoctrineToMany($this, $fieldName, $graphName);
@@ -267,7 +266,7 @@ class DoctrineProvider
             'name' => $config['name'] . '__Input',
             'fields' => function () use ($entityMetaType, $inputFields) {
                 foreach ($entityMetaType->getAssociationMappings() as $association) {
-                    if ($association['type'] === ClassMetadataInfo::MANY_TO_ONE || $association['type'] === ClassMetadataInfo::ONE_TO_ONE) {
+                    if ($association['type'] === ClassMetadata::MANY_TO_ONE || $association['type'] === ClassMetadata::ONE_TO_ONE) {
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
@@ -279,7 +278,7 @@ class DoctrineProvider
                         continue;
                     }
 
-                    if ($association['type'] === ClassMetadataInfo::ONE_TO_MANY || $association['type'] === ClassMetadataInfo::MANY_TO_MANY) {
+                    if ($association['type'] === ClassMetadata::ONE_TO_MANY || $association['type'] === ClassMetadata::MANY_TO_MANY) {
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
@@ -304,7 +303,7 @@ class DoctrineProvider
             'name' => $config['name'] . '__QueryFilter',
             'fields' => function () use ($entityMetaType, $queryFilterFields, $class) {
                 foreach ($entityMetaType->getAssociationMappings() as $association) {
-                    if ($association['type'] === ClassMetadataInfo::MANY_TO_ONE || $association['type'] === ClassMetadataInfo::ONE_TO_ONE) {
+                    if ($association['type'] === ClassMetadata::MANY_TO_ONE || $association['type'] === ClassMetadata::ONE_TO_ONE) {
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
@@ -326,14 +325,14 @@ class DoctrineProvider
         }
     }
 
-    private function getGraphName(ClassMetadataInfo $entityMetaType): string
+    private function getGraphName(ClassMetadata $entityMetaType): string
     {
         $doctrineClass = $entityMetaType->getName();
 
         return str_replace('\\', '__', $doctrineClass);
     }
 
-    private function getNiceName(ClassMetadataInfo $entityMetaType): ?string
+    private function getNiceName(ClassMetadata $entityMetaType): ?string
     {
         return $this->niceNameMap[$this->getGraphName($entityMetaType)] ?? null;
     }
@@ -345,7 +344,7 @@ class DoctrineProvider
         $this->doctrineToName[$key] = $name;
     }
 
-    private static function getStandardType($name = null)
+    private static function getStandardType(?string $name = null)
     {
         if (self::$standardTypes === null) {
             self::$standardTypes = [

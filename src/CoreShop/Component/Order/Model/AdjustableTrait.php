@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -64,7 +63,7 @@ trait AdjustableTrait
     /**
      * @return AdjustmentInterface[]
      */
-    public function getAdjustments(string $type = null)
+    public function getAdjustments(?string $type = null)
     {
         $adjustments = [];
 
@@ -149,14 +148,14 @@ trait AdjustableTrait
         $this->addToAdjustmentsTotal($adjustment);
     }
 
-    public function removeAdjustments(string $type = null)
+    public function removeAdjustments(?string $type = null)
     {
         foreach ($this->getAdjustments($type) as $adjustment) {
             $this->removeAdjustment($adjustment);
         }
     }
 
-    public function removeAdjustmentsRecursively(string $type = null)
+    public function removeAdjustmentsRecursively(?string $type = null)
     {
         $this->removeAdjustments($type);
 

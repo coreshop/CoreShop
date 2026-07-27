@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -20,6 +19,7 @@ namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Exception\NotFoundException;
+use Webmozart\Assert\Assert;
 
 class ClassInstaller implements ClassInstallerInterface
 {
@@ -37,6 +37,8 @@ class ClassInstaller implements ClassInstallerInterface
         }
 
         $json = file_get_contents($jsonFile);
+
+        Assert::string($json);
 
         DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
 
@@ -68,6 +70,8 @@ class ClassInstaller implements ClassInstallerInterface
 
             $class->setName($className);
             $class->setUserOwner(0);
+
+            Assert::string($json);
 
             DataObject\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
 
@@ -108,6 +112,8 @@ class ClassInstaller implements ClassInstallerInterface
         }
 
         $json = file_get_contents($jsonFile);
+
+        Assert::string($json);
 
         DataObject\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
 

@@ -3,6 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="false"
+    findUnusedCode="false"
 >
     <projectFiles>
         <directory name="src" />
@@ -19,8 +21,10 @@
             <directory name="src/CoreShop/Behat" />
 
             <directory name="src/CoreShop/Bundle/FrontendBundle" />
-            <directory name="src/CoreShop/Bundle/IndexBundle/ProcessManager" />
             <directory name="vendor" />
+
+            <file name="src/CoreShop/Component/Pimcore/SplPriorityQueue.php" />
+            <file name="src/CoreShop/Component/Pimcore/PriorityQueue.php" />
         </ignoreFiles>
     </projectFiles>
 
@@ -113,6 +117,8 @@
                 <referencedMethod name="Symfony\Bundle\SecurityBundle\Security\_FirewallMap::getFirewallConfig" />
                 <referencedMethod name="Symfony\Component\Workflow\Registry::get" />
                 <referencedMethod name="Pimcore\File::getValidFilename" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Column::__construct" />
+                <referencedMethod name="Pimcore\File::getLocalTempFilePath" />
             </errorLevel>
         </InternalMethod>
 
@@ -215,21 +221,15 @@
             </errorLevel>
         </AmbiguousConstantInheritance>
 
+        <RedundantCastGivenDocblockType>
+            <errorLevel type="info">
+                <file name="src/CoreShop/Bundle/PimcoreBundle/Controller/Admin/DynamicDropdownController.php" />
+                <file name="src/CoreShop/Bundle/CoreBundle/Controller/CustomerTransformerController.php" />
+            </errorLevel>
+        </RedundantCastGivenDocblockType>
+
         <!-- level 5 issues - should be avoided at mosts costs... -->
 
-        <TooManyArguments>
-            <errorLevel type="info">
-                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
-                <referencedFunction name="Symfony\Component\HttpKernel\Config\FileLocator::__construct" />
-                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
-                <referencedFunction name="Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken::__construct" /> <!-- removed parameter in Symfony 5.4 -->
-            </errorLevel>
-            <errorLevel type="suppress">
-                <referencedFunction name="Doctrine\ORM\Query\Expr::andX" />
-                <referencedFunction name="Doctrine\ORM\Query\Expr::orX" />
-                <referencedFunction name="Symfony\Component\Serializer\Attribute\SerializedName::__construct" />
-            </errorLevel>
-        </TooManyArguments>
 
         <!-- level 6 issues - really bad things -->
 

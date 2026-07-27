@@ -7,14 +7,14 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
 
     coreshop.datahub.graphql.querytypegenerator.resource.coreshop_relations_types:
-        class: CoreShop\Bundle\ResourceBundle\DataHub\QueryType\CoreShopRelations
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Multihref
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:
             - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopRelations }
 
     coreshop.datahub.graphql.querytypegenerator.resource.coreshop_relation_types:
-        class: CoreShop\Bundle\ResourceBundle\DataHub\QueryType\CoreShopRelation
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Href
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:

@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -21,6 +20,7 @@ namespace CoreShop\Behat\Page\Frontend\Account;
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Bundle\TestBundle\Page\Frontend\AbstractFrontendPage;
 use CoreShop\Bundle\TestBundle\Service\DriverHelper;
+use CoreShop\Component\Address\Model\CountryInterface;
 
 class ChangeAddressPage extends AbstractFrontendPage implements ChangeAddressPageInterface
 {
@@ -50,7 +50,7 @@ class ChangeAddressPage extends AbstractFrontendPage implements ChangeAddressPag
         $this->getElement('address-lastname')->setValue($lastname);
     }
 
-    public function specifyStreet(?string $street = null, $number = null): void
+    public function specifyStreet(?string $street = null, ?string $number = null): void
     {
         $this->getElement('address-street')->setValue($street);
         $this->getElement('address-number')->setValue($number);
@@ -82,10 +82,19 @@ class ChangeAddressPage extends AbstractFrontendPage implements ChangeAddressPag
         DriverHelper::waitForPageToLoad($this->getSession());
     }
 
-    public function fillAddress($country = null, $city = null, $postcode = null, $number = null, $street = null, $firstname = null, $lastname = null, $salutation = null, $phone = null): void
-    {
+    public function fillAddress(
+        ?CountryInterface $country = null,
+        ?string $city = null,
+        ?string $postcode = null,
+        ?string $number = null,
+        ?string $street = null,
+        ?string $firstname = null,
+        ?string $lastname = null,
+        ?string $salutation = null,
+        ?string $phone = null,
+    ): void {
         $this->getElement('address-phoneNumber')->setValue($phone);
-        $this->getElement('address-country')->setValue($country ? $country->getId() : null);
+        $this->getElement('address-country')->setValue($country?->getId());
         $this->getElement('address-city')->setValue($city);
         $this->getElement('address-postcode')->setValue($postcode);
         $this->getElement('address-number')->setValue($number);

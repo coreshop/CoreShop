@@ -1,0 +1,5 @@
+{% if category is defined %}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController::menuAction', {activeCategory: category})) }}
+{% else %}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController::menuAction')) }}
+{% endif %}

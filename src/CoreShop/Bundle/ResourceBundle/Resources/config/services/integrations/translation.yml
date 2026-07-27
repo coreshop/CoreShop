@@ -10,7 +10,8 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface'
         tags:
-            - { name: doctrine.event_subscriber, connection: default, priority: 99 }
+            - { name: doctrine.event_listener, connection: default, event: loadClassMetadata, priority: 99 }
+            - { name: doctrine.event_listener, connection: default, event: postLoad, priority: 99 }
 
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface: '@CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner'
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner:

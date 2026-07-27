@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -45,7 +44,7 @@ final class OptimisticEntityLockContext implements Context
      */
     public function iUnsuccessfullyLockTheObjectInstanceWithCurrentVersion(Concrete $dataObject): void
     {
-        Assert::throws(function () use ($dataObject) {
+        Assert::throws(function () use ($dataObject): void {
             $this->entityLockManager->lock($dataObject, $dataObject->getValueForFieldName('optimisticLockVersion'));
         }, OptimisticLockException::class);
     }
@@ -56,7 +55,7 @@ final class OptimisticEntityLockContext implements Context
      */
     public function iUnsuccessfullySaveTheObject(Concrete $dataObject): void
     {
-        Assert::throws(function () use ($dataObject) {
+        Assert::throws(function () use ($dataObject): void {
             $dataObject->save();
         }, OptimisticLockException::class);
     }
