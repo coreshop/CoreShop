@@ -36,5 +36,7 @@ jobs:
     permissions:
       contents: write
     uses: ./.github/workflows/shared-frontend-build.yaml
+    # Needed for STUDIO_BUILD_APP_PRIVATE_KEY: a called workflow gets no secrets by default.
+    secrets: inherit
     with:
       commit: true

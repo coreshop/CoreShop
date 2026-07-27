@@ -46,8 +46,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # `GITHUB_TOKEN` cannot push to a release branch: the "Version Branches" ruleset requires
+      # a pull request and only bypasses for admins, and GitHub Actions itself is not an app
+      # that can be added to the bypass list. The CoreShop Studio Build app is, so the commit is
+      # made with its installation token instead.
+      - name: Generate a token for the asset commit
+        id: app-token
+        if: ${{ inputs.commit && vars.STUDIO_BUILD_APP_ID != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.STUDIO_BUILD_APP_ID }}
+          private-key: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
+
       - name: Checkout code
         uses: actions/checkout@v7
+        with:
+          # Falls back to the default token when no app is configured. The push then fails
+          # loudly in the commit step rather than silently skipping the assets.
+          token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -98,9 +114,23 @@ jobs:
 
       - name: Commit built assets
         if: ${{ inputs.commit && steps.stage.outputs.changed == 'true' }}
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          # Attribute the commit to whichever identity actually pushes it. The numeric id in the
+          # noreply address is what links a commit to the bot account on GitHub.
+          if [ -n "$APP_SLUG" ]; then
+            BOT_ID="$(gh api "/users/${APP_SLUG}%5Bbot%5D" --jq .id 2>/dev/null || true)"
+          fi
+          if [ -n "${BOT_ID:-}" ]; then
+            git config user.name "${APP_SLUG}[bot]"
+            git config user.email "${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          fi
+
           git commit -m 'Build CoreShop Studio bundles'
 
           if git push origin HEAD:"${GITHUB_REF_NAME}"; then
@@ -119,6 +149,6 @@ jobs:
             exit 0
           fi
 
-          echo "::error::Could not push the built Studio assets to ${GITHUB_REF_NAME}. The branch did not move on, so the push was refused — check that the GitHub Actions app is a bypass actor on the branch ruleset."
+          echo "::error::Could not push the built Studio assets to ${GITHUB_REF_NAME}. The branch did not move on, so the push was refused — check that the STUDIO_BUILD_APP_ID variable and STUDIO_BUILD_APP_PRIVATE_KEY secret are set and that the app is a bypass actor on the branch ruleset."
           echo 'Push failed: built assets were not committed.' >> "$GITHUB_STEP_SUMMARY"
           exit 1
