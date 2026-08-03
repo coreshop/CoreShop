@@ -8,6 +8,7 @@
     "dev:single": "tsx studio-build.ts dev",
     "install-deps": "npm install",
     "clean": "rm -rf dist && npm run clean:workspaces",
+    "clean:builds": "tsx studio-clean.ts",
     "clean:workspaces": "npm run clean --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "check-types": "npm run check-types --workspaces --if-present"

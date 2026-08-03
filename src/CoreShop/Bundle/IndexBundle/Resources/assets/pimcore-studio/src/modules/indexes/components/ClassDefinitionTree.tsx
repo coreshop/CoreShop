@@ -11,120 +11,26 @@
  */
 
 import React from 'react'
-import { Tree, Empty, Skeleton, Typography } from 'antd'
+import { Empty, Skeleton, Typography } from 'antd'
 import { createStyles } from 'antd-style'
-import type { DataNode as AntDataNode } from 'antd/es/tree'
-
-interface DataNode extends AntDataNode {
-  data?: Record<string, any> | null
-}
+import { useTranslation } from 'react-i18next'
 import {
   Draggable,
   Icon,
+  TreeElement,
+  type TreeDataItem,
   type DragAndDropInfo
 } from '@pimcore/studio-ui-bundle/components'
 import type { ClassDefinitionResponse, ClassDefinitionField, IndexColumn } from '../api'
+import { getIconForFieldType } from './field-type-icons'
 
 const { Title } = Typography
 
-/**
- * Maps Pimcore and CoreShop field types to icon names
- * Uses only icons that are actually available in Pimcore's icon library
- */
-const getIconForFieldType = (fieldType: string): string => {
-  const icons: Record<string, string> = {
-    // Basic Pimcore types
-    'input': 'text-field',
-    'textarea': 'long-text',
-    'wysiwyg': 'wysiwyg-field',
-    'checkbox': 'checkbox',
-    'numeric': 'number-field',
-    'number': 'number-field',
-    'select': 'chevron-down',
-    'multiselect': 'multi-select',
-    'date': 'calendar',
-    'datetime': 'calendar',
-    'time': 'date-time-field',
-
-    // Media
-    'image': 'image',
-    'hotspotimage': 'image',
-    'advancedImage': 'image',
-    'video': 'video',
-    'asset': 'asset',
-
-    // Relations
-    'manyToOneRelation': 'data-object',
-    'advancedManyToOneRelation': 'data-object',
-    'manyToManyRelation': 'many-to-many',
-    'advancedManyToManyRelation': 'many-to-many',
-    'manyToManyObjectRelation': 'data-object',
-    'reverseObjectRelation': 'data-object',
-    'object': 'data-object',
-    'objects': 'data-object',
-
-    // Links
-    'href': 'many-to-many',
-    'multihref': 'many-to-many',
-    'urlSlug': 'many-to-many',
-
-    // Structure
-    'folder': 'folder',
-    'panel': 'layout',
-    'layout': 'layout',
-    'fieldcollections': 'collection',
-    'localizedfields': 'country-select',
-    'block': 'collection',
-    'table': 'columns',
-    'structuredTable': 'columns',
-
-    // Localization
-    'country': 'country-select',
-    'countries': 'country-select',
-    'language': 'country-select',
-    'languages': 'country-select',
-
-    // Special fields
-    'currency': 'coreshop_icon_currency',
-    'quantityValue': 'number-field',
-    'inputQuantityValue': 'number-field',
-    'calculatedValue': 'calculator',
-    'data': 'widget',
-
-    // CoreShop field types
-    'coreShopRelation': 'many-to-many',
-    'coreShopRelations': 'many-to-many',
-    'coreShopMoney': 'coreshop_icon_currency',
-    'coreShopMoneyCurrency': 'coreshop_icon_currency',
-    'coreShopCurrency': 'coreshop_icon_currency',
-    'coreShopCurrencyMultiselect': 'coreshop_icon_currency',
-    'coreShopProductSpecificPriceRules': 'coreshop_icon_currency',
-    'coreShopProductUnitDefinitions': 'number-field',
-    'coreShopProductQuantityPriceRules': 'coreshop_icon_currency',
-    'coreShopStoreValues': 'coreshop_store',
-    'coreShopStore': 'coreshop_store',
-    'coreShopQuantityValue': 'number-field',
-    'coreShopQuantityPrice': 'coreshop_icon_currency',
-    'coreShopSeo': 'seo',
-    'coreShopPaymentProvider': 'coreshop_icon_payment_provider',
-    'coreShopPaymentProviderMultiselect': 'coreshop_icon_payment_provider',
-    'coreShopCarrier': 'coreshop_carriers',
-    'coreShopCarrierMultiselect': 'coreshop_carriers',
-    'coreShopShippingRule': 'coreshop_shipping',
-    'coreShopTaxRate': 'coreshop_icon_currency',
-    'coreShopTaxRuleGroup': 'coreshop_icon_currency',
-    'coreShopCountry': 'country-select',
-    'coreShopCountryMultiselect': 'country-select',
-    'coreShopState': 'country-select',
-    'coreShopAddressIdentifier': 'widget',
-    'coreShopSuperBoxSelect': 'chevron-down',
-    'coreShopItemSelector': 'multi-select',
-    'coreShopDynamicDropdown': 'chevron-down',
-    'coreShopDynamicDropdownMultiple': 'multi-select',
-    'coreShopSerializedData': 'widget'
-  }
-
-  return icons[fieldType] || 'widget'
+interface NodeMeta {
+  fieldtype: string
+  iconName: string
+  label: string
+  data: Partial<IndexColumn> | null
 }
 
 interface ClassDefinitionTreeProps {
@@ -138,98 +44,91 @@ export const ClassDefinitionTree: React.FC<ClassDefinitionTreeProps> = ({
   loading,
   onAddField
 }) => {
+  const { t } = useTranslation()
   const { styles } = useTreeLayoutStyles()
 
-  const buildTreeData = (): DataNode[] => {
-    if (!classDefinition) return []
-
-    const nodes: DataNode[] = []
-
-    // Build tree from class definition response
-    Object.keys(classDefinition).forEach(key => {
-      const section = classDefinition[key]
-      if (!section) return
-
-      const node = buildNode(section, key)
-      if (node) {
-        nodes.push(node)
-      }
-    })
-
-    return nodes
-  }
-
-  const buildNode = (field: ClassDefinitionField, key: string): DataNode | null => {
-    const nodeLabel = field.nodeLabel || field.name || key
-    const fieldtype = field.fieldtype || field.nodeType || 'folder'
+  const buildNode = (field: ClassDefinitionField, key: string): TreeDataItem | null => {
+    const nodeLabel = field.nodeLabel ?? field.name ?? key
+    const fieldtype = field.fieldtype ?? field.nodeType ?? 'folder'
     const isLayout = fieldtype === 'layout' || fieldtype === 'panel' || !field.name
 
-    // Build children if exist
-    const children = field.childs && Array.isArray(field.childs)
-      ? field.childs.map((child, index) => buildNode(child, `${key}-${index}`)).filter(Boolean) as DataNode[]
+    const children = Array.isArray(field.childs)
+      ? field.childs.map((child, index) => buildNode(child, `${key}-${index}`)).filter(Boolean) as TreeDataItem[]
       : undefined
 
     const iconName = getIconForFieldType(fieldtype)
 
     const fieldData = isLayout ? null : {
-      name: field.name || nodeLabel,
-      objectKey: field.name || '',
-      objectType: field.nodeType || 'object',
-      dataType: field.fieldtype || 'input',
+      name: field.name ?? nodeLabel,
+      objectKey: field.name ?? '',
+      objectType: field.nodeType ?? 'object',
+      dataType: field.fieldtype ?? 'input',
       getter: field.getter,
       interpreter: field.interpreter,
       configuration: field.configuration
     }
 
-    // Make field items draggable with icon and type info
-    const title = isLayout ? (
-      <><Icon value={iconName} /> <span>{nodeLabel}</span></>
-    ) : (
+    return {
+      key: `${key}-${field.name ?? nodeLabel}`,
+      title: isLayout ? nodeLabel : `${nodeLabel} (${fieldtype})`,
+      icon: <Icon value={ iconName } />,
+      // Pimcore's Draggable needs this class to keep rows at 24px
+      className: isLayout ? undefined : 'ant-tree-node--has-drag-and-drop',
+      isLeaf: children === undefined || children.length === 0,
+      children,
+      actions: fieldData !== null ? [{ key: 'add', icon: 'new', translationKey: 'coreshop_indexes_field_add' }] : undefined,
+      meta: { fieldtype, iconName, label: nodeLabel, data: fieldData } satisfies NodeMeta
+    }
+  }
+
+  const treeData = React.useMemo<TreeDataItem[]>(() => {
+    if (classDefinition === null) return []
+
+    const nodes: TreeDataItem[] = []
+    Object.keys(classDefinition).forEach(key => {
+      const section = classDefinition[key]
+      if (section === undefined || section === null) return
+
+      const node = buildNode(section, key)
+      if (node !== null) {
+        nodes.push(node)
+      }
+    })
+
+    return nodes
+  }, [classDefinition])
+
+  const renderTitle = (node: any, initialComponent: React.ReactElement): React.ReactNode => {
+    const meta = node.meta as NodeMeta | undefined
+
+    if (meta?.data == null) {
+      return initialComponent
+    }
+
+    const fieldData = meta.data
+
+    return (
       <Draggable
-        info={{
+        info={ {
           type: 'coreshop-index-field',
-          title: nodeLabel,
-          icon: { value: iconName },
+          title: meta.label,
+          icon: { value: meta.iconName },
           data: fieldData
-        } as DragAndDropInfo}
+        } as DragAndDropInfo }
       >
-        <><Icon value={iconName} /> <span>{nodeLabel}</span> <span style={{
-          fontSize: 11,
-          color: 'var(--ant-color-text-tertiary)',
-          fontFamily: 'monospace'
-        }}>
-          {fieldtype}
-        </span></>
+        <span onDoubleClick={ () => { onAddField(fieldData) } }>
+          {initialComponent}
+        </span>
       </Draggable>
     )
-
-    return {
-      key: `${key}-${field.name || nodeLabel}`,
-      title,
-      isLeaf: !children || children.length === 0,
-      children,
-      selectable: !isLayout,
-      // Store field data for click handler
-      data: fieldData
-    }
   }
-
-  const handleSelect = (selectedKeys: React.Key[], info: any) => {
-    // Single click does nothing, only double click adds
-  }
-
-  const handleDoubleClick = (e: React.MouseEvent, node: any) => {
-    if (node.data) {
-      onAddField(node.data)
-    }
-  }
-
-  const treeData = buildTreeData()
 
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <Title level={5} className={styles.title}>Class Definitions</Title>
+        <Title level={5} className={styles.title}>
+          {t('coreshop_indexes_class_definitions')}
+        </Title>
       </div>
       <div className={styles.content}>
         {loading ? (
@@ -238,19 +137,19 @@ export const ClassDefinitionTree: React.FC<ClassDefinitionTreeProps> = ({
           </div>
         ) : treeData.length === 0 ? (
           <div className={styles.stateContainer}>
-            <Empty description="No class definition available" />
+            <Empty description={t('coreshop_indexes_no_class_definition')} />
           </div>
         ) : (
           <div className={styles.scrollArea}>
-            <Tree
-              style={{ minHeight: '100%' }}
-              showIcon
-              showLine={false}
+            <TreeElement
               defaultExpandAll
-              treeData={treeData}
-              onSelect={handleSelect}
-              onDoubleClick={handleDoubleClick}
-              virtual={false}
+              onActionsClick={ (key, action, node) => {
+                const meta = (node as any).meta as NodeMeta | undefined
+                if (action === 'add' && meta?.data != null) onAddField(meta.data)
+              } }
+              onSelected={ () => {} }
+              titleRender={ renderTitle }
+              treeData={ treeData }
             />
           </div>
         )}
@@ -275,11 +174,9 @@ const useTreeLayoutStyles = createStyles(({ css, token }) => ({
   `,
   title: css`
     margin: 0 !important;
-    font-size: 12px;
-    font-weight: 600;
-    color: ${token.colorTextSecondary};
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: ${token.fontSize}px;
+    font-weight: ${token.fontWeightStrong};
+    color: ${token.colorText};
   `,
   content: css`
     flex: 1 1 auto;
@@ -294,59 +191,16 @@ const useTreeLayoutStyles = createStyles(({ css, token }) => ({
     overflow: auto;
     padding: 16px;
   `,
+  // Draggable renders a block-level div inside .ant-tree-title — the fixed button height keeps
+  // the label on the icon's line box (same fix Pimcore applies to its own drag wrappers)
   scrollArea: css`
     flex: 1 1 auto;
     min-height: 0;
     overflow: auto;
-    padding: 8px;
+    padding: ${token.paddingXS}px 0;
 
-    .ant-tree {
-      background: transparent;
-      font-size: 13px;
-
-      .ant-tree-treenode {
-        padding: 1px 0;
-
-        &:hover {
-          .ant-tree-node-content-wrapper {
-            background-color: ${token.colorFillQuaternary};
-          }
-        }
-      }
-
-      .ant-tree-node-content-wrapper {
-        border-radius: 4px;
-        transition: all 0.2s;
-        padding: 3px 6px;
-        line-height: 20px;
-
-        &:hover {
-          background-color: ${token.colorFillQuaternary};
-        }
-
-        &.ant-tree-node-selected {
-          background-color: ${token.colorPrimaryBg};
-        }
-      }
-
-      .ant-tree-iconEle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 16px;
-        height: 16px;
-      }
-
-      .ant-tree-title {
-        display: inline-flex;
-        align-items: center;
-        width: 100%;
-      }
-
-      .ant-tree-switcher {
-        width: 16px;
-        line-height: 20px;
-      }
+    .ant-tree-title__btn {
+      height: 24px;
     }
   `
 }))
