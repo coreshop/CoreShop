@@ -1,2 +1,0 @@
-/*! For license information please see 416.f5cb0188.js.LICENSE.txt */
-"use strict";(self.chunk_coreshopindex=self.chunk_coreshopindex||[]).push([["416"],{5062:function(n,c,e){e(2855),e(5168),e(2696),e(7579),e(6697),e(910)},761:function(n,c,e){e(2855),e(5168),e(2696)}}]);

@@ -1,0 +1,71 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/398.6af2db9a.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/604.732955c8.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/564.9517c2eb.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/808.f23084b4.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/450.115c990b.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/174.53494ecd.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/448.f41de822.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/254.55cf06c3.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/79.1b943066.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/821.8f0493e8.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/920.1389525e.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/76.69813474.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/536.15a5c663.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/51.f82f2766.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/460.307e3bed.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/663.70000b81.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/965.47335d65.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/696.5dc34bf0.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/44.e1f3a07f.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/63.42c4a160.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/20.3ad928f1.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/375.8361bde8.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/695.4d80b554.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/604.732955c8.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/398.6af2db9a.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/main.1e71c991.js"
+      ],
+      "css": []
+    },
+    "coreshopnotification": {
+      "js": [
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/398.6af2db9a.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/604.732955c8.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/564.9517c2eb.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/808.f23084b4.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/450.115c990b.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/174.53494ecd.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/448.f41de822.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/254.55cf06c3.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/79.1b943066.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/821.8f0493e8.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/920.1389525e.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/__federation_expose_default_export.7e922151.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/76.69813474.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/536.15a5c663.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/51.f82f2766.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/460.307e3bed.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/663.70000b81.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/965.47335d65.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/696.5dc34bf0.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/44.e1f3a07f.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/63.42c4a160.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/20.3ad928f1.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/375.8361bde8.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/async/695.4d80b554.js",
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshopnotification/studio/c596d4df67cc281297c67ecf6cd81057/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}
