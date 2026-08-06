@@ -27,6 +27,7 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
+use CoreShop\Component\Rule\Model\Action;
 use Webmozart\Assert\Assert;
 
 class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
@@ -77,6 +78,7 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
             }
 
             foreach ($configuration['actions'] as $action) {
+                $action = Action::denormalize($action);
                 $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
                 /**
@@ -132,6 +134,7 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
             }
 
             foreach ($configuration['actions'] as $action) {
+                $action = Action::denormalize($action);
                 $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
                 /**
