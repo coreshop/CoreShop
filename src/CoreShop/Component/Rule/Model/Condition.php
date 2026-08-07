@@ -58,7 +58,7 @@ class Condition implements ConditionInterface
             return $condition;
         }
 
-        $model = new static();
+        $model = new self();
         $model->setType($condition['type'] ?? null);
         $model->setConfiguration($condition['configuration'] ?? []);
 

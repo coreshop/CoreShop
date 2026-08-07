@@ -58,7 +58,7 @@ class Action implements ActionInterface
             return $action;
         }
 
-        $model = new static();
+        $model = new self();
         $model->setType($action['type'] ?? null);
         $model->setConfiguration($action['configuration'] ?? []);
 
