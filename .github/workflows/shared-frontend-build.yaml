@@ -1,0 +1,171 @@
+name: shared-frontend-build
+
+on:
+  workflow_call:
+    inputs:
+      commit:
+        description: >-
+          Commit the built Studio assets back to the branch. Only enabled for pushes to a
+          release branch — pull requests build for verification only, so their diffs stay
+          readable.
+        type: boolean
+        default: false
+
+# No workflow-level `permissions`: it would override what the calling job grants, leaving the
+# build job read-only even on the push build. Jobs declare what they need instead.
+jobs:
+  check-types:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run esbuild install script
+        run: npm rebuild esbuild
+
+      - name: Run type checks
+        run: npm run check-types
+
+  # No job-level `permissions` block: the job inherits what the calling workflow grants, so the
+  # write scope needed for the commit only exists on the push build.
+  build:
+    needs: check-types
+    runs-on: ubuntu-latest
+
+    steps:
+      # `GITHUB_TOKEN` cannot push to a release branch: the "Version Branches" ruleset requires
+      # a pull request and only bypasses for admins, and GitHub Actions itself is not an app
+      # that can be added to the bypass list. The CoreShop Studio Build app is, so the commit is
+      # made with its installation token instead.
+      #
+      # Secrets cannot be read in an `if:` condition, so whether the app is configured is
+      # determined in a step that can see them. Without this the workflow would break the
+      # moment it lands on a branch where the credentials are not set up yet.
+      - name: Check whether the build app is configured
+        id: app-config
+        if: ${{ inputs.commit }}
+        env:
+          APP_ID: ${{ secrets.STUDIO_BUILD_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
+        run: |
+          if [ -n "$APP_ID" ] && [ -n "$PRIVATE_KEY" ]; then
+            echo 'configured=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'configured=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate a token for the asset commit
+        id: app-token
+        if: ${{ steps.app-config.outputs.configured == 'true' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.STUDIO_BUILD_APP_ID }}
+          private-key: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
+
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          # Falls back to the default token when no app is configured. The push then fails
+          # loudly in the commit step rather than silently skipping the assets.
+          token: ${{ steps.app-token.outputs.token || github.token }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Cache Rsbuild build cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules/.cache/rsbuild
+          key: rsbuild-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            rsbuild-${{ hashFiles('package-lock.json') }}-
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run esbuild install script
+        run: npm rebuild esbuild
+
+      - name: Run production build
+        run: npm run build
+
+      # Build ids are derived from the sources, so an unchanged bundle produces an unchanged
+      # output directory and anything reported here is a real asset change.
+      #
+      # `git add --all` also stages deletions of stale build directories. The previous
+      # `file_pattern` glob missed those: the shell expands it against the working tree, so
+      # directories that no longer exist never reached `git add` and piled up in the repository.
+      - name: Stage built assets
+        id: stage
+        run: |
+          git add --all --force -- 'src/CoreShop/Bundle/*/Resources/public/studio/*'
+          if git diff --cached --quiet; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            echo 'Studio assets are up to date.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+            {
+              echo '### Studio assets changed by this build'
+              echo
+              echo '```'
+              git diff --cached --stat
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit built assets
+        if: ${{ inputs.commit && steps.stage.outputs.changed == 'true' }}
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: |
+          # Attribute the commit to whichever identity actually pushes it. The numeric id in the
+          # noreply address is what links a commit to the bot account on GitHub.
+          if [ -n "$APP_SLUG" ]; then
+            BOT_ID="$(gh api "/users/${APP_SLUG}%5Bbot%5D" --jq .id 2>/dev/null || true)"
+          fi
+          if [ -n "${BOT_ID:-}" ]; then
+            git config user.name "${APP_SLUG}[bot]"
+            git config user.email "${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          fi
+
+          git commit -m 'Build CoreShop Studio bundles'
+
+          if git push origin HEAD:"${GITHUB_REF_NAME}"; then
+            exit 0
+          fi
+
+          # A rejected push has two very different causes, and only one of them is benign:
+          # the branch moved on while we were building, in which case the newer push runs its
+          # own build and supersedes these assets. Anything else — a ruleset rejection, a
+          # missing write scope — means the assets never land, and that must not pass as a
+          # green job. HEAD~1 is the commit this build started from.
+          git fetch --quiet origin "${GITHUB_REF_NAME}"
+          if [ "$(git rev-parse "origin/${GITHUB_REF_NAME}")" != "$(git rev-parse HEAD~1)" ]; then
+            echo "::notice::${GITHUB_REF_NAME} moved on during the build; the newer push rebuilds the assets."
+            echo 'Push skipped: branch moved on during the build.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "::error::Could not push the built Studio assets to ${GITHUB_REF_NAME}. The branch did not move on, so the push was refused — check that the STUDIO_BUILD_APP_ID and STUDIO_BUILD_APP_PRIVATE_KEY secrets are set and that the app is a bypass actor on the branch ruleset."
+          echo 'Push failed: built assets were not committed.' >> "$GITHUB_STEP_SUMMARY"
+          exit 1

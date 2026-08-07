@@ -101,3 +101,34 @@ services:
             - '%coreshop.form.type.shipping_rule.action.price.validation_groups%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\CustomerCompanyAssignmentType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\StoreSettingsType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\CoreBundle\Form\Schema\StoreSettingsSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\CoreBundle\Form\Schema\CartCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\CoreBundle\Form\Extension\OrderInvoiceCreationTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\Studio\OrderInvoiceCreationType }
+
+    CoreShop\Bundle\CoreBundle\Form\Extension\StudioOrderShipmentCreationTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\Studio\OrderShipmentCreationType }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Demo\EntityChoiceDemoType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }

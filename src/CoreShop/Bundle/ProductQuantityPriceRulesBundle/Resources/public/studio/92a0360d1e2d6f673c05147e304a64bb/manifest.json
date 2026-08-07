@@ -1,0 +1,113 @@
+{
+  "allFiles": [
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/main.2adbdecf.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/remoteEntry.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/745.1cb40991.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/695.339f9999.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/375.3266c734.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/20.9e2a92fb.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/63.75ca0040.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/696.7c77bbe6.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/639.67e6ca4a.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/126.28845c1e.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/460.0920e0c1.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/51.aa0a6456.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/536.d8b4e628.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/76.a7549619.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/__federation_expose_default_export.3897ac44.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/920.80ba665a.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/821.7da400d9.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/79.7271d8d3.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/254.3f73f30c.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/448.f3e5f3c2.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/174.a1815232.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/450.60d75df7.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/808.6a7953fc.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/564.87c3aac5.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/958.5c0d86c3.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/129.a168beb8.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/498.cd4e4509.js",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/mf-stats.json",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/mf-manifest.json",
+    "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/958.5c0d86c3.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/129.a168beb8.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/498.cd4e4509.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/main.2adbdecf.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/498.cd4e4509.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/129.a168beb8.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/958.5c0d86c3.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/564.87c3aac5.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/808.6a7953fc.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/450.60d75df7.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/174.a1815232.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/448.f3e5f3c2.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/254.3f73f30c.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/79.7271d8d3.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/821.7da400d9.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/920.80ba665a.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/76.a7549619.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/536.d8b4e628.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/51.aa0a6456.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/460.0920e0c1.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/126.28845c1e.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/639.67e6ca4a.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/696.7c77bbe6.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/63.75ca0040.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/20.9e2a92fb.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/375.3266c734.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/695.339f9999.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/745.1cb40991.js"
+        ]
+      }
+    },
+    "coreshopproductquantitypricerules": {
+      "initial": {
+        "js": [
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/498.cd4e4509.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/129.a168beb8.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/958.5c0d86c3.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/564.87c3aac5.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/808.6a7953fc.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/450.60d75df7.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/174.a1815232.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/448.f3e5f3c2.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/254.3f73f30c.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/79.7271d8d3.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/821.7da400d9.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/920.80ba665a.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/__federation_expose_default_export.3897ac44.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/76.a7549619.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/536.d8b4e628.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/51.aa0a6456.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/460.0920e0c1.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/126.28845c1e.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/639.67e6ca4a.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/696.7c77bbe6.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/63.75ca0040.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/20.9e2a92fb.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/375.3266c734.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/695.339f9999.js",
+          "/bundles/coreshopproductquantitypricerules/studio/92a0360d1e2d6f673c05147e304a64bb/static/js/async/745.1cb40991.js"
+        ]
+      }
+    }
+  }
+}

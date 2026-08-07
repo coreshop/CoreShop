@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
+use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class StoresConfigurationType extends AbstractType
@@ -26,9 +26,9 @@ final class StoresConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('stores', CollectionType::class, [
-                'allow_add' => true,
-                'allow_delete' => true,
+            ->add('stores', StoreChoiceType::class, [
+                'label' => 'coreshop_condition_stores',
+                'multiple' => true,
             ])
         ;
     }

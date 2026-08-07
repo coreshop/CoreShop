@@ -19,8 +19,10 @@ namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
@@ -31,6 +33,13 @@ final class CarrierChoiceType extends AbstractType
     public function __construct(
         private RepositoryInterface $carrierRepository,
     ) {
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        if ($options['multiple']) {
+            $builder->addModelTransformer(new CollectionToArrayTransformer());
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

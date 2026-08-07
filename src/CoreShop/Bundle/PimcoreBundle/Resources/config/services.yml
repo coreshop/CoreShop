@@ -6,7 +6,8 @@ imports:
     - { resource: services/print.yaml }
 
 parameters:
-    coreshop.admin.route.base: /admin/coreshop
+    coreshop.admin.route.base: /{backend}/coreshop
+    coreshop.admin.route.backend_requirement: (admin|(pimcore-studio\/api))
 
 services:
     _defaults:

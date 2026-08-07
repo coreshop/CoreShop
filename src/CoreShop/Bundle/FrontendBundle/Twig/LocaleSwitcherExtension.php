@@ -19,7 +19,6 @@ namespace CoreShop\Bundle\FrontendBundle\Twig;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
-use Pimcore\Bundle\StaticRoutesBundle\Model\Staticroute;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Document;
 use Pimcore\Model\Site;
@@ -89,11 +88,19 @@ final class LocaleSwitcherExtension extends AbstractExtension
             $link = '';
             if ($this->getMainRequest()->attributes->get('pimcore_request_source') === 'staticroute') {
                 $route = $this->getMainRequest()->attributes->get('_route');
-                $staticRoute = Staticroute::getByName($route);
+                if (!is_string($route)) {
+                    continue;
+                }
+
+                $staticRoute = null;
+                $staticRouteClass = self::getStaticRouteClass();
+                if (null !== $staticRouteClass) {
+                    $staticRoute = call_user_func([$staticRouteClass, 'getByName'], $route);
+                }
 
                 if ($staticRoute) {
                     $params = [];
-                    if (str_contains($staticRoute->getVariables(), '_locale')) {
+                    if (str_contains((string) $staticRoute->getVariables(), '_locale')) {
                         $params = ['_locale' => $language];
                     }
                     $link = $this->router->generate($route, $params);
@@ -131,5 +138,18 @@ final class LocaleSwitcherExtension extends AbstractExtension
         }
 
         return $mainRequest;
+    }
+
+    /**
+     * @return class-string|null
+     */
+    private static function getStaticRouteClass(): ?string
+    {
+        $staticRouteClass = sprintf('Pimcore\\Bundle\\%s\\Model\\Staticroute', 'StaticRoutesBundle');
+        if (!class_exists($staticRouteClass)) {
+            return null;
+        }
+
+        return $staticRouteClass;
     }
 }

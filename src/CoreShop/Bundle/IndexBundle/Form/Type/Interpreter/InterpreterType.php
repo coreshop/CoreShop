@@ -89,6 +89,11 @@ final class InterpreterType extends AbstractType
         ;
     }
 
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_index_column_interpreter';
+    }
+
     /**
      * @param string        $configurationType
      */

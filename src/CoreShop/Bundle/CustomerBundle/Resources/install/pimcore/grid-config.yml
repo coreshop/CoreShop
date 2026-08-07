@@ -137,7 +137,7 @@ grid_config:
                                     type: value
                                     class: DefaultValue
                                     attribute: newsletterActive
-                                    dataType: newsletterActive
+                                    dataType: checkbox
                                     childs: []
                             attribute: ''
                             param1: ''
@@ -163,7 +163,7 @@ grid_config:
                                     type: value
                                     class: DefaultValue
                                     attribute: newsletterConfirmed
-                                    dataType: newsletterConfirmed
+                                    dataType: checkbox
                                     childs: []
                             attribute: ''
                             param1: ''
@@ -471,7 +471,7 @@ grid_config:
                                     type: value
                                     class: DefaultValue
                                     attribute: newsletterActive
-                                    dataType: newsletterActive
+                                    dataType: checkbox
                                     childs: []
                             attribute: ''
                             param1: ''
@@ -497,7 +497,7 @@ grid_config:
                                     type: value
                                     class: DefaultValue
                                     attribute: newsletterConfirmed
-                                    dataType: newsletterConfirmed
+                                    dataType: checkbox
                                     childs: []
                             attribute: ''
                             param1: ''

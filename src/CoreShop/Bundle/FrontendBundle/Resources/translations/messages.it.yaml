@@ -190,6 +190,7 @@ coreshop.form.customer_registration.customer: 'Dati utente'
 coreshop.form.customer_registration.address: "Informazioni sull'indirizzo"
 coreshop.form.address.salutation: 'Saluto'
 coreshop.form.address.company: 'Azienda'
+coreshop.form.address.state: 'Provincia'
 coreshop.form.address.firstname: 'Nome'
 coreshop.form.address.lastname: 'Cognome'
 coreshop.form.address.street: 'Via'

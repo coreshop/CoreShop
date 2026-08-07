@@ -10,7 +10,6 @@ parameters:
     coreshop.form.type.cart_price_rule.condition.nested.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.order_item_action_conditions.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.order_item_action_actions.validation_groups: [coreshop]
-    coreshop.form.type.cart_price_rule.condition.timespan.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.voucher.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.not_combinable.validation_groups: [coreshop]
 
@@ -87,11 +86,6 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType:
-        arguments:
-            - '%coreshop.form.type.cart_price_rule.condition.timespan.validation_groups%'
-        tags:
-           - { name: form.type }
 
     CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType:
         arguments:
@@ -104,3 +98,51 @@ services:
             - '%coreshop.form.type.cart_price_rule.condition.not_combinable.validation_groups%'
         tags:
            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\AdminAddressCreationType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\OrderBundle\Form\Schema\CartCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\OrderBundle\Form\Schema\AdminAddressCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Studio\OrderInvoiceCreationType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Studio\OrderInvoiceCreationItemsType:
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Studio\OrderShipmentCreationType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Studio\OrderShipmentCreationItemsType:
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Studio\OrderPaymentCreationType:
+        tags:
+            - { name: form.type }
+            - { name: coreshop.studio_form }
+
+    CoreShop\Bundle\OrderBundle\Form\Schema\OrderInvoiceCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\OrderBundle\Form\Schema\OrderShipmentCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }
+
+    CoreShop\Bundle\OrderBundle\Form\Schema\OrderPaymentCreationSchemaEnricher:
+        tags:
+            - { name: coreshop_studio_form.enricher }

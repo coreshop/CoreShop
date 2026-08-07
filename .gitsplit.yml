@@ -58,6 +58,7 @@ splits:
     - { prefix: src/CoreShop/Bundle/StorageListBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/StorageListBundle.git' }
     - { prefix: src/CoreShop/Component/Store, target: 'https://${GH_TOKEN}@github.com/coreshop/Store.git' }
     - { prefix: src/CoreShop/Bundle/StoreBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/StoreBundle.git' }
+    - { prefix: src/CoreShop/Bundle/StudioFormBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/StudioFormBundle.git' }
     - { prefix: src/CoreShop/Component/Taxation, target: 'https://${GH_TOKEN}@github.com/coreshop/Taxation.git' }
     - { prefix: src/CoreShop/Bundle/TaxationBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/TaxationBundle.git' }
     - { prefix: src/CoreShop/Bundle/TestBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/TestBundle.git' }

@@ -1,0 +1,42 @@
+---
+coreshop_messenger: 'Messenger'
+coreshop_messenger_list: 'Messenger'
+coreshop_messenger_class: 'Klasse'
+coreshop_messenger_failed_at: 'Gescheitert am'
+coreshop_messenger_error: 'Fehler'
+coreshop_messenger_delete_failed_message: 'Nachricht löschen'
+coreshop_messenger_retry_failed_message: 'Nachricht erneut senden'
+coreshop_messenger_failure_receivers: 'Fehler-Empfänger auswählen'
+coreshop_messenger_failed_messages: 'Fehlgeschlagene Nachrichten'
+coreshop_messenger_pending_messages: 'Ausstehende Nachrichten'
+coreshop_messenger_receivers: 'Empfänger auswählen'
+coreshop_messenger_info: 'Details'
+coreshop_permission_messenger: 'CoreShop: Messenger'
+
+# Chart
+coreshop_messenger_total_messages: 'Nachrichten gesamt'
+coreshop_messenger_no_data: 'Keine ausstehenden Nachrichten'
+coreshop_messenger_error_loading: 'Fehler beim Laden der Daten'
+
+# List
+coreshop_messenger_reload_all: 'Aktualisieren'
+
+# Grid
+coreshop_messenger_actions: 'Aktionen'
+coreshop_messenger_reload: 'Aktualisieren'
+coreshop_messenger_show_error: 'Fehler anzeigen'
+coreshop_messenger_delete: 'Löschen'
+coreshop_messenger_retry: 'Wiederholen'
+coreshop_messenger_cancel: 'Abbrechen'
+coreshop_messenger_close: 'Schließen'
+coreshop_messenger_select_receiver: 'Bitte wählen Sie einen Empfänger um fehlgeschlagene Nachrichten anzuzeigen'
+coreshop_messenger_select_receiver_pending: 'Bitte wählen Sie einen Empfänger um ausstehende Nachrichten anzuzeigen'
+coreshop_messenger_message_info: 'Nachrichteninformationen'
+coreshop_messenger_error_details: 'Fehlerdetails'
+coreshop_messenger_delete_confirm: 'Sind Sie sicher, dass Sie diese Nachricht löschen möchten?'
+coreshop_messenger_retry_confirm: 'Sind Sie sicher, dass Sie diese Nachricht erneut senden möchten?'
+coreshop_messenger_delete_success: 'Nachricht erfolgreich gelöscht'
+coreshop_messenger_delete_error: 'Fehler beim Löschen der Nachricht'
+coreshop_messenger_retry_success: 'Nachricht wird erneut gesendet'
+coreshop_messenger_retry_error: 'Fehler beim erneuten Senden der Nachricht'
+coreshop_messenger_no_error: 'Keine Fehlerinformationen verfügbar'

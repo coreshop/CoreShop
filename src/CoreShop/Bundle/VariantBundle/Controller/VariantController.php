@@ -37,7 +37,7 @@ class VariantController extends AdminController
 {
     public function getAttributesAction(Request $request)
     {
-        $id = $this->getParameterFromRequest($request, 'id');
+        $id = (int) $this->getParameterFromRequest($request, 'id');
 
         if (!$id) {
             throw new \InvalidArgumentException('no product id given');
@@ -89,7 +89,7 @@ class VariantController extends AdminController
         MessageBusInterface $messageBus,
         TranslatorInterface $translator,
     ) {
-        $id = $this->getParameterFromRequest($request, 'id');
+        $id = (int) $this->getParameterFromRequest($request, 'id');
         $attributes = $this->getParameterFromRequest($request, 'attributes');
 
         if (!$id) {
@@ -118,7 +118,7 @@ class VariantController extends AdminController
              * @psalm-suppress InternalMethod
              */
             $messageBus->dispatch(
-                new CreateVariantMessage($product->getId(), $attributeIds, $this->getAdminUser()?->getId()),
+                new CreateVariantMessage($product->getId(), $attributeIds, $this->getPimcoreUser()?->getId()),
             );
         }
 

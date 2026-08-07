@@ -18,6 +18,7 @@ services:
             - '%coreshop.form.type.currency.validation_groups%'
         tags:
             -  { name: form.type }
+            -  { name: coreshop.studio_form }
 
     CoreShop\Bundle\CurrencyBundle\Form\Type\ExchangeRateType:
         arguments:

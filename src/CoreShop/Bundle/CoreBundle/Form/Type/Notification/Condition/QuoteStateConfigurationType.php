@@ -17,14 +17,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-
-final class QuoteStateConfigurationType extends AbstractType
+final class QuoteStateConfigurationType extends AbstractWorkflowPlaceConfigurationType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    protected function getFieldName(): string
     {
-        $builder->add('quoteState', TextType::class);
+        return 'quoteState';
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_notification_condition_quote_state';
     }
 }

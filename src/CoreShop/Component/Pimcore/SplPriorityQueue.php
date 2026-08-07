@@ -60,7 +60,7 @@ class SplPriorityQueue extends \SplPriorityQueue implements Serializable
             $priority = [$priority, $this->serial--];
         }
 
-        parent::insert($value, $priority);
+        return parent::insert($value, $priority);
     }
 
     /**

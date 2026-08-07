@@ -46,6 +46,7 @@ services:
     arguments:
       - '@CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository'
       - '@messenger.routable_message_bus'
+      - '@?Pimcore\Bundle\StudioBackendBundle\Mercure\Service\PublishServiceInterface'
     tags:
       - { name: monolog.logger, channel: 'coreshop_messenger' }
 
@@ -53,6 +54,7 @@ services:
   CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRejecter:
     arguments:
       - '@CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository'
+      - '@?Pimcore\Bundle\StudioBackendBundle\Mercure\Service\PublishServiceInterface'
 
   CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController:
     tags:

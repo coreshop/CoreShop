@@ -28,13 +28,38 @@ class ResourceSettingsController extends AdminController
     public function getNicePathAction(Request $request): Response
     {
         $targets = json_decode($this->getParameterFromRequest($request, 'targets'), true);
+        $detailed = $request->request->getBoolean('detailed');
         $result = [];
 
         foreach ($targets as $target) {
             $element = Service::getElementById($target['type'], $target['id']);
 
             if ($element instanceof AbstractElement) {
-                $result[$element->getId()] = $element->getFullPath();
+                if ($detailed) {
+                    // Return detailed information
+                    $elementData = [
+                        'id' => $element->getId(),
+                        'type' => $target['type'],
+                        'fullPath' => $element->getFullPath(),
+                        'subtype' => null,
+                        'isPublished' => true,
+                    ];
+
+                    // Add subtype for objects
+                    if (method_exists($element, 'getType')) {
+                        $elementData['subtype'] = $element->getType();
+                    }
+
+                    // Add published status
+                    if (method_exists($element, 'isPublished')) {
+                        $elementData['isPublished'] = $element->isPublished();
+                    }
+
+                    $result[$element->getId()] = $elementData;
+                } else {
+                    // Backward compatible: return only fullPath as string
+                    $result[$element->getId()] = $element->getFullPath();
+                }
             }
         }
 

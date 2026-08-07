@@ -1,5 +1,5 @@
 {% extends '@CoreShopFrontend/layout-full.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
 
 {% block center %}
     <div id="main-container" class="container p-0">
@@ -50,8 +50,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12 col-lg-6">
-                                        {{ form_row(form.company, coreshop_test_form_attribute('address-lastname')) }}
+                                        {{ form_row(form.company, coreshop_test_form_attribute('address-company')) }}
                                     </div>
+                                    {% if form.state is defined %}
+                                        <div class="col-12 col-lg-6">
+                                            {{ form_row(form.state, coreshop_test_form_attribute('address-state')) }}
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 <div class="row">
                                     <div class="col-12 col-lg-6">

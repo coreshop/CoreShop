@@ -1,0 +1,93 @@
+{
+  "allFiles": [
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/main.8c4ebfd9.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/remoteEntry.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/695.f3951c47.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/375.70416f83.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/63.9e39d82e.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/696.17527f5d.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/460.600a3125.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/51.ad135ad2.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/536.c628657c.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/76.9b0a4664.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/__federation_expose_default_export.2b4419d5.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/920.6e5f4ec4.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/821.3098003a.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/79.405d9073.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/254.d61a4fa9.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/448.d1b4a9d3.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/174.10c3b224.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/450.b3b8ad5d.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/808.7cd63ca4.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/564.e3aedd6c.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/879.121d9e2d.js",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/mf-stats.json",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/mf-manifest.json",
+    "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/879.121d9e2d.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/main.8c4ebfd9.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/879.121d9e2d.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/564.e3aedd6c.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/808.7cd63ca4.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/450.b3b8ad5d.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/174.10c3b224.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/448.d1b4a9d3.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/254.d61a4fa9.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/79.405d9073.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/821.3098003a.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/920.6e5f4ec4.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/76.9b0a4664.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/536.c628657c.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/51.ad135ad2.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/460.600a3125.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/696.17527f5d.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/63.9e39d82e.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/375.70416f83.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/695.f3951c47.js"
+        ]
+      }
+    },
+    "coreshopmessenger": {
+      "initial": {
+        "js": [
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/879.121d9e2d.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/564.e3aedd6c.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/808.7cd63ca4.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/450.b3b8ad5d.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/174.10c3b224.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/448.d1b4a9d3.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/254.d61a4fa9.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/79.405d9073.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/821.3098003a.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/920.6e5f4ec4.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/__federation_expose_default_export.2b4419d5.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/76.9b0a4664.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/536.c628657c.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/51.ad135ad2.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/460.600a3125.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/696.17527f5d.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/63.9e39d82e.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/375.70416f83.js",
+          "/bundles/coreshopmessenger/studio/a41c3d86be4a44ee48ce975351fa8971/static/js/async/695.f3951c47.js"
+        ]
+      }
+    }
+  }
+}

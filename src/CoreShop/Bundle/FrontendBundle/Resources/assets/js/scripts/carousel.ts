@@ -25,6 +25,5 @@ export class Carousel {
             }
         });
 
-        console.log(mainSlider);
     }
 }

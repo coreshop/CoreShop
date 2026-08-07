@@ -31,12 +31,14 @@ final class MysqlWorkerType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
+                'required' => false,
             ])
             ->add('localizedIndexes', CollectionType::class, [
                 'entry_type' => MysqlWorkerTableIndexType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
+                'required' => false,
             ])
         ;
     }

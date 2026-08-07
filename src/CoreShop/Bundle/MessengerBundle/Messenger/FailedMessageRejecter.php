@@ -18,12 +18,17 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
 use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
+use CoreShop\Bundle\MessengerBundle\Mercure\MessengerUpdate;
+use Pimcore\Bundle\StudioBackendBundle\Mercure\Service\PublishServiceInterface;
+use Pimcore\Bundle\StudioBackendBundle\Mercure\Util\Topics;
+use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class FailedMessageRejecter implements FailedMessageRejecterInterface
 {
     public function __construct(
         private FailureReceiversRepositoryInterface $failureReceivers,
+        private ?PublishServiceInterface $publishService = null,
     ) {
     }
 
@@ -42,5 +47,32 @@ final class FailedMessageRejecter implements FailedMessageRejecterInterface
         }
 
         $failureReceiver->reject($envelope);
+
+        $this->publishMercureUpdate($receiverName, $envelope, (string) $id);
+    }
+
+    private function publishMercureUpdate(string $receiver, Envelope $envelope, string $messageId): void
+    {
+        if (null === $this->publishService) {
+            return;
+        }
+
+        try {
+            $update = MessengerUpdate::rejected(
+                $receiver,
+                \get_class($envelope->getMessage()),
+                $messageId,
+            );
+
+            $this->publishService->publish(
+                Topics::STUDIO->value,
+                $update,
+                true,
+                null,
+                'coreshop.messenger.update',
+            );
+        } catch (\Throwable) {
+            // Silently ignore publish errors
+        }
     }
 }
