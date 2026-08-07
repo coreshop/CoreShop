@@ -92,7 +92,7 @@
     "doctrine/dbal": "^4.2",
     "doctrine/doctrine-bundle": "^2.4",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
-    "doctrine/orm": "^3.0",
+    "doctrine/orm": "^3.0,<3.6.8",
     "fakerphp/faker": "^1.16",
     "gedmo/doctrine-extensions": "^3.11",
     "jms/serializer": "^3.32",

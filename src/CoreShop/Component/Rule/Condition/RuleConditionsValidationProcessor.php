@@ -19,6 +19,7 @@ namespace CoreShop\Component\Rule\Condition;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
@@ -46,7 +47,7 @@ class RuleConditionsValidationProcessor implements RuleConditionsValidationProce
         }
 
         foreach ($conditions as $condition) {
-            if (!$this->isConditionValid($subject, $rule, $condition, $params)) {
+            if (!$this->isConditionValid($subject, $rule, Condition::denormalize($condition), $params)) {
                 return false;
             }
         }
