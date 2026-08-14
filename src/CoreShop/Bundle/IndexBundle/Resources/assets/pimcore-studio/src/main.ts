@@ -11,23 +11,14 @@
  */
 
 import { type IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
-import { serviceIds as pimcoreServiceIds } from '@pimcore/studio-ui-bundle/app'
-import type { WidgetRegistry as PimcoreWidgetRegistry } from '@pimcore/studio-ui-bundle/modules/widget-manager'
-import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
-import { widgetRegistryServiceId, type WidgetRegistry } from '@coreshop/studio-form'
 // Deep import (bundled, not a shared remote) so the document editable registration also works
 // inside the reduced document editor iframe app.
 import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
-import { Input } from 'antd'
 import { IndexBundleIconModule } from './modules/icon-library'
-import { DynamicTypeObjectDataCoreShopFilter } from './dynamic-types'
 import { ConditionRegistry, NestedCondition } from './modules/filters/conditions'
 import { serviceIds } from './modules/filters/service-ids'
-import { FilterFieldSelect, FilterFieldsMultiSelect, FilterValueSelect, FilterValueMultiSelect } from './modules/filters/widgets'
-import { FilterManager } from './modules/filters/FilterManager'
-import { IndexManager } from './modules/indexes/IndexManager'
-import { InterpreterWidget } from './modules/indexes/widgets/InterpreterWidget'
-import { InterpreterCollectionWidget } from './modules/indexes/widgets/InterpreterCollectionWidget'
+import { FiltersModule } from './modules/filters/module'
+import { IndexesModule } from './modules/indexes/module'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-index',
@@ -37,38 +28,12 @@ const plugin: IAbstractPlugin = {
         // document editor iframe; only depends on the core DocumentEditableRegistry.
         registerCoreShopDocumentEditableSelects(['coreshop_filter', 'coreshop_index'])
 
-        try {
-        // Register Dynamic Types
-        const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
-            pimcoreServiceIds['DynamicTypes/ObjectDataRegistry']
-        )
-        objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopFilter())
-
-        // Register Pimcore widgets
-        const widgetManager = container.get<PimcoreWidgetRegistry>(pimcoreServiceIds.widgetManager)
-
-        widgetManager.registerWidget({
-            name: 'coreshop-index-filter',
-            component: FilterManager
-        })
-
-        widgetManager.registerWidget({
-            name: 'coreshop-index-index',
-            component: IndexManager
-        })
-
-        // Register custom schema widgets for filter conditions
-        const schemaWidgetRegistry = container.get<WidgetRegistry>(widgetRegistryServiceId)
-        schemaWidgetRegistry.register('coreshop_filter_index_field', () => ({ component: FilterFieldSelect }))
-        schemaWidgetRegistry.register('coreshop_filter_index_fields', () => ({ component: FilterFieldsMultiSelect }))
-        schemaWidgetRegistry.register('coreshop_filter_value_select', () => ({ component: FilterValueSelect }))
-        schemaWidgetRegistry.register('coreshop_filter_value_multiselect', () => ({ component: FilterValueMultiSelect }))
-
-        // Create and bind separate registries for pre-conditions and user-conditions
+        // Create and bind separate registries for pre-conditions and user-conditions. These
+        // are this bundle's own services, so binding them here makes them available to every
+        // other plugin from its onStartup onwards.
         container.bind(serviceIds.preConditionRegistry).to(ConditionRegistry).inSingletonScope()
         container.bind(serviceIds.userConditionRegistry).to(ConditionRegistry).inSingletonScope()
 
-        // Get registries
         const preConditionRegistry = container.get<ConditionRegistry>(serviceIds.preConditionRegistry)
         const userConditionRegistry = container.get<ConditionRegistry>(serviceIds.userConditionRegistry)
 
@@ -76,39 +41,15 @@ const plugin: IAbstractPlugin = {
         // Other conditions are registered dynamically from schema config in FilterManager
         preConditionRegistry.register('nested', NestedCondition)
         userConditionRegistry.register('nested', NestedCondition)
-
-        // Register interpreter widget for dynamic schema loading (no prototypes needed)
-        schemaWidgetRegistry.register('coreshop_index_column_interpreter', (field) => ({
-            component: InterpreterWidget,
-            props: { field },
-        }))
-
-        // Register interpreter collection widget (nested interpreter lists)
-        schemaWidgetRegistry.register('interpreter_collection', (field) => ({
-            component: InterpreterCollectionWidget,
-            props: { field },
-        }))
-        } catch {
-            // Everything above targets the main Studio app (object editor, widgets, schema
-            // forms). Those services are absent in the reduced document editor iframe app —
-            // skip them there; the document editables are already registered above.
-        }
     },
 
     onStartup({ moduleSystem }) {
-        try {
-            // Hide IndexBundle-owned rule collection prefixes from generic schema forms
-            const formWidgetRegistry = container.get<WidgetRegistry>(widgetRegistryServiceId)
-            const hiddenWidget = () => ({ component: Input, extra: { hidden: true } })
-            ;[
-              'coreshop_filter_pre_condition_collection',
-              'coreshop_filter_user_condition_collection',
-            ].forEach((prefix) => formWidgetRegistry.register(prefix, hiddenWidget))
-        } catch {
-            // Main Studio app only — StudioForm registry absent in the document editor iframe.
-        }
-
+        // Widget, object data and schema widget registrations live in these modules: modules
+        // are initialised after every plugin's onInit, so the registries other plugins bind
+        // in their own onInit are guaranteed to exist by then.
         moduleSystem.registerModule(IndexBundleIconModule)
+        moduleSystem.registerModule(FiltersModule)
+        moduleSystem.registerModule(IndexesModule)
     }
 }
 
