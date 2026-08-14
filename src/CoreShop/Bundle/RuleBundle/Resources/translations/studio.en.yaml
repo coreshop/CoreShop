@@ -1,7 +1,8 @@
 ---
 coreshop_conditions: 'Conditions'
 coreshop_actions: 'Actions'
-coreshop_condition_no_configuration: 'No Configuration available'
+coreshop_condition_no_configuration: 'This condition has no configuration.'
+coreshop_action_no_configuration: 'This action has no configuration.'
 coreshop_condition_conditions_operator_and: 'And'
 coreshop_condition_conditions_operator_or: 'Or'
 coreshop_condition_conditions_operator_not: 'Not'

@@ -3,12 +3,22 @@
  */
 
 import type { RuleConfig } from '../types'
-import { createSchemaAction, createSchemaCondition } from '../components'
+import { createSchemaAction, createSchemaCondition, EmptyAction, EmptyCondition } from '../components'
 import { ActionRegistry } from './ActionRegistry'
 import { ConditionRegistry } from './ConditionRegistry'
 
 export interface SchemaRegistrationOptions {
   overwriteExisting?: boolean
+  /**
+   * All condition types the backend knows about. Types without a schema mapping are valid,
+   * they just ship without a configuration form and get an EmptyCondition placeholder.
+   */
+  knownConditionTypes?: string[]
+  /**
+   * All action types the backend knows about. Types without a schema mapping are valid,
+   * they just ship without a configuration form and get an EmptyAction placeholder.
+   */
+  knownActionTypes?: string[]
 }
 
 const isSchemaConditionComponent = (component: unknown): boolean => {
@@ -121,6 +131,21 @@ export const registerSchemaComponentsFromMaps = (
       actionRegistry.register(type, createSchemaAction(blockPrefix))
     }
   }
+
+  // Known types without a schema mapping have no configuration form at all
+  // (e.g. the voucherCredit cart price rule action). They are still valid, so render a
+  // neutral placeholder instead of leaving them to the "Unknown type" fallback.
+  for (const type of options.knownConditionTypes ?? []) {
+    if (!conditionRegistry.has(type)) {
+      conditionRegistry.register(type, EmptyCondition)
+    }
+  }
+
+  for (const type of options.knownActionTypes ?? []) {
+    if (!actionRegistry.has(type)) {
+      actionRegistry.register(type, EmptyAction)
+    }
+  }
 }
 
 export const registerSchemaComponentsFromConfig = (
@@ -135,6 +160,10 @@ export const registerSchemaComponentsFromConfig = (
     config.conditionSchemaByType,
     config.actionSchemaByType,
     config.schemas,
-    options,
+    {
+      knownConditionTypes: config.conditions,
+      knownActionTypes: config.actions,
+      ...options,
+    },
   )
 }

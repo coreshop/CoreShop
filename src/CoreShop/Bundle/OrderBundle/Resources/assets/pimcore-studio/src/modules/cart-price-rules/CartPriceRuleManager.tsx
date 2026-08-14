@@ -57,6 +57,10 @@ export const CartPriceRuleManager: React.FC = () => {
           cfg.itemConditionSchemaByType,
           cfg.itemActionSchemaByType,
           cfg.schemas,
+          {
+            knownConditionTypes: cfg.itemConditions,
+            knownActionTypes: cfg.itemActions,
+          },
         )
 
         setConfig(cfg)
