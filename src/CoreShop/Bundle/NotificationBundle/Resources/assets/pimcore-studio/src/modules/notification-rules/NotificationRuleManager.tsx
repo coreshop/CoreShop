@@ -40,6 +40,8 @@ export const NotificationRuleManager: React.FC = () => {
 
         const conditionMap: Record<string, string> = {}
         const actionMap: Record<string, string> = {}
+        const knownConditionTypes: string[] = []
+        const knownActionTypes: string[] = []
 
         for (const type of cfg.types) {
           for (const [conditionName, blockPrefix] of Object.entries(cfg.conditionSchemaByType?.[type] ?? {})) {
@@ -49,9 +51,19 @@ export const NotificationRuleManager: React.FC = () => {
           for (const [actionName, blockPrefix] of Object.entries(cfg.actionSchemaByType?.[type] ?? {})) {
             actionMap[`${type}.${actionName}`] = blockPrefix
           }
+
+          knownConditionTypes.push(...(cfg.conditions[type] ?? []).map(name => `${type}.${name}`))
+          knownActionTypes.push(...(cfg.actions[type] ?? []).map(name => `${type}.${name}`))
         }
 
-        registerSchemaComponentsFromMaps(conditionRegistry, actionRegistry, conditionMap, actionMap, cfg.schemas)
+        registerSchemaComponentsFromMaps(
+          conditionRegistry,
+          actionRegistry,
+          conditionMap,
+          actionMap,
+          cfg.schemas,
+          { knownConditionTypes, knownActionTypes },
+        )
         setConfig(cfg)
       })
       .catch(err => {

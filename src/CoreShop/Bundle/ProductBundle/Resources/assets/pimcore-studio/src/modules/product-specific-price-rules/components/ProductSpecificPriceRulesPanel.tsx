@@ -86,11 +86,18 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
         actionRegistry,
         value.conditionSchemaByType,
         value.actionSchemaByType,
+        undefined,
+        {
+          knownConditionTypes: value.conditions,
+          knownActionTypes: value.actions,
+        },
       )
     } catch (e) {
       console.warn('Product specific price rules registries not available:', e)
     }
   }, [
+    value.conditions,
+    value.actions,
     value.conditionSchemaByType,
     value.actionSchemaByType,
   ])

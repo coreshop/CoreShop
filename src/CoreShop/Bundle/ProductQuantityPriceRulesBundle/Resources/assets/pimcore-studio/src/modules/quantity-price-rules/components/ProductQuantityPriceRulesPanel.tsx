@@ -17,7 +17,7 @@ import { container } from '@pimcore/studio-ui-bundle'
 import { useGlobalDataObjectContext } from '@pimcore/studio-ui-bundle/modules/data-object'
 import { ConditionsPanel } from '@coreshop/rule/src/rules/components/ConditionsPanel'
 import { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
-import { createSchemaCondition } from '@coreshop/rule/src/rules/components'
+import { createSchemaCondition, EmptyCondition } from '@coreshop/rule/src/rules/components'
 import type { RuleCondition } from '@coreshop/rule/src/rules/types'
 import { useTranslation } from 'react-i18next'
 import type { QuantityPriceRule, QuantityPriceRulesFieldData, CalculationBehaviour, QuantityRange } from '../types'
@@ -112,7 +112,15 @@ export const ProductQuantityPriceRulesPanel: React.FC<Props> = ({
         conditionRegistry.register(type, createSchemaCondition(blockPrefix))
       }
     }
-  }, [hasConditionRegistry, value.conditionSchemaByType])
+
+    // Known types without a schema mapping have no configuration form at all. They are
+    // still valid, so render a neutral placeholder instead of "Unknown condition type".
+    for (const type of availableConditionTypes) {
+      if (!conditionRegistry.has(type)) {
+        conditionRegistry.register(type, EmptyCondition)
+      }
+    }
+  }, [hasConditionRegistry, value.conditionSchemaByType, availableConditionTypes])
 
   // Get calculation behaviour options
   const calculationBehaviourOptions = (value.stores?.calculationBehaviourTypes ?? DEFAULT_CALCULATION_BEHAVIOURS)
