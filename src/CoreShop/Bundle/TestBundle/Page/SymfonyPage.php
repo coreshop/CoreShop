@@ -24,6 +24,30 @@ use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
 
 abstract class SymfonyPage extends BaseSymfonyPage implements SymfonyPageInterface
 {
+    /**
+     * Default parameters added to every generated URL.
+     *
+     * Deliberately a constant instead of an override of the parent's static $additionalParameters
+     * property: that property is untyped in friends-of-behat/page-object-extension ^0.3 and typed
+     * in ^0.4, so a redeclaration here is a compile error against one of the two versions.
+     */
+    protected const array DEFAULT_URL_PARAMETERS = ['_locale' => 'en'];
+
+    protected function getUrl(array $urlParameters = []): string
+    {
+        $url = parent::getUrl(array_merge(static::DEFAULT_URL_PARAMETERS, $urlParameters));
+
+        $replace = [];
+
+        foreach (static::DEFAULT_URL_PARAMETERS as $key => $value) {
+            $replace[sprintf('&%s=%s', $key, $value)] = '';
+            $replace[sprintf('?%s=%s&', $key, $value)] = '?';
+            $replace[sprintf('?%s=%s', $key, $value)] = '';
+        }
+
+        return str_replace(array_keys($replace), array_values($replace), $url);
+    }
+
     protected function getElement(string $name, array $parameters = []): NodeElement
     {
         DriverHelper::waitForPageToLoad($this->getSession());
