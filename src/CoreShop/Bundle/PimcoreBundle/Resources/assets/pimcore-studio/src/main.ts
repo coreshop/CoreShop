@@ -25,6 +25,12 @@ import {
 const plugin: IAbstractPlugin = {
     name: 'coreshop-pimcore',
 
+    // Base plugin of the CoreShop Studio stack: it registers the dynamic types the other
+    // CoreShop plugins build on. Plugins are initialised in ascending priority order
+    // (default 0), so this runs before coreshop-resource, coreshop-studio-form-plugin and
+    // every feature bundle.
+    priority: -1200,
+
     onInit() {
         const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
             serviceIds['DynamicTypes/ObjectDataRegistry']

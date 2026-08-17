@@ -24,6 +24,7 @@ const plugin: IAbstractPlugin = {
   // Init before the feature bundle plugins (index, address, ...) that resolve the
   // StudioForm WidgetRegistry in their own onInit. Plugins are ordered ascending by
   // priority, so a low value guarantees this plugin binds the registry first.
+  // Provider ladder: coreshop-pimcore (-1200), coreshop-resource (-1100), this (-1000).
   priority: -1000,
 
   onInit() {

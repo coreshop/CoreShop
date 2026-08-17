@@ -39,6 +39,11 @@ import { ResourceConfigProvider, coreshopResourceServiceIds } from './config'
 const plugin: IAbstractPlugin = {
     name: 'coreshop-resource',
 
+    // This plugin provides the entity extension registries that the feature bundles resolve.
+    // Plugins are initialised in ascending priority order (default 0), so a negative value
+    // guarantees the binds below happen before any consumer's onInit runs.
+    priority: -1100,
+
     onInit() {
         // Register CoreShop Dynamic Types for Data Objects
         const objectDataRegistry = container.get<DynamicTypeObjectDataRegistry>(
