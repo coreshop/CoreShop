@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -59,7 +58,7 @@ class CustomerRegistrationType extends AbstractResourceType
         $builder
             ->add('user', UserRegistrationType::class, [
                 'label' => false,
-                'constraints' => [new Valid(['groups' => $this->validationGroups])],
+                'constraints' => [new Valid(groups: $this->validationGroups)],
                 'allow_username' => $this->loginIdentifier === 'username',
             ])
             ->add('salutation', SalutationChoiceType::class, [
@@ -94,7 +93,7 @@ class CustomerRegistrationType extends AbstractResourceType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => $this->validationGroups]),
+                    new Valid(groups: $this->validationGroups),
                 ],
                 'mapped' => false,
             ])
@@ -102,13 +101,13 @@ class CustomerRegistrationType extends AbstractResourceType
                 'label' => 'coreshop.form.customer.terms',
                 'mapped' => false,
                 'validation_groups' => $this->validationGroups,
-                'constraints' => new IsTrue(['groups' => $this->validationGroups]),
+                'constraints' => new IsTrue(groups: $this->validationGroups),
             ])
             ->add('submit', SubmitType::class)
         ;
 
         if ($this->loginIdentifier !== 'username') {
-            $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) {
+            $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event): void {
                 $data = $event->getData();
 
                 if (!$data instanceof CustomerInterface) {

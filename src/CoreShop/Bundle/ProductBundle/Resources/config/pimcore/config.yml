@@ -11,6 +11,12 @@ pimcore:
                     coreShopProductUnitDefinition: CoreShop\Bundle\ProductBundle\CoreExtension\ProductUnitDefinition
                     coreShopProductUnit: CoreShop\Bundle\ProductBundle\CoreExtension\ProductUnit
 
+core_shop_resource:
+    orm_cascade_merge_associations:
+        CoreShop\Component\Product\Model\ProductUnitDefinitions:
+            associations:
+                - unitDefinitions
+
 jms_serializer:
     metadata:
         directories:

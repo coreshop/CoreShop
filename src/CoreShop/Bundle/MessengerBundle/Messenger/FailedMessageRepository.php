@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -47,16 +46,14 @@ final class FailedMessageRepository implements FailedMessageRepositoryInterface
 
         $rows = [];
         foreach ($envelopes as $envelope) {
-            /** @var RedeliveryStamp|null $lastRedeliveryStamp */
             $lastRedeliveryStamp = $envelope->last(RedeliveryStamp::class);
-            /** @var ErrorDetailsStamp|null $lastErrorDetailsStamp */
             $lastErrorDetailsStamp = $envelope->last(ErrorDetailsStamp::class);
 
             $failedMessageDetails = new FailedMessageDetails(
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
-                $lastRedeliveryStamp?->getRedeliveredAt()->format('Y-m-d H:i:s'),
-                $lastErrorDetailsStamp?->getExceptionMessage() ?? '',
+                ($lastRedeliveryStamp?->getRedeliveredAt()->format('Y-m-d H:i:s')) ?? '',
+                $lastErrorDetailsStamp?->getExceptionMessage(),
                 '<pre>' . print_r($envelope->getMessage(), true) . '</pre>',
             );
 

@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -80,7 +79,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function () use ($document) {
+        VersionHelper::useVersioning(function () use ($document): void {
             $document->save();
         }, false);
 
@@ -110,7 +109,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $document->setItems($items);
 
-        VersionHelper::useVersioning(function () use ($document) {
+        VersionHelper::useVersioning(function () use ($document): void {
             $document->save();
         }, false);
 
@@ -130,7 +129,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->calculateTotal($document, true);
         $this->calculateTotal($document, false);
 
-        VersionHelper::useVersioning(function () use ($document) {
+        VersionHelper::useVersioning(function () use ($document): void {
             $document->save();
         }, false);
     }

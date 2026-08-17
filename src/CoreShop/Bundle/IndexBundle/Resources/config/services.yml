@@ -108,12 +108,12 @@ services:
     coreshop.form_registry.index.interpreter:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    # OpenSearch Client Registry
+    # Search Client Registry (OpenSearch and Elasticsearch clients)
     coreshop.registry.index.opensearch_client:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - OpenSearch\Client
-            - opensearch-clients
+            - Pimcore\SearchClient\SearchClientInterface
+            - search-clients
         tags:
             - { name: coreshop.registry, type_hint: opensearchClients }
 
@@ -340,5 +340,9 @@ services:
             - '@coreshop.registry.index.worker'
 
     CoreShop\Component\Index\Extension\DecimalIndexColumnTypeConfigExtension:
+        tags:
+            - { name: coreshop.index.extension }
+
+    CoreShop\Component\Index\Extension\StringIndexColumnTypeConfigExtension:
         tags:
             - { name: coreshop.index.extension }

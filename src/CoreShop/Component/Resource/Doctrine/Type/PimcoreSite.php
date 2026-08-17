@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -25,7 +24,7 @@ use Pimcore\Model\Site;
 
 class PimcoreSite extends Type
 {
-    public const PIMCORE_SITE = 'pimcoreSite';
+    public const string PIMCORE_SITE = 'pimcoreSite';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
@@ -57,7 +56,7 @@ class PimcoreSite extends Type
         return null;
     }
 
-    public function getBindingType(): int
+    public function getBindingType(): ParameterType
     {
         return ParameterType::INTEGER;
     }

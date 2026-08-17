@@ -5,20 +5,20 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
 namespace CoreShop\Behat\Page\Frontend\Account;
 
 use CoreShop\Bundle\TestBundle\Page\Frontend\FrontendPageInterface;
+use CoreShop\Component\Address\Model\CountryInterface;
 
 interface ChangeAddressPageInterface extends FrontendPageInterface
 {
@@ -32,7 +32,7 @@ interface ChangeAddressPageInterface extends FrontendPageInterface
 
     public function specifyLastname(?string $lastname = null): void;
 
-    public function specifyStreet(?string $street = null, $number = null): void;
+    public function specifyStreet(?string $street = null, ?string $number = null): void;
 
     public function specifyPhoneNumber(string $phoneNumber): void;
 
@@ -42,5 +42,15 @@ interface ChangeAddressPageInterface extends FrontendPageInterface
 
     public function addAddress(): void;
 
-    public function fillAddress($country = null, $city = null, $postcode = null, $number = null, $street = null, $firstname = null, $lastname = null, $salutation = null, $phone = null): void;
+    public function fillAddress(
+        ?CountryInterface $country = null,
+        ?string $city = null,
+        ?string $postcode = null,
+        ?string $number = null,
+        ?string $street = null,
+        ?string $firstname = null,
+        ?string $lastname = null,
+        ?string $salutation = null,
+        ?string $phone = null,
+    ): void;
 }

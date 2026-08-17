@@ -5,28 +5,28 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use CoreShop\Bundle\ResourceBundle\Attribute\AsPimcoreModel;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Reflection\ClassReflection;
+use Pimcore\Bundle\GenericExecutionEngineBundle\PimcoreGenericExecutionEngineBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -36,7 +36,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use function Symfony\Component\String\u;
 
-final class CoreShopResourceExtension extends AbstractPimcoreExtension
+final class CoreShopResourceExtension extends AbstractModelExtension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -71,12 +71,21 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
 
         $container->setParameter('coreshop.resources', []);
         $container->setParameter('coreshop.resource.mapping', $configs['mapping']);
+        $container->setParameter('coreshop.orm_cascade_merge', $configs['orm_cascade_merge_associations']);
 
         $this->autoRegisterPimcoreModels($configs, $container);
 
         $this->loadPersistence($configs['drivers'], $configs['resources'], $loader);
         $this->loadResources($configs['resources'], $container);
         $this->loadPimcoreModels($configs['pimcore'], $container);
+
+        $this->registerDependantBundles(
+            'coreshop',
+            [
+                PimcoreGenericExecutionEngineBundle::class,
+            ],
+            $container,
+        );
 
         $bodyListener = new Definition(BodyListener::class);
         $bodyListener->addTag('kernel.event_listener', [
@@ -147,7 +156,7 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
             return $alias;
         }
 
-        $shortName = Container::underscore(substr(strrchr($className, '\\'), 1));
+        $shortName = Container::underscore(substr((string) strrchr($className, '\\'), 1));
 
         return 'app.' . u($shortName)->snake()->toString();
     }

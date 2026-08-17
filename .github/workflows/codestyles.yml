@@ -15,17 +15,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: [ '4.0', '4.1','next' ]
+        branches: [ '5.0', 'next' ]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ matrix.branch }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.3
 
       - name: Install PHP dependencies
         run: composer update --no-interaction --no-scripts
@@ -34,7 +34,7 @@ jobs:
         run: vendor/bin/ecs check --fix src
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: '[CS] Refactor'
           author: CoreShop <info@coreshop.org>

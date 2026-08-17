@@ -1,3 +1,2 @@
 parameters:
-    payum.storage.doctrine.orm.class: CoreShop\Bundle\PayumBundle\Storage\LockingStorage
-
+#    payum.storage.doctrine.orm.class: CoreShop\Bundle\PayumBundle\Storage\LockingStorage

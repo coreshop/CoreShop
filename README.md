@@ -3,7 +3,6 @@
 ![Static Tests (Lint, Stan)](https://github.com/coreshop/CoreShop/actions/workflows/static.yml/badge.svg)
 [![Behat UI](https://github.com/coreshop/CoreShop/actions/workflows/behat_ui.yml/badge.svg)](https://github.com/coreshop/CoreShop/actions/workflows/behat_ui.yml)
 [![Behat](https://github.com/coreshop/CoreShop/actions/workflows/behat.yml/badge.svg)](https://github.com/coreshop/CoreShop/actions/workflows/behat.yml)
-[![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 [![Latest Pre-Release](https://img.shields.io/packagist/vpre/coreshop/core-shop.svg)](https://www.packagist.org/packages/coreshop/core-shop)
 
 [![CoreShop](etc/illustration.png 'CoreShop')](https://www.coreshop.com)
@@ -20,7 +19,7 @@ transcends ordinary transactions.
 
 # Requirements
 
-- Pimcore `^11.5`
+- Pimcore `^12.3`
 
 # Installation
 

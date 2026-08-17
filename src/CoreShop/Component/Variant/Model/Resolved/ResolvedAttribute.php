@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -24,12 +23,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ResolvedAttribute
 {
-    private AttributeInterface $attribute;
+    private ?AttributeInterface $attribute;
 
     private ArrayCollection $products;
 
     public function __construct(
-        AttributeInterface $attribute = null,
+        ?AttributeInterface $attribute = null,
     ) {
         $this->products = new ArrayCollection();
         if ($attribute) {
@@ -37,12 +36,12 @@ class ResolvedAttribute
         }
     }
 
-    public function getAttribute(): AttributeInterface
+    public function getAttribute(): ?AttributeInterface
     {
         return $this->attribute;
     }
 
-    public function setAttribute(AttributeInterface $attribute): void
+    public function setAttribute(?AttributeInterface $attribute): void
     {
         $this->attribute = $attribute;
     }

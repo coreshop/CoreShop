@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -24,32 +23,24 @@ use Symfony\Component\String\UnicodeString;
 class ColorConsoleDiffFormatter
 {
     /**
-     * @var string
-     *
      * @see https://regex101.com/r/ovLMDF/1
      */
-    private const PLUS_START_REGEX = '#^(\+.*)#';
+    private const string PLUS_START_REGEX = '#^(\+.*)#';
 
     /**
-     * @var string
-     *
      * @see https://regex101.com/r/xwywpa/1
      */
-    private const MINUT_START_REGEX = '#^(\-.*)#';
+    private const string MINUT_START_REGEX = '#^(\-.*)#';
 
     /**
-     * @var string
-     *
      * @see https://regex101.com/r/CMlwa8/1
      */
-    private const AT_START_REGEX = '#^(@.*)#';
+    private const string AT_START_REGEX = '#^(@.*)#';
 
     /**
-     * @var string
-     *
      * @see https://regex101.com/r/qduj2O/1
      */
-    private const NEWLINES_REGEX = "#\n\r|\n#";
+    private const string NEWLINES_REGEX = "#\n\r|\n#";
 
     private string $template;
 
