@@ -8,7 +8,36 @@ This index plays a crucial role in enhancing search and filter capabilities with
 CoreShop currently supports the following types of indexes:
 
 - **MySQL**: Utilizes a MySQL database for indexing.
-- ~~Elasticsearch~~: Currently not supported.
+- **OpenSearch** (since 4.1.3): Utilizes an [OpenSearch](https://opensearch.org/) cluster for indexing.
+- ~~Elasticsearch~~: Currently not supported. Use the OpenSearch worker instead.
+
+### OpenSearch
+
+The OpenSearch worker is available since CoreShop 4.1.3 and requires the `pimcore/opensearch-client` package:
+
+```bash
+composer require pimcore/opensearch-client
+```
+
+Configure one or more OpenSearch clients via the `pimcore_open_search_client` configuration:
+
+```yaml
+pimcore_open_search_client:
+    clients:
+        default:
+            hosts: ['https://opensearch:9200']
+            username: 'admin'
+            password: 'somethingsecret'
+```
+
+Every configured client is automatically registered and can be selected when creating an index with the type
+**OpenSearch**. The worker itself provides the following options:
+
+| Option             | Description                                                    |
+|--------------------|----------------------------------------------------------------|
+| Client             | The OpenSearch client to use (from the configuration above).   |
+| Number of Shards   | Number of shards for the created index (default `1`).          |
+| Number of Replicas | Number of replicas for the created index (default `1`).        |
 
 ### Adding Fields to the Index
 
