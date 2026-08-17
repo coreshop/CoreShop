@@ -32,8 +32,7 @@ use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\OpenSearchWorkerInterface;
 use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use OpenSearch\Client;
-use OpenSearch\Common\Exceptions\Missing404Exception;
+use Pimcore\SearchClient\SearchClientInterface;
 use Pimcore\Tool;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -73,7 +72,7 @@ class OpenSearchWorker extends AbstractWorker implements OpenSearchWorkerInterfa
         $client = $this->getClient($index);
         $indexName = $this->getIndexName($index->getName());
 
-        if ($client->indices()->exists(['index' => $indexName])) {
+        if ($client->existsIndex(['index' => $indexName])) {
             $this->deleteIndexStructures($index);
         }
 
@@ -104,13 +103,10 @@ class OpenSearchWorker extends AbstractWorker implements OpenSearchWorkerInterfa
 
         $this->eventDispatcher->dispatch($event, 'coreshop.index.create_or_update_index_structures');
 
-        $client
-            ->indices()
-            ->create([
-                'index' => $event->getArgument('index'),
-                'body' => $event->getArgument('body'),
-            ])
-        ;
+        $client->createIndex([
+            'index' => $event->getArgument('index'),
+            'body' => $event->getArgument('body'),
+        ]);
     }
 
     /**
@@ -120,38 +116,62 @@ class OpenSearchWorker extends AbstractWorker implements OpenSearchWorkerInterfa
      */
     public function deleteIndexStructures(IndexInterface $index): void
     {
-        try {
-            $this->getClient($index)
-                ->indices()
-                ->delete([
-                    'index' => $this->getIndexName($index->getName()),
-                ])
-            ;
-        } catch (Missing404Exception) {
-            // If the index does not exist, we can ignore the exception
+        $client = $this->getClient($index);
+        $indexName = $this->getIndexName($index->getName());
+
+        if (!$client->existsIndex(['index' => $indexName])) {
+            return;
         }
+
+        $client->deleteIndex([
+            'index' => $indexName,
+        ]);
     }
 
     public function renameIndexStructures(IndexInterface $index, string $oldName, string $newName): void
     {
-        $indices = $this->getClient($index)->indices();
+        $client = $this->getClient($index);
         $oldIndex = $this->getIndexName($oldName);
         $newIndex = $this->getIndexName($newName);
 
         // First, check if the old index exists
-        if (!$indices->exists(['index' => $oldIndex])) {
+        if (!$client->existsIndex(['index' => $oldIndex])) {
             return;
         }
 
-        // Then, clone the whole index with the new name
-        $indices->clone([
-            'index' => $oldIndex,
-            'target' => $newIndex,
+        // Re-create the index under the new name with the settings and mappings of the old
+        // one. The generic search client abstraction has no "clone" operation, so settings
+        // and mappings are copied explicitly and the documents are re-indexed.
+        $mappings = $client->getIndexMapping(['index' => $oldIndex])[$oldIndex]['mappings'] ?? [];
+        $settings = $client->getIndexSettings(['index' => $oldIndex])[$oldIndex]['settings']['index'] ?? [];
+
+        // Remove internal settings which cannot be set on index creation
+        unset(
+            $settings['creation_date'],
+            $settings['provided_name'],
+            $settings['uuid'],
+            $settings['version'],
+        );
+
+        $client->createIndex([
+            'index' => $newIndex,
+            'body' => [
+                'settings' => ['index' => $settings],
+                'mappings' => $mappings,
+            ],
+        ]);
+
+        $client->reIndex([
             'wait_for_completion' => true,
+            'refresh' => true,
+            'body' => [
+                'source' => ['index' => $oldIndex],
+                'dest' => ['index' => $newIndex],
+            ],
         ]);
 
         // Finally, delete the old index
-        $indices->delete([
+        $client->deleteIndex([
             'index' => $oldIndex,
         ]);
     }
@@ -201,15 +221,11 @@ class OpenSearchWorker extends AbstractWorker implements OpenSearchWorkerInterfa
 
         // Delete the document from the index if it is not indexable
         if (!$object->getIndexable($index)) {
-            try {
-                $client
-                    ->delete([
-                        'index' => $indexName,
-                        'id' => $objectId,
-                    ])
-                ;
-            } catch (Missing404Exception) {
-                // If the document does not exist, we can ignore the exception
+            if ($client->exists(['index' => $indexName, 'id' => $objectId])) {
+                $client->delete([
+                    'index' => $indexName,
+                    'id' => $objectId,
+                ]);
             }
 
             return;
@@ -253,7 +269,7 @@ class OpenSearchWorker extends AbstractWorker implements OpenSearchWorkerInterfa
         );
     }
 
-    public function getClient(IndexInterface $index): Client
+    public function getClient(IndexInterface $index): SearchClientInterface
     {
         $config = $index->getConfiguration();
 
@@ -263,10 +279,10 @@ class OpenSearchWorker extends AbstractWorker implements OpenSearchWorkerInterfa
 
         $client = $this->clientRegistry->get($config['client']);
 
-        if (!$client instanceof Client) {
+        if (!$client instanceof SearchClientInterface) {
             throw new \RuntimeException(
                 \sprintf(
-                    'OpenSearch client "%s" could not be found. Available clients: "%s"',
+                    'Search client "%s" could not be found. Available clients: "%s"',
                     $config['client'],
                     \implode(', ', \array_keys($this->clientRegistry->all())),
                 ),

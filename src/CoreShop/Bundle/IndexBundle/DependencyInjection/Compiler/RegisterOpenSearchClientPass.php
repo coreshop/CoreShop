@@ -23,7 +23,16 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterOpenSearchClientPass implements CompilerPassInterface
 {
-    private const string CLIENT_SERVICE_PREFIX = 'pimcore.open_search_client.';
+    /**
+     * Wrapper clients implementing Pimcore\SearchClient\SearchClientInterface,
+     * registered by pimcore/opensearch-client and pimcore/elasticsearch-client.
+     * OpenSearch is scanned first so its clients keep their bare identifier on
+     * a name collision (BC with configurations created before Elasticsearch support).
+     */
+    private const array CLIENT_SERVICE_PREFIXES = [
+        'opensearch' => 'pimcore.openSearch.custom_client.',
+        'elasticsearch' => 'pimcore.elasticsearch.custom_client.',
+    ];
 
     /**
      * @inheritDoc
@@ -31,10 +40,21 @@ class RegisterOpenSearchClientPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition('coreshop.registry.index.opensearch_client');
+        $registered = [];
 
-        foreach ($container->getDefinitions() as $id => $definition) {
-            if (\str_starts_with($id, self::CLIENT_SERVICE_PREFIX)) {
-                $identifier = \str_replace(self::CLIENT_SERVICE_PREFIX, '', $id);
+        foreach (self::CLIENT_SERVICE_PREFIXES as $engine => $prefix) {
+            foreach ($container->getDefinitions() as $id => $definition) {
+                if (!\str_starts_with($id, $prefix)) {
+                    continue;
+                }
+
+                $identifier = \substr($id, \strlen($prefix));
+
+                if (isset($registered[$identifier])) {
+                    $identifier = $engine . '_' . $identifier;
+                }
+
+                $registered[$identifier] = true;
                 $registry->addMethodCall('register', [$identifier, new Reference($id)]);
             }
         }
