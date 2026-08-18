@@ -227,10 +227,9 @@ final readonly class CoreShopTestInstallProfile implements InstallProfileInterfa
 
     private function readValue(string $name): ?string
     {
-        /** @var string|false|null $value */
         $value = $_ENV[$name] ?? $_SERVER[$name] ?? getenv($name);
 
-        if ($value === false || $value === null || trim($value) === '') {
+        if (!\is_string($value) || trim($value) === '') {
             return null;
         }
 
