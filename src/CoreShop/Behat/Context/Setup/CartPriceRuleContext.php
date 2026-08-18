@@ -552,6 +552,18 @@ final class CartPriceRuleContext implements Context
     }
 
     /**
+     * Detaches all managed entities so the next cart calculation reloads the cart price rules
+     * (and their JSON "configuration") fresh from the database, exercising the serialize/
+     * deserialize round-trip of nested conditions/actions.
+     *
+     * @Given /^the cart price rules are reloaded from the database$/
+     */
+    public function theCartPriceRulesAreReloadedFromTheDatabase(): void
+    {
+        $this->objectManager->clear();
+    }
+
+    /**
      * @Given /^the (cart item action) has a condition amount with value "([^"]+)" to "([^"]+)"$/
      */
     public function theCartItemActionHasAAmountCondition(ActionInterface $action, $minAmount, $maxAmount): void

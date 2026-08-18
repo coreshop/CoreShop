@@ -12,19 +12,23 @@
 
 import React from 'react'
 import { Alert } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ActionComponentProps } from '../types'
 
 /**
  * EmptyAction component for actions that don't require configuration
- * Use this for actions that just need to exist without any settings
+ * Registered automatically for action types that ship without a configuration form type
  */
 export const EmptyAction: React.FC<ActionComponentProps> = () => {
+  const { t } = useTranslation()
+
   return (
     <Alert
-      message="This action has no configuration options."
+      message={t('coreshop_action_no_configuration', { defaultValue: 'This action has no configuration.' })}
       type="info"
       showIcon
       style={{ marginTop: 8 }}
     />
   )
 }
+EmptyAction.displayName = 'EmptyAction'

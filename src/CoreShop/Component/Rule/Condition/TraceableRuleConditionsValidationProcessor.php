@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Rule\Condition;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
@@ -49,6 +50,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         $ruleResult = true;
 
         foreach ($conditions as $condition) {
+            $condition = Condition::denormalize($condition);
             $conditionResult = $this->isConditionValid($subject, $rule, $condition, $params);
 
             if (!$conditionResult) {

@@ -50,6 +50,29 @@ class Action implements ActionInterface
      */
     protected $configuration;
 
+    /**
+     * Rehydrate an action that was stored inside a JSON "configuration" column (and therefore
+     * comes back as a plain array) into an ActionInterface object. Objects are returned as-is.
+     *
+     * @param ActionInterface|array $action
+     */
+    public static function denormalize($action): ActionInterface
+    {
+        if ($action instanceof ActionInterface) {
+            return $action;
+        }
+
+        $model = new self();
+        $model->setType($action['type'] ?? null);
+        $model->setConfiguration($action['configuration'] ?? []);
+
+        if (isset($action['sort'])) {
+            $model->setSort($action['sort']);
+        }
+
+        return $model;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,11 +112,22 @@ class Action implements ActionInterface
         return $this;
     }
 
+    /**
+     * Nested conditions/actions (e.g. inside a cartItemAction) are stored inside this JSON
+     * "configuration" column. json_encode() cannot serialize the model objects (they end up as
+     * "{}"), so convert them to plain arrays for storage. They are rehydrated on read via
+     * Condition::denormalize() / self::denormalize().
+     */
     private function normalizeConfiguration(array $configuration): array
     {
         foreach ($configuration as $key => $value) {
             if ($value instanceof ConditionInterface || $value instanceof ActionInterface) {
-                continue;
+                $configuration[$key] = [
+                    'id' => $value->getId(),
+                    'type' => $value->getType(),
+                    'sort' => $value->getSort(),
+                    'configuration' => $value->getConfiguration(),
+                ];
             } elseif ($value instanceof Collection) {
                 $configuration[$key] = $this->normalizeConfiguration($value->toArray());
             } elseif ($value instanceof ResourceInterface) {

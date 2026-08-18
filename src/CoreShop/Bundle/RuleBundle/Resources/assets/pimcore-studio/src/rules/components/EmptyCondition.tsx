@@ -12,19 +12,23 @@
 
 import React from 'react'
 import { Alert } from 'antd'
+import { useTranslation } from 'react-i18next'
 import type { ConditionComponentProps } from '../types'
 
 /**
  * EmptyCondition component for conditions that don't require configuration
- * Use this for conditions that just need to exist without any settings
+ * Registered automatically for condition types that ship without a configuration form type
  */
 export const EmptyCondition: React.FC<ConditionComponentProps> = () => {
+  const { t } = useTranslation()
+
   return (
     <Alert
-      message="This condition has no configuration options."
+      message={t('coreshop_condition_no_configuration', { defaultValue: 'This condition has no configuration.' })}
       type="info"
       showIcon
       style={{ marginTop: 8 }}
     />
   )
 }
+EmptyCondition.displayName = 'EmptyCondition'
