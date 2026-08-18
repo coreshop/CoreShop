@@ -43,7 +43,10 @@
     "require-dev": {
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
-        "phpstan/phpstan-webmozart-assert": "^2.0"
+        "phpstan/phpstan-webmozart-assert": "^2.0",
+        "pimcore/generic-data-index-bundle": "^2026.1",
+        "pimcore/studio-backend-bundle": "^2026.1",
+        "pimcore/studio-ui-bundle": "^2026.1"
     },
     "autoload": {
         "psr-4": {
