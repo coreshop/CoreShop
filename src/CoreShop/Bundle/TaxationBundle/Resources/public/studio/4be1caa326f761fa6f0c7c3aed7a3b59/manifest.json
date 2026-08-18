@@ -1,0 +1,103 @@
+{
+  "allFiles": [
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/main.939483e6.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/remoteEntry.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/695.e51b64ff.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/375.7f598466.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/44.049bb041.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/63.45bfaec9.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/696.f5517d01.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/663.9be05826.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/460.f92dd25d.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/51.c8ca636b.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/536.1656c9aa.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/76.96294ec3.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/__federation_expose_default_export.032fd989.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/920.478be2d4.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/821.305267fd.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/79.9402c066.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/254.6c06183a.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/448.7c493adc.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/174.6d4a01ab.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/450.d25ec61e.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/808.2ed12b4f.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/564.7079d4fe.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/398.3551693e.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/449.208d9e64.js",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/mf-stats.json",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/mf-manifest.json",
+    "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/main.html"
+  ],
+  "entries": {
+    "main": {
+      "html": [
+        "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/main.html"
+      ],
+      "initial": {
+        "js": [
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/398.3551693e.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/449.208d9e64.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/main.939483e6.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/449.208d9e64.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/398.3551693e.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/564.7079d4fe.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/808.2ed12b4f.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/450.d25ec61e.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/174.6d4a01ab.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/448.7c493adc.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/254.6c06183a.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/79.9402c066.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/821.305267fd.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/920.478be2d4.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/76.96294ec3.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/536.1656c9aa.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/51.c8ca636b.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/460.f92dd25d.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/663.9be05826.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/696.f5517d01.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/63.45bfaec9.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/44.049bb041.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/375.7f598466.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/695.e51b64ff.js"
+        ]
+      }
+    },
+    "coreshoptaxation": {
+      "initial": {
+        "js": [
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/remoteEntry.js"
+        ]
+      },
+      "async": {
+        "js": [
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/449.208d9e64.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/398.3551693e.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/564.7079d4fe.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/808.2ed12b4f.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/450.d25ec61e.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/174.6d4a01ab.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/448.7c493adc.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/254.6c06183a.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/79.9402c066.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/821.305267fd.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/920.478be2d4.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/__federation_expose_default_export.032fd989.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/76.96294ec3.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/536.1656c9aa.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/51.c8ca636b.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/460.f92dd25d.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/663.9be05826.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/696.f5517d01.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/63.45bfaec9.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/44.049bb041.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/375.7f598466.js",
+          "/bundles/coreshoptaxation/studio/4be1caa326f761fa6f0c7c3aed7a3b59/static/js/async/695.e51b64ff.js"
+        ]
+      }
+    }
+  }
+}
