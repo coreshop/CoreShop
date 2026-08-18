@@ -29,8 +29,6 @@ final class CoreShopMoneyExtension extends AbstractPimcoreExtension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
-
         if (!$container->hasParameter('coreshop.currency.decimal_factor')) {
             $container->setParameter('coreshop.currency.decimal_factor', 100);
         }
@@ -43,10 +41,6 @@ final class CoreShopMoneyExtension extends AbstractPimcoreExtension
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
-        }
-
-        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
-            $loader->load('services/classic_admin.yml');
         }
 
         if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {

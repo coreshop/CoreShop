@@ -65,7 +65,6 @@ final class Configuration implements ConfigurationInterface
 
         $this->addStack($rootNode);
         $this->addModelsSection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -254,35 +253,4 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
-    {
-        $node->children()
-            ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->scalarNode('permissions')
-                        ->cannotBeOverwritten()
-                        ->defaultValue(['country', 'state', 'zone'])
-                    ->end()
-                ->end()
-            ->end()
-        ->end()
-        ;
-    }
 }

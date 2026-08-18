@@ -60,6 +60,7 @@ class Setup
 
         $schemaManager->createDatabase($connection->quoteIdentifier($dbName));
 
+        /** @phpstan-ignore arguments.count */
         $installer = new \Pimcore\Bundle\InstallBundle\Installer(
             \Pimcore::getContainer()->get('monolog.logger.pimcore'),
             \Pimcore::getContainer()->get('event_dispatcher'),
@@ -69,14 +70,13 @@ class Setup
         $num = $method->getNumberOfParameters();
 
         if ($num >= 3) {
+            /** @phpstan-ignore method.notFound */
             $installer->setupDatabase($connection, [
                 'username' => 'admin',
                 'password' => 'coreshop',
             ]);
         } else {
-            /**
-             * @phpstan-ignore-next-line
-             */
+            /** @phpstan-ignore method.notFound */
             $installer->setupDatabase([
                 'username' => 'admin',
                 'password' => 'coreshop',

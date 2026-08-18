@@ -62,10 +62,6 @@ final class CoreShopPaymentExtension extends AbstractModelExtension implements P
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
         //$this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
 
-        if (array_key_exists('pimcore_admin', $configs)) {
-            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
-        }
-
         $bundles = $container->getParameter('kernel.bundles');
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {

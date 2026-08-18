@@ -150,7 +150,6 @@ class EntityMerger
 
             $reflectionClass = new \ReflectionClass($origData);
             $property = $reflectionClass->getProperty('collection');
-            $property->setAccessible(true);
             $origDataCollection = $property->getValue($origData);
 
             if (!$origDataCollection instanceof Collection) {
@@ -164,7 +163,6 @@ class EntityMerger
 
                 $reflectionClass = new \ReflectionClass($newData);
                 $property = $reflectionClass->getProperty('collection');
-                $property->setAccessible(true);
                 $newDataCollection = $property->getValue($newData);
 
                 if (!$newDataCollection instanceof Collection) {
@@ -227,7 +225,6 @@ class EntityMerger
 
                     $reflectionClass = new \ReflectionClass($newData);
                     $property = $reflectionClass->getProperty('snapshot');
-                    $property->setAccessible(true);
                     $property->setValue($newData, $snapshotEntries);
                 }
 

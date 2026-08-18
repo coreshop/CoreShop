@@ -52,7 +52,6 @@ final class Configuration implements ConfigurationInterface
         ;
 
         $this->addCategorySection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
         $this->addControllerSection($rootNode);
 
         return $treeBuilder;
@@ -106,35 +105,4 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
-    {
-        $node->children()
-            ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('install')
-                        ->addDefaultsIfNotSet()
-                        ->children()
-                            ->arrayNode('routes')
-                                ->treatNullLike([])
-                                ->scalarPrototype()->end()
-                                ->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/staticroutes.yml'])
-                            ->end()
-                            ->arrayNode('documents')
-                                ->treatNullLike([])
-                                ->scalarPrototype()->end()
-                                ->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/documents.yml'])
-                            ->end()
-                            ->arrayNode('image_thumbnails')
-                                ->treatNullLike([])
-                                ->scalarPrototype()->end()
-                                ->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/image-thumbnails.yml'])
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ->end()
-        ;
-    }
 }

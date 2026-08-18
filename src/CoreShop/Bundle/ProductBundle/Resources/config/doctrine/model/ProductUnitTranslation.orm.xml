@@ -8,10 +8,10 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="fullLabel" column="full_label"/>
-        <field name="fullPluralLabel" column="full_plural_label"/>
-        <field name="shortLabel" column="short_label"/>
-        <field name="shortPluralLabel" column="short_plural_label"/>
+        <field name="fullLabel" column="full_label" type="string" length="255"/>
+        <field name="fullPluralLabel" column="full_plural_label" type="string" length="255"/>
+        <field name="shortLabel" column="short_label" type="string" length="255"/>
+        <field name="shortPluralLabel" column="short_plural_label" type="string" length="255"/>
 
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>

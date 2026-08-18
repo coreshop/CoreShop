@@ -55,6 +55,13 @@ ui_pimcore:
 
         Robertfausk\Behat\PantherExtension: ~
 
+    calls:
+        # Deprecations must never fail a scenario: Behat's runtime call handler turns every
+        # reported error into a failing step, while Pimcore's own test setup (Codeception's
+        # default error_level) reports deprecations without escalating them. 8191 is
+        # E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED.
+        error_reporting: 8191
+
     gherkin:
         filters:
             tags: '@ui_pimcore&&~@wip'

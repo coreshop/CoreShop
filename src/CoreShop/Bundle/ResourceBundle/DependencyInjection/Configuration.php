@@ -51,7 +51,6 @@ final class Configuration implements ConfigurationInterface
         $this->addResourcesSection($rootNode);
         $this->addTranslationsSection($rootNode);
         $this->addDriversSection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
         $this->addCascadeMergeAssociations($rootNode);
 
         return $treeBuilder;
@@ -158,34 +157,6 @@ final class Configuration implements ConfigurationInterface
                     ->enumPrototype()->values(CoreShopResourceBundle::getAvailableDrivers())->end()
                 ->end()
             ->end()
-        ;
-    }
-
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
-    {
-        $node->children()
-            ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                ->end()
-            ->end()
-        ->end()
         ;
     }
 

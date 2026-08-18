@@ -78,7 +78,6 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
         $this->addStack($rootNode);
 
         return $treeBuilder;
@@ -401,56 +400,4 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
-    {
-        $node->children()
-            ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->scalarNode('permissions')
-                        ->cannotBeOverwritten()
-                        ->defaultValue([
-                            'cart_price_rule',
-                            'order_list',
-                            'order_detail',
-                            'order_create',
-                            'quote_list',
-                            'quote_detail',
-                            'quote_create',
-                            'cart_list',
-                            'cart_detail',
-                            'cart_create',
-                        ])
-                    ->end()
-                    ->arrayNode('install')
-                        ->addDefaultsIfNotSet()
-                        ->children()
-                            ->arrayNode('grid_config')
-                                ->treatNullLike([])
-                                ->scalarPrototype()->end()
-                                ->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/grid-config.yml'])
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ->end()
-        ;
-    }
 }

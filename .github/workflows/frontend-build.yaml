@@ -4,7 +4,7 @@ on:
   # Pull requests only verify that the Studio bundles type-check and build. Nothing is committed,
   # so the diff of a pull request stays limited to the actual source changes.
   pull_request:
-    branches: [ '5.1' ]
+    branches: [ '2026.x' ]
   # The built assets are committed once per push to the release branch. That commit is what the
   # monorepo split picks up, so consumers keep getting prebuilt assets.
   #
@@ -12,7 +12,7 @@ on:
   # another (no-op) build. It deliberately carries no `[skip ci]` marker: that would skip every
   # workflow for the push, including the monorepo split that has to pick the assets up.
   push:
-    branches: [ '5.1' ]
+    branches: [ '2026.x' ]
     paths-ignore:
       - 'src/CoreShop/Bundle/*/Resources/public/studio/**'
   workflow_dispatch:
