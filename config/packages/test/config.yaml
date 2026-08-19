@@ -35,3 +35,7 @@ monolog:
             level: error
         console:
             channels: ['!event', '!doctrine', '!console', '!cache']
+
+core_shop_resource:
+    translation:
+        locale_column_length: 8
