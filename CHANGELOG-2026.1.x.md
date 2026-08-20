@@ -91,3 +91,55 @@ Additional effects:
 Developer docs covering `rule-engine`, `payment-provider`, `menu-bundle`, `form-extension`, and
 `order-detail` extension have been rewritten to use Studio patterns (StudioFormBundle schema,
 TabExtension / ActionExtension slots). ExtJS code samples were removed.
+
+### Configurable translation `locale` column length
+
+`ORMTranslatableListener` hardcoded the Doctrine ORM mapping for every `*_translation` entity's
+`locale` column to `length: 5`. This is too short for any locale identifier beyond a plain
+`language_REGION` code.
+
+A [BCP 47 / RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html) language tag (Pimcore/ICU locale
+strings use `_` instead of `-`, but the subtag rules are the same) is built as:
+
+```
+language ["-" script] ["-" region] *("-" variant)
+```
+
+- `language`: 2–3 letters (rarely up to 8 for registered/reserved tags)
+- `script`: **exactly 4 letters** (ISO 15924), e.g. `Hans`, `Hant`, `Cyrl`, `Latn`
+- `region`: 2 letters (ISO 3166-1) or 3 digits (UN M49)
+- `variant`: 5–8 alphanumeric chars, or 1 digit + 3 alphanumeric chars, and — per the `*("-" variant)`
+  grammar in [RFC 5646 §2.2.5](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.5) — a tag can
+  carry **any number of them**. There is no fixed maximum tag length; `5` (or any other single value)
+  is only ever a practical choice for the locales a given project actually uses, never a technically
+  correct upper bound.
+
+Real-world examples already longer than 5 characters:
+
+- `zh_Hans` / `zh_Hant` — 7 chars (script only, no region)
+- `zh_Hant_HK`, `zh_Hant_TW`, `zh_Hans_SG` — 10 chars (script + region)
+- `sr_Cyrl_RS` / `sr_Latn_RS` — 10 chars (Serbian, Cyrillic vs. Latin, Serbia)
+- `uz_Cyrl_UZ` / `uz_Latn_UZ` — 10 chars (Uzbek)
+- `pa_Arab_PK` / `pa_Guru_IN` — 10 chars (Punjabi, Shahmukhi vs. Gurmukhi script)
+- `de_DE_1901` — 10 chars (German, traditional 1901 orthography *variant*, not a script)
+
+All of these are real ICU/CLDR locale IDs — the same data source Symfony's
+[Intl component](https://symfony.com/doc/current/components/intl.html) (and by extension Pimcore's
+locale list) draws from, and the identifier grammar itself comes from
+[Unicode UTS #35](https://www.unicode.org/reports/tr35/#Identifiers). `zh_Hans` / `zh_Hant` are only
+the example that was hit in practice — MySQL silently truncated them to `zh_Ha`, which then collided
+with the `(translatable_id, locale)` unique constraint and caused a duplicate-key error on insert.
+
+The column length is now configurable:
+
+```yaml
+core_shop_resource:
+    translation:
+        locale_column_length: 8
+```
+
+**The default stays `5`** — this is opt-in. If you raise it, you are responsible for a migration:
+changing this value only updates Doctrine's *mapping metadata* for newly created schemas. It does
+**not** alter any already-created database column. You must ship your own
+`ALTER TABLE ... MODIFY locale VARCHAR(<n>)` migration for every existing `*_translation` table, or
+inserts will keep failing/truncating against the old column width.
