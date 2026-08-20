@@ -11,7 +11,7 @@ on:
       - '*.xml'
       - 'composer.json'
       - '.github/workflows/static.yml'
-  pull_request:
+  pull_request_target:
     branches: [ '2026.x' ]
     paths:
       - 'features/**'
