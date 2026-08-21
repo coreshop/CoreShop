@@ -72,6 +72,10 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
          */
         $this->registerDependantBundles('coreshop', [PimcoreCustomReportsBundle::class], $container);
 
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
+        }
+
         $container->setParameter('coreshop.after_logout_redirect_route', $configs['after_logout_redirect_route']);
 
         $bundles = $container->getParameter('kernel.bundles');

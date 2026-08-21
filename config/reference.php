@@ -470,7 +470,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         datetime?: array{
  *             default_format?: scalar|Param|null, // Default: "Y-m-d\\TH:i:sP"
  *             default_deserialization_formats?: list<scalar|Param|null>,
- *             default_timezone?: scalar|Param|null, // Default: "Europe/Berlin"
+ *             default_timezone?: scalar|Param|null, // Default: "UTC"
  *             cdata?: scalar|Param|null, // Default: true
  *         },
  *         array_collection?: array{
@@ -570,7 +570,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             datetime?: array{
  *                 default_format?: scalar|Param|null, // Default: "Y-m-d\\TH:i:sP"
  *                 default_deserialization_formats?: list<scalar|Param|null>,
- *                 default_timezone?: scalar|Param|null, // Default: "Europe/Berlin"
+ *                 default_timezone?: scalar|Param|null, // Default: "UTC"
  *                 cdata?: scalar|Param|null, // Default: true
  *             },
  *             array_collection?: array{
@@ -716,6 +716,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     translation?: bool|array{
  *         enabled?: bool|Param, // Default: true
  *         locale_provider?: scalar|Param|null, // Default: "CoreShop\\Component\\Resource\\Translation\\Provider\\TranslationLocaleProviderInterface"
+ *         locale_column_length?: int|Param, // Length of the `locale` column mapped onto every `*_translation` database table. The default of 5 fits plain language/region codes like "de_AT" but is too short for locales with a script subtag, e.g. "zh_Hans" / "zh_Hant" (7 chars) - MySQL silently truncates them, which then collides with the unique (translatable_id, locale) constraint. IMPORTANT: changing this value only updates Doctrine's mapping metadata for newly created schemas - it does NOT alter any already-created database column. You must ship your own migration that runs `ALTER TABLE ... MODIFY locale VARCHAR(<n>)` on every existing `*_translation` table, or inserts will keep failing/truncating against the old column width. // Default: 5
  *     },
  *     drivers?: list<"doctrine/orm"|Param>,
  *     orm_cascade_merge_associations?: array<string, array{ // Default: []
@@ -765,6 +766,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     doctrine?: array{
  *         table_name?: scalar|Param|null, // Default: null
  *         connection?: scalar|Param|null, // Default: null
+ *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["messenger"]
  *     },
  * }
  * @psalm-type CoreShopRuleConfig = array{
@@ -1006,6 +1010,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         order_shipment?: scalar|Param|null, // Default: "CoreShop\\Component\\Order\\Model\\OrderShipmentInterface"
  *         order_shipment_item?: scalar|Param|null, // Default: "CoreShop\\Component\\Order\\Model\\OrderShipmentItemInterface"
  *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["cart_price_rule","order_list","order_detail","order_create","quote_list","quote_detail","quote_create","cart_list","cart_detail","cart_create"]
+ *     },
  * }
  * @psalm-type CoreShopCustomerConfig = array{
  *     login_identifier?: "email"|"username"|Param, // Default: "email"
@@ -1058,6 +1065,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 type?: scalar|Param|null, // Default: "object"
  *             },
  *         },
+ *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["customer_list","customer_group_list"]
  *     },
  * }
  * @psalm-type CoreShopUserConfig = array{
@@ -1298,6 +1308,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         category?: scalar|Param|null, // Default: "CoreShop\\Component\\Product\\Model\\CategoryInterface"
  *         manufacturer?: scalar|Param|null, // Default: "CoreShop\\Component\\Product\\Model\\ManufacturerInterface"
  *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["product_price_rule","product_unit"]
+ *     },
  * }
  * @psalm-type CoreShopThemeConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
@@ -1411,6 +1424,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["country","state","zone"]
+ *     },
  * }
  * @psalm-type CoreShopCurrencyConfig = array{
  *     money_decimal_factor?: int|Param, // Default: 100
@@ -1444,6 +1460,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 form?: scalar|Param|null, // Default: "CoreShop\\Bundle\\CurrencyBundle\\Form\\Type\\ExchangeRateType"
  *             },
  *         },
+ *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["currency","exchange_rate"]
  *     },
  * }
  * @psalm-type CoreShopTaxationConfig = array{
@@ -1509,6 +1528,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["tax_rate","tax_rule_group"]
+ *     },
  * }
  * @psalm-type CoreShopStoreConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
@@ -1528,6 +1550,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 form?: scalar|Param|null, // Default: "CoreShop\\Bundle\\StoreBundle\\Form\\Type\\StoreType"
  *             },
  *         },
+ *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["store"]
  *     },
  * }
  * @psalm-type CoreShopIndexConfig = array{
@@ -1584,6 +1609,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  *     mapping_types?: array<string, scalar|Param|null>,
  *     worker_mapping_types?: array<string, array<string, scalar|Param|null>>,
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["index","filter"]
+ *     },
  * }
  * @psalm-type CoreShopShippingConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
@@ -1639,6 +1667,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 form?: scalar|Param|null, // Default: "CoreShop\\Bundle\\ShippingBundle\\Form\\Type\\ShippingRuleGroupType"
  *             },
  *         },
+ *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["carrier","shipping_rule"]
  *     },
  * }
  * @psalm-type CoreShopPaymentConfig = array{
@@ -1719,6 +1750,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["payment_provider","payment_provider_rule"]
+ *     },
  * }
  * @psalm-type CoreShopSequenceConfig = array{
  *     resources?: array{
@@ -1770,6 +1804,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             },
  *         },
  *     },
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["notification"]
+ *     },
  * }
  * @psalm-type CoreShopTrackingConfig = array{
  *     autoconfigure_with_attributes?: scalar|Param|null, // Default: false
@@ -1801,6 +1838,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         security?: scalar|Param|null, // Default: "CoreShop\\Bundle\\FrontendBundle\\Controller\\SecurityController"
  *         payment?: scalar|Param|null, // Default: "CoreShop\\Bundle\\PayumBundle\\Controller\\PaymentController"
  *         mail?: scalar|Param|null, // Default: "CoreShop\\Bundle\\FrontendBundle\\Controller\\MailController"
+ *     },
+ *     pimcore_admin?: array{
+ *         install?: array{
+ *             documents?: list<scalar|Param|null>,
+ *             image_thumbnails?: list<scalar|Param|null>,
+ *         },
  *     },
  * }
  * @psalm-type CoreShopPayumConfig = array{
@@ -2883,7 +2926,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             domain?: scalar|Param|null, // Default: null
  *             secure?: true|false|"auto"|Param, // Default: null
  *             httponly?: bool|Param, // Default: true
- *             samesite?: null|"lax"|"strict"|"none"|Param, // Default: "lax"
+ *             samesite?: null|"lax"|"strict"|"none"|Param, // Default: "strict"
  *             always_remember_me?: bool|Param, // Default: false
  *             remember_me_parameter?: scalar|Param|null, // Default: "_remember_me"
  *         },
@@ -3678,6 +3721,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             priority?: int|Param,
  *         }>,
  *     }>,
+ *     pimcore_admin?: array{
+ *         permissions?: scalar|Param|null, // Default: ["settings","ctc_assign_to_new","ctc_assign_to_existing"]
+ *     },
  * }
  * @psalm-type CoreShopStorageListConfig = array{
  *     list?: array<string, array{ // Default: []
