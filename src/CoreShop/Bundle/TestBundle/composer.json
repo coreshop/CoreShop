@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "pimcore/pimcore": "^12.0",
-        "coreshop/pimcore": "^5.0",
+        "pimcore/pimcore": "^12.3",
+        "coreshop/pimcore": "^5.1",
         "behat/behat": "^3.8",
         "robertfausk/behat-panther-extension": "^1.0",
         "behat/mink": "^1.8",
@@ -60,8 +60,8 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "5.1-dev",
+            "dev-master": "5.1-dev"
         }
     },
     "config": {

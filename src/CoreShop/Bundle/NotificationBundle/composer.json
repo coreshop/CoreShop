@@ -24,11 +24,11 @@
         }
     ],
     "require": {
-        "coreshop/notification": "^5.0",
-        "coreshop/registry": "^5.0",
-        "coreshop/rule-bundle": "^5.0",
-        "coreshop/messenger-bundle": "^5.0",
-        "pimcore/pimcore": "^12.0"
+        "coreshop/notification": "^5.1",
+        "coreshop/registry": "^5.1",
+        "coreshop/rule-bundle": "^5.1",
+        "coreshop/messenger-bundle": "^5.1",
+        "pimcore/pimcore": "^12.3"
     },
     "require-dev": {
         "pimcore/studio-ui-bundle": "^2025.4",
@@ -51,8 +51,8 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "5.1-dev",
+            "dev-master": "5.1-dev"
         }
     },
     "config": {

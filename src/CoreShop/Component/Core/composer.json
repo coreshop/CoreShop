@@ -24,29 +24,29 @@
         }
     ],
     "require": {
-        "coreshop/configuration": "^5.0",
-        "coreshop/store": "^5.0",
-        "coreshop/resource": "^5.0",
-        "coreshop/address": "^5.0",
-        "coreshop/order": "^5.0",
-        "coreshop/currency": "^5.0",
-        "coreshop/customer": "^5.0",
-        "coreshop/shipping": "^5.0",
-        "coreshop/inventory": "^5.0",
-        "coreshop/product": "^5.0",
-        "coreshop/product-quantity-price-rules": "^5.0",
-        "coreshop/index": "^5.0",
-        "coreshop/payment": "^5.0",
-        "coreshop/payum-payment": "^5.0",
-        "coreshop/taxation": "^5.0",
-        "coreshop/notification": "^5.0",
-        "coreshop/payum-bundle": "^5.0",
-        "coreshop/variant": "^5.0",
-        "coreshop/seo": "^5.0",
-        "coreshop/user": "^5.0",
-        "coreshop/tracking": "^5.0",
-        "coreshop/wishlist": "^5.0",
-        "pimcore/pimcore": "^12.0"
+        "coreshop/configuration": "^5.1",
+        "coreshop/store": "^5.1",
+        "coreshop/resource": "^5.1",
+        "coreshop/address": "^5.1",
+        "coreshop/order": "^5.1",
+        "coreshop/currency": "^5.1",
+        "coreshop/customer": "^5.1",
+        "coreshop/shipping": "^5.1",
+        "coreshop/inventory": "^5.1",
+        "coreshop/product": "^5.1",
+        "coreshop/product-quantity-price-rules": "^5.1",
+        "coreshop/index": "^5.1",
+        "coreshop/payment": "^5.1",
+        "coreshop/payum-payment": "^5.1",
+        "coreshop/taxation": "^5.1",
+        "coreshop/notification": "^5.1",
+        "coreshop/payum-bundle": "^5.1",
+        "coreshop/variant": "^5.1",
+        "coreshop/seo": "^5.1",
+        "coreshop/user": "^5.1",
+        "coreshop/tracking": "^5.1",
+        "coreshop/wishlist": "^5.1",
+        "pimcore/pimcore": "^12.3"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
@@ -68,8 +68,8 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "5.1-dev",
+            "dev-master": "5.1-dev"
         }
     },
     "config": {
