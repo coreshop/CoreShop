@@ -17,6 +17,10 @@ import { useTranslation } from 'react-i18next'
 import { SchemaForm } from '@coreshop/studio-form'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { formatCurrency } from '@coreshop/pimcore/src/utils'
+import { buildCreationItemPayload, loadCreationItemFields } from '../utils/creationItems'
+import type { CreationItemFields } from '../utils/creationItems'
+
+const BLOCK_PREFIX = 'coreshop_order_shipment_creation'
 
 export interface CreateShipmentModalProps {
   open: boolean
@@ -31,7 +35,9 @@ export interface CreateShipmentModalProps {
  * Create Shipment Modal
  *
  * Form fields and items grid rendered via SchemaForm.
- * Columns are defined by OrderShipmentCreationItemsType (configurable via form types).
+ * Columns are defined by OrderShipmentCreationItemsType, including fields added
+ * by Symfony form type extensions. Per-item values are therefore never reduced
+ * to a fixed key set — they are passed through as the form schema declares them.
  */
 export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
   open,
@@ -46,6 +52,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
   const [formData, setFormData] = useState<Record<string, unknown>>({})
   const [loading, setLoading] = useState(false)
   const [loadingItems, setLoadingItems] = useState(false)
+  const [itemFields, setItemFields] = useState<CreationItemFields>([])
 
   // Set default carrier and load items when modal opens
   useEffect(() => {
@@ -62,15 +69,17 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
         const data = await response.json()
 
         if (data.success && data.items && Object.keys(data.items).length > 0) {
-          // Map API data (keyed by orderItemId) to form field names
+          setItemFields(await loadCreationItemFields(BLOCK_PREFIX))
+
+          // Rename the API's item keys to the form field names. Everything else
+          // is passed through, so values a bundle contributes through the
+          // "coreshop.order.shipment.prepare_ship_able" event reach the grid.
           const items: Record<string, any> = {}
           for (const [orderItemId, item] of Object.entries(data.items) as Array<[string, any]>) {
             items[orderItemId] = {
-              orderItemId: item.orderItemId,
-              name: item.name,
+              ...item,
               price: formatCurrency(item.price, currencyCode),
               orderedQuantity: item.quantity,
-              quantityShipped: item.quantityShipped,
               quantity: item.toShip,
               maxQuantity: item.maxToShip,
             }
@@ -100,11 +109,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
       const itemsToShip: Record<string, any> = {}
       for (const [key, item] of Object.entries(itemsObj)) {
         if (item.quantity > 0) {
-          itemsToShip[key] = {
-            orderItemId: item.orderItemId,
-            quantity: item.quantity,
-            maxQuantity: item.maxQuantity
-          }
+          itemsToShip[key] = buildCreationItemPayload(item, itemFields)
         }
       }
 
@@ -160,7 +165,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
       destroyOnClose
     >
       <SchemaForm
-        blockPrefix="coreshop_order_shipment_creation"
+        blockPrefix={BLOCK_PREFIX}
         data={formData}
         onChange={(draft) => setFormData((prev) => ({ ...prev, ...draft }))}
       />
