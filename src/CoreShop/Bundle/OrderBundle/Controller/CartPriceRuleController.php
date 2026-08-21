@@ -51,7 +51,6 @@ class CartPriceRuleController extends ResourceController
 
     public function getConfigAction(
         Request $request,
-        RuleFormSchemaCollector $schemaCollector,
         #[Autowire(service: 'coreshop.form_registry.cart_price_rule.conditions')]
         FormTypeRegistryInterface $conditionFormRegistry,
         #[Autowire(service: 'coreshop.form_registry.cart_price_rule.actions')]
@@ -60,6 +59,9 @@ class CartPriceRuleController extends ResourceController
         FormTypeRegistryInterface $itemConditionFormRegistry,
         #[Autowire(service: 'coreshop.form_registry.cart_item_price_rule.actions')]
         FormTypeRegistryInterface $itemActionFormRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        ?RuleFormSchemaCollector $schemaCollector = null,
     ): JsonResponse {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
@@ -67,27 +69,32 @@ class CartPriceRuleController extends ResourceController
         $itemActions = $this->getCartItemConfigActions();
         $itemConditions = $this->getCartItemConfigConditions();
 
-        $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
-        $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
-        $itemConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($itemConditionFormRegistry, array_keys($itemConditions));
-        $itemActionSchemas = $schemaCollector->collectSchemasWithTypeMap($itemActionFormRegistry, array_keys($itemActions));
-
-        return $this->viewHandler->handle([
+        $payload = [
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
             'itemActions' => array_keys($itemActions),
             'itemConditions' => array_keys($itemConditions),
-            'schemas' => array_merge(
+        ];
+
+        if (null !== $schemaCollector) {
+            $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
+            $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
+            $itemConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($itemConditionFormRegistry, array_keys($itemConditions));
+            $itemActionSchemas = $schemaCollector->collectSchemasWithTypeMap($itemActionFormRegistry, array_keys($itemActions));
+
+            $payload['schemas'] = array_merge(
                 $conditionSchemas['schemas'],
                 $actionSchemas['schemas'],
                 $itemConditionSchemas['schemas'],
                 $itemActionSchemas['schemas'],
-            ),
-            'conditionSchemaByType' => $conditionSchemas['schemaByType'],
-            'actionSchemaByType' => $actionSchemas['schemaByType'],
-            'itemConditionSchemaByType' => $itemConditionSchemas['schemaByType'],
-            'itemActionSchemaByType' => $itemActionSchemas['schemaByType'],
-        ]);
+            );
+            $payload['conditionSchemaByType'] = $conditionSchemas['schemaByType'];
+            $payload['actionSchemaByType'] = $actionSchemas['schemaByType'];
+            $payload['itemConditionSchemaByType'] = $itemConditionSchemas['schemaByType'];
+            $payload['itemActionSchemaByType'] = $itemActionSchemas['schemaByType'];
+        }
+
+        return $this->viewHandler->handle($payload);
     }
 
     public function getCartItemConfigAction(Request $request): JsonResponse

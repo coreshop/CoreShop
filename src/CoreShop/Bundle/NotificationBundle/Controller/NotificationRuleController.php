@@ -32,11 +32,13 @@ class NotificationRuleController extends ResourceController
 {
     public function getConfigAction(
         Request $request,
-        RuleFormSchemaCollector $schemaCollector,
         #[Autowire(service: 'coreshop.form_registry.notification_rule.conditions')]
         FormTypeRegistryInterface $conditionFormRegistry,
         #[Autowire(service: 'coreshop.form_registry.notification_rule.actions')]
         FormTypeRegistryInterface $actionFormRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        ?RuleFormSchemaCollector $schemaCollector = null,
     ): Response {
         $conditions = [];
         $actions = [];
@@ -81,15 +83,17 @@ class NotificationRuleController extends ResourceController
                 $typeActions = array_keys($this->getParameter($actionParameter));
                 $actions[$type] = array_merge($actions[$type], $typeActions);
 
-                // Main registry uses compound keys: {notificationType}.{actionName}
-                $compoundKeys = array_map(static fn (string $name) => $type . '.' . $name, $typeActions);
-                $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, $compoundKeys);
-                $schemas = array_merge($schemas, $actionSchemas['schemas']);
+                if (null !== $schemaCollector) {
+                    // Main registry uses compound keys: {notificationType}.{actionName}
+                    $compoundKeys = array_map(static fn (string $name) => $type . '.' . $name, $typeActions);
+                    $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, $compoundKeys);
+                    $schemas = array_merge($schemas, $actionSchemas['schemas']);
 
-                foreach ($typeActions as $actionName) {
-                    $compoundKey = $type . '.' . $actionName;
-                    if (isset($actionSchemas['schemaByType'][$compoundKey])) {
-                        $actionSchemaByType[$type][$actionName] = $actionSchemas['schemaByType'][$compoundKey];
+                    foreach ($typeActions as $actionName) {
+                        $compoundKey = $type . '.' . $actionName;
+                        if (isset($actionSchemas['schemaByType'][$compoundKey])) {
+                            $actionSchemaByType[$type][$actionName] = $actionSchemas['schemaByType'][$compoundKey];
+                        }
                     }
                 }
             }
@@ -102,29 +106,36 @@ class NotificationRuleController extends ResourceController
                 $typeConditions = array_keys($this->getParameter($conditionParameter));
                 $conditions[$type] = array_merge($conditions[$type], $typeConditions);
 
-                // Main registry uses compound keys: {notificationType}.{conditionName}
-                $compoundKeys = array_map(static fn (string $name) => $type . '.' . $name, $typeConditions);
-                $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, $compoundKeys);
-                $schemas = array_merge($schemas, $conditionSchemas['schemas']);
+                if (null !== $schemaCollector) {
+                    // Main registry uses compound keys: {notificationType}.{conditionName}
+                    $compoundKeys = array_map(static fn (string $name) => $type . '.' . $name, $typeConditions);
+                    $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, $compoundKeys);
+                    $schemas = array_merge($schemas, $conditionSchemas['schemas']);
 
-                foreach ($typeConditions as $conditionName) {
-                    $compoundKey = $type . '.' . $conditionName;
-                    if (isset($conditionSchemas['schemaByType'][$compoundKey])) {
-                        $conditionSchemaByType[$type][$conditionName] = $conditionSchemas['schemaByType'][$compoundKey];
+                    foreach ($typeConditions as $conditionName) {
+                        $compoundKey = $type . '.' . $conditionName;
+                        if (isset($conditionSchemas['schemaByType'][$compoundKey])) {
+                            $conditionSchemaByType[$type][$conditionName] = $conditionSchemas['schemaByType'][$compoundKey];
+                        }
                     }
                 }
             }
         }
 
-        return $this->viewHandler->handle([
+        $payload = [
             'success' => true,
             'types' => $types,
             'actions' => $actions,
             'conditions' => $conditions,
-            'schemas' => $schemas,
-            'conditionSchemaByType' => $conditionSchemaByType,
-            'actionSchemaByType' => $actionSchemaByType,
-        ]);
+        ];
+
+        if (null !== $schemaCollector) {
+            $payload['schemas'] = $schemas;
+            $payload['conditionSchemaByType'] = $conditionSchemaByType;
+            $payload['actionSchemaByType'] = $actionSchemaByType;
+        }
+
+        return $this->viewHandler->handle($payload);
     }
 
     public function sortAction(Request $request): Response

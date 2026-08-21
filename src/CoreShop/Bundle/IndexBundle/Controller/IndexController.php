@@ -48,7 +48,6 @@ class IndexController extends ResourceController
     }
 
     public function getConfigAction(
-        RuleFormSchemaCollector $schemaCollector,
         IndexableClassesProviderInterface $indexableClassesProvider,
         #[Autowire(service: 'coreshop.form_registry.index.getter')]
         FormTypeRegistryInterface $getterFormTypeRegistry,
@@ -56,6 +55,9 @@ class IndexController extends ResourceController
         FormTypeRegistryInterface $interpreterFormTypeRegistry,
         #[Autowire(service: 'coreshop.form_registry.index.worker')]
         FormTypeRegistryInterface $workerFormTypeRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        ?RuleFormSchemaCollector $schemaCollector = null,
     ): Response {
         $indexInterpreterRegistry = $this->container->get('coreshop.registry.index.interpreter');
 
@@ -63,9 +65,11 @@ class IndexController extends ResourceController
         $interpreterTypes = $this->getInterpreterTypes();
         $workerTypes = $this->getWorkerTypes();
 
-        $getterSchemas = $schemaCollector->collectSchemasWithTypeMap($getterFormTypeRegistry, $getterTypes);
-        $interpreterSchemas = $schemaCollector->collectSchemasWithTypeMap($interpreterFormTypeRegistry, $interpreterTypes);
-        $workerSchemas = $schemaCollector->collectSchemasWithTypeMap($workerFormTypeRegistry, $workerTypes);
+        $noSchemas = ['schemas' => [], 'schemaByType' => []];
+
+        $getterSchemas = $schemaCollector?->collectSchemasWithTypeMap($getterFormTypeRegistry, $getterTypes) ?? $noSchemas;
+        $interpreterSchemas = $schemaCollector?->collectSchemasWithTypeMap($interpreterFormTypeRegistry, $interpreterTypes) ?? $noSchemas;
+        $workerSchemas = $schemaCollector?->collectSchemasWithTypeMap($workerFormTypeRegistry, $workerTypes) ?? $noSchemas;
 
         $gettersResult = [];
 
@@ -139,25 +143,28 @@ class IndexController extends ResourceController
             $workersResult[] = $entry;
         }
 
-        return $this->viewHandler->handle(
-            [
-                'success' => true,
-                'interpreters' => $interpretersResult,
-                'getters' => $gettersResult,
-                'fieldTypes' => $fieldTypesResult,
-                'classes' => $availableClasses,
-                'workerTypes' => $workerTypes,
-                'workers' => $workersResult,
-                'schemas' => array_merge(
-                    $getterSchemas['schemas'],
-                    $interpreterSchemas['schemas'],
-                    $workerSchemas['schemas'],
-                ),
-                'getterSchemaByType' => $getterSchemas['schemaByType'],
-                'interpreterSchemaByType' => $interpreterSchemas['schemaByType'],
-                'workerSchemaByType' => $workerSchemas['schemaByType'],
-            ],
-        );
+        $payload = [
+            'success' => true,
+            'interpreters' => $interpretersResult,
+            'getters' => $gettersResult,
+            'fieldTypes' => $fieldTypesResult,
+            'classes' => $availableClasses,
+            'workerTypes' => $workerTypes,
+            'workers' => $workersResult,
+        ];
+
+        if (null !== $schemaCollector) {
+            $payload['schemas'] = array_merge(
+                $getterSchemas['schemas'],
+                $interpreterSchemas['schemas'],
+                $workerSchemas['schemas'],
+            );
+            $payload['getterSchemaByType'] = $getterSchemas['schemaByType'];
+            $payload['interpreterSchemaByType'] = $interpreterSchemas['schemaByType'];
+            $payload['workerSchemaByType'] = $workerSchemas['schemaByType'];
+        }
+
+        return $this->viewHandler->handle($payload);
     }
 
     public function getClassDefinitionForFieldSelectionAction(Request $request): Response
