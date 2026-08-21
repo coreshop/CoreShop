@@ -37,9 +37,11 @@ final readonly class ProductQuantityPriceRulesAdapter implements SetterDataInter
     public function __construct(
         private ArrayTransformerInterface $serializer,
         private ParameterBagInterface $parameterBag,
-        private RuleFormSchemaCollector $schemaCollector,
         #[Autowire(service: 'coreshop.form_registry.product_quantity_price_rules.conditions')]
         private FormTypeRegistryInterface $conditionFormRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        private ?RuleFormSchemaCollector $schemaCollector = null,
     ) {
     }
 
@@ -153,9 +155,9 @@ final readonly class ProductQuantityPriceRulesAdapter implements SetterDataInter
      */
     private function getConditionSchemaByType(): array
     {
-        return $this->schemaCollector->collectSchemasWithTypeMap(
+        return $this->schemaCollector?->collectSchemasWithTypeMap(
             $this->conditionFormRegistry,
             $this->getConfigConditions(),
-        )['schemaByType'];
+        )['schemaByType'] ?? [];
     }
 }

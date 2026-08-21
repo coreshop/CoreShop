@@ -28,28 +28,35 @@ class ProductPriceRuleController extends ResourceController
 {
     public function getConfigAction(
         Request $request,
-        RuleFormSchemaCollector $schemaCollector,
         #[Autowire(service: 'coreshop.form_registry.product_price_rule.conditions')]
         FormTypeRegistryInterface $conditionFormRegistry,
         #[Autowire(service: 'coreshop.form_registry.product_price_rule.actions')]
         FormTypeRegistryInterface $actionFormRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        ?RuleFormSchemaCollector $schemaCollector = null,
     ): Response {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
-        $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
-        $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
-
-        return $this->viewHandler->handle([
+        $payload = [
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
-            'schemas' => array_merge(
+        ];
+
+        if (null !== $schemaCollector) {
+            $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
+            $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
+
+            $payload['schemas'] = array_merge(
                 $conditionSchemas['schemas'],
                 $actionSchemas['schemas'],
-            ),
-            'conditionSchemaByType' => $conditionSchemas['schemaByType'],
-            'actionSchemaByType' => $actionSchemas['schemaByType'],
-        ]);
+            );
+            $payload['conditionSchemaByType'] = $conditionSchemas['schemaByType'];
+            $payload['actionSchemaByType'] = $actionSchemas['schemaByType'];
+        }
+
+        return $this->viewHandler->handle($payload);
     }
 
     /**
