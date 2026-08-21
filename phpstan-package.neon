@@ -58,7 +58,7 @@ parameters:
 
         # Optional dependencies
         - identifier: class.notFound
-          message: '/Pimcore\\Bundle\\(AdminBundle|StudioBackendBundle|StudioUiBundle|GoogleMarketingBundle|NewsletterBundle)\\/'
+          message: '/Pimcore\\Bundle\\(AdminBundle|StudioBackendBundle|StudioUiBundle|GoogleMarketingBundle)\\/'
 
 includes:
     - ./vendor/phpstan/phpstan-doctrine/extension.neon

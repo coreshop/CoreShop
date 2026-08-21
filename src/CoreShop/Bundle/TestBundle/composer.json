@@ -68,8 +68,5 @@
     },
     "config": {
         "sort-packages": true
-    },
-    "suggest": {
-        "pimcore/newsletter-bundle": "^2.0 - Enables Pimcore Newsletter document type and field integrations"
     }
 }
