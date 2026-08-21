@@ -24,11 +24,11 @@
         }
     ],
     "require": {
-        "coreshop/index": "^5.0",
-        "coreshop/registry": "^5.0",
-        "coreshop/resource-bundle": "^5.0",
-        "coreshop/menu-bundle": "^5.0",
-        "pimcore/pimcore": "^12.0",
+        "coreshop/index": "^5.1",
+        "coreshop/registry": "^5.1",
+        "coreshop/resource-bundle": "^5.1",
+        "coreshop/menu-bundle": "^5.1",
+        "pimcore/pimcore": "^12.3",
         "doctrine/migrations": "^3.9"
     },
     "suggest": {
@@ -59,8 +59,8 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "5.1-dev",
+            "dev-master": "5.1-dev"
         },
         "pimcore": {
             "bundles": [

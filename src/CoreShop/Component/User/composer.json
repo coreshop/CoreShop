@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "coreshop/resource": "^5.0",
-        "pimcore/pimcore": "^12.0",
+        "coreshop/resource": "^5.1",
+        "pimcore/pimcore": "^12.3",
         "symfony/security-core": "^6.4.14 || ^7.2"
     },
     "require-dev": {
@@ -48,8 +48,8 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.0-dev",
-            "dev-master": "5.0-dev"
+            "dev-main": "5.1-dev",
+            "dev-master": "5.1-dev"
         }
     },
     "config": {
