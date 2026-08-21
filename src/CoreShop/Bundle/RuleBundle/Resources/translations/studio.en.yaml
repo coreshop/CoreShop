@@ -1,4 +1,5 @@
 ---
+coreshop_settings: 'Settings'
 coreshop_conditions: 'Conditions'
 coreshop_actions: 'Actions'
 coreshop_condition_no_configuration: 'This condition has no configuration.'
