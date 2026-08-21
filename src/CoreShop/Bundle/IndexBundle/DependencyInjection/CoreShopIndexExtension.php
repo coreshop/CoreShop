@@ -77,6 +77,10 @@ final class CoreShopIndexExtension extends AbstractModelExtension implements Pre
 
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
 
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
+        }
+
         $bundles = $container->getParameter('kernel.bundles');
 
         if (isset($configs['mapping_types'])) {

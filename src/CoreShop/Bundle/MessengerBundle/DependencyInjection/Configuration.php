@@ -45,7 +45,24 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
 
+        $this->addPimcoreResourcesSection($rootNode);
+
         return $treeBuilder;
     }
 
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['messenger'])
+                    ->end()
+                ->end()
+            ->end()
+        ->end()
+        ;
+    }
 }

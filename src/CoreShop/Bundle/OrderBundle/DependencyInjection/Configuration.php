@@ -80,6 +80,8 @@ final class Configuration implements ConfigurationInterface
         $this->addModelsSection($rootNode);
         $this->addStack($rootNode);
 
+        $this->addPimcoreResourcesSection($rootNode);
+
         return $treeBuilder;
     }
 
@@ -400,4 +402,30 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue([
+                            'cart_price_rule',
+                            'order_list',
+                            'order_detail',
+                            'order_create',
+                            'quote_list',
+                            'quote_detail',
+                            'quote_create',
+                            'cart_list',
+                            'cart_detail',
+                            'cart_create',
+                        ])
+                    ->end()
+                ->end()
+            ->end()
+        ->end()
+        ;
+    }
 }

@@ -69,6 +69,10 @@ final class CoreShopShippingExtension extends AbstractModelExtension implements 
 
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
 
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
+        }
+
         $alias = new Alias($configs['default_resolver']);
         $alias->setPublic(true);
 

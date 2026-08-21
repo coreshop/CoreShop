@@ -23,8 +23,11 @@ Removed:
   listeners, the Pimcore Grid Config Installer).
 - All `classic_admin.yml` service files and the conditional `PimcoreAdminBundle` loading blocks in
   bundle extensions.
-- `pimcore_admin` configuration section from `CoreShopPimcoreExtension` and all bundle `Configuration`
-  classes, plus the `registerPimcoreResources()` helper on `AbstractPimcoreExtension`.
+- The classic-admin asset keys of the `pimcore_admin` configuration section (`js`, `css`, `editmode_js`,
+  `editmode_css`), along with the installers behind the `grid_config` and `routes` install types. The
+  section itself and the `registerPimcoreResources()` helper on `AbstractPimcoreExtension` remain, and
+  still carry the backend-relevant `permissions` and `install` declarations — see "Backend declarations
+  kept" below.
 - `CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface`, `AsGridFilter` attribute,
   `RegisterGridFilterPass` compiler pass, `GridConfigInstaller` / `GridConfigInstallerInterface`.
 - `CoreShop\Bundle\PimcoreBundle\Controller\Admin\*` controllers. Studio-facing actions were moved to
@@ -36,6 +39,27 @@ Removed:
 
 If you have project code referencing any of these symbols, see the migration notes in the
 upgrade guide.
+
+### Backend declarations kept: `pimcore_admin` and `registerPimcoreResources()`
+
+Despite its name, the `pimcore_admin` configuration section was never only about the classic admin. Besides
+the ExtJS asset keys it carries the declarations that drive the resource installers, and those are unrelated
+to the admin UI:
+
+- `permissions` — the Pimcore user-permission definitions installed by `PimcorePermissionInstaller`.
+- `install.documents` / `install.image_thumbnails` / `install.sql` — installed by
+  `PimcoreDocumentsInstaller`, `PimcoreImageThumbnailsInstaller` and `SqlInstaller`.
+
+The section and the `registerPimcoreResources()` helper therefore stay. Only the classic-admin keys are gone,
+and they are *ignored* rather than rejected, so a bundle that still declares `js` / `css` alongside its
+`permissions` keeps working on 2026.x with no changes to its `Configuration` class or its extension.
+
+The section name is kept as `pimcore_admin` for backwards compatibility, even though it is now a purely
+historical name. This is deliberate and permanent: there is no rename, no alias and no deprecation, because
+bundles outside the core declare `pimcore_admin: { permissions: [...] }` and call `registerPimcoreResources()`
+verbatim and must keep working. The same goes for the method name.
+
+See `docs/03_Bundles/Resource_Bundle/06_User_Permissions.md`.
 
 ### Studio extension points unchanged
 

@@ -48,6 +48,10 @@ final class CoreShopFrontendExtension extends AbstractModelExtension
         $container->setParameter('coreshop.frontend.category.default_sort_name', $configs['category']['default_sort_name']);
         $container->setParameter('coreshop.frontend.category.default_sort_direction', $configs['category']['default_sort_direction']);
 
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
+        }
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
     }
