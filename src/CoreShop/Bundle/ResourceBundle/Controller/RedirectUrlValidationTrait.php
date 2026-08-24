@@ -42,18 +42,19 @@ trait RedirectUrlValidationTrait
             return $default;
         }
 
+        // Reject backslashes and control characters anywhere in the URL: browsers normalise
+        // backslashes to slashes and control characters can hide a different target from parse_url()
+        if (preg_match('/[\\\\\\x00-\\x1f\\x7f]/', $url)) {
+            return $default;
+        }
+
         // Check for protocol-relative URLs (//example.com) which could be used for open redirects
         if (str_starts_with($url, '//')) {
             return $default;
         }
 
-        // Relative URLs (starting with /) are safe if they don't contain dangerous characters
+        // Relative URLs (starting with a single /) are safe
         if (str_starts_with($url, '/')) {
-            // Reject URLs with backslashes, control characters, or whitespace that could be misinterpreted
-            if (preg_match('/[\\\\\\x00-\\x1f\\x7f]/', $url)) {
-                return $default;
-            }
-
             return $url;
         }
 
@@ -70,8 +71,9 @@ trait RedirectUrlValidationTrait
             return $default;
         }
 
-        // Reject URLs with @ in the authority component (user:pass@host manipulation)
-        if (isset($parsedUrl['user']) || str_contains($url, '@')) {
+        // Reject credentials in the authority component (user:pass@host manipulation).
+        // Only the authority is checked, an "@" inside the query or fragment is harmless.
+        if (isset($parsedUrl['user']) || isset($parsedUrl['pass'])) {
             return $default;
         }
 
