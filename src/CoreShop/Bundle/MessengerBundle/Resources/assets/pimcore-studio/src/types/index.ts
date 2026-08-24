@@ -23,7 +23,6 @@ export interface MessengerMessage {
 
 export interface MessengerFailedMessage extends MessengerMessage {
   failed_at: string
-  failedAt: string
   error: string
 }
 
