@@ -75,14 +75,14 @@ public function registerBundlesToCollection(BundleCollection $collection)
 
    ```javascript
     new coreshop.menu.coreshop.my_menu();
-   
-    pimcore.eventDispatcher.registerTarget('coreshopMenuOpen', new (Class.create({
-        coreshopMenuOpen: function(type, item) {
+
+    document.addEventListener(coreshop.events.menu.open, (e) => {
+        var item = e.detail.item;
+
         if (item.id === 'my-menu-item') {
             alert('My Menu Item has been clicked');
         }
-    }
-
+    });
    ```
 
 

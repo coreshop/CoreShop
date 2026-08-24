@@ -50,3 +50,12 @@ services:
         tags:
             - { name: console.command, command: coreshop:migration:generate }
 
+    CoreShop\Bundle\CoreBundle\Command\SetupStatesCommand:
+        arguments:
+            - '@coreshop.repository.country'
+            - '@coreshop.repository.state'
+            - '@coreshop.factory.state'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: console.command, command: coreshop:setup:states }
+

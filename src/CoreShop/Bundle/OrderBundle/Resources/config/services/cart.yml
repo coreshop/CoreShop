@@ -59,7 +59,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: pimcore.admin.object.list.beforeListLoad, method: checkObjectList }
 
-
     CoreShop\Bundle\OrderBundle\Form\Type\CartListChoiceType:
         arguments:
             - '@CoreShop\Component\Order\Cart\CartResolver'
@@ -70,3 +69,8 @@ services:
         arguments:
             - '@coreshop.repository.order'
             - '@CoreShop\Component\Order\Context\CartContext'
+
+    CoreShop\Bundle\OrderBundle\StorageList\LastActivatedCartStorage:
+        decorates: coreshop.storage_list.storage.order
+        arguments:
+            $inner: '@.inner'

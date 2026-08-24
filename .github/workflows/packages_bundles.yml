@@ -5,7 +5,7 @@ on:
     paths:
       - 'src/CoreShop/Bundle/**'
       - '.github/workflows/packages_bundles.yml'
-  pull_request_target:
+  pull_request:
     branches: [ '5.0', 'next' ]
     paths:
       - 'src/CoreShop/Bundle/**'
@@ -32,16 +32,10 @@ jobs:
     name: "Create a list of packages"
 
     steps:
-      - name: Checkout PR head (only for pull_request_target)
-        if: github.event_name == 'pull_request_target'
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-
-      - name: Checkout PR head (for push or other events)
-        if: github.event_name != 'pull_request_target'
-        uses: actions/checkout@v4
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: "List Packages"
         id: create-list
@@ -61,18 +55,15 @@ jobs:
         pimcore: [ ^12.3 ]
         dependencies: [ highest, lowest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
+        exclude:
+          - php: 8.4
+            dependencies: lowest
 
     steps:
-      - name: Checkout PR head (only for pull_request_target)
-        if: github.event_name == 'pull_request_target'
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-
-      - name: Checkout PR head (for push or other events)
-        if: github.event_name != 'pull_request_target'
-        uses: actions/checkout@v4
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -85,7 +76,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}

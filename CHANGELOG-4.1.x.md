@@ -1,3 +1,23 @@
+## 4.1.12
+* [StorageListBundle] Fix authentication (remember me token) by @breakone in https://github.com/coreshop/CoreShop/pull/3086
+* [OrderBundle] Restore last-opened cart across sessions by @breakone in https://github.com/coreshop/CoreShop/pull/3083
+
+## 4.1.11
+* Fix order token generator entropy using CSPRNG and 32-char tokens by @Copilot in https://github.com/coreshop/CoreShop/pull/2964
+* Fix password reset security: user enumeration, weak tokens, plaintext storage, missing TTL by @Copilot in https://github.com/coreshop/CoreShop/pull/2961
+* backport passwordResetHashCreatedAt user migration from 2026.x by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3008
+* [IndexBundle] OpenSearchWorker: Refactor delete methods for index operations by @aarongerig in https://github.com/coreshop/CoreShop/pull/3028
+
+## 4.1.10
+* Fix outdated Menu Bundle docs for ExtJs event handling by @Copilot in https://github.com/coreshop/CoreShop/pull/2966
+* Add multi-select drag & drop support for objectMultihref condition lists by @Copilot in https://github.com/coreshop/CoreShop/pull/2960
+* Add CLI command for setting up states/regions for additional countries by @Copilot in https://github.com/coreshop/CoreShop/pull/2959
+* [MessengerBundle] Add auto-refresh and chart tooltip by @Copilot in https://github.com/coreshop/CoreShop/pull/2965
+* Fix information exposure in OrderInvoiceController and OrderShipmentController by @Copilot in https://github.com/coreshop/CoreShop/pull/2962
+
+## 4.1.9
+* Fix Injection in CustomerTransformerController by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/2945
+
 ## 4.1.8
 * [Messenger] dispatch `FailedMessageDetailsEvent` to allow customization of failed message details generation by @jdreesen in https://github.com/coreshop/CoreShop/pull/2911
 * [Messenger] wrap failed message details info modal data in `<pre>` tags by @jdreesen in https://github.com/coreshop/CoreShop/pull/2910

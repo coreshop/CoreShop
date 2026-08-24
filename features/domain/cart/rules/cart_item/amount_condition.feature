@@ -50,3 +50,14 @@ Feature: Adding a new cart item rule
     And the cart item action has a action discount-percent with 10% discount
     Then the cart rule should be valid for my cart
     And the cart discount should be "0" excluding tax
+
+  Scenario: A cart-item-action keeps its nested condition and action after reloading from the database
+    Given adding a cart price rule named "amount"
+    And the cart rule is active
+    And the cart rule is not a voucher rule
+    And the cart rule has a cart-item-action action
+    And the cart item action has a condition amount with value "90" to "150"
+    And the cart item action has a action discount-percent with 10% discount
+    And the cart price rules are reloaded from the database
+    Then I refresh my cart
+    And the cart item discount should be "-1000" excluding tax

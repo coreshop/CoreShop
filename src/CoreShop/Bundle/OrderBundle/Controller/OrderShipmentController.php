@@ -182,8 +182,7 @@ class OrderShipmentController extends PimcoreController
                     'Content-Disposition' => 'inline; filename="shipment-' . $shipment->getId() . '.pdf"',
                 ];
             } catch (\Exception $e) {
-                $responseData = '<strong>' . $e->getMessage() . '</strong><br>trace: ' . $e->getTraceAsString();
-                $header = ['Content-Type' => 'text/html'];
+                return new Response('An error occurred while rendering the shipment.', 500, ['Content-Type' => 'text/html']);
             }
 
             return new Response($responseData, 200, $header);
