@@ -1,3 +1,7 @@
+## 5.0.1
+* All changes merged from 4.1.*
+* Dependency Updates in FrontendBundle Design v2
+ 
 ## 5.0.0
 
 > CoreShop is now Licensed under CCL only! If you update to Version 5 make sure to read

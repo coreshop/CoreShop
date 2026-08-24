@@ -63,7 +63,15 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
-                if (!isset($data['type'])) {
+                // Nested rule elements (stored inside a JSON "configuration") have no entity id.
+                // The admin JS falls back to submitting the whole element as "id" when the loaded
+                // data has no "id" key; drop any non-scalar id so it does not fail integer validation.
+                if (is_array($data) && isset($data['id']) && !is_scalar($data['id'])) {
+                    unset($data['id']);
+                    $event->setData($data);
+                }
+
+                if (!is_array($data) || !isset($data['type'])) {
                     return;
                 }
 

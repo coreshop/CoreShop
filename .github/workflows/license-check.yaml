@@ -6,7 +6,7 @@ on:
       - 'composer.json'
       - '*/**/composer.json'
       - '.github/workflows/license-check.yaml'
-  pull_request_target:
+  pull_request:
     branches: [ '5.0', 'next' ]
     paths:
       - 'composer.json'
@@ -50,16 +50,10 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-      - name: Checkout PR head (only for pull_request_target)
-        if: github.event_name == 'pull_request_target'
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-
-      - name: Checkout PR head (for push or other events)
-        if: github.event_name != 'pull_request_target'
-        uses: actions/checkout@v4
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -76,7 +70,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}

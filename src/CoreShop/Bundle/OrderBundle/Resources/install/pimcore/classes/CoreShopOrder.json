@@ -229,6 +229,28 @@
                                 "visibleSearch": false
                             },
                             {
+                                "fieldtype": "datetime",
+                                "queryColumnType": "bigint(20)",
+                                "columnType": "bigint(20)",
+                                "phpdocType": "\\Carbon\\Carbon",
+                                "defaultValue": null,
+                                "useCurrentDate": false,
+                                "name": "lastActivatedAt",
+                                "title": "Last Activated At",
+                                "tooltip": "Timestamp the cart was last selected\/activated by its customer; used to restore the last-opened cart across sessions.",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": true,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
+                            {
                                 "fieldtype": "language",
                                 "onlySystemLanguages": false,
                                 "options": [

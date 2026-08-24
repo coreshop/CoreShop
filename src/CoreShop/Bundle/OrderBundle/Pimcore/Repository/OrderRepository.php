@@ -46,7 +46,12 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $list->setOrder('ASC');
         $list->load();
 
-        return $list->getObjects();
+        /**
+         * @var OrderInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findCartByCustomer(CustomerInterface $customer): array
@@ -75,6 +80,9 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $list->load();
 
         if ($list->getTotalCount() > 0) {
+            /**
+             * @var OrderInterface[] $objects
+             */
             $objects = $list->getObjects();
 
             return $objects[0];
@@ -90,6 +98,9 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $list->load();
 
         if ($list->getTotalCount() === 1) {
+            /**
+             * @var OrderInterface[] $objects
+             */
             $objects = $list->getObjects();
 
             return $objects[0];
@@ -102,8 +113,9 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND store = ? AND saleState = ? ', [$customer->getId(), $store->getId(), OrderSaleStates::STATE_CART]);
-        $list->setOrderKey('creationDate');
-        $list->setOrder('DESC');
+        // Prefer the cart the customer last activated
+        $list->setOrderKey(['lastActivatedAt', 'creationDate']);
+        $list->setOrder(['DESC', 'DESC']);
         $list->load();
 
         $objects = $list->getObjects();

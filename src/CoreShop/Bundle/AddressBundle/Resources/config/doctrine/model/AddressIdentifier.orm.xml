@@ -9,7 +9,7 @@
         </id>
 
         <field name="active" column="active" type="boolean" />
-        <field name="name" column="name" type="string" />
+        <field name="name" column="name" type="string" length="255" />
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

@@ -325,7 +325,7 @@ class Listing extends AbstractListing
             $aggregations[$columnName] = [
                 'terms' => [
                     'field' => $columnName,
-                    'order' => ['_term' => 'asc'],
+                    'order' => ['_key' => 'asc'],
                 ],
             ];
         }

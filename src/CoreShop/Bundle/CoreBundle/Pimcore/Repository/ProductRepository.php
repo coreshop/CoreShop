@@ -56,7 +56,12 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             $list->setCondition('parentId = ?', [$product->getId()]);
         }
 
-        return $list->getObjects();
+        /**
+         * @var ProductInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findRecursiveVariantIdsForProductAndStoreByProducts(array $products, StoreInterface $store, array $cacheTags = []): array

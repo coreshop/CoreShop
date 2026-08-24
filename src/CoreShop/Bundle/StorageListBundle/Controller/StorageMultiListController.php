@@ -61,7 +61,7 @@ class StorageMultiListController extends AbstractController
 
     public function createNamedStorageListAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $this->denyAccessUnlessGranted(sprintf('CORESHOP_STORAGE_LIST_CREATED_%s', strtoupper($this->identifier)));
 
         $form = $this->formFactory->createNamed('coreshop', CreatedNamedStorageListType::class);
@@ -106,7 +106,7 @@ class StorageMultiListController extends AbstractController
 
     public function listStorageListAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $this->denyAccessUnlessGranted('CORESHOP_STORAGE_LIST_MULTI_LIST_' . $this->identifier);
 
         $storageLists = $this->listResolver->getStorageLists($this->contextProvider->getCurrentContext());
