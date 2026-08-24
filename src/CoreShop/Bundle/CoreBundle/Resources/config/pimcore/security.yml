@@ -25,6 +25,8 @@ security:
                 default_target_path: coreshop_index
                 use_forward: false
                 use_referer: true
+                success_handler: CoreShop\Bundle\CoreBundle\Security\ShopUserAuthenticationSuccessHandler
+                failure_handler: CoreShop\Bundle\CoreBundle\Security\ShopUserAuthenticationFailureHandler
             remember_me:
                 secret: "%secret%"
                 name: APP_CORESHOP_REMEMBER_ME

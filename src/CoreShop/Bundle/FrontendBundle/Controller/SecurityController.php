@@ -45,9 +45,26 @@ class SecurityController extends FrontendController
             'form' => $form->createView(),
             'last_username' => $lastUsername,
             'last_error' => $lastError,
-            'target' => $this->getParameterFromRequest($request, 'target', null),
-            'failure' => $this->getParameterFromRequest($request, 'failure', null),
+            'target' => $this->validateRedirectParameter($request, 'target'),
+            'failure' => $this->validateRedirectParameter($request, 'failure'),
         ]);
+    }
+
+    /**
+     * The values end up in the "_target_path"/"_failure_path" fields of the login form, which
+     * Symfony redirects to after a successful/failed login attempt.
+     */
+    private function validateRedirectParameter(Request $request, string $parameter): ?string
+    {
+        $value = $this->getParameterFromRequest($request, $parameter, null);
+
+        if (!is_string($value) || '' === $value) {
+            return null;
+        }
+
+        $validated = $this->validateRedirectUrl($request, $value, '');
+
+        return '' === $validated ? null : $validated;
     }
 
     public static function getSubscribedServices(): array
