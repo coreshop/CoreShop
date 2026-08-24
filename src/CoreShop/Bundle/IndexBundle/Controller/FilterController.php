@@ -33,31 +33,36 @@ use Symfony\Component\HttpFoundation\Response;
 class FilterController extends ResourceController
 {
     public function getConfigAction(
-        RuleFormSchemaCollector $schemaCollector,
         #[Autowire(service: 'coreshop.form_registry.filter.pre_condition_types')]
         FormTypeRegistryInterface $preConditionFormRegistry,
         #[Autowire(service: 'coreshop.form_registry.filter.user_condition_types')]
         FormTypeRegistryInterface $userConditionFormRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        ?RuleFormSchemaCollector $schemaCollector = null,
     ): Response {
         $preConditionTypes = array_keys($this->getPreConditionTypes());
         $userConditionTypes = array_keys($this->getUserConditionTypes());
 
-        $preConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($preConditionFormRegistry, $preConditionTypes);
-        $userConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($userConditionFormRegistry, $userConditionTypes);
+        $payload = [
+            'success' => true,
+            'pre_conditions' => $preConditionTypes,
+            'user_conditions' => $userConditionTypes,
+        ];
 
-        return $this->viewHandler->handle(
-            [
-                'success' => true,
-                'pre_conditions' => $preConditionTypes,
-                'user_conditions' => $userConditionTypes,
-                'schemas' => array_merge(
-                    $preConditionSchemas['schemas'],
-                    $userConditionSchemas['schemas'],
-                ),
-                'preConditionSchemaByType' => $preConditionSchemas['schemaByType'],
-                'userConditionSchemaByType' => $userConditionSchemas['schemaByType'],
-            ],
-        );
+        if (null !== $schemaCollector) {
+            $preConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($preConditionFormRegistry, $preConditionTypes);
+            $userConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($userConditionFormRegistry, $userConditionTypes);
+
+            $payload['schemas'] = array_merge(
+                $preConditionSchemas['schemas'],
+                $userConditionSchemas['schemas'],
+            );
+            $payload['preConditionSchemaByType'] = $preConditionSchemas['schemaByType'];
+            $payload['userConditionSchemaByType'] = $userConditionSchemas['schemaByType'];
+        }
+
+        return $this->viewHandler->handle($payload);
     }
 
     public function getFieldsForIndexAction(Request $request, RepositoryInterface $indexRepository): Response

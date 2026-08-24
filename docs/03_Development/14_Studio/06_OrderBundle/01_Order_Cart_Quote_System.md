@@ -201,77 +201,91 @@ export const CustomTab: React.FC<SaleTabProps> = () => {
 }
 ```
 
-## Modal Field Extensions
+## Extending the Creation Modals
 
-Modal Field Extensions allow bundles to inject additional fields into action modals.
+The shipment, invoice and payment creation modals are rendered entirely from a
+form schema, so they are extended from PHP with plain Symfony **form type
+extensions** — no JavaScript and no frontend registry involved.
 
-### Architecture
+### Modals and their form types
 
-```typescript
-export interface ModalFieldExtension {
-  (props: any): React.ReactNode
-}
+| Modal | Block prefix | Form type | Per-item entry type |
+|-------|--------------|-----------|---------------------|
+| CreateShipmentModal | `coreshop_order_shipment_creation` | `Form\Type\Studio\OrderShipmentCreationType` | `Form\Type\Studio\OrderShipmentCreationItemsType` |
+| CreateInvoiceModal | `coreshop_order_invoice_creation` | `Form\Type\Studio\OrderInvoiceCreationType` | `Form\Type\Studio\OrderInvoiceCreationItemsType` |
+| CreatePaymentModal | `coreshop_order_payment_creation` | `Form\Type\Studio\OrderPaymentCreationType` | — |
 
-export class ModalFieldExtensionRegistry {
-  register(modalKey: string, extension: ModalFieldExtension): void
-  getFields(modalKey: string, props: any): React.ReactNode[]
-  hasExtensions(modalKey: string): boolean
-}
-```
+> Note the `Studio` namespace. The types without it back the classic ExtJS
+> wizards; extending those has no effect in Studio, and vice versa.
 
-### Available Modal Keys
+### Adding a modal-level field
 
-| Key | Modal | Description |
-|-----|-------|-------------|
-| `create-shipment` | CreateShipmentModal | Create new shipment |
-| `create-payment` | CreatePaymentModal | Create new payment |
-| `create-invoice` | CreateInvoiceModal | Create new invoice |
+Extend the root type. CoreBundle does exactly this to add the carrier select to
+the shipment modal:
 
-### Adding Modal Fields
+```php
+final class StudioOrderShipmentCreationTypeExtension extends AbstractTypeExtension
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('carrier', CarrierChoiceType::class, [
+            'label' => 'coreshop_carrier',
+            'priority' => 400,
+        ]);
+    }
 
-```typescript
-// src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/src/modules/sales/extensions/CustomExtension.tsx
-
-import React from 'react'
-import { Form, Input } from 'antd'
-import { container } from '@pimcore/studio-ui-bundle'
-import { ModalFieldExtensionRegistry } from '@coreshop/order/src/modules/sales/extensions'
-import { extensionServiceIds } from '@coreshop/order/src/modules/sales/extensions/service-ids'
-
-// Extension component - receives form instance and onChange
-const TrackingNumberExtension: React.FC<{
-  form: any
-  onChange: (values: any) => void
-}> = ({ form, onChange }) => {
-  return (
-    <Form.Item
-      label="Tracking Number"
-      name="trackingNumber"
-    >
-      <Input
-        placeholder="Enter tracking number"
-        onChange={(e) => onChange({ trackingNumber: e.target.value })}
-      />
-    </Form.Item>
-  )
-}
-
-// Registration
-const plugin: IAbstractPlugin = {
-    name: 'your-bundle',
-
-    onInit() {
-        const registry = container.get<ModalFieldExtensionRegistry>(
-            extensionServiceIds.modalFieldExtensionRegistry
-        )
-
-        // Add field to create-shipment modal
-        registry.register('create-shipment', (props) => (
-            <TrackingNumberExtension {...props} />
-        ))
+    public static function getExtendedTypes(): iterable
+    {
+        return [OrderShipmentCreationType::class];
     }
 }
 ```
+
+### Adding a per-item column
+
+Extend the entry type. The field becomes an extra column in the items grid,
+because `GridCollectionWidget` derives its columns from the collection
+prototype in the generated schema:
+
+```php
+final class OrderShipmentCreationItemsTypeExtension extends AbstractTypeExtension
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('stockItem', StockItemChoiceType::class, [
+            'label' => 'coreshop_stock_item',
+            'constraints' => [new NotBlank()],
+        ]);
+    }
+
+    public static function getExtendedTypes(): iterable
+    {
+        return [OrderShipmentCreationItemsType::class];
+    }
+}
+```
+
+**The field must be added in `buildForm()`.** A field added from a `PRE_SUBMIT`
+listener exists only while handling a submit, so it never reaches the generated
+schema and the modal cannot render a column for it.
+
+### Pre-filling per-item values
+
+The `get-ship-able-items` and `get-invoice-able-items` endpoints dispatch a
+`GenericEvent` (`coreshop.order.shipment.prepare_ship_able` and
+`coreshop.order.invoice.prepare_invoice_able`) that lets a bundle add values to
+each item. Any key matching a form field name is used as that column's initial
+value; keys the form does not declare are dropped before the create request, so
+they are safe to use for internal purposes.
+
+### How values survive the round trip
+
+The modals never reduce an item to a fixed key set. On load they pass the API
+item through and only rename the keys the API and the form spell differently.
+On submit `buildCreationItemPayload()` (`modules/sales/utils/creationItems.ts`)
+keeps exactly the fields the entry type declares, skipping disabled ones —
+Symfony ignores submitted values for those and uses the server-side value
+instead.
 
 ## Order Creation Wizard
 
@@ -472,10 +486,8 @@ OrderBundle/Resources/assets/pimcore-studio/src/
 │   │   ├── registry/
 │   │   │   ├── SaleTabRegistry.ts
 │   │   │   └── ComponentRegistry.ts
-│   │   ├── extensions/
-│   │   │   ├── ModalFieldExtensionRegistry.ts
-│   │   │   ├── service-ids.ts
-│   │   │   └── index.ts
+│   │   ├── utils/
+│   │   │   └── creationItems.ts          # Schema-driven per-item mapping
 │   │   ├── context/
 │   │   │   ├── SaleActionsContext.tsx
 │   │   │   └── ButtonRegistry.tsx

@@ -17,6 +17,10 @@ import { useTranslation } from 'react-i18next'
 import { SchemaForm } from '@coreshop/studio-form'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 import { formatCurrency } from '@coreshop/pimcore/src/utils'
+import { buildCreationItemPayload, loadCreationItemFields } from '../utils/creationItems'
+import type { CreationItemFields } from '../utils/creationItems'
+
+const BLOCK_PREFIX = 'coreshop_order_invoice_creation'
 
 export interface CreateInvoiceModalProps {
   open: boolean
@@ -30,7 +34,9 @@ export interface CreateInvoiceModalProps {
  * Create Invoice Modal
  *
  * Form fields and items grid rendered via SchemaForm.
- * Columns are defined by OrderInvoiceCreationItemsType (configurable via form types).
+ * Columns are defined by OrderInvoiceCreationItemsType, including fields added
+ * by Symfony form type extensions. Per-item values are therefore never reduced
+ * to a fixed key set — they are passed through as the form schema declares them.
  */
 export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
   open,
@@ -44,6 +50,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
   const [formData, setFormData] = useState<Record<string, unknown>>({})
   const [loading, setLoading] = useState(false)
   const [loadingItems, setLoadingItems] = useState(false)
+  const [itemFields, setItemFields] = useState<CreationItemFields>([])
 
   // Load invoiceable items and populate formData
   useEffect(() => {
@@ -56,15 +63,17 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
         const data = await response.json()
 
         if (data.success && data.items && Object.keys(data.items).length > 0) {
-          // Map API data (keyed by orderItemId) to form field names
+          setItemFields(await loadCreationItemFields(BLOCK_PREFIX))
+
+          // Rename the API's item keys to the form field names. Everything else
+          // is passed through, so values a bundle contributes through the
+          // "coreshop.order.invoice.prepare_invoice_able" event reach the grid.
           const items: Record<string, any> = {}
           for (const [orderItemId, item] of Object.entries(data.items) as Array<[string, any]>) {
             items[orderItemId] = {
-              orderItemId: item.orderItemId,
-              name: item.name,
+              ...item,
               price: formatCurrency(item.price, currencyCode),
               orderedQuantity: item.quantity,
-              quantityInvoiced: item.quantityInvoiced,
               quantity: item.toInvoice,
               maxQuantity: item.maxToInvoice,
             }
@@ -96,11 +105,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       const itemsToInvoice: Record<string, any> = {}
       for (const [key, item] of Object.entries(itemsObj)) {
         if (item.quantity > 0) {
-          itemsToInvoice[key] = {
-            orderItemId: item.orderItemId,
-            quantity: item.quantity,
-            maxQuantity: item.maxQuantity
-          }
+          itemsToInvoice[key] = buildCreationItemPayload(item, itemFields)
         }
       }
 
@@ -149,7 +154,7 @@ export const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       destroyOnClose
     >
       <SchemaForm
-        blockPrefix="coreshop_order_invoice_creation"
+        blockPrefix={BLOCK_PREFIX}
         data={formData}
         onChange={(draft) => setFormData((prev) => ({ ...prev, ...draft }))}
       />
