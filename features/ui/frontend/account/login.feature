@@ -12,3 +12,10 @@ Feature: Signing in to the store
         And I specify the password as "test"
         And I log in
         Then I should be logged in
+
+    Scenario: Sign in ignores a redirect target pointing to a foreign host
+        When I want to log in with "//example.com" as redirect target
+        And I specify the username as "dominik@example.com"
+        And I specify the password as "test"
+        And I log in
+        Then I should be logged in
