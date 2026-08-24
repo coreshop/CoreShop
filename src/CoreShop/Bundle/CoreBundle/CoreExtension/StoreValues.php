@@ -30,7 +30,6 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
@@ -377,7 +376,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 continue;
             }
 
-            $newStoreValues[] = $this->createUnmanagedCopy($storeValue);
+            $newStoreValues[] = clone $storeValue;
         }
 
         return $newStoreValues;
@@ -438,7 +437,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                     //This means that we inherited store values and also changed something, thus we break the inheritance and
                     //give the product its own record
                     if (count($changeSet) > 0) {
-                        $newStoreValue = $this->createUnmanagedCopy($productStoreValue);
+                        $newStoreValue = clone $productStoreValue;
                         $newStoreValue->setProduct($object);
                         $newStoreValue->setFieldName($this->getName());
 
@@ -686,11 +685,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             }
 
             if ($storeValuesEntity instanceof ProductStoreValuesInterface && $storeValuesEntity->getProduct() && $storeValuesEntity->getProduct()->getId() !== $object->getId()) {
-                //Inherited values, the form submission below fills in all values of the new record
-                /**
-                 * @var ProductStoreValuesInterface $storeValuesEntity
-                 */
-                $storeValuesEntity = $this->getFactory()->createNew();
+                //Inherited values, the copy gets its own record and the form submission below fills in the values
+                $storeValuesEntity = clone $storeValuesEntity;
                 $storeValuesEntity->setProduct($object);
                 $storeValuesEntity->setFieldName($this->getName());
             }
@@ -847,32 +843,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         }
 
         return $serialized;
-    }
-
-    /**
-     * Copies the given store values into a record Doctrine does not know yet. Cloning and dropping the identity keeps
-     * every other field, which is what a project that replaces the ProductStoreValues model with its own one, adding
-     * further persisted fields, relies on. The unit definition prices belong to the original record and are therefore
-     * not part of the copy.
-     */
-    private function createUnmanagedCopy(ProductStoreValuesInterface $storeValue): ProductStoreValuesInterface
-    {
-        $newStoreValue = clone $storeValue;
-
-        $reflectionClass = new \ReflectionClass($newStoreValue);
-        $property = $reflectionClass->getProperty('id');
-        $property->setAccessible(true);
-        $property->setValue($newStoreValue, null);
-
-        $property = $reflectionClass->getProperty('product');
-        $property->setAccessible(true);
-        $property->setValue($newStoreValue, null);
-
-        $property = $reflectionClass->getProperty('productUnitDefinitionPrices');
-        $property->setAccessible(true);
-        $property->setValue($newStoreValue, new ArrayCollection());
-
-        return $newStoreValue;
     }
 
     /**
