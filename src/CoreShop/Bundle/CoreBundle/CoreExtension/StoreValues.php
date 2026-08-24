@@ -377,22 +377,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 continue;
             }
 
-            $newStoreValue = clone $storeValue;
-
-            $reflectionClass = new \ReflectionClass($newStoreValue);
-            $property = $reflectionClass->getProperty('id');
-            $property->setAccessible(true);
-            $property->setValue($newStoreValue, null);
-
-            $property = $reflectionClass->getProperty('product');
-            $property->setAccessible(true);
-            $property->setValue($newStoreValue, null);
-
-            $property = $reflectionClass->getProperty('productUnitDefinitionPrices');
-            $property->setAccessible(true);
-            $property->setValue($newStoreValue, new ArrayCollection());
-
-            $newStoreValues[] = $newStoreValue;
+            $newStoreValues[] = $this->createUnmanagedCopy($storeValue);
         }
 
         return $newStoreValues;
@@ -453,13 +438,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                     //This means that we inherited store values and also changed something, thus we break the inheritance and
                     //give the product its own record
                     if (count($changeSet) > 0) {
-                        /**
-                         * @var ProductStoreValuesInterface $newStoreValue
-                         */
-                        $newStoreValue = $this->getFactory()->createNew();
-                        $newStoreValue->setStore($productStoreValue->getStore());
-                        $newStoreValue->setPrice($productStoreValue->getPrice());
-                        $newStoreValue->setTaxRule($productStoreValue->getTaxRule());
+                        $newStoreValue = $this->createUnmanagedCopy($productStoreValue);
                         $newStoreValue->setProduct($object);
                         $newStoreValue->setFieldName($this->getName());
 
@@ -868,6 +847,32 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         }
 
         return $serialized;
+    }
+
+    /**
+     * Copies the given store values into a record Doctrine does not know yet. Cloning and dropping the identity keeps
+     * every other field, which is what a project that replaces the ProductStoreValues model with its own one, adding
+     * further persisted fields, relies on. The unit definition prices belong to the original record and are therefore
+     * not part of the copy.
+     */
+    private function createUnmanagedCopy(ProductStoreValuesInterface $storeValue): ProductStoreValuesInterface
+    {
+        $newStoreValue = clone $storeValue;
+
+        $reflectionClass = new \ReflectionClass($newStoreValue);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($newStoreValue, null);
+
+        $property = $reflectionClass->getProperty('product');
+        $property->setAccessible(true);
+        $property->setValue($newStoreValue, null);
+
+        $property = $reflectionClass->getProperty('productUnitDefinitionPrices');
+        $property->setAccessible(true);
+        $property->setValue($newStoreValue, new ArrayCollection());
+
+        return $newStoreValue;
     }
 
     /**
