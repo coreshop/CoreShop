@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use CoreShop\Bundle\ResourceBundle\Controller\RedirectUrlValidationTrait;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
@@ -28,6 +29,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class FrontendController extends AbstractController
 {
+    use RedirectUrlValidationTrait;
+
     public function __construct(
         \Psr\Container\ContainerInterface $container,
     ) {

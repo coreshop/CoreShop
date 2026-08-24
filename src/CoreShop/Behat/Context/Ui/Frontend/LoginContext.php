@@ -43,6 +43,14 @@ final class LoginContext implements Context
     }
 
     /**
+     * @When I want to log in with :target as redirect target
+     */
+    public function iWantToLogInWithRedirectTarget(string $target): void
+    {
+        $this->loginPage->open(['target' => $target]);
+    }
+
+    /**
      * @When I want to reset password
      */
     public function iWantToResetPassword(): void

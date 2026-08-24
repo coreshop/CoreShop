@@ -1,0 +1,87 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
+ * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ *
+ */
+
+namespace CoreShop\Bundle\ResourceBundle\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
+
+trait RedirectUrlValidationTrait
+{
+    /**
+     * Validates a redirect URL to prevent open redirects.
+     *
+     * Only allows:
+     * - Relative URLs (starting with "/" but not "//")
+     * - URLs on the same host as the current request with http/https scheme
+     *
+     * @param Request $request The current request to validate against
+     * @param string  $url     The URL to validate
+     * @param string  $default The default URL to return if validation fails
+     *
+     * @return string The validated URL or the default if invalid
+     */
+    protected function validateRedirectUrl(Request $request, string $url, string $default): string
+    {
+        // Empty URL, use default
+        if ('' === $url) {
+            return $default;
+        }
+
+        // Reject backslashes and control characters anywhere in the URL: browsers normalise
+        // backslashes to slashes and control characters can hide a different target from parse_url()
+        if (preg_match('/[\\\\\\x00-\\x1f\\x7f]/', $url)) {
+            return $default;
+        }
+
+        // Check for protocol-relative URLs (//example.com) which could be used for open redirects
+        if (str_starts_with($url, '//')) {
+            return $default;
+        }
+
+        // Relative URLs (starting with a single /) are safe
+        if (str_starts_with($url, '/')) {
+            return $url;
+        }
+
+        // For absolute URLs, verify the host matches the current request
+        $parsedUrl = parse_url($url);
+
+        // If parsing failed or no host is present, use default
+        if (false === $parsedUrl || !isset($parsedUrl['host'])) {
+            return $default;
+        }
+
+        // Only allow http and https schemes
+        if (isset($parsedUrl['scheme']) && !in_array(strtolower($parsedUrl['scheme']), ['http', 'https'], true)) {
+            return $default;
+        }
+
+        // Reject credentials in the authority component (user:pass@host manipulation).
+        // Only the authority is checked, an "@" inside the query or fragment is harmless.
+        if (isset($parsedUrl['user']) || isset($parsedUrl['pass'])) {
+            return $default;
+        }
+
+        // Check if the host matches the current request host
+        if (strtolower($parsedUrl['host']) === strtolower($request->getHost())) {
+            return $url;
+        }
+
+        return $default;
+    }
+}

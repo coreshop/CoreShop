@@ -2,6 +2,15 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Bundle\CoreBundle\Security\ShopUserAuthenticationSuccessHandler:
+        arguments:
+            - '@security.http_utils'
+
+    CoreShop\Bundle\CoreBundle\Security\ShopUserAuthenticationFailureHandler:
+        arguments:
+            - '@http_kernel'
+            - '@security.http_utils'
+
     CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler:
         arguments:
             - '@router'
