@@ -226,7 +226,12 @@ class CartController extends FrontendController
         $this->denyAccessUnlessGranted('CORESHOP_CART');
         $this->denyAccessUnlessGranted('CORESHOP_CART_ADD_ITEM');
 
-        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_index'));
+        $defaultRedirectGet = $this->generateUrl('coreshop_index');
+        $redirect = $this->validateRedirectUrl(
+            $request,
+            (string) $this->getParameterFromRequest($request, '_redirect', $defaultRedirectGet),
+            $defaultRedirectGet,
+        );
 
         $product = $this->container->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
 
@@ -249,7 +254,12 @@ class CartController extends FrontendController
         $form = $this->container->get('form.factory')->createNamed('coreshop-' . $product->getId(), AddToCartType::class, $addToCart);
 
         if ($request->isMethod('POST')) {
-            $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_cart_summary'));
+            $defaultRedirectPost = $this->generateUrl('coreshop_cart_summary');
+            $redirect = $this->validateRedirectUrl(
+                $request,
+                (string) $this->getParameterFromRequest($request, '_redirect', $defaultRedirectPost),
+                $defaultRedirectPost,
+            );
 
             $form->handleRequest($request);
 

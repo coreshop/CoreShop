@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StorageListBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Controller\RedirectUrlValidationTrait;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
@@ -45,6 +46,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StorageListController extends AbstractController
 {
+    use RedirectUrlValidationTrait;
+
     public function __construct(
         ContainerInterface $container,
         protected string $identifier,
@@ -85,7 +88,12 @@ class StorageListController extends AbstractController
         $this->denyAccessUnlessGranted($privilege);
         $this->denyAccessUnlessGranted($privilegeAdd);
 
-        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->summaryRoute));
+        $defaultRedirect = $this->generateUrl($this->summaryRoute);
+        $redirect = $this->validateRedirectUrl(
+            $request,
+            (string) $this->getParameterFromRequest($request, '_redirect', $defaultRedirect),
+            $defaultRedirect,
+        );
         $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
         $storageList = $this->context->getStorageList();
 
