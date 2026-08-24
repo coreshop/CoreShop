@@ -252,7 +252,7 @@ coreshop.messenger.list = Class.create({
                     rootProperty: 'data'
                 }
             },
-            fields: ['id', 'class', 'failedAt', 'error']
+            fields: ['id', 'class', 'failed_at', 'error']
         });
 
         var grid = new Ext.grid.Panel({

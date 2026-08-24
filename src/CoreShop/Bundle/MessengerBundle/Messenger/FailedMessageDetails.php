@@ -70,7 +70,7 @@ final class FailedMessageDetails implements \JsonSerializable
         return [
             'id' => $this->id,
             'class' => $this->class,
-            'failedAt' => $this->failedAt,
+            'failed_at' => $this->failedAt,
             'error' => $this->error,
             'serialized' => $this->serialized,
         ];
