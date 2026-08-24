@@ -44,11 +44,30 @@ final class AmqpDeathHeaderFailedAtResolver implements FailedAtResolverInterface
             return $time;
         }
 
-        if (!is_int($time) && !is_string($time)) {
+        // Do not narrow this to int/string: "time" is an AMQP timestamp field, and ext-amqp decodes
+        // it into an AMQPTimestamp value object, not a scalar. AMQPTimestamp is \Stringable and
+        // stringifies to the epoch seconds. Other AMQP clients hand over a plain int instead, so
+        // both have to be accepted here.
+        if ($time instanceof \Stringable) {
+            $time = (string) $time;
+        }
+
+        if (!is_int($time) && !(is_string($time) && is_numeric($time))) {
             return null;
         }
 
-        return \DateTimeImmutable::createFromFormat('U', (string) $time) ?: null;
+        $failedAt = \DateTimeImmutable::createFromFormat('U', (string) (int) $time);
+
+        if (false === $failedAt) {
+            return null;
+        }
+
+        // Keep the setTimezone() call: createFromFormat('U', ...) always returns the date in UTC,
+        // whereas RedeliveryStampFailedAtResolver returns server local time. FailedMessageRepository
+        // formats whatever it gets with a plain format('Y-m-d H:i:s') and no conversion, so without
+        // this normalisation broker dead-letterings would be rendered in a different timezone than
+        // Symfony side failures in the very same grid.
+        return $failedAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     }
 
     private function getLastRejectedDeath(Envelope $envelope): ?array
