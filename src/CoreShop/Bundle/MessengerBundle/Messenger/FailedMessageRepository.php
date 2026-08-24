@@ -22,16 +22,22 @@ use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
-use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class FailedMessageRepository implements FailedMessageRepositoryInterface
 {
+    private FailedAtResolverInterface $failedAtResolver;
+
     public function __construct(
         private FailureReceiversRepositoryInterface $failureReceivers,
         private EventDispatcherInterface $eventDispatcher,
+        ?FailedAtResolverInterface $failedAtResolver = null,
     ) {
+        $this->failedAtResolver = $failedAtResolver ?? new ChainFailedAtResolver([
+            new RedeliveryStampFailedAtResolver(),
+            new AmqpDeathHeaderFailedAtResolver(),
+        ]);
     }
 
     public function listFailedMessages(string $receiverName, int $limit = 10): array
@@ -46,13 +52,13 @@ final class FailedMessageRepository implements FailedMessageRepositoryInterface
 
         $rows = [];
         foreach ($envelopes as $envelope) {
-            $lastRedeliveryStamp = $envelope->last(RedeliveryStamp::class);
             $lastErrorDetailsStamp = $envelope->last(ErrorDetailsStamp::class);
+            $failedAt = $this->failedAtResolver->resolve($envelope);
 
             $failedMessageDetails = new FailedMessageDetails(
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
-                ($lastRedeliveryStamp?->getRedeliveredAt()->format('Y-m-d H:i:s')) ?? '',
+                $failedAt?->format('Y-m-d H:i:s') ?? '',
                 $lastErrorDetailsStamp?->getExceptionMessage(),
                 '<pre>' . print_r($envelope->getMessage(), true) . '</pre>',
             );
