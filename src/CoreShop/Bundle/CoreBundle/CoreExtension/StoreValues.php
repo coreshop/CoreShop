@@ -23,6 +23,7 @@ use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
@@ -439,8 +440,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
             if ($productStoreValue->getProduct() && $productStoreValue->getProduct()->getId() !== $object->getId()) {
                 if ($productStoreValue->getId()) {
+                    $classMetadata = $this->getEntityManager()->getClassMetadata(
+                        $this->getProductStoreValuesRepository()->getClassName(),
+                    );
+
                     $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
-                        $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
+                        $classMetadata,
                         $productStoreValue,
                     );
                     $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
@@ -448,12 +453,41 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                     //This means that we inherited store values and also changed something, thus we break the inheritance and
                     //give the product its own record
                     if (count($changeSet) > 0) {
+                        /**
+                         * @var ProductStoreValuesInterface $newStoreValue
+                         */
                         $newStoreValue = $this->getFactory()->createNew();
                         $newStoreValue->setStore($productStoreValue->getStore());
                         $newStoreValue->setPrice($productStoreValue->getPrice());
                         $newStoreValue->setTaxRule($productStoreValue->getTaxRule());
                         $newStoreValue->setProduct($object);
                         $newStoreValue->setFieldName($this->getName());
+
+                        //The unit definition prices still belong to the inherited entity, the new record needs its own ones
+                        foreach ($productStoreValue->getProductUnitDefinitionPrices() as $unitDefinitionPrice) {
+                            if (null === $unitDefinitionPrice->getUnitDefinition()) {
+                                continue;
+                            }
+
+                            /**
+                             * @var ProductUnitDefinitionPriceInterface $newUnitDefinitionPrice
+                             */
+                            $newUnitDefinitionPrice = $this->getProductUnitDefinitionPriceFactory()->createNew();
+                            $newUnitDefinitionPrice->setUnitDefinition($unitDefinitionPrice->getUnitDefinition());
+                            $newUnitDefinitionPrice->setPrice($unitDefinitionPrice->getPrice());
+
+                            $newStoreValue->addProductUnitDefinitionPrice($newUnitDefinitionPrice);
+                        }
+
+                        //The inherited entity is shared with the parent product and still managed, carrying the very
+                        //changes that broke the inheritance. Roll it back to its persisted state and take it out of the
+                        //Unit of Work, otherwise the pending change set is written onto the parent product's record.
+                        foreach ($changeSet as $changedField => $changedValues) {
+                            $classMetadata->setFieldValue($productStoreValue, $changedField, $changedValues[0]);
+                        }
+
+                        $this->getEntityManager()->detach($productStoreValue);
+
                         $productStoreValue = $newStoreValue;
                     }
                 } else {
@@ -673,6 +707,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             }
 
             if ($storeValuesEntity instanceof ProductStoreValuesInterface && $storeValuesEntity->getProduct() && $storeValuesEntity->getProduct()->getId() !== $object->getId()) {
+                //Inherited values, the form submission below fills in all values of the new record
+                /**
+                 * @var ProductStoreValuesInterface $storeValuesEntity
+                 */
                 $storeValuesEntity = $this->getFactory()->createNew();
                 $storeValuesEntity->setProduct($object);
                 $storeValuesEntity->setFieldName($this->getName());
@@ -902,6 +940,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     protected function getFactory()
     {
         return \Pimcore::getContainer()->get('coreshop.factory.product_store_values');
+    }
+
+    /**
+     * @return FactoryInterface
+     */
+    protected function getProductUnitDefinitionPriceFactory()
+    {
+        return \Pimcore::getContainer()->get('coreshop.factory.product_unit_definition_price');
     }
 
     /**

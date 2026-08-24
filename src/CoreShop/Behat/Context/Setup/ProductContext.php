@@ -469,6 +469,41 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (variant "[^"]+") inherited price is changed to ([^"]+) for (store "[^"]+")$/
+     * @Given /^the (variants) inherited price is changed to ([^"]+) for (store "[^"]+")$/
+     */
+    public function theVariantsInheritedPriceIsChangedTo(ProductInterface $product, int $price, StoreInterface $store): void
+    {
+        //Resolved through pimcore inheritance, this is the store values entity of the parent product
+        $storeValues = $product->getStoreValuesForStore($store);
+
+        Assert::isInstanceOf($storeValues, ProductStoreValuesInterface::class);
+
+        $storeValues->setPrice($price);
+
+        $product->setStoreValuesForStore($storeValues, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product) is reloaded from the database$/
+     * @Given /^the (variant) is reloaded from the database$/
+     */
+    public function theProductIsReloadedFromTheDatabase(ProductInterface $product): void
+    {
+        $reloadedProduct = Concrete::getById($product->getId(), ['force' => true]);
+
+        Assert::isInstanceOf($reloadedProduct, ProductInterface::class);
+
+        if ($reloadedProduct->getType() === 'variant') {
+            $this->sharedStorage->set('variant', $reloadedProduct);
+        } else {
+            $this->sharedStorage->set('product', $reloadedProduct);
+        }
+    }
+
+    /**
      * @Given /^the (product "[^"]+") has a minimum order quantity of "([^"]+)"$/
      * @Given /^the (product) has a minimum order quantity of "([^"]+)"$/
      */

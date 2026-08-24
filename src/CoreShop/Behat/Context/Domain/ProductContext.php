@@ -21,6 +21,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
@@ -135,6 +136,38 @@ final class ProductContext implements Context
         $taxRule = $product->getStoreValuesOfType('taxRule', $this->shopperContext->getStore());
 
         Assert::eq($taxRule?->getId(), $taxRuleGroup->getId());
+    }
+
+    /**
+     * @Then /^the (product) should have a unit price of "([^"]+)" for (unit "[^"]+") in (store "[^"]+")$/
+     * @Then /^the (variant) should have a unit price of "([^"]+)" for (unit "[^"]+") in (store "[^"]+")$/
+     */
+    public function theProductsUnitPriceShouldBe(ProductInterface $product, int $price, ProductUnitInterface $unit, StoreInterface $store): void
+    {
+        $storeValues = $product->getStoreValuesForStore($store);
+
+        Assert::isInstanceOf($storeValues, ProductStoreValuesInterface::class);
+
+        foreach ($storeValues->getProductUnitDefinitionPrices() as $unitDefinitionPrice) {
+            if ($unitDefinitionPrice->getUnitDefinition()?->getUnit() !== $unit) {
+                continue;
+            }
+
+            Assert::same(
+                $price,
+                $unitDefinitionPrice->getPrice(),
+                sprintf(
+                    'Expected the products price for unit %s to be %s, but got %s',
+                    $unit->getName(),
+                    $price,
+                    $unitDefinitionPrice->getPrice(),
+                ),
+            );
+
+            return;
+        }
+
+        throw new \InvalidArgumentException(sprintf('Expected the product to have a price for unit %s', $unit->getName()));
     }
 
     /**
