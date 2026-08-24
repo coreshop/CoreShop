@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MessengerBundle;
 
 use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
+use CoreShop\Bundle\MessengerBundle\DependencyInjection\CompilerPass\FailedAtResolverPass;
 use CoreShop\Bundle\MessengerBundle\DependencyInjection\CompilerPass\FailureReceiverPass;
 use CoreShop\Bundle\MessengerBundle\DependencyInjection\CompilerPass\ReceiverPass;
 use CoreShop\Bundle\PimcoreBundle\CoreShopPimcoreBundle;
@@ -41,5 +42,6 @@ final class CoreShopMessengerBundle extends Bundle implements DependentBundleInt
 
         $container->addCompilerPass(new ReceiverPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
         $container->addCompilerPass(new FailureReceiverPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
+        $container->addCompilerPass(new FailedAtResolverPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
     }
 }

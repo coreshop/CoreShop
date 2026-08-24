@@ -40,7 +40,8 @@ services:
   CoreShop\Bundle\MessengerBundle\Messenger\FailedAtResolverInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\ChainFailedAtResolver'
   CoreShop\Bundle\MessengerBundle\Messenger\ChainFailedAtResolver:
     arguments:
-      - !tagged_iterator coreshop.messenger.failed_at_resolver
+      # replaced by CoreShop\Bundle\MessengerBundle\DependencyInjection\CompilerPass\FailedAtResolverPass
+      - [ ]
 
   CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRepositoryInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRepository'
   CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRepository:
