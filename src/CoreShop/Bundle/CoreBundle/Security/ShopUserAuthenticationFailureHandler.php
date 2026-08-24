@@ -40,15 +40,18 @@ class ShopUserAuthenticationFailureHandler extends DefaultAuthenticationFailureH
     {
         $parameter = $this->options['failure_path_parameter'];
         $root = false === ($position = strpos($parameter, '[')) ? $parameter : substr($parameter, 0, $position);
-        $failureUrl = $request->get($root);
 
-        if (is_string($failureUrl) && !$this->isAllowedRedirectUrl($request, $failureUrl)) {
+        foreach ([$request->attributes, $request->query, $request->request] as $bag) {
+            $failureUrl = $bag->all()[$root] ?? null;
+
+            if (!is_string($failureUrl) || $this->isAllowedRedirectUrl($request, $failureUrl)) {
+                continue;
+            }
+
             // Drop the rejected value so the parent falls back to the configured failure path.
             // This happens before delegating because the parent would otherwise treat a value
             // such as "https:evil.tld" as a route name and fail with a RouteNotFoundException.
-            $request->attributes->remove($root);
-            $request->query->remove($root);
-            $request->request->remove($root);
+            $bag->remove($root);
         }
 
         $response = parent::onAuthenticationFailure($request, $exception);
