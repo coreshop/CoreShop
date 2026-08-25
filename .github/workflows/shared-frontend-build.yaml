@@ -70,7 +70,7 @@ jobs:
       - name: Generate a token for the asset commit
         id: app-token
         if: ${{ steps.app-config.outputs.configured == 'true' }}
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.STUDIO_BUILD_APP_ID }}
           private-key: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
