@@ -21,8 +21,6 @@ use CoreShop\Bundle\TestBundle\Page\SymfonyPage;
 
 abstract class AbstractFrontendPage extends SymfonyPage implements FrontendPageInterface
 {
-    protected static $additionalParameters = ['_locale' => 'en'];
-
     public function isOpenWithUri(string $uri): bool
     {
         return $this->getSession()->getCurrentUrl() !== $uri;

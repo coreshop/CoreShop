@@ -12,6 +12,12 @@ parameters:
         - '**/DependencyInjection/Configuration.php'
         - '**/Migrations/Version*.php'
         - '**/DataHub/*.php'
+        # Optional admin-ui-classic-bundle GridColumnConfig
+        - '**/AdminClass/Pimcore/GridColumnConfig/*.php'
+        # Optional studio bundles
+        - '**/Studio/*.php'
+        - '**/Studio/**/*.php'
+        - '**/StudioBackend/**/*.php'
         - src/CoreShop/Component/Pimcore/SplPriorityQueue.php
         - src/CoreShop/Component/Pimcore/PriorityQueue.php
 
@@ -45,6 +51,9 @@ parameters:
         - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Access to undefined constant PackageVersions\\Versions::VERSIONS/'
+        # Optional dependencies
+        - identifier: class.notFound
+          message: '/Pimcore\\Bundle\\(AdminBundle|StudioBackendBundle|StudioUiBundle|GoogleMarketingBundle|NewsletterBundle)\\/'
 
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon

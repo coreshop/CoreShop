@@ -529,7 +529,7 @@
                         "children": [
                             {
                                 "name": "mainVariant",
-                                "title": "Main Variant",
+                                "title": "coreshop.product.main_variant",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": false,

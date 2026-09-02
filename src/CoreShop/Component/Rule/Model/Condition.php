@@ -17,7 +17,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Rule\Model;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
+use Doctrine\Common\Collections\Collection;
+use CoreShop\Component\Rule\Model\ActionInterface;
+use CoreShop\Component\Rule\Model\ConditionInterface;
 
 /**
  * @psalm-suppress MissingConstructor
@@ -124,6 +128,10 @@ class Condition implements ConditionInterface
                     'sort' => $value->getSort(),
                     'configuration' => $value->getConfiguration(),
                 ];
+            } elseif ($value instanceof Collection) {
+                $configuration[$key] = $this->normalizeConfiguration($value->toArray());
+            } elseif ($value instanceof ResourceInterface) {
+                $configuration[$key] = $value->getId();
             } elseif (is_array($value)) {
                 $configuration[$key] = $this->normalizeConfiguration($value);
             }

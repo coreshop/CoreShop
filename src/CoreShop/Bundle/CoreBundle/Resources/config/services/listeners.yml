@@ -65,13 +65,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 7 }
 
-    CoreShop\Bundle\CoreBundle\EventListener\CustomerOrderDeletionListener:
-        arguments:
-            - '@coreshop.repository.order'
-        tags:
-            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
-            - { name: kernel.event_listener, event: pimcore.dataobject.deleteInfo, method: checkCustomerDeletionAllowed }
-
     CoreShop\Bundle\CoreBundle\EventListener\CustomerSecurityValidationListener:
         arguments:
             - '@Pimcore\Http\RequestHelper'
@@ -86,16 +79,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: coreshop.product_quantity_price_rules.data_validation, method: validate }
 
-    CoreShop\Bundle\CoreBundle\EventListener\ProductStoreValuesAdminGetListener:
-        tags:
-            - { name: kernel.event_subscriber }
-
-    CoreShop\Bundle\CoreBundle\EventListener\AdminJavascriptListener:
-        arguments:
-            - '@router'
-        tags:
-            - { name: kernel.event_subscriber }
-
     CoreShop\Bundle\CoreBundle\EventListener\RecursiveVariantCacheInvalidationEventListener:
         tags:
             - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\CoreBundle\AdminClass\EventListener\CustomerOrderDeletionListener:
+        arguments:
+            - '@coreshop.repository.order'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
+            - { name: kernel.event_listener, event: pimcore.dataobject.deleteInfo, method: checkCustomerDeletionAllowed }

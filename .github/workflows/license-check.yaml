@@ -1,13 +1,13 @@
 name: License Check
 on:
   push:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'composer.json'
       - '*/**/composer.json'
       - '.github/workflows/license-check.yaml'
   pull_request:
-    branches: [ '5.0', 'next' ]
+    branches: [ '5.0', '5.1' ]
     paths:
       - 'composer.json'
       - '*/**/composer.json'

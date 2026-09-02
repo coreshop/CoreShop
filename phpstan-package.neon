@@ -10,16 +10,26 @@ parameters:
         - '**/ProcessManager/IndexProcess.php'
         - '**/DataHub/*.php'
         - 'vendor/***'
-        - Core/EventListener/*.php (?)
-        - Core/Context/CustomerAndStoreBasedStorageListContext.php (?)
-        - Core/Context/SessionAndStoreBasedStorageListContext.php (?)
-        - Core/Context/StoreBasedStorageListContext.php (?)
-        - Core/Provider/CoreContextProvider.php (?)
-        - Core/Storage/SessionStorageListStorage.php (?)
-        - Core/Repository/CustomerAndStoreAwareRepositoryInterface.php (?)
-        - DependencyInjection/CoreShopStorageListExtension.php (?)
-        - SplPriorityQueue.php (?)
-        - PriorityQueue.php (?)
+        # Optional admin-ui-classic-bundle listeners
+        - '**/EventListener/MenuAdminListener.php'
+        - '**/EventListener/PimcoreAdminListener.php'
+        # Optional admin-ui-classic-bundle GridColumnConfig (causes internal error)
+        - '**/Pimcore/GridColumnConfig/ResourceFieldGetter.php'
+        - '**/AdminClass/Pimcore/GridColumnConfig/*.php'
+        # Optional studio bundles
+        - '**/Studio/*.php'
+        - '**/Studio/**/*.php'
+        - '**/StudioBackend/**/*.php'
+        # StorageListBundle Core files depend on optional CoreBundle/StoreComponent/CustomerComponent
+        - '**/Core/EventListener/SessionStoreStorageListSubscriber.php'
+        - '**/Core/EventListener/SessionStoreStorageListLogoutSubscriber.php'
+        - '**/Core/EventListener/StorageListBlamerListener.php'
+        - '**/Core/Context/CustomerAndStoreBasedStorageListContext.php'
+        - '**/Core/Context/SessionAndStoreBasedStorageListContext.php'
+        - '**/Core/Context/StoreBasedStorageListContext.php'
+        - '**/Core/Provider/CoreContextProvider.php'
+        - '**/Core/Storage/SessionStorageListStorage.php'
+        - '**/Core/Repository/CustomerAndStoreAwareRepositoryInterface.php'
 
     ignoreErrors:
         # Magic calls
@@ -50,6 +60,10 @@ parameters:
         - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Access to undefined constant PackageVersions\\Versions::VERSIONS/'
+
+        # Optional dependencies
+        - identifier: class.notFound
+          message: '/Pimcore\\Bundle\\(AdminBundle|StudioBackendBundle|StudioUiBundle|GoogleMarketingBundle|NewsletterBundle)\\/'
 
 includes:
     - ./vendor/phpstan/phpstan-doctrine/extension.neon

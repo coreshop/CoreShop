@@ -52,10 +52,14 @@ class PaymentProviderController extends ResourceController
             ];
         }
 
+        /** @var array<string, string> $gatewayBlockPrefixes */
+        $gatewayBlockPrefixes = $this->getParameter('coreshop.gateway_block_prefixes');
+
         return $this->viewHandler->handle(
             [
                 'success' => true,
                 'factories' => $factoryResults,
+                'gatewayBlockPrefixes' => $gatewayBlockPrefixes,
             ],
         );
     }

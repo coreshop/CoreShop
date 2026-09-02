@@ -55,5 +55,25 @@ final class RegisterGatewayConfigTypePass implements CompilerPassInterface
         ksort($gatewayFactories);
 
         $container->setParameter('coreshop.gateway_factories', $gatewayFactories);
+
+        // Build a map of gateway factory name → form type block prefix for Studio frontend.
+        $gatewayBlockPrefixes = [];
+        foreach ($gatewayConfigurationTypes as $id => $attributes) {
+            $definition = $container->findDefinition($id);
+            $class = $definition->getClass();
+
+            foreach ($attributes as $tags) {
+                if (!isset($tags['type'])) {
+                    $tags['type'] = Container::underscore(substr((string) strrchr($class, '\\'), 1));
+                }
+
+                // Compute block prefix: same logic as Symfony AbstractType::getBlockPrefix()
+                $shortName = substr((string) strrchr($class, '\\'), 1);
+                $blockPrefix = Container::underscore(preg_replace('/Type$/', '', $shortName));
+                $gatewayBlockPrefixes[$tags['type']] = $blockPrefix;
+            }
+        }
+
+        $container->setParameter('coreshop.gateway_block_prefixes', $gatewayBlockPrefixes);
     }
 }

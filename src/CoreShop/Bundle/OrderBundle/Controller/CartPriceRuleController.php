@@ -20,6 +20,8 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherGeneratorType;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
@@ -28,6 +30,7 @@ use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,20 +49,52 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
-    public function getConfigAction(Request $request): JsonResponse
-    {
+    public function getConfigAction(
+        Request $request,
+        #[Autowire(service: 'coreshop.form_registry.cart_price_rule.conditions')]
+        FormTypeRegistryInterface $conditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_price_rule.actions')]
+        FormTypeRegistryInterface $actionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_item_price_rule.conditions')]
+        FormTypeRegistryInterface $itemConditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.cart_item_price_rule.actions')]
+        FormTypeRegistryInterface $itemActionFormRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        ?RuleFormSchemaCollector $schemaCollector = null,
+    ): JsonResponse {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
         $itemActions = $this->getCartItemConfigActions();
         $itemConditions = $this->getCartItemConfigConditions();
 
-        return $this->viewHandler->handle([
+        $payload = [
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
             'itemActions' => array_keys($itemActions),
             'itemConditions' => array_keys($itemConditions),
-        ]);
+        ];
+
+        if (null !== $schemaCollector) {
+            $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
+            $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
+            $itemConditionSchemas = $schemaCollector->collectSchemasWithTypeMap($itemConditionFormRegistry, array_keys($itemConditions));
+            $itemActionSchemas = $schemaCollector->collectSchemasWithTypeMap($itemActionFormRegistry, array_keys($itemActions));
+
+            $payload['schemas'] = array_merge(
+                $conditionSchemas['schemas'],
+                $actionSchemas['schemas'],
+                $itemConditionSchemas['schemas'],
+                $itemActionSchemas['schemas'],
+            );
+            $payload['conditionSchemaByType'] = $conditionSchemas['schemaByType'];
+            $payload['actionSchemaByType'] = $actionSchemas['schemaByType'];
+            $payload['itemConditionSchemaByType'] = $itemConditionSchemas['schemaByType'];
+            $payload['itemActionSchemaByType'] = $itemActionSchemas['schemaByType'];
+        }
+
+        return $this->viewHandler->handle($payload);
     }
 
     public function getCartItemConfigAction(Request $request): JsonResponse

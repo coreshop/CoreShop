@@ -63,7 +63,7 @@
                     },
                     {
                         "name": "token",
-                        "title": "Token",
+                        "title": "coreshop.wishlist.token",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,
@@ -88,7 +88,7 @@
                     },
                     {
                         "name": "items",
-                        "title": "Items",
+                        "title": "coreshop.wishlist.items",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,
@@ -118,7 +118,7 @@
                     },
                     {
                         "name": "customer",
-                        "title": "Customer",
+                        "title": "coreshop.wishlist.customer",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,
@@ -150,7 +150,7 @@
                     },
                     {
                         "name": "store",
-                        "title": "Store",
+                        "title": "coreshop.wishlist.store",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,

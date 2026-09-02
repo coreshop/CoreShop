@@ -44,7 +44,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
 
         if (array_key_exists($language, $mails)) {
             $mailDocumentId = $mails[$language];
-            $mailDocument = Document::getById($mailDocumentId);
+            $mailDocument = Document::getById((int)$mailDocumentId);
             $recipient = [];
 
             if (!$configuration['doNotSendToDesignatedRecipient']) {

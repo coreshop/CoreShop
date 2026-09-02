@@ -1,5 +1,5 @@
 services:
-  CoreShop\Bundle\PimcoreBundle\EventListener\AdminJavascriptListener:
+  CoreShop\Bundle\PimcoreBundle\AdminClass\EventListener\AdminJavascriptListener:
     arguments:
       - '%coreshop.all.pimcore.admin.js%'
       - '%coreshop.all.pimcore.admin.editmode_js%'
@@ -7,3 +7,9 @@ services:
       - '%coreshop.all.pimcore.admin.editmode_css%'
     tags:
       - { name: kernel.event_subscriber }
+
+  CoreShop\Bundle\PimcoreBundle\AdminClass\EventListener\Grid\ObjectListFilterListener:
+    arguments:
+      - '@coreshop.registry.grid.filter'
+    tags:
+      - { name: kernel.event_listener, event: pimcore.admin.object.list.beforeListLoad, method: checkObjectList }

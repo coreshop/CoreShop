@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branches: [ '5.0', 'next' ]
+        branches: [ '5.0', '5.1' ]
 
     steps:
       - uses: actions/checkout@v7
@@ -37,7 +37,7 @@ jobs:
         uses: peter-evans/create-pull-request@v8
         with:
           commit-message: '[CS] Refactor'
-          author: CoreShop <info@coreshop.org>
+          author: CoreShop <info@coreshop.com>
           title: '[CS] Refactor'
           body: |
             This PR has been generated automatically to fix code-styles

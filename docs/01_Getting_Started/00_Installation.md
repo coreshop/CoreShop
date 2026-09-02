@@ -5,7 +5,7 @@ CoreShop:
 
 ## Initial Setup
 
-1. Install with composer: `composer require coreshop/core-shop ^5.0`
+1. Install with composer: `composer require coreshop/core-shop ^5.1`
 2. Enable the bundle in `config/bundles.php` and the `CoreShopCoreBundle` to the list of Bundles to load:
     ```php
     <?php
@@ -27,7 +27,7 @@ CoreShop:
     - Add the CoreShop Frontend parameter at the very top of your `security.yaml` (before `security`):
       ```yaml
       parameters:
-          coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
+          coreshop.security.frontend_regex: "^/(?!admin|pimcore-studio)[^/]*"
 
       security:
           ...
@@ -39,7 +39,8 @@ CoreShop:
          coreshop_user:
              id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
       ```
-    - Add the Firewall Config. Find your existing `firewalls` entry and add the `coreshop_frontend` entry after the other entries:
+    - Add the Firewall Config. Find your existing `firewalls` entry and add the `coreshop_frontend` entry after the other
+      entries - in particular after `pimcore_studio`, since Symfony uses the first firewall whose pattern matches:
       ```yaml
        firewalls:
          coreshop_frontend:

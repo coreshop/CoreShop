@@ -1,0 +1,13 @@
+---
+coreshop_settings: 'Einstellungen'
+coreshop_conditions: 'Bedingungen'
+coreshop_actions: 'Aktionen'
+coreshop_condition_no_configuration: 'Diese Bedingung hat keine Konfiguration.'
+coreshop_action_no_configuration: 'Diese Aktion hat keine Konfiguration.'
+coreshop_condition_conditions_operator_and: 'Und'
+coreshop_condition_conditions_operator_or: 'Oder'
+coreshop_condition_conditions_operator_not: 'Nicht'
+coreshop_condition_conditions_operator: 'Vergleich'
+
+# Studio v2
+coreshop_save: 'Speichern'

@@ -41,4 +41,9 @@ final class IteratorInterpreterType extends AbstractType
             ])
         ;
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_index_interpreter_iterator';
+    }
 }

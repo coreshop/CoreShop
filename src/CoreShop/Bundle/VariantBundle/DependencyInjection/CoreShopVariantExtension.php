@@ -43,5 +43,11 @@ final class CoreShopVariantExtension extends AbstractModelExtension
         $container->setParameter('coreshop.variant.redirect_to_main_variant', $configs['redirect_to_main_variant']);
 
         $loader->load('services.yml');
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
+            $loader->load('services/studio.yml');
+        }
     }
 }

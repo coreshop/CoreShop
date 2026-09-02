@@ -43,6 +43,7 @@ final class DiscountAmountConfigurationType extends AbstractType
     {
         $builder
             ->add('amount', MoneyType::class, [
+                'label' => 'coreshop_action_discount_amount_amount',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                     new Type(type: 'numeric', groups: $this->validationGroups),
@@ -50,14 +51,17 @@ final class DiscountAmountConfigurationType extends AbstractType
                 ],
             ])
             ->add('gross', CheckboxType::class, [
+                'label' => 'coreshop_action_discountAmount_gross',
             ])
             ->add('applyOn', ChoiceType::class, [
+                'label' => 'coreshop_action_discount_apply_on',
                 'choices' => [
                     'total' => 'total',
                     'subtotal' => 'subtotal',
                 ],
             ])
             ->add('currency', CurrencyChoiceType::class, [
+                'label' => 'coreshop_currency',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                 ],

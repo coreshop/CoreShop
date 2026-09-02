@@ -16,6 +16,7 @@ services:
             - '%coreshop.form.type.product_unit.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitTranslationType:
         arguments:

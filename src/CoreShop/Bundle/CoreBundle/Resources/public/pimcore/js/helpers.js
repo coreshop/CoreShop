@@ -34,7 +34,7 @@ coreshop.helpers.showAbout = function () {
     var html = '<div class="pimcore_about_window">';
     html += '<br><img src="/bundles/coreshopcore/pimcore/img/logo-full.svg" style="width: 400px;"><br>';
     html += '<br><b>Version: ' + coreshop.settings.bundle.version + '</b>';
-    html += '<br><br>&copy; by CoreShop GmbH, Wels, Austria (<a href="https://www.coreshop.com/" target="_blank">coreshop.org</a>)';
+    html += '<br><br>&copy; by CoreShop GmbH, Wels, Austria (<a href="https://www.coreshop.com/" target="_blank">coreshop.com</a>)';
     html += '<br><br><a href="https://github.com/coreshop/coreshop/blob/master/LICENSE.md" target="_blank">License</a> | ';
     html += '<a href="https://www.coreshop.com/contact.html" target="_blank">Contact</a>';
     html += '</div>';

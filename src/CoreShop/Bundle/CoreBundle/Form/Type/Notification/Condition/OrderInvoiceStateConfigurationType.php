@@ -17,18 +17,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-
-final class OrderInvoiceStateConfigurationType extends AbstractType
+final class OrderInvoiceStateConfigurationType extends AbstractWorkflowPlaceConfigurationType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    protected function getFieldName(): string
     {
-        $builder
-            ->add('orderInvoiceState', TextType::class, [
-            ])
-        ;
+        return 'orderInvoiceState';
     }
 
     public function getBlockPrefix(): string

@@ -38,6 +38,7 @@ services:
             - '%coreshop.form.type.cart_price_rule.validation_groups%'
         tags:
             - { name: form.type }
+            - { name: coreshop.studio_form }
 
     CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleTranslationType:
         arguments:
@@ -146,7 +147,7 @@ services:
 
     CoreShop\Component\Order\Cart\Rule\Condition\TimeSpanConditionChecker:
         tags:
-            - { name: coreshop.cart_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+            - { name: coreshop.cart_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
     CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker:
         arguments:

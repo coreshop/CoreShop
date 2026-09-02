@@ -17,14 +17,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use Pimcore\Controller\UserAwareController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
-/**
- * @psalm-suppress InternalClass
- */
-class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController
+class AdminController extends UserAwareController
 {
     public function __construct(
         \Psr\Container\ContainerInterface $container,
@@ -39,11 +37,6 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
         return $this->parameterBag->get($name);
     }
 
-    /**
-     * @return mixed
-     *
-     * based on Symfony\Component\HttpFoundation\Request::get
-     */
     protected function getParameterFromRequest(Request $request, string $key, $default = null): mixed
     {
         if ($request !== $result = $request->attributes->get($key, $request)) {
@@ -63,9 +56,8 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
 
     /**
      * @psalm-suppress ImplementedReturnTypeMismatch
-     * @psalm-suppress InvalidReturnType
      *
-     * @return non-empty-array<array-key, SubscribedService|string>
+     * @return array<array-key, SubscribedService|string>
      */
     public static function getSubscribedServices(): array
     {

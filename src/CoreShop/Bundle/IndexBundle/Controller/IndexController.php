@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
-use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Service\IndexableClassesProviderInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -45,35 +47,63 @@ class IndexController extends ResourceController
         return $this->viewHandler->handle($typesObject);
     }
 
-    public function getConfigAction(): Response
-    {
+    public function getConfigAction(
+        IndexableClassesProviderInterface $indexableClassesProvider,
+        #[Autowire(service: 'coreshop.form_registry.index.getter')]
+        FormTypeRegistryInterface $getterFormTypeRegistry,
+        #[Autowire(service: 'coreshop.form_registry.index.interpreter')]
+        FormTypeRegistryInterface $interpreterFormTypeRegistry,
+        #[Autowire(service: 'coreshop.form_registry.index.worker')]
+        FormTypeRegistryInterface $workerFormTypeRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        ?RuleFormSchemaCollector $schemaCollector = null,
+    ): Response {
         $indexInterpreterRegistry = $this->container->get('coreshop.registry.index.interpreter');
-        $interpreters = $this->getInterpreterTypes();
-        $interpretersResult = [];
 
-        $getters = $this->getGetterTypes();
+        $getterTypes = $this->getGetterTypes();
+        $interpreterTypes = $this->getInterpreterTypes();
+        $workerTypes = $this->getWorkerTypes();
+
+        $noSchemas = ['schemas' => [], 'schemaByType' => []];
+
+        $getterSchemas = $schemaCollector?->collectSchemasWithTypeMap($getterFormTypeRegistry, $getterTypes) ?? $noSchemas;
+        $interpreterSchemas = $schemaCollector?->collectSchemasWithTypeMap($interpreterFormTypeRegistry, $interpreterTypes) ?? $noSchemas;
+        $workerSchemas = $schemaCollector?->collectSchemasWithTypeMap($workerFormTypeRegistry, $workerTypes) ?? $noSchemas;
+
         $gettersResult = [];
 
-        foreach ($getters as $getter) {
-            $gettersResult[] = [
+        foreach ($getterTypes as $getter) {
+            $entry = [
                 'type' => $getter,
                 'name' => $getter,
             ];
+
+            if (isset($getterSchemas['schemaByType'][$getter])) {
+                $entry['blockPrefix'] = $getterSchemas['schemaByType'][$getter];
+            }
+
+            $gettersResult[] = $entry;
         }
 
-        foreach ($interpreters as $interpreter) {
+        $interpretersResult = [];
+
+        foreach ($interpreterTypes as $interpreter) {
             $class = $indexInterpreterRegistry->get($interpreter);
             $implements = class_implements($class) ?: [];
 
-            $localized = in_array(LocalizedInterpreterInterface::class, $implements, true);
-            $relation = in_array(RelationInterpreterInterface::class, $implements, true);
-
-            $interpretersResult[] = [
+            $entry = [
                 'type' => $interpreter,
                 'name' => $interpreter,
-                'localized' => $localized,
-                'relation' => $relation,
+                'localized' => in_array(LocalizedInterpreterInterface::class, $implements, true),
+                'relation' => in_array(RelationInterpreterInterface::class, $implements, true),
             ];
+
+            if (isset($interpreterSchemas['schemaByType'][$interpreter])) {
+                $entry['blockPrefix'] = $interpreterSchemas['schemaByType'][$interpreter];
+            }
+
+            $interpretersResult[] = $entry;
         }
 
         /**
@@ -93,33 +123,48 @@ class IndexController extends ResourceController
             }
         }
 
-        $classes = new DataObject\ClassDefinition\Listing();
-        $classes = $classes->load();
-        $availableClasses = [];
+        $availableClasses = array_map(
+            static fn (string $name) => ['name' => $name],
+            $indexableClassesProvider->getIndexableClassNames(),
+        );
 
-        foreach ($classes as $class) {
-            if ($class instanceof DataObject\ClassDefinition) {
-                $pimcoreClass = 'Pimcore\Model\DataObject\\' . ucfirst($class->getName());
-                $implements = class_implements($pimcoreClass) ?: [];
+        $workersResult = [];
 
-                if (in_array(IndexableInterface::class, $implements, true)) {
-                    $availableClasses[] = [
-                        'name' => $class->getName(),
-                    ];
-                }
+        foreach ($workerTypes as $workerType) {
+            $entry = [
+                'type' => $workerType,
+                'name' => $workerType,
+            ];
+
+            if (isset($workerSchemas['schemaByType'][$workerType])) {
+                $entry['blockPrefix'] = $workerSchemas['schemaByType'][$workerType];
             }
+
+            $workersResult[] = $entry;
         }
 
-        return $this->viewHandler->handle(
-            [
-                'success' => true,
-                'interpreters' => $interpretersResult,
-                'getters' => $gettersResult,
-                'fieldTypes' => $fieldTypesResult,
-                'classes' => $availableClasses,
-                'workerTypes' => $this->getWorkerTypes(),
-            ],
-        );
+        $payload = [
+            'success' => true,
+            'interpreters' => $interpretersResult,
+            'getters' => $gettersResult,
+            'fieldTypes' => $fieldTypesResult,
+            'classes' => $availableClasses,
+            'workerTypes' => $workerTypes,
+            'workers' => $workersResult,
+        ];
+
+        if (null !== $schemaCollector) {
+            $payload['schemas'] = array_merge(
+                $getterSchemas['schemas'],
+                $interpreterSchemas['schemas'],
+                $workerSchemas['schemas'],
+            );
+            $payload['getterSchemaByType'] = $getterSchemas['schemaByType'];
+            $payload['interpreterSchemaByType'] = $interpreterSchemas['schemaByType'];
+            $payload['workerSchemaByType'] = $workerSchemas['schemaByType'];
+        }
+
+        return $this->viewHandler->handle($payload);
     }
 
     public function getClassDefinitionForFieldSelectionAction(Request $request): Response

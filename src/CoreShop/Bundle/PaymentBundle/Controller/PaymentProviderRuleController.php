@@ -18,17 +18,45 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PaymentBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PaymentProviderRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request): Response
-    {
+    public function getConfigAction(
+        Request $request,
+        #[Autowire(service: 'coreshop.form_registry.payment_provider_rule.conditions')]
+        FormTypeRegistryInterface $conditionFormRegistry,
+        #[Autowire(service: 'coreshop.form_registry.payment_provider_rule.actions')]
+        FormTypeRegistryInterface $actionFormRegistry,
+        // Provided by CoreShopStudioFormBundle, which is only registered when
+        // Pimcore Studio is installed — null on classic-admin-only setups.
+        ?RuleFormSchemaCollector $schemaCollector = null,
+    ): Response {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
-        return $this->viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
+        $payload = [
+            'actions' => array_keys($actions),
+            'conditions' => array_keys($conditions),
+        ];
+
+        if (null !== $schemaCollector) {
+            $conditionSchemas = $schemaCollector->collectSchemasWithTypeMap($conditionFormRegistry, array_keys($conditions));
+            $actionSchemas = $schemaCollector->collectSchemasWithTypeMap($actionFormRegistry, array_keys($actions));
+
+            $payload['schemas'] = array_merge(
+                $conditionSchemas['schemas'],
+                $actionSchemas['schemas'],
+            );
+            $payload['conditionSchemaByType'] = $conditionSchemas['schemaByType'];
+            $payload['actionSchemaByType'] = $actionSchemas['schemaByType'];
+        }
+
+        return $this->viewHandler->handle($payload);
     }
 
     /**

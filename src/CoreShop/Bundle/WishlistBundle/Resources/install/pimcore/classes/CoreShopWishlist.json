@@ -44,7 +44,7 @@
                 "children": [
                     {
                         "name": "name",
-                        "title": "coreshop.order.name",
+                        "title": "coreshop.wishlist.name",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": true,
@@ -77,7 +77,7 @@
                         "unique": false,
                         "showCharCount": null,
                         "name": "token",
-                        "title": "coreshop.order.token",
+                        "title": "coreshop.wishlist.token",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": true,
@@ -109,7 +109,7 @@
                         "classes": [],
                         "pathFormatterClass": "",
                         "name": "items",
-                        "title": "Items",
+                        "title": "coreshop.wishlist.items",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,

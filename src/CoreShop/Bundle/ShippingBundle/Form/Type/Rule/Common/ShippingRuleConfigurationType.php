@@ -38,6 +38,7 @@ final class ShippingRuleConfigurationType extends AbstractType
     {
         $builder
             ->add('shippingRule', ShippingRuleChoiceType::class, [
+                'label' => 'coreshop_carriers_shipping_rule',
                 'constraints' => [
                     new NotBlank(groups: $this->validationGroups),
                 ],

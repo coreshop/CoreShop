@@ -1,0 +1,7 @@
+coreshop_studio_form_schema:
+    path: /pimcore-studio/api/coreshop-studio-form/schema/{blockPrefix}
+    defaults:
+        _controller: CoreShop\Bundle\StudioFormBundle\Controller\FormSchemaController::schemaAction
+    methods: [GET]
+    requirements:
+        blockPrefix: '.+'

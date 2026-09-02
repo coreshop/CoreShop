@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
+use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierChoiceType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class CarriersConfigurationType extends AbstractType
@@ -26,9 +26,9 @@ final class CarriersConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('carriers', CollectionType::class, [
-                'allow_add' => true,
-                'allow_delete' => true,
+            ->add('carriers', CarrierChoiceType::class, [
+                'label' => 'coreshop_condition_carriers',
+                'multiple' => true,
             ])
         ;
     }
