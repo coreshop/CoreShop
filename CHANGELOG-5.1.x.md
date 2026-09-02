@@ -46,3 +46,4 @@ service IDs in your own configuration, see [UPGRADE-5.1.md](UPGRADE-5.1.md) for 
 * [Composer] constrain 5.1 split packages to their 5.1 siblings by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3173
 * Make RuleFormSchemaCollector injection optional (split-package installs) by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3171
 * Messenger: drop the redundant failedAt field from MessengerFailedMessage by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3180
+* [5.1] Treat PHP deprecations the way Pimcore does and drop the react/promise conflict by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3198
