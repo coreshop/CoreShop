@@ -521,7 +521,7 @@ export const AboutModal: React.FC<AboutModalProps> = (props) => {
           <Flex className={`${styles.actionRow} ${styles.revealFour}`}>
             <Button
               className={styles.actionBtn}
-              href="https://github.com/coreshop/CoreShop/blob/master/LICENSE.md"
+              href="https://github.com/coreshop/CoreShop/blob/2026.x/LICENSE.md"
               target="_blank"
               type="link"
             >

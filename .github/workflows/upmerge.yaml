@@ -15,46 +15,153 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'coreshop/coreshop'
     name: Upmerge
-    timeout-minutes: 5
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         include:
           -
-            base_branch: "3.2"
-            target_branch: "4.0"
-          -
-            base_branch: "4.0"
-            target_branch: "4.1"
-          -
             base_branch: "4.1"
             target_branch: "5.0"
           -
             base_branch: "5.0"
-            target_branch: "next"
+            target_branch: "5.1"
+          -
+            base_branch: "5.1"
+            target_branch: "2026.x"
 
     steps:
       -
         uses: actions/checkout@v7
         with:
           ref: ${{ matrix.target_branch }}
+          # A real merge needs the full history of both branches.
+          fetch-depth: 0
 
       -
-        name: Reset upmerge branch
+        name: Merge ${{ matrix.base_branch }} into ${{ matrix.target_branch }}
+        id: merge
+        env:
+          BASE: ${{ matrix.base_branch }}
+          TARGET: ${{ matrix.target_branch }}
+          UPMERGE_BRANCH: "upmerge/${{ matrix.base_branch }}_${{ matrix.target_branch }}"
         run: |
-          git fetch origin ${{ matrix.base_branch }}:${{ matrix.base_branch }}
-          git reset --hard ${{ matrix.base_branch }}
+          set -euo pipefail
+
+          # The only tracked generated content in the repository is the Studio build output, and
+          # it lives exclusively under this pathspec — the same one `shared-frontend-build` stages
+          # after a build. It is also the only pathspec the automatic conflict resolution below
+          # ever passes to git, which is what bounds that resolution to build artifacts.
+          # The trailing `/*` is load-bearing: a git pathspec containing a wildcard is matched
+          # against the whole path, so without it nothing under the directory matches at all.
+          ARTIFACTS='src/CoreShop/Bundle/*/Resources/public/studio/*'
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          git fetch --no-tags origin "${BASE}:refs/remotes/origin/${BASE}"
+
+          if [ "$(git rev-list --count "HEAD..origin/${BASE}")" -eq 0 ]; then
+            echo 'status=skipped' >> "$GITHUB_OUTPUT"
+            echo "Nothing to merge: \`${TARGET}\` already contains every commit from \`${BASE}\`." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          # `create-pull-request` resets an existing pull request branch to whatever this run
+          # produces, and it offers no way to opt out of that. So the branch is checked for
+          # commits this workflow did not make — a human's conflict resolution — and the leg is
+          # left alone rather than force-pushed over. It resumes once that pull request is merged
+          # and the branch is deleted.
+          if git fetch --no-tags origin "${UPMERGE_BRANCH}:refs/remotes/origin/${UPMERGE_BRANCH}" 2>/dev/null; then
+            FOREIGN="$(git log --format='%h %an <%ae> %s' "origin/${UPMERGE_BRANCH}" --not HEAD "origin/${BASE}" \
+              | grep -v ' github-actions\[bot\] ' || true)"
+            if [ -n "$FOREIGN" ]; then
+              echo 'status=skipped' >> "$GITHUB_OUTPUT"
+              {
+                echo "Skipped: \`${UPMERGE_BRANCH}\` carries commits that this workflow did not make."
+                echo
+                echo '```'
+                echo "$FOREIGN"
+                echo '```'
+                echo
+                echo 'Recreating the branch would discard that work, so this leg is left untouched'
+                echo 'until its pull request is merged.'
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          fi
+
+          # `--no-commit` so that the clean and the conflicted case converge on the same
+          # normalisation and the same commit below.
+          if git merge --no-commit --no-ff "origin/${BASE}"; then
+            :
+          else
+            OUTSIDE="$(git diff --name-only --diff-filter=U -- . ":(exclude)${ARTIFACTS}")"
+            if [ -n "$OUTSIDE" ]; then
+              # A genuine source conflict. Nothing is resolved automatically; the branch is reset
+              # to the base exactly as this workflow always did, so the pull request opens with
+              # the conflicts visible and a human resolves them.
+              git merge --abort
+              git reset --hard "origin/${BASE}"
+              echo 'status=conflict' >> "$GITHUB_OUTPUT"
+              echo "note=**Not merged automatically.** This branch is the tip of \`${BASE}\`; it conflicts with \`${TARGET}\` outside the Studio build artifacts, so nothing was resolved for you. Please resolve it manually." >> "$GITHUB_OUTPUT"
+              {
+                echo "Conflicts outside the Studio build artifacts — left for manual resolution:"
+                echo
+                echo '```'
+                echo "$OUTSIDE"
+                echo '```'
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          fi
+
+          # Take the target's build output wholesale instead of resolving artifact conflicts file
+          # by file. Rename detection pairs build directories across branches only sometimes, so a
+          # file-by-file resolution can still leave both branches' directories side by side;
+          # restoring the target's tree verbatim keeps exactly one build directory per bundle.
+          #
+          # Nothing is lost by preferring the target: `shared-frontend-build` rebuilds and commits
+          # these assets on the next push to a release branch, so the merged branch regenerates
+          # them from the merged sources anyway.
+          git rm -rq --force --ignore-unmatch -- "$ARTIFACTS"
+          git checkout HEAD -- "$ARTIFACTS"
+
+          # Post-conditions. Both must hold before anything is committed.
+          if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+            echo '::error::Unmerged paths remain after resolving the Studio build artifacts.'
+            exit 1
+          fi
+          if ! git diff --cached --quiet HEAD -- "$ARTIFACTS"; then
+            echo '::error::The Studio build artifacts do not match the target branch after resolution.'
+            exit 1
+          fi
+
+          git commit --no-edit --no-verify -m "Merge branch '${BASE}' into ${TARGET}"
+
+          echo 'status=merged' >> "$GITHUB_OUTPUT"
+          echo "note=Merged automatically. Conflicting Studio build artifacts, if any, were resolved in favour of \`${TARGET}\`." >> "$GITHUB_OUTPUT"
+          {
+            echo "Merged \`${BASE}\` into \`${TARGET}\`."
+            echo
+            echo '```'
+            git show --stat --format='%h %s' HEAD | head -50
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       -
         name: Create Pull Request
+        if: steps.merge.outputs.status != 'skipped'
         uses: peter-evans/create-pull-request@v8
         with:
           title: '[UPMERGE] ${{ matrix.base_branch }} -> ${{ matrix.target_branch }}'
           body: |
             This PR has been generated automatically.
-            
+
+            ${{ steps.merge.outputs.note }}
+
             **Remember!** The upmerge should always be merged with using `Merge pull request` button.
-            
+
             In case of conflicts, please resolve them manually with usign the following commands:
             ```
             git fetch upstream

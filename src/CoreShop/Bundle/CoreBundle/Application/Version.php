@@ -19,13 +19,13 @@ namespace CoreShop\Bundle\CoreBundle\Application;
 
 final class Version
 {
-    public const string MAJOR_VERSION = '5';
+    public const string MAJOR_VERSION = '2026';
 
     public const string MINOR_VERSION = '1';
 
     public const string RELEASE_VERSION = '0';
 
-    public const string EXTRA_VERSION = '';
+    public const string EXTRA_VERSION = 'beta.1';
 
     public static function getVersion(): string
     {

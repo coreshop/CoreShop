@@ -1,7 +1,7 @@
 name: Behat
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -9,8 +9,8 @@ on:
       - '*.php'
       - 'src/**'
       - '.github/workflows/behat.yml'
-  pull_request:
-    branches: [ '5.0', '5.1' ]
+  pull_request_target:
+    branches: [ '2026.x' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -27,13 +27,10 @@ env:
   APP_ENV: "test"
   CORESHOP_SKIP_DB_SETUP: "1"
   PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
-  PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
-  PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
-  PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "127.0.0.1"
-  PIMCORE_INSTALL_MYSQL_USERNAME: "root"
-  PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
-  PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
-  PIMCORE_INSTALL_MYSQL_PORT: "3306"
+  DATABASE_URL: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+  PIMCORE_OPENSEARCH_DSN: "opensearch://127.0.0.1:9200?ssl=false&ssl_verify=false"
+  PIMCORE_ADMIN_USER: "admin"
+  PIMCORE_ADMIN_PASSWORD: "admin"
   PIMCORE_KERNEL_CLASS: 'Kernel'
   PIMCORE_SECRET: "${{ secrets.PIMCORE_SECRET }}"
   PIMCORE_INSTALL_ENCRYPTION_SECRET: "${{ secrets.PIMCORE_SECRET }}"
@@ -53,14 +50,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - php: 8.3
-            pimcore: ^12.3
-            dependencies: highest
-            allow-failure: false
           - php: 8.4
-            pimcore: ^12.3
+            pimcore: ^2026.2
             dependencies: highest
             allow-failure: false
+          - php: 8.5
+            pimcore: ^2026.2
+            dependencies: highest
+            allow-failure: true
 
     services:
       database:
@@ -88,6 +85,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          allow-unsafe-pr-checkout: true
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -143,14 +141,10 @@ jobs:
           EOF
 
       - name: Install Pimcore
-        run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
+        run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --install-profile 'CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile' --skip-validation --no-interaction
 
-      - name: Install Pimcore Bundles
+      - name: Rebuild Pimcore classes
         run: |
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreGenericDataIndexBundle
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreGenericExecutionEngineBundle
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioBackendBundle
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioUiBundle
           bin/console pimcore:deployment:classes-rebuild --force --create-classes
           bin/console generic-data-index:update:index -r
 

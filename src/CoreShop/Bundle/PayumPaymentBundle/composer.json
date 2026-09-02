@@ -24,9 +24,9 @@
         }
     ],
     "require": {
-        "coreshop/payment-bundle": "^5.1",
-        "coreshop/payum-payment": "^5.1",
-        "pimcore/pimcore": "^12.3",
+        "coreshop/payment-bundle": "^2026.1",
+        "coreshop/payum-payment": "^2026.1",
+        "pimcore/pimcore": "^2026.2",
         "payum/payum-bundle": "^2.6.2",
         "php-http/guzzle7-adapter": "^1.0"
     },
@@ -50,8 +50,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.1-dev",
-            "dev-master": "5.1-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {

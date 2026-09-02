@@ -76,8 +76,9 @@ final class Configuration implements ConfigurationInterface
         ;
 
         $this->addModelsSection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
         $this->addStack($rootNode);
+
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -383,22 +384,6 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('pimcore_admin')
                 ->addDefaultsIfNotSet()
                 ->children()
-                    ->arrayNode('js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
                         ->defaultValue(['product_price_rule', 'product_unit'])

@@ -1,0 +1,12 @@
+coreshop_search:
+    path:       /search
+    controller: CoreShop\Bundle\FrontendBundle\Controller\SearchController::searchAction
+
+coreshop_switch_currency:
+    path:       /switch-currency/{currencyCode}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CurrencyController::switchAction
+    requirements: { currencyCode: '.+' }
+
+coreshop_index:
+    path:       ''
+    controller: CoreShop\Bundle\FrontendBundle\Controller\IndexController::indexAction

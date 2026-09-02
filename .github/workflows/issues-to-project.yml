@@ -1,0 +1,22 @@
+# ⚠️  CENTRALLY MANAGED FILE — DO NOT EDIT LOCALLY!
+#
+# This file is distributed from coreshop/workflow-collection via file sync
+# (source: templates/issues-to-project.yml). Local changes will be
+# overwritten by the next sync run via PR.
+#
+# Adds every newly opened issue to the "CoreShop Development" project board.
+# PRs are added by the guardrail caller (pr-guardrail.yml) instead — issue
+# events don't reach reusable workflows called from PR triggers.
+
+name: Issues to Project
+
+on:
+  issues:
+    types: [opened, reopened]
+
+permissions: {}
+
+jobs:
+  add-to-project:
+    uses: coreshop/workflow-collection/.github/workflows/add-to-project.yml@v1
+    secrets: inherit

@@ -1,7 +1,7 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'
@@ -11,8 +11,8 @@ on:
       - '*.xml'
       - 'composer.json'
       - '.github/workflows/static.yml'
-  pull_request:
-    branches: [ '5.0', '5.1' ]
+  pull_request_target:
+    branches: [ '2026.x' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'
@@ -45,11 +45,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ 8.3, 8.4 ]
-        pimcore: [ ^12.3 ]
+        php: [ 8.4, 8.5 ]
+        pimcore: [ ^2026.2 ]
         dependencies: [ highest, lowest ]
         exclude:
-          - php: 8.4
+          - php: 8.5
             dependencies: lowest
     services:
       database:
@@ -67,6 +67,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          allow-unsafe-pr-checkout: true
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2

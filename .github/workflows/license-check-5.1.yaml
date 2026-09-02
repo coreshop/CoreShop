@@ -1,0 +1,92 @@
+name: License Check [5.1]
+on:
+  push:
+    branches: [ '5.1' ]
+    paths:
+      - 'composer.json'
+      - '*/**/composer.json'
+      - '.github/workflows/license-check-5.1.yaml'
+  pull_request:
+    branches: [ '5.1' ]
+    paths:
+      - 'composer.json'
+      - '*/**/composer.json'
+      - '.github/workflows/license-check-5.1.yaml'
+  release:
+    types: [ created ]
+  schedule:
+    - cron: "0 1 * * 1"
+
+permissions:
+  contents: read
+
+env:
+  APP_ENV: "test"
+  PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+  PIMCORE_SECRET: "${{ secrets.PIMCORE_SECRET }}"
+  PIMCORE_INSTALL_ENCRYPTION_SECRET: "${{ secrets.PIMCORE_SECRET }}"
+  PIMCORE_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
+  PIMCORE_INSTALL_INSTANCE_IDENTIFIER: "${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}"
+  PIMCORE_INSTALL_PRODUCT_KEY: "${{ secrets.PIMCORE_PRODUCT_KEY }}"
+  PIMCORE_PRODUCT_KEY: "${{ secrets.PIMCORE_PRODUCT_KEY }}"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 8.3, 8.4 ]
+        pimcore: [ ^12.3 ]
+        dependencies: [ highest ]
+    services:
+      database:
+        image: "mysql:8"
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: coreshop_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
+          extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: pimcore/pimcore
+        run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+
+      - if: matrix.dependencies == 'highest'
+        name: Install dependencies highest
+        run: composer update --no-progress --prefer-dist --optimize-autoloader
+
+      - if: matrix.dependencies == 'lowest'
+        name: Install dependencies lowest
+        run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
+
+      - name: Check Licenses
+        run: vendor/bin/composer-license-checker
+

@@ -1,0 +1,116 @@
+name: Packages Components [5.1]
+on:
+  push:
+    branches: [ '5.1' ]
+    paths:
+      - 'src/CoreShop/Component/**'
+      - '.github/workflows/packages_components-5.1.yml'
+  pull_request:
+    branches: [ '5.1' ]
+    paths:
+      - 'src/CoreShop/Component/**'
+      - '.github/workflows/packages_components-5.1.yml'
+  release:
+    types: [ created ]
+  schedule:
+    - cron: "0 1 * * 1"
+env:
+  PIMCORE_SECRET: ${{ secrets.PIMCORE_SECRET }}
+  PIMCORE_INSTALL_ENCRYPTION_SECRET: ${{ secrets.PIMCORE_SECRET }}
+  PIMCORE_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
+  PIMCORE_INSTALL_INSTANCE_IDENTIFIER: ${{ secrets.PIMCORE_INSTANCE_IDENTIFIER }}
+  PIMCORE_INSTALL_PRODUCT_KEY: ${{ secrets.PIMCORE_PRODUCT_KEY }}
+  PIMCORE_PRODUCT_KEY: ${{ secrets.PIMCORE_PRODUCT_KEY }}
+
+permissions:
+  contents: read
+
+jobs:
+  list:
+    if: github.repository == 'coreshop/CoreShop'
+    runs-on: ubuntu-latest
+    name: "Create a list of packages"
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+
+      - name: "List Packages"
+        id: create-list
+        run: echo "packages=$(find src/CoreShop/Component -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)" >> $GITHUB_OUTPUT
+
+    outputs:
+      packages: "${{ steps.create-list.outputs.packages }}"
+
+  test-packages:
+    needs: list
+    if: github.repository == 'coreshop/CoreShop'
+    runs-on: ubuntu-latest
+    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}, Deps ${{ matrix.dependencies }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 8.3, 8.4 ]
+        pimcore: [ ^12.3 ]
+        dependencies: [ highest, lowest ]
+        package: "${{ fromJson(needs.list.outputs.packages) }}"
+        exclude:
+          - php: 8.4
+            dependencies: lowest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-pimcore-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-
+            ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-
+
+      - name: Validate composer.json
+        run: composer validate --ansi --strict
+        working-directory: "src/CoreShop/${{ matrix.package }}"
+
+      - name: pimcore/pimcore
+        run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        env:
+          COMPOSER_ROOT_VERSION: dev-master
+        working-directory: "src/CoreShop/${{ matrix.package }}"
+
+      - if: matrix.dependencies == 'highest'
+        name: Install dependencies highest
+        run: composer update --no-progress --prefer-dist --optimize-autoloader
+        env:
+          COMPOSER_ROOT_VERSION: dev-master
+        working-directory: "src/CoreShop/${{ matrix.package }}"
+
+      - if: matrix.dependencies == 'lowest'
+        name: Install dependencies lowest
+        run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
+        env:
+          COMPOSER_ROOT_VERSION: dev-master
+        working-directory: "src/CoreShop/${{ matrix.package }}"
+
+      - name: STAN
+        run: |
+          cp ../../../../phpstan-package.neon phpstan.neon
+          vendor/bin/phpstan analyse -c phpstan.neon . -l 3
+        working-directory: "src/CoreShop/${{ matrix.package }}"
