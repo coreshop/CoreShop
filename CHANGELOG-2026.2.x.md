@@ -1,4 +1,8 @@
-## 2026.1.0
+## 2026.2.0
+
+> There is no final `2026.1.0`. The `2026.1.0-beta.1` pre-release targeted Pimcore 2026.1, but the
+> minimum requirement was raised to Pimcore 2026.2 before the line went stable (see below), and under
+> the year-based scheme the CoreShop minor now follows the Pimcore minor it is built against.
 
 ### Version scheme aligned with Pimcore
 
@@ -171,3 +175,23 @@ changing this value only updates Doctrine's *mapping metadata* for newly created
 **not** alter any already-created database column. You must ship your own
 `ALTER TABLE ... MODIFY locale VARCHAR(<n>)` migration for every existing `*_translation` table, or
 inserts will keep failing/truncating against the old column width.
+
+### What's Changed
+
+* All changes merged from 5.1.*
+* [Dependabot] target version updates at 5.1 branch by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3073
+* [Dependabot] cover split packages & target both 5.0 and 5.1 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3093
+* chore: trigger Studio frontend build by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3107
+* [Security] fix pull_request_target workflow injection (pwn request) by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3117
+* Treat PHP deprecations the way Pimcore does and drop the react/promise conflict by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3148
+* Make TestBundle pages compatible with page-object-extension ^0.3 and ^0.4 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3150
+* 2026.x: install profile for the external bundles' test apps by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3152
+* [TestBundle] fix standalone PHPStan: add studio packages to require-dev by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3158
+* [CI] Use pull_request_target so fork PRs get the CI secrets by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3161
+* [CI] Opt in to fork PR checkout for pull_request_target workflows by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3162
+* Make locale column length configurable by @astehlik in https://github.com/coreshop/CoreShop/pull/3160
+* [TestBundle] drop pimcore/newsletter-bundle coupling by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3166
+* Restore the backend half of pimcore_admin that the classic admin removal took with it by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3169
+* Merge in the upmerge workflow and auto-resolve Studio artifact conflicts by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3186
+* Raise the Studio UI SDK pin to 2026.2.5 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3192
+* Raise the Pimcore floor to ^2026.2 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3190
