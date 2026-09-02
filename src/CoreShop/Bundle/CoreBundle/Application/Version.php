@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -20,13 +19,13 @@ namespace CoreShop\Bundle\CoreBundle\Application;
 
 final class Version
 {
-    public const MAJOR_VERSION = '4';
+    public const string MAJOR_VERSION = '5';
 
-    public const MINOR_VERSION = '1';
+    public const string MINOR_VERSION = '0';
 
-    public const RELEASE_VERSION = '13';
+    public const string RELEASE_VERSION = '1';
 
-    public const EXTRA_VERSION = '';
+    public const string EXTRA_VERSION = '';
 
     public static function getVersion(): string
     {

@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -33,7 +32,6 @@ use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\Request;
@@ -205,16 +203,6 @@ class CheckoutController extends FrontendController
          * If everything is valid, we continue with Order-Creation.
          */
         $order = $this->getCart();
-
-        //Fallback for Orders/Carts without token (eg. legacy carts)
-        //will be removed in future
-        //@Todo: remove with CoreShop 5.0
-        if (!$order->getToken()) {
-            $tokenGenerator = new UniqueTokenGenerator();
-            $order->setToken($tokenGenerator->generate(32));
-            $order->save();
-        }
-
         $workflow = $this->container->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
 
         if ($order->getSaleState() !== OrderSaleStates::STATE_ORDER) {
@@ -316,7 +304,7 @@ class CheckoutController extends FrontendController
         return $this->container->get('coreshop.checkout_manager.factory');
     }
 
-    protected function addEventFlash(string $type, string $message = null, array $parameters = []): void
+    protected function addEventFlash(string $type, ?string $message = null, array $parameters = []): void
     {
         if (!$message) {
             return;

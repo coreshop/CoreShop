@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -37,10 +36,17 @@ final class CommandDirectoryChecker
             return;
         }
 
+        $directory = realpath($directory);
+
+        if (!$directory) {
+            return;
+        }
+
         try {
             $this->filesystem->mkdir($directory, 0755);
 
-            $output->writeln(sprintf('<comment>Created "%s" directory.</comment>', realpath($directory)));
+            $output->writeln(sprintf('<comment>Created "%s" directory.</comment>', $directory));
+            $output->writeln(sprintf('<comment>Created "%s" directory.</comment>', $directory));
         } catch (IOException) {
             $output->writeln('');
             $output->writeln('<error>Cannot run command due to unexisting directory (tried to create it automatically, failed).</error>');
@@ -48,7 +54,7 @@ final class CommandDirectoryChecker
 
             throw new \RuntimeException(sprintf(
                 'Create directory "%s" and run command "<comment>%s</comment>"',
-                realpath($directory),
+                $directory,
                 $this->name,
             ));
         }
@@ -60,10 +66,16 @@ final class CommandDirectoryChecker
             return;
         }
 
+        $directory = realpath($directory);
+
+        if (!$directory) {
+            return;
+        }
+
         try {
             $this->filesystem->chmod($directory, 0755);
 
-            $output->writeln(sprintf('<comment>Changed "%s" permissions to 0755.</comment>', realpath($directory)));
+            $output->writeln(sprintf('<comment>Changed "%s" permissions to 0755.</comment>', $directory));
         } catch (IOException) {
             $output->writeln('');
             $output->writeln('<error>Cannot run command due to bad directory permissions (tried to change permissions to 0755).</error>');
@@ -71,7 +83,7 @@ final class CommandDirectoryChecker
 
             throw new \RuntimeException(sprintf(
                 'Set "%s" writable and run command "<comment>%s</comment>"',
-                realpath(dirname($directory)),
+                dirname($directory),
                 $this->name,
             ));
         }

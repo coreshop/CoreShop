@@ -8,7 +8,7 @@
     "ecommerce"
   ],
   "homepage": "https://www.coreshop.com",
-  "license": "GPL-3.0-or-later",
+  "license": "proprietary",
   "authors": [
     {
       "name": "CoreShop Team",
@@ -24,46 +24,45 @@
     }
   ],
   "require": {
-    "coreshop/order-bundle": "^4.0",
-    "coreshop/customer-bundle": "^4.0",
-    "coreshop/inventory-bundle": "^4.0",
-    "coreshop/product-bundle": "^4.0",
-    "coreshop/product-quantity-price-rules-bundle": "^4.0",
-    "coreshop/address-bundle": "^4.0",
-    "coreshop/currency-bundle": "^4.0",
-    "coreshop/money-bundle": "^4.0",
-    "coreshop/taxation-bundle": "^4.0",
-    "coreshop/store-bundle": "^4.0",
-    "coreshop/index-bundle": "^4.0",
-    "coreshop/payment-bundle": "^4.0",
-    "coreshop/seo-bundle": "^4.0",
-    "coreshop/shipping-bundle": "^4.0",
-    "coreshop/tracking-bundle": "^4.0",
-    "coreshop/frontend-bundle": "^4.0",
-    "coreshop/sequence-bundle": "^4.0",
-    "coreshop/payum-bundle": "^4.0",
-    "coreshop/payum-payment-bundle": "^4.0",
-    "coreshop/configuration-bundle": "^4.0",
-    "coreshop/notification-bundle": "^4.0",
-    "coreshop/workflow-bundle": "^4.0",
-    "coreshop/menu-bundle": "^4.0",
-    "coreshop/user-bundle": "^4.0",
-    "coreshop/variant-bundle": "^4.0",
-    "coreshop/wishlist-bundle": "^4.0",
-    "coreshop/messenger-bundle": "^4.0",
-    "coreshop/class-definition-patch-bundle": "^4.0",
-    "coreshop/core": "^4.0",
-    "doctrine/data-fixtures": "^1.5",
+    "coreshop/order-bundle": "^5.0",
+    "coreshop/customer-bundle": "^5.0",
+    "coreshop/inventory-bundle": "^5.0",
+    "coreshop/product-bundle": "^5.0",
+    "coreshop/product-quantity-price-rules-bundle": "^5.0",
+    "coreshop/address-bundle": "^5.0",
+    "coreshop/currency-bundle": "^5.0",
+    "coreshop/money-bundle": "^5.0",
+    "coreshop/taxation-bundle": "^5.0",
+    "coreshop/store-bundle": "^5.0",
+    "coreshop/index-bundle": "^5.0",
+    "coreshop/payment-bundle": "^5.0",
+    "coreshop/seo-bundle": "^5.0",
+    "coreshop/shipping-bundle": "^5.0",
+    "coreshop/tracking-bundle": "^5.0",
+    "coreshop/sequence-bundle": "^5.0",
+    "coreshop/payum-bundle": "^5.0",
+    "coreshop/payum-payment-bundle": "^5.0",
+    "coreshop/configuration-bundle": "^5.0",
+    "coreshop/notification-bundle": "^5.0",
+    "coreshop/workflow-bundle": "^5.0",
+    "coreshop/menu-bundle": "^5.0",
+    "coreshop/user-bundle": "^5.0",
+    "coreshop/variant-bundle": "^5.0",
+    "coreshop/wishlist-bundle": "^5.0",
+    "coreshop/messenger-bundle": "^5.0",
+    "coreshop/class-definition-patch-bundle": "^5.0",
+    "coreshop/core": "^5.0",
+    "doctrine/data-fixtures": "^1.8",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
     "fakerphp/faker": "^1.16",
-    "rinvex/countries": "^7.3",
-    "pimcore/pimcore": "^11.0",
-    "pimcore/newsletter-bundle": "^1.0.1"
+    "rinvex/countries": "^9.0",
+    "pimcore/pimcore": "^12.3",
+    "pimcore/newsletter-bundle": "^2.0"
   },
   "require-dev": {
-    "phpstan/phpstan": "^1.10",
-    "phpstan/phpstan-doctrine": "^1.3.40",
-    "phpstan/phpstan-webmozart-assert": "^1.2.4"
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-doctrine": "^2.0",
+    "phpstan/phpstan-webmozart-assert": "^2.0"
   },
   "autoload": {
     "psr-4": {
@@ -80,10 +79,14 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "4.1-dev"
+      "dev-main": "5.0-dev",
+      "dev-master": "5.0-dev"
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "php-http/discovery": false
+    }
   }
 }

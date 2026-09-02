@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -41,7 +40,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
         parent::buildForm($builder, $options);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -53,7 +52,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -61,10 +60,18 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
                 $event->getForm()->get('type')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
-                if (!isset($data['type'])) {
+                // Nested rule elements (stored inside a JSON "configuration") have no entity id.
+                // The admin JS falls back to submitting the whole element as "id" when the loaded
+                // data has no "id" key; drop any non-scalar id so it does not fail integer validation.
+                if (is_array($data) && isset($data['id']) && !is_scalar($data['id'])) {
+                    unset($data['id']);
+                    $event->setData($data);
+                }
+
+                if (!is_array($data) || !isset($data['type'])) {
                     return;
                 }
 

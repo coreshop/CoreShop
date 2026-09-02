@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -103,7 +102,7 @@ abstract class AbstractDriver implements DriverInterface
         $definition->setPublic(true);
 
         $definitionArgs = [$modelClass];
-        if (in_array(TranslatableFactoryInterface::class, class_implements($factoryClass))) {
+        if (in_array(TranslatableFactoryInterface::class, class_implements($factoryClass) ?: [])) {
             $decoratedDefinition = new Definition(Factory::class);
             $decoratedDefinition->setArguments($definitionArgs);
 
@@ -114,7 +113,7 @@ abstract class AbstractDriver implements DriverInterface
 
         $container->setDefinition($metadata->getServiceId('factory'), $definition);
 
-        foreach (class_implements($factoryClass) as $typehintClass) {
+        foreach (class_implements($factoryClass) ?: [] as $typehintClass) {
             $container->registerAliasForArgument(
                 $metadata->getServiceId('factory'),
                 $typehintClass,

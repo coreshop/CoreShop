@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -210,7 +209,7 @@ final class IndexContext implements Context
         );
     }
 
-    private function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, bool $localized = false, bool $relational = false): array|bool
+    private function fetchAllFromIndex(IndexInterface $index, ?IndexableInterface $object = null, bool $localized = false, bool $relational = false): array|bool
     {
         if ($localized) {
             $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
@@ -237,7 +236,7 @@ final class IndexContext implements Context
 
     private function indexShouldHaveColumnsInTable(string $tableName, array $columns): void
     {
-        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
 
         Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
 
@@ -260,23 +259,23 @@ final class IndexContext implements Context
 
     private function indexShouldHaveColumnOfType(string $tableName, string $column, string $type): void
     {
-        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
 
         Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
 
-        $doctrineCol = $schemaManager->listTableDetails($tableName)->getColumn($column);
-        $actualType = $schemaManager->getDatabasePlatform()->getColumnDeclarationSQL($column, $doctrineCol->toArray());
+        $doctrineCol = $schemaManager->introspectTable($tableName)->getColumn($column);
+        $actualType = $this->entityManager->getConnection()->getDatabasePlatform()->getColumnDeclarationSQL($column, $doctrineCol->toArray());
 
         Assert::eq($type, $actualType);
     }
 
     private function indexShouldHaveIndexInTable(string $tableName, array $columns): void
     {
-        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
 
         Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
 
-        $table = $schemaManager->listTableDetails($tableName);
+        $table = $schemaManager->introspectTable($tableName);
         $found = false;
 
         foreach ($table->getIndexes() as $index) {

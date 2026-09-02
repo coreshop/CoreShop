@@ -9,33 +9,50 @@ CoreShop currently supports the following types of indexes:
 
 - **MySQL**: Utilizes a MySQL database for indexing.
 - **OpenSearch** (since 4.1.3): Utilizes an [OpenSearch](https://opensearch.org/) cluster for indexing.
-- ~~Elasticsearch~~: Currently not supported. Use the OpenSearch worker instead.
+- **Elasticsearch** (since 5.0): Utilizes an [Elasticsearch](https://www.elastic.co/elasticsearch) cluster for indexing, using the same worker as OpenSearch.
 
-### OpenSearch
+### OpenSearch / Elasticsearch
 
-The OpenSearch worker is available since CoreShop 4.1.3 and requires the `pimcore/opensearch-client` package:
+The OpenSearch worker supports both OpenSearch and Elasticsearch clusters. Depending on your engine, install one of
+the Pimcore client packages:
 
 ```bash
+# For OpenSearch
 composer require pimcore/opensearch-client
+
+# For Elasticsearch
+composer require pimcore/elasticsearch-client
 ```
 
-Configure one or more OpenSearch clients via the `pimcore_open_search_client` configuration:
+Configure one or more clients via the corresponding configuration tree:
 
 ```yaml
+# OpenSearch
 pimcore_open_search_client:
     clients:
         default:
             hosts: ['https://opensearch:9200']
             username: 'admin'
             password: 'somethingsecret'
+
+# Elasticsearch
+pimcore_elasticsearch_client:
+    clients:
+        default:
+            hosts: ['https://elasticsearch:9200']
+            username: 'elastic'
+            password: 'somethingsecret'
 ```
 
 Every configured client is automatically registered and can be selected when creating an index with the type
-**OpenSearch**. The worker itself provides the following options:
+**OpenSearch**. If both packages are installed and a client name exists in both configurations, the OpenSearch client
+keeps the plain name and the Elasticsearch client is available as `elasticsearch_<name>`.
+
+The worker provides the following options:
 
 | Option             | Description                                                    |
 |--------------------|----------------------------------------------------------------|
-| Client             | The OpenSearch client to use (from the configuration above).   |
+| Client             | The search client to use (from the configuration above).       |
 | Number of Shards   | Number of shards for the created index (default `1`).          |
 | Number of Replicas | Number of replicas for the created index (default `1`).        |
 

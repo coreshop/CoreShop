@@ -11,7 +11,7 @@
         <field name="type" column="type"/>
         <field name="label" column="label" nullable="true"/>
         <field name="quantityUnit" column="quantityUnit" type="string" nullable="true"/>
-        <field name="configuration" column="configuration" type="array" nullable="true"/>
+        <field name="configuration" column="configuration" type="json" nullable="true"/>
         <field name="sort" column="sort" type="integer" nullable="true" />
 
         <field name="creationDate" type="datetime">

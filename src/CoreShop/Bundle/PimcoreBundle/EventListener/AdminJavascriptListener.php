@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -35,9 +34,13 @@ final class AdminJavascriptListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            /** @phpstan-ignore-next-line */
             BundleManagerEvents::JS_PATHS => 'getAdminJavascript',
+            /** @phpstan-ignore-next-line */
             BundleManagerEvents::CSS_PATHS => 'getAdminCss',
+            /** @phpstan-ignore-next-line */
             BundleManagerEvents::EDITMODE_JS_PATHS => 'getEditmodeAdminJavascript',
+            /** @phpstan-ignore-next-line */
             BundleManagerEvents::EDITMODE_CSS_PATHS => 'getEditmodeAdminCSS',
         ];
     }

@@ -1,6 +1,6 @@
 CoreShop\Component\Order\Model\CartItem:
     getters:
         quantity:
-            - NotBlank: { message: coreshop.cart_item.quantity.not_blank, groups: coreshop }
-            - Type: { type: numeric, message: coreshop.cart_item.quantity.numeric, groups: coreshop }
-            - GreaterThan: { value: 0, message: coreshop.cart_item.quantity.min, groups: coreshop }
+            - NotBlank: { message: coreshop.cart_item.quantity.not_blank, groups: [coreshop] }
+            - Type: { type: numeric, message: coreshop.cart_item.quantity.numeric, groups: [coreshop] }
+            - GreaterThan: { value: 0, message: coreshop.cart_item.quantity.min, groups: [coreshop] }

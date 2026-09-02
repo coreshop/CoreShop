@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -80,9 +79,18 @@ class ProductUnitDefinitionsController extends ResourceController
             }
         }
 
-        return $definitions->filter(function (ProductUnitDefinitionInterface $unitDefinition) {
+        /**
+         * @var Collection $result
+         */
+        $result = $definitions->filter(function (object $unitDefinition) {
+            if (!$unitDefinition instanceof ProductUnitDefinitionInterface) {
+                return false;
+            }
+
             return null !== $unitDefinition->getId();
         });
+
+        return $result;
     }
 
     protected function getLatestVersion(Concrete $object): Concrete

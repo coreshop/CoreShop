@@ -5,14 +5,13 @@ declare(strict_types=1);
 /*
  * CoreShop
  *
- * This source file is available under two different licenses:
- *  - GNU General Public License version 3 (GPLv3)
- *  - CoreShop Commercial License (CCL)
+ * This source file is available under the terms of the
+ * CoreShop Commercial License (CCL)
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.com)
- * @license    https://www.coreshop.com/license     GPLv3 and CCL
+ * @license    CoreShop Commercial License (CCL)
  *
  */
 
@@ -24,6 +23,7 @@ use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\DBAL\ArrayParameterType;
 use Pimcore\Model\DataObject\Listing;
+use Pimcore\Model\DataObject\Listing\Concrete\Dao;
 
 class CategoryRepository extends BaseCategoryRepository implements CategoryRepositoryInterface
 {
@@ -33,7 +33,12 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         $list->setCondition('stores LIKE ?', ['%,' . $store->getId() . ',%']);
         $this->setSortingForListingWithoutCategory($list);
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findFirstLevelForStore(StoreInterface $store): array
@@ -43,7 +48,12 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $this->setSortingForListingWithoutCategory($list);
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array
@@ -53,12 +63,21 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $this->setSortingForListing($list, $category);
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
     public function findRecursiveChildCategoryIdsForStoreByCategories(array $categories, StoreInterface $store): array
     {
         $list = $this->getList();
+
+        /**
+         * @var Dao $dao
+         */
         $dao = $list->getDao();
 
         /** @psalm-suppress InternalMethod */
@@ -94,6 +113,10 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $list = $this->getList();
+
+        /**
+         * @var Dao $dao
+         */
         $dao = $list->getDao();
 
         $qb = $this->connection->createQueryBuilder();
@@ -131,10 +154,15 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $this->setSortingForListing($list, $category);
 
-        return $list->getObjects();
+        /**
+         * @var CategoryInterface[] $objects
+         */
+        $objects = $list->getObjects();
+
+        return $objects;
     }
 
-    private function setSortingForListing(Listing $list, CategoryInterface $category): void
+    protected function setSortingForListing(Listing $list, CategoryInterface $category): void
     {
         if (method_exists($category, 'getChildrenSortBy')) {
             $list->setOrderKey(

@@ -10,9 +10,6 @@ services:
     coreshop.form_registry.payum_gateway_config:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    # TODO:
-    #coreshop.payum.http_client: '@psr18.http_client'
-
     CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction:
         tags:
             - { name: payum.action, all: true, alias: coreshop.resolve_next_route }
