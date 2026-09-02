@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
-    "@module-federation/rsbuild-plugin": "^2.8.0",
+    "@module-federation/rsbuild-plugin": "^2.9.0",
     "@rsbuild/core": "^1.3.16",
     "@rsbuild/plugin-node-polyfill": "^1.4.1",
     "@rsbuild/plugin-react": "^1.3.1",
