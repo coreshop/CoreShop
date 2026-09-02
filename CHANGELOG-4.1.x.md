@@ -1,3 +1,8 @@
+## 4.1.13
+* Fix open redirect vulnerabilities in redirect parameter handling by @Copilot in https://github.com/coreshop/CoreShop/pull/2963
+* add permission to check to order/order-payment controller by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3101
+* [Docs] document OpenSearch index worker (available since 4.1.3) by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3155
+
 ## 4.1.12
 * [StorageListBundle] Fix authentication (remember me token) by @breakone in https://github.com/coreshop/CoreShop/pull/3086
 * [OrderBundle] Restore last-opened cart across sessions by @breakone in https://github.com/coreshop/CoreShop/pull/3083
