@@ -52,11 +52,11 @@ jobs:
       matrix:
         include:
           - php: 8.4
-            pimcore: ^2026.1
+            pimcore: ^2026.2
             dependencies: highest
             allow-failure: false
           - php: 8.5
-            pimcore: ^2026.1
+            pimcore: ^2026.2
             dependencies: highest
             allow-failure: true
 

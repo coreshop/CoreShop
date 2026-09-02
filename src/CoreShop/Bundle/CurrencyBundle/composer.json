@@ -26,11 +26,11 @@
     "require": {
         "coreshop/currency": "^2026.1",
         "coreshop/resource-bundle": "^2026.1",
-        "pimcore/pimcore": "^2026.1",
+        "pimcore/pimcore": "^2026.2",
         "symfony/intl": "^6.4.14 || ^7.2"
     },
     "require-dev": {
-        "pimcore/studio-ui-bundle": "^2026.1",
+        "pimcore/studio-ui-bundle": "^2026.2",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0"

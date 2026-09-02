@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "pimcore/pimcore": "^2026.1",
+        "pimcore/pimcore": "^2026.2",
         "coreshop/pimcore": "^2026.1",
         "behat/behat": "^3.8",
         "robertfausk/behat-panther-extension": "^1.0",
@@ -44,9 +44,9 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
-        "pimcore/generic-data-index-bundle": "^2026.1",
-        "pimcore/studio-backend-bundle": "^2026.1",
-        "pimcore/studio-ui-bundle": "^2026.1"
+        "pimcore/generic-data-index-bundle": "^2026.2",
+        "pimcore/studio-backend-bundle": "^2026.2",
+        "pimcore/studio-ui-bundle": "^2026.2"
     },
     "autoload": {
         "psr-4": {

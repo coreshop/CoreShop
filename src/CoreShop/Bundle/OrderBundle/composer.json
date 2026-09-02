@@ -35,10 +35,10 @@
         "coreshop/money-bundle": "^2026.1",
         "coreshop/workflow-bundle": "^2026.1",
         "coreshop/order": "^2026.1",
-        "pimcore/pimcore": "^2026.1"
+        "pimcore/pimcore": "^2026.2"
     },
     "require-dev": {
-        "pimcore/studio-ui-bundle": "^2026.1",
+        "pimcore/studio-ui-bundle": "^2026.2",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0"

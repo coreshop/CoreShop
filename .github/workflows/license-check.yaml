@@ -36,7 +36,7 @@ jobs:
     strategy:
       matrix:
         php: [ 8.4, 8.5 ]
-        pimcore: [ ^2026.1 ]
+        pimcore: [ ^2026.2 ]
         dependencies: [ highest ]
     services:
       database:
