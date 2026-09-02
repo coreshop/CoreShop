@@ -1,0 +1,74 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/712.20ce702b.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/861.9899d4fa.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/564.5b524240.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/290.56461044.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/808.0f3b8c2f.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/450.e563615c.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/174.8ee75e82.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/448.3194b63e.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/254.d745384a.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/79.0e508323.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/821.96a09f68.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/920.b3f3b66d.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/76.dbcb59ee.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/536.d7689ce5.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/51.356e6017.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/460.c7da48ae.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/663.5365a7ce.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/193.8fa9027f.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/696.da496324.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/520.01bc3fd1.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/63.3ad8b1f4.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/375.9769c880.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/695.a6e5db11.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/44.91b7ed55.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/290.56461044.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/861.9899d4fa.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/712.20ce702b.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/main.4d3564eb.js"
+      ],
+      "css": []
+    },
+    "coreshoppayment": {
+      "js": [
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/712.20ce702b.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/861.9899d4fa.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/564.5b524240.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/290.56461044.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/808.0f3b8c2f.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/450.e563615c.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/174.8ee75e82.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/448.3194b63e.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/254.d745384a.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/79.0e508323.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/821.96a09f68.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/920.b3f3b66d.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/__federation_expose_default_export.4a1cea81.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/76.dbcb59ee.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/536.d7689ce5.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/51.356e6017.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/460.c7da48ae.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/663.5365a7ce.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/193.8fa9027f.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/696.da496324.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/520.01bc3fd1.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/63.3ad8b1f4.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/375.9769c880.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/695.a6e5db11.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/async/44.91b7ed55.js",
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/static/js/remoteEntry.js"
+      ],
+      "css": []
+    },
+    "exposeRemote": {
+      "js": [
+        "/bundles/coreshoppayment/studio/5a13d26697da092c87b18336a9064188/exposeRemote.js"
+      ],
+      "css": []
+    }
+  }
+}
