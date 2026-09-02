@@ -33,10 +33,10 @@
         "coreshop/product-quantity-price-rules": "^2026.1",
         "coreshop/rule-bundle": "^2026.1",
         "coreshop/money-bundle": "^2026.1",
-        "pimcore/pimcore": "^2026.1"
+        "pimcore/pimcore": "^2026.2"
     },
     "require-dev": {
-        "pimcore/studio-ui-bundle": "^2026.1",
+        "pimcore/studio-ui-bundle": "^2026.2",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0"

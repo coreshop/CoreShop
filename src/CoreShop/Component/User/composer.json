@@ -25,7 +25,7 @@
     ],
     "require": {
         "coreshop/resource": "^2026.1",
-        "pimcore/pimcore": "^2026.1",
+        "pimcore/pimcore": "^2026.2",
         "symfony/security-core": "^6.4.14 || ^7.2"
     },
     "require-dev": {

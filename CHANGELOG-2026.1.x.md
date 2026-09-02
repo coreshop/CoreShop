@@ -6,11 +6,15 @@ CoreShop switches from semantic versioning to Pimcore's year-based scheme. The p
 remains the last semver release and continues to receive maintenance; all new development targets
 `2026.1` and up.
 
-### Pimcore 2026.1 minimum requirement
+### Pimcore 2026.2 minimum requirement
 
-All CoreShop components and bundles now require **`pimcore/pimcore: ^2026.1`**. Companion bundles
-(`pimcore/studio-ui-bundle`, `pimcore/studio-backend-bundle`, `pimcore/generic-data-index-bundle`)
-are likewise bumped to `^2026.1`.
+All CoreShop components and bundles now require **`pimcore/pimcore: ^2026.2`**. Companion bundles
+(`pimcore/studio-ui-bundle`, `pimcore/studio-backend-bundle`, `pimcore/generic-data-index-bundle`,
+`pimcore/opensearch-client`) are likewise bumped to `^2026.2`.
+
+The floor tracks the Pimcore Studio SDK that CoreShop's Studio plugins are built and tested against.
+Pimcore removes exported symbols between minor versions, so declaring a minimum older than the SDK we
+build against would let Composer install a Pimcore that cannot load the shipped Studio bundles.
 
 ### Classic Admin / ExtJS removed
 

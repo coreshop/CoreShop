@@ -46,7 +46,7 @@
         "coreshop/user": "^2026.1",
         "coreshop/tracking": "^2026.1",
         "coreshop/wishlist": "^2026.1",
-        "pimcore/pimcore": "^2026.1"
+        "pimcore/pimcore": "^2026.2"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",

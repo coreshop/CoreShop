@@ -110,7 +110,7 @@
     "payum/payum-bundle": "^2.6.2",
     "php-http/guzzle7-adapter": "^1.0",
     "php-http/message-factory": "^1.1",
-    "pimcore/pimcore": "^2026.1",
+    "pimcore/pimcore": "^2026.2",
     "rinvex/countries": "^9.0",
     "sebastian/diff": "^4.0 | ^5.0 | ^6.0",
     "stof/doctrine-extensions-bundle": "^1.14",
@@ -130,8 +130,8 @@
   "suggest": {
     "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine.",
     "pimcore/elasticsearch-client": "Allows to use ElasticSearch as your index engine.",
-    "pimcore/generic-data-index-bundle": "^2.0 - Generic Data Index support for Pimcore Studio UI",
-    "pimcore/studio-ui-bundle": "^1.0 - Modern React-based Studio UI for Pimcore (recommended)"
+    "pimcore/generic-data-index-bundle": "^2026.2 - Generic Data Index support for Pimcore Studio UI",
+    "pimcore/studio-ui-bundle": "^2026.2 - Modern React-based Studio UI for Pimcore (recommended)"
   },
   "conflict": {
     "ezimuel/ringphp": "<1.4",
@@ -154,10 +154,10 @@
     "phpstan/phpstan-symfony": "^2.0",
     "phpstan/phpstan-webmozart-assert": "^2.0",
     "phpunit/phpunit": "^10.0",
-    "pimcore/opensearch-client": "^2026.1",
-    "pimcore/generic-data-index-bundle": "^2026.1",
-    "pimcore/studio-backend-bundle": "^2026.1",
-    "pimcore/studio-ui-bundle": "^2026.1",
+    "pimcore/opensearch-client": "^2026.2",
+    "pimcore/generic-data-index-bundle": "^2026.2",
+    "pimcore/studio-backend-bundle": "^2026.2",
+    "pimcore/studio-ui-bundle": "^2026.2",
     "robertfausk/behat-panther-extension": "^1.2",
     "symfony/browser-kit": "^6.4.14 || ^7.2",
     "symfony/css-selector": "^6.4.14 || ^7.2",
