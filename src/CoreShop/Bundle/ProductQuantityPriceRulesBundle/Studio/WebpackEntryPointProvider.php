@@ -17,16 +17,27 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Studio;
 
-use Pimcore\Bundle\StudioUiBundle\Webpack\WebpackEntryPointProviderInterface;
+use Pimcore\Bundle\StudioUiBundle\Build\BuildArchive;
+use Pimcore\Bundle\StudioUiBundle\Build\BuildArchiveExtractionTrait;
+use Pimcore\Bundle\StudioUiBundle\Build\BuildArchiveProviderInterface;
 
 /**
+ * The Studio build of this bundle ships as a single archive in Resources/build-dist and is
+ * extracted into Resources/public/studio at cache warmup (or on first use while the
+ * directory is writable) by Pimcore's BuildArchiveExtractor.
+ *
  * @internal
  */
-final class WebpackEntryPointProvider implements WebpackEntryPointProviderInterface
+final class WebpackEntryPointProvider implements BuildArchiveProviderInterface
 {
-    public function getEntryPointsJsonLocations(): array
+    use BuildArchiveExtractionTrait;
+
+    protected function buildArchive(): BuildArchive
     {
-        return glob(__DIR__ . '/../Resources/public/studio/*/entrypoints.json');
+        return new BuildArchive(
+            archiveGlob: __DIR__ . '/../Resources/build-dist/build*.zip',
+            targetDir: __DIR__ . '/../Resources/public/studio',
+        );
     }
 
     public function getEntryPoints(): array

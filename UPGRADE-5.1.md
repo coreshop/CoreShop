@@ -74,3 +74,16 @@ on these controllers.
 This affects you only if you wrote a custom subclass of one of CoreShop's admin
 controllers and called any of those inherited methods. Inject the equivalent
 services directly in your subclass instead.
+
+## Studio builds ship as archives
+
+The compiled Studio frontend of each bundle is no longer committed as an expanded
+`Resources/public/studio/<id>/` directory. Each bundle ships a single archive
+`Resources/build-dist/build-<id>.zip` instead, which Pimcore's `BuildArchiveExtractor`
+(pimcore/studio-ui-bundle ≥ 2025.4.6) unpacks into `Resources/public/studio/` during cache
+warmup. This follows the model Pimcore introduced for its own Studio UI build.
+
+Deployments on a read-only filesystem must run `bin/console cache:warmup` (or `cache:clear`)
+during the build or deploy phase while `vendor/` is still writable. Standard Pimcore
+deployments already do this. When `assets:install` runs in copy mode (without `--symlink`),
+run `cache:warmup` before it so the extracted build gets copied.

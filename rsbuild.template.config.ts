@@ -55,13 +55,14 @@ const entryFile = './src/main.ts'
 // Load bundle-specific dependencies for module federation
 const dependencies = loadBundleDependencies(resolvedBundleDir)
 
-// Clean old build directories before creating the new one
+// Clean old build directories before creating the new one. This also drops the marker file
+// Pimcore's BuildArchiveExtractor leaves next to a build it extracted from the committed
+// archive: without the marker the extractor treats the local build as a manual one and never
+// replaces it with the archive.
 const studioPath = path.resolve(__dirname, 'src/CoreShop/Bundle', `${resolvedBundleDir}Bundle/Resources/public/studio`)
 if (fs.existsSync(studioPath)) {
   for (const entry of fs.readdirSync(studioPath, { withFileTypes: true })) {
-    if (entry.isDirectory()) {
-      fs.rmSync(path.resolve(studioPath, entry.name), { recursive: true, force: true })
-    }
+    fs.rmSync(path.resolve(studioPath, entry.name), { recursive: true, force: true })
   }
 }
 
