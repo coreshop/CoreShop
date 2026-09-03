@@ -50,6 +50,17 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         $this->productUnitDefinitionPrices = new ArrayCollection();
     }
 
+    /**
+     * A copy is a new record that belongs to nobody yet: it has no identity of its own, no product and none of the
+     * unit definition prices, which stay with the record they were created for.
+     */
+    public function __clone()
+    {
+        $this->id = null;
+        $this->product = null;
+        $this->productUnitDefinitionPrices = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
