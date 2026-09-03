@@ -7,6 +7,10 @@ services:
   CoreShop\Bundle\ProductQuantityPriceRulesBundle\Studio\WebpackEntryPointProvider:
     tags:
       - { name: pimcore_studio_ui.webpack_entry_point_provider }
+    # The extractor is injected through the trait's #[Required] setter; the services of this
+    # file are not autowired, so the call is explicit.
+    calls:
+      - [setBuildArchiveExtractor, ['@Pimcore\Bundle\StudioUiBundle\Build\BuildArchiveExtractor']]
 
   # StudioBackend Data Adapters
   CoreShop\Bundle\ProductQuantityPriceRulesBundle\StudioBackend\DataAdapter\ProductQuantityPriceRulesAdapter:

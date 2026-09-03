@@ -1,3 +1,19 @@
+## 2026.2.1
+
+### Studio builds ship as archives
+
+The Studio frontend build of every bundle is now committed as a single archive,
+`Resources/build-dist/build-<id>.zip`, instead of the expanded `Resources/public/studio/<id>/`
+directory (Pimcore's build archive model, see pimcore/studio-ui-bundle#3779). Pimcore's
+`BuildArchiveExtractor` unpacks it into `Resources/public/studio` during `cache:warmup`; the
+entry point providers implement `BuildArchiveProviderInterface`. Requires
+`pimcore/studio-ui-bundle` ^2026.2.1.
+
+> **Deployment:** read-only filesystem deployments must run `bin/console cache:warmup` (or
+> `cache:clear`) during the build/deploy phase while `vendor/` is still writable — standard
+> Pimcore deployments already do this. When `assets:install` runs in copy mode, run
+> `cache:warmup` before it.
+
 ## 2026.2.0
 
 > There is no final `2026.1.0`. The `2026.1.0-beta.1` pre-release targeted Pimcore 2026.1, but the

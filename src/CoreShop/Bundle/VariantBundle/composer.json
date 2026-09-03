@@ -28,7 +28,7 @@
         "coreshop/variant": "^2026.1"
     },
     "require-dev": {
-        "pimcore/studio-ui-bundle": "^2026.2",
+        "pimcore/studio-ui-bundle": "^2026.2.1",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0"

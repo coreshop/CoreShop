@@ -157,7 +157,7 @@
     "pimcore/opensearch-client": "^2026.2",
     "pimcore/generic-data-index-bundle": "^2026.2",
     "pimcore/studio-backend-bundle": "^2026.2",
-    "pimcore/studio-ui-bundle": "^2026.2",
+    "pimcore/studio-ui-bundle": "^2026.2.1",
     "robertfausk/behat-panther-extension": "^1.2",
     "symfony/browser-kit": "^6.4.14 || ^7.2",
     "symfony/css-selector": "^6.4.14 || ^7.2",

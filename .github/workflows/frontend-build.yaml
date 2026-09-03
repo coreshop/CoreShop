@@ -1,42 +1,75 @@
+# Caller for the coreshop/CoreShop monorepo — NOT synced (the core has its own
+# CI); copy it to .github/workflows/frontend-build.yaml there. It runs the same
+# reusable workflow as the bundle repos with the core's layout: the npm project
+# is the repository root, `npm ci` installs from the committed lock file, no
+# composer install is needed, and `npm run build` (studio-build.ts) builds and
+# packages every bundle itself, so the workflow only stages and commits the
+# archives it produced.
+
 name: CoreShop Studio Frontend Build
 
+# Only the Studio sources and the build configuration influence the packaged
+# builds, so only they trigger a build. The commit that carries the packaged
+# builds touches nothing but Resources/build-dist, which is not in this list,
+# so it never triggers another (no-op) run. It deliberately carries no
+# `[skip ci]` marker: that would skip every workflow for the push, including
+# the monorepo split that has to pick the archives up.
 on:
-  # Pull requests only verify that the Studio bundles type-check and build. Nothing is committed,
-  # so the diff of a pull request stays limited to the actual source changes.
   pull_request:
     branches: [ '2026.x' ]
-  # The built assets are committed once per push to the release branch. That commit is what the
-  # monorepo split picks up, so consumers keep getting prebuilt assets.
-  #
-  # The commit itself only touches the built assets, so `paths-ignore` keeps it from triggering
-  # another (no-op) build. It deliberately carries no `[skip ci]` marker: that would skip every
-  # workflow for the push, including the monorepo split that has to pick the assets up.
+    paths:
+      - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'tsconfig.studio.json'
+      - 'rsbuild.template.config.ts'
+      - 'studio-build.ts'
+      - '.github/workflows/frontend-build.yaml'
+  # Pushes to the version branches and to release branches commit the packaged
+  # builds. The release branch build makes sure a release pull request already
+  # carries the final archives, so the tag created right after the merge is
+  # complete.
   push:
-    branches: [ '2026.x' ]
-    paths-ignore:
-      - 'src/CoreShop/Bundle/*/Resources/public/studio/**'
+    branches: [ '2026.x', 'release/**' ]
+    paths:
+      - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'tsconfig.studio.json'
+      - 'rsbuild.template.config.ts'
+      - 'studio-build.ts'
+      - '.github/workflows/frontend-build.yaml'
   workflow_dispatch:
+
+# A newer push to the same branch supersedes a running build; the commit job of
+# the reusable workflow only ever pushes the archives of the build it belongs to.
+concurrency:
+  group: studio-frontend-build-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  # Pull requests and manual runs verify only. Gating on `push` rather than on "not a pull
-  # request" keeps a manual run on a feature branch from committing assets to that branch.
-  verify:
-    if: ${{ github.event_name != 'push' }}
-    permissions:
-      contents: read
-    uses: ./.github/workflows/shared-frontend-build.yaml
-    with:
-      commit: false
-
   build:
-    if: ${{ github.event_name == 'push' }}
     permissions:
       contents: write
-    uses: ./.github/workflows/shared-frontend-build.yaml
-    # Needed for STUDIO_BUILD_APP_PRIVATE_KEY: a called workflow gets no secrets by default.
+    uses: coreshop/workflow-collection/.github/workflows/studio-build.yml@v1
+    # Needed for STUDIO_BUILD_APP_PRIVATE_KEY: a called workflow gets no secrets
+    # by default.
     secrets: inherit
     with:
-      commit: true
+      # See templates/studio-build.yml for the reasoning behind this condition.
+      commit: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
+      assets_path: '.'
+      composer: false
+      install_command: 'npm ci --ignore-scripts'
+      build_command: 'npm run build'
+      # studio-build.ts derives the per-bundle build ids and packages the
+      # archives itself.
+      package: false
+      stage_pathspec: 'src/CoreShop/Bundle/*/Resources/build-dist/*'
+      # The core's type check is clean and stays a gate.
+      typecheck_blocking: true
