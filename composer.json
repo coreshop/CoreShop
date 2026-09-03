@@ -160,7 +160,7 @@
     "pimcore/google-marketing-bundle": "^2.0",
     "pimcore/opensearch-client": "^2.1",
     "pimcore/studio-backend-bundle": "^2025.4",
-    "pimcore/studio-ui-bundle": "^2025.4.6",
+    "pimcore/studio-ui-bundle": "^2025.4.9",
     "robertfausk/behat-panther-extension": "^1.2",
     "symfony/browser-kit": "^6.4.14 || ^7.2",
     "symfony/css-selector": "^6.4.14 || ^7.2",

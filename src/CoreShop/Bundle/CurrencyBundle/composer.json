@@ -30,7 +30,7 @@
         "symfony/intl": "^6.4.14 || ^7.2"
     },
     "require-dev": {
-        "pimcore/studio-ui-bundle": "^2025.4.6",
+        "pimcore/studio-ui-bundle": "^2025.4.9",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0"

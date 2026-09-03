@@ -80,7 +80,7 @@ services directly in your subclass instead.
 The compiled Studio frontend of each bundle is no longer committed as an expanded
 `Resources/public/studio/<id>/` directory. Each bundle ships a single archive
 `Resources/build-dist/build-<id>.zip` instead, which Pimcore's `BuildArchiveExtractor`
-(pimcore/studio-ui-bundle ≥ 2025.4.6) unpacks into `Resources/public/studio/` during cache
+(pimcore/studio-ui-bundle ≥ 2025.4.9) unpacks into `Resources/public/studio/` during cache
 warmup. This follows the model Pimcore introduced for its own Studio UI build.
 
 Deployments on a read-only filesystem must run `bin/console cache:warmup` (or `cache:clear`)
