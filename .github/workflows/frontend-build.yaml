@@ -26,12 +26,15 @@ on:
       - 'rsbuild.template.config.ts'
       - 'studio-build.ts'
       - '.github/workflows/frontend-build.yaml'
-  # Pushes to the version branches and to release branches commit the packaged
-  # builds. The release branch build makes sure a release pull request already
-  # carries the final archives, so the tag created right after the merge is
-  # complete.
+  # Pushes to the version branches commit the packaged builds. Release branches
+  # are covered by their pull request: a pull request from this repository
+  # builds and commits the archives too, so the release pull request already
+  # carries the final archives and the tag created right after the merge is
+  # complete. A `push` trigger on `release/**` would start a second run for the
+  # same commit that cancels the first one in the concurrency group below, and
+  # the cancelled run counts as a failed check.
   push:
-    branches: [ '2026.x', 'release/**' ]
+    branches: [ '2026.x' ]
     paths:
       - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
       - 'package.json'
