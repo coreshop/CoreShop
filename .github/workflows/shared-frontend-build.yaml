@@ -5,14 +5,26 @@ on:
     inputs:
       commit:
         description: >-
-          Commit the built Studio assets back to the branch. Only enabled for pushes to a
-          release branch — pull requests build for verification only, so their diffs stay
-          readable.
+          Commit the packaged Studio builds (Resources/build-dist/build-<id>.zip) back to the
+          branch. Enabled for pushes to a version or release branch and for pull requests from
+          this repository; pull requests from forks and manual runs build for verification
+          only.
         type: boolean
         default: false
 
-# No workflow-level `permissions`: it would override what the calling job grants, leaving the
-# build job read-only even on the push build. Jobs declare what they need instead.
+# No workflow-level `permissions`: it would override what the calling job grants. The jobs
+# that run repository code (`npm ci`, `npm run …`) declare `contents: read` themselves; only
+# the commit job, which runs no repository code, gets the write scope.
+
+env:
+  # The branch the archives are committed to.
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  # The ref the build runs on. For a pull request that is the head branch itself rather than
+  # the merge ref, so the archives are built from — and committed to — the same commit. A fork
+  # can be private and unreadable with this repository's token, so its head is fetched through
+  # the mirror ref GitHub keeps for every pull request.
+  CHECKOUT_REF: ${{ github.event.pull_request && github.event.pull_request.head.repo.full_name != github.repository && format('refs/pull/{0}/head', github.event.pull_request.number) || github.head_ref || github.ref_name }}
+
 jobs:
   check-types:
     runs-on: ubuntu-latest
@@ -23,6 +35,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+        with:
+          ref: ${{ env.CHECKOUT_REF }}
+          # Runs repository code; nothing here needs authenticated git after the checkout.
+          persist-credentials: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -39,48 +55,25 @@ jobs:
       - name: Run type checks
         run: npm run check-types
 
-  # No job-level `permissions` block: the job inherits what the calling workflow grants, so the
-  # write scope needed for the commit only exists on the push build.
+  # Read-only: runs the build and captures the resulting archives as a patch. The write scope
+  # only exists in the commit job below, which never runs repository code.
   build:
     needs: check-types
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
+    outputs:
+      changed: ${{ steps.capture.outputs.changed }}
+      sha: ${{ steps.capture.outputs.sha }}
+
     steps:
-      # `GITHUB_TOKEN` cannot push to a release branch: the "Version Branches" ruleset requires
-      # a pull request and only bypasses for admins, and GitHub Actions itself is not an app
-      # that can be added to the bypass list. The CoreShop Studio Build app is, so the commit is
-      # made with its installation token instead.
-      #
-      # Secrets cannot be read in an `if:` condition, so whether the app is configured is
-      # determined in a step that can see them. Without this the workflow would break the
-      # moment it lands on a branch where the credentials are not set up yet.
-      - name: Check whether the build app is configured
-        id: app-config
-        if: ${{ inputs.commit }}
-        env:
-          APP_ID: ${{ secrets.STUDIO_BUILD_APP_ID }}
-          PRIVATE_KEY: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
-        run: |
-          if [ -n "$APP_ID" ] && [ -n "$PRIVATE_KEY" ]; then
-            echo 'configured=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'configured=false' >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Generate a token for the asset commit
-        id: app-token
-        if: ${{ steps.app-config.outputs.configured == 'true' }}
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ secrets.STUDIO_BUILD_APP_ID }}
-          private-key: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
-
       - name: Checkout code
         uses: actions/checkout@v7
         with:
-          # Falls back to the default token when no app is configured. The push then fails
-          # loudly in the commit step rather than silently skipping the assets.
-          token: ${{ steps.app-token.outputs.token || github.token }}
+          ref: ${{ env.CHECKOUT_REF }}
+          persist-credentials: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -102,26 +95,28 @@ jobs:
       - name: Run esbuild install script
         run: npm rebuild esbuild
 
+      # Builds every bundle and packages each build into Resources/build-dist/build-<id>.zip.
+      # The id is derived from the sources, and an existing archive for the id is left
+      # untouched, so an unchanged bundle produces no diff at all and anything reported below
+      # is a real source change.
       - name: Run production build
         run: npm run build
 
-      # Build ids are derived from the sources, so an unchanged bundle produces an unchanged
-      # output directory and anything reported here is a real asset change.
-      #
-      # `git add --all` also stages deletions of stale build directories. The previous
-      # `file_pattern` glob missed those: the shell expands it against the working tree, so
-      # directories that no longer exist never reached `git add` and piled up in the repository.
-      - name: Stage built assets
-        id: stage
+      # `git add --all` also stages the removal of the previous archive of a bundle whose id
+      # changed, so the patch is a faithful round-trip of the build-dist directories.
+      - name: Capture the packaged builds as a patch
+        id: capture
         run: |
-          git add --all --force -- 'src/CoreShop/Bundle/*/Resources/public/studio/*'
+          git add --all -- 'src/CoreShop/Bundle/*/Resources/build-dist/*'
+          git diff --cached --binary > "${RUNNER_TEMP}/build-dist.patch"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           if git diff --cached --quiet; then
             echo 'changed=false' >> "$GITHUB_OUTPUT"
-            echo 'Studio assets are up to date.' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Studio build archives are up to date.' >> "$GITHUB_STEP_SUMMARY"
           else
             echo 'changed=true' >> "$GITHUB_OUTPUT"
             {
-              echo '### Studio assets changed by this build'
+              echo '### Studio build archives changed by this build'
               echo
               echo '```'
               git diff --cached --stat
@@ -129,12 +124,91 @@ jobs:
             } >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Commit built assets
-        if: ${{ inputs.commit && steps.stage.outputs.changed == 'true' }}
+      - name: Upload the patch
+        if: ${{ steps.capture.outputs.changed == 'true' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-dist-patch
+          path: ${{ runner.temp }}/build-dist.patch
+          retention-days: 1
+          if-no-files-found: error
+          # Artifact names are immutable per run; let a re-run of a failed job upload again.
+          overwrite: true
+
+  # Write-capable, but runs no repository code: it only applies the patch of the build job and
+  # commits it. Gated to pushes and to pull requests from this repository, so a fork's code
+  # never gets near the write-capable token.
+  commit:
+    needs: build
+    if: ${{ inputs.commit && needs.build.outputs.changed == 'true' && (!github.event.pull_request || github.event.pull_request.head.repo.full_name == github.repository) }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      # `GITHUB_TOKEN` cannot push to a version branch: the "Version Branches" ruleset requires
+      # a pull request and only bypasses for admins, and GitHub Actions itself is not an app
+      # that can be added to the bypass list. The CoreShop Studio Build app is, so the commit is
+      # made with its installation token instead.
+      #
+      # Secrets cannot be read in an `if:` condition, so whether the app is configured is
+      # determined in a step that can see them. Without this the workflow would break the
+      # moment it lands on a branch where the credentials are not set up yet.
+      - name: Check whether the build app is configured
+        id: app-config
+        env:
+          APP_ID: ${{ secrets.STUDIO_BUILD_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
+        run: |
+          if [ -n "$APP_ID" ] && [ -n "$PRIVATE_KEY" ]; then
+            echo 'configured=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'configured=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate a token for the commit
+        id: app-token
+        if: ${{ steps.app-config.outputs.configured == 'true' }}
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.STUDIO_BUILD_APP_ID }}
+          private-key: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
+
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+          repository: ${{ github.repository }}
+          # Falls back to the default token when no app is configured. The push then fails
+          # loudly in the commit step rather than silently skipping the archives.
+          token: ${{ steps.app-token.outputs.token || github.token }}
+
+      - name: Download the patch
+        uses: actions/download-artifact@v8
+        with:
+          name: build-dist-patch
+          path: ${{ runner.temp }}
+
+      - name: Commit the packaged builds
         env:
           APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
           GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          BUILT_SHA: ${{ needs.build.outputs.sha }}
         run: |
+          # The patch was taken against the commit the build ran on. If the branch moved on in
+          # the meantime, the newer push runs its own build and supersedes these archives, so
+          # a patch that no longer applies is benign in that case — and only in that case.
+          if ! git apply --index "${RUNNER_TEMP}/build-dist.patch"; then
+            if [ "$(git rev-parse HEAD)" != "${BUILT_SHA}" ]; then
+              echo "::notice::${BRANCH_NAME} moved on during the build; the newer push rebuilds the archives."
+              echo 'Commit skipped: branch moved on during the build.' >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "::error::The packaged Studio builds do not apply to ${BRANCH_NAME} although the branch did not move on."
+            exit 1
+          fi
+
           # Attribute the commit to whichever identity actually pushes it. The numeric id in the
           # noreply address is what links a commit to the bot account on GitHub.
           if [ -n "$APP_SLUG" ]; then
@@ -150,22 +224,22 @@ jobs:
 
           git commit -m 'Build CoreShop Studio bundles'
 
-          if git push origin HEAD:"${GITHUB_REF_NAME}"; then
+          if git push origin HEAD:"${BRANCH_NAME}"; then
             exit 0
           fi
 
           # A rejected push has two very different causes, and only one of them is benign:
           # the branch moved on while we were building, in which case the newer push runs its
-          # own build and supersedes these assets. Anything else — a ruleset rejection, a
-          # missing write scope — means the assets never land, and that must not pass as a
-          # green job. HEAD~1 is the commit this build started from.
-          git fetch --quiet origin "${GITHUB_REF_NAME}"
-          if [ "$(git rev-parse "origin/${GITHUB_REF_NAME}")" != "$(git rev-parse HEAD~1)" ]; then
-            echo "::notice::${GITHUB_REF_NAME} moved on during the build; the newer push rebuilds the assets."
+          # own build and supersedes these archives. Anything else — a ruleset rejection, a
+          # missing write scope — means the archives never land, and that must not pass as a
+          # green job. HEAD~1 is the commit this job started from.
+          git fetch --quiet origin "${BRANCH_NAME}"
+          if [ "$(git rev-parse "origin/${BRANCH_NAME}")" != "$(git rev-parse HEAD~1)" ]; then
+            echo "::notice::${BRANCH_NAME} moved on during the build; the newer push rebuilds the archives."
             echo 'Push skipped: branch moved on during the build.' >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
-          echo "::error::Could not push the built Studio assets to ${GITHUB_REF_NAME}. The branch did not move on, so the push was refused — check that the STUDIO_BUILD_APP_ID and STUDIO_BUILD_APP_PRIVATE_KEY secrets are set and that the app is a bypass actor on the branch ruleset."
-          echo 'Push failed: built assets were not committed.' >> "$GITHUB_STEP_SUMMARY"
+          echo "::error::Could not push the packaged Studio builds to ${BRANCH_NAME}. The branch did not move on, so the push was refused — check that the STUDIO_BUILD_APP_ID and STUDIO_BUILD_APP_PRIVATE_KEY secrets are set and that the app is a bypass actor on the branch ruleset."
+          echo 'Push failed: packaged builds were not committed.' >> "$GITHUB_STEP_SUMMARY"
           exit 1

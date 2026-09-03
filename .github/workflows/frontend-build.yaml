@@ -1,42 +1,60 @@
 name: CoreShop Studio Frontend Build
 
+# Only the Studio sources and the build configuration influence the packaged builds, so only
+# they trigger a build. The commit that carries the packaged builds touches nothing but
+# Resources/build-dist and therefore never triggers another (no-op) run. It deliberately
+# carries no `[skip ci]` marker: that would skip every workflow for the push, including the
+# monorepo split that has to pick the archives up.
 on:
-  # Pull requests only verify that the Studio bundles type-check and build. Nothing is committed,
-  # so the diff of a pull request stays limited to the actual source changes.
   pull_request:
     branches: [ '5.1' ]
-  # The built assets are committed once per push to the release branch. That commit is what the
-  # monorepo split picks up, so consumers keep getting prebuilt assets.
-  #
-  # The commit itself only touches the built assets, so `paths-ignore` keeps it from triggering
-  # another (no-op) build. It deliberately carries no `[skip ci]` marker: that would skip every
-  # workflow for the push, including the monorepo split that has to pick the assets up.
+    paths:
+      - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'tsconfig.studio.json'
+      - 'rsbuild.template.config.ts'
+      - 'studio-build.ts'
+      - '.github/workflows/frontend-build.yaml'
+      - '.github/workflows/shared-frontend-build.yaml'
+  # Pushes to the version branch and to release branches commit the packaged builds. The
+  # release branch build makes sure a release pull request already carries the final archives,
+  # so the tag created right after the merge is complete.
   push:
-    branches: [ '5.1' ]
-    paths-ignore:
-      - 'src/CoreShop/Bundle/*/Resources/public/studio/**'
+    branches: [ '5.1', 'release/**' ]
+    paths:
+      - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'tsconfig.studio.json'
+      - 'rsbuild.template.config.ts'
+      - 'studio-build.ts'
+      - '.github/workflows/frontend-build.yaml'
+      - '.github/workflows/shared-frontend-build.yaml'
   workflow_dispatch:
+
+# A newer push to the same branch supersedes a running build; the commit job of the shared
+# workflow only ever pushes the archives of the build it belongs to.
+concurrency:
+  group: studio-frontend-build-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  # Pull requests and manual runs verify only. Gating on `push` rather than on "not a pull
-  # request" keeps a manual run on a feature branch from committing assets to that branch.
-  verify:
-    if: ${{ github.event_name != 'push' }}
-    permissions:
-      contents: read
-    uses: ./.github/workflows/shared-frontend-build.yaml
-    with:
-      commit: false
-
   build:
-    if: ${{ github.event_name == 'push' }}
     permissions:
       contents: write
     uses: ./.github/workflows/shared-frontend-build.yaml
     # Needed for STUDIO_BUILD_APP_PRIVATE_KEY: a called workflow gets no secrets by default.
     secrets: inherit
     with:
-      commit: true
+      # Pull requests from this repository get their archives committed like the version and
+      # release branches do, so a pull request always carries the build of its own sources.
+      # Pull requests from forks and manual runs build for verification only: a fork must not
+      # get its code near a write-capable token, and a manual run on a feature branch must not
+      # push to it.
+      commit: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
