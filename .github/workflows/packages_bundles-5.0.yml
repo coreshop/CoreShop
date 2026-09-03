@@ -28,13 +28,20 @@ permissions:
 
 jobs:
   list:
+    # `release` and `schedule` always run the workflow file from the default branch, so this job
+    # also fires for releases of the other lines. Only tags of this line are checked here; the
+    # other lines have their own copy of this workflow.
+    if: ${{ github.event_name != 'release' || startsWith(github.event.release.tag_name, '5.0.') }}
     runs-on: ubuntu-latest
     name: "Create a list of packages"
 
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # On `schedule` the workflow runs from the default branch and `github.sha` is that
+          # branch's head, not this line's — check the line's branch out explicitly. Releases
+          # (the tag) and pushes keep `github.sha`, pull requests their head commit.
+          ref: ${{ github.event.pull_request.head.sha || (github.event_name == 'schedule' && '5.0') || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: "List Packages"
@@ -62,7 +69,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # On `schedule` the workflow runs from the default branch and `github.sha` is that
+          # branch's head, not this line's — check the line's branch out explicitly. Releases
+          # (the tag) and pushes keep `github.sha`, pull requests their head commit.
+          ref: ${{ github.event.pull_request.head.sha || (github.event_name == 'schedule' && '5.0') || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: Install PHP
