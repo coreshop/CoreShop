@@ -221,6 +221,40 @@ function computeBuildId(plugin: Plugin, plugins: Plugin[], bundleDeps: Map<strin
   return hash.digest('hex').slice(0, 32)
 }
 
+/**
+ * Package each freshly built bundle into Resources/build-dist/build-<id>.zip.
+ *
+ * Only the archive is committed; the expanded build in Resources/public/studio is gitignored
+ * and reconstructed from the archive at cache warmup by Pimcore's BuildArchiveExtractor (see
+ * the bundles' Studio/WebpackEntryPointProvider). The packaging itself is Pimcore's
+ * `studio-package-build`, which expects a `.build-id` file in the output directory: it keeps
+ * an existing archive for that id untouched — the compiled output is not byte-reproducible,
+ * but the id is source-derived, so an unchanged id means unchanged sources — and replaces
+ * the previous archive when the id is new. One archive per bundle is ever tracked.
+ */
+function packageBuilds(buildPlugins: Plugin[], plugins: Plugin[], bundleDeps: Map<string, string[]>): void {
+  const packageBin = path.resolve(__dirname, 'node_modules/.bin/studio-package-build')
+
+  for (const plugin of buildPlugins) {
+    const buildId = computeBuildId(plugin, plugins, bundleDeps)
+    const bundleRoot = path.resolve(__dirname, 'src/CoreShop/Bundle', plugin.name)
+    const studioDir = path.join(bundleRoot, 'Resources/public/studio')
+    const outputDir = path.join(studioDir, buildId)
+
+    if (!fs.existsSync(path.join(outputDir, 'entrypoints.json'))) {
+      throw new Error(`[${plugin.name}] build output ${outputDir} is missing, cannot package it`)
+    }
+
+    fs.writeFileSync(path.join(outputDir, '.build-id'), `${buildId}\n`)
+
+    logPlugin(plugin, 'Packaging build...')
+    execSync(`"${packageBin}" --build-dir "${studioDir}" --out-dir "${path.join(bundleRoot, 'Resources/build-dist')}"`, {
+      cwd: __dirname,
+      stdio: 'inherit'
+    })
+  }
+}
+
 // Color codes for console output
 const colors = {
   reset: '\x1b[0m',
@@ -414,6 +448,7 @@ async function main() {
 
     try {
       await runCommand(concurrentlyCmd, __dirname);
+      packageBuilds(buildPlugins, plugins, bundleDeps);
       log('\n🎉 All bundles built successfully!', colors.green);
       process.exit(0);
     } catch (error) {

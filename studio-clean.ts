@@ -1,8 +1,9 @@
 /**
  * Removes all generated Studio build output (src/CoreShop/Bundle/<X>Bundle/Resources/public/studio/*).
  *
- * The GitHub Action rebuilds and commits these artifacts, so deleting them locally keeps the
- * git diff/history reviewable. Run `npm run build` afterwards to get a working local Studio again.
+ * The expanded builds are not tracked in git: each bundle ships its build as an archive in
+ * Resources/build-dist, from which Pimcore extracts it again at cache warmup. Run
+ * `npm run build` afterwards to get a Studio built from the local sources.
  *
  * Usage:
  *   npm run clean:builds            # delete

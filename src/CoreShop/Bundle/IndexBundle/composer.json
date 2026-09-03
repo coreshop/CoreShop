@@ -38,7 +38,7 @@
         "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine."
     },
     "require-dev": {
-        "pimcore/studio-ui-bundle": "^2025.4",
+        "pimcore/studio-ui-bundle": "^2025.4.9",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
