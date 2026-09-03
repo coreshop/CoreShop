@@ -78,8 +78,9 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
         $this->addStack($rootNode);
+
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -407,22 +408,6 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('pimcore_admin')
                 ->addDefaultsIfNotSet()
                 ->children()
-                    ->arrayNode('js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
                         ->defaultValue([
@@ -437,16 +422,6 @@ final class Configuration implements ConfigurationInterface
                             'cart_detail',
                             'cart_create',
                         ])
-                    ->end()
-                    ->arrayNode('install')
-                        ->addDefaultsIfNotSet()
-                        ->children()
-                            ->arrayNode('grid_config')
-                                ->treatNullLike([])
-                                ->scalarPrototype()->end()
-                                ->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/grid-config.yml'])
-                            ->end()
-                        ->end()
                     ->end()
                 ->end()
             ->end()

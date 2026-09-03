@@ -33,6 +33,7 @@ final class ORMTranslatableListener implements EventSubscriber
     public function __construct(
         private RegistryInterface $resourceMetadataRegistry,
         private TranslatableEntityLocaleAssignerInterface $translatableEntityLocaleAssigner,
+        private int $translationLocaleColumnLength = 5,
     ) {
     }
 
@@ -134,11 +135,13 @@ final class ORMTranslatableListener implements EventSubscriber
         }
 
         if (!$metadata->hasField('locale')) {
+            // Length is configurable (core_shop_resource.translation.locale_column_length) - changing it only
+            // affects newly created schemas, see the option's `info()` in Configuration::addTranslationsSection().
             $metadata->mapField([
                 'fieldName' => 'locale',
                 'type' => 'string',
                 'nullable' => false,
-                'length' => 5,
+                'length' => $this->translationLocaleColumnLength,
             ]);
         }
 

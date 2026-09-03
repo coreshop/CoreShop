@@ -165,13 +165,11 @@ class ProductUnitDefinition extends Data implements
 
         $reflectionClass = new \ReflectionClass($data);
         $property = $reflectionClass->getProperty('id');
-        $property->setAccessible(true);
         $property->setValue($data, null);
 
         foreach ($data->getUnitDefinitions() as $unitDefinition) {
             $reflectionClass = new \ReflectionClass($unitDefinition);
             $property = $reflectionClass->getProperty('id');
-            $property->setAccessible(true);
             $property->setValue($unitDefinition, null);
         }
 

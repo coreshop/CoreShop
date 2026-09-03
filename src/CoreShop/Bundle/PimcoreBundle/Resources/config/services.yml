@@ -17,9 +17,6 @@ services:
     CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\ClassInstaller'
     CoreShop\Component\Pimcore\DataObject\ClassInstaller: ~
 
-    CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
-    CoreShop\Component\Pimcore\DataObject\GridConfigInstaller: ~
-
     CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface: '@CoreShop\Component\Pimcore\DataObject\ObjectService'
     CoreShop\Component\Pimcore\DataObject\ObjectService: ~
 

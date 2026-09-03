@@ -16,7 +16,7 @@ name: CoreShop Studio Frontend Build
 # the monorepo split that has to pick the archives up.
 on:
   pull_request:
-    branches: [ '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
       - 'package.json'
@@ -31,7 +31,7 @@ on:
   # carries the final archives, so the tag created right after the merge is
   # complete.
   push:
-    branches: [ '5.1', 'release/**' ]
+    branches: [ '2026.x', 'release/**' ]
     paths:
       - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
       - 'package.json'

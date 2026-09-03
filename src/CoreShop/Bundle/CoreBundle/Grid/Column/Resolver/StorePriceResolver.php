@@ -51,6 +51,7 @@ final class StorePriceResolver implements ColumnResolverInterface, CoreElementCo
 
         $config = $column->getConfig();
         $storeId = (int) ($config['storeId'] ?? 0);
+        /** @var StoreInterface|null $store */
         $store = $this->storeRepository->find($storeId);
 
         if (!$store instanceof StoreInterface) {
