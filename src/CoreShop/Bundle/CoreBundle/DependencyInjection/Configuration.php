@@ -39,6 +39,17 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('checkout_manager_factory')->cannotBeEmpty()->end()
                 ->scalarNode('after_logout_redirect_route')->defaultValue('coreshop_index')->cannotBeEmpty()->end()
                 ->scalarNode('autoconfigure_with_attributes')->defaultFalse()->end()
+                ->arrayNode('telemetry')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('enabled')
+                            ->info('Daily anonymous ping to the CoreShop license portal. Set CORESHOP_TELEMETRY=false to opt out.')
+                            ->defaultValue('%env(bool:CORESHOP_TELEMETRY)%')
+                        ->end()
+                        ->scalarNode('endpoint')->defaultValue('https://license.coreshop.com/v1/ping')->cannotBeEmpty()->end()
+                        ->floatNode('timeout')->defaultValue(4.0)->min(0.5)->end()
+                    ->end()
+                ->end()
             ->end()
         ;
         $this->addModelsSection($rootNode);

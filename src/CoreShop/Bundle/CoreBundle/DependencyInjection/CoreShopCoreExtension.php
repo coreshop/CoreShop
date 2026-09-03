@@ -21,16 +21,19 @@ use CoreShop\Bundle\CoreBundle\Attribute\AsPortlet;
 use CoreShop\Bundle\CoreBundle\Attribute\AsReport;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
+use CoreShop\Bundle\CoreBundle\Telemetry\TelemetryPinger;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Core\Telemetry\TelemetryDataProviderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\DefaultCheckoutManagerFactory;
 use CoreShop\Component\Registry\Autoconfiguration;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -78,6 +81,11 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $container->setParameter('coreshop.after_logout_redirect_route', $configs['after_logout_redirect_route']);
 
+        $container->setParameter('coreshop.telemetry.enabled', $configs['telemetry']['enabled']);
+        $container->setParameter('coreshop.telemetry.endpoint', $configs['telemetry']['endpoint']);
+        $container->setParameter('coreshop.telemetry.timeout', $configs['telemetry']['timeout']);
+        $container->registerForAutoconfiguration(TelemetryDataProviderInterface::class)->addTag('coreshop.telemetry.provider');
+
         $bundles = $container->getParameter('kernel.bundles');
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
@@ -89,6 +97,8 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         }
 
         $loader->load('services.yml');
+        // lint:yaml runs without --parse-tags, so the provider iterator is wired here instead of via !tagged_iterator
+        $container->getDefinition(TelemetryPinger::class)->replaceArgument(1, new TaggedIteratorArgument('coreshop.telemetry.provider'));
 
         $env = (string) $container->getParameter('kernel.environment');
         if (str_contains($env, 'test')) {
