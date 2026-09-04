@@ -54,7 +54,7 @@ jobs:
           # ever passes to git, which is what bounds that resolution to build artifacts.
           # The trailing `/*` is load-bearing: a git pathspec containing a wildcard is matched
           # against the whole path, so without it nothing under the directory matches at all.
-          ARTIFACTS='src/CoreShop/Bundle/*/Resources/public/studio/*'
+          ARTIFACTS='src/CoreShop/Bundle/*/Resources/build-dist/*'
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
