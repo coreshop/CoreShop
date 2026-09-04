@@ -1,7 +1,7 @@
 name: Behat UI
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -9,8 +9,8 @@ on:
       - '*.php'
       - 'src/**'
       - '.github/workflows/behat_ui.yml'
-  pull_request:
-    branches: [ '5.0', '5.1' ]
+  pull_request_target:
+    branches: [ '2026.x' ]
     paths:
       - 'composer.json'
       - 'features/**'
@@ -27,13 +27,10 @@ env:
   APP_ENV: "test"
   CORESHOP_SKIP_DB_SETUP: "1"
   PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
-  PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
-  PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
-  PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "127.0.0.1"
-  PIMCORE_INSTALL_MYSQL_USERNAME: "root"
-  PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
-  PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
-  PIMCORE_INSTALL_MYSQL_PORT: "3306"
+  DATABASE_URL: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+  PIMCORE_OPENSEARCH_DSN: "opensearch://127.0.0.1:9200?ssl=false&ssl_verify=false"
+  PIMCORE_ADMIN_USER: "admin"
+  PIMCORE_ADMIN_PASSWORD: "admin"
   PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/index_test.php"
   PIMCORE_KERNEL_CLASS: 'Kernel'
   PIMCORE_SECRET: "${{ secrets.PIMCORE_SECRET }}"
@@ -48,20 +45,24 @@ permissions:
 
 jobs:
   behat_ui:
+    # `release` and `schedule` always run the workflow file from the default branch, so this job
+    # also fires for releases of the other lines. Only tags of this line are checked here; the
+    # other lines have their own copy of this workflow.
+    if: ${{ github.event_name != 'release' || startsWith(github.event.release.tag_name, '2026.') }}
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.allow-failure }}
 
     strategy:
       matrix:
         include:
-          - php: 8.3
-            pimcore: ^12.3
-            dependencies: highest
-            allow-failure: false
           - php: 8.4
-            pimcore: ^12.3
+            pimcore: ^2026.2
             dependencies: highest
             allow-failure: false
+          - php: 8.5
+            pimcore: ^2026.2
+            dependencies: highest
+            allow-failure: true
 
     services:
       database:
@@ -87,8 +88,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # On `schedule` the workflow runs from the default branch and `github.sha` is that
+          # branch's head, not this line's — check the line's branch out explicitly. Releases
+          # (the tag) and pushes keep `github.sha`, pull requests their head commit.
+          ref: ${{ github.event.pull_request.head.sha || (github.event_name == 'schedule' && '2026.x') || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          allow-unsafe-pr-checkout: true
 
       - uses: browser-actions/setup-chrome@v2
         with:
@@ -149,14 +154,10 @@ jobs:
           EOF
 
       - name: Install Pimcore
-        run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
+        run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --install-profile 'CoreShop\Bundle\CoreBundle\InstallProfile\CoreShopInstallProfile' --skip-validation --no-interaction
 
-      - name: Install Pimcore Bundles
+      - name: Rebuild Pimcore classes
         run: |
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreGenericDataIndexBundle
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreGenericExecutionEngineBundle
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioBackendBundle
-          bin/console pimcore:bundle:install --no-post-change-commands PimcoreStudioUiBundle
           bin/console pimcore:deployment:classes-rebuild --force --create-classes
           bin/console generic-data-index:update:index -r
 

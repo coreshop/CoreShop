@@ -10,12 +10,6 @@ parameters:
         - '**/ProcessManager/IndexProcess.php'
         - '**/DataHub/*.php'
         - 'vendor/***'
-        # Optional admin-ui-classic-bundle listeners
-        - '**/EventListener/MenuAdminListener.php'
-        - '**/EventListener/PimcoreAdminListener.php'
-        # Optional admin-ui-classic-bundle GridColumnConfig (causes internal error)
-        - '**/Pimcore/GridColumnConfig/ResourceFieldGetter.php'
-        - '**/AdminClass/Pimcore/GridColumnConfig/*.php'
         # Optional studio bundles
         - '**/Studio/*.php'
         - '**/Studio/**/*.php'
@@ -45,6 +39,7 @@ parameters:
 
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)/'
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface/'
+        - '/Call to method (arrayNode|scalarNode|booleanNode|integerNode|floatNode|enumNode|variableNode)\(\) on an unknown class Symfony\\Component\\Config\\Definition\\Builder\\NodeBuilder/'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::save\(\)./'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::delete\(\)./'
         - '/Method Pimcore\\Model\\DataObject\\Concrete::getLatestVersion\(\)\(.*\)/'
@@ -63,7 +58,7 @@ parameters:
 
         # Optional dependencies
         - identifier: class.notFound
-          message: '/Pimcore\\Bundle\\(AdminBundle|StudioBackendBundle|StudioUiBundle|GoogleMarketingBundle|NewsletterBundle)\\/'
+          message: '/Pimcore\\Bundle\\(AdminBundle|StudioBackendBundle|StudioUiBundle|GoogleMarketingBundle)\\/'
 
 includes:
     - ./vendor/phpstan/phpstan-doctrine/extension.neon

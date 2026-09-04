@@ -7,7 +7,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="type" column="type"/>
+        <field name="type" column="type" type="string" length="255"/>
         <field name="sort" column="sort" type="integer" nullable="true" />
         <field name="configuration" column="configuration" type="json" nullable="true"/>
     </mapped-superclass>

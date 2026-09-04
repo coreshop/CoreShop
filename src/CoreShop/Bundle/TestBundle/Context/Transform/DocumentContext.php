@@ -19,7 +19,6 @@ namespace CoreShop\Bundle\TestBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
-use Pimcore\Bundle\NewsletterBundle\Model\Document\Newsletter;
 use Pimcore\Model\Document;
 use Webmozart\Assert\Assert;
 
@@ -127,18 +126,6 @@ final class DocumentContext implements Context
     }
 
     /**
-     * @Transform /^document-newsletter "([^"]+)"$/
-     */
-    public function getDocumentNewsletterByFullPath(string $fullPath): Newsletter
-    {
-        $document = Newsletter::getByPath($fullPath);
-
-        Assert::isInstanceOf($document, Newsletter::class);
-
-        return $document;
-    }
-
-    /**
      * @Transform /^document/
      */
     public function document(): Document
@@ -218,18 +205,6 @@ final class DocumentContext implements Context
         $document = $this->sharedStorage->get('document');
 
         Assert::isInstanceOf($document, Document\Folder::class);
-
-        return $document;
-    }
-
-    /**
-     * @Transform /^document-newsletter/
-     */
-    public function documentNewsletter(): Newsletter
-    {
-        $document = $this->sharedStorage->get('document');
-
-        Assert::isInstanceOf($document, Newsletter::class);
 
         return $document;
     }

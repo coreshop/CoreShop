@@ -250,5 +250,6 @@ services:
         class: CoreShop\Behat\Context\Domain\ResourceContext
         arguments:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: fob.context_service }

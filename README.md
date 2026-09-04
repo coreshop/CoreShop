@@ -19,7 +19,7 @@ transcends ordinary transactions.
 
 # Pimcore Studio UI
 
-CoreShop 5.0 ships with a fully rewritten admin interface built on **Pimcore Studio v2** (React/TypeScript). Each CoreShop bundle provides its own Studio plugin using Module Federation, allowing independent development and deployment.
+CoreShop 2026.x ships with a fully rewritten admin interface built on **Pimcore Studio** (React/TypeScript). Each CoreShop bundle provides its own Studio plugin using Module Federation, allowing independent development and deployment.
 
 ```bash
 # Install frontend dependencies
@@ -36,7 +36,7 @@ The build system auto-discovers all bundles with Studio assets under `src/CoreSh
 
 # Requirements
 
-- Pimcore `^12.3`
+- Pimcore `^2026.2`
 
 # Installation
 

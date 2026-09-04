@@ -36,8 +36,6 @@ monolog:
         console:
             channels: ['!event', '!doctrine', '!console', '!cache']
 
-pimcore_static_routes:
-    config_location:
-        staticroutes:
-            write_target:
-                type: settings-store
+core_shop_resource:
+    translation:
+        locale_column_length: 8

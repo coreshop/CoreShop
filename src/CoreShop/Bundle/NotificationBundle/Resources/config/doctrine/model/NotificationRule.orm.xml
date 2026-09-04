@@ -8,8 +8,8 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="name" column="name"/>
-        <field name="type" column="type" nullable="true"/>
+        <field name="name" column="name" type="string" length="255"/>
+        <field name="type" column="type" nullable="true" type="string" length="255"/>
         <field name="active" column="active" type="boolean"/>
         <field name="sort" column="sort" type="integer"/>
 

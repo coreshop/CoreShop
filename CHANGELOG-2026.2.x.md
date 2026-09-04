@@ -1,0 +1,320 @@
+## 2026.2.1
+
+### Telemetry ping and license check
+
+CoreShop now sends an anonymous ping to the CoreShop license portal once every 24 hours through the Pimcore
+maintenance task `coreshop_telemetry`. It transmits a hashed instance identifier, the configured domains, CoreShop,
+Pimcore and PHP versions and the list of installed CoreShop packages and Pimcore bundles. No customer or content data
+is sent. The subscription token contributed by `coreshop/enterprise-subscription-bundle` is transmitted as a SHA-256
+hash only.
+
+- Added `CoreShop\Component\Core\Telemetry\TelemetryDataProviderInterface` (tag `coreshop.telemetry.provider`),
+  `TelemetryPingerInterface`, `TelemetryResultStorageInterface` and `InstanceIdentifierProviderInterface`.
+- Added the console command `coreshop:telemetry:ping [--dump]`.
+- Added the configuration node `core_shop_core.telemetry` (`enabled`, `endpoint`, `timeout`). Opt out with
+  `CORESHOP_TELEMETRY=false`. The previously unused `send_usage_log` option is superseded by `telemetry.enabled`.
+- See [Telemetry and License Check](docs/01_Getting_Started/05_Telemetry.md).
+
+### Version scheme aligned with Pimcore
+
+CoreShop switches from semantic versioning to Pimcore's year-based scheme. The previous line (`5.x`)
+remains the last semver release and continues to receive maintenance; all new development targets
+`2026.1` and up.
+
+### Pimcore 2026.1 minimum requirement
+
+All CoreShop components and bundles now require **`pimcore/pimcore: ^2026.1`**. Companion bundles
+(`pimcore/studio-ui-bundle`, `pimcore/studio-backend-bundle`, `pimcore/generic-data-index-bundle`)
+are likewise bumped to `^2026.1`.
+
+### Classic Admin / ExtJS removed
+
+Pimcore Classic Admin (ExtJS) support is removed. CoreShop 2026.1 targets **Pimcore Studio exclusively**.
+
+Removed:
+
+- All `Resources/public/pimcore/` ExtJS asset trees (~480 JS/CSS files across 22 bundles).
+- All `AdminClass/` namespaces (grid column operators, admin-JS injection listeners, admin-grid filter
+  listeners, the Pimcore Grid Config Installer).
+- All `classic_admin.yml` service files and the conditional `PimcoreAdminBundle` loading blocks in
+  bundle extensions.
+- `pimcore_admin` configuration section from `CoreShopPimcoreExtension` and all bundle `Configuration`
+  classes, plus the `registerPimcoreResources()` helper on `AbstractPimcoreExtension`.
+- `CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface`, `AsGridFilter` attribute,
+  `RegisterGridFilterPass` compiler pass, `GridConfigInstaller` / `GridConfigInstallerInterface`.
+- `CoreShop\Bundle\PimcoreBundle\Controller\Admin\*` controllers. Studio-facing actions were moved to
+  `CoreShop\Bundle\PimcoreBundle\Controller\{DynamicDropdown,Grid}Controller`.
+- ExtJS menu rendering (`coreshop_menu` route, `menu.js.twig`, `JsonRenderer`). The Studio menu API
+  (`coreshop_menu_api`, `StudioRenderer`) is unchanged.
+- `pimcore/admin-ui-classic-bundle` suggest entries from all bundle `composer.json`.
+- Classic Admin firewall / ACL / role hierarchy scaffolding in `config/packages/security.yaml`.
+
+If you have project code referencing any of these symbols, see the migration notes in the
+upgrade guide.
+
+### Studio extension points unchanged
+
+The following Studio APIs, routes, and registries continue to work as in `5.1`:
+
+- `GET /pimcore-studio/api/coreshop/grid/studio-filters/{listType}`
+- `GET /pimcore-studio/api/coreshop/grid/actions/{listType}`
+- `POST /pimcore-studio/api/coreshop/grid/apply-action`
+- `/pimcore-studio/api/coreshop/dynamic-dropdown/{options,methods}`
+- `/pimcore-studio/api/coreshop/menus`
+- The seven entity extension types (form / table-column / save-decorator / tab / action / validation /
+  lifecycle) and all dynamic type registrations.
+
+### Static routes migrated to native Symfony routing (opt-in)
+
+CoreShop no longer depends on the deprecated `pimcore/static-routes-bundle`. The ~40 frontend shop
+routes previously defined in `FrontendBundle/Resources/install/pimcore/staticroutes.yml` and written
+into Pimcore's `settings-store` on install are now declared as native Symfony routes under
+`FrontendBundle/Resources/config/routes/`, split per URL topic (`shop/index.yaml`,
+`shop/cart.yaml`, `shop/catalog.yaml`, `shop/checkout.yaml`, `shop/customer.yaml`, `shop/wishlist.yaml`,
+`partial.yaml`).
+
+**Routes are opt-in.** The bundle no longer auto-registers them via Pimcore's `pimcore_bundle` route
+loader. Projects must explicitly import them in their own `config/routes.yaml`:
+
+```yaml
+coreshop_frontend:
+    resource: "@CoreShopFrontendBundle/Resources/config/routes.yaml"
+```
+
+Projects with a custom storefront can skip the top-level import and cherry-pick only the sub-files
+they want (e.g. `routes/shop/cart.yaml` without `routes/shop/checkout.yaml`). See the Installation
+Guide for details.
+
+Additional effects:
+
+- Installing CoreShop no longer runs a route-installation step; the Symfony router picks the routes
+  up at cache warm-up.
+- `PimcoreRoutesInstaller`, `RouteConfiguration`, and the `coreshop.resource.installer.routes`
+  service definition are removed.
+- `PimcoreStaticRoutesBundle` is removed from `config/bundles.php` and from the conditional
+  registration in `CoreShopResourceBundle::registerDependentBundles()`.
+- `LocaleSwitcherExtension` no longer calls `Staticroute::getByName()` — it inspects the current
+  route's compiled parameters via `RouterInterface::getRouteCollection()`.
+- The `pimcore_wishlist_summary` path previously exposed both `/{_locale}/shop/wishlist` and
+  `/{_locale}/shop/wishlist/{identifier}` under one name. The identifier variant is now a separate
+  route, `coreshop_wishlist_summary_identifier`. Existing twig/template callers pass no identifier
+  and are unaffected.
+- Route names and reverse URLs are preserved 1:1 — no template or redirect URL change is required.
+
+### Documentation
+
+Developer docs covering `rule-engine`, `payment-provider`, `menu-bundle`, `form-extension`, and
+`order-detail` extension have been rewritten to use Studio patterns (StudioFormBundle schema,
+TabExtension / ActionExtension slots). ExtJS code samples were removed.
+
+### Studio builds ship as archives
+
+The Studio frontend build of every bundle is now committed as a single archive,
+`Resources/build-dist/build-<id>.zip`, instead of the expanded `Resources/public/studio/<id>/`
+directory (Pimcore's build archive model, see pimcore/studio-ui-bundle#3779). Pimcore's
+`BuildArchiveExtractor` unpacks it into `Resources/public/studio` during `cache:warmup`; the
+entry point providers implement `BuildArchiveProviderInterface`. Requires
+`pimcore/studio-ui-bundle` ^2026.2.1.
+
+> **Deployment:** read-only filesystem deployments must run `bin/console cache:warmup` (or
+> `cache:clear`) during the build/deploy phase while `vendor/` is still writable — standard
+> Pimcore deployments already do this. When `assets:install` runs in copy mode, run
+> `cache:warmup` before it.
+
+## 2026.2.0
+
+> There is no final `2026.1.0`. The `2026.1.0-beta.1` pre-release targeted Pimcore 2026.1, but the
+> minimum requirement was raised to Pimcore 2026.2 before the line went stable (see below), and under
+> the year-based scheme the CoreShop minor now follows the Pimcore minor it is built against.
+
+### Version scheme aligned with Pimcore
+
+CoreShop switches from semantic versioning to Pimcore's year-based scheme. The previous line (`5.x`)
+remains the last semver release and continues to receive maintenance; all new development targets
+`2026.1` and up.
+
+### Pimcore 2026.2 minimum requirement
+
+All CoreShop components and bundles now require **`pimcore/pimcore: ^2026.2`**. Companion bundles
+(`pimcore/studio-ui-bundle`, `pimcore/studio-backend-bundle`, `pimcore/generic-data-index-bundle`,
+`pimcore/opensearch-client`) are likewise bumped to `^2026.2`.
+
+The floor tracks the Pimcore Studio SDK that CoreShop's Studio plugins are built and tested against.
+Pimcore removes exported symbols between minor versions, so declaring a minimum older than the SDK we
+build against would let Composer install a Pimcore that cannot load the shipped Studio bundles.
+
+### Classic Admin / ExtJS removed
+
+Pimcore Classic Admin (ExtJS) support is removed. CoreShop 2026.1 targets **Pimcore Studio exclusively**.
+
+Removed:
+
+- All `Resources/public/pimcore/` ExtJS asset trees (~480 JS/CSS files across 22 bundles).
+- All `AdminClass/` namespaces (grid column operators, admin-JS injection listeners, admin-grid filter
+  listeners, the Pimcore Grid Config Installer).
+- All `classic_admin.yml` service files and the conditional `PimcoreAdminBundle` loading blocks in
+  bundle extensions.
+- The classic-admin asset keys of the `pimcore_admin` configuration section (`js`, `css`, `editmode_js`,
+  `editmode_css`), along with the installers behind the `grid_config` and `routes` install types. The
+  section itself and the `registerPimcoreResources()` helper on `AbstractPimcoreExtension` remain, and
+  still carry the backend-relevant `permissions` and `install` declarations — see "Backend declarations
+  kept" below.
+- `CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface`, `AsGridFilter` attribute,
+  `RegisterGridFilterPass` compiler pass, `GridConfigInstaller` / `GridConfigInstallerInterface`.
+- `CoreShop\Bundle\PimcoreBundle\Controller\Admin\*` controllers. Studio-facing actions were moved to
+  `CoreShop\Bundle\PimcoreBundle\Controller\{DynamicDropdown,Grid}Controller`.
+- ExtJS menu rendering (`coreshop_menu` route, `menu.js.twig`, `JsonRenderer`). The Studio menu API
+  (`coreshop_menu_api`, `StudioRenderer`) is unchanged.
+- `pimcore/admin-ui-classic-bundle` suggest entries from all bundle `composer.json`.
+- Classic Admin firewall / ACL / role hierarchy scaffolding in `config/packages/security.yaml`.
+
+If you have project code referencing any of these symbols, see the migration notes in the
+upgrade guide.
+
+### Backend declarations kept: `pimcore_admin` and `registerPimcoreResources()`
+
+Despite its name, the `pimcore_admin` configuration section was never only about the classic admin. Besides
+the ExtJS asset keys it carries the declarations that drive the resource installers, and those are unrelated
+to the admin UI:
+
+- `permissions` — the Pimcore user-permission definitions installed by `PimcorePermissionInstaller`.
+- `install.documents` / `install.image_thumbnails` / `install.sql` — installed by
+  `PimcoreDocumentsInstaller`, `PimcoreImageThumbnailsInstaller` and `SqlInstaller`.
+
+The section and the `registerPimcoreResources()` helper therefore stay. Only the classic-admin keys are gone,
+and they are *ignored* rather than rejected, so a bundle that still declares `js` / `css` alongside its
+`permissions` keeps working on 2026.x with no changes to its `Configuration` class or its extension.
+
+The section name is kept as `pimcore_admin` for backwards compatibility, even though it is now a purely
+historical name. This is deliberate and permanent: there is no rename, no alias and no deprecation, because
+bundles outside the core declare `pimcore_admin: { permissions: [...] }` and call `registerPimcoreResources()`
+verbatim and must keep working. The same goes for the method name.
+
+See `docs/03_Bundles/Resource_Bundle/06_User_Permissions.md`.
+
+### Studio extension points unchanged
+
+The following Studio APIs, routes, and registries continue to work as in `5.1`:
+
+- `GET /pimcore-studio/api/coreshop/grid/studio-filters/{listType}`
+- `GET /pimcore-studio/api/coreshop/grid/actions/{listType}`
+- `POST /pimcore-studio/api/coreshop/grid/apply-action`
+- `/pimcore-studio/api/coreshop/dynamic-dropdown/{options,methods}`
+- `/pimcore-studio/api/coreshop/menus`
+- The seven entity extension types (form / table-column / save-decorator / tab / action / validation /
+  lifecycle) and all dynamic type registrations.
+
+### Static routes migrated to native Symfony routing (opt-in)
+
+CoreShop no longer depends on the deprecated `pimcore/static-routes-bundle`. The ~40 frontend shop
+routes previously defined in `FrontendBundle/Resources/install/pimcore/staticroutes.yml` and written
+into Pimcore's `settings-store` on install are now declared as native Symfony routes under
+`FrontendBundle/Resources/config/routes/`, split per URL topic (`shop/index.yaml`,
+`shop/cart.yaml`, `shop/catalog.yaml`, `shop/checkout.yaml`, `shop/customer.yaml`, `shop/wishlist.yaml`,
+`partial.yaml`).
+
+**Routes are opt-in.** The bundle no longer auto-registers them via Pimcore's `pimcore_bundle` route
+loader. Projects must explicitly import them in their own `config/routes.yaml`:
+
+```yaml
+coreshop_frontend:
+    resource: "@CoreShopFrontendBundle/Resources/config/routes.yaml"
+```
+
+Projects with a custom storefront can skip the top-level import and cherry-pick only the sub-files
+they want (e.g. `routes/shop/cart.yaml` without `routes/shop/checkout.yaml`). See the Installation
+Guide for details.
+
+Additional effects:
+
+- Installing CoreShop no longer runs a route-installation step; the Symfony router picks the routes
+  up at cache warm-up.
+- `PimcoreRoutesInstaller`, `RouteConfiguration`, and the `coreshop.resource.installer.routes`
+  service definition are removed.
+- `PimcoreStaticRoutesBundle` is removed from `config/bundles.php` and from the conditional
+  registration in `CoreShopResourceBundle::registerDependentBundles()`.
+- `LocaleSwitcherExtension` no longer calls `Staticroute::getByName()` — it inspects the current
+  route's compiled parameters via `RouterInterface::getRouteCollection()`.
+- The `pimcore_wishlist_summary` path previously exposed both `/{_locale}/shop/wishlist` and
+  `/{_locale}/shop/wishlist/{identifier}` under one name. The identifier variant is now a separate
+  route, `coreshop_wishlist_summary_identifier`. Existing twig/template callers pass no identifier
+  and are unaffected.
+- Route names and reverse URLs are preserved 1:1 — no template or redirect URL change is required.
+
+### Documentation
+
+Developer docs covering `rule-engine`, `payment-provider`, `menu-bundle`, `form-extension`, and
+`order-detail` extension have been rewritten to use Studio patterns (StudioFormBundle schema,
+TabExtension / ActionExtension slots). ExtJS code samples were removed.
+
+### Configurable translation `locale` column length
+
+`ORMTranslatableListener` hardcoded the Doctrine ORM mapping for every `*_translation` entity's
+`locale` column to `length: 5`. This is too short for any locale identifier beyond a plain
+`language_REGION` code.
+
+A [BCP 47 / RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html) language tag (Pimcore/ICU locale
+strings use `_` instead of `-`, but the subtag rules are the same) is built as:
+
+```
+language ["-" script] ["-" region] *("-" variant)
+```
+
+- `language`: 2–3 letters (rarely up to 8 for registered/reserved tags)
+- `script`: **exactly 4 letters** (ISO 15924), e.g. `Hans`, `Hant`, `Cyrl`, `Latn`
+- `region`: 2 letters (ISO 3166-1) or 3 digits (UN M49)
+- `variant`: 5–8 alphanumeric chars, or 1 digit + 3 alphanumeric chars, and — per the `*("-" variant)`
+  grammar in [RFC 5646 §2.2.5](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.5) — a tag can
+  carry **any number of them**. There is no fixed maximum tag length; `5` (or any other single value)
+  is only ever a practical choice for the locales a given project actually uses, never a technically
+  correct upper bound.
+
+Real-world examples already longer than 5 characters:
+
+- `zh_Hans` / `zh_Hant` — 7 chars (script only, no region)
+- `zh_Hant_HK`, `zh_Hant_TW`, `zh_Hans_SG` — 10 chars (script + region)
+- `sr_Cyrl_RS` / `sr_Latn_RS` — 10 chars (Serbian, Cyrillic vs. Latin, Serbia)
+- `uz_Cyrl_UZ` / `uz_Latn_UZ` — 10 chars (Uzbek)
+- `pa_Arab_PK` / `pa_Guru_IN` — 10 chars (Punjabi, Shahmukhi vs. Gurmukhi script)
+- `de_DE_1901` — 10 chars (German, traditional 1901 orthography *variant*, not a script)
+
+All of these are real ICU/CLDR locale IDs — the same data source Symfony's
+[Intl component](https://symfony.com/doc/current/components/intl.html) (and by extension Pimcore's
+locale list) draws from, and the identifier grammar itself comes from
+[Unicode UTS #35](https://www.unicode.org/reports/tr35/#Identifiers). `zh_Hans` / `zh_Hant` are only
+the example that was hit in practice — MySQL silently truncated them to `zh_Ha`, which then collided
+with the `(translatable_id, locale)` unique constraint and caused a duplicate-key error on insert.
+
+The column length is now configurable:
+
+```yaml
+core_shop_resource:
+    translation:
+        locale_column_length: 8
+```
+
+**The default stays `5`** — this is opt-in. If you raise it, you are responsible for a migration:
+changing this value only updates Doctrine's *mapping metadata* for newly created schemas. It does
+**not** alter any already-created database column. You must ship your own
+`ALTER TABLE ... MODIFY locale VARCHAR(<n>)` migration for every existing `*_translation` table, or
+inserts will keep failing/truncating against the old column width.
+
+### What's Changed
+
+* All changes merged from 5.1.*
+* [Dependabot] target version updates at 5.1 branch by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3073
+* [Dependabot] cover split packages & target both 5.0 and 5.1 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3093
+* chore: trigger Studio frontend build by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3107
+* [Security] fix pull_request_target workflow injection (pwn request) by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3117
+* Treat PHP deprecations the way Pimcore does and drop the react/promise conflict by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3148
+* Make TestBundle pages compatible with page-object-extension ^0.3 and ^0.4 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3150
+* 2026.x: install profile for the external bundles' test apps by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3152
+* [TestBundle] fix standalone PHPStan: add studio packages to require-dev by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3158
+* [CI] Use pull_request_target so fork PRs get the CI secrets by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3161
+* [CI] Opt in to fork PR checkout for pull_request_target workflows by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3162
+* Make locale column length configurable by @astehlik in https://github.com/coreshop/CoreShop/pull/3160
+* [TestBundle] drop pimcore/newsletter-bundle coupling by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3166
+* Restore the backend half of pimcore_admin that the classic admin removal took with it by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3169
+* Merge in the upmerge workflow and auto-resolve Studio artifact conflicts by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3186
+* Raise the Studio UI SDK pin to 2026.2.5 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3192
+* Raise the Pimcore floor to ^2026.2 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3190

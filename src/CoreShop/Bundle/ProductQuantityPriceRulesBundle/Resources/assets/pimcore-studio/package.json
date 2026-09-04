@@ -18,7 +18,7 @@
     "@coreshop/studio-form": "*"
   },
   "peerDependencies": {
-    "@pimcore/studio-ui-bundle": "2025.4.13",
+    "@pimcore/studio-ui-bundle": "2026.2.5",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.0",
     "immer": "^10.1.1",

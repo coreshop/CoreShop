@@ -37,8 +37,11 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
-        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         $this->registerStack('coreshop', $configs['stack'], $container);
+
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
+        }
 
         $container->setParameter('coreshop.customer.security.login_identifier', $configs['login_identifier']);
 

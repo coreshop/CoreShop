@@ -52,8 +52,8 @@ final class Configuration implements ConfigurationInterface
         ;
 
         $this->addCategorySection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
         $this->addControllerSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -115,11 +115,6 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()
                         ->children()
-                            ->arrayNode('routes')
-                                ->treatNullLike([])
-                                ->scalarPrototype()->end()
-                                ->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/staticroutes.yml'])
-                            ->end()
                             ->arrayNode('documents')
                                 ->treatNullLike([])
                                 ->scalarPrototype()->end()
