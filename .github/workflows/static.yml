@@ -27,6 +27,13 @@ on:
   schedule:
     - cron: "0 1 * * 1"
 
+# A newer push to the same pull request or branch supersedes the run that is still going: the
+# older run would only report on a commit nobody looks at any more. The event name is part of the
+# group so that a release or the weekly schedule is never cancelled by a push on the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

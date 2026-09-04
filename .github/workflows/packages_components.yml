@@ -14,6 +14,12 @@ on:
     types: [ created ]
   schedule:
     - cron: "0 1 * * 1"
+# A newer push to the same pull request or branch supersedes the run that is still going; the
+# event name keeps a release or the weekly schedule from being cancelled by a push on the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 env:
   PIMCORE_SECRET: ${{ secrets.PIMCORE_SECRET }}
   PIMCORE_INSTALL_ENCRYPTION_SECRET: ${{ secrets.PIMCORE_SECRET }}
@@ -39,23 +45,40 @@ jobs:
 
       - name: "List Packages"
         id: create-list
-        run: echo "packages=$(find src/CoreShop/Component -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)" >> $GITHUB_OUTPUT
+        # A job per package spends more time checking out the repository and setting up PHP than
+        # it spends on the package itself, and it puts one check per package on every pull
+        # request. The packages are handed out in chunks instead: the same work, a fraction of
+        # the setup, and a check list that can still be read.
+        run: |
+          chunks=$(find src/CoreShop/Component -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; \
+            | sed -e 's/src\/CoreShop\///g' \
+            | sort \
+            | jq --raw-input . \
+            | jq --slurp --compact-output --argjson size "$CHUNK_SIZE" \
+              '[range(0; length; $size) as $i | {index: ($i / $size + 1 | floor), packages: (.[$i:$i + $size] | join(" "))}]')
+
+          echo "chunks=$chunks" >> "$GITHUB_OUTPUT"
+          echo "$chunks" | jq .
+        env:
+          # Chunks run in parallel, the packages within a chunk one after another. Larger chunks
+          # save setup time and shorten the check list; smaller ones use more runners at once.
+          CHUNK_SIZE: 8
 
     outputs:
-      packages: "${{ steps.create-list.outputs.packages }}"
+      chunks: "${{ steps.create-list.outputs.chunks }}"
 
   test-packages:
     needs: list
     if: github.repository == 'coreshop/CoreShop'
     runs-on: ubuntu-latest
-    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}, Deps ${{ matrix.dependencies }}"
+    name: "Chunk ${{ matrix.chunk.index }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}, Deps ${{ matrix.dependencies }}"
     strategy:
       fail-fast: false
       matrix:
         php: [ 8.3, 8.4 ]
         pimcore: [ ^12.3 ]
         dependencies: [ highest, lowest ]
-        package: "${{ fromJson(needs.list.outputs.packages) }}"
+        chunk: "${{ fromJson(needs.list.outputs.chunks) }}"
         exclude:
           - php: 8.4
             dependencies: lowest
@@ -80,37 +103,45 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php }}-pimcore-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.dependencies }}-packages-${{ hashFiles('src/CoreShop/Component/*/composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-
-            ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-
+            ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.dependencies }}-packages-
+            ${{ runner.os }}-php-${{ matrix.php }}-
 
-      - name: Validate composer.json
-        run: composer validate --ansi --strict
-        working-directory: "src/CoreShop/${{ matrix.package }}"
-
-      - name: pimcore/pimcore
-        run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        env:
-          COMPOSER_ROOT_VERSION: dev-master
-        working-directory: "src/CoreShop/${{ matrix.package }}"
-
-      - if: matrix.dependencies == 'highest'
-        name: Install dependencies highest
-        run: composer update --no-progress --prefer-dist --optimize-autoloader
-        env:
-          COMPOSER_ROOT_VERSION: dev-master
-        working-directory: "src/CoreShop/${{ matrix.package }}"
-
-      - if: matrix.dependencies == 'lowest'
-        name: Install dependencies lowest
-        run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
-        env:
-          COMPOSER_ROOT_VERSION: dev-master
-        working-directory: "src/CoreShop/${{ matrix.package }}"
-
-      - name: STAN
+      - name: Validate, install and analyse
+        # Every package of the chunk is checked even when an earlier one failed, so one broken
+        # package does not hide the state of the rest behind another round trip.
         run: |
-          cp ../../../../phpstan-package.neon phpstan.neon
-          vendor/bin/phpstan analyse -c phpstan.neon . -l 3
-        working-directory: "src/CoreShop/${{ matrix.package }}"
+          status=0
+
+          for package in ${{ matrix.chunk.packages }}; do
+            echo "::group::$package"
+
+            (
+              set -e
+
+              cd "src/CoreShop/$package"
+
+              composer validate --ansi --strict
+              composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+
+              if [ "${{ matrix.dependencies }}" = 'lowest' ]; then
+                composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
+              else
+                composer update --no-progress --prefer-dist --optimize-autoloader
+              fi
+
+              cp ../../../../phpstan-package.neon phpstan.neon
+              vendor/bin/phpstan analyse -c phpstan.neon . -l 3
+            ) || status=1
+
+            # Each package installs its own copy of Pimcore; a whole chunk of them at once does
+            # not fit on the runner.
+            rm -rf "src/CoreShop/$package/vendor"
+
+            echo "::endgroup::"
+          done
+
+          exit $status
+        env:
+          COMPOSER_ROOT_VERSION: dev-main

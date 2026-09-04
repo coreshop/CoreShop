@@ -23,6 +23,13 @@ on:
   schedule:
     - cron: "0 1 * * 1"
 
+# A newer push to the same pull request or branch supersedes the run that is still going: the
+# older run would only report on a commit nobody looks at any more. The event name is part of the
+# group so that a release or the weekly schedule is never cancelled by a push on the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 env:
   APP_ENV: "test"
   CORESHOP_SKIP_DB_SETUP: "1"
@@ -51,16 +58,16 @@ jobs:
     continue-on-error: ${{ matrix.allow-failure }}
 
     strategy:
+      fail-fast: false
       matrix:
-        include:
-          - php: 8.3
-            pimcore: ^12.3
-            dependencies: highest
-            allow-failure: false
-          - php: 8.4
-            pimcore: ^12.3
-            dependencies: highest
-            allow-failure: false
+        php: [ 8.3, 8.4 ]
+        pimcore: [ ^12.3 ]
+        dependencies: [ highest ]
+        allow-failure: [ false ]
+        # The suites are spread over the shards by scenario count. More shards only help while no
+        # single suite is longer than an even share, and the cart suite alone holds a good quarter of all domain scenarios — it is the
+        # floor. Keep this list and the `--shards` argument of the Behat step in sync.
+        shard: [ 1, 2, 3, 4 ]
 
     services:
       database:
@@ -81,7 +88,7 @@ jobs:
         ports:
           - 9200:9200
 
-    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}, Shard ${{ matrix.shard }}/4"
 
     steps:
       - uses: actions/checkout@v7
@@ -159,4 +166,26 @@ jobs:
           bin/console coreshop:install
 
       - name: Run Behat
-        run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default
+        run: |
+          suites=$(php .github/bin/behat-shard.php --profile=default --shard=${{ matrix.shard }} --shards=4)
+
+          if [ -z "$suites" ]; then
+            echo "No suites assigned to this shard."
+
+            exit 0
+          fi
+
+          # Behat takes a single --suite, so a shard runs its suites one after the other. Each of
+          # them runs even when an earlier one failed: stopping at the first failure would hide
+          # the rest of the shard's scenarios behind another round trip.
+          status=0
+
+          for suite in $suites; do
+            echo "::group::behat --suite=$suite"
+
+            vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default --suite "$suite" || status=1
+
+            echo "::endgroup::"
+          done
+
+          exit $status
