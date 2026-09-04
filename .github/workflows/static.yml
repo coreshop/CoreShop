@@ -27,6 +27,13 @@ on:
   schedule:
     - cron: "0 1 * * 1"
 
+# A newer push to the same pull request or branch supersedes the run that is still going: the
+# older run would only report on a commit nobody looks at any more. The event name is part of the
+# group so that a release or the weekly schedule is never cancelled by a push on the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -59,7 +66,13 @@ jobs:
           MYSQL_DATABASE: coreshop_test
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        # Installing the Pimcore class definitions issues hundreds of CREATE/ALTER TABLE
+        # statements, and every one of them waits on an fsync. The test database lives and dies
+        # with the job, so it has no business touching the disk at all — a RAM disk takes the
+        # durability cost out of the DDL and out of the scenarios that write through it.
+        options: >-
+          --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          --tmpfs /var/lib/mysql:rw,noexec,nosuid,size=2g
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
