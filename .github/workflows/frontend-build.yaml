@@ -16,7 +16,7 @@ name: CoreShop Studio Frontend Build
 # the monorepo split that has to pick the archives up.
 on:
   pull_request:
-    branches: [ '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
       - 'package.json'
@@ -34,7 +34,7 @@ on:
   # same commit that cancels the first one in the concurrency group below, and
   # the cancelled run counts as a failed check.
   push:
-    branches: [ '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'src/CoreShop/Bundle/*/Resources/assets/pimcore-studio/**'
       - 'package.json'

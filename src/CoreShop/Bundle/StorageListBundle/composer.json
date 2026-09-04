@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "coreshop/resource-bundle": "^5.1",
-        "coreshop/storage-list": "^5.1"
+        "coreshop/resource-bundle": "^2026.1",
+        "coreshop/storage-list": "^2026.1"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
@@ -47,8 +47,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.1-dev",
-            "dev-master": "5.1-dev"
+            "dev-main": "2026.x-dev"
         }
     }
 }

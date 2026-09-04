@@ -1,11 +1,3 @@
-coreshop_menu:
-    path:     /{backend}/coreshop/{type}/menu.js
-    requirements:
-        backend: '%coreshop.admin.route.backend_requirement%'
-    defaults:
-        backend: admin
-        _controller: CoreShop\Bundle\MenuBundle\Controller\MenuController::menuAction
-
 coreshop_menu_api:
     path:     /{backend}/coreshop/menus
     requirements:
@@ -13,4 +5,3 @@ coreshop_menu_api:
     defaults:
         backend: admin
         _controller: CoreShop\Bundle\MenuBundle\Controller\MenuController::jsonAction
-

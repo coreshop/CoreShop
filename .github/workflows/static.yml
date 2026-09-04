@@ -1,7 +1,7 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'
@@ -11,8 +11,8 @@ on:
       - '*.xml'
       - 'composer.json'
       - '.github/workflows/static.yml'
-  pull_request:
-    branches: [ '5.0', '5.1' ]
+  pull_request_target:
+    branches: [ '2026.x' ]
     paths:
       - 'features/**'
       - 'behat.yml.dist'
@@ -49,14 +49,18 @@ env:
 
 jobs:
   lint:
+    # `release` and `schedule` always run the workflow file from the default branch, so this job
+    # also fires for releases of the other lines. Only tags of this line are checked here; the
+    # other lines have their own copy of this workflow.
+    if: ${{ github.event_name != 'release' || startsWith(github.event.release.tag_name, '2026.') }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ 8.3, 8.4 ]
-        pimcore: [ ^12.3 ]
+        php: [ 8.4, 8.5 ]
+        pimcore: [ ^2026.2 ]
         dependencies: [ highest, lowest ]
         exclude:
-          - php: 8.4
+          - php: 8.5
             dependencies: lowest
     services:
       database:
@@ -78,8 +82,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # On `schedule` the workflow runs from the default branch and `github.sha` is that
+          # branch's head, not this line's — check the line's branch out explicitly. Releases
+          # (the tag) and pushes keep `github.sha`, pull requests their head commit.
+          ref: ${{ github.event.pull_request.head.sha || (github.event_name == 'schedule' && '2026.x') || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          allow-unsafe-pr-checkout: true
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2

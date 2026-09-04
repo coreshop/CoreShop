@@ -1,12 +1,12 @@
 name: Packages Components
 on:
   push:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
   pull_request:
-    branches: [ '5.0', '5.1' ]
+    branches: [ '2026.x' ]
     paths:
       - 'src/CoreShop/Component/**'
       - '.github/workflows/packages_components.yml'
@@ -33,14 +33,20 @@ permissions:
 
 jobs:
   list:
-    if: github.repository == 'coreshop/CoreShop'
+    # `release` and `schedule` always run the workflow file from the default branch, so this job
+    # also fires for releases of the other lines. Only tags of this line are checked here; the
+    # other lines have their own copy of this workflow.
+    if: ${{ github.repository == 'coreshop/CoreShop' && (github.event_name != 'release' || startsWith(github.event.release.tag_name, '2026.')) }}
     runs-on: ubuntu-latest
     name: "Create a list of packages"
 
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # On `schedule` the workflow runs from the default branch and `github.sha` is that
+          # branch's head, not this line's — check the line's branch out explicitly. Releases
+          # (the tag) and pushes keep `github.sha`, pull requests their head commit.
+          ref: ${{ github.event.pull_request.head.sha || (github.event_name == 'schedule' && '2026.x') || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: "List Packages"
@@ -75,18 +81,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.3, 8.4 ]
-        pimcore: [ ^12.3 ]
+        php: [ 8.4, 8.5 ]
+        pimcore: [ ^2026.2 ]
         dependencies: [ highest, lowest ]
         chunk: "${{ fromJson(needs.list.outputs.chunks) }}"
         exclude:
-          - php: 8.4
+          - php: 8.5
             dependencies: lowest
 
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # On `schedule` the workflow runs from the default branch and `github.sha` is that
+          # branch's head, not this line's — check the line's branch out explicitly. Releases
+          # (the tag) and pushes keep `github.sha`, pull requests their head commit.
+          ref: ${{ github.event.pull_request.head.sha || (github.event_name == 'schedule' && '2026.x') || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: Install PHP

@@ -9,8 +9,8 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="name" column="name" />
-        <field name="template" column="template" />
+        <field name="name" column="name" type="string" length="255" />
+        <field name="template" column="template" type="string" length="255" />
         <field name="isDefault" column="isDefault" type="boolean"/>
         <field name="siteId" column="siteId" type="integer"/>
 
