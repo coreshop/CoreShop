@@ -193,7 +193,7 @@ jobs:
 
       - name: Run Behat
         run: |
-          suites=$(php .github/bin/behat-shard.php --profile=ui --shard=${{ matrix.shard }} --shards=4)
+          suites=$(php -d display_errors=stderr .github/bin/behat-shard.php --profile=ui --shard=${{ matrix.shard }} --shards=4)
 
           if [ -z "$suites" ]; then
             echo "No suites assigned to this shard."
