@@ -52,6 +52,7 @@
         "coreshop/wishlist-bundle": "^5.1",
         "coreshop/messenger-bundle": "^5.1",
         "coreshop/class-definition-patch-bundle": "^5.1",
+        "coreshop/telemetry-bundle": "^5.1",
         "coreshop/core": "^5.1",
         "doctrine/data-fixtures": "^1.5",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
