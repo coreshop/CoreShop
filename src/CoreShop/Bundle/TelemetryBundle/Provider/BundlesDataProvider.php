@@ -15,10 +15,10 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Telemetry\Provider;
+namespace CoreShop\Bundle\TelemetryBundle\Provider;
 
 use Composer\InstalledVersions;
-use CoreShop\Component\Core\Telemetry\TelemetryDataProviderInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryDataProviderInterface;
 
 /**
  * Reports every installed CoreShop package plus every package of type

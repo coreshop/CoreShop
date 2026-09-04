@@ -2,16 +2,18 @@
 
 ### Telemetry ping and license check
 
-CoreShop now sends an anonymous ping to the CoreShop license portal once every 24 hours through the Pimcore
-maintenance task `coreshop_telemetry`. It transmits a hashed instance identifier, the configured domains, CoreShop,
+The new `coreshop/telemetry-bundle` (`CoreShopTelemetryBundle`, registered by `CoreShopCoreBundle` and usable
+without it on installations that only run single CoreShop bundles) sends an anonymous ping to the CoreShop license
+portal once every 24 hours through the Pimcore maintenance task `coreshop_telemetry`. It transmits a hashed instance identifier (plus Pimcore's instance identifier in clear text, so installations can
+be matched with Pimcore's product registration), the configured domains, CoreShop,
 Pimcore and PHP versions and the list of installed CoreShop packages and Pimcore bundles. No customer or content data
 is sent. The subscription token contributed by `coreshop/enterprise-subscription-bundle` is transmitted as a SHA-256
 hash only.
 
-- Added `CoreShop\Component\Core\Telemetry\TelemetryDataProviderInterface` (tag `coreshop.telemetry.provider`),
+- Added `CoreShop\Bundle\TelemetryBundle\Contract\TelemetryDataProviderInterface` (tag `coreshop.telemetry.provider`),
   `TelemetryPingerInterface`, `TelemetryResultStorageInterface` and `InstanceIdentifierProviderInterface`.
 - Added the console command `coreshop:telemetry:ping [--dump]`.
-- Added the configuration node `core_shop_core.telemetry` (`enabled`, `endpoint`, `timeout`). Opt out with
+- Added the configuration node `core_shop_telemetry` (`enabled`, `endpoint`, `timeout`). Opt out with
   `CORESHOP_TELEMETRY=false`. The previously unused `send_usage_log` option is superseded by `telemetry.enabled`.
 - See [Telemetry and License Check](docs/01_Getting_Started/05_Telemetry.md).
 

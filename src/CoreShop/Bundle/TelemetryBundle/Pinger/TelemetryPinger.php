@@ -15,13 +15,13 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Telemetry;
+namespace CoreShop\Bundle\TelemetryBundle\Pinger;
 
-use CoreShop\Bundle\CoreBundle\Application\Version;
-use CoreShop\Component\Core\Telemetry\InstanceIdentifierProviderInterface;
-use CoreShop\Component\Core\Telemetry\TelemetryDataProviderInterface;
-use CoreShop\Component\Core\Telemetry\TelemetryPingerInterface;
-use CoreShop\Component\Core\Telemetry\TelemetryResultStorageInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\InstanceIdentifierProviderInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryDataProviderInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryPingerInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryResultStorageInterface;
+use CoreShop\Bundle\TelemetryBundle\Version\CoreShopVersion;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -60,6 +60,7 @@ final class TelemetryPinger implements TelemetryPingerInterface
         $payload = [
             'id' => $this->identifierProvider->getHashedIdentifier(),
             'pimcoreInstanceId' => $this->identifierProvider->getPimcoreInstanceId(),
+            'pimcoreInstanceIdentifier' => $this->identifierProvider->getRawPimcoreIdentifier(),
         ];
 
         foreach ($this->providers as $provider) {
@@ -85,8 +86,8 @@ final class TelemetryPinger implements TelemetryPingerInterface
                 'timeout' => $this->timeout,
                 'max_duration' => $this->timeout + 1,
                 'headers' => [
-                    'User-Agent' => 'CoreShop/' . Version::getVersion(),
-                    'X-CoreShop-Client' => Version::getVersion(),
+                    'User-Agent' => 'CoreShop/' . CoreShopVersion::get(),
+                    'X-CoreShop-Client' => CoreShopVersion::get(),
                 ],
             ]);
 

@@ -15,7 +15,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Core\Telemetry;
+namespace CoreShop\Bundle\TelemetryBundle\Contract;
 
 interface TelemetryResultStorageInterface
 {

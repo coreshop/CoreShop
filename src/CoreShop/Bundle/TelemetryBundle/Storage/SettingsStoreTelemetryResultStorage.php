@@ -15,9 +15,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Telemetry;
+namespace CoreShop\Bundle\TelemetryBundle\Storage;
 
-use CoreShop\Component\Core\Telemetry\TelemetryResultStorageInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryResultStorageInterface;
 use Pimcore\Model\Tool\SettingsStore;
 
 final class SettingsStoreTelemetryResultStorage implements TelemetryResultStorageInterface

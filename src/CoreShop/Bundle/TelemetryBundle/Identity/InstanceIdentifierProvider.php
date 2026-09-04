@@ -15,9 +15,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Telemetry;
+namespace CoreShop\Bundle\TelemetryBundle\Identity;
 
-use CoreShop\Component\Core\Telemetry\InstanceIdentifierProviderInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\InstanceIdentifierProviderInterface;
 use Pimcore\Model\Tool\SettingsStore;
 use Symfony\Component\Uid\Uuid;
 
@@ -61,6 +61,15 @@ final class InstanceIdentifierProvider implements InstanceIdentifierProviderInte
     public function getHashedIdentifier(): string
     {
         return hash('sha256', $this->getIdentifier());
+    }
+
+    public function getRawPimcoreIdentifier(): ?string
+    {
+        if (null === $this->pimcoreInstanceIdentifier || '' === trim($this->pimcoreInstanceIdentifier)) {
+            return null;
+        }
+
+        return trim($this->pimcoreInstanceIdentifier);
     }
 
     public function getPimcoreInstanceId(): ?string
