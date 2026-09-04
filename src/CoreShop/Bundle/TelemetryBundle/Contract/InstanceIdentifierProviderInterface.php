@@ -15,7 +15,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Core\Telemetry;
+namespace CoreShop\Bundle\TelemetryBundle\Contract;
 
 interface InstanceIdentifierProviderInterface
 {
@@ -35,4 +35,11 @@ interface InstanceIdentifierProviderInterface
      * identical to what Pimcore's product registration uses. Null when either is missing.
      */
     public function getPimcoreInstanceId(): ?string;
+
+    /**
+     * Pimcore's instance identifier (`PIMCORE_INSTANCE_IDENTIFIER`) in clear text, so the
+     * portal can match an installation with Pimcore's product registration. Null when not
+     * configured; the generated UUID fallback is never exposed here.
+     */
+    public function getRawPimcoreIdentifier(): ?string;
 }

@@ -15,9 +15,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Command;
+namespace CoreShop\Bundle\TelemetryBundle\Command;
 
-use CoreShop\Component\Core\Telemetry\TelemetryPingerInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryPingerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

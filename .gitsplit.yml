@@ -61,6 +61,7 @@ splits:
     - { prefix: src/CoreShop/Bundle/StudioFormBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/StudioFormBundle.git' }
     - { prefix: src/CoreShop/Component/Taxation, target: 'https://${GH_TOKEN}@github.com/coreshop/Taxation.git' }
     - { prefix: src/CoreShop/Bundle/TaxationBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/TaxationBundle.git' }
+    - { prefix: src/CoreShop/Bundle/TelemetryBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/TelemetryBundle.git' }
     - { prefix: src/CoreShop/Bundle/TestBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/TestBundle.git' }
     - { prefix: src/CoreShop/Bundle/ThemeBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ThemeBundle.git' }
     - { prefix: src/CoreShop/Component/Tracking, target: 'https://${GH_TOKEN}@github.com/coreshop/Tracking.git' }
