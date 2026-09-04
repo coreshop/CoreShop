@@ -22,7 +22,6 @@ use CoreShop\Bundle\CoreBundle\Attribute\AsReport;
 use CoreShop\Bundle\CoreBundle\Telemetry\TelemetryPinger;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
-use CoreShop\Bundle\CoreBundle\Telemetry\TelemetryPinger;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Core\Portlet\PortletInterface;
