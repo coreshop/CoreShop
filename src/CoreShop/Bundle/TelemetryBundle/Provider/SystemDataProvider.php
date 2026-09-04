@@ -15,11 +15,11 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Telemetry\Provider;
+namespace CoreShop\Bundle\TelemetryBundle\Provider;
 
 use Composer\InstalledVersions;
-use CoreShop\Bundle\CoreBundle\Application\Version;
-use CoreShop\Component\Core\Telemetry\TelemetryDataProviderInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryDataProviderInterface;
+use CoreShop\Bundle\TelemetryBundle\Version\CoreShopVersion;
 
 final class SystemDataProvider implements TelemetryDataProviderInterface
 {
@@ -32,7 +32,7 @@ final class SystemDataProvider implements TelemetryDataProviderInterface
     {
         return [
             'environment' => $this->kernelEnvironment,
-            'coreshop' => Version::getVersion(),
+            'coreshop' => CoreShopVersion::get(),
             'pimcore' => InstalledVersions::getPrettyVersion('pimcore/pimcore') ?? 'unknown',
             'php' => \PHP_VERSION,
             'timestamp' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format(\DateTimeInterface::ATOM),

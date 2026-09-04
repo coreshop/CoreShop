@@ -41,6 +41,7 @@ use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
 use CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
+use CoreShop\Bundle\TelemetryBundle\CoreShopTelemetryBundle;
 use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
 use CoreShop\Bundle\UserBundle\CoreShopUserBundle;
 use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
@@ -97,6 +98,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
+        $collection->addBundle(new CoreShopTelemetryBundle(), 1300);
 
         if (self::isStudioUiBundleAvailable()) {
             $studioFormBundleClass = self::getStudioFormBundleClass();

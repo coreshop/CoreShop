@@ -1,0 +1,65 @@
+parameters:
+    env(CORESHOP_TELEMETRY): 'true'
+
+services:
+    _defaults:
+        public: false
+
+    CoreShop\Bundle\TelemetryBundle\Contract\InstanceIdentifierProviderInterface: '@CoreShop\Bundle\TelemetryBundle\Identity\InstanceIdentifierProvider'
+    CoreShop\Bundle\TelemetryBundle\Identity\InstanceIdentifierProvider:
+        arguments:
+            - '%pimcore.product_registration.instance_identifier%'
+            - '%pimcore.encryption.secret%'
+
+    CoreShop\Bundle\TelemetryBundle\Contract\TelemetryResultStorageInterface: '@CoreShop\Bundle\TelemetryBundle\Storage\SettingsStoreTelemetryResultStorage'
+    CoreShop\Bundle\TelemetryBundle\Storage\SettingsStoreTelemetryResultStorage: ~
+
+    CoreShop\Bundle\TelemetryBundle\Provider\SystemDataProvider:
+        arguments:
+            - '%kernel.environment%'
+        tags:
+            - { name: coreshop.telemetry.provider }
+
+    CoreShop\Bundle\TelemetryBundle\Provider\HostsDataProvider:
+        arguments:
+            - '%pimcore.config%'
+            - '@router.request_context'
+        tags:
+            - { name: coreshop.telemetry.provider }
+
+    CoreShop\Bundle\TelemetryBundle\Provider\BundlesDataProvider:
+        tags:
+            - { name: coreshop.telemetry.provider }
+
+    # own client so the timeout is isolated from any framework.http_client configuration
+    coreshop.telemetry.http_client:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - { timeout: '%coreshop.telemetry.timeout%' }
+
+    CoreShop\Bundle\TelemetryBundle\Contract\TelemetryPingerInterface: '@CoreShop\Bundle\TelemetryBundle\Pinger\TelemetryPinger'
+    CoreShop\Bundle\TelemetryBundle\Pinger\TelemetryPinger:
+        public: true
+        arguments:
+            - '@coreshop.telemetry.http_client'
+            - [] # replaced in CoreShopTelemetryExtension by TaggedIteratorArgument('coreshop.telemetry.provider'); lint:yaml has no custom tag support
+            - '@CoreShop\Bundle\TelemetryBundle\Contract\InstanceIdentifierProviderInterface'
+            - '@CoreShop\Bundle\TelemetryBundle\Contract\TelemetryResultStorageInterface'
+            - '@logger'
+            - '%coreshop.telemetry.enabled%'
+            - '%coreshop.telemetry.endpoint%'
+            - '%coreshop.telemetry.timeout%'
+
+    coreshop.maintenance.telemetry_task:
+        class: CoreShop\Bundle\TelemetryBundle\Maintenance\TelemetryTask
+        arguments:
+            - '@CoreShop\Bundle\TelemetryBundle\Contract\TelemetryPingerInterface'
+        tags:
+            - { name: pimcore.maintenance.task, type: coreshop_telemetry }
+
+    CoreShop\Bundle\TelemetryBundle\Command\TelemetryPingCommand:
+        arguments:
+            - '@CoreShop\Bundle\TelemetryBundle\Contract\TelemetryPingerInterface'
+        tags:
+            - { name: console.command, command: coreshop:telemetry:ping }
