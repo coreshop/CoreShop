@@ -31,7 +31,6 @@ imports:
     - { resource: services/shipping-taxation.yml }
     - { resource: services/taxation.yml }
     - { resource: services/fixtures.yaml }
-    - { resource: services/telemetry.yml }
 
 services:
     _defaults:

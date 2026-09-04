@@ -15,9 +15,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Telemetry\Provider;
+namespace CoreShop\Bundle\TelemetryBundle\Provider;
 
-use CoreShop\Component\Core\Telemetry\TelemetryDataProviderInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryDataProviderInterface;
 use Pimcore\Model\Site;
 use Symfony\Component\Routing\RequestContext;
 

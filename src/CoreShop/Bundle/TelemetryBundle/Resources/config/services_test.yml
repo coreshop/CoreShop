@@ -1,0 +1,4 @@
+services:
+    # never call the license portal from the test-suite
+    coreshop.telemetry.http_client:
+        class: Symfony\Component\HttpClient\MockHttpClient

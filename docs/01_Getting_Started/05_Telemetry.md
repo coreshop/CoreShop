@@ -1,7 +1,8 @@
 # Telemetry and License Check
 
 CoreShop is licensed under the CoreShop Commercial License (CCL). To know which installations exist and whether they
-carry a valid subscription, CoreShop sends a small, anonymous ping to the CoreShop license portal once every 24 hours.
+carry a valid subscription, the `coreshop/telemetry-bundle` (`CoreShopTelemetryBundle`, registered automatically by
+`CoreShopCoreBundle` and usable on its own on installations that only run single CoreShop bundles) sends a small, anonymous ping to the CoreShop license portal once every 24 hours.
 
 The ping is sent by the Pimcore maintenance task `coreshop_telemetry`. If the maintenance is not running, it is also
 triggered on demand by the `coreshop/enterprise-subscription-bundle` when the Pimcore Studio checks the subscription
@@ -13,6 +14,7 @@ only produces a warning in the application log.
 | Field | Content |
 |---|---|
 | `id` | SHA-256 of the Pimcore instance identifier (`PIMCORE_INSTANCE_IDENTIFIER`). If none is configured, a UUID is generated once and stored in the Pimcore settings store. The raw identifier is never sent. |
+| `pimcoreInstanceIdentifier` | Pimcore's instance identifier in clear text, so the installation can be matched with Pimcore's product registration. Omitted when none is configured; the generated UUID fallback is never sent in clear text. |
 | `pimcoreInstanceId` | HMAC of the Pimcore instance identifier with the Pimcore encryption secret, the same value Pimcore uses for its product registration. Omitted when either value is missing. |
 | `hosts`, `currentDomain` | The main domain from the Pimcore system settings, all domains of all Pimcore sites, and the host of the current request if any. |
 | `coreshop`, `pimcore`, `php` | Version numbers. |
@@ -26,11 +28,10 @@ No customer data, no content, no order or product data is transmitted.
 ## Opt-out and configuration
 
 ```yaml
-core_shop_core:
-    telemetry:
-        enabled: '%env(bool:CORESHOP_TELEMETRY)%'   # default true
-        endpoint: 'https://license.coreshop.com/v1/ping'
-        timeout: 4.0
+core_shop_telemetry:
+    enabled: '%env(bool:CORESHOP_TELEMETRY)%'   # default true
+    endpoint: 'https://license.coreshop.com/v1/ping'
+    timeout: 4.0
 ```
 
 Set `CORESHOP_TELEMETRY=false` in your `.env` to disable the ping entirely. Note that without the ping the license
@@ -46,7 +47,7 @@ bin/console pimcore:maintenance --job=coreshop_telemetry
 
 ## Contributing data from a bundle
 
-Implement `CoreShop\Component\Core\Telemetry\TelemetryDataProviderInterface` and return a partial payload. Services
+Implement `CoreShop\Bundle\TelemetryBundle\Contract\TelemetryDataProviderInterface` and return a partial payload. Services
 implementing the interface are tagged `coreshop.telemetry.provider` automatically. Values are merged on top of the core
 payload; `hosts` and `bundles` are concatenated.
 

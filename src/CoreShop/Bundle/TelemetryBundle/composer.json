@@ -1,0 +1,61 @@
+{
+    "name": "coreshop/telemetry-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Telemetry Bundle",
+    "keywords": [
+        "coreshop",
+        "pimcore",
+        "ecommerce",
+        "telemetry"
+    ],
+    "homepage": "https://www.coreshop.com",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "CoreShop Team",
+            "email": "info@coreshop.com",
+            "homepage": "https://www.coreshop.com/",
+            "role": "Developer"
+        },
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "pimcore/pimcore": "^2026.2",
+        "symfony/http-client": "^6.4.14 || ^7.2",
+        "symfony/uid": "^6.4 || ^7.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-webmozart-assert": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\TelemetryBundle\\": ""
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../*/*"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "2026.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
+    }
+}

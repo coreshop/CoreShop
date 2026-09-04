@@ -81,6 +81,7 @@
       "coreshop/studio-form-bundle": "self.version",
       "coreshop/taxation": "self.version",
       "coreshop/taxation-bundle": "self.version",
+      "coreshop/telemetry-bundle": "self.version",
       "coreshop/test-bundle": "self.version",
       "coreshop/theme-bundle": "self.version",
       "coreshop/tracking": "self.version",

@@ -15,9 +15,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\CoreBundle\Maintenance;
+namespace CoreShop\Bundle\TelemetryBundle\Maintenance;
 
-use CoreShop\Component\Core\Telemetry\TelemetryPingerInterface;
+use CoreShop\Bundle\TelemetryBundle\Contract\TelemetryPingerInterface;
 use Pimcore\Maintenance\TaskInterface;
 
 final class TelemetryTask implements TaskInterface
