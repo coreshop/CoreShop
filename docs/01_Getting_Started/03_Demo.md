@@ -8,19 +8,21 @@ business owner, or eCommerce enthusiast, our demos offer a valuable glimpse into
 ## Frontend Demo
 
 :::info
-[https://demo4.coreshop.org](https://demo4.coreshop.org)
+[https://demo2026.coreshop.dev](https://demo2026.coreshop.dev)
 :::
 
 ## Backend Demo
 
+CoreShop 2026 runs on Pimcore Studio; there is no classic admin anymore.
+
 :::info
-[https://demo4.coreshop.org/admin](https://demo4.coreshop.org/admin)
+[https://demo2026.coreshop.dev/pimcore-studio](https://demo2026.coreshop.dev/pimcore-studio)
 
 Username: admin  / Password: coreshop
 :::
 
+## Run it yourself
 
-:::tip
-You can also setup this demo locally by running `bin/console coreshop:install:demo`
-:::
+The demo is a public project on GitHub: [coreshop/demo2026](https://github.com/coreshop/demo2026). Clone it and start it
+with Docker Compose, or install the demo data into your own project with `bin/console coreshop:install:demo`.
 
