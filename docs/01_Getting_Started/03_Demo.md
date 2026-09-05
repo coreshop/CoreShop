@@ -8,7 +8,7 @@ business owner, or eCommerce enthusiast, our demos offer a valuable glimpse into
 ## Frontend Demo
 
 :::info
-[https://demo2026.coreshop.org](https://demo2026.coreshop.org)
+[https://demo2026.coreshop.dev](https://demo2026.coreshop.dev)
 :::
 
 ## Backend Demo
@@ -16,7 +16,7 @@ business owner, or eCommerce enthusiast, our demos offer a valuable glimpse into
 CoreShop 2026 runs on Pimcore Studio; there is no classic admin anymore.
 
 :::info
-[https://demo2026.coreshop.org/pimcore-studio](https://demo2026.coreshop.org/pimcore-studio)
+[https://demo2026.coreshop.dev/pimcore-studio](https://demo2026.coreshop.dev/pimcore-studio)
 
 Username: admin  / Password: coreshop
 :::
