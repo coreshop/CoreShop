@@ -1,3 +1,12 @@
+## 2026.2.2
+
+### Studio build archives extract on a fresh install
+
+The bundles that ship their Studio build as `Resources/build-dist/build-<id>.zip` now also
+ship an (empty) `Resources/public/` directory. Pimcore's `BuildArchiveExtractor` refuses to
+extract into a missing directory, so a fresh install without a pre-created
+`Resources/public` ended with a Studio that answered 500 (#3230).
+
 ## 2026.2.1
 
 ### Telemetry ping and license check
