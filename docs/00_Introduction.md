@@ -25,7 +25,7 @@ Our documentation is organized into easy-to-navigate sections, each tailored to 
 
 ## Explore CoreShop in Action
 
-- **Live Demo**: Experience CoreShop firsthand and use our [CoreShop Demo](https://demo4.coreshop.org) as a blueprint
+- **Live Demo**: Experience CoreShop firsthand and use our [CoreShop Demo](https://demo5.coreshop.dev) as a blueprint
   for your implementations.
 
 For more information about Pimcore itself, visit [pimcore.com](https://pimcore.com).
