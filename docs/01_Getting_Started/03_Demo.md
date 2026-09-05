@@ -8,7 +8,7 @@ business owner, or eCommerce enthusiast, our demos offer a valuable glimpse into
 ## Frontend Demo
 
 :::info
-[https://demo5.coreshop.org](https://demo5.coreshop.org)
+[https://demo5.coreshop.dev](https://demo5.coreshop.dev)
 :::
 
 ## Backend Demo
@@ -16,9 +16,9 @@ business owner, or eCommerce enthusiast, our demos offer a valuable glimpse into
 CoreShop 5.1 ships both the classic admin and Pimcore Studio.
 
 :::info
-Classic admin: [https://demo5.coreshop.org/admin](https://demo5.coreshop.org/admin)
+Classic admin: [https://demo5.coreshop.dev/admin](https://demo5.coreshop.dev/admin)
 
-Pimcore Studio: [https://demo5.coreshop.org/pimcore-studio](https://demo5.coreshop.org/pimcore-studio)
+Pimcore Studio: [https://demo5.coreshop.dev/pimcore-studio](https://demo5.coreshop.dev/pimcore-studio)
 
 Username: admin  / Password: coreshop
 :::
