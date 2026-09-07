@@ -19,8 +19,8 @@ namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker;
-use Pimcore\Bundle\GoogleMarketingBundle\Tracker\TrackerInterface;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GA4Ecommerce extends AbstractEcommerceTracker

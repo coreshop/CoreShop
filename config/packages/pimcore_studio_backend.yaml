@@ -1,10 +1,12 @@
 pimcore_studio_backend:
     mercure_settings:
-        # Server-seitig: Docker-internes Netzwerk
+        # Server-seitig: Docker-internes Netzwerk. Der PHP-Container spricht den
+        # mercure-Container direkt an — NICHT über den externen Host.
         hub_url_server: 'http://mercure/.well-known/mercure'
-        # Client-seitig: Vollständige URL inkl. .well-known/mercure
-        hub_url_client: 'https://coreshop-5.localhost/hub/.well-known/mercure'
-        # Muss mit docker-compose.override.yaml übereinstimmen
+        # hub_url_client + jwt_cookie_host weglassen: Pimcore leitet sie aus
+        # dem aktuellen Request-Host ab. Nginx proxiet /hub/ → mercure (siehe
+        # .docker/nginx.conf), funktioniert also für jede Domain die via
+        # Traefik reinkommt.
+        # Muss mit MERCURE_PUBLISHER/SUBSCRIBER_JWT_KEY im mercure-Container
+        # übereinstimmen (Default im dev-compose-Image).
         jwt_key: 'SECRET_MERCURE_KEY_SECRET_MERCURE_KEY'
-        # Cookie-Pfad muss /hub sein, damit es für alle Mercure-Requests gilt
-        jwt_cookie_host: 'coreshop-5.localhost'

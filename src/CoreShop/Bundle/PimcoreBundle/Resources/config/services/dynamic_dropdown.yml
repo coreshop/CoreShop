@@ -1,7 +1,4 @@
 services:
-    CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController:
-        calls:
-            - [ setContainer, [ '@Psr\Container\ContainerInterface' ]]
+    CoreShop\Bundle\PimcoreBundle\Controller\DynamicDropdownController:
         tags:
             - { name: controller.service_arguments }
-            - { name: container.service_subscriber }

@@ -77,6 +77,10 @@ final class CoreShopIndexExtension extends AbstractModelExtension implements Pre
 
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
 
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
+        }
+
         $bundles = $container->getParameter('kernel.bundles');
 
         if (isset($configs['mapping_types'])) {
@@ -103,8 +107,6 @@ final class CoreShopIndexExtension extends AbstractModelExtension implements Pre
         if (array_key_exists('PimcoreStudioUiBundle', $bundles)) {
             $loader->load('services/studio.yml');
         }
-
-        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $container->getDefinition(MysqlWorker::class)->setArgument(
             7,

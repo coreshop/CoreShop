@@ -15,7 +15,7 @@ core_shop_core:
                   priority: 50
 ```
 
-The [Checkout Controller](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/FrontendBundle/Controller/CheckoutController.php#L44)
+The [Checkout Controller](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/FrontendBundle/Controller/CheckoutController.php#L44)
 takes care about handling
 the Checkout for you then.
 

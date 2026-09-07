@@ -41,7 +41,6 @@ class PimcoreFieldCollectionDefinitionReplaceFilter implements Filter
         }
 
         $reflectionProperty = ReflectionHelper::getProperty($object, $property);
-        $reflectionProperty->setAccessible(true);
 
         $value = ($this->callback)($object, $fieldDefinition, $property, $reflectionProperty->getValue($object));
 

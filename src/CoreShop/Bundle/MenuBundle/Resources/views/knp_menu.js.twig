@@ -1,2 +1,0 @@
-var item = {{ item|json_encode()|raw }};
-var menu = [{% for item in items%}{{item|json_encode()|raw}}{% if not loop.last %},{%endif%}{% endfor %}];

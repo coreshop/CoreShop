@@ -1,0 +1,13 @@
+coreshop_partial_cart_add:
+    path:       /{_locale}/_partial/cart/add/{product}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CartController::addItemAction
+    requirements:
+        _locale:  '[a-z]{2}(_[A-Z]{2})?'
+        product:  '\d+'
+
+coreshop_partial_wishlist_add:
+    path:       /{_locale}/_partial/wishlist/add/{product}
+    controller: coreshop.storage_list.controller.wishlist::addItemAction
+    requirements:
+        _locale:  '[a-z]{2}(_[A-Z]{2})?'
+        product:  '\d+'

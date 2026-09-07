@@ -1,5 +1,4 @@
 imports:
-    - { resource: admin.yml }
     - { resource: messenger.yml }
 
 doctrine_migrations:

@@ -151,19 +151,15 @@ class ProductQuantityPriceRules extends Data implements
 
             $reflectionClass = new \ReflectionClass($newPriceRule);
             $property = $reflectionClass->getProperty('id');
-            $property->setAccessible(true);
             $property->setValue($newPriceRule, null);
 
             $property = $reflectionClass->getProperty('product');
-            $property->setAccessible(true);
             $property->setValue($newPriceRule, null);
 
             $property = $reflectionClass->getProperty('conditions');
-            $property->setAccessible(true);
             $property->setValue($newPriceRule, new ArrayCollection());
 
             $property = $reflectionClass->getProperty('ranges');
-            $property->setAccessible(true);
             $property->setValue($newPriceRule, new ArrayCollection());
 
             foreach ($priceRule->getConditions() as $condition) {
@@ -171,7 +167,6 @@ class ProductQuantityPriceRules extends Data implements
 
                 $reflectionClass = new \ReflectionClass($newCondition);
                 $property = $reflectionClass->getProperty('id');
-                $property->setAccessible(true);
                 $property->setValue($newCondition, null);
 
                 $newPriceRule->addCondition($newCondition);
@@ -182,12 +177,10 @@ class ProductQuantityPriceRules extends Data implements
 
                 $reflectionClass = new \ReflectionClass($newRange);
                 $property = $reflectionClass->getProperty('id');
-                $property->setAccessible(true);
                 $property->setValue($newRange, null);
 
                 if ($reflectionClass->hasProperty('unitDefinition')) {
                     $property = $reflectionClass->getProperty('unitDefinition');
-                    $property->setAccessible(true);
                     $property->setValue($newRange, null);
                 }
 

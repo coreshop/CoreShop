@@ -1,0 +1,56 @@
+# ⚠️  CENTRALLY MANAGED FILE — DO NOT EDIT LOCALLY!
+#
+# This file is distributed from coreshop/workflow-collection via file sync
+# (source: templates/pr-guardrail-oss.yml). Local changes will be overwritten
+# by the next sync run via PR.
+#
+# Variant for PUBLIC open-source repos with external contributors and fork
+# PRs. Difference to the standard template (templates/pr-guardrail.yml):
+# advisory mode instead of enforce, so community PRs are not converted to
+# draft just because they don't know the internal branch convention.
+#
+# Rules, bypass and FAQ: docs/GUARDRAILS.md in coreshop/workflow-collection.
+
+name: PR Guardrail
+
+on:
+  # pull_request_target instead of pull_request: always runs with the code
+  # and secrets of the base branch. The guardrail NEVER checks out PR code —
+  # especially important here because the repo receives PRs from forks.
+  pull_request_target:
+    types: [opened, reopened, edited, ready_for_review, labeled, unlabeled]
+  # Reacts to completed CI runs (R5) …
+  check_suite:
+    types: [completed]
+  # … and to classic commit statuses of external CI systems.
+  status: {}
+
+permissions:
+  actions: read
+
+# One run per PR: new events cancel running evaluations of the same PR.
+concurrency:
+  group: pr-guardrail-${{ github.event.pull_request.number || github.event.check_suite.head_sha || github.event.sha || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  guardrail:
+    uses: coreshop/workflow-collection/.github/workflows/pr-guardrail.yml@v1
+    with:
+      # Advisory mode: the guardrail only comments, the check stays green and
+      # the PR is not converted to draft. External contributors do not branch
+      # as issue/<number> (R1) and often have no issue (R2) — in enforce mode
+      # every community PR would be blocked immediately.
+      enforce: false
+      # Fixes without a prior issue are normal in OSS repos.
+      require-issue-open: false
+      # CoreShop core maintains minor version branches (5.0, 5.1, 2026.x).
+      version-branch-pattern: '^\d+\.(x|\d+)$'
+    secrets: inherit
+
+  # Adds the PR to the "CoreShop Development" project board.
+  # Comment out to disable.
+  add-to-project:
+    if: github.event_name == 'pull_request_target'
+    uses: coreshop/workflow-collection/.github/workflows/add-to-project.yml@v1
+    secrets: inherit

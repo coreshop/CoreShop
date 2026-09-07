@@ -24,13 +24,13 @@
         }
     ],
     "require": {
-        "coreshop/pimcore": "^5.1",
+        "coreshop/pimcore": "^2026.1",
         "doctrine/common": "^3.1",
         "doctrine/dbal": "^4.2",
-        "coreshop/locale": "^5.1",
+        "coreshop/locale": "^2026.1",
         "doctrine/orm": "^3.0",
         "webmozart/assert": "^1.10",
-        "pimcore/pimcore": "^12.3",
+        "pimcore/pimcore": "^2026.2",
         "symfony/finder": "^6.4.14 || ^7.2"
     },
     "require-dev": {
@@ -53,8 +53,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.1-dev",
-            "dev-master": "5.1-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {

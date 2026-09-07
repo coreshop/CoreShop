@@ -9,7 +9,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="name" column="name" unique="true" length="190" />
+        <field name="name" column="name" unique="true" length="190" type="string" />
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

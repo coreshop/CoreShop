@@ -12,7 +12,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="code" column="code" length="190"/>
+        <field name="code" column="code" length="190" type="string"/>
         <field name="used" column="used" type="boolean"/>
         <field name="uses" column="uses" type="integer"/>
         <field name="creditUsed" column="creditUsed" type="integer"/>

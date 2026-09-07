@@ -197,29 +197,4 @@ abstract class AbstractResourceBundle extends Bundle implements PimcoreBundleInt
     {
         return null;
     }
-
-    public function getAdminIframePath(): ?string
-    {
-        return null;
-    }
-
-    public function getJsPaths(): array
-    {
-        return [];
-    }
-
-    public function getCssPaths(): array
-    {
-        return [];
-    }
-
-    public function getEditmodeJsPaths(): array
-    {
-        return [];
-    }
-
-    public function getEditmodeCssPaths(): array
-    {
-        return [];
-    }
 }

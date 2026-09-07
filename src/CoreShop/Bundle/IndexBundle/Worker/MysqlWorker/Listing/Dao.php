@@ -320,7 +320,6 @@ class Dao
     {
         $reflection = new \ReflectionClass($queryBuilder);
         $property = $reflection->getProperty('where');
-        $property->setAccessible(true);
 
         return $property->getValue($queryBuilder);
     }
@@ -329,7 +328,6 @@ class Dao
     {
         $reflection = new \ReflectionClass($queryBuilder);
         $property = $reflection->getProperty('orderBy');
-        $property->setAccessible(true);
 
         return $property->getValue($queryBuilder);
     }

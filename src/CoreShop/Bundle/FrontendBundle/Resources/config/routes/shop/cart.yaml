@@ -1,0 +1,36 @@
+coreshop_cart_add:
+    path:       /cart/add/{product}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CartController::addItemAction
+    requirements: { product: '\d+' }
+    methods:    [POST]
+
+coreshop_cart_remove:
+    path:       /cart/remove/{cartItem}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CartController::removeItemAction
+    requirements: { cartItem: '\d+' }
+
+coreshop_cart_remove_price_rule:
+    path:       /cart/remove-price-rule
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CartController::removePriceRuleAction
+
+coreshop_cart_check_shipment:
+    path:       /cart/shipment-calculation
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CartController::shipmentCalculationAction
+
+coreshop_cart_create_quote:
+    path:       /cart/quote
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CartController::createQuoteAction
+
+coreshop_cart_create_named:
+    path:       /cart/create
+    controller: coreshop.storage_list.controller_multi_list.order::createNamedStorageListAction
+    methods:    [GET, POST]
+
+coreshop_cart_list:
+    path:       /cart/list
+    controller: coreshop.storage_list.controller_multi_list.order::listStorageListAction
+    methods:    [GET, POST]
+
+coreshop_cart_summary:
+    path:       /cart
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CartController::summaryAction

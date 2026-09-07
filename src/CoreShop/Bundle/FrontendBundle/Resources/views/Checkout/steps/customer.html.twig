@@ -6,7 +6,8 @@
 {% endblock %}
 
 {% block checkout %}
-    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\SecurityController::loginAction', {renderLayout: false, failure: pimcore_url(), target: pimcore_url()})) }}
+    {% set currentUrl = app.request.requestUri %}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\SecurityController::loginAction', {renderLayout: false, failure: currentUrl, target: currentUrl})) }}
 
     {% if coreshop_configuration('system.guest.checkout') %}
         <h2 class="main-heading text-center mt-4">

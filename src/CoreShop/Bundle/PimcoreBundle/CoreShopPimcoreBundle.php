@@ -21,7 +21,6 @@ use Composer\InstalledVersions;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\ExpressionLanguageServicePass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\LinkGeneratorPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActionPass;
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagImplementationLoaderPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterStudioGridFilterPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagPass;
@@ -72,7 +71,6 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterGridActionPass());
-        $container->addCompilerPass(new RegisterGridFilterPass());
         $container->addCompilerPass(new RegisterStudioGridFilterPass());
         $container->addCompilerPass(new RegisterPimcoreDocumentTagImplementationLoaderPass());
         $container->addCompilerPass(new RegisterPimcoreDocumentTagPass());

@@ -15,10 +15,10 @@ Extensions enable you to:
 To create an extension, implement one of the following interfaces depending on your needs:
 
 - **Column Extensions**: Implement
-  the [`CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Index/Extension/IndexColumnsExtensionInterface.php)
+  the [`CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Index/Extension/IndexColumnsExtensionInterface.php)
   if you want to add new columns to the index.
 - **MySQL Query Extensions**: For extending MySQL query capabilities, use
-  the [`CoreShop\Bundle\IndexBundle\Extension\MysqlIndexQueryExtensionInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/IndexBundle/Extension/MysqlIndexQueryExtensionInterface.php).
+  the [`CoreShop\Bundle\IndexBundle\Extension\MysqlIndexQueryExtensionInterface`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/IndexBundle/Extension/MysqlIndexQueryExtensionInterface.php).
 
 After implementing the appropriate interface, register your service with the tag `coreshop.index.extension`.
 

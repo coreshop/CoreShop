@@ -32,9 +32,9 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use Pimcore\Bundle\GoogleMarketingBundle\Code\CodeCollector;
-use Pimcore\Bundle\GoogleMarketingBundle\Tracker\AbstractTracker;
-use Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Code\CodeCollector;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\AbstractTracker;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker;
 use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context
@@ -181,20 +181,16 @@ final class TrackingContext implements Context
         ) {
             $trackerReflector = new \ReflectionClass(AbstractTracker::class);
             $codeCollectorMethod = $trackerReflector->getMethod('getCodeCollector');
-            $codeCollectorMethod->setAccessible(true);
 
             $codeCollector = $codeCollectorMethod->getClosure($tracker->tracker)();
 
-            $codeCollectorMethod->setAccessible(false);
 
             $codeCollectorReflector = new \ReflectionClass(CodeCollector::class);
 
             $codePartsProperty = $codeCollectorReflector->getProperty('codeParts');
-            $codePartsProperty->setAccessible(true);
 
             $blocks = $codePartsProperty->getValue($codeCollector);
 
-            $codePartsProperty->setAccessible(false);
 
             if (!isset($blocks[CodeCollector::CONFIG_KEY_GLOBAL])) {
                 $blocks[CodeCollector::CONFIG_KEY_GLOBAL] = [

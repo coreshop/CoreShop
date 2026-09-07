@@ -3,13 +3,13 @@
 CoreShop employs multiple Price Calculators to determine the correct price for a product. By default, the following
 calculators are used:
 
-- [Price Rule Calculator](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ProductBundle/Calculator/PriceRuleCalculator.php):
+- [Price Rule Calculator](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Bundle/ProductBundle/Calculator/PriceRuleCalculator.php):
   Utilizes prices from Catalog Price Rules and Specific Price Rules.
-- [Store Product Price Calculator](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Product/Calculator/StoreProductPriceCalculator.php):
+- [Store Product Price Calculator](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Product/Calculator/StoreProductPriceCalculator.php):
   Calculates prices based on store values.
 
 For custom calculators, implement the
-interface [```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Calculator/ProductPriceCalculatorInterface.php)
+interface [```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Product/Calculator/ProductPriceCalculatorInterface.php)
 and register your service with the tag ```coreshop.product.price_calculator```, including attributes ```type```
 and ```priority```.
 

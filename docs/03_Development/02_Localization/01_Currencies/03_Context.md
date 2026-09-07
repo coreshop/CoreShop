@@ -10,9 +10,9 @@ characterized by its name, priority, associated tag, and a specific role. The fo
 
 | Name                                                                                                                                                         | Priority | Tag                         | Description                                                                       |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------------------------------------------------------------|
-| [FixedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Currency/Context/FixedCurrencyContext.php)                    | default  | `coreshop.context.currency` | Primarily used for testing purposes.                                              |
-| [StorageBasedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Currency/StorageBasedCurrencyContext.php) | default  | `coreshop.context.currency` | Checks if a currency has been changed during a frontend request.                  |
-| [CountryAwareCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Currency/CountryAwareCurrencyContext.php) | default  | `coreshop.context.currency` | Commonly used as it determines the currency based on the current country context. |
+| [FixedCurrencyContext](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Currency/Context/FixedCurrencyContext.php)                    | default  | `coreshop.context.currency` | Primarily used for testing purposes.                                              |
+| [StorageBasedCurrencyContext](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Context/Currency/StorageBasedCurrencyContext.php) | default  | `coreshop.context.currency` | Checks if a currency has been changed during a frontend request.                  |
+| [CountryAwareCurrencyContext](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Context/Currency/CountryAwareCurrencyContext.php) | default  | `coreshop.context.currency` | Commonly used as it determines the currency based on the current country context. |
 
 ## Creating a Custom Currency Resolver
 

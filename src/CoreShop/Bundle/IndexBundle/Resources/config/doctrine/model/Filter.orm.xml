@@ -8,10 +8,10 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="name" column="name"/>
+        <field name="name" column="name" type="string" length="255"/>
         <field name="resultsPerPage" column="resultsPerPage" type="integer" nullable="true"/>
-        <field name="orderDirection" column="orderDirection"/>
-        <field name="orderKey" column="orderKey"/>
+        <field name="orderDirection" column="orderDirection" type="string" length="255"/>
+        <field name="orderKey" column="orderKey" type="string" length="255"/>
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

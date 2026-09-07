@@ -67,10 +67,13 @@ docker-compose.override.yaml
 settings.local.json
 .rsbuild
 
+.aim/
+TODO.md
+
+supervisord.pid
 # Expanded Studio frontend builds. Not committed: each bundle ships its build as an archive in
 # Resources/build-dist/build-<id>.zip, which Pimcore's BuildArchiveExtractor unpacks into
 # Resources/public/studio at cache warmup. The extractor's marker, lock and temporary
 # directories live next to the build.
 src/CoreShop/Bundle/*/Resources/public/studio/*
 src/CoreShop/Bundle/*/Resources/public/.studio*
-supervisord.pid

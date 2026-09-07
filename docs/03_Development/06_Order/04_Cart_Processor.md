@@ -6,13 +6,13 @@ ensuring that the cart is re-calculated.
 
 The following processors are implemented by default:
 
-- [Cart Adjustment Clearer](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartAdjustmentClearer.php)
-- [Item Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartItemProcessor.php)
-- [Item Tax Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartItemTaxProcessor.php)
-- [Cart Price Rule Voucher Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartPriceRuleVoucherProcessor.php)
-- [Cart Rule Auto Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartRuleAutoProcessor.php)
-- [Cart Shipping Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartShippingProcessor.php)
-- [Cart Tax Processor](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Order/Processor/CartTaxProcessor.php)
+- [Cart Adjustment Clearer](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Order/Processor/CartAdjustmentClearer.php)
+- [Item Processor](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Order/Processor/CartItemProcessor.php)
+- [Item Tax Processor](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Order/Processor/CartItemTaxProcessor.php)
+- [Cart Price Rule Voucher Processor](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Order/Processor/CartPriceRuleVoucherProcessor.php)
+- [Cart Rule Auto Processor](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Order/Processor/CartRuleAutoProcessor.php)
+- [Cart Shipping Processor](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Order/Processor/CartShippingProcessor.php)
+- [Cart Tax Processor](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Order/Processor/CartTaxProcessor.php)
 
 These processors handle all necessary price calculations for the cart. To extend cart calculations, a new processor
 should be created.
@@ -20,7 +20,7 @@ should be created.
 ## Creating a Cart Processor
 
 To create a Cart Processor, implement the
-interface [```CoreShop\Component\Order\Processor\CartProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Processor/CartProcessorInterface.php).
+interface [```CoreShop\Component\Order\Processor\CartProcessorInterface```](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Order/Processor/CartProcessorInterface.php).
 Register this in the container with the tag ```coreshop.cart_processor``` and a ```priority``` attribute.
 
 ### Example of a Cart Processor

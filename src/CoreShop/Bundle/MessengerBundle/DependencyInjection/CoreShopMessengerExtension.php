@@ -32,6 +32,10 @@ final class CoreShopMessengerExtension extends AbstractPimcoreExtension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
+        if (array_key_exists('pimcore_admin', $config)) {
+            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        }
+
         $bundles = $container->getParameter('kernel.bundles');
 
         if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
@@ -45,7 +49,5 @@ final class CoreShopMessengerExtension extends AbstractPimcoreExtension
         if (array_key_exists('PimcoreStudioBackendBundle', $bundles)) {
             $loader->load('services/studio_backend.yml');
         }
-
-        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
     }
 }

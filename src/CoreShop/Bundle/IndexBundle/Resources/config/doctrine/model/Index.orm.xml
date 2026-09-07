@@ -8,9 +8,9 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="class" column="class"/>
-        <field name="name" column="name"/>
-        <field name="worker" column="worker" nullable="true"/>
+        <field name="class" column="class" type="string" length="255"/>
+        <field name="name" column="name" type="string" length="255"/>
+        <field name="worker" column="worker" nullable="true" type="string" length="255"/>
         <field name="configuration" column="configuration" type="json"/>
         <field name="indexLastVersion" column="indexLastVersion" type="boolean">
             <options>

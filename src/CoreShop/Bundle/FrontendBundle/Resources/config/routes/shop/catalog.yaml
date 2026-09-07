@@ -1,0 +1,14 @@
+coreshop_quote_detail:
+    path:       /quote~q{quote}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\QuoteController::showAction
+    requirements: { quote: '\d+' }
+
+coreshop_product_detail:
+    path:       /{name}~p{product}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\ProductController::detailAction
+    requirements: { name: '[^/]+', product: '\d+' }
+
+coreshop_category_list:
+    path:       /{name}~c{category}
+    controller: CoreShop\Bundle\FrontendBundle\Controller\CategoryController::indexAction
+    requirements: { name: '[^/]+', category: '\d+' }

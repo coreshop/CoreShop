@@ -8,6 +8,6 @@
         <field name="details" column="details" type="object" nullable="true"/>
         <field name="afterUrl" column="afterUrl" type="text" nullable="true"/>
         <field name="targetUrl" column="targetUrl" type="text"/>
-        <field name="gatewayName" column="gatewayName" length="255"/>
+        <field name="gatewayName" column="gatewayName" length="255" type="string"/>
     </mapped-superclass>
 </doctrine-mapping>

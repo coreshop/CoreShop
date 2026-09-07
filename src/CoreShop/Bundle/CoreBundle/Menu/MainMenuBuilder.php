@@ -447,8 +447,6 @@ class MainMenuBuilder implements MenuBuilderInterface
         $menuItem->addChild('coreshop_about')
             ->setLabel('coreshop_about')
             ->setAttribute('iconCls', 'coreshop_nav_icon_logo')
-            ->setAttribute('resource', 'coreshop.core')
-            ->setAttribute('function', 'about')
             ->setAttribute('widgetEvent', 'coreshop.about.open')
             ->setExtra('order', 1000)
         ;

@@ -22,4 +22,4 @@ CoreShop uses [GitHub issues](https://github.com/CoreShop/coreshop/issues).
 GPL License
 -----------
 
-License can be found [here](https://github.com/coreshop/CoreShop/blob/master/LICENSE.md).
+License can be found [here](https://github.com/coreshop/CoreShop/blob/2026.x/LICENSE.md).

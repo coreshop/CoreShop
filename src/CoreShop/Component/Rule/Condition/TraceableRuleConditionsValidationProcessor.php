@@ -79,26 +79,30 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         ?ConditionInterface $condition = null,
         $conditionResult = false,
     ): void {
-        if (!isset($this->processed[$subject->getId()])) {
-            $this->processed[$subject->getId()] = [
+        $subjectId = $subject->getId() ?? spl_object_id($subject);
+        $ruleId = $rule->getId() ?? spl_object_id($rule);
+
+        if (!isset($this->processed[$subjectId])) {
+            $this->processed[$subjectId] = [
                 'subject' => $subject,
                 'type' => $subject::class,
                 'rules' => [],
             ];
         }
 
-        if (!isset($this->processed[$subject->getId()]['rules'][$rule->getId()])) {
+        if (!isset($this->processed[$subjectId]['rules'][$ruleId])) {
             $actions = [];
 
             foreach ($rule->getActions() as $action) {
-                $actions[$action->getId()] = [
+                $actionId = $action->getId() ?? spl_object_id($action);
+                $actions[$actionId] = [
                     'action' => $action,
                     'configuration' => $action->getConfiguration(),
                     'type' => $action->getType(),
                 ];
             }
 
-            $this->processed[$subject->getId()]['rules'][$rule->getId()] = [
+            $this->processed[$subjectId]['rules'][$ruleId] = [
                 'rule' => $rule,
                 'result' => $ruleResult,
                 'conditions' => [],
@@ -107,8 +111,9 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         }
 
         if (null !== $condition) {
-            $this->processed[$subject->getId()]['rules'][$rule->getId()]['result'] = $ruleResult;
-            $this->processed[$subject->getId()]['rules'][$rule->getId()]['conditions'][$condition->getId()] = [
+            $conditionId = $condition->getId() ?? spl_object_id($condition);
+            $this->processed[$subjectId]['rules'][$ruleId]['result'] = $ruleResult;
+            $this->processed[$subjectId]['rules'][$ruleId]['conditions'][$conditionId] = [
                 'condition' => $condition,
                 'configuration' => $condition->getConfiguration(),
                 'type' => $condition->getType(),

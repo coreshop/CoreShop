@@ -57,24 +57,4 @@ class CoreShopOptimisticEntityLockBundle extends AbstractPimcoreBundle
 
         return '';
     }
-
-    public function getJsPaths(): array
-    {
-        return [];
-    }
-
-    public function getCssPaths(): array
-    {
-        return [];
-    }
-
-    public function getEditmodeJsPaths(): array
-    {
-        return [];
-    }
-
-    public function getEditmodeCssPaths(): array
-    {
-        return [];
-    }
 }

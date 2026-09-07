@@ -15,11 +15,9 @@
             <directory name="src/CoreShop/Component/Resource/DataHub" />
             <directory name="src/CoreShop/Bundle/*/DataHub" />
             <directory name="src/CoreShop/Bundle/*/CoreExtension" />
-            <directory name="src/CoreShop/Bundle/*/AdminClass" />
             <directory name="src/CoreShop/Bundle/*/Studio" />
             <directory name="src/CoreShop/Bundle/*/StudioBackend" />
             <directory name="src/CoreShop/Bundle/StudioFormBundle" />
-            <directory name="src/CoreShop/Bundle/*/AdminClass/Pimcore/GridColumnConfig" />
             <directory name="src/CoreShop/Bundle/*/Migrations" />
             <directory name="src/CoreShop/Bundle/*/Fixtures" />
             <directory name="src/CoreShop/Behat" />
@@ -35,7 +33,6 @@
             <file name="src/CoreShop/Bundle/MessengerBundle/Messenger/FailedMessageRetryer.php" />
             <file name="src/CoreShop/Bundle/TestBundle/Context/Setup/DocumentContext.php" />
             <file name="src/CoreShop/Bundle/TestBundle/Context/Transform/DocumentContext.php" />
-            <file name="src/CoreShop/Component/Pimcore/DataObject/GridConfigInstaller.php" />
 
             <file name="src/CoreShop/Component/Pimcore/SplPriorityQueue.php" />
             <file name="src/CoreShop/Component/Pimcore/PriorityQueue.php" />
@@ -83,7 +80,6 @@
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver" />
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Controller\AdminController" />
                 <referencedClass name="Pimcore\Bundle\AdminBundle\Security\User\User" />
-                <referencedClass name="Pimcore\Bundle\StaticRoutesBundle\PimcoreStaticRoutesBundle" />
                 <referencedClass name="Pimcore\Bundle\SimpleBackendSearchBundle\PimcoreSimpleBackendSearchBundle" />
             </errorLevel>
         </DeprecatedClass>
@@ -114,6 +110,12 @@
                 <referencedMethod name="Pimcore\Bundle\AdminBundle\Controller\AdminController::getAdminUser" />
                 <referencedMethod name="Doctrine\DBAL\Query\QueryBuilder::getQueryPart" />
                 <referencedMethod name="Symfony\Component\HttpFoundation\Request::get" />
+                <referencedMethod name="Doctrine\DBAL\Connection::quoteIdentifier" />
+                <referencedMethod name="Doctrine\DBAL\Schema\AbstractAsset::getName" />
+                <referencedMethod name="Doctrine\DBAL\Schema\AbstractSchemaManager::introspectTable" />
+                <referencedMethod name="Doctrine\DBAL\Schema\AbstractSchemaManager::listTableNames" />
+                <referencedMethod name="Doctrine\DBAL\Schema\AbstractSchemaManager::listViews" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Table::setPrimaryKey" />
             </errorLevel>
         </DeprecatedMethod>
         <UndefinedInterfaceMethod>
@@ -144,8 +146,8 @@
         <InternalClass>
             <errorLevel type="info">
                 <referencedClass name="Pimcore\File" />
-                <referencedClass name="Pimcore\Bundle\StudioBackendBundle\Grid\Column\FrontendType" />
                 <referencedClass name="Pimcore\Bundle\StudioBackendBundle\Exception\Api\TransformerException" />
+                <referencedClass name="Pimcore\Bundle\StudioBackendBundle\Grid\Column\FrontendType" />
             </errorLevel>
         </InternalClass>
 
@@ -244,7 +246,7 @@
 
         <RedundantCastGivenDocblockType>
             <errorLevel type="info">
-                <file name="src/CoreShop/Bundle/PimcoreBundle/Controller/Admin/DynamicDropdownController.php" />
+                <file name="src/CoreShop/Bundle/PimcoreBundle/Controller/DynamicDropdownController.php" />
                 <file name="src/CoreShop/Bundle/CoreBundle/Controller/CustomerTransformerController.php" />
             </errorLevel>
         </RedundantCastGivenDocblockType>

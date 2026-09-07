@@ -380,15 +380,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
             $reflectionClass = new \ReflectionClass($newStoreValue);
             $property = $reflectionClass->getProperty('id');
-            $property->setAccessible(true);
             $property->setValue($newStoreValue, null);
 
             $property = $reflectionClass->getProperty('product');
-            $property->setAccessible(true);
             $property->setValue($newStoreValue, null);
 
             $property = $reflectionClass->getProperty('productUnitDefinitionPrices');
-            $property->setAccessible(true);
             $property->setValue($newStoreValue, new ArrayCollection());
 
             $newStoreValues[] = $newStoreValue;

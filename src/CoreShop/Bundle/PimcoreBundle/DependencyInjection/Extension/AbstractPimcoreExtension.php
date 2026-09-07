@@ -22,34 +22,73 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 abstract class AbstractPimcoreExtension extends Extension
 {
+    /**
+     * Registers a bundle's `pimcore_admin` configuration section.
+     *
+     * Two kinds of declaration are read, both consumed by the installers behind
+     * `coreshop:resources:install`:
+     *
+     *  - `permissions`: Pimcore user-permission definitions. Every entry is prefixed with the
+     *    application name, so `permissions: [order_list]` under the application `coreshop` declares
+     *    `coreshop_permission_order_list`, installed into the group `coreshop_permission_group_coreshop`.
+     *  - `install`: resources to install, keyed by installer type (`documents`, `image_thumbnails`,
+     *    `sql`). Each type maps to a list of file references. Types are not validated here - a type with
+     *    no installer behind it simply ends up in a container parameter nobody reads.
+     *
+     * The classic ExtJS admin's asset keys (`js`, `css`, `editmode_js`, `editmode_css`) are not read at
+     * all, so bundles that still carry their pre-2026 configuration keep working unchanged.
+     *
+     * The section is named `pimcore_admin` for historical reasons only - it configures backend resources,
+     * not the classic admin UI. Do not rename it and do not rename this method: bundles outside this
+     * repository declare `pimcore_admin: { permissions: [...] }` and call `registerPimcoreResources()`
+     * verbatim, and both names are kept deliberately so that code keeps working.
+     */
     protected function registerPimcoreResources(string $applicationName, array $bundleResources, ContainerBuilder $container): void
     {
-        $resourceTypes = ['js', 'css', 'editmode_js', 'editmode_css'];
+        if (array_key_exists('install', $bundleResources)) {
+            foreach ($bundleResources['install'] as $type => $value) {
+                $applicationParameter = sprintf('%s.pimcore.admin.install.%s', $applicationName, $type);
+                $globalParameter = sprintf('coreshop.all.pimcore.admin.install.%s', $type);
 
-        foreach ($resourceTypes as $resourceType) {
-            $applicationParameter = sprintf('%s.pimcore.admin.%s', $applicationName, $resourceType);
-            //$aliasParameter = sprintf('%s.pimcore.admin.%s', $this->getAlias(), $resourceType);
-            $globalParameter = sprintf('coreshop.all.pimcore.admin.%s', $resourceType);
+                foreach ([$applicationParameter, $globalParameter] as $containerParameter) {
+                    /**
+                     * @var array $resources
+                     */
+                    $resources = $container->hasParameter($containerParameter) ? $container->getParameter($containerParameter) : [];
 
-            $parameters = [
-                $applicationParameter,
-                $globalParameter,
-            ];
-
-            foreach ($parameters as $containerParameter) {
-                $resources = [];
-                $bundleTypeResources = [];
-
-                if (array_key_exists($resourceType, $bundleResources)) {
-                    $bundleTypeResources = array_values($bundleResources[$resourceType]);
+                    $container->setParameter($containerParameter, array_merge($resources, array_values($value)));
                 }
-
-                if ($container->hasParameter($containerParameter)) {
-                    $resources = $container->getParameter($containerParameter);
-                }
-
-                $container->setParameter($containerParameter, array_merge($resources, $bundleTypeResources));
             }
+        }
+
+        if (array_key_exists('permissions', $bundleResources)) {
+            $applicationParameter = sprintf('%s.permissions', $applicationName);
+            $globalParameter = 'coreshop.all.permissions';
+
+            /**
+             * @var string[] $applicationPermissions
+             */
+            $applicationPermissions = $container->hasParameter($applicationParameter) ? $container->getParameter($applicationParameter) : [];
+
+            /**
+             * @var array<string, string[]> $globalPermissions
+             */
+            $globalPermissions = $container->hasParameter($globalParameter) ? $container->getParameter($globalParameter) : [];
+
+            $identifiers = [];
+
+            foreach ($bundleResources['permissions'] as $permission) {
+                $identifiers[] = sprintf('%s_permission_%s', $applicationName, $permission);
+            }
+
+            $globalPermissions[$applicationName] = array_values(array_unique(
+                array_merge($globalPermissions[$applicationName] ?? [], $identifiers),
+            ));
+
+            $container->setParameter($globalParameter, $globalPermissions);
+            $container->setParameter($applicationParameter, array_values(array_unique(
+                array_merge($applicationPermissions, $identifiers),
+            )));
         }
     }
 }

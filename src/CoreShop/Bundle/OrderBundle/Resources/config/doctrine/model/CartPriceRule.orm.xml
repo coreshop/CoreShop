@@ -9,8 +9,8 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="name" column="name"/>
-        <field name="description" column="description" nullable="true"/>
+        <field name="name" column="name" type="string" length="255"/>
+        <field name="description" column="description" nullable="true" type="string" length="255"/>
         <field name="isVoucherRule" column="isVoucherRule" type="boolean"/>
         <field name="active" column="active" type="boolean"/>
         <field name="priority" column="priority" type="integer">

@@ -51,7 +51,6 @@ final class Configuration implements ConfigurationInterface
         $this->addResourcesSection($rootNode);
         $this->addTranslationsSection($rootNode);
         $this->addDriversSection($rootNode);
-        $this->addPimcoreResourcesSection($rootNode);
         $this->addCascadeMergeAssociations($rootNode);
 
         return $treeBuilder;
@@ -144,6 +143,22 @@ final class Configuration implements ConfigurationInterface
                     ->canBeDisabled()
                     ->children()
                         ->scalarNode('locale_provider')->defaultValue(TranslationLocaleProviderInterface::class)->cannotBeEmpty()->end()
+                        ->integerNode('locale_column_length')
+                            ->min(1)
+                            ->defaultValue(5)
+                            ->info(
+                                'Length of the `locale` column mapped onto every `*_translation` database table. ' .
+                                'The default of 5 fits plain language/region codes like "de_AT" but is too short ' .
+                                'for locales with a script subtag, e.g. "zh_Hans" / "zh_Hant" (7 chars) ' .
+                                '- MySQL silently truncates them, which then collides with the unique ' .
+                                '(translatable_id, locale) constraint. IMPORTANT: changing this value only updates ' .
+                                'Doctrine\'s mapping metadata for newly created schemas - it does NOT alter any ' .
+                                'already-created database column. You must ship your own migration that runs ' .
+                                '`ALTER TABLE ... MODIFY locale VARCHAR(<n>)` on every existing `*_translation` ' .
+                                'table, or inserts will keep failing/truncating against the old column width.',
+                            )
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;
@@ -158,34 +173,6 @@ final class Configuration implements ConfigurationInterface
                     ->enumPrototype()->values(CoreShopResourceBundle::getAvailableDrivers())->end()
                 ->end()
             ->end()
-        ;
-    }
-
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
-    {
-        $node->children()
-            ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_js')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                    ->arrayNode('editmode_css')
-                        ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
-                    ->end()
-                ->end()
-            ->end()
-        ->end()
         ;
     }
 

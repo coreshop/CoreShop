@@ -8,14 +8,14 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="objectKey" column="objectKey" nullable="true"/>
-        <field name="objectType" column="objectType"/>
-        <field name="dataType" column="dataType"/>
-        <field name="name" column="name"/>
-        <field name="getter" column="getter" nullable="true"/>
-        <field name="columnType" column="columnType"/>
+        <field name="objectKey" column="objectKey" nullable="true" type="string" length="255"/>
+        <field name="objectType" column="objectType" type="string" length="255"/>
+        <field name="dataType" column="dataType" type="string" length="255"/>
+        <field name="name" column="name" type="string" length="255"/>
+        <field name="getter" column="getter" nullable="true" type="string" length="255"/>
+        <field name="columnType" column="columnType" type="string" length="255"/>
         <field name="getterConfig" column="getterConfig" type="json" nullable="true"/>
-        <field name="interpreter" column="interpreter" nullable="true"/>
+        <field name="interpreter" column="interpreter" nullable="true" type="string" length="255"/>
         <field name="interpreterConfig" column="interpreterConfig" type="json" nullable="true"/>
         <field name="configuration" column="configuration" type="json" nullable="true"/>
 

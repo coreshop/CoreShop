@@ -3,23 +3,13 @@ services:
         public: true
         autowire: true
 
-    CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:
+    CoreShop\Bundle\PimcoreBundle\Controller\GridController:
         tags:
             - { name: controller.service_arguments }
             - { name: container.service_subscriber }
         bind:
-            $gridFilterServiceRegistry: '@coreshop.registry.grid.filter'
             $gridActionServiceRegistry: '@coreshop.registry.grid.action'
             $studioGridFilterServiceRegistry: '@coreshop.registry.studio.grid.filter'
-
-    coreshop.registry.grid.filter:
-        class: CoreShop\Component\Registry\ServiceRegistry
-        public: true
-        arguments:
-            - 'CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface'
-            - 'coreshop-grid-filter'
-        tags:
-            - { name: coreshop.registry, type_hint: gridFilters }
 
     coreshop.registry.grid.action:
         class: CoreShop\Component\Registry\ServiceRegistry
@@ -30,8 +20,6 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: gridActions }
 
-    # Studio v2 Grid Filter Registry
-    # Registers StudioGridFilterInterface implementations for listing available filters
     coreshop.registry.studio.grid.filter:
         class: CoreShop\Component\Registry\ServiceRegistry
         public: true

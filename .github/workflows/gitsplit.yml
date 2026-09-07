@@ -3,7 +3,7 @@ on:
     workflow_dispatch: ~
     push:
         branches:
-            - next
+            - 2026.x
             - 2.0
             - 2.1
             - 2.2

@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "coreshop/registry": "^5.1",
-        "pimcore/pimcore": "^12.3",
+        "coreshop/registry": "^2026.1",
+        "pimcore/pimcore": "^2026.2",
         "webmozart/assert": "^1.10"
     },
     "require-dev": {
@@ -48,8 +48,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.1-dev",
-            "dev-master": "5.1-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {

@@ -89,7 +89,6 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
 
                 $reflectionClass = new \ReflectionClass($newDefinitionPrice);
                 $property = $reflectionClass->getProperty('id');
-                $property->setAccessible(true);
                 $property->setValue($newDefinitionPrice, null);
 
                 $newDefinitionPrice->setProductStoreValues($newStoreValue);

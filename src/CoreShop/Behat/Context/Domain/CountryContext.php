@@ -112,7 +112,6 @@ final class CountryContext implements Context
     public function thereShouldBeASampleCountryContextLoadedByAttributeAsCountryContext(): void
     {
         $reflection = new \ReflectionClass($this->compositeCountryContext);
-        $reflection->getProperty('countryContexts')->setAccessible(true);
         /**
          * @var \CoreShop\Component\Pimcore\PriorityQueue $priorityQueue
          */

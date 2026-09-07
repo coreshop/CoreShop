@@ -28,12 +28,12 @@
         "doctrine/doctrine-bundle": "^2.4",
         "jms/serializer-bundle": "^5.0",
         "stof/doctrine-extensions-bundle": "^1.6",
-        "coreshop/pimcore-bundle": "^5.1",
-        "coreshop/locale-bundle": "^5.1",
-        "coreshop/optimistic-entity-lock-bundle": "^5.1",
-        "coreshop/registry": "^5.1",
-        "coreshop/resource": "^5.1",
-        "coreshop/studio-form-bundle": "^5.1",
+        "coreshop/pimcore-bundle": "^2026.1",
+        "coreshop/locale-bundle": "^2026.1",
+        "coreshop/optimistic-entity-lock-bundle": "^2026.1",
+        "coreshop/registry": "^2026.1",
+        "coreshop/resource": "^2026.1",
+        "coreshop/studio-form-bundle": "^2026.1",
         "symfony/config": "^6.4.14 || ^7.2",
         "symfony/expression-language": "^6.4.14 || ^7.2",
         "symfony/form": "^6.4.14 || ^7.2",
@@ -44,10 +44,10 @@
         "symfony/validator": "^6.4.14 || ^7.2",
         "symfony/yaml": "^6.4.14 || ^7.2",
         "gedmo/doctrine-extensions": "^3.11.0",
-        "pimcore/pimcore": "^12.3"
+        "pimcore/pimcore": "^2026.2"
     },
     "require-dev": {
-        "pimcore/studio-ui-bundle": "^2025.4.9",
+        "pimcore/studio-ui-bundle": "^2026.2.1",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0"
@@ -67,16 +67,13 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.1-dev",
-            "dev-master": "5.1-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {
         "sort-packages": true
     },
     "suggest": {
-        "pimcore/studio-ui-bundle": "^0.6.30 - Modern React-based Studio UI for Pimcore (recommended)",
-        "pimcore/admin-ui-classic-bundle": "^2.0 - Classic ExtJS-based admin interface for Pimcore (legacy)",
         "pimcore/elasticsearch-client": "Allows to use ElasticSearch as your index engine.",
         "pimcore/opensearch-client": "Allows to use OpenSearch as your index engine."
     }

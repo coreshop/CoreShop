@@ -1,10 +1,23 @@
 services:
+    CoreShop\Bundle\TrackingBundle\GoogleMarketing\SiteId\SiteIdProvider:
+        public: true
+        arguments:
+            - '@Pimcore\Http\Request\Resolver\SiteResolver'
+
+    CoreShop\Bundle\TrackingBundle\GoogleMarketing\Config\ConfigProvider:
+        public: true
+
+    CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker:
+        public: true
+        arguments:
+            - '@CoreShop\Bundle\TrackingBundle\GoogleMarketing\SiteId\SiteIdProvider'
+
     CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface: '@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver'
     CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver:
         public: true
         arguments:
-            - '@Pimcore\Bundle\GoogleMarketingBundle\SiteId\SiteIdProvider'
-            - '@Pimcore\Bundle\GoogleMarketingBundle\Config\ConfigProvider'
+            - '@CoreShop\Bundle\TrackingBundle\GoogleMarketing\SiteId\SiteIdProvider'
+            - '@CoreShop\Bundle\TrackingBundle\GoogleMarketing\Config\ConfigProvider'
 
     CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker:
         abstract: true
@@ -19,7 +32,7 @@ services:
         arguments:
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - '@Pimcore\Http\ResponseHelper'
-            - '@Pimcore\Bundle\GoogleMarketingBundle\SiteId\SiteIdProvider'
+            - '@CoreShop\Bundle\TrackingBundle\GoogleMarketing\SiteId\SiteIdProvider'
             - '@CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker'
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -100 }
@@ -28,7 +41,7 @@ services:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
         calls:
-            - [setTracker, ['@Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker']]
+            - [setTracker, ['@CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker']]
             - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-enhanced-ecommerce }
@@ -37,7 +50,7 @@ services:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
         calls:
-            - [setTracker, ['@Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker']]
+            - [setTracker, ['@CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker']]
             - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-4 }
@@ -46,7 +59,7 @@ services:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
         calls:
-            - [setTracker, ['@Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker']]
+            - [setTracker, ['@CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker']]
             - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-4-tag-manager }
@@ -55,7 +68,7 @@ services:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
         calls:
-            - [setTracker, ['@Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker']]
+            - [setTracker, ['@CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker']]
             - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-universal-ecommerce }
@@ -64,7 +77,7 @@ services:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
         calls:
-            - [setTracker, ['@Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker']]
+            - [setTracker, ['@CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker']]
             - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-gtag-enhanced-ecommerce }

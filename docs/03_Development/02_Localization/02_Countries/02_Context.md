@@ -8,9 +8,9 @@ Different contexts are used for determining the appropriate country in various s
 
 | Name                                                                                                                                                  | Priority | Tag                        | Description                                                   |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------|----------|----------------------------|---------------------------------------------------------------|
-| [FixedCountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/FixedCountryContext.php)                | default  | `coreshop.context.country` | For testing purposes.                                         |
-| [CountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/RequestBased/CountryContext.php)             | default  | `coreshop.context.country` | Checks for a country within the country request resolver.     |
-| [StoreAwareCountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Country/StoreAwareCountryContext.php) | default  | `coreshop.context.country` | Considers the current store context to determine the country. |
+| [FixedCountryContext](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Address/Context/FixedCountryContext.php)                | default  | `coreshop.context.country` | For testing purposes.                                         |
+| [CountryContext](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Address/Context/RequestBased/CountryContext.php)             | default  | `coreshop.context.country` | Checks for a country within the country request resolver.     |
+| [StoreAwareCountryContext](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Core/Context/Country/StoreAwareCountryContext.php) | default  | `coreshop.context.country` | Considers the current store context to determine the country. |
 
 ## Resolver
 
@@ -18,7 +18,7 @@ Resolvers are used to find the correct country based on different criteria:
 
 | Name                                                                                                                                                                | Priority | Tag                                               | Description                                            |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------------------------------------------|--------------------------------------------------------|
-| [GeoLiteBasedRequestResolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/RequestBased/GeoLiteBasedRequestResolver.php) | 10       | `coreshop.context.country.request_based.resolver` | Uses the Geo Lite Database to determine user location. |
+| [GeoLiteBasedRequestResolver](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Address/Context/RequestBased/GeoLiteBasedRequestResolver.php) | 10       | `coreshop.context.country.request_based.resolver` | Uses the Geo Lite Database to determine user location. |
 
 ## Create a Custom Resolver
 

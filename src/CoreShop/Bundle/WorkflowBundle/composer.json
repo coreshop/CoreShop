@@ -30,12 +30,12 @@
         }
     ],
     "require": {
-        "coreshop/pimcore": "^5.1",
-        "coreshop/registry": "^5.1",
+        "coreshop/pimcore": "^2026.1",
+        "coreshop/registry": "^2026.1",
         "symfony/config": "^6.4.14 || ^7.2",
         "symfony/workflow": "^6.4.14 || ^7.2",
         "symfony/yaml": "^6.4.14 || ^7.2",
-        "pimcore/pimcore": "^12.3"
+        "pimcore/pimcore": "^2026.2"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
@@ -57,8 +57,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "5.1-dev",
-            "dev-master": "5.1-dev"
+            "dev-main": "2026.x-dev"
         }
     },
     "config": {

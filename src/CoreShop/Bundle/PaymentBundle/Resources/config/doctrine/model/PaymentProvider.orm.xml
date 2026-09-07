@@ -9,7 +9,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="identifier" column="identifier" length="100" unique="true"/>
+        <field name="identifier" column="identifier" length="100" unique="true" type="string"/>
         <field name="active" column="active" type="boolean"/>
         <field name="position" column="position" type="integer"/>
         <field name="logo" column="logo" type="pimcoreAsset" nullable="true"/>

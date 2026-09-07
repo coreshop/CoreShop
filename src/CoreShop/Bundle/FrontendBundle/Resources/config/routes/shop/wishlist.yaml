@@ -1,0 +1,18 @@
+coreshop_wishlist_add:
+    path:       /wishlist/add/{product}
+    controller: coreshop.storage_list.controller.wishlist::addItemAction
+    requirements: { product: '\d+' }
+
+coreshop_wishlist_remove:
+    path:       /wishlist/remove/{item}
+    controller: coreshop.storage_list.controller.wishlist::removeItemAction
+    requirements: { item: '\d+' }
+
+coreshop_wishlist_summary_identifier:
+    path:       /wishlist/{identifier}
+    controller: coreshop.storage_list.controller.wishlist::summaryAction
+    requirements: { identifier: '.+' }
+
+coreshop_wishlist_summary:
+    path:       /wishlist
+    controller: coreshop.storage_list.controller.wishlist::summaryAction

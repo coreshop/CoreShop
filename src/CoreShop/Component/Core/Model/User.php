@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
+use Carbon\Carbon;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\User\Model\User as BaseUser;
 

@@ -9,8 +9,8 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="title" column="title" nullable="true"/>
-        <field name="description" column="description" nullable="true"/>
+        <field name="title" column="title" nullable="true" type="string" length="255"/>
+        <field name="description" column="description" nullable="true" type="string" length="255"/>
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

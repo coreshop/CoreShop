@@ -88,10 +88,6 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
             $loader->load('services/studio.yml');
         }
 
-        if (array_key_exists('PimcoreAdminBundle', $bundles)) {
-            $loader->load('services/classic_admin.yml');
-        }
-
         $loader->load('services.yml');
 
         $env = (string) $container->getParameter('kernel.environment');

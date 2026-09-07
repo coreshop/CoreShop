@@ -130,19 +130,15 @@ class ProductSpecificPriceRules extends Data implements
 
             $reflectionClass = new \ReflectionClass($newPriceRule);
             $property = $reflectionClass->getProperty('id');
-            $property->setAccessible(true);
             $property->setValue($newPriceRule, null);
 
             $property = $reflectionClass->getProperty('product');
-            $property->setAccessible(true);
             $property->setValue($newPriceRule, null);
 
             $property = $reflectionClass->getProperty('conditions');
-            $property->setAccessible(true);
             $property->setValue($newPriceRule, new ArrayCollection());
 
             $property = $reflectionClass->getProperty('actions');
-            $property->setAccessible(true);
             $property->setValue($newPriceRule, new ArrayCollection());
 
             foreach ($priceRule->getConditions() as $condition) {
@@ -150,7 +146,6 @@ class ProductSpecificPriceRules extends Data implements
 
                 $reflectionClass = new \ReflectionClass($newCondition);
                 $property = $reflectionClass->getProperty('id');
-                $property->setAccessible(true);
                 $property->setValue($newCondition, null);
 
                 $newPriceRule->addCondition($newCondition);
@@ -161,7 +156,6 @@ class ProductSpecificPriceRules extends Data implements
 
                 $reflectionClass = new \ReflectionClass($newAction);
                 $property = $reflectionClass->getProperty('id');
-                $property->setAccessible(true);
                 $property->setValue($newAction, null);
 
                 $newPriceRule->addAction($newAction);

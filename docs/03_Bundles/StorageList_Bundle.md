@@ -16,22 +16,22 @@ $ composer require coreshop/storage-list-bundle:^4.0
 The bundle requires three models to function effectively:
 
 1. **Storage List** - Represents the collection. Implement
-   the [`StorageListInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListInterface.php).
+   the [`StorageListInterface`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/StorageList/Model/StorageListInterface.php).
 2. **Storage Item** - The item within the collection, which can store additional information, such as prices for a cart.
    Implement
-   the [`StorageListItemInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListItemInterface.php).
+   the [`StorageListItemInterface`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/StorageList/Model/StorageListItemInterface.php).
 3. **Storage Product** - The actual product being stored inside the item. Implement
-   the [`StorageListProductInterface`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageListProductInterface.php).
+   the [`StorageListProductInterface`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/StorageList/Model/StorageListProductInterface.php).
 
 CoreShop provides basic implementations
-of [`Storage List`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageList.php)
-and [`Storage Item`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/Model/StorageItem.php).
+of [`Storage List`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/StorageList/Model/StorageList.php)
+and [`Storage Item`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/StorageList/Model/StorageItem.php).
 You will need to implement the StorageListProduct yourself.
 
 ### Mutating Lists
 
 Use
-the [`Storage List Modifier`](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/StorageList/StorageListModifier.php)
+the [`Storage List Modifier`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/StorageList/StorageListModifier.php)
 to create and persist lists.
 
 ### Example: Basic Session-Based Wishlist

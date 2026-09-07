@@ -19,7 +19,6 @@ namespace CoreShop\Bundle\TestBundle\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
-use Pimcore\Bundle\NewsletterBundle\Model\Document\Newsletter;
 use Pimcore\Model\Document;
 
 final class DocumentContext implements Context
@@ -50,7 +49,6 @@ final class DocumentContext implements Context
             'hardlink' => Document\Hardlink::class,
             'folder' => Document\Folder::class,
             'email' => Document\Email::class,
-            'newsletter' => Newsletter::class,
             default => throw new \InvalidArgumentException($type . ' is not valid')
         };
 

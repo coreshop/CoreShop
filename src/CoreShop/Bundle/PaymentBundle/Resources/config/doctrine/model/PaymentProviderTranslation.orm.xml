@@ -9,7 +9,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="title" column="title"/>
+        <field name="title" column="title" type="string" length="255"/>
         <field name="description" column="description" type="text" nullable="true"/>
         <field name="instructions" column="instructions" type="text" nullable="true"/>
         <field name="creationDate" type="datetime">

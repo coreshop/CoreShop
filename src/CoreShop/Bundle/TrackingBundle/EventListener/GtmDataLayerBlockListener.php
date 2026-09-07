@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TrackingBundle\EventListener;
 
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker;
-use Pimcore\Bundle\GoogleMarketingBundle\SiteId\SiteIdProvider;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\SiteId\SiteIdProvider;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Pimcore\Http\ResponseHelper;
 use Pimcore\Tool;

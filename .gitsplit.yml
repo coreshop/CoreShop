@@ -1,7 +1,7 @@
 cache_url: 'file://cache'
 project_url: 'https://@github.com/coreshop/CoreShop.git'
 origins:
-    - ^next$
+    - ^\d+\.x$
     - ^\d+\.\d+$
     - ^\d+\.\d+\.\d+$
     - '^\d+\.\d+\.\d+(?:-?(?:alpha|beta|rc)\.?\d*)?$'

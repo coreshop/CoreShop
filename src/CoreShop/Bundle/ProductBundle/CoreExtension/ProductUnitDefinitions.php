@@ -204,25 +204,20 @@ class ProductUnitDefinitions extends Data implements
         $reflectionClass = new \ReflectionClass($newData);
 
         $property = $reflectionClass->getProperty('unitDefinitions');
-        $property->setAccessible(true);
         $property->setValue($newData, new ArrayCollection());
 
         $property = $reflectionClass->getProperty('id');
-        $property->setAccessible(true);
         $property->setValue($newData, null);
 
         $property = $reflectionClass->getProperty('product');
-        $property->setAccessible(true);
         $property->setValue($newData, null);
 
         $property = $reflectionClass->getProperty('defaultUnitDefinition');
-        $property->setAccessible(true);
         $property->setValue($newData, null);
 
         $newDefaultDefinition = clone $data->getDefaultUnitDefinition();
         $reflectionClass = new \ReflectionClass($newDefaultDefinition);
         $property = $reflectionClass->getProperty('id');
-        $property->setAccessible(true);
         $property->setValue($newDefaultDefinition, null);
 
         $newData->setDefaultUnitDefinition($newDefaultDefinition);
@@ -232,7 +227,6 @@ class ProductUnitDefinitions extends Data implements
 
             $reflectionClass = new \ReflectionClass($newUnitDefinition);
             $property = $reflectionClass->getProperty('id');
-            $property->setAccessible(true);
             $property->setValue($newUnitDefinition, null);
 
             $newUnitDefinition->setProductUnitDefinitions($newData);
