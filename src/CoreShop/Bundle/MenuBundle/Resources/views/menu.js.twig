@@ -53,6 +53,10 @@ coreshop.menu.{{ type }} = Class.create({
                 else if (item.attributes.hasOwnProperty('container') && item.attributes.container) {
                     return;
                 }
+                else if (!item.attributes.hasOwnProperty('resource')) {
+                    // Studio-only entry (widgetId / widgetEvent without a classic resource handler)
+                    return;
+                }
 
                 menuItems.push(menuItem);
             };
