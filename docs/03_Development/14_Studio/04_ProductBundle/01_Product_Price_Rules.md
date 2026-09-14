@@ -205,6 +205,23 @@ export const coreshopProductServiceIds = {
 | `discountPrice` | ProductBundle | Discounted fixed price |
 | `notDiscountableCustomAttributes` | ProductBundle | Marks products as non-discountable |
 
+## Indexability Badge on Conditions
+
+Every condition card in the rule editor shows whether the condition can be represented in a precomputed index
+(such as the `coreshop/product-price-index-bundle`):
+
+- **Indexable** (green): the checker implements `CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface`.
+  The tooltip lists the dimensions the outcome depends on (`store`, `currency`, `customer_group`, `country`,
+  `company`, `customer`).
+- **Not indexable** (orange): the condition depends on the cart or on data no index can represent.
+
+The data comes from the backend: `GET /pimcore-studio/api/coreshop/product_price_rules/get-config` returns
+`conditionMeta` (`{ type: { indexable, dimensions } }`), built by `CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector`.
+For product specific price rules the same map is part of the `coreShopProductSpecificPriceRules` field data.
+`registerSchemaComponentsFromConfig` / `registerSchemaComponentsFromMaps` store it on the `ConditionRegistry`
+(`getMeta(type)`), so nested conditions get the badge too. A custom condition gets the green badge by implementing
+the interface on its checker, no JavaScript is needed.
+
 ## Hand-Written React Components (Rare)
 
 If your condition/action needs custom interactive behavior that cannot be expressed as a Symfony FormType, you can still write a React component:

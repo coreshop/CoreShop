@@ -17,13 +17,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Model\CompanyInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface;
+use CoreShop\Component\Rule\Condition\IndexableConditionValuesInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-final class CustomerGroupsConditionChecker implements ConditionCheckerInterface, IndexableConditionCheckerInterface
+final class CompaniesConditionChecker implements ConditionCheckerInterface, IndexableConditionValuesInterface
 {
     public function isValid(
         ResourceInterface $subject,
@@ -35,24 +36,22 @@ final class CustomerGroupsConditionChecker implements ConditionCheckerInterface,
             return false;
         }
 
-        /**
-         * @var CustomerInterface $customer
-         */
-        $customer = $params['customer'];
+        $company = $params['customer']->getCompany();
 
-        foreach ($customer->getCustomerGroups() as $group) {
-            if ($group instanceof ResourceInterface) {
-                if (in_array($group->getId(), $configuration['customerGroups'])) {
-                    return true;
-                }
-            }
+        if (!$company instanceof CompanyInterface) {
+            return false;
         }
 
-        return false;
+        return in_array($company->getId(), $configuration['companies'] ?? []);
     }
 
     public function getPriceIndexDimensions(array $configuration): array
     {
-        return [self::DIMENSION_CUSTOMER_GROUP];
+        return [self::DIMENSION_COMPANY];
+    }
+
+    public function getPriceIndexDimensionValues(array $configuration): array
+    {
+        return [self::DIMENSION_COMPANY => array_map('intval', $configuration['companies'] ?? [])];
     }
 }

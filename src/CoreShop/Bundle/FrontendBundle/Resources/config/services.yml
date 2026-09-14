@@ -16,6 +16,10 @@ services:
         calls:
             - [setContainer, ['@service_container']]
 
+    CoreShop\Bundle\FrontendBundle\Listing\CategorySortApplierInterface: '@CoreShop\Bundle\FrontendBundle\Listing\CategorySortApplier'
+    CoreShop\Bundle\FrontendBundle\Listing\CategorySortApplier:
+        public: true
+
     CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface: '@CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator'
     CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator:
         public: true

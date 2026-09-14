@@ -2,7 +2,7 @@
  * Registers schema-based rule components from backend type->blockPrefix mappings.
  */
 
-import type { RuleConfig } from '../types'
+import type { ConditionMeta, RuleConfig } from '../types'
 import { createSchemaAction, createSchemaCondition, EmptyAction, EmptyCondition } from '../components'
 import { ActionRegistry } from './ActionRegistry'
 import { ConditionRegistry } from './ConditionRegistry'
@@ -19,6 +19,8 @@ export interface SchemaRegistrationOptions {
    * they just ship without a configuration form and get an EmptyAction placeholder.
    */
   knownActionTypes?: string[]
+  /** Per condition type metadata (indexability), stored on the condition registry. */
+  conditionMeta?: Record<string, ConditionMeta>
 }
 
 const isSchemaConditionComponent = (component: unknown): boolean => {
@@ -141,6 +143,10 @@ export const registerSchemaComponentsFromMaps = (
     }
   }
 
+  for (const [type, meta] of Object.entries(options.conditionMeta ?? {})) {
+    conditionRegistry.setMeta(type, meta)
+  }
+
   for (const type of options.knownActionTypes ?? []) {
     if (!actionRegistry.has(type)) {
       actionRegistry.register(type, EmptyAction)
@@ -163,6 +169,7 @@ export const registerSchemaComponentsFromConfig = (
     {
       knownConditionTypes: config.conditions,
       knownActionTypes: config.actions,
+      conditionMeta: config.conditionMeta,
       ...options,
     },
   )

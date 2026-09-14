@@ -34,11 +34,21 @@ export interface Rule {
   actions?: RuleAction[]
 }
 
+/**
+ * Backend metadata per condition type: whether the condition can be represented in a precomputed
+ * index (e.g. a price index) and the context dimensions its outcome depends on.
+ */
+export interface ConditionMeta {
+  indexable: boolean
+  dimensions?: string[]
+}
+
 export interface RuleConfig {
   conditions: string[]
   actions: string[]
   conditionSchemaByType?: Record<string, string>
   actionSchemaByType?: Record<string, string>
+  conditionMeta?: Record<string, ConditionMeta>
   schemas?: Record<string, any>
   [key: string]: any
 }

@@ -2,3 +2,9 @@ imports:
     - { resource: services/form.yml }
     - { resource: services/commands.yml }
     - { resource: services/rule_active_validator.yml }
+
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector: ~

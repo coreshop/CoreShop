@@ -11,9 +11,10 @@
  */
 
 import React, { useMemo } from 'react'
-import { Card, Button, Space } from 'antd'
+import { Card, Button, Space, Tag, Tooltip } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons'
 import { container } from '@pimcore/studio-ui-bundle'
+import { useTranslation } from 'react-i18next'
 import type { RuleCondition } from '../types'
 import type { ConditionRegistry } from '../registry/ConditionRegistry'
 import { formatTypeLabel } from './type-label'
@@ -51,12 +52,32 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
   )
 
   const ConditionComponent = conditionRegistry.get(condition.type)
+  const meta = conditionRegistry.getMeta(condition.type)
+  const { t } = useTranslation()
 
   const title = (
     <Space>
       <span style={{ fontWeight: 600 }}>
         {formatTypeLabel('Condition', condition.type)}
       </span>
+      {meta !== undefined && (
+        meta.indexable
+          ? (
+            <Tooltip title={t('coreshop_rule_condition_indexable_hint', {
+              defaultValue: 'The outcome of this condition only depends on well-known context dimensions, so a precomputed index can represent it. Dimensions: {{dimensions}}',
+              dimensions: (meta.dimensions ?? []).length > 0 ? (meta.dimensions ?? []).join(', ') : t('coreshop_rule_condition_indexable_none', { defaultValue: 'none' })
+            })}>
+              <Tag color="green">{t('coreshop_rule_condition_indexable', { defaultValue: 'Indexable' })}</Tag>
+            </Tooltip>
+          )
+          : (
+            <Tooltip title={t('coreshop_rule_condition_not_indexable_hint', {
+              defaultValue: 'This condition depends on the cart or on data no index can represent. Rules containing it are skipped by precomputed indices.'
+            })}>
+              <Tag color="orange">{t('coreshop_rule_condition_not_indexable', { defaultValue: 'Not indexable' })}</Tag>
+            </Tooltip>
+          )
+      )}
     </Space>
   )
 

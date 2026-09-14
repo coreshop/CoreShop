@@ -21,9 +21,10 @@ use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-final class ZonesConditionChecker implements ConditionCheckerInterface
+final class ZonesConditionChecker implements ConditionCheckerInterface, IndexableConditionCheckerInterface
 {
     public function isValid(
         ResourceInterface $subject,
@@ -42,5 +43,10 @@ final class ZonesConditionChecker implements ConditionCheckerInterface
         }
 
         return in_array($country->getZone()->getId(), $configuration['zones']);
+    }
+
+    public function getPriceIndexDimensions(array $configuration): array
+    {
+        return [self::DIMENSION_COUNTRY];
     }
 }

@@ -23,10 +23,11 @@ use CoreShop\Component\Core\Rule\Condition\ProductVariantsCheckerTrait;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Webmozart\Assert\Assert;
 
-class ProductsConditionChecker implements ConditionCheckerInterface
+class ProductsConditionChecker implements ConditionCheckerInterface, IndexableConditionCheckerInterface
 {
     use ProductVariantsCheckerTrait {
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
@@ -58,5 +59,10 @@ class ProductsConditionChecker implements ConditionCheckerInterface
         );
 
         return in_array($subject->getId(), $productIdsToCheck);
+    }
+
+    public function getPriceIndexDimensions(array $configuration): array
+    {
+        return [];
     }
 }

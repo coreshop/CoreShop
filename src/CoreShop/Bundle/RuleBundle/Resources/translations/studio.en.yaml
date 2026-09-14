@@ -11,3 +11,8 @@ coreshop_condition_conditions_operator: 'Operator'
 
 # Studio v2
 coreshop_save: 'Save'
+coreshop_rule_condition_indexable: 'Indexable'
+coreshop_rule_condition_indexable_hint: 'The outcome of this condition only depends on well-known context dimensions, so a precomputed index (e.g. a price index) can represent it. Dimensions: {{dimensions}}'
+coreshop_rule_condition_indexable_none: 'none'
+coreshop_rule_condition_not_indexable: 'Not indexable'
+coreshop_rule_condition_not_indexable_hint: 'This condition depends on the cart or on data no index can represent. Rules containing it are skipped by precomputed indices such as the price index.'

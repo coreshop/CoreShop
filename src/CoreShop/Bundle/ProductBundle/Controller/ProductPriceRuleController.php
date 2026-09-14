@@ -19,7 +19,9 @@ namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector;
 use CoreShop\Bundle\StudioFormBundle\Form\Schema\RuleFormSchemaCollector;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +34,9 @@ class ProductPriceRuleController extends ResourceController
         FormTypeRegistryInterface $conditionFormRegistry,
         #[Autowire(service: 'coreshop.form_registry.product_price_rule.actions')]
         FormTypeRegistryInterface $actionFormRegistry,
+        #[Autowire(service: 'coreshop.registry.product_price_rule.conditions')]
+        ServiceRegistryInterface $conditionRegistry,
+        ConditionMetaCollector $conditionMetaCollector,
         // Provided by CoreShopStudioFormBundle, which is only registered when
         // Pimcore Studio is installed — null on classic-admin-only setups.
         ?RuleFormSchemaCollector $schemaCollector = null,
@@ -42,6 +47,7 @@ class ProductPriceRuleController extends ResourceController
         $payload = [
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
+            'conditionMeta' => $conditionMetaCollector->collect($conditionRegistry, array_keys($conditions)),
         ];
 
         if (null !== $schemaCollector) {

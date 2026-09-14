@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\Listing\CategorySortApplierInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
@@ -158,10 +159,9 @@ class CategoryController extends FrontendController
                 'coreshop.frontend.category.default_sort_direction',
             ) : $orderDirection);
             $sort = $this->getParameterFromRequest($request, 'sort', $sortKey);
-            $sortParsed = $this->parseSorting($sort);
+            $sortParsed = $this->parseSorting($sort, array_unique(array_filter([$orderKey, ...$this->getSortApplier()->getSortOptions()])));
 
-            $filteredList->setOrderKey($sortParsed['name']);
-            $filteredList->setOrder($sortParsed['direction']);
+            $this->getSortApplier()->applyToIndexListing($filteredList, $sortParsed['name'], $sortParsed['direction']);
 
             $currentFilter = $this->container->get(FilterProcessorInterface::class)->processConditions(
                 $category->getFilter(),
@@ -194,7 +194,7 @@ class CategoryController extends FrontendController
                     'coreshop.frontend.category.default_sort_direction',
                 ),
             );
-            $sortParsed = $this->parseSorting($sort);
+            $sortParsed = $this->parseSorting($sort, $this->getSortApplier()->getSortOptions());
 
             $categories = [$category];
             if ($displaySubCategories === true) {
@@ -206,13 +206,11 @@ class CategoryController extends FrontendController
                 }
             }
 
-            $options = [
-                'order_key' => $sortParsed['name'],
-                'order' => $sortParsed['direction'],
+            $options = $this->getSortApplier()->applyToProductListingOptions([
                 'categories' => $categories,
                 'store' => $this->getContext()->getStore(),
                 'return_type' => 'list',
-            ];
+            ], $sortParsed['name'], $sortParsed['direction']);
 
             if ($variantMode !== ListingInterface::VARIANT_MODE_HIDE) {
                 $options['object_types'] = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
@@ -235,7 +233,10 @@ class CategoryController extends FrontendController
         $viewParameters['type'] = $type;
         $viewParameters['perPageAllowed'] = $allowedPerPage;
         $viewParameters['sort'] = $sort;
-        $viewParameters['validSortElements'] = $this->getParameter('coreshop.frontend.category.valid_sort_options');
+        $viewParameters['validSortElements'] = array_values(array_unique([
+            ...$this->getParameter('coreshop.frontend.category.valid_sort_options'),
+            ...$this->getSortApplier()->getSortOptions(),
+        ]));
 
         foreach ($paginator as $product) {
             $this->container->get(TrackerInterface::class)->trackProductImpression($product);
@@ -265,7 +266,16 @@ class CategoryController extends FrontendController
         }
     }
 
-    protected function parseSorting(string $sortString): array
+    protected function getSortApplier(): CategorySortApplierInterface
+    {
+        return $this->container->get(CategorySortApplierInterface::class);
+    }
+
+    /**
+     * @param string[] $additionalValidNames sort names accepted besides the configured valid_sort_options,
+     *                                       e.g. the order key configured on the category's filter
+     */
+    protected function parseSorting(string $sortString, array $additionalValidNames = []): array
     {
         $sort = [
             'name' => 'name',
@@ -281,10 +291,9 @@ class CategoryController extends FrontendController
         $name = $sortString[0];
         $direction = $sortString[1];
 
-        if (in_array($name, $this->getParameter('coreshop.frontend.category.valid_sort_options')) && in_array(
-            $direction,
-            ['desc', 'asc'],
-        )) {
+        $validNames = [...$this->getParameter('coreshop.frontend.category.valid_sort_options'), ...$additionalValidNames];
+
+        if (in_array($name, $validNames, true) && in_array($direction, ['desc', 'asc'], true)) {
             return [
                 'name' => $name,
                 'direction' => $direction,
@@ -324,6 +333,7 @@ class CategoryController extends FrontendController
             TrackerInterface::class,
             FilteredListingFactoryInterface::class,
             FilterProcessorInterface::class,
+            CategorySortApplierInterface::class,
             new SubscribedService('coreshop.repository.product', ProductRepositoryInterface::class),
         ]);
     }

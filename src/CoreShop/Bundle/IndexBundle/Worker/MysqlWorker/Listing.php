@@ -24,6 +24,7 @@ use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing\Dao;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Condition\MatchCondition;
 use CoreShop\Component\Index\Listing\ExtendedListingInterface;
+use CoreShop\Component\Index\Listing\IdSubselectListingInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Listing\OrderAwareListingInterface;
 use CoreShop\Component\Index\Listing\RawResultListingInterface;
@@ -37,7 +38,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
-class Listing extends AbstractListing implements OrderAwareListingInterface, ExtendedListingInterface, RawResultListingInterface
+class Listing extends AbstractListing implements OrderAwareListingInterface, ExtendedListingInterface, RawResultListingInterface, IdSubselectListingInterface
 {
     protected ?array $objects = null;
 
@@ -301,6 +302,20 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected function loadElementById($elementId)
     {
         return AbstractObject::getById($elementId);
+    }
+
+    public function getIdSubselect(?string $excludedFieldName = null): string
+    {
+        $queryBuilder = $this->dao->createQueryBuilder();
+        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, $this->getVariantMode());
+        $this->addJoins($queryBuilder);
+
+        $queryBuilder
+            ->select('DISTINCT q.o_id')
+            ->from($this->getQueryTableName(), 'q')
+        ;
+
+        return $queryBuilder->getSQL();
     }
 
     public function getGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)

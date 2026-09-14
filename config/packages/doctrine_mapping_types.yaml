@@ -4,4 +4,3 @@ doctrine:
             default:
                 mapping_types:
                     bit: boolean
-                    enum: string

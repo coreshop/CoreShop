@@ -21,5 +21,11 @@ use CoreShop\Component\Product\Model\ProductInterface;
 
 interface ValidRulesFetcherInterface
 {
+    /**
+     * Context key; when set (truthy) implementations must not serve rules from a per product cache,
+     * because the caller evaluates the same product under several contexts (e.g. the price index).
+     */
+    public const string CONTEXT_NO_CACHE = 'no_rule_cache';
+
     public function getValidRules(ProductInterface $product, array $context): array;
 }

@@ -90,6 +90,7 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
         {
           knownConditionTypes: value.conditions,
           knownActionTypes: value.actions,
+          conditionMeta: value.conditionMeta,
         },
       )
     } catch (e) {
@@ -100,6 +101,7 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
     value.actions,
     value.conditionSchemaByType,
     value.actionSchemaByType,
+    value.conditionMeta,
   ])
 
   // Build RuleConfig from the value prop
@@ -108,7 +110,8 @@ export const ProductSpecificPriceRulesPanel: React.FC<Props> = ({
     actions: value.actions || [],
     conditionSchemaByType: value.conditionSchemaByType,
     actionSchemaByType: value.actionSchemaByType,
-  }), [value.conditions, value.actions, value.conditionSchemaByType, value.actionSchemaByType])
+    conditionMeta: value.conditionMeta,
+  }), [value.conditions, value.actions, value.conditionSchemaByType, value.actionSchemaByType, value.conditionMeta])
 
   const handleRuleChange = (index: number, updatedRule: ProductSpecificPriceRule) => {
     const newRules = [...value.rules]
