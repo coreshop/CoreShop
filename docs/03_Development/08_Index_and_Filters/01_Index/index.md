@@ -24,7 +24,9 @@ composer require pimcore/opensearch-client
 composer require pimcore/elasticsearch-client
 ```
 
-Configure one or more clients via the corresponding configuration tree:
+Configure one or more clients via the corresponding configuration tree. Note that the two bundles use different
+keys: [pimcore/opensearch-client](https://github.com/pimcore/opensearch-client) uses `clients`, while
+[pimcore/elasticsearch-client](https://github.com/pimcore/elasticsearch-client) uses `es_clients`:
 
 ```yaml
 # OpenSearch
@@ -37,7 +39,7 @@ pimcore_open_search_client:
 
 # Elasticsearch
 pimcore_elasticsearch_client:
-    clients:
+    es_clients:
         default:
             hosts: ['https://elasticsearch:9200']
             username: 'elastic'
