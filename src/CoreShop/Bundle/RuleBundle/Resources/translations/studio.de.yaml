@@ -11,3 +11,8 @@ coreshop_condition_conditions_operator: 'Vergleich'
 
 # Studio v2
 coreshop_save: 'Speichern'
+coreshop_rule_condition_indexable: 'Indexierbar'
+coreshop_rule_condition_indexable_hint: 'Das Ergebnis dieser Condition hängt nur von bekannten Kontext-Dimensionen ab, ein vorberechneter Index (z. B. der Preis-Index) kann sie abbilden. Dimensionen: {{dimensions}}'
+coreshop_rule_condition_indexable_none: 'keine'
+coreshop_rule_condition_not_indexable: 'Nicht indexierbar'
+coreshop_rule_condition_not_indexable_hint: 'Diese Condition hängt vom Warenkorb oder von Daten ab, die kein Index abbilden kann. Regeln damit werden von vorberechneten Indizes wie dem Preis-Index übersprungen.'

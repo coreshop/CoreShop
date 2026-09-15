@@ -20,9 +20,10 @@ namespace CoreShop\Component\Core\Product\Rule\Condition;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Condition\IndexableConditionValuesInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-final class CustomersConditionChecker implements ConditionCheckerInterface
+final class CustomersConditionChecker implements ConditionCheckerInterface, IndexableConditionValuesInterface
 {
     public function isValid(
         ResourceInterface $subject,
@@ -35,5 +36,15 @@ final class CustomersConditionChecker implements ConditionCheckerInterface
         }
 
         return in_array($params['customer']->getId(), $configuration['customers']);
+    }
+
+    public function getPriceIndexDimensions(array $configuration): array
+    {
+        return [self::DIMENSION_CUSTOMER];
+    }
+
+    public function getPriceIndexDimensionValues(array $configuration): array
+    {
+        return [self::DIMENSION_CUSTOMER => array_map('intval', $configuration['customers'] ?? [])];
     }
 }

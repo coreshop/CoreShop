@@ -1,5 +1,29 @@
 ## 2026.2.2
 
+### Indexable price rule conditions and pluggable category sorting
+
+Generic extension points for bundles that precompute prices or add their own listing sort options:
+
+- Added `CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface` (a condition declares the context
+  dimensions its outcome depends on) and `IndexableConditionValuesInterface` (the ids it explicitly references). The
+  store, currency, country, zone, customer group, guest, customers, companies, products, categories and timespan
+  condition checkers implement them.
+- Added the product price rule condition `companies` (`CompaniesConditionChecker`, `CompaniesConfigurationType`).
+- Added `CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector` and `ConditionMetaProviderInterface` (tag
+  `coreshop.rule.condition_meta_provider`): bundles contribute per condition type metadata that the Studio rule
+  editor receives as `conditionMeta`. A provider delivering `indexable` gets an "Indexable" / "Not indexable" badge
+  on the condition card; without a provider nothing is shown.
+- Added `CoreShop\Component\Index\Listing\IdSubselectListingInterface`, implemented by the MySQL listing: the ids
+  matching a listing as an SQL subselect for set based joins with other tables.
+- Added `CoreShop\Bundle\FrontendBundle\Listing\CategorySortApplierInterface`; the category page delegates its
+  sorting to it, bundles decorate it to add sort options. Sort labels come from `coreshop.ui.sort.<key>_<direction>`
+  with the previous "<Key> ascending" fallback.
+- Added `CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface::CONTEXT_NO_CACHE`; a price context
+  carrying it bypasses `MemoryCachedValidRuleFetcher`.
+- Fixed the swapped German translations of the name sort options.
+- Removed the `enum: string` mapping type from `config/packages/doctrine_mapping_types.yaml`: DBAL 4.4 maps ENUM
+  natively and the mapping broke every schema introspection (`Column "type" has invalid type`).
+
 ### Studio build archives extract on a fresh install
 
 The bundles that ship their Studio build as `Resources/build-dist/build-<id>.zip` now also

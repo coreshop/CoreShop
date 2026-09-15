@@ -2,3 +2,12 @@ imports:
     - { resource: services/form.yml }
     - { resource: services/commands.yml }
     - { resource: services/rule_active_validator.yml }
+
+services:
+    _defaults:
+        public: true
+
+    # providers are collected by ConditionMetaProviderPass (tag coreshop.rule.condition_meta_provider)
+    CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector:
+        arguments:
+            - []

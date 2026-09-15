@@ -20,6 +20,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CompaniesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
@@ -34,8 +35,8 @@ use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurat
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductPriceNestedConfigurationType;
-use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
@@ -45,6 +46,7 @@ use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Customer\Model\CompanyInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
@@ -176,6 +178,23 @@ final class ProductPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
             'customers' => [
                 $customer->getId(),
+            ],
+        ]));
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition companies with (company "[^"]+")$/
+     * @Given /^the (price rule) has a condition companies with (company "[^"]+")$/
+     */
+    public function theProductPriceRuleHasACompanyCondition(
+        ProductPriceRuleInterface $rule,
+        CompanyInterface $company,
+    ): void {
+        $this->assertConditionForm(CompaniesConfigurationType::class, 'companies');
+
+        $this->addCondition($rule, $this->createConditionWithForm('companies', [
+            'companies' => [
+                $company->getId(),
             ],
         ]));
     }
@@ -461,6 +480,37 @@ final class ProductPriceRuleContext implements Context
                         'products' => [
                             $product->getId(),
                         ],
+                    ],
+                ],
+            ],
+        ]));
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition nested with operator "([^"]+)" with (customer-group "[^"]+") and (country "[^"]+")$/
+     * @Given /^the (price rule) has a condition nested with operator "([^"]+)" with (customer-group "[^"]+") and (country "[^"]+")$/
+     */
+    public function theProductsPriceRuleHasANestedConditionWithCustomerGroupAndCountry(
+        ProductPriceRuleInterface $rule,
+        string $operator,
+        CustomerGroupInterface $group,
+        CountryInterface $country,
+    ): void {
+        $this->assertConditionForm(ProductPriceNestedConfigurationType::class, 'nested');
+
+        $this->addCondition($rule, $this->createConditionWithForm('nested', [
+            'operator' => $operator,
+            'conditions' => [
+                [
+                    'type' => 'customerGroups',
+                    'configuration' => [
+                        'customerGroups' => [$group->getId()],
+                    ],
+                ],
+                [
+                    'type' => 'countries',
+                    'configuration' => [
+                        'countries' => [$country->getId()],
                     ],
                 ],
             ],

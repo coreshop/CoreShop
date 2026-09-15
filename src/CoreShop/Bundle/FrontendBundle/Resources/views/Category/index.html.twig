@@ -33,8 +33,10 @@
                         {% for value in validSortElements %}
                             {% set asc = value ~ '_asc' %}
                             {% set desc = value ~ '_desc' %}
-                            <option value="{{ asc }}" {% if sort == asc %} selected="selected" {% endif %}>{{ value|capitalize ~ ' ' ~ ('coreshop.ui.ascending'|trans) }}</option>
-                            <option value="{{ desc }}" {% if sort == desc %} selected="selected" {% endif %}>{{ value|capitalize ~ ' ' ~ ('coreshop.ui.descending'|trans) }}</option>
+                            {% set ascLabel = ('coreshop.ui.sort.' ~ asc)|trans %}
+                            {% set descLabel = ('coreshop.ui.sort.' ~ desc)|trans %}
+                            <option value="{{ asc }}" {% if sort == asc %} selected="selected" {% endif %}>{{ ascLabel != 'coreshop.ui.sort.' ~ asc ? ascLabel : value|capitalize ~ ' ' ~ ('coreshop.ui.ascending'|trans) }}</option>
+                            <option value="{{ desc }}" {% if sort == desc %} selected="selected" {% endif %}>{{ descLabel != 'coreshop.ui.sort.' ~ desc ? descLabel : value|capitalize ~ ' ' ~ ('coreshop.ui.descending'|trans) }}</option>
                         {% endfor %}
                     </select>
                 </div>

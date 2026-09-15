@@ -205,6 +205,17 @@ export const coreshopProductServiceIds = {
 | `discountPrice` | ProductBundle | Discounted fixed price |
 | `notDiscountableCustomAttributes` | ProductBundle | Marks products as non-discountable |
 
+## Condition Metadata from Bundles
+
+Bundles can attach metadata to condition types, for example to mark which conditions they support. The backend
+collects it from all services tagged `coreshop.rule.condition_meta_provider`
+(`CoreShop\Bundle\RuleBundle\Collector\ConditionMetaProviderInterface`) and returns it as `conditionMeta`
+(`{ type: { ...meta } }`) in `GET /pimcore-studio/api/coreshop/product_price_rules/get-config` and in the
+`coreShopProductSpecificPriceRules` field data. `registerSchemaComponentsFromConfig` / `registerSchemaComponentsFromMaps`
+store it on the `ConditionRegistry` (`getMeta(type)`), so nested conditions see it too. The core ships no provider.
+If a provider delivers the key `indexable` (boolean) and optionally `dimensions` (string list), the condition card
+shows an "Indexable" / "Not indexable" badge with the dimensions in the tooltip.
+
 ## Hand-Written React Components (Rare)
 
 If your condition/action needs custom interactive behavior that cannot be expressed as a Symfony FormType, you can still write a React component:

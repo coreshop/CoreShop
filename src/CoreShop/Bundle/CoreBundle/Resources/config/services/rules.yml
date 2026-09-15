@@ -15,6 +15,12 @@ services:
             - { name: coreshop.product_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
             - { name: coreshop.product_specific_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
 
+    coreshop.rule.condition.companies:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CompaniesConditionChecker
+        tags:
+            - { name: coreshop.product_price_rule.condition, type: companies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CompaniesConfigurationType }
+            - { name: coreshop.product_specific_price_rule.condition, type: companies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CompaniesConfigurationType }
+
     coreshop.rule.condition.customer_groups:
         class: CoreShop\Component\Core\Product\Rule\Condition\CustomerGroupsConditionChecker
         tags:

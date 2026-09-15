@@ -10,7 +10,7 @@
  * @license    CoreShop Commercial License (CCL)
  */
 
-import type { Rule } from '@coreshop/rule/src/rules'
+import type { ConditionMeta, Rule } from '@coreshop/rule/src/rules'
 
 export interface ProductSpecificPriceRuleTranslation {
   label?: string
@@ -28,5 +28,6 @@ export interface ProductSpecificPriceRulesData {
   conditions: string[]
   actionSchemaByType?: Record<string, string>
   conditionSchemaByType?: Record<string, string>
+  conditionMeta?: Record<string, ConditionMeta>
   rules: ProductSpecificPriceRule[]
 }

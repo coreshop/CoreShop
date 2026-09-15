@@ -22,11 +22,12 @@ use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Webmozart\Assert\Assert;
 
-final class CategoriesConditionChecker implements ConditionCheckerInterface
+final class CategoriesConditionChecker implements ConditionCheckerInterface, IndexableConditionCheckerInterface
 {
     use CategoriesConditionCheckerTrait {
         CategoriesConditionCheckerTrait::__construct as private __traitConstruct;
@@ -71,5 +72,10 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
         }
 
         return false;
+    }
+
+    public function getPriceIndexDimensions(array $configuration): array
+    {
+        return [];
     }
 }

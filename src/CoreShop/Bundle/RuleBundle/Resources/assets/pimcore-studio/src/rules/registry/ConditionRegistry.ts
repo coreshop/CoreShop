@@ -11,12 +11,13 @@
  */
 
 import React from 'react'
-import type { ConditionComponentProps } from '../types'
+import type { ConditionComponentProps, ConditionMeta } from '../types'
 
 type ConditionComponent = React.ComponentType<ConditionComponentProps>
 
 export class ConditionRegistry {
   private conditions: Map<string, ConditionComponent> = new Map()
+  private meta: Map<string, ConditionMeta> = new Map()
 
   register(type: string, component: ConditionComponent): void {
     this.conditions.set(type, component)
@@ -32,5 +33,13 @@ export class ConditionRegistry {
 
   getAll(): Map<string, ConditionComponent> {
     return this.conditions
+  }
+
+  setMeta(type: string, meta: ConditionMeta): void {
+    this.meta.set(type, meta)
+  }
+
+  getMeta(type: string): ConditionMeta | undefined {
+    return this.meta.get(type)
   }
 }

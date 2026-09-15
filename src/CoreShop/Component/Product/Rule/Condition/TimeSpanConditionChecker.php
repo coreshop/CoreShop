@@ -20,9 +20,10 @@ namespace CoreShop\Component\Product\Rule\Condition;
 use Carbon\Carbon;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-class TimeSpanConditionChecker implements ConditionCheckerInterface
+class TimeSpanConditionChecker implements ConditionCheckerInterface, IndexableConditionCheckerInterface
 {
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
@@ -44,5 +45,10 @@ class TimeSpanConditionChecker implements ConditionCheckerInterface
         }
 
         return true;
+    }
+
+    public function getPriceIndexDimensions(array $configuration): array
+    {
+        return [];
     }
 }

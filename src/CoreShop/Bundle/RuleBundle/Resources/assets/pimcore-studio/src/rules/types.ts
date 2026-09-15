@@ -34,11 +34,24 @@ export interface Rule {
   actions?: RuleAction[]
 }
 
+/**
+ * Backend metadata per condition type, contributed by bundles through
+ * CoreShop\Bundle\RuleBundle\Collector\ConditionMetaProviderInterface. When a provider delivers
+ * "indexable" (and optionally "dimensions"), the condition card shows a badge; without a provider
+ * no metadata (and no badge) exists.
+ */
+export interface ConditionMeta {
+  indexable?: boolean
+  dimensions?: string[]
+  [key: string]: unknown
+}
+
 export interface RuleConfig {
   conditions: string[]
   actions: string[]
   conditionSchemaByType?: Record<string, string>
   actionSchemaByType?: Record<string, string>
+  conditionMeta?: Record<string, ConditionMeta>
   schemas?: Record<string, any>
   [key: string]: any
 }

@@ -113,7 +113,7 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the (product "[^"]+") is (:?also) priced at (\d+) for (store "[^"]+")$/
+     * @Given /^the (product "[^"]+") is (?:also )?priced at (\d+) for (store "[^"]+")$/
      * @Given /^the (product) is priced at (\d+) for (store "[^"]+")$/
      */
     public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store): void
