@@ -7,4 +7,6 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector: ~
+    CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector:
+        arguments:
+            - !tagged_iterator coreshop.rule.condition_meta_provider

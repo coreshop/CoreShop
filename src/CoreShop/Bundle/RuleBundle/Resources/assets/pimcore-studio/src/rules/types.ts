@@ -35,12 +35,15 @@ export interface Rule {
 }
 
 /**
- * Backend metadata per condition type: whether the condition can be represented in a precomputed
- * index (e.g. a price index) and the context dimensions its outcome depends on.
+ * Backend metadata per condition type, contributed by bundles through
+ * CoreShop\Bundle\RuleBundle\Collector\ConditionMetaProviderInterface. The product price index bundle
+ * adds whether the condition can be represented in the price index and the dimensions it depends on;
+ * without such a bundle no metadata (and no badge) exists.
  */
 export interface ConditionMeta {
-  indexable: boolean
+  indexable?: boolean
   dimensions?: string[]
+  [key: string]: unknown
 }
 
 export interface RuleConfig {

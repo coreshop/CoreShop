@@ -19,7 +19,7 @@ export interface SchemaRegistrationOptions {
    * they just ship without a configuration form and get an EmptyAction placeholder.
    */
   knownActionTypes?: string[]
-  /** Per condition type metadata (indexability), stored on the condition registry. */
+  /** Per condition type metadata contributed by bundles, stored on the condition registry. */
   conditionMeta?: Record<string, ConditionMeta>
 }
 

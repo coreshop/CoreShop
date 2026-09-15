@@ -10,8 +10,10 @@ filter and sort by price. The core only gains generic extension points:
   store, currency, country, zone, customer group, guest, customers, companies, products, categories and timespan
   condition checkers implement them.
 - Added the product price rule condition `companies` (`CompaniesConditionChecker`, `CompaniesConfigurationType`).
-- Studio shows an "Indexable" / "Not indexable" badge on every price rule condition (`conditionMeta` in the rule
-  config, `CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector`).
+- Added `CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector` and `ConditionMetaProviderInterface` (tag
+  `coreshop.rule.condition_meta_provider`): bundles contribute per condition type metadata that the Studio rule
+  editor receives as `conditionMeta`. The product price index bundle uses it for an "Indexable" / "Not indexable"
+  badge on price rule conditions; without a provider nothing is shown.
 - Added `CoreShop\Component\Index\Listing\IdSubselectListingInterface`, implemented by the MySQL listing: the ids
   matching a listing as an SQL subselect for set based joins with other tables.
 - Added `CoreShop\Bundle\FrontendBundle\Listing\CategorySortApplierInterface`; the category page delegates its

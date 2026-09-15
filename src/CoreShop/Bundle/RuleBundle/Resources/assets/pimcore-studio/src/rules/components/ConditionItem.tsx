@@ -60,7 +60,7 @@ export const ConditionItem: React.FC<ConditionItemProps> = ({
       <span style={{ fontWeight: 600 }}>
         {formatTypeLabel('Condition', condition.type)}
       </span>
-      {meta !== undefined && (
+      {meta?.indexable !== undefined && (
         meta.indexable
           ? (
             <Tooltip title={t('coreshop_rule_condition_indexable_hint', {

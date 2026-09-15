@@ -141,7 +141,7 @@ final readonly class ProductSpecificPriceRulesAdapter implements SetterDataInter
     }
 
     /**
-     * @return array<string, array{indexable: bool, dimensions: list<string>}>
+     * @return array<string, array<string, mixed>>
      */
     private function getConditionMeta(): array
     {
