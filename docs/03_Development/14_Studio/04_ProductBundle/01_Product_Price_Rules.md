@@ -205,24 +205,16 @@ export const coreshopProductServiceIds = {
 | `discountPrice` | ProductBundle | Discounted fixed price |
 | `notDiscountableCustomAttributes` | ProductBundle | Marks products as non-discountable |
 
-## Indexability Badge on Conditions
+## Condition Metadata from Bundles
 
-With the `coreshop/product-price-index-bundle` installed, every condition card in the rule editor shows whether the
-condition can be represented in the precomputed price index:
-
-- **Indexable** (green): the checker implements `CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface`.
-  The tooltip lists the dimensions the outcome depends on (`store`, `currency`, `customer_group`, `country`,
-  `company`, `customer`).
-- **Not indexable** (orange): the condition depends on the cart or on data no index can represent.
-
-Without the bundle no badge is shown. The data comes from the backend:
-`GET /pimcore-studio/api/coreshop/product_price_rules/get-config` returns `conditionMeta` (`{ type: { ...meta } }`),
-built by `CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector` from all services tagged
-`coreshop.rule.condition_meta_provider` (`ConditionMetaProviderInterface`). The core ships no provider; the price
-index bundle contributes `indexable` and `dimensions`. For product specific price rules the same map is part of the
+Bundles can attach metadata to condition types, for example to mark which conditions they support. The backend
+collects it from all services tagged `coreshop.rule.condition_meta_provider`
+(`CoreShop\Bundle\RuleBundle\Collector\ConditionMetaProviderInterface`) and returns it as `conditionMeta`
+(`{ type: { ...meta } }`) in `GET /pimcore-studio/api/coreshop/product_price_rules/get-config` and in the
 `coreShopProductSpecificPriceRules` field data. `registerSchemaComponentsFromConfig` / `registerSchemaComponentsFromMaps`
-store it on the `ConditionRegistry` (`getMeta(type)`), so nested conditions get the badge too. A custom condition gets
-the green badge by implementing the interface on its checker, no JavaScript is needed.
+store it on the `ConditionRegistry` (`getMeta(type)`), so nested conditions see it too. The core ships no provider.
+If a provider delivers the key `indexable` (boolean) and optionally `dimensions` (string list), the condition card
+shows an "Indexable" / "Not indexable" badge with the dimensions in the tooltip.
 
 ## Hand-Written React Components (Rare)
 

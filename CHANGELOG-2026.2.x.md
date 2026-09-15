@@ -2,8 +2,7 @@
 
 ### Indexable price rule conditions and pluggable category sorting
 
-Groundwork for the `coreshop/product-price-index-bundle`, which precomputes product prices so that listings can
-filter and sort by price. The core only gains generic extension points:
+Generic extension points for bundles that precompute prices or add their own listing sort options:
 
 - Added `CoreShop\Component\Rule\Condition\IndexableConditionCheckerInterface` (a condition declares the context
   dimensions its outcome depends on) and `IndexableConditionValuesInterface` (the ids it explicitly references). The
@@ -12,8 +11,8 @@ filter and sort by price. The core only gains generic extension points:
 - Added the product price rule condition `companies` (`CompaniesConditionChecker`, `CompaniesConfigurationType`).
 - Added `CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector` and `ConditionMetaProviderInterface` (tag
   `coreshop.rule.condition_meta_provider`): bundles contribute per condition type metadata that the Studio rule
-  editor receives as `conditionMeta`. The product price index bundle uses it for an "Indexable" / "Not indexable"
-  badge on price rule conditions; without a provider nothing is shown.
+  editor receives as `conditionMeta`. A provider delivering `indexable` gets an "Indexable" / "Not indexable" badge
+  on the condition card; without a provider nothing is shown.
 - Added `CoreShop\Component\Index\Listing\IdSubselectListingInterface`, implemented by the MySQL listing: the ids
   matching a listing as an SQL subselect for set based joins with other tables.
 - Added `CoreShop\Bundle\FrontendBundle\Listing\CategorySortApplierInterface`; the category page delegates its

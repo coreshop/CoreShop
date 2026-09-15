@@ -21,8 +21,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 /**
  * Contributes per condition type metadata for the Studio rule editor. Register implementations with the
  * tag "coreshop.rule.condition_meta_provider"; the ConditionMetaCollector merges the results of all providers.
- * The core ships no provider, bundles add what their editor extensions need (e.g. the product price index
- * bundle adds "indexable" and "dimensions").
+ * The core ships no provider; bundles add what their editor extensions need, e.g. "indexable" and
+ * "dimensions" for the badge on the condition card.
  */
 interface ConditionMetaProviderInterface
 {

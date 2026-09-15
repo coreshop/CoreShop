@@ -36,9 +36,9 @@ export interface Rule {
 
 /**
  * Backend metadata per condition type, contributed by bundles through
- * CoreShop\Bundle\RuleBundle\Collector\ConditionMetaProviderInterface. The product price index bundle
- * adds whether the condition can be represented in the price index and the dimensions it depends on;
- * without such a bundle no metadata (and no badge) exists.
+ * CoreShop\Bundle\RuleBundle\Collector\ConditionMetaProviderInterface. When a provider delivers
+ * "indexable" (and optionally "dimensions"), the condition card shows a badge; without a provider
+ * no metadata (and no badge) exists.
  */
 export interface ConditionMeta {
   indexable?: boolean
