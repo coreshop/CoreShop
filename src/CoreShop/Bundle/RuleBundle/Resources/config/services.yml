@@ -7,6 +7,7 @@ services:
     _defaults:
         public: true
 
+    # providers are collected by ConditionMetaProviderPass (tag coreshop.rule.condition_meta_provider)
     CoreShop\Bundle\RuleBundle\Collector\ConditionMetaCollector:
         arguments:
-            - !tagged_iterator coreshop.rule.condition_meta_provider
+            - []
