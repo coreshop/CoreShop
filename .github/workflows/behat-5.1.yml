@@ -9,7 +9,7 @@ on:
       - '*.php'
       - 'src/**'
       - '.github/workflows/behat-5.1.yml'
-  pull_request:
+  pull_request_target:
     branches: [ '5.1' ]
     paths:
       - 'composer.json'
@@ -88,13 +88,14 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           # On `schedule` the workflow runs from the default branch and `github.sha` is that
           # branch's head, not this line's — check the line's branch out explicitly. Releases
           # (the tag) and pushes keep `github.sha`, pull requests their head commit.
           ref: ${{ github.event.pull_request.head.sha || (github.event_name == 'schedule' && '5.1') || github.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          allow-unsafe-pr-checkout: true
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
