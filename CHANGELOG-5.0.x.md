@@ -1,3 +1,8 @@
+## 5.0.3
+* [Frontend] Fix negative/zero page and perPage query params by @andrew72ru in https://github.com/coreshop/CoreShop/pull/3251
+* [Docs] Fix Elasticsearch client configuration key and link client bundles by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3238
+* [CI] Pull request checks run from the default branch so fork PRs get the CI secrets by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3255
+
 ## 5.0.2
 * All changes merged from 4.1.12 and 4.1.13
 * [PHPStan] fix listing return types for Pimcore 12.3.9 by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3092
