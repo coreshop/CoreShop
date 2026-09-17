@@ -116,13 +116,13 @@ class CategoryController extends FrontendController
         );
         $variantMode = $this->getConfigurationService()->getForStore('system.category.variant_mode');
 
-        $page = (int) $this->getParameterFromRequest($request, 'page', 1) ?: 1;
+        $page = max(1, (int) $this->getParameterFromRequest($request, 'page', 1));
         $type = $this->getParameterFromRequest($request, 'type', $listModeDefault);
 
         $defaultPerPage = $type === 'list' ? $listPerPageDefault : $gridPerPageDefault;
         $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
 
-        $perPage = (int) $this->getParameterFromRequest($request, 'perPage', $defaultPerPage) ?: 10;
+        $perPage = max(1, (int) $this->getParameterFromRequest($request, 'perPage', $defaultPerPage) ?: 10);
 
         $this->validateCategory($request, $category);
 
