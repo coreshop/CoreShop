@@ -1,3 +1,12 @@
+## 5.1.2
+
+- All changes merged from 5.0.3.
+- Fixed the Classic Admin "About CoreShop" menu entry: it is wired to the classic resource dispatcher again, and the
+  Studio-only menu entries are hidden in the Classic Admin (#3236).
+- Fixed the category and search pages failing on a zero or negative `page` / `perPage` query parameter (#3247).
+- Docs: the demo links point at the CoreShop 5 demo (#3232), and the Elasticsearch client configuration key is
+  corrected with links to the client bundles (#3239).
+
 ## 5.1.1
 
 ### Telemetry ping and license check
