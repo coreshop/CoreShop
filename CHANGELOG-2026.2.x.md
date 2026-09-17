@@ -31,6 +31,16 @@ ship an (empty) `Resources/public/` directory. Pimcore's `BuildArchiveExtractor`
 extract into a missing directory, so a fresh install without a pre-created
 `Resources/public` ended with a Studio that answered 500 (#3230).
 
+### Merged from 5.1.2
+
+- All changes merged from 5.0.3 and 5.1.2, among them: the category and search pages no longer fail on a zero or
+  negative `page` / `perPage` query parameter (#3247).
+
+### Documentation
+
+- The demo links point at the CoreShop 2026 demo (#3232), and the Elasticsearch client configuration key is corrected
+  with links to the client bundles (#3240).
+
 ## 2026.2.1
 
 ### Telemetry ping and license check
