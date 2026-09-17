@@ -9,15 +9,8 @@ on:
       - '*.php'
       - 'src/**'
       - '.github/workflows/behat.yml'
-  pull_request:
-    branches: [ '5.0', '5.1' ]
-    paths:
-      - 'composer.json'
-      - 'features/**'
-      - 'behat.yml.dist'
-      - '*.php'
-      - 'src/**'
-      - '.github/workflows/behat.yml'
+  # Pull requests against this line run from the default branch (the `behat-<line>.yml` copy there,
+  # `pull_request_target`), so that fork pull requests get the CI secrets.
   release:
     types: [ created ]
   schedule:
