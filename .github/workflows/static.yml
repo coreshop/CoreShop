@@ -11,17 +11,8 @@ on:
       - '*.xml'
       - 'composer.json'
       - '.github/workflows/static.yml'
-  pull_request:
-    branches: [ '5.0', '5.1' ]
-    paths:
-      - 'features/**'
-      - 'behat.yml.dist'
-      - 'src/**'
-      - '*.php'
-      - '*.neon'
-      - '*.xml'
-      - 'composer.json'
-      - '.github/workflows/static.yml'
+  # Pull requests against this line run from the default branch (the `static-<line>.yml` copy there,
+  # `pull_request_target`), so that fork pull requests get the CI secrets.
   release:
     types: [ created ]
   schedule:
