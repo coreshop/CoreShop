@@ -46,3 +46,17 @@ coreshop_country_select: 'Wählen Sie ein Land aus, um Details anzuzeigen.'
 coreshop_zone_add: 'Zone hinzufügen'
 coreshop_zone_select: 'Wählen Sie eine Zone aus, um Details anzuzeigen.'
 coreshop_zone_configuration: 'Zone Konfiguration'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-country: 'CoreShop Land'
+field-definition.core-shop-country.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-country)"
+field-definition.core-shop-country.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-country)"
+field-definition.core-shop-country-multiselect: 'CoreShop Land Mehrfachauswahl'
+field-definition.core-shop-country-multiselect.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-country-multiselect)"
+field-definition.core-shop-country-multiselect.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-country-multiselect)"
+field-definition.core-shop-state: 'CoreShop Bundesland'
+field-definition.core-shop-state.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-state)"
+field-definition.core-shop-state.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-state)"
+field-definition.core-shop-address-identifier: 'CoreShop Adress-Identifier'
+field-definition.core-shop-address-identifier.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-address-identifier)"
+field-definition.core-shop-address-identifier.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-address-identifier)"

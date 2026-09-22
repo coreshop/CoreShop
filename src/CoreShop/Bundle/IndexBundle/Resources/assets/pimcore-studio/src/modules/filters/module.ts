@@ -25,6 +25,10 @@ import { Input } from 'antd'
 import { DynamicTypeObjectDataCoreShopFilter } from '../../dynamic-types'
 import { FilterFieldSelect, FilterFieldsMultiSelect, FilterValueSelect, FilterValueMultiSelect } from './widgets'
 import { FilterManager } from './FilterManager'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
+import {
+    DynamicTypeFieldDefinitionCoreShopFilter
+} from '../../dynamic-types'
 
 export const FiltersModule: AbstractModule = {
     onInit(): void {
@@ -33,6 +37,11 @@ export const FiltersModule: AbstractModule = {
                 pimcoreServiceIds['DynamicTypes/ObjectDataRegistry']
             )
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopFilter())
+
+            // Class-definition editor types (Studio class editor)
+            registerCoreShopFieldDefinitionTypes([
+                new DynamicTypeFieldDefinitionCoreShopFilter()
+            ])
 
             const widgetManager = container.get<PimcoreWidgetRegistry>(pimcoreServiceIds.widgetManager)
 

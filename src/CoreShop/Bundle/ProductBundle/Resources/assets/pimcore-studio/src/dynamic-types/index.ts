@@ -9,3 +9,9 @@ export { DynamicTypeObjectDataCoreShopProductUnit } from './DynamicTypeObjectDat
 export { DynamicTypeObjectDataCoreShopProductUnitDefinition } from './DynamicTypeObjectDataCoreShopProductUnitDefinition'
 export { DynamicTypeObjectDataCoreShopProductUnitDefinitions } from './DynamicTypeObjectDataCoreShopProductUnitDefinitions'
 export { DynamicTypeObjectDataCoreShopProductSpecificPriceRules } from './DynamicTypeObjectDataCoreShopProductSpecificPriceRules'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopProductSpecificPriceRules } from './DynamicTypeFieldDefinitionCoreShopProductSpecificPriceRules'
+export { DynamicTypeFieldDefinitionCoreShopProductUnit } from './DynamicTypeFieldDefinitionCoreShopProductUnit'
+export { DynamicTypeFieldDefinitionCoreShopProductUnitDefinition } from './DynamicTypeFieldDefinitionCoreShopProductUnitDefinition'
+export { DynamicTypeFieldDefinitionCoreShopProductUnitDefinitions } from './DynamicTypeFieldDefinitionCoreShopProductUnitDefinitions'

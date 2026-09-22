@@ -18,3 +18,4 @@ export {
   DynamicTypeDocumentEditableCoreShopSelect,
   registerCoreShopDocumentEditableSelects
 } from './DynamicTypeDocumentEditableCoreShopSelect'
+export * from './field-definitions'

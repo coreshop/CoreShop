@@ -25,3 +25,14 @@ coreshop_exchange_rate_created: 'Wechselkurs erstellt'
 coreshop_exchange_rate_updated: 'Wechselkurs aktualisiert'
 coreshop_exchange_rate_deleted: 'Wechselkurs gelöscht'
 coreshop_delete_exchange_rate_confirm: 'Sind Sie sicher, dass Sie diesen Wechselkurs löschen möchten?'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-currency: 'CoreShop Währung'
+field-definition.core-shop-currency.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-currency)"
+field-definition.core-shop-currency.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-currency)"
+field-definition.core-shop-currency-multiselect: 'CoreShop Währung Mehrfachauswahl'
+field-definition.core-shop-currency-multiselect.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-currency-multiselect)"
+field-definition.core-shop-currency-multiselect.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-currency-multiselect)"
+field-definition.core-shop-money-currency: 'CoreShop Geldbetrag mit Währung'
+field-definition.core-shop-money-currency.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-money-currency)"
+field-definition.core-shop-money-currency.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-money-currency)"

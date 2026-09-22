@@ -24,3 +24,32 @@ coreshop_dynamic_dropdown_super_box_select_settings: 'Superbox Select settings'
 coreshop_dynamic_dropdown_choose_tags: 'Choose tags'
 coreshop_dynamic_dropdown_error_loading_options: 'Error loading options'
 coreshop_dynamic_dropdown_only_published: 'Only published selectable'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-serialized-data: 'CoreShop Serialized Data'
+field-definition.core-shop-serialized-data.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-serialized-data)"
+field-definition.core-shop-serialized-data.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-serialized-data)"
+field-definition.core-shop-dynamic-dropdown: 'CoreShop Dynamic Dropdown'
+field-definition.core-shop-dynamic-dropdown.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-dynamic-dropdown)"
+field-definition.core-shop-dynamic-dropdown.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-dynamic-dropdown)"
+field-definition.core-shop-dynamic-dropdown-multiple: 'CoreShop Dynamic Dropdown Multiple'
+field-definition.core-shop-dynamic-dropdown-multiple.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-dynamic-dropdown-multiple)"
+field-definition.core-shop-dynamic-dropdown-multiple.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-dynamic-dropdown-multiple)"
+field-definition.core-shop-item-selector: 'CoreShop Item Selector'
+field-definition.core-shop-item-selector.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-item-selector)"
+field-definition.core-shop-item-selector.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-item-selector)"
+field-definition.core-shop-super-box-select: 'CoreShop Super Box Select'
+field-definition.core-shop-super-box-select.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-super-box-select)"
+field-definition.core-shop-super-box-select.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-super-box-select)"
+field-definition.groups.data.coreshop: 'CoreShop'
+coreshop_field_definition_max_items: 'Maximum items'
+coreshop_field_definition_folder_name: 'Folder path'
+coreshop_field_definition_folder_name_tooltip: 'Path of the DataObject folder whose children are offered as options, e.g. /shop/manufacturers'
+coreshop_field_definition_class_name: 'Class'
+coreshop_field_definition_method_name: 'Label method'
+coreshop_field_definition_method_name_tooltip: 'Getter used for the option label, e.g. getKey or getName'
+coreshop_field_definition_sort_by: 'Sort by'
+coreshop_field_definition_sort_by_id: 'ID'
+coreshop_field_definition_sort_by_value: 'Label'
+coreshop_field_definition_recursive: 'Include subfolders'
+coreshop_field_definition_only_published: 'Only published objects'

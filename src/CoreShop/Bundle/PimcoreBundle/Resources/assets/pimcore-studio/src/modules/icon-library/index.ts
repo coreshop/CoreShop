@@ -28,6 +28,8 @@ import itemSelectorIcon from '../../assets/item-selector.svg?react'
 import serializedIcon from '../../assets/serialized.svg?react'
 // @ts-ignore
 import superBoxSelectIcon from '../../assets/super-box-select.svg?react'
+// @ts-ignore
+import coreshopLogoIcon from '../../assets/coreshop-logo.svg?react'
 
 export const PimcoreBundleIconModule: AbstractModule = {
   onInit(): void {
@@ -66,6 +68,12 @@ export const PimcoreBundleIconModule: AbstractModule = {
     iconLibrary.register({
       name: 'coreshop_super_box_select',
       component: superBoxSelectIcon
+    })
+
+    // Group icon for CoreShop field types in the Studio class editor
+    iconLibrary.register({
+      name: 'coreshop_field_definition_group',
+      component: coreshopLogoIcon
     })
   }
 }

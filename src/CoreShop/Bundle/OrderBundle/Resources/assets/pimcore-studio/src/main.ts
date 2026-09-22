@@ -64,6 +64,10 @@ import { OrderCreationPanel } from './modules/order-creation/components'
 import { useOrderCreationNavItem } from './modules/order-creation/components/OrderCreationButton'
 import { orderCreationWidgetRestorer } from './modules/order-creation/OrderCreationWidgetRestorer'
 import { BaseStepConfig, ProductsStepConfig, TotalsStepConfig } from './modules/order-creation/steps'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
+import {
+    DynamicTypeFieldDefinitionCoreShopCartPriceRule
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-order',
@@ -76,6 +80,11 @@ const plugin: IAbstractPlugin = {
             serviceIds['DynamicTypes/ObjectDataRegistry']
         )
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCartPriceRule())
+
+        // Class-definition editor types (Studio class editor)
+        registerCoreShopFieldDefinitionTypes([
+            new DynamicTypeFieldDefinitionCoreShopCartPriceRule()
+        ])
 
         // ============================================
         // Grid Cell Types Registration

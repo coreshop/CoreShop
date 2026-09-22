@@ -29,6 +29,13 @@ import { coreshopProductServiceIds } from './modules/product-price-rules/service
 import { NestedCondition } from './modules/product-price-rules/conditions'
 import { ProductPriceRuleManager } from './modules/product-price-rules/ProductPriceRuleManager'
 import { ProductUnitManager } from './modules/product-units/ProductUnitManager'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
+import {
+    DynamicTypeFieldDefinitionCoreShopProductSpecificPriceRules,
+    DynamicTypeFieldDefinitionCoreShopProductUnit,
+    DynamicTypeFieldDefinitionCoreShopProductUnitDefinition,
+    DynamicTypeFieldDefinitionCoreShopProductUnitDefinitions
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-product',
@@ -42,6 +49,14 @@ const plugin: IAbstractPlugin = {
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopProductUnitDefinition())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopProductUnitDefinitions())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopProductSpecificPriceRules())
+
+        // Class-definition editor types (Studio class editor)
+        registerCoreShopFieldDefinitionTypes([
+            new DynamicTypeFieldDefinitionCoreShopProductSpecificPriceRules(),
+            new DynamicTypeFieldDefinitionCoreShopProductUnit(),
+            new DynamicTypeFieldDefinitionCoreShopProductUnitDefinition(),
+            new DynamicTypeFieldDefinitionCoreShopProductUnitDefinitions()
+        ])
 
         // Register ProductPriceRule registries as singleton services in the container
         // This allows other bundles to access them via container.get()

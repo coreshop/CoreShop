@@ -74,3 +74,11 @@ coreshop_condition_amount_minAmount: 'Mindestbetrag'
 coreshop_condition_amount_maxAmount: 'Höchstbetrag'
 coreshop_condition_amount_gross: 'Bruttobetrag verwenden'
 coreshop_condition_amount_use_total: 'Gesamtbetrag verwenden'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-payment-provider: 'CoreShop Zahlungsanbieter'
+field-definition.core-shop-payment-provider.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-payment-provider)"
+field-definition.core-shop-payment-provider.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-payment-provider)"
+field-definition.core-shop-payment-provider-multiselect: 'CoreShop Zahlungsanbieter Mehrfachauswahl'
+field-definition.core-shop-payment-provider-multiselect.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-payment-provider-multiselect)"
+field-definition.core-shop-payment-provider-multiselect.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-payment-provider-multiselect)"

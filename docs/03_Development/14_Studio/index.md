@@ -241,6 +241,8 @@ src/CoreShop/Bundle/YourBundle/Resources/assets/pimcore-studio/
 │   │   └── icon-library/
 │   │       └── index.ts                 # Icon definitions
 │   └── dynamic-types/                   # Pimcore Data Object field types
+│       ├── DynamicTypeObjectData*.tsx   # object editor (value rendering)
+│       └── DynamicTypeFieldDefinition*.tsx # class definition editor (settings form)
 ├── package.json
 ├── tsconfig.json
 └── rsbuild.config.ts                    # Build configuration
@@ -332,6 +334,7 @@ npm run build
 - [Base Infrastructure](02_Base_Infrastructure/01_ResourceBundle.md) - ResourceBundle and RuleBundle details
 - [FormBuilder](02_Base_Infrastructure/03_FormBuilder.md) - Decorator-based form builder
 - [StudioFormBundle](02_Base_Infrastructure/04_StudioFormBundle.md) - Schema-driven forms from PHP FormTypes
+- [Dynamic Types](02_Base_Infrastructure/06_Dynamic_Types.md) - CoreShop field types in the object editor and the class definition editor
 - [Extending Rule Actions](../01_Extending_Guide/04_Extending_Rule_Actions.md) - Creating custom rule actions
 - [Extending Rule Conditions](../01_Extending_Guide/05_Extending_Rule_Conditions.md) - Creating custom rule conditions
 
