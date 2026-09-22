@@ -29,9 +29,12 @@ import { EntityChoiceWidget } from '@coreshop/resource/src/components/EntityChoi
 // Deep import (bundled, not a shared remote) so the document editable registration also works
 // inside the reduced document editor iframe app.
 import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/dynamic-types/DynamicTypeDocumentEditableCoreShopSelect'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
 import {
     DynamicTypeObjectDataCoreShopCarrier,
-    DynamicTypeObjectDataCoreShopCarrierMultiselect
+    DynamicTypeObjectDataCoreShopCarrierMultiselect,
+    DynamicTypeFieldDefinitionCoreShopCarrier,
+    DynamicTypeFieldDefinitionCoreShopCarrierMultiselect
 } from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
@@ -49,6 +52,12 @@ const plugin: IAbstractPlugin = {
             )
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCarrier())
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCarrierMultiselect())
+
+            // Class-definition editor types (Studio class editor)
+            registerCoreShopFieldDefinitionTypes([
+                new DynamicTypeFieldDefinitionCoreShopCarrier(),
+                new DynamicTypeFieldDefinitionCoreShopCarrierMultiselect()
+            ])
 
             // Register Carrier widget
             const widgetManager = container.get<WidgetRegistry>(serviceIds.widgetManager)

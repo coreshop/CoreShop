@@ -1,3 +1,19 @@
+## 5.1.3
+
+### CoreShop field types in the Studio class definition editor
+
+All CoreShop DataObject field types (`coreShopStore`, `coreShopMoney`, `coreShopProductUnitDefinitions`, ...)
+can now be added and configured in the Studio class editor. Previously the editor showed "Type not supported"
+and the types were missing from the "add field" dropdown, because CoreShop only registered them in the object
+editor registry (#3260).
+
+- Added `DynamicTypeFieldDefinitionCoreShop*` classes for all 31 field types, grouped under a new "CoreShop"
+  entry in the "add field" dropdown.
+- Added the base classes `DynamicTypeFieldDefinitionCoreShopAbstract` (PimcoreBundle),
+  `DynamicTypeFieldDefinitionCoreShopSelect`, `...Multiselect`, `...Relation`, `...Relations` (ResourceBundle)
+  and `registerCoreShopFieldDefinitionTypes()` for third-party bundles that ship their own CoreShop-style
+  field types. See `docs/03_Development/14_Studio/02_Base_Infrastructure/06_Dynamic_Types.md`.
+
 ## 5.1.2
 
 - All changes merged from 5.0.3.

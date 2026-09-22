@@ -11,3 +11,6 @@
  */
 
 export { DynamicTypeObjectDataCoreShopProductQuantityPriceRules } from './DynamicTypeObjectDataCoreShopProductQuantityPriceRules'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopProductQuantityPriceRules } from './DynamicTypeFieldDefinitionCoreShopProductQuantityPriceRules'

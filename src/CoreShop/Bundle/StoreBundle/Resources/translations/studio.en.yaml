@@ -8,3 +8,11 @@ coreshop_stores: 'Stores'
 
 # Studio v2
 coreshop_store_add: 'Add Store'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-store: 'CoreShop Store'
+field-definition.core-shop-store.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-store)"
+field-definition.core-shop-store.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-store)"
+field-definition.core-shop-store-multiselect: 'CoreShop Store Multiselect'
+field-definition.core-shop-store-multiselect.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-store-multiselect)"
+field-definition.core-shop-store-multiselect.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-store-multiselect)"

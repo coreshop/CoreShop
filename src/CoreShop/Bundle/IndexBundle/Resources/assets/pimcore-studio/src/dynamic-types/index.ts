@@ -6,3 +6,6 @@
  */
 
 export { DynamicTypeObjectDataCoreShopFilter } from './DynamicTypeObjectDataCoreShopFilter'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopFilter } from './DynamicTypeFieldDefinitionCoreShopFilter'

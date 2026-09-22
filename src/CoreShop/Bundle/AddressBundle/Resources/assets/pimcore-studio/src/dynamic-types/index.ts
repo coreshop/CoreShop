@@ -9,3 +9,9 @@ export { DynamicTypeObjectDataCoreShopCountry } from './DynamicTypeObjectDataCor
 export { DynamicTypeObjectDataCoreShopCountryMultiselect } from './DynamicTypeObjectDataCoreShopCountryMultiselect'
 export { DynamicTypeObjectDataCoreShopState } from './DynamicTypeObjectDataCoreShopState'
 export { DynamicTypeObjectDataCoreShopAddressIdentifier } from './DynamicTypeObjectDataCoreShopAddressIdentifier'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopAddressIdentifier } from './DynamicTypeFieldDefinitionCoreShopAddressIdentifier'
+export { DynamicTypeFieldDefinitionCoreShopCountry } from './DynamicTypeFieldDefinitionCoreShopCountry'
+export { DynamicTypeFieldDefinitionCoreShopCountryMultiselect } from './DynamicTypeFieldDefinitionCoreShopCountryMultiselect'
+export { DynamicTypeFieldDefinitionCoreShopState } from './DynamicTypeFieldDefinitionCoreShopState'

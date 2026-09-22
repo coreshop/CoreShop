@@ -27,11 +27,16 @@ import { StateManager } from './modules/states/StateManager'
 import { loadCountries, getCountryCache } from './components/CountrySelect'
 import { loadStates, getStateCache } from './components/StateSelect'
 import { loadZones, getZoneCache } from './components/ZoneMultiSelect'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
 import {
     DynamicTypeObjectDataCoreShopCountry,
     DynamicTypeObjectDataCoreShopCountryMultiselect,
     DynamicTypeObjectDataCoreShopState,
-    DynamicTypeObjectDataCoreShopAddressIdentifier
+    DynamicTypeObjectDataCoreShopAddressIdentifier,
+    DynamicTypeFieldDefinitionCoreShopAddressIdentifier,
+    DynamicTypeFieldDefinitionCoreShopCountry,
+    DynamicTypeFieldDefinitionCoreShopCountryMultiselect,
+    DynamicTypeFieldDefinitionCoreShopState
 } from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
@@ -51,6 +56,14 @@ const plugin: IAbstractPlugin = {
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCountryMultiselect())
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopState())
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopAddressIdentifier())
+
+            // Class-definition editor types (Studio class editor)
+            registerCoreShopFieldDefinitionTypes([
+                new DynamicTypeFieldDefinitionCoreShopAddressIdentifier(),
+                new DynamicTypeFieldDefinitionCoreShopCountry(),
+                new DynamicTypeFieldDefinitionCoreShopCountryMultiselect(),
+                new DynamicTypeFieldDefinitionCoreShopState()
+            ])
 
             // Register StudioForm widgets for ChoiceTypes
             const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)

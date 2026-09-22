@@ -42,3 +42,11 @@ coreshop_carrier_select: 'Select carrier'
 coreshop_identifier_required: 'Identifier is required'
 coreshop_loading_configuration: 'Loading configuration...'
 coreshop_shipping_rule_select: 'Select shipping rule'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-carrier: 'CoreShop Carrier'
+field-definition.core-shop-carrier.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-carrier)"
+field-definition.core-shop-carrier.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-carrier)"
+field-definition.core-shop-carrier-multiselect: 'CoreShop Carrier Multiselect'
+field-definition.core-shop-carrier-multiselect.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-carrier-multiselect)"
+field-definition.core-shop-carrier-multiselect.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-carrier-multiselect)"

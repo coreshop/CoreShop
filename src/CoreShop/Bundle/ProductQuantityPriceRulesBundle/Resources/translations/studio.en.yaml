@@ -34,3 +34,8 @@ coreshop_add_quantity_price_rule: 'Add Quantity Price Rule'
 coreshop_product_quantity_price_rules_no_ranges: 'No ranges configured'
 coreshop_product_quantity_price_rules_units: 'Units'
 coreshop_product_quantity_price_rules_unit_definition: 'Unit'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-product-quantity-price-rules: 'CoreShop Product Quantity Price Rules'
+field-definition.core-shop-product-quantity-price-rules.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-product-quantity-price-rules)"
+field-definition.core-shop-product-quantity-price-rules.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-product-quantity-price-rules)"

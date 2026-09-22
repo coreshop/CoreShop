@@ -35,6 +35,11 @@ import {
 } from './entities/extensions'
 import { entitySaveDecoratorsServiceId, EntitySaveDecoratorRegistry } from './entities/save-decorators'
 import { ResourceConfigProvider, coreshopResourceServiceIds } from './config'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/pimcore/src/dynamic-types/field-definitions'
+import {
+    DynamicTypeFieldDefinitionCoreShopRelation,
+    DynamicTypeFieldDefinitionCoreShopRelations
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-resource',
@@ -51,6 +56,12 @@ const plugin: IAbstractPlugin = {
         )
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopRelation())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopRelations())
+
+        // Class-definition editor types (Studio class editor)
+        registerCoreShopFieldDefinitionTypes([
+            new DynamicTypeFieldDefinitionCoreShopRelation(),
+            new DynamicTypeFieldDefinitionCoreShopRelations()
+        ])
 
         // Bind generic registries used by bundle UIs
         try {

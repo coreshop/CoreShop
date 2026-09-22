@@ -16,6 +16,10 @@ import {
 } from '@pimcore/studio-ui-bundle/modules/element'
 import { MoneyBundleIconModule } from './modules/icon-library'
 import { DynamicTypeObjectDataCoreShopMoney } from './dynamic-types/DynamicTypeObjectDataCoreShopMoney'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/pimcore/src/dynamic-types/field-definitions'
+import {
+    DynamicTypeFieldDefinitionCoreShopMoney
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-money',
@@ -26,6 +30,11 @@ const plugin: IAbstractPlugin = {
         )
 
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopMoney())
+
+        // Class-definition editor types (Studio class editor)
+        registerCoreShopFieldDefinitionTypes([
+            new DynamicTypeFieldDefinitionCoreShopMoney()
+        ])
     },
 
     onStartup({ moduleSystem }) {

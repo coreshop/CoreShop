@@ -7,3 +7,7 @@
 
 export { DynamicTypeObjectDataCoreShopPaymentProvider } from './DynamicTypeObjectDataCoreShopPaymentProvider'
 export { DynamicTypeObjectDataCoreShopPaymentProviderMultiselect } from './DynamicTypeObjectDataCoreShopPaymentProviderMultiselect'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopPaymentProvider } from './DynamicTypeFieldDefinitionCoreShopPaymentProvider'
+export { DynamicTypeFieldDefinitionCoreShopPaymentProviderMultiselect } from './DynamicTypeFieldDefinitionCoreShopPaymentProviderMultiselect'
