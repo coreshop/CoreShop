@@ -7,3 +7,7 @@
 
 export { DynamicTypeObjectDataCoreShopStore } from './DynamicTypeObjectDataCoreShopStore'
 export { DynamicTypeObjectDataCoreShopStoreMultiselect } from './DynamicTypeObjectDataCoreShopStoreMultiselect'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopStore } from './DynamicTypeFieldDefinitionCoreShopStore'
+export { DynamicTypeFieldDefinitionCoreShopStoreMultiselect } from './DynamicTypeFieldDefinitionCoreShopStoreMultiselect'

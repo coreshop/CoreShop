@@ -23,9 +23,12 @@ import { registerCoreShopDocumentEditableSelects } from '@coreshop/resource/src/
 import { StoreBundleIconModule } from './modules/icon-library'
 import { StoreManager } from './modules/stores/StoreManager'
 import { loadStores, getStoreCache } from './components/StoreSelect'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
 import {
     DynamicTypeObjectDataCoreShopStore,
-    DynamicTypeObjectDataCoreShopStoreMultiselect
+    DynamicTypeObjectDataCoreShopStoreMultiselect,
+    DynamicTypeFieldDefinitionCoreShopStore,
+    DynamicTypeFieldDefinitionCoreShopStoreMultiselect
 } from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
@@ -43,6 +46,12 @@ const plugin: IAbstractPlugin = {
 
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStore())
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStoreMultiselect())
+
+            // Class-definition editor types (Studio class editor)
+            registerCoreShopFieldDefinitionTypes([
+                new DynamicTypeFieldDefinitionCoreShopStore(),
+                new DynamicTypeFieldDefinitionCoreShopStoreMultiselect()
+            ])
 
             // Register StudioForm widget for StoreChoiceType
             const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)

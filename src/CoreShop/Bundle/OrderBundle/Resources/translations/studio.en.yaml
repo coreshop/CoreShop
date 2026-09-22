@@ -668,3 +668,8 @@ coreshop_change_state_error: 'Failed to change state'
 coreshop_transition: 'Transition'
 coreshop_order_with_number: 'Order: {{number}}'
 coreshop_open_data_object: 'Open DataObject'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-cart-price-rule: 'CoreShop Cart Price Rule'
+field-definition.core-shop-cart-price-rule.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-cart-price-rule)"
+field-definition.core-shop-cart-price-rule.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-cart-price-rule)"

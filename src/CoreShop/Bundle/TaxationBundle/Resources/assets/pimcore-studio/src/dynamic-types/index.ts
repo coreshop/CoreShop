@@ -7,3 +7,7 @@
 
 export { DynamicTypeObjectDataCoreShopTaxRate } from './DynamicTypeObjectDataCoreShopTaxRate'
 export { DynamicTypeObjectDataCoreShopTaxRuleGroup } from './DynamicTypeObjectDataCoreShopTaxRuleGroup'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopTaxRate } from './DynamicTypeFieldDefinitionCoreShopTaxRate'
+export { DynamicTypeFieldDefinitionCoreShopTaxRuleGroup } from './DynamicTypeFieldDefinitionCoreShopTaxRuleGroup'

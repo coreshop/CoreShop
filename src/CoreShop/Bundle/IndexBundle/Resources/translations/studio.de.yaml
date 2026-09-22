@@ -94,3 +94,8 @@ coreshop_indexes_no_fields_selected: 'Keine Felder ausgewählt'
 coreshop_indexes_drag_fields_hint: 'Felder aus dem Klassendefinitions-Baum hierher ziehen'
 coreshop_indexes_field_add: 'Feld hinzufügen'
 coreshop_indexes_field_edit: 'Feld bearbeiten'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-filter: 'CoreShop Filter'
+field-definition.core-shop-filter.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-filter)"
+field-definition.core-shop-filter.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-filter)"

@@ -13,7 +13,8 @@
   "license": "CCL",
   "private": true,
   "dependencies": {
-    "zustand": "^5.0.7"
+    "zustand": "^5.0.7",
+    "@coreshop/pimcore": "file:../../../../PimcoreBundle/Resources/assets/pimcore-studio"
   },
   "peerDependencies": {
     "@pimcore/studio-ui-bundle": "2026.2.5",

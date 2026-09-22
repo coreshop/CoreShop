@@ -338,3 +338,8 @@ customer_selected: 'Customer Selected'
 assign_another: 'Assign Another Customer'
 cancel: 'Cancel'
 close: 'Close'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-store-values: 'CoreShop Store Values'
+field-definition.core-shop-store-values.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-store-values)"
+field-definition.core-shop-store-values.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-store-values)"

@@ -1,2 +1,9 @@
 ---
 coreshop_money: 'Geld'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-money: 'CoreShop Geldbetrag'
+field-definition.core-shop-money.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-money)"
+field-definition.core-shop-money.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-money)"
+coreshop_field_definition_nullable: 'Nullable'
+coreshop_field_definition_money_integer_tooltip: 'Als Ganzzahl in der kleinsten Währungseinheit gespeichert (z. B. Cent): 38312 = 383,12'

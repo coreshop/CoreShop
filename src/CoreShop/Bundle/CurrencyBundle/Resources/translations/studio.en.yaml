@@ -25,3 +25,14 @@ coreshop_exchange_rate_created: 'Exchange rate created'
 coreshop_exchange_rate_updated: 'Exchange rate updated'
 coreshop_exchange_rate_deleted: 'Exchange rate deleted'
 coreshop_delete_exchange_rate_confirm: 'Are you sure you want to delete this exchange rate?'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-currency: 'CoreShop Currency'
+field-definition.core-shop-currency.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-currency)"
+field-definition.core-shop-currency.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-currency)"
+field-definition.core-shop-currency-multiselect: 'CoreShop Currency Multiselect'
+field-definition.core-shop-currency-multiselect.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-currency-multiselect)"
+field-definition.core-shop-currency-multiselect.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-currency-multiselect)"
+field-definition.core-shop-money-currency: 'CoreShop Money with Currency'
+field-definition.core-shop-money-currency.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-money-currency)"
+field-definition.core-shop-money-currency.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-money-currency)"

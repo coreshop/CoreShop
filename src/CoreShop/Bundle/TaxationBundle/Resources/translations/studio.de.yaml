@@ -14,3 +14,11 @@ coreshop_name: 'Name'
 coreshop_active: 'Aktiv'
 coreshop_tax_rate_select: 'Steuerrate auswählen'
 coreshop_tax_rule_group_select: 'Steuerregel auswählen'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-tax-rate: 'CoreShop Steuersatz'
+field-definition.core-shop-tax-rate.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-tax-rate)"
+field-definition.core-shop-tax-rate.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-tax-rate)"
+field-definition.core-shop-tax-rule-group: 'CoreShop Steuerregelgruppe'
+field-definition.core-shop-tax-rule-group.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-tax-rule-group)"
+field-definition.core-shop-tax-rule-group.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-tax-rule-group)"

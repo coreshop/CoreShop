@@ -34,3 +34,8 @@ coreshop_add_quantity_price_rule: 'Stückmengen-Preisregel hinzufügen'
 coreshop_product_quantity_price_rules_no_ranges: 'Keine Bereiche konfiguriert'
 coreshop_product_quantity_price_rules_units: 'Einheiten'
 coreshop_product_quantity_price_rules_unit_definition: 'Einheit'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-product-quantity-price-rules: 'CoreShop Staffelpreisregeln'
+field-definition.core-shop-product-quantity-price-rules.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-product-quantity-price-rules)"
+field-definition.core-shop-product-quantity-price-rules.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-product-quantity-price-rules)"

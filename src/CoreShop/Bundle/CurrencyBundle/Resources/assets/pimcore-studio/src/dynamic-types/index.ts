@@ -8,3 +8,8 @@
 export { DynamicTypeObjectDataCoreShopCurrency } from './DynamicTypeObjectDataCoreShopCurrency'
 export { DynamicTypeObjectDataCoreShopCurrencyMultiselect } from './DynamicTypeObjectDataCoreShopCurrencyMultiselect'
 export { DynamicTypeObjectDataCoreShopMoneyCurrency } from './DynamicTypeObjectDataCoreShopMoneyCurrency'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopCurrency } from './DynamicTypeFieldDefinitionCoreShopCurrency'
+export { DynamicTypeFieldDefinitionCoreShopCurrencyMultiselect } from './DynamicTypeFieldDefinitionCoreShopCurrencyMultiselect'
+export { DynamicTypeFieldDefinitionCoreShopMoneyCurrency } from './DynamicTypeFieldDefinitionCoreShopMoneyCurrency'

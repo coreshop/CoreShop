@@ -20,6 +20,10 @@ import { ProductQuantityPriceRulesBundleIconModule } from './modules/icon-librar
 import { ConditionRegistry } from '@coreshop/rule/src/rules/registry'
 import { coreshopQuantityPriceRulesServiceIds } from './modules/quantity-price-rules'
 import { DynamicTypeObjectDataCoreShopProductQuantityPriceRules } from './dynamic-types'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/pimcore/src/dynamic-types/field-definitions'
+import {
+    DynamicTypeFieldDefinitionCoreShopProductQuantityPriceRules
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
   name: 'coreshop-product-quantity-price-rules',
@@ -30,6 +34,11 @@ const plugin: IAbstractPlugin = {
       serviceIds['DynamicTypes/ObjectDataRegistry']
     )
     objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopProductQuantityPriceRules())
+
+    // Class-definition editor types (Studio class editor)
+    registerCoreShopFieldDefinitionTypes([
+        new DynamicTypeFieldDefinitionCoreShopProductQuantityPriceRules()
+    ])
 
     // Create and bind condition registry for Quantity Price Rules
     // Note: All conditions (nested, timespan, categories, customers, etc.) are registered
