@@ -145,7 +145,10 @@ jobs:
             echo "Merged \`${BASE}\` into \`${TARGET}\`."
             echo
             echo '```'
-            git show --stat --format='%h %s' HEAD | head -50
+            # No pipe here: under `set -o pipefail` a merge touching more than 50 files makes
+            # `git show | head` exit 141 (SIGPIPE) after the merge commit was already created,
+            # and the step fails before the branch is pushed.
+            head -50 <<< "$(git show --stat --format='%h %s' HEAD)"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
