@@ -14,12 +14,18 @@ import { IAbstractPlugin, container } from '@pimcore/studio-ui-bundle'
 import { serviceIds } from '@pimcore/studio-ui-bundle/app'
 import { DynamicTypeObjectDataRegistry } from '@pimcore/studio-ui-bundle/modules/element'
 import { PimcoreBundleIconModule } from './modules/icon-library'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/pimcore/src/dynamic-types/field-definitions'
 import {
     DynamicTypeObjectDataCoreShopSerializedData,
     DynamicTypeObjectDataCoreShopDynamicDropdown,
     DynamicTypeObjectDataCoreShopDynamicDropdownMultiple,
     DynamicTypeObjectDataCoreShopItemSelector,
-    DynamicTypeObjectDataCoreShopSuperBoxSelect
+    DynamicTypeObjectDataCoreShopSuperBoxSelect,
+    DynamicTypeFieldDefinitionCoreShopDynamicDropdown,
+    DynamicTypeFieldDefinitionCoreShopDynamicDropdownMultiple,
+    DynamicTypeFieldDefinitionCoreShopItemSelector,
+    DynamicTypeFieldDefinitionCoreShopSerializedData,
+    DynamicTypeFieldDefinitionCoreShopSuperBoxSelect
 } from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
@@ -41,6 +47,15 @@ const plugin: IAbstractPlugin = {
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopDynamicDropdownMultiple())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopItemSelector())
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopSuperBoxSelect())
+
+        // Class-definition editor types (Studio class editor)
+        registerCoreShopFieldDefinitionTypes([
+            new DynamicTypeFieldDefinitionCoreShopDynamicDropdown(),
+            new DynamicTypeFieldDefinitionCoreShopDynamicDropdownMultiple(),
+            new DynamicTypeFieldDefinitionCoreShopItemSelector(),
+            new DynamicTypeFieldDefinitionCoreShopSerializedData(),
+            new DynamicTypeFieldDefinitionCoreShopSuperBoxSelect()
+        ])
     },
 
     onStartup({ moduleSystem }) {

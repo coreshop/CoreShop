@@ -1,2 +1,9 @@
 ---
 coreshop_money: 'Money'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-money: 'CoreShop Money'
+field-definition.core-shop-money.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-money)"
+field-definition.core-shop-money.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-money)"
+coreshop_field_definition_nullable: 'Nullable'
+coreshop_field_definition_money_integer_tooltip: 'Stored as integer in the smallest currency unit (e.g. cents): 38312 = 383.12'

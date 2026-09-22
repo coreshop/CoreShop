@@ -25,9 +25,12 @@ import { TaxRateManager } from './modules/tax-rates/TaxRateManager'
 import { TaxRuleGroupManager } from './modules/tax-rule-groups/TaxRuleGroupManager'
 import { loadTaxRates, getTaxRateCache } from './components/TaxRateSelect'
 import { loadTaxRuleGroups, getTaxRuleGroupCache } from './components/TaxRuleGroupSelect'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
 import {
     DynamicTypeObjectDataCoreShopTaxRate,
-    DynamicTypeObjectDataCoreShopTaxRuleGroup
+    DynamicTypeObjectDataCoreShopTaxRuleGroup,
+    DynamicTypeFieldDefinitionCoreShopTaxRate,
+    DynamicTypeFieldDefinitionCoreShopTaxRuleGroup
 } from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
@@ -45,6 +48,12 @@ const plugin: IAbstractPlugin = {
 
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopTaxRate())
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopTaxRuleGroup())
+
+            // Class-definition editor types (Studio class editor)
+            registerCoreShopFieldDefinitionTypes([
+                new DynamicTypeFieldDefinitionCoreShopTaxRate(),
+                new DynamicTypeFieldDefinitionCoreShopTaxRuleGroup()
+            ])
 
             // Register StudioForm widgets for TaxationChoiceTypes
             const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)

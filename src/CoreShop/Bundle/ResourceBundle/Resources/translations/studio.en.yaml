@@ -46,3 +46,17 @@ coreshop_grid_filter_created_this_week: 'Created This Week'
 coreshop_grid_filter_created_this_month: 'Created This Month'
 coreshop_grid_filter_created_this_year: 'Created This Year'
 coreshop_grid_filter_created_last_year: 'Created Last Year'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-relation: 'CoreShop Relation'
+field-definition.core-shop-relation.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-relation)"
+field-definition.core-shop-relation.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-relation)"
+field-definition.core-shop-relations: 'CoreShop Relations'
+field-definition.core-shop-relations.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-relations)"
+field-definition.core-shop-relations.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-relations)"
+coreshop_field_definition_allow_empty: 'Allow empty value'
+coreshop_field_definition_render_type: 'Render type'
+coreshop_field_definition_render_type_list: 'List'
+coreshop_field_definition_render_type_tags: 'Tags'
+coreshop_field_definition_stack: 'CoreShop resource'
+coreshop_field_definition_return_concrete: 'Return concrete object'

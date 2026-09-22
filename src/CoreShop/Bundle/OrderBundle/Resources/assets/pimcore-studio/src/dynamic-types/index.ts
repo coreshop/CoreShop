@@ -6,3 +6,6 @@
  */
 
 export { DynamicTypeObjectDataCoreShopCartPriceRule } from './DynamicTypeObjectDataCoreShopCartPriceRule'
+
+// Class-definition editor types (Studio class editor)
+export { DynamicTypeFieldDefinitionCoreShopCartPriceRule } from './DynamicTypeFieldDefinitionCoreShopCartPriceRule'

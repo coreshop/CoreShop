@@ -119,3 +119,17 @@ coreshop_categories: 'Categories'
 coreshop_product_price_rule_select: 'Select product price rule'
 coreshop_product_unit_select: 'Select product unit'
 coreshop_translations: 'Translations'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-product-unit: 'CoreShop Product Unit'
+field-definition.core-shop-product-unit.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-product-unit)"
+field-definition.core-shop-product-unit.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-product-unit)"
+field-definition.core-shop-product-unit-definition: 'CoreShop Product Unit Definition'
+field-definition.core-shop-product-unit-definition.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-product-unit-definition)"
+field-definition.core-shop-product-unit-definition.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-product-unit-definition)"
+field-definition.core-shop-product-unit-definitions: 'CoreShop Product Unit Definitions'
+field-definition.core-shop-product-unit-definitions.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-product-unit-definitions)"
+field-definition.core-shop-product-unit-definitions.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-product-unit-definitions)"
+field-definition.core-shop-product-specific-price-rules: 'CoreShop Product Specific Price Rules'
+field-definition.core-shop-product-specific-price-rules.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-product-specific-price-rules)"
+field-definition.core-shop-product-specific-price-rules.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-product-specific-price-rules)"

@@ -36,6 +36,10 @@ import {
   customerCompanyAssignmentWidgetRestorer,
 } from './modules/customer-company-assignment'
 import { registerCoreStudioFormDemoTabs } from './modules/studio-form-demos/registerDemoTabs'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
+import {
+    DynamicTypeFieldDefinitionCoreShopStoreValues
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-core',
@@ -49,6 +53,11 @@ const plugin: IAbstractPlugin = {
         )
 
         objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopStoreValues())
+
+        // Class-definition editor types (Studio class editor)
+        registerCoreShopFieldDefinitionTypes([
+            new DynamicTypeFieldDefinitionCoreShopStoreValues()
+        ])
 
         // ============================================
         // Grid Advanced-Column Transformers Registration

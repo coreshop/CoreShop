@@ -30,6 +30,12 @@ import {
     DynamicTypeObjectDataCoreShopMoneyCurrency
 } from './dynamic-types'
 import { initCurrencyConfig } from './modules/currency-config'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
+import {
+    DynamicTypeFieldDefinitionCoreShopCurrency,
+    DynamicTypeFieldDefinitionCoreShopCurrencyMultiselect,
+    DynamicTypeFieldDefinitionCoreShopMoneyCurrency
+} from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
     name: 'coreshop-currency',
@@ -50,6 +56,13 @@ const plugin: IAbstractPlugin = {
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrency())
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopCurrencyMultiselect())
             objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopMoneyCurrency())
+
+            // Class-definition editor types (Studio class editor)
+            registerCoreShopFieldDefinitionTypes([
+                new DynamicTypeFieldDefinitionCoreShopCurrency(),
+                new DynamicTypeFieldDefinitionCoreShopCurrencyMultiselect(),
+                new DynamicTypeFieldDefinitionCoreShopMoneyCurrency()
+            ])
 
             // Register StudioForm widget for CurrencyChoiceType
             const formWidgetRegistry = container.get<StudioFormWidgetRegistry>(widgetRegistryServiceId)

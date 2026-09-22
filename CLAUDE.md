@@ -220,6 +220,10 @@ export class DynamicTypeObjectDataCoreShopCountry extends DynamicTypeObjectDataA
 
 Complex types: `coreShopMoney` (MoneyBundle), `coreShopMoneyCurrency` (CurrencyBundle), `coreShopStoreValues` (CoreBundle), `coreShopRelation`/`coreShopRelations` (ResourceBundle), `coreShopProductSpecificPriceRules` (ProductBundle), `coreShopProductQuantityPriceRules` (ProductQuantityPriceRulesBundle)
 
+### Class definition editor (`DynamicTypeFieldDefinition*`)
+
+Every field type needs a **second** class for the Studio class editor, otherwise it shows "Type not supported" and is missing from the "add field" dropdown. Name it `DynamicTypeFieldDefinitionCoreShop<Name>`, put it next to the object data type and register it via `registerCoreShopFieldDefinitionTypes([...])` in the same `try/catch` as the object data registry. Base classes: `DynamicTypeFieldDefinitionCoreShopAbstract` (`@coreshop/pimcore/src/dynamic-types/field-definitions`), `...CoreShopSelect` / `...CoreShopMultiselect` (`@coreshop/resource/src/dynamic-types/field-definitions`). Form field names must match the PHP CoreExtension properties. Add `field-definition.<kebab-case id>` (+ `.with-prefix.add` / `.with-prefix.convert`) translation keys. Docs: `docs/03_Development/14_Studio/02_Base_Infrastructure/06_Dynamic_Types.md`.
+
 ## StudioFormBundle - Schema-Driven Form System
 
 **This is the primary way to build forms.** Generates React forms from Symfony FormTypes via JSON schema.

@@ -662,3 +662,8 @@ coreshop_change_state_error: 'Status konnte nicht geändert werden'
 coreshop_transition: 'Übergang'
 coreshop_order_with_number: 'Bestellung: {{number}}'
 coreshop_open_data_object: 'DataObject öffnen'
+
+# Studio class editor (field definitions)
+field-definition.core-shop-cart-price-rule: 'CoreShop Warenkorb-Preisregel'
+field-definition.core-shop-cart-price-rule.with-prefix.add: "$t(tree.actions.prefix.add)$t(field-definition.core-shop-cart-price-rule)"
+field-definition.core-shop-cart-price-rule.with-prefix.convert: "$t(tree.actions.prefix.convert)$t(field-definition.core-shop-cart-price-rule)"

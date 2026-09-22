@@ -29,9 +29,12 @@ import { coreshopPaymentServiceIds } from './modules/payment-provider-rules/serv
 import { PaymentProviderManager } from './modules/payment-providers/PaymentProviderManager'
 import { PaymentProviderRuleManager } from './modules/payment-provider-rules/PaymentProviderRuleManager'
 import { GatewayRegistry } from './modules/payment-providers/gateways'
+import { registerCoreShopFieldDefinitionTypes } from '@coreshop/resource/src/dynamic-types/field-definitions'
 import {
     DynamicTypeObjectDataCoreShopPaymentProvider,
-    DynamicTypeObjectDataCoreShopPaymentProviderMultiselect
+    DynamicTypeObjectDataCoreShopPaymentProviderMultiselect,
+    DynamicTypeFieldDefinitionCoreShopPaymentProvider,
+    DynamicTypeFieldDefinitionCoreShopPaymentProviderMultiselect
 } from './dynamic-types'
 
 const plugin: IAbstractPlugin = {
@@ -51,6 +54,12 @@ const plugin: IAbstractPlugin = {
     )
     objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopPaymentProvider())
     objectDataRegistry.registerDynamicType(new DynamicTypeObjectDataCoreShopPaymentProviderMultiselect())
+
+    // Class-definition editor types (Studio class editor)
+    registerCoreShopFieldDefinitionTypes([
+        new DynamicTypeFieldDefinitionCoreShopPaymentProvider(),
+        new DynamicTypeFieldDefinitionCoreShopPaymentProviderMultiselect()
+    ])
 
     // ============================================
     // Payment Provider Rules Registry Setup
