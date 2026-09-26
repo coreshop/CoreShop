@@ -31,3 +31,25 @@ Feature: Having the ability to inherit store values
     Then I am in store "Germany"
     And the product should be priced at "200"
     And the variant should be priced at "200"
+
+  Scenario: Changing the inherited store values of a variant keeps the price of the product
+    Given the variants inherited price is changed to 250 for store "Austria"
+    And the product is reloaded from the database
+    And the variant is reloaded from the database
+    Then the product should be priced at "100"
+    And the variant should be priced at "250"
+
+  Scenario: Changing the inherited store values of a variant keeps the unit prices of both products
+    Given the site has a product-unit "Pieces"
+    And the site has a product-unit "Carton"
+    And the products price is 200 for store "Germany"
+    And the product has the default unit "Pieces"
+    And the product has an additional unit "Carton" with conversion rate "24" and price 2000
+    And the variants inherited price is changed to 250 for store "Germany"
+    And the product is reloaded from the database
+    And the variant is reloaded from the database
+    Then I am in store "Germany"
+    And the product should be priced at "200"
+    And the variant should be priced at "250"
+    And the product should have a unit price of "2000" for unit "Carton" in store "Germany"
+    And the variant should have a unit price of "2000" for unit "Carton" in store "Germany"
