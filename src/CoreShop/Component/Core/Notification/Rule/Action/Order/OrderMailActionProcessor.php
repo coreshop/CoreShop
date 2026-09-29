@@ -56,7 +56,7 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
 
             if (array_key_exists($language, $configuration['mails'])) {
                 $mailDocumentId = $configuration['mails'][$language];
-                $mailDocument = Document::getById($mailDocumentId);
+                $mailDocument = Document::getById((int) $mailDocumentId);
 
                 $params['mailRule'] = $rule;
                 $params['document'] = $subject;

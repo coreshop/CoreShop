@@ -12,9 +12,11 @@ default:
                 - CoreShop\Bundle\TestBundle\Context\Transform\ClassContext
 
                 - CoreShop\Bundle\TestBundle\Context\Setup\ClassContext
+                - coreshop.behat.context.setup.asset
 
                 - CoreShop\Bundle\TestBundle\Context\Domain\ClassContext
                 - CoreShop\Bundle\TestBundle\Context\Domain\PimcoreContext
                 - coreshop.behat.context.domain.resource
+                - coreshop.behat.context.domain.pimcore_asset_form
             filters:
                 tags: "@domain&&@pimcore"

@@ -237,6 +237,20 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.setup.email_document:
+        class: CoreShop\Behat\Context\Setup\EmailDocumentContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.asset:
+        class: CoreShop\Behat\Context\Setup\AssetContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.setup.payment:
         class: CoreShop\Behat\Context\Setup\PaymentContext
         arguments:

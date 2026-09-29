@@ -39,9 +39,11 @@ default:
                 - coreshop.behat.context.setup.order_invoice
                 - coreshop.behat.context.setup.shipping
                 - coreshop.behat.context.setup.cart_price_rule
+                - coreshop.behat.context.setup.email_document
 
                 - coreshop.behat.context.domain.order
                 - coreshop.behat.context.domain.customer
                 - coreshop.behat.context.domain.notification_rule
+                - coreshop.behat.context.domain.order_mail
             filters:
                 tags: "@domain&&@order"
