@@ -116,6 +116,13 @@
                 <referencedMethod name="Doctrine\DBAL\Schema\AbstractSchemaManager::listTableNames" />
                 <referencedMethod name="Doctrine\DBAL\Schema\AbstractSchemaManager::listViews" />
                 <referencedMethod name="Doctrine\DBAL\Schema\Table::setPrimaryKey" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Schema::createTable" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Table::addColumn" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Table::addOption" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Table::addIndex" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Table::addUniqueIndex" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Column::setLength" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Column::getType" />
             </errorLevel>
         </DeprecatedMethod>
         <UndefinedInterfaceMethod>
@@ -137,6 +144,7 @@
                 <referencedMethod name="Symfony\Component\Workflow\Registry::get" />
                 <referencedMethod name="Pimcore\File::getValidFilename" />
                 <referencedMethod name="Doctrine\DBAL\Schema\Column::__construct" />
+                <referencedMethod name="Doctrine\DBAL\Schema\Schema::__construct" />
                 <referencedMethod name="Pimcore\File::getLocalTempFilePath" />
                 <referencedMethod name="Pimcore\Bundle\StudioBackendBundle\MappedParameter\Filter\ColumnFiltersParameterInterface::getColumnFilters" />
                 <referencedMethod name="Pimcore\Bundle\StudioBackendBundle\Exception\Api\TransformerException::__construct" />
