@@ -110,6 +110,7 @@ services:
             - '@payum'
             - '@router'
             - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
+            - '@translator'
         tags:
             - { name: fob.context_service }
 
