@@ -19,6 +19,7 @@ namespace CoreShop\Behat\Context\Ui\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProvider;
 use GuzzleHttp\Client;
@@ -27,16 +28,22 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Payum\Core\Payum;
 use Pimcore\Model\DataObject\Concrete;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
 final class PaymentController implements Context
 {
+    private ?ResponseInterface $revisePageResponse = null;
+
     public function __construct(
         private Payum $payum,
         private RouterInterface $router,
         private WorkflowStateInfoManagerInterface $workflowStateInfoManager,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -102,5 +109,67 @@ final class PaymentController implements Context
                 count($checkStates),
             ),
         );
+    }
+
+    /**
+     * @When /^I open the revise page of (my order) for the (latest order payment)$/
+     */
+    public function iOpenTheRevisePageOfMyOrderForThePayment(OrderInterface $order, PaymentInterface $payment): void
+    {
+        $this->openRevisePage((string) $order->getToken(), ['paymentId' => $payment->getId()]);
+    }
+
+    /**
+     * @When /^I open the revise page for the order token "([^"]+)"$/
+     */
+    public function iOpenTheRevisePageForTheOrderToken(string $token): void
+    {
+        $this->openRevisePage($token);
+    }
+
+    /**
+     * @Then /^the revise page should show the message "([^"]+)"$/
+     */
+    public function theRevisePageShouldShowTheMessage(string $message): void
+    {
+        Assert::contains($this->getRevisePageContent(), htmlspecialchars($this->translator->trans($message, [], null, 'en'), \ENT_QUOTES));
+    }
+
+    /**
+     * @Then /^the revise page should not show the message "([^"]+)"$/
+     */
+    public function theRevisePageShouldNotShowTheMessage(string $message): void
+    {
+        Assert::notContains($this->getRevisePageContent(), htmlspecialchars($this->translator->trans($message, [], null, 'en'), \ENT_QUOTES));
+    }
+
+    /**
+     * @Then the revise page should not be found
+     */
+    public function theRevisePageShouldNotBeFound(): void
+    {
+        Assert::notNull($this->revisePageResponse, 'The revise page has not been opened.');
+        Assert::eq($this->revisePageResponse->getStatusCode(), 404);
+    }
+
+    private function openRevisePage(string $token, array $query = []): void
+    {
+        $this->router->setContext(RequestContext::fromUri(getenv('PANTHER_EXTERNAL_BASE_URI')));
+
+        $url = $this->router->generate(
+            'coreshop_order_revise',
+            array_merge(['_locale' => 'en', 'token' => $token], $query),
+            UrlGeneratorInterface::ABSOLUTE_URL,
+        );
+
+        $this->revisePageResponse = (new Client())->request('GET', $url, ['http_errors' => false]);
+    }
+
+    private function getRevisePageContent(): string
+    {
+        Assert::notNull($this->revisePageResponse, 'The revise page has not been opened.');
+        Assert::eq($this->revisePageResponse->getStatusCode(), 200);
+
+        return (string) $this->revisePageResponse->getBody();
     }
 }
