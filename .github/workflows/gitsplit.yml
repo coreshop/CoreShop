@@ -1,18 +1,14 @@
 name: Monorepo split
 on:
     workflow_dispatch: ~
+    # Only the lines that still receive commits. 2.x–4.0 are final and already live in
+    # the split repositories, so re-splitting them costs an hour for nothing.
     push:
         branches:
-            - next
-            - 2.0
-            - 2.1
-            - 2.2
-            - 3.0
-            - 3.1
-            - 4.0
             - 4.1
             - 5.0
             - 5.1
+            - 2026.x
         paths:
             - 'src/CoreShop/Bundle/**'
             - 'src/CoreShop/Component/**'
@@ -35,7 +31,14 @@ jobs:
                 uses: actions/cache@v6
                 with:
                     path: cache
-                    key: gitsplit-cache
+                    # A cache is only ever saved under a key that does not exist yet, so a static
+                    # key froze the split state at its first save and every eviction meant a full
+                    # rebuild (~70 min). Keying per run saves a fresh snapshot every time; the
+                    # prefix restore key picks up the newest one, from any branch (caches saved on
+                    # the default branch are visible everywhere).
+                    key: gitsplit-cache-${{ github.run_id }}
+                    restore-keys: |
+                        gitsplit-cache-
             -
                 name: Split repositories
                 uses: docker://jderusse/gitsplit:latest

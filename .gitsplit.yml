@@ -1,10 +1,11 @@
 cache_url: 'file://cache'
 project_url: 'https://@github.com/coreshop/CoreShop.git'
+# Only the lines that still receive commits are split. 2.x–4.0 and their tags are final and
+# already live in the split repositories; listing them here only makes a cache miss re-split
+# history nobody changes.
 origins:
-    - ^next$
-    - ^\d+\.\d+$
-    - ^\d+\.\d+\.\d+$
-    - '^\d+\.\d+\.\d+(?:-?(?:alpha|beta|rc)\.?\d*)?$'
+    - ^(4\.1|5\.0|5\.1|2026\.x)$
+    - '^(4\.1|5\.\d+|2026\.\d+)\.\d+(?:-?(?:alpha|beta|rc)\.?\d*)?$'
 splits:
     - { prefix: src/CoreShop/Component/Address, target: 'https://${GH_TOKEN}@github.com/coreshop/Address.git' }
     - { prefix: src/CoreShop/Bundle/AddressBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/AddressBundle.git' }
