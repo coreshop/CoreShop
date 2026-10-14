@@ -58,6 +58,11 @@ final class Version20260821090100 extends AbstractMigration
             . 'the legacy LONGTEXT definition to the platform json type.';
     }
 
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         $this->addSql('SELECT 1'); // the conversion happens in postUp()
