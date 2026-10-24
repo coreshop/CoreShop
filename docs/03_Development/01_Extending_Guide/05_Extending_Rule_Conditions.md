@@ -197,7 +197,7 @@ circle (A uses B, B uses A) which would otherwise recurse endlessly. The Rule co
 
 `CoreShop\Component\Rule\Condition\RuleValidationProcessor` runs every rule validation through the shared
 `coreshop.rule.recursion_guard` service
-([`RuleRecursionGuardInterface`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Rule/Recursion/RuleRecursionGuardInterface.php)).
+([`RuleRecursionGuardInterface`](https://github.com/coreshop/CoreShop/blob/5.1/src/CoreShop/Component/Rule/Recursion/RuleRecursionGuardInterface.php)).
 If a rule is validated again for the same subject while it is still being validated, the inner validation returns
 `false` and a warning containing the rule path is logged. Custom condition checkers that validate another rule through
 a `RuleValidationProcessorInterface` (like `ShippingRuleConditionChecker` does) are covered automatically.
