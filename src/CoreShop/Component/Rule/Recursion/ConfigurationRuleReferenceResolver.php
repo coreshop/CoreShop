@@ -20,6 +20,7 @@ namespace CoreShop\Component\Rule\Recursion;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\Condition;
+use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
 /**
@@ -63,6 +64,8 @@ final class ConfigurationRuleReferenceResolver implements RuleReferenceResolverI
     }
 
     /**
+     * @param iterable<ConditionInterface|array> $conditions
+     *
      * @return iterable<RuleInterface>
      */
     private function resolveConditions(iterable $conditions): iterable
