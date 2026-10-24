@@ -1,4 +1,6 @@
 CoreShop\Component\Shipping\Model\ShippingRule:
+    constraints:
+        - CoreShop\Bundle\RuleBundle\Validator\Constraints\NoCircularRuleReference: { groups: [coreshop] }
     properties:
       name:
           - NotBlank: { groups: [coreshop] }

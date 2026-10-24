@@ -1,0 +1,1 @@
+coreshop.rule.circular_reference: 'Zirkelbezug zwischen Regeln: %path%. Eine Regel darf sich weder direkt noch über andere Regeln selbst verwenden.'
