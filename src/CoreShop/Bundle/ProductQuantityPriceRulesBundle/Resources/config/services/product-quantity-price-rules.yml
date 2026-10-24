@@ -71,6 +71,7 @@ services:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
         arguments:
             - '@coreshop.product_quantity_price_rules.conditions.processor'
+            - '@coreshop.rule.recursion_guard'
 
     # Rule Fetcher
     CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherInterface: '@CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidProductQuantityPriceRuleFetcher'

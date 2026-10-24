@@ -36,6 +36,24 @@ The default actions included in CoreShop are:
 - **Price**: Set a fixed price for shipping.
 - **Shipping Rule**: Trigger other shipping rules.
 
+## Reusing Shipping Rules
+
+The **Shipping Rule** condition and action let a rule reuse another Shipping Rule: the condition is valid if the
+referenced rule is valid, the action adds the price (and price modifications) of the referenced rule.
+
+A rule must never end up referencing itself, neither directly (A uses A) nor through other rules (A uses B, B uses A),
+also not from inside a **Nested** condition. CoreShop protects against that on two levels:
+
+- **When saving:** a Shipping Rule that would close such a circle is rejected with a validation error that shows the
+  path, e.g. `Express → Heavy Goods → Express`. A rule that only uses rules which reference each other (but not the rule
+  being saved) can still be saved.
+- **While calculating:** rules created before this check (or written to the database directly) do not crash the
+  checkout. As soon as a rule is reached a second time during the same evaluation, it is treated as *not valid*
+  (conditions) or as adding *nothing* (actions: `0`), and a warning with the path is written to the log.
+
+See [Rules referencing other Rules](../../01_Extending_Guide/05_Extending_Rule_Conditions.md#rules-referencing-other-rules)
+for how to make custom conditions and actions that reference rules part of this check.
+
 ## Extending Conditions and Actions
 
 CoreShop also provides options to extend these default rules with custom conditions and actions:

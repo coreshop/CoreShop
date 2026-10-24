@@ -26,6 +26,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.notification_rule.conditions.processor'
+            - '@coreshop.rule.recursion_guard'
 
     CoreShop\Component\Notification\Processor\RulesProcessorInterface: '@CoreShop\Component\Notification\Processor\RulesProcessor'
     CoreShop\Component\Notification\Processor\RulesProcessor:
