@@ -104,7 +104,8 @@ class ProductUnitDefinitions extends Data implements
      */
     public function setWidth($width)
     {
-        $this->width = $this->getAsIntegerCast($width);
+        // an empty width must stay null instead of being cast to 0
+        $this->width = strlen((string) $width) === 0 ? null : (int) $width;
 
         return $this;
     }
