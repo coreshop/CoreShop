@@ -27,10 +27,13 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
+    use CircularRuleReferenceTrait;
+
     public function __construct(
         private CarrierRepositoryInterface $carrierRepository,
         private RuleValidationProcessorInterface $ruleValidationProcessor,
@@ -38,6 +41,7 @@ final class ShippingContext implements Context
         private CarrierPriceCalculatorInterface $carrierPriceCalculator,
         private ShippableCarrierValidatorInterface $shippingRuleValidator,
         private CartContextResolverInterface $cartContextResolver,
+        private ValidatorInterface $validator,
     ) {
     }
 
@@ -106,5 +110,32 @@ final class ShippingContext implements Context
             $ruleResult,
             sprintf('Asserted that the Carrier %s is valid for my cart, but it is not', $carrier->getTitle('en')),
         );
+    }
+
+    /**
+     * @Then /^the (shipping rule "[^"]+") should not be saveable because of a circular reference$/
+     */
+    public function theShippingRuleShouldNotBeSaveableBecauseOfACircularReference(ShippingRuleInterface $rule): void
+    {
+        Assert::true(
+            $this->hasCircularRuleReferenceViolation($rule),
+            sprintf('Asserted that the Shipping Rule "%s" is rejected because of a circular reference, but it is not', $rule->getName()),
+        );
+    }
+
+    /**
+     * @Then /^the (shipping rule "[^"]+") should be saveable without a circular reference$/
+     */
+    public function theShippingRuleShouldBeSaveableWithoutACircularReference(ShippingRuleInterface $rule): void
+    {
+        Assert::false(
+            $this->hasCircularRuleReferenceViolation($rule),
+            sprintf('Asserted that the Shipping Rule "%s" has no circular reference, but it has one', $rule->getName()),
+        );
+    }
+
+    protected function getValidator(): ValidatorInterface
+    {
+        return $this->validator;
     }
 }

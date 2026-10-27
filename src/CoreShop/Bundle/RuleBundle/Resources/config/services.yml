@@ -2,3 +2,26 @@ imports:
     - { resource: services/form.yml }
     - { resource: services/commands.yml }
     - { resource: services/rule_active_validator.yml }
+
+services:
+    _defaults:
+        public: true
+
+    # Shared on purpose: the rule processors are not shared, the guard has to see the whole evaluation stack
+    CoreShop\Component\Rule\Recursion\RuleRecursionGuardInterface: '@coreshop.rule.recursion_guard'
+    coreshop.rule.recursion_guard:
+        class: CoreShop\Component\Rule\Recursion\RuleRecursionGuard
+        arguments:
+            - '@logger'
+
+    # resolvers are collected by RuleReferenceResolverPass (tag coreshop.rule.reference_resolver)
+    CoreShop\Component\Rule\Recursion\RuleCycleDetectorInterface: '@CoreShop\Component\Rule\Recursion\RuleCycleDetector'
+    CoreShop\Component\Rule\Recursion\RuleCycleDetector:
+        arguments:
+            - []
+
+    CoreShop\Bundle\RuleBundle\Validator\Constraints\NoCircularRuleReferenceValidator:
+        arguments:
+            - '@CoreShop\Component\Rule\Recursion\RuleCycleDetectorInterface'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_rule_no_circular_reference }

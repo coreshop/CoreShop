@@ -103,6 +103,7 @@ services:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
         arguments:
             - '@coreshop.product_specific_price_rule.conditions.processor'
+            - '@coreshop.rule.recursion_guard'
 
     # Price Calculators
     coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher: '@CoreShop\Component\Product\Rule\Fetcher\ValidProductSpecificPriceRuleFetcher'

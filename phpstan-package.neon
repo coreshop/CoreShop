@@ -1,6 +1,10 @@
 parameters:
     reportUnmatchedIgnoredErrors: false
 
+    # Every package installs (and afterwards removes) its own vendor/. A cache shared between packages
+    # (default /tmp/phpstan) makes PHPStan pick up stub paths inside the previous package's phar.
+    tmpDir: %currentWorkingDirectory%/vendor/.phpstan-cache
+
     excludePaths:
         # Makes PHPStan crash
         - '**/DependencyInjection/Configuration.php'
