@@ -40,9 +40,10 @@ final class ResourceIdentifier
 
     public static function describeRule(RuleInterface $rule): string
     {
-        $name = (string) $rule->getName();
+        // unsaved rules may not have a name yet
+        $name = $rule->getName();
 
-        if ('' !== $name) {
+        if ($name) {
             return $name;
         }
 

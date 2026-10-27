@@ -55,7 +55,7 @@ final class ConfigurationRuleReferenceResolver implements RuleReferenceResolverI
 
         foreach ($rule->getActions() as $action) {
             $action = Action::denormalize($action);
-            $configurationKey = $this->actionTypes[(string) $action->getType()] ?? null;
+            $configurationKey = $this->actionTypes[$action->getType()] ?? null;
 
             if (null !== $configurationKey) {
                 yield from $this->findRule($action->getConfiguration()[$configurationKey] ?? null);
@@ -72,7 +72,7 @@ final class ConfigurationRuleReferenceResolver implements RuleReferenceResolverI
     {
         foreach ($conditions as $condition) {
             $condition = Condition::denormalize($condition);
-            $type = (string) $condition->getType();
+            $type = $condition->getType();
             $configuration = $condition->getConfiguration() ?? [];
 
             if (isset($this->conditionTypes[$type])) {
