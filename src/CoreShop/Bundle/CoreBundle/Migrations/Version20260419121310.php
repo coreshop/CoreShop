@@ -30,6 +30,11 @@ final class Version20260419121310 extends AbstractMigration
         return 'Add passwordResetHashCreatedAt datetime field to the User class (required by UserInterface::getPasswordResetHashCreatedAt introduced in bb2de14712).';
     }
 
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         $classUpdater = new ClassUpdate(

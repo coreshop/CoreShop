@@ -34,6 +34,11 @@ final class Version20260616120000 extends AbstractMigration
         return 'Add CoreShopOrder.lastActivatedAt for last-opened cart persistence';
     }
 
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         $classUpdater = new ClassUpdate(
