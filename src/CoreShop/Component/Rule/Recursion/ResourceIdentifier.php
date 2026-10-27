@@ -40,9 +40,9 @@ final class ResourceIdentifier
 
     public static function describeRule(RuleInterface $rule): string
     {
-        $name = $rule->getName();
+        $name = (string) $rule->getName();
 
-        if (is_string($name) && '' !== $name) {
+        if ('' !== $name) {
             return $name;
         }
 
