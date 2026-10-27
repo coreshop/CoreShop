@@ -55,6 +55,9 @@ jobs:
     if: ${{ github.event_name != 'release' || startsWith(github.event.release.tag_name, '2026.') }}
     runs-on: ubuntu-latest
     strategy:
+      # A failure in one matrix entry must not cancel the others: their results are part of the
+      # same round of feedback.
+      fail-fast: false
       matrix:
         php: [ 8.4, 8.5 ]
         pimcore: [ ^2026.2 ]
@@ -113,32 +116,36 @@ jobs:
       - name: pimcore/pimcore
         run: composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
 
-      - if: matrix.dependencies == 'highest'
-        name: Install dependencies highest
-        run: composer update --no-progress --prefer-dist --optimize-autoloader
+      - name: Install dependencies ${{ matrix.dependencies }}
+        id: install
+        run: composer update --no-progress --prefer-dist --optimize-autoloader ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
 
-      - if: matrix.dependencies == 'lowest'
-        name: Install dependencies lowest
-        run: composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
-
+      # Every check below runs even when an earlier one failed, so one broken check does not hide
+      # the result of the others behind another round trip. They only need the dependencies.
       - name: Validate YAML
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: bin/console lint:yaml src
 
       - name: Validate TWIG
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: bin/console lint:twig src
 
       - name: Validate Container
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: bin/console lint:container
 
       - name: Validate Doctrine Settings
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: bin/console doctrine:schema:validate --skip-sync
 
       - name: STAN
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: |
           cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
           bin/console cache:clear --env=dev
           vendor/bin/phpstan
 
       - name: PSALM
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: |
           vendor/bin/psalm
