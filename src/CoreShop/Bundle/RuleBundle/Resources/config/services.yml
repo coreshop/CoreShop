@@ -14,11 +14,11 @@ services:
         arguments:
             - '@logger'
 
-    # Resolvers tell which conditions/actions of a rule reference other rules (tag coreshop.rule.reference_resolver)
+    # resolvers are collected by RuleReferenceResolverPass (tag coreshop.rule.reference_resolver)
     CoreShop\Component\Rule\Recursion\RuleCycleDetectorInterface: '@CoreShop\Component\Rule\Recursion\RuleCycleDetector'
     CoreShop\Component\Rule\Recursion\RuleCycleDetector:
         arguments:
-            - !tagged_iterator coreshop.rule.reference_resolver
+            - []
 
     CoreShop\Bundle\RuleBundle\Validator\Constraints\NoCircularRuleReferenceValidator:
         arguments:
