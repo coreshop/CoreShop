@@ -186,3 +186,68 @@ const plugin: IAbstractPlugin = {
 
 export default plugin
 ```
+
+## Rules referencing other Rules
+
+Some conditions and actions reference another rule of the same type, for example the `shippingRule` condition/action of
+Shipping Rules and the `paymentProviderRule` condition/action of Payment Provider Rules. Such references can form a
+circle (A uses B, B uses A) which would otherwise recurse endlessly. The Rule component handles this in two places:
+
+### At runtime: `RuleRecursionGuard`
+
+`CoreShop\Component\Rule\Condition\RuleValidationProcessor` runs every rule validation through the shared
+`coreshop.rule.recursion_guard` service
+([`RuleRecursionGuardInterface`](https://github.com/coreshop/CoreShop/blob/2026.x/src/CoreShop/Component/Rule/Recursion/RuleRecursionGuardInterface.php)).
+If a rule is validated again for the same subject while it is still being validated, the inner validation returns
+`false` and a warning containing the rule path is logged. Custom condition checkers that validate another rule through
+a `RuleValidationProcessorInterface` (like `ShippingRuleConditionChecker` does) are covered automatically.
+
+If your own code evaluates rule *actions* recursively, wrap it in the guard as well and choose what a circular call
+should return:
+
+```php
+use CoreShop\Component\Rule\Recursion\RuleRecursionGuardInterface;
+
+return $this->recursionGuard->guard(
+    RuleRecursionGuardInterface::SCOPE_ACTIONS_PRICE, // or your own scope string
+    $rule,
+    $subject,                                         // e.g. the carrier
+    fn (): int => $this->calculatePrice($rule, $subject),
+    0,                                                // returned for a circular call
+);
+```
+
+Inject `@coreshop.rule.recursion_guard` into such services. The rule processors are not shared, the guard must be, or
+it cannot see the whole evaluation.
+
+### When saving: `NoCircularRuleReference`
+
+The `CoreShop\Bundle\RuleBundle\Validator\Constraints\NoCircularRuleReference` class constraint rejects a rule that
+references itself, directly or through other rules. Which conditions and actions hold a reference is described by
+services tagged `coreshop.rule.reference_resolver`. For references stored as rule id in the configuration, use the
+generic `ConfigurationRuleReferenceResolver`:
+
+```yaml
+services:
+    app.shipping_rule.reference_resolver:
+        class: CoreShop\Component\Rule\Recursion\ConfigurationRuleReferenceResolver
+        arguments:
+            - CoreShop\Component\Shipping\Model\ShippingRuleInterface # rules handled (and referenced)
+            - '@coreshop.repository.shipping_rule'
+            - { myRuleCondition: rule }   # condition type => configuration key holding the rule id
+            - { myRuleAction: rule }      # action type => configuration key holding the rule id
+            - [nested]                    # condition types holding child conditions in "conditions"
+        tags:
+            - { name: coreshop.rule.reference_resolver }
+```
+
+For anything else implement `CoreShop\Component\Rule\Recursion\RuleReferenceResolverInterface` and tag it the same
+way. Shipping Rules and Payment Provider Rules already have the constraint and a resolver for their built-in
+conditions/actions; for other rule types add the constraint to the rule model's validation mapping:
+
+```yaml
+# config/validator/validation.yaml
+App\Model\MyRule:
+    constraints:
+        - CoreShop\Bundle\RuleBundle\Validator\Constraints\NoCircularRuleReference: { groups: [coreshop] }
+```
