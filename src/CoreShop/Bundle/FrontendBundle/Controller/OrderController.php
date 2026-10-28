@@ -34,21 +34,23 @@ class OrderController extends FrontendController
         $token = $this->getParameterFromRequest($request, 'token');
         $payment = null;
 
-        /** @var OrderInterface $order */
         $order = $this->getOrderRepository()->findOneBy(['token' => $token]);
 
-        if ($request->query->has('paymentId')) {
-            $paymentObject = $this->getPaymentRepository()->find($request->query->get('paymentId'));
-            if ($paymentObject instanceof PaymentInterface) {
-                $payment = $paymentObject;
-            }
+        if (!$order instanceof OrderInterface) {
+            throw $this->createNotFoundException();
         }
 
-        foreach ($this->getPaymentRepository()->findForPayable($order) as $payment) {
-            if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
+        $paymentId = $request->query->get('paymentId');
+
+        foreach ($this->getPaymentRepository()->findForPayable($order) as $orderPayment) {
+            if ($orderPayment->getState() === PaymentInterface::STATE_COMPLETED) {
                 $this->addFlash('error', $this->container->get('translator')->trans('coreshop.ui.error.order_already_paid'));
 
                 return $this->redirectToRoute('coreshop_index');
+            }
+
+            if (null !== $paymentId && (string) $orderPayment->getId() === (string) $paymentId) {
+                $payment = $orderPayment;
             }
         }
 
