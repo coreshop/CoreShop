@@ -94,20 +94,20 @@ significant part of its features or functions. Additionally, the Customer may no
 Software, or any Derivative, in a manner that results in a competing or functionally comparable product that is offered
 as a free or commercial alternative to CoreShop GmbH’s official offerings.
 
-2.2.1. The Customer shall also refrain from incorporating the Software, or any Derivative, into a commercial product or
+2.2.2. The Customer shall also refrain from incorporating the Software, or any Derivative, into a commercial product or
 service offering materially deriving its economic value from the Software, even if it is not directly exposed or
 obvious.
 
-2.2.1. The Customer is also prohibited from representing, implying, or otherwise suggesting that its use, distribution,
+2.2.3. The Customer is also prohibited from representing, implying, or otherwise suggesting that its use, distribution,
 or customization of the Software is endorsed, certified, or supported by CoreShop GmbH, unless such authorization has
 been explicitly granted in writing.
 
-2.2.1. The Customer may only use the Software for its own enterprise. The Customer may not use the Software
+2.2.4. The Customer may only use the Software for its own enterprise. The Customer may not use the Software
 simultaneously in more instances than Customer has acquired usage licences for. The Customer is only permitted to copy
 the Software to the extent that this is necessary for the intended use, including the correction of errors. The creation
 of a backup copy is permitted if it is necessary to secure the contractual use.
 
-2.2.1. The Customer must not, at any time, (i) rent, lease, lend, sell, license, assign, distribute, publish, transfer,
+2.2.5. The Customer must not, at any time, (i) rent, lease, lend, sell, license, assign, distribute, publish, transfer,
 or otherwise make available the Software; (ii) use the Software in any manner or for any purpose that infringes,
 misappropriate, or otherwise wireless any intellectual property ride or other ride of any person, or that violates any
 applicable law.
