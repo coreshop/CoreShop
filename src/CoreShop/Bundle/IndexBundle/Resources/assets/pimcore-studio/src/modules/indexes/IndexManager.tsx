@@ -51,6 +51,9 @@ export const IndexManager: React.FC = () => {
           if (getterConfig && Object.keys(getterConfig).length > 0) cleanCol.getterConfig = getterConfig
           if (interpreter) cleanCol.interpreter = interpreter
           if (interpreterConfig && Object.keys(interpreterConfig).length > 0) cleanCol.interpreterConfig = interpreterConfig
+          // The column's own configuration (e.g. key/className of an object brick
+          // column) is validated server-side and must travel with the column too.
+          if (configuration && Object.keys(configuration).length > 0) cleanCol.configuration = configuration
 
           // Add to object keyed by objectKey
           columnsObj[col.objectKey] = cleanCol
