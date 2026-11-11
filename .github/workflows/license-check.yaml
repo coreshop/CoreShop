@@ -8,10 +8,6 @@ on:
       - '.github/workflows/license-check.yaml'
   pull_request:
     branches: [ '2026.x' ]
-    paths:
-      - 'composer.json'
-      - '*/**/composer.json'
-      - '.github/workflows/license-check.yaml'
   release:
     types: [ created ]
   schedule:
@@ -31,11 +27,53 @@ env:
   PIMCORE_PRODUCT_KEY: "${{ secrets.PIMCORE_PRODUCT_KEY }}"
 
 jobs:
+  # The pull request trigger has no `paths:` filter on purpose: a workflow that does not start
+  # reports no check at all, and a required check that never reports blocks the pull request
+  # forever. The filter lives here instead — the tests are skipped when nothing relevant changed,
+  # and the `License Check` gate at the end still reports a result.
+  changes:
+    name: "Detect relevant changes"
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      relevant: ${{ steps.filter.outputs.relevant }}
+    steps:
+      - name: Match the changed files
+        id: filter
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          CHANGED_FILES: ${{ github.event.pull_request.changed_files }}
+          # Kept in sync with the `push` trigger's `paths:` above, as regular expressions.
+          PATTERNS: |
+            ^composer\.json$
+            ^[^/]*/(.*/)?composer\.json$
+            ^\.github/workflows/license-check\.yaml$
+        run: |
+          # Anything but a pull request (push, release, schedule) is filtered by its trigger
+          # already. The files endpoint lists at most 3000 files; a larger pull request just runs.
+          if [ -z "$PR" ] || [ "$CHANGED_FILES" -gt 3000 ]; then
+            echo 'relevant=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          files="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR}/files" \
+            --jq '.[] | .filename, (.previous_filename // empty)')"
+
+          if grep -qE -f <(sed '/^[[:space:]]*$/d; s/^[[:space:]]*//' <<< "$PATTERNS") <<< "$files"; then
+            echo 'relevant=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'relevant=false' >> "$GITHUB_OUTPUT"
+            echo 'No relevant files changed — the tests are skipped.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   lint:
     # `release` and `schedule` always run the workflow file from the default branch, so this job
     # also fires for releases of the other lines. Only tags of this line are checked here; the
     # other lines have their own copy of this workflow.
-    if: ${{ github.event_name != 'release' || startsWith(github.event.release.tag_name, '2026.') }}
+    if: ${{ needs.changes.outputs.relevant == 'true' && (github.event_name != 'release' || startsWith(github.event.release.tag_name, '2026.')) }}
+    needs: changes
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -97,3 +135,21 @@ jobs:
       - name: Check Licenses
         run: vendor/bin/composer-license-checker
 
+  # The one check to require in the branch ruleset. The matrix jobs above are named after their
+  # matrix entries, which change with every PHP or Pimcore bump and are not unique across
+  # workflows. `always()` is load-bearing: without it this job is skipped when a test fails, and
+  # a skipped required check counts as passed.
+  required:
+    name: "License Check"
+    needs: [ changes, lint ]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the results
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Results: $RESULTS"
+          case " $RESULTS " in
+            *' failure '*|*' cancelled '*) exit 1 ;;
+          esac
