@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^8.3",
     "coreshop/resource": "^5.0",
     "coreshop/registry": "^5.0",
     "coreshop/rule": "^5.0"
