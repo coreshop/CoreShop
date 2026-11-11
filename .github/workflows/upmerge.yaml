@@ -153,10 +153,28 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       -
+        # The pull request is pushed and opened as the coreshop-bot app (the app the Studio build
+        # commits with), not with GITHUB_TOKEN, for two reasons:
+        # - GITHUB_TOKEN can never get the `workflows` permission, so GitHub refuses the push of an
+        #   upmerge that carries a change to `.github/workflows/*`.
+        # - Events caused by GITHUB_TOKEN start no workflows, so a pull request it opens never gets
+        #   the required checks of the branch ruleset and can not be merged.
+        # Should the token not be available, the step falls back to GITHUB_TOKEN as before.
+        name: Create app token
+        id: app-token
+        if: steps.merge.outputs.status != 'skipped'
+        continue-on-error: true
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.STUDIO_BUILD_APP_ID }}
+          private-key: ${{ secrets.STUDIO_BUILD_APP_PRIVATE_KEY }}
+
+      -
         name: Create Pull Request
         if: steps.merge.outputs.status != 'skipped'
         uses: peter-evans/create-pull-request@v8
         with:
+          token: ${{ steps.app-token.outputs.token || github.token }}
           title: '[UPMERGE] ${{ matrix.base_branch }} -> ${{ matrix.target_branch }}'
           body: |
             This PR has been generated automatically.
