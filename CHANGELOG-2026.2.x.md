@@ -1,3 +1,24 @@
+## 2026.2.3
+
+### Fixes
+
+- Fixed the order mail rule action failing on current Pimcore versions: the mail document id from the action
+  configuration is cast to `int` before `Document::getById()` (#3264).
+- Marked the migrations that run DDL statements as non-transactional (`CoreBundle` `Version20260419121310`,
+  `Version20260616120000`, `Version20260821090100`, `IndexBundle` `Version20200224161101`). MySQL and MariaDB commit
+  implicitly on DDL, which left the DBAL transaction nesting raised for the rest of the migration run and made a
+  later migration fail with "SAVEPOINT DOCTRINE_n does not exist" (#3272).
+- The CoreShop field types `coreShopStoreValues`, `coreShopMoneyCurrency`, `coreShopMoney` and
+  `coreShopProductUnitDefinitions` no longer call Pimcore's deprecated `Data::getAsIntegerCast()`, which flooded the
+  logs on every class definition load (#3274).
+- Psalm: the doctrine/dbal 4.5 schema API deprecations are reported as info (#3267).
+
+### Merged from 5.1.3
+
+- All changes merged from 5.1.3, among them: CoreShop field types can be added and configured in the Studio class
+  definition editor (#3261), Studio indexes with object brick / field collection columns save again (#3281), the
+  order revise page shows the requested payment (#3270) and the German admin translations are fixed (#3268).
+
 ## 2026.2.2
 
 ### Indexable price rule conditions and pluggable category sorting
