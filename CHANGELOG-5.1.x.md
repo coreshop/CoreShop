@@ -14,6 +14,16 @@ editor registry (#3260).
   and `registerCoreShopFieldDefinitionTypes()` for third-party bundles that ship their own CoreShop-style
   field types. See `docs/03_Development/14_Studio/02_Base_Infrastructure/06_Dynamic_Types.md`.
 
+### Fixes
+
+- Fixed saving an index in Studio that holds an object brick or field collection column: the column's `key` /
+  `className` configuration was dropped from the save payload and the backend rejected it as blank (#3280, #3281).
+- Fixed the order revise page showing the note or state of the order's oldest payment instead of the requested one
+  after a cancelled or failed payment. `paymentId` no longer loads a payment of a different order, and an unknown
+  order token returns a 404 instead of a 500 (#3270).
+- Fixed German admin translations for the renamed `not_combinable_with_cart_price_voucher_rule` condition and added
+  the missing German keys for the `backendUpdated` and user type conditions and the customer menu (#3268).
+
 ## 5.1.2
 
 - All changes merged from 5.0.3.
