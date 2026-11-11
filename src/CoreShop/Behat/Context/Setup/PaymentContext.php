@@ -36,6 +36,7 @@ use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleActionType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleConditionType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common\PaymentProviderRuleConfigurationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType;
@@ -587,6 +588,32 @@ final class PaymentContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
             'percent' => (int) $amount,
+        ]));
+    }
+
+    /**
+     * @Given /^the (payment-provider-rule "[^"]+") has a condition payment-provider-rule with (payment-provider-rule "[^"]+")$/
+     * @Given /^the (payment-provider-rule) has a condition payment-provider-rule with (payment-provider-rule "[^"]+")$/
+     */
+    public function thePaymentProviderRuleHasAPaymentProviderRuleCondition(PaymentProviderRuleInterface $rule, PaymentProviderRuleInterface $referencedRule): void
+    {
+        $this->assertConditionForm(PaymentProviderRuleConfigurationType::class, 'paymentProviderRule');
+
+        $this->addCondition($rule, $this->createConditionWithForm('paymentProviderRule', [
+            'paymentProviderRule' => $referencedRule->getId(),
+        ]));
+    }
+
+    /**
+     * @Given /^the (payment-provider-rule "[^"]+") has a action payment-provider-rule with (payment-provider-rule "[^"]+")$/
+     * @Given /^the (payment-provider-rule) has a action payment-provider-rule with (payment-provider-rule "[^"]+")$/
+     */
+    public function thePaymentProviderRuleHasAPaymentProviderRuleAction(PaymentProviderRuleInterface $rule, PaymentProviderRuleInterface $referencedRule): void
+    {
+        $this->assertActionForm(PaymentProviderRuleConfigurationType::class, 'paymentProviderRule');
+
+        $this->addAction($rule, $this->createActionWithForm('paymentProviderRule', [
+            'paymentProviderRule' => $referencedRule->getId(),
         ]));
     }
 }

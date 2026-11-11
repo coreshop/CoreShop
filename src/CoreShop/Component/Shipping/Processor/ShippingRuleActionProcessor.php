@@ -19,6 +19,8 @@ namespace CoreShop\Component\Shipping\Processor;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
+use CoreShop\Component\Rule\Recursion\RuleRecursionGuard;
+use CoreShop\Component\Rule\Recursion\RuleRecursionGuardInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
@@ -30,10 +32,45 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
 {
     public function __construct(
         protected ServiceRegistryInterface $actionServiceRegistry,
+        protected RuleRecursionGuardInterface $recursionGuard = new RuleRecursionGuard(),
     ) {
     }
 
     public function getPrice(
+        ShippingRuleInterface $shippingRule,
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        array $context,
+    ): int {
+        // A rule that ends up calculating its own price again (e.g. through a "shippingRule" action) adds nothing
+        return $this->recursionGuard->guard(
+            RuleRecursionGuardInterface::SCOPE_ACTIONS_PRICE,
+            $shippingRule,
+            $carrier,
+            fn (): int => $this->calculatePrice($shippingRule, $carrier, $shippable, $address, $context),
+            0,
+        );
+    }
+
+    public function getModification(
+        ShippingRuleInterface $shippingRule,
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        int $price,
+        array $context,
+    ): int {
+        return $this->recursionGuard->guard(
+            RuleRecursionGuardInterface::SCOPE_ACTIONS_MODIFICATION,
+            $shippingRule,
+            $carrier,
+            fn (): int => $this->calculateModification($shippingRule, $carrier, $shippable, $address, $price, $context),
+            0,
+        );
+    }
+
+    protected function calculatePrice(
         ShippingRuleInterface $shippingRule,
         CarrierInterface $carrier,
         ShippableInterface $shippable,
@@ -59,7 +96,7 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
         return $price;
     }
 
-    public function getModification(
+    protected function calculateModification(
         ShippingRuleInterface $shippingRule,
         CarrierInterface $carrier,
         ShippableInterface $shippable,

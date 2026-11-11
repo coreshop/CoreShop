@@ -27,10 +27,13 @@ use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Payment\Validator\PaymentProviderRuleValidator;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 final class PaymentProviderContext implements Context
 {
+    use CircularRuleReferenceTrait;
+
     public function __construct(
         private PaymentProviderRepositoryInterface $paymentProviderRepository,
         private RuleValidationProcessorInterface $ruleValidationProcessor,
@@ -38,6 +41,7 @@ final class PaymentProviderContext implements Context
         private PaymentProviderRulePriceCalculatorInterface $paymentProviderPriceCalculator,
         private PaymentProviderRuleValidator $paymentRuleValidator,
         private CartContextResolverInterface $cartContextResolver,
+        private ValidatorInterface $validator,
     ) {
     }
 
@@ -102,5 +106,32 @@ final class PaymentProviderContext implements Context
             $ruleResult,
             sprintf('Asserted that the PaymentProvider %s is valid for my cart, but it is not', $paymentProvider->getTitle('en')),
         );
+    }
+
+    /**
+     * @Then /^the (payment-provider-rule "[^"]+") should not be saveable because of a circular reference$/
+     */
+    public function thePaymentProviderRuleShouldNotBeSaveableBecauseOfACircularReference(PaymentProviderRuleInterface $rule): void
+    {
+        Assert::true(
+            $this->hasCircularRuleReferenceViolation($rule),
+            sprintf('Asserted that the Payment Provider Rule "%s" is rejected because of a circular reference, but it is not', $rule->getName()),
+        );
+    }
+
+    /**
+     * @Then /^the (payment-provider-rule "[^"]+") should be saveable without a circular reference$/
+     */
+    public function thePaymentProviderRuleShouldBeSaveableWithoutACircularReference(PaymentProviderRuleInterface $rule): void
+    {
+        Assert::false(
+            $this->hasCircularRuleReferenceViolation($rule),
+            sprintf('Asserted that the Payment Provider Rule "%s" has no circular reference, but it has one', $rule->getName()),
+        );
+    }
+
+    protected function getValidator(): ValidatorInterface
+    {
+        return $this->validator;
     }
 }

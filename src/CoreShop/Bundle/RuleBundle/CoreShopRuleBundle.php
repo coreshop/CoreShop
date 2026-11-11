@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\RuleBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RuleAvailabilityAssessorPass;
+use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RuleReferenceResolverPass;
 use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\TraceableValidationProcessorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -38,6 +39,7 @@ final class CoreShopRuleBundle extends AbstractResourceBundle
 
         $container->addCompilerPass(new TraceableValidationProcessorPass());
         $container->addCompilerPass(new RuleAvailabilityAssessorPass());
+        $container->addCompilerPass(new RuleReferenceResolverPass());
     }
 
     protected function getModelNamespace(): string
