@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^8.3",
     "coreshop/payment": "^5.0",
     "payum/payum": "^1.7",
     "symfony/http-client": "^6.4 || ^7.3"
