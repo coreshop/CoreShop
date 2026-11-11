@@ -185,6 +185,9 @@ jobs:
             # Each package installs its own copy of Pimcore; a whole chunk of them at once does
             # not fit on the runner.
             rm -rf "src/CoreShop/$package/vendor"
+            # PHPStan caches into the shared system temp dir; that cache points at stub files
+            # inside the phpstan.phar of the package we just deleted, which crashes the next run.
+            rm -rf "$(php -r 'echo sys_get_temp_dir();')/phpstan"
 
             echo "::endgroup::"
           done
