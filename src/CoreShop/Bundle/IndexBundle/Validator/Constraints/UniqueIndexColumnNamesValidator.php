@@ -24,6 +24,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class UniqueIndexColumnNamesValidator extends ConstraintValidator
 {
+    /**
+     * getName() is documented as string, but a submitted column can still be unnamed.
+     *
+     * @psalm-suppress DocblockTypeContradiction
+     * @psalm-suppress RedundantConditionGivenDocblockType
+     */
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueIndexColumnNames) {
@@ -42,9 +48,10 @@ final class UniqueIndexColumnNamesValidator extends ConstraintValidator
                 continue;
             }
 
-            $name = (string) $column->getName();
+            $name = $column->getName();
 
-            if ($name === '') {
+            // A new column can still be unnamed here; NotBlank reports that.
+            if (!\is_string($name) || $name === '') {
                 continue;
             }
 
