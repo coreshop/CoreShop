@@ -19,6 +19,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use CoreShop\Bundle\IndexBundle\Form\Type\IndexType;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
@@ -34,6 +35,8 @@ use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Listing;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormFactoryInterface;
 
 final class IndexContext implements Context
 {
@@ -45,6 +48,7 @@ final class IndexContext implements Context
         private ServiceRegistryInterface $workerServiceRegistry,
         private FactoryInterface $indexColumnFactory,
         private IndexUpdaterServiceInterface $indexUpdater,
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
@@ -116,6 +120,59 @@ final class IndexContext implements Context
         }
 
         $this->saveIndex($index);
+    }
+
+    /**
+     * Submits the index form the way the Studio index editor does: columns as a plain list.
+     *
+     * @Given /^I save the (index) with following columns:$/
+     */
+    public function iSaveTheIndexWithFollowingColumns(IndexInterface $index, TableNode $table): void
+    {
+        $this->submitIndexForm($index, $this->getColumnsPayloadFromTable($table), true);
+    }
+
+    /**
+     * @When /^I try to save the (index) with following columns:$/
+     */
+    public function iTryToSaveTheIndexWithFollowingColumns(IndexInterface $index, TableNode $table): void
+    {
+        $this->submitIndexForm($index, $this->getColumnsPayloadFromTable($table), false);
+    }
+
+    /**
+     * Loads the index like the resource controller does and submits its columns unchanged.
+     *
+     * @When /^I save the (index) again without changes$/
+     */
+    public function iSaveTheIndexAgainWithoutChanges(IndexInterface $index): void
+    {
+        $index = $this->reloadIndex($index);
+
+        $columnIds = [];
+        $columns = [];
+
+        foreach ($index->getColumns() as $column) {
+            $columnIds[$column->getName()] = $column->getId();
+
+            $payload = [
+                'name' => $column->getName(),
+                'objectKey' => $column->getObjectKey(),
+                'objectType' => $column->getObjectType(),
+                'dataType' => $column->getDataType(),
+                'columnType' => $column->getColumnType(),
+            ];
+
+            if ($column->getInterpreter()) {
+                $payload['interpreter'] = $column->getInterpreter();
+            }
+
+            $columns[] = $payload;
+        }
+
+        $this->sharedStorage->set('index_column_ids', $columnIds);
+
+        $this->submitIndexForm($index, $columns, true);
     }
 
     /**
@@ -198,6 +255,95 @@ final class IndexContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('index', $index);
+    }
+
+    private function getColumnsPayloadFromTable(TableNode $table): array
+    {
+        $columns = [];
+
+        foreach ($table->getHash() as $row) {
+            $column = [
+                'name' => $row['name'],
+                'objectKey' => $row['key'],
+                'objectType' => $row['type'],
+                'dataType' => 'input',
+                'columnType' => $row['columnType'],
+            ];
+
+            if (($row['interpreter'] ?? '') !== '') {
+                $column['interpreter'] = $row['interpreter'];
+            }
+
+            $columns[] = $column;
+        }
+
+        return $columns;
+    }
+
+    private function submitIndexForm(IndexInterface $index, array $columns, bool $mustBeValid): void
+    {
+        $form = $this->formFactory->createNamed('', IndexType::class, $index);
+        $form->submit([
+            'name' => $index->getName(),
+            'class' => $index->getClass(),
+            'worker' => $index->getWorker(),
+            'indexLastVersion' => $index->getIndexLastVersion() ? '1' : null,
+            'columns' => $columns,
+            'configuration' => ['indexes' => [], 'localizedIndexes' => []],
+        ]);
+
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            if ($error instanceof FormError) {
+                $errors[] = $error->getMessage();
+            }
+        }
+
+        $this->sharedStorage->set('index_form_errors', $errors);
+
+        if (!$form->isValid()) {
+            if ($mustBeValid) {
+                throw new \RuntimeException(sprintf('Index form is invalid: %s', implode(', ', $errors)));
+            }
+
+            return;
+        }
+
+        /**
+         * @var IndexInterface $index
+         */
+        $index = $form->getData();
+
+        $this->objectManager->persist($index);
+        $this->objectManager->flush();
+
+        $index = $this->reloadIndex($index);
+
+        /**
+         * @var WorkerInterface $worker
+         */
+        $worker = $this->workerServiceRegistry->get($index->getWorker());
+        $worker->createOrUpdateIndexStructures($index);
+
+        $this->sharedStorage->set('index', $index);
+    }
+
+    /**
+     * Like the resource controller: clear the entity manager and load the index again, so its
+     * columns come from the database.
+     */
+    private function reloadIndex(IndexInterface $index): IndexInterface
+    {
+        $id = $index->getId();
+        $this->objectManager->clear();
+
+        $reloaded = $this->objectManager->find($index::class, $id);
+
+        if (!$reloaded instanceof IndexInterface) {
+            throw new \RuntimeException(sprintf('Index %s not found', (string) $id));
+        }
+
+        return $reloaded;
     }
 
     /**

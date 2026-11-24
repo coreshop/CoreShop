@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -30,6 +31,7 @@ final class IndexContext implements Context
     public function __construct(
         private RepositoryInterface $indexRepository,
         private EntityManagerInterface $entityManager,
+        private SharedStorageInterface $sharedStorage,
     ) {
     }
 
@@ -207,6 +209,79 @@ final class IndexContext implements Context
                 get_debug_type($value),
             ),
         );
+    }
+
+    /**
+     * Checks the stored column definitions (coreshop_index_column), not the index table.
+     *
+     * @Then /^the (index) should have column definitions "([^"]+)"$/
+     */
+    public function theIndexShouldHaveColumnDefinitions(IndexInterface $index, string $columns): void
+    {
+        $expected = explode(', ', $columns);
+        sort($expected);
+
+        $actual = array_map(
+            static fn (array $row): string => (string) $row['name'],
+            $this->fetchColumnDefinitions($index),
+        );
+        sort($actual);
+
+        Assert::same(
+            $actual,
+            $expected,
+            sprintf('Expected column definitions "%s", found "%s".', implode(', ', $expected), implode(', ', $actual)),
+        );
+    }
+
+    /**
+     * @Then /^the (index) column definitions should have kept their ids$/
+     */
+    public function theIndexColumnDefinitionsShouldHaveKeptTheirIds(IndexInterface $index): void
+    {
+        $before = $this->sharedStorage->get('index_column_ids');
+        $after = $this->fetchColumnDefinitionIds($index);
+
+        ksort($before);
+        ksort($after);
+
+        Assert::eq($after, $before, 'The index columns were recreated instead of updated.');
+    }
+
+    /**
+     * @Then /^saving the index should fail because the column name "([^"]+)" is used more than once$/
+     */
+    public function savingTheIndexShouldFailBecauseTheColumnNameIsUsedMoreThanOnce(string $name): void
+    {
+        $errors = $this->sharedStorage->get('index_form_errors');
+        $expected = sprintf('Column name "%s" is used more than once in this index.', $name);
+
+        Assert::inArray(
+            $expected,
+            $errors,
+            sprintf('Expected error "%s", got "%s".', $expected, implode(', ', $errors)),
+        );
+    }
+
+    private function fetchColumnDefinitions(IndexInterface $index): array
+    {
+        return $this->entityManager->getConnection()->fetchAllAssociative(
+            'SELECT id, name FROM coreshop_index_column WHERE indexId = ?',
+            [$index->getId()],
+        );
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function fetchColumnDefinitionIds(IndexInterface $index): array
+    {
+        $ids = [];
+        foreach ($this->fetchColumnDefinitions($index) as $row) {
+            $ids[(string) $row['name']] = (int) $row['id'];
+        }
+
+        return $ids;
     }
 
     private function fetchAllFromIndex(IndexInterface $index, ?IndexableInterface $object = null, bool $localized = false, bool $relational = false): array|bool
