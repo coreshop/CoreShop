@@ -126,7 +126,6 @@ final class IndexContext implements Context
      * Submits the index form the way the Studio index editor does: columns as a plain list.
      *
      * @Given /^I save the (index) with following columns:$/
-     * @When /^I save the (index) with following columns:$/
      */
     public function iSaveTheIndexWithFollowingColumns(IndexInterface $index, TableNode $table): void
     {
