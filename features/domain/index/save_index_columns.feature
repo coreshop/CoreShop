@@ -26,6 +26,19 @@ Feature: Saving the columns of an index
     Then the index should have column definitions "sku, skuSoundex"
     And the index column definitions should have kept their ids
 
+  Scenario: Removing a column keeps the columns behind it
+    Given I save the index with following columns:
+      | name   | key | type   | interpreter | interpreterConfig       | columnType |
+      | ean    | ean | object |             |                         | STRING     |
+      | hasSku | sku | object | expression  | {"expression": "value"} | STRING     |
+      | sku    | sku | object |             |                         | STRING     |
+    When I save the index with following columns:
+      | name   | key | type   | interpreter | interpreterConfig       | columnType |
+      | hasSku | sku | object | expression  | {"expression": "value"} | STRING     |
+      | sku    | sku | object |             |                         | STRING     |
+    Then the index should have column definitions "hasSku, sku"
+    And the index should have columns "hasSku, sku"
+
   Scenario: Column names have to be unique within an index
     Given I save the index with following columns:
       | name | key | type   | interpreter | columnType |
