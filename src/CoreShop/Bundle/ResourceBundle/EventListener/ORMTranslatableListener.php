@@ -170,8 +170,16 @@ final class ORMTranslatableListener implements EventSubscriber
             return false;
         }
 
-        foreach ($metadata->table['uniqueConstraints'] as $constraint) {
-            if (!array_diff($constraint['columns'], $columns)) {
+        /**
+         * doctrine/orm 3.8 types these entries with its `IndexMapping` phpstan-type alias, which
+         * PHPStan cannot resolve outside ClassMetadata; at runtime they are plain arrays.
+         *
+         * @var array<array-key, array{columns?: list<string>}> $uniqueConstraints
+         */
+        $uniqueConstraints = $metadata->table['uniqueConstraints'];
+
+        foreach ($uniqueConstraints as $constraint) {
+            if (isset($constraint['columns']) && !array_diff($constraint['columns'], $columns)) {
                 return true;
             }
         }

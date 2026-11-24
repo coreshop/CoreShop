@@ -94,6 +94,7 @@ coreshop_indexes_no_fields_selected: 'No fields selected'
 coreshop_indexes_drag_fields_hint: 'Drag fields from the class definition tree to add them'
 coreshop_indexes_field_add: 'Add Field'
 coreshop_indexes_field_edit: 'Edit Field'
+coreshop_indexes_column_name_not_unique: 'Column name "{{name}}" is already used in this index'
 
 # Studio class editor (field definitions)
 field-definition.core-shop-filter: 'CoreShop Filter'

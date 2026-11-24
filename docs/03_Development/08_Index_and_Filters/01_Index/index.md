@@ -66,6 +66,12 @@ To add new fields to the index:
 
 ![Index Fields](img/fields.png)
 
+A field can be added more than once, for example to index it with different interpreters.
+Columns are identified by their **Name**, which becomes the column name in the index table,
+so the name has to be unique within an index (case-insensitive). When a field is added whose
+name is already taken, a free name is proposed (`sku` → `sku_2`), which can be changed in the
+field dialog. Saving an index with duplicate column names fails with a validation error.
+
 ### Field Properties
 
 Each field in the index requires certain properties to be configured:
@@ -75,7 +81,7 @@ Each field in the index requires certain properties to be configured:
 | Field                              | Description                                                                                                                                                          |
 |------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Key                                | The Pimcore field name.                                                                                                                                              |
-| Name                               | The name of the field in the index.                                                                                                                                  |
+| Name                               | The name of the field in the index. Must be unique within the index.                                                                                                 |
 | Getter Class                       | Important for field-types like "Localized Fields", "Classification Store", "Object Brick", and "Field Collection". Used to retrieve the correct value for the index. |
 | [Interpreter](./01_Interpreter.md) | Transforms values before they are stored in the index, e.g., resolving dependencies or creating a similarity index.                                                  |
 | Type                               | The field type in the index, depending on the index type                                                                                                             |
