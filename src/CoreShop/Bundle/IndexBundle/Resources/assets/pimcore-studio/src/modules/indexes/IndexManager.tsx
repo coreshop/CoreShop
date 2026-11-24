@@ -40,9 +40,10 @@ export const IndexManager: React.FC = () => {
       leftRootTitle={t('coreshop_indexes', { defaultValue: 'Indices' })}
       getTitle={(li, data) => data?.name ?? li?.name ?? `#${li?.id ?? ''}`}
       buildSavePayload={(data) => {
-        // Convert columns array to object keyed by objectKey (ExtJS format)
-        const columnsObj: Record<string, any> = {}
-        data.columns?.forEach(col => {
+        // Send the columns as a plain list. Several columns may use the same class field
+        // (objectKey), and fields of different bricks, field collections or classification
+        // store groups share an objectKey too, so keying by objectKey would drop columns.
+        const columnsList = (data.columns ?? []).map(col => {
           const { id, getter, getterConfig, interpreter, interpreterConfig, configuration, ...rest } = col
           const cleanCol: any = { ...rest }
 
@@ -55,8 +56,7 @@ export const IndexManager: React.FC = () => {
           // column) is validated server-side and must travel with the column too.
           if (configuration && Object.keys(configuration).length > 0) cleanCol.configuration = configuration
 
-          // Add to object keyed by objectKey
-          columnsObj[col.objectKey] = cleanCol
+          return cleanCol
         })
 
         // Prepare configuration - convert arrays to objects
@@ -80,7 +80,7 @@ export const IndexManager: React.FC = () => {
           class: data.class,
           worker: data.worker,
           indexLastVersion: data.indexLastVersion,
-          columns: columnsObj,
+          columns: columnsList,
           configuration: Object.keys(configObj).length > 0 ? configObj : { indexes: {}, localizedIndexes: {} }
         }
 

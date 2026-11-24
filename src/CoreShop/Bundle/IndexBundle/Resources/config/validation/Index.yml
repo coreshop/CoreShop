@@ -6,3 +6,5 @@ CoreShop\Component\Index\Model\Index:
           - NotBlank: { groups: [coreshop] }
       worker:
           - NotBlank: { groups: [coreshop] }
+      columns:
+          - CoreShop\Bundle\IndexBundle\Validator\Constraints\UniqueIndexColumnNames: { groups: [coreshop] }

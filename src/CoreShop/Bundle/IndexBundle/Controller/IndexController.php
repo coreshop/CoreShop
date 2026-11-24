@@ -461,7 +461,7 @@ class IndexController extends ResourceController
         ];
 
         if ('quantityValue' === $field->getType()) {
-            $definition['interpreter'] = ' quantityValue';
+            $definition['interpreter'] = 'quantityValue';
         }
 
         return $definition;
