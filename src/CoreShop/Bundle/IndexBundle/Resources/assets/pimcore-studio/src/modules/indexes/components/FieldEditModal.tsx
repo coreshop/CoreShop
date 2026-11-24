@@ -17,12 +17,18 @@ import { SchemaForm } from '@coreshop/studio-form/src/schema-adapter'
 import type { IndexColumn, IndexConfig } from '../api'
 import { InterpreterSchemaProvider } from '../InterpreterSchemaContext'
 import { mergeFormDraft } from '../mergeFormDraft'
+import { isColumnNameTaken } from '../columnNames'
+import { useTranslation } from 'react-i18next'
 
 const { TabPane } = Tabs
 
 interface FieldEditModalProps {
   open: boolean
   field: IndexColumn | null
+  /** All columns of the index, used to keep column names unique */
+  columns?: IndexColumn[]
+  /** Position of `field` in `columns`, or null when a new column is added */
+  editingIndex?: number | null
   config?: IndexConfig
   onClose: () => void
   onSave: (field: IndexColumn) => void
@@ -31,10 +37,13 @@ interface FieldEditModalProps {
 export const FieldEditModal: React.FC<FieldEditModalProps> = ({
   open,
   field,
+  columns = [],
+  editingIndex = null,
   config,
   onClose,
   onSave
 }) => {
+  const { t } = useTranslation()
   const { styles } = useModalStyles()
   const [form] = Form.useForm()
   const [selectedGetter, setSelectedGetter] = useState<string | undefined>()
@@ -184,7 +193,16 @@ export const FieldEditModal: React.FC<FieldEditModalProps> = ({
               <Form.Item
                 label="Name"
                 name="name"
-                rules={[{ required: true, message: 'Please enter a name' }]}
+                rules={[
+                  { required: true, message: 'Please enter a name' },
+                  {
+                    validator: async (_, value?: string) => {
+                      if (value !== undefined && value !== '' && isColumnNameTaken(value, columns, editingIndex)) {
+                        throw new Error(t('coreshop_indexes_column_name_not_unique', { name: value }))
+                      }
+                    }
+                  }
+                ]}
               >
                 <Input placeholder="Enter field name" />
               </Form.Item>

@@ -17,6 +17,7 @@ import { indexApi } from '../api'
 import { ClassDefinitionTree } from './ClassDefinitionTree'
 import { SelectedFieldsTree } from './SelectedFieldsTree'
 import { FieldEditModal } from './FieldEditModal'
+import { getUniqueColumnName } from '../columnNames'
 import { getErrorMessage, renderApiError } from '@coreshop/resource/src/entities'
 
 interface ColumnsPanelProps {
@@ -58,23 +59,17 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
   }, [index.class])
 
   const handleAddField = (field: Partial<IndexColumn>) => {
-    // Check if field already exists
-    const exists = columns.some(col =>
-      col.objectKey === field.objectKey &&
-      col.objectType === field.objectType
-    )
-
-    if (exists) {
-      messageApi.warning(`Field "${field.objectKey}" already added`)
-      return
-    }
-
+    // The same field may be added several times (e.g. with different interpreters), and
+    // fields of different bricks / field collections / classification store groups share
+    // an objectKey. Columns are identified by their name, so only the name has to be
+    // unique: propose a free one, the user can still change it in the modal.
+    //
     // `field.dataType` is the Pimcore ClassDefinition fieldtype (e.g. 'input', 'numeric'),
     // not a valid index column type. Open the edit modal with the draft column and let the
     // user pick a valid index column type (STRING, INTEGER, …). The column is only appended
     // once the user clicks Apply (see handleSaveField with editingIndex === null).
     const draftColumn: IndexColumn = {
-      name: field.name || field.objectKey || '',
+      name: getUniqueColumnName(field.name || field.objectKey || '', columns),
       objectKey: field.objectKey || '',
       objectType: field.objectType,
       dataType: field.dataType,
@@ -210,6 +205,8 @@ export const ColumnsPanel: React.FC<ColumnsPanelProps> = ({
       <FieldEditModal
         open={dialogVisible}
         field={editingColumn}
+        columns={columns}
+        editingIndex={editingIndex}
         config={config}
         onClose={handleCloseModal}
         onSave={handleSaveField}

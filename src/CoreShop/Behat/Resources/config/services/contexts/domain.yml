@@ -121,6 +121,7 @@ services:
         arguments:
             - '@coreshop.repository.index'
             - '@doctrine.orm.entity_manager'
+            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
 
