@@ -39,6 +39,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.shipping_rule.conditions.processor'
+            - '@coreshop.rule.recursion_guard'
 
     # Shipping CONDITIONS
     CoreShop\Component\Shipping\Rule\Condition\AmountConditionChecker:
@@ -92,6 +93,19 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.shipping_rule.actions'
+            - '@coreshop.rule.recursion_guard'
+
+    # Detects Shipping Rules referencing themselves through "shippingRule" conditions/actions before saving
+    coreshop.shipping_rule.reference_resolver:
+        class: CoreShop\Component\Rule\Recursion\ConfigurationRuleReferenceResolver
+        arguments:
+            - CoreShop\Component\Shipping\Model\ShippingRuleInterface
+            - '@coreshop.repository.shipping_rule'
+            - { shippingRule: shippingRule }
+            - { shippingRule: shippingRule }
+            - [nested]
+        tags:
+            - { name: coreshop.rule.reference_resolver }
 
     # Validators
     CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator:

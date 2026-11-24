@@ -177,6 +177,14 @@ export const coreshopPaymentServiceIds = {
 | `price` | PaymentBundle | Fixed price override |
 | `paymentProviderRule` | PaymentBundle | Apply another payment provider rule |
 
+### Reusing other Payment Provider Rules
+
+The `paymentProviderRule` condition and action must not lead back to the rule itself (A uses A, or A uses B and B uses
+A, also inside a `nested` condition). Saving such a rule fails with a validation error naming the path, which Studio
+shows as the save error. Existing circular rules are evaluated as *not valid* / price `0` at the point where the circle
+closes, and a warning is logged. See
+[Rules referencing other Rules](../../01_Extending_Guide/05_Extending_Rule_Conditions.md#rules-referencing-other-rules).
+
 ## Gateway Configurators
 
 Gateway configurators provide custom configuration UI for payment gateways (PayPal, Stripe, etc.). These still use hand-written React components because they are not part of the rule system.

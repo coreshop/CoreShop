@@ -1,0 +1,1 @@
+coreshop.rule.circular_reference: 'Circular rule reference: %path%. A rule must not use itself, neither directly nor through other rules.'

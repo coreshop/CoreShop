@@ -33,8 +33,10 @@ use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common\ShippingRuleConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
@@ -522,6 +524,40 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the (shipping rule "[^"]+") has a condition shipping-rule with (shipping rule "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition shipping-rule with (shipping rule "[^"]+")$/
+     */
+    public function theShippingRuleHasAShippingRuleCondition(ShippingRuleInterface $rule, ShippingRuleInterface $referencedRule): void
+    {
+        $this->assertConditionForm(ShippingRuleConfigurationType::class, 'shippingRule');
+
+        $this->addCondition($rule, $this->createConditionWithForm('shippingRule', [
+            'shippingRule' => $referencedRule->getId(),
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition nested with operator "([^"]+)" with (shipping rule "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition nested with operator "([^"]+)" with (shipping rule "[^"]+")$/
+     */
+    public function theShippingRuleHasANestedConditionWithShippingRule(ShippingRuleInterface $rule, string $operator, ShippingRuleInterface $referencedRule): void
+    {
+        $this->assertConditionForm(NestedConfigurationType::class, 'nested');
+
+        $this->addCondition($rule, $this->createConditionWithForm('nested', [
+            'operator' => $operator,
+            'conditions' => [
+                [
+                    'type' => 'shippingRule',
+                    'configuration' => [
+                        'shippingRule' => $referencedRule->getId(),
+                    ],
+                ],
+            ],
+        ]));
+    }
+
+    /**
      * @Given /^the (shipping rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
      * @Given /^the (shipping rule) has a action price of ([^"]+) in (currency "[^"]+")$/
      */
@@ -586,6 +622,19 @@ final class ShippingContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
             'percent' => (int) $amount,
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a action shipping-rule with (shipping rule "[^"]+")$/
+     * @Given /^the (shipping rule) has a action shipping-rule with (shipping rule "[^"]+")$/
+     */
+    public function theShippingRuleHasAShippingRuleAction(ShippingRuleInterface $rule, ShippingRuleInterface $referencedRule): void
+    {
+        $this->assertActionForm(ShippingRuleConfigurationType::class, 'shippingRule');
+
+        $this->addAction($rule, $this->createActionWithForm('shippingRule', [
+            'shippingRule' => $referencedRule->getId(),
         ]));
     }
 

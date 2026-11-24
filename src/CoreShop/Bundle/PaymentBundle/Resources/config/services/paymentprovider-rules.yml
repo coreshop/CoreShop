@@ -39,6 +39,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.payment_provider_rule.conditions.processor'
+            - '@coreshop.rule.recursion_guard'
 
     # payment CONDITIONS
     CoreShop\Component\Payment\Rule\Condition\AmountConditionChecker:
@@ -80,6 +81,19 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.payment_provider_rule.actions'
+            - '@coreshop.rule.recursion_guard'
+
+    # Detects Payment Provider Rules referencing themselves through "paymentProviderRule" conditions/actions before saving
+    coreshop.payment_provider_rule.reference_resolver:
+        class: CoreShop\Component\Rule\Recursion\ConfigurationRuleReferenceResolver
+        arguments:
+            - CoreShop\Component\Payment\Model\PaymentProviderRuleInterface
+            - '@coreshop.repository.payment_provider_rule'
+            - { paymentProviderRule: paymentProviderRule }
+            - { paymentProviderRule: paymentProviderRule }
+            - [nested]
+        tags:
+            - { name: coreshop.rule.reference_resolver }
 
     # Validators
     CoreShop\Component\Payment\Validator\PaymentProviderRuleValidator:

@@ -1,0 +1,3 @@
+CoreShop\Component\Payment\Model\PaymentProviderRule:
+    constraints:
+        - CoreShop\Bundle\RuleBundle\Validator\Constraints\NoCircularRuleReference: { groups: [coreshop] }

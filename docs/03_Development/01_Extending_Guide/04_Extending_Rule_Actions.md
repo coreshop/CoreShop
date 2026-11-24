@@ -196,3 +196,9 @@ const plugin: IAbstractPlugin = {
 
 export default plugin
 ```
+
+## Actions referencing other Rules
+
+Actions that reuse another rule (like the `shippingRule` action) can form circular references. See
+[Rules referencing other Rules](./05_Extending_Rule_Conditions.md#rules-referencing-other-rules) for how they are
+detected at runtime and before saving.
