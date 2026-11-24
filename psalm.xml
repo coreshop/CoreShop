@@ -123,6 +123,10 @@
                 <referencedMethod name="Doctrine\DBAL\Schema\Table::addUniqueIndex" />
                 <referencedMethod name="Doctrine\DBAL\Schema\Column::setLength" />
                 <referencedMethod name="Doctrine\DBAL\Schema\Column::getType" />
+                <!-- deprecated in doctrine/dbal 4.6; the replacement (Configuration::getTypeProvider()) does not exist in 4.2 -->
+                <referencedMethod name="Doctrine\DBAL\Types\Type::getType" />
+                <referencedMethod name="Doctrine\DBAL\Types\Type::hasType" />
+                <referencedMethod name="Doctrine\DBAL\Types\Type::lookupName" />
             </errorLevel>
         </DeprecatedMethod>
         <UndefinedInterfaceMethod>
