@@ -19,7 +19,11 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\Step\Then;
 use CoreShop\Behat\Service\Tracking\ConfigResolver;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Code\CodeCollector;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\AbstractTracker;
+use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\GA4Ecommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\GA4TagManagerEcommerce;
@@ -32,9 +36,6 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Code\CodeCollector;
-use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\AbstractTracker;
-use CoreShop\Bundle\TrackingBundle\GoogleMarketing\Tracker\Tracker;
 use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context
@@ -73,9 +74,7 @@ final class TrackingContext implements Context
         $ga4TmTracker->setConfigResolver(new ConfigResolver());
     }
 
-    /**
-     * @Then /^tracking (product) impression with tracker "([^"]+)" should generate:$/
-     */
+    #[Then('/^tracking (product) impression with tracker "([^"]+)" should generate:$/')]
     public function trackProductImpression(ProductInterface $product, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
@@ -87,9 +86,7 @@ final class TrackingContext implements Context
         Assert::eq(preg_replace("/\r|\n/", '', $this->getRenderedPartForTracker($tracker)), preg_replace("/\r|\n/", '', $result));
     }
 
-    /**
-     * @Then /^tracking (product) with tracker "([^"]+)" should generate:$/
-     */
+    #[Then('/^tracking (product) with tracker "([^"]+)" should generate:$/')]
     public function trackProductView(ProductInterface $product, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
@@ -101,9 +98,7 @@ final class TrackingContext implements Context
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
-    /**
-     * @Then /^tracking cart-add for (my cart) with (product) with tracker "([^"]+)" should generate:$/
-     */
+    #[Then('/^tracking cart-add for (my cart) with (product) with tracker "([^"]+)" should generate:$/')]
     public function trackCartAdd(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
@@ -119,9 +114,7 @@ final class TrackingContext implements Context
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
-    /**
-     * @Then /^tracking cart-remove for (my cart) with (product) with tracker "([^"]+)" should generate:$/
-     */
+    #[Then('/^tracking cart-remove for (my cart) with (product) with tracker "([^"]+)" should generate:$/')]
     public function trackCartRemove(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
@@ -133,9 +126,7 @@ final class TrackingContext implements Context
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
-    /**
-     * @Then /^tracking checkout step for (my cart) with tracker "([^"]+)" should generate:$/
-     */
+    #[Then('/^tracking checkout step for (my cart) with tracker "([^"]+)" should generate:$/')]
     public function trackCheckoutStep(OrderInterface $cart, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
@@ -148,9 +139,7 @@ final class TrackingContext implements Context
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
-    /**
-     * @Then /^tracking (my order) checkout complete with tracker "([^"]+)" should generate:$/
-     */
+    #[Then('/^tracking (my order) checkout complete with tracker "([^"]+)" should generate:$/')]
     public function trackCheckoutComplete(OrderInterface $order, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
@@ -184,13 +173,11 @@ final class TrackingContext implements Context
 
             $codeCollector = $codeCollectorMethod->getClosure($tracker->tracker)();
 
-
             $codeCollectorReflector = new \ReflectionClass(CodeCollector::class);
 
             $codePartsProperty = $codeCollectorReflector->getProperty('codeParts');
 
             $blocks = $codePartsProperty->getValue($codeCollector);
-
 
             if (!isset($blocks[CodeCollector::CONFIG_KEY_GLOBAL])) {
                 $blocks[CodeCollector::CONFIG_KEY_GLOBAL] = [

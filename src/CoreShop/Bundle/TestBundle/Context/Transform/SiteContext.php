@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\Site;
 use Webmozart\Assert\Assert;
@@ -29,9 +30,7 @@ final class SiteContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^site "([^"]+)"$/
-     */
+    #[Transform('/^site "([^"]+)"$/')]
     public function getSiteByKey(string $domain): Site
     {
         $site = Site::getByDomain($domain);
@@ -41,9 +40,7 @@ final class SiteContext implements Context
         return $site;
     }
 
-    /**
-     * @Transform /^site$/
-     */
+    #[Transform('/^site$/')]
     public function site(): Site
     {
         $site = $this->sharedStorage->get('site');

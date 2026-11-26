@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -55,10 +56,8 @@ final class ProductContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a product "([^"]+)"$/
-     * @Given /^the site has another product "([^"]+)"$/
-     */
+    #[Given('/^the site has a product "([^"]+)"$/')]
+    #[Given('/^the site has another product "([^"]+)"$/')]
     public function theSiteHasAProduct(string $productName): void
     {
         $product = $this->createSimpleProduct($productName);
@@ -66,10 +65,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the site has a product "([^"]+)" with key "([^"]+)"$/
-     * @Given /^the site has another product "([^"]+)" with key "([^"]+)"$/
-     */
+    #[Given('/^the site has a product "([^"]+)" with key "([^"]+)"$/')]
+    #[Given('/^the site has another product "([^"]+)" with key "([^"]+)"$/')]
     public function theSiteHasAProductWithKey(string $productName, string $key): void
     {
         $product = $this->createSimpleProduct($productName);
@@ -79,10 +76,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has a meta title "([^"]+)"$/
-     * @Given /^the (products) meta title is "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") has a meta title "([^"]+)"$/')]
+    #[Given('/^the (products) meta title is "([^"]+)"$/')]
     public function theProductHasAMetaTitle(ProductInterface $product, $metaTitle): void
     {
         $product->setPimcoreMetaTitle($metaTitle);
@@ -90,10 +85,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has a meta description "([^"]+)"$/
-     * @Given /^the (products) meta description is "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") has a meta description "([^"]+)"$/')]
+    #[Given('/^the (products) meta description is "([^"]+)"$/')]
     public function theProductHasAMetaDescription(ProductInterface $product, $metaDescription): void
     {
         $product->setPimcoreMetaDescription($metaDescription);
@@ -101,10 +94,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the site has a product "([^"]+)" priced at (\d+)$/
-     * @Given /^the site has a product "([^"]+)" priced at (\d+) for (store "[^"]+")$/
-     */
+    #[Given('/^the site has a product "([^"]+)" priced at (\d+)$/')]
+    #[Given('/^the site has a product "([^"]+)" priced at (\d+) for (store "[^"]+")$/')]
     public function theSiteHasAProductPricedAt(string $productName, int $price = 100, ?StoreInterface $store = null): void
     {
         $product = $this->createProduct($productName, $price, $store);
@@ -112,10 +103,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is (?:also )?priced at (\d+) for (store "[^"]+")$/
-     * @Given /^the (product) is priced at (\d+) for (store "[^"]+")$/
-     */
+    #[Given('/^the (product "[^"]+") is (?:also )?priced at (\d+) for (store "[^"]+")$/')]
+    #[Given('/^the (product) is priced at (\d+) for (store "[^"]+")$/')]
     public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store): void
     {
         $product->setStores(array_merge($product->getStores(), [$store->getId()]));
@@ -124,11 +113,9 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/
-     * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+) for (store "[^"]+")$/
-     * @Given /^the (product) has a variant "([^"]+)" priced at ([^"]+)$/
-     */
+    #[Given('/^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/')]
+    #[Given('/^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+) for (store "[^"]+")$/')]
+    #[Given('/^the (product) has a variant "([^"]+)" priced at ([^"]+)$/')]
     public function theProductHasAVariantPricedAt(
         ProductInterface $product,
         string $productName,
@@ -140,10 +127,8 @@ final class ProductContext implements Context
         $this->saveProduct($variant);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has a variant "([^"]+)"$/
-     * @Given /^the (product) has a variant "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") has a variant "([^"]+)"$/')]
+    #[Given('/^the (product) has a variant "([^"]+)"$/')]
     public function theProductHasAVariant(
         ProductInterface $product,
         string $productName,
@@ -155,9 +140,7 @@ final class ProductContext implements Context
         $this->saveProduct($variant);
     }
 
-    /**
-     * @Given /^the (product) has variants for all values of (attribute group "[^"]+") and (attribute group "[^"]+")$/
-     */
+    #[Given('/^the (product) has variants for all values of (attribute group "[^"]+") and (attribute group "[^"]+")$/')]
     public function theProductHasVaraintsForAllValuesOfAttributeGroup(
         ProductInterface $product,
         AttributeGroupInterface $group1,
@@ -199,9 +182,7 @@ final class ProductContext implements Context
         }
     }
 
-    /**
-     * @Given /^the (product) has variants for all values of (attribute group "[^"]+") and (attribute group "[^"]+") and (attribute group "[^"]+")$/
-     */
+    #[Given('/^the (product) has variants for all values of (attribute group "[^"]+") and (attribute group "[^"]+") and (attribute group "[^"]+")$/')]
     public function theProductHasVaraintsForAllValuesOf3AttributeGroups(
         ProductInterface $product,
         AttributeGroupInterface $group1,
@@ -245,10 +226,8 @@ final class ProductContext implements Context
         }
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is in (category "[^"]+")$/
-     * @Given /^([^"]+) is in (category "[^"]+")$/
-     */
+    #[Given('/^the (product "[^"]+") is in (category "[^"]+")$/')]
+    #[Given('/^([^"]+) is in (category "[^"]+")$/')]
     public function theProductIsInCategory(ProductInterface $product, CategoryInterface $category): void
     {
         $product->setCategories([$category]);
@@ -256,10 +235,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has (tax rule group "[^"]+")$/
-     * @Given /^the (product) has the (tax rule group "[^"]+")$/
-     */
+    #[Given('/^the (product "[^"]+") has (tax rule group "[^"]+")$/')]
+    #[Given('/^the (product) has the (tax rule group "[^"]+")$/')]
     public function theProductHasTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup): void
     {
         $store = $this->sharedStorage->get('store');
@@ -269,10 +246,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") host description is "([^"]+)"$/
-     * @Given /^the (products) short description is "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") host description is "([^"]+)"$/')]
+    #[Given('/^the (products) short description is "([^"]+)"$/')]
     public function theProductHasAShortDescription(ProductInterface $product, $description): void
     {
         $product->setShortDescription($description);
@@ -280,10 +255,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") weighs ([^"]+)kg$/
-     * @Given /^the (product) weighs ([^"]+)kg$/
-     */
+    #[Given('/^the (product "[^"]+") weighs ([^"]+)kg$/')]
+    #[Given('/^the (product) weighs ([^"]+)kg$/')]
     public function theProductWeighsKg(ProductInterface $product, float $kg): void
     {
         $product->setWeight($kg);
@@ -291,10 +264,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") measurements are ([^"]+)x([^"]+)x([^"]+)$/
-     * @Given /^the (product) measurements are ([^"]+)x([^"]+)x([^"]+)$/
-     */
+    #[Given('/^the (product "[^"]+") measurements are ([^"]+)x([^"]+)x([^"]+)$/')]
+    #[Given('/^the (product) measurements are ([^"]+)x([^"]+)x([^"]+)$/')]
     public function theProductsMeasurementsAre(ProductInterface $product, float $width, float $height, float $depth): void
     {
         $product->setWidth($width);
@@ -304,11 +275,9 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is active and published and available for (store "[^"]+")$/
-     * @Given /^the (product) is active and published and available for (store "[^"]+")$/
-     * @Given /^the (product) is active and published and available$/
-     */
+    #[Given('/^the (product "[^"]+") is active and published and available for (store "[^"]+")$/')]
+    #[Given('/^the (product) is active and published and available for (store "[^"]+")$/')]
+    #[Given('/^the (product) is active and published and available$/')]
     public function theProductIsActivePublishedAndAvailableForStore(ProductInterface $product, ?StoreInterface $store = null): void
     {
         $product->setActive(true);
@@ -321,10 +290,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") ean is "([^"]+)"$/
-     * @Given /^the (products) ean is "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") ean is "([^"]+)"$/')]
+    #[Given('/^the (products) ean is "([^"]+)"$/')]
     public function theProductsEanIs(ProductInterface $product, $ean): void
     {
         $product->setEan($ean);
@@ -332,10 +299,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is active$/
-     * @Given /^the (product) is active$/
-     */
+    #[Given('/^the (product "[^"]+") is active$/')]
+    #[Given('/^the (product) is active$/')]
     public function theProductIsActive(ProductInterface $product): void
     {
         $product->setActive(true);
@@ -343,10 +308,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is not active$/
-     * @Given /^the (product) is not active$/
-     */
+    #[Given('/^the (product "[^"]+") is not active$/')]
+    #[Given('/^the (product) is not active$/')]
     public function theProductIsNotActive(ProductInterface $product): void
     {
         $product->setActive(false);
@@ -354,10 +317,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is stock tracked$/
-     * @Given /^the (product) is stock tracked$/
-     */
+    #[Given('/^the (product "[^"]+") is stock tracked$/')]
+    #[Given('/^the (product) is stock tracked$/')]
     public function theProductIsTracked(ProductInterface $product): void
     {
         $product->setIsTracked(true);
@@ -365,10 +326,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is not stock tracked$/
-     * @Given /^the (product) is not stock tracked$/
-     */
+    #[Given('/^the (product "[^"]+") is not stock tracked$/')]
+    #[Given('/^the (product) is not stock tracked$/')]
     public function theProductIsNotTracked(ProductInterface $product): void
     {
         $product->setIsTracked(false);
@@ -376,10 +335,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has (\d+) on hand$/
-     * @Given /^the (product) has (\d+) on hand$/
-     */
+    #[Given('/^the (product "[^"]+") has (\d+) on hand$/')]
+    #[Given('/^the (product) has (\d+) on hand$/')]
     public function theProductHasOnHand(ProductInterface $product, int $onHand): void
     {
         $product->setOnHand($onHand);
@@ -387,10 +344,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has (\d+) on hold$/
-     * @Given /^the (product) has (\d+) on hold$/
-     */
+    #[Given('/^the (product "[^"]+") has (\d+) on hold$/')]
+    #[Given('/^the (product) has (\d+) on hold$/')]
     public function theProductHasOnHold(ProductInterface $product, int $onHold): void
     {
         $product->setOnHold($onHold);
@@ -398,12 +353,10 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is published$/
-     * @Given /^the (product) is published$/
-     * @Given /^the (variant "[^"]+") is published$/
-     * @Given /^the (variant) is published$/
-     */
+    #[Given('/^the (product "[^"]+") is published$/')]
+    #[Given('/^the (product) is published$/')]
+    #[Given('/^the (variant "[^"]+") is published$/')]
+    #[Given('/^the (variant) is published$/')]
     public function theProductIsPublished(ProductInterface $product): void
     {
         $product->setPublished(true);
@@ -411,12 +364,10 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is not published$/
-     * @Given /^the (product) is not published$/
-     * @Given /^the (variant "[^"]+") is not published$/
-     * @Given /^the (variant) is not published$/
-     */
+    #[Given('/^the (product "[^"]+") is not published$/')]
+    #[Given('/^the (product) is not published$/')]
+    #[Given('/^the (variant "[^"]+") is not published$/')]
+    #[Given('/^the (variant) is not published$/')]
     public function theProductIsNotPublished(ProductInterface $product): void
     {
         $product->setPublished(false);
@@ -424,10 +375,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") sku is "([^"]+)"$/
-     * @Given /^the (products) sku is "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") sku is "([^"]+)"$/')]
+    #[Given('/^the (products) sku is "([^"]+)"$/')]
     public function theProductsSkuIs(ProductInterface $product, $sku): void
     {
         $product->setSku($sku);
@@ -435,10 +384,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has (manufacturer "[^"]+")$/
-     * @Given /^the (products) has (manufacturer "[^"]+")$/
-     */
+    #[Given('/^the (product "[^"]+") has (manufacturer "[^"]+")$/')]
+    #[Given('/^the (products) has (manufacturer "[^"]+")$/')]
     public function theProductHasManufacturer(ProductInterface $product, ManufacturerInterface $manufacturer): void
     {
         $product->setManufacturer($manufacturer);
@@ -446,10 +393,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/
-     * @Given /^the (products) price is ([^"]+) for (store "[^"]+")$/
-     */
+    #[Given('/^the (product "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/')]
+    #[Given('/^the (products) price is ([^"]+) for (store "[^"]+")$/')]
     public function theProductHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store): void
     {
         $product->setStoreValuesOfType('price', $price, $store);
@@ -457,10 +402,8 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (variant "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/
-     * @Given /^the (variants) price is ([^"]+) for (store "[^"]+")$/
-     */
+    #[Given('/^the (variant "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/')]
+    #[Given('/^the (variants) price is ([^"]+) for (store "[^"]+")$/')]
     public function theVariantHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store): void
     {
         $product->setStoreValuesOfType('price', $price, $store);
@@ -468,30 +411,24 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has a minimum order quantity of "([^"]+)"$/
-     * @Given /^the (product) has a minimum order quantity of "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") has a minimum order quantity of "([^"]+)"$/')]
+    #[Given('/^the (product) has a minimum order quantity of "([^"]+)"$/')]
     public function theProductHasAMinimumOrderQuantity(ProductInterface $product, int $miminumQuantity): void
     {
         $product->setMinimumQuantityToOrder($miminumQuantity);
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") has a maximum order quantity of "([^"]+)"$/
-     * @Given /^the (product) has a maximum order quantity of "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") has a maximum order quantity of "([^"]+)"$/')]
+    #[Given('/^the (product) has a maximum order quantity of "([^"]+)"$/')]
     public function theProductHasAMaximumOrderQuantity(ProductInterface $product, int $maximumQuantity): void
     {
         $product->setMaximumQuantityToOrder($maximumQuantity);
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product) has the default (unit "[^"]+")$/
-     * @Given /^the (product "[^"]+") has the default (unit "[^"]+")"$/
-     */
+    #[Given('/^the (product) has the default (unit "[^"]+")$/')]
+    #[Given('/^the (product "[^"]+") has the default (unit "[^"]+")"$/')]
     public function theProductHasTheDefaultUnit(ProductInterface $product, ProductUnitInterface $unit): void
     {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
@@ -509,14 +446,12 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+")$/
-     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+")$/
-     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
-     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
-     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
-     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
-     */
+    #[Given('/^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+")$/')]
+    #[Given('/^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+")$/')]
+    #[Given('/^the (product) has an additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/')]
+    #[Given('/^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/')]
+    #[Given('/^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/')]
+    #[Given('/^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/')]
     public function theProductHasAnAdditionalUnit(
         ProductInterface $product,
         ProductUnitInterface $unit,
@@ -560,9 +495,7 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^I copy the (product)$/
-     */
+    #[Given('/^I copy the (product)$/')]
     public function iCopyTheProduct(ProductInterface $product): void
     {
         $objectService = new Service();
@@ -574,9 +507,7 @@ final class ProductContext implements Context
         $this->sharedStorage->set('copied-object', $newObject);
     }
 
-    /**
-     * @Given /^I copy the (products) unit-definitions and quantity-price-rules to all variants$/
-     */
+    #[Given('/^I copy the (products) unit-definitions and quantity-price-rules to all variants$/')]
     public function iCopyTheUnitDefinitionsAndQuantityPriceRulesToAllVariants(ProductInterface $product): void
     {
         /**

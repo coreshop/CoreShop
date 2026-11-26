@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
@@ -37,8 +38,8 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargeAmountConfigurati
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType;
-use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
@@ -81,9 +82,7 @@ final class CartPriceRuleContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^I apply the voucher code "([^"]+)" to (my cart)$/
-     */
+    #[Given('/^I apply the voucher code "([^"]+)" to (my cart)$/')]
     public function iApplyTheCartRuleToMyCart($voucherCode, OrderInterface $cart): void
     {
         $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
@@ -102,9 +101,7 @@ final class CartPriceRuleContext implements Context
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @Given /^adding a cart price rule named "([^"]+)"$/
-     */
+    #[Given('/^adding a cart price rule named "([^"]+)"$/')]
     public function addingACartPriceRule($ruleName): void
     {
         /**
@@ -119,10 +116,8 @@ final class CartPriceRuleContext implements Context
         $this->sharedStorage->set('cart-price-rule', $rule);
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has priority "([^"]+)"$/
-     * @Given /^the (cart rule) has priority "([^"]+)"$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has priority "([^"]+)"$/')]
+    #[Given('/^the (cart rule) has priority "([^"]+)"$/')]
     public function theCartPriceRuleHasPriority(CartPriceRuleInterface $rule, int $priority): void
     {
         $rule->setPriority($priority);
@@ -131,10 +126,8 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") is active$/
-     * @Given /^the (cart rule) is active$/
-     */
+    #[Given('/^the (cart rule "[^"]+") is active$/')]
+    #[Given('/^the (cart rule) is active$/')]
     public function theCartPriceRuleIsActive(CartPriceRuleInterface $rule): void
     {
         $rule->setActive(true);
@@ -143,10 +136,8 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") is inactive$/
-     * @Given /^the (cart rule) is inactive$/
-     */
+    #[Given('/^the (cart rule "[^"]+") is inactive$/')]
+    #[Given('/^the (cart rule) is inactive$/')]
     public function theCartPriceRuleIsInActive(CartPriceRuleInterface $rule): void
     {
         $rule->setActive(false);
@@ -155,11 +146,9 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") is a voucher rule$/
-     * @Given /^the (cart rule) is a voucher rule$/
-     * @Given /^the (cart rule) is a voucher rule with code "([^"]+)"$/
-     */
+    #[Given('/^the (cart rule "[^"]+") is a voucher rule$/')]
+    #[Given('/^the (cart rule) is a voucher rule$/')]
+    #[Given('/^the (cart rule) is a voucher rule with code "([^"]+)"$/')]
     public function theCartPriceRuleIsVoucherRule(CartPriceRuleInterface $rule, ?string $code = null): void
     {
         $rule->setIsVoucherRule(true);
@@ -179,10 +168,8 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") is not a voucher rule$/
-     * @Given /^the (cart rule) is not a voucher rule$/
-     */
+    #[Given('/^the (cart rule "[^"]+") is not a voucher rule$/')]
+    #[Given('/^the (cart rule) is not a voucher rule$/')]
     public function theCartPriceRuleIsNotAVoucherRule(CartPriceRuleInterface $rule): void
     {
         $rule->setIsVoucherRule(false);
@@ -191,10 +178,8 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition amount with value "([^"]+)" to "([^"]+)"$/
-     * @Given /^the (cart rule) has a condition amount with value "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition amount with value "([^"]+)" to "([^"]+)"$/')]
+    #[Given('/^the (cart rule) has a condition amount with value "([^"]+)" to "([^"]+)"$/')]
     public function theCartPriceRuleHasAAmoundCondition(CartPriceRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -205,10 +190,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition countries with (country "[^"]+")$/
-     * @Given /^the (cart rule) has a condition countries with (country "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition countries with (country "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition countries with (country "[^"]+")$/')]
     public function theCartPriceRuleHasACountriesCondition(CartPriceRuleInterface $rule, CountryInterface $country): void
     {
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
@@ -220,10 +203,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition customers with (customer "[^"]+")$/
-     * @Given /^the (cart rule) has a condition customers with (customer "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition customers with (customer "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition customers with (customer "[^"]+")$/')]
     public function theCartPriceRuleHasACustomerCondition(CartPriceRuleInterface $rule, CustomerInterface $customer): void
     {
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
@@ -235,10 +216,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition guest$/
-     * @Given /^the (cart rule) has a condition guest$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition guest$/')]
+    #[Given('/^the (cart rule) has a condition guest$/')]
     public function theCartPriceRuleHasAGuestCondition(CartPriceRuleInterface $rule): void
     {
         $this->assertConditionForm(EmptyConfigurationFormType::class, 'guest');
@@ -246,10 +225,8 @@ final class CartPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('guest', []));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
-     * @Given /^the (cart rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/')]
+    #[Given('/^the (cart rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/')]
     public function theCartPriceRuleHasATimeSpanCondition(CartPriceRuleInterface $rule, $from, $to): void
     {
         $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
@@ -263,10 +240,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
-     * @Given /^the (cart rule) has a condition customer-groups with (customer-group "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition customer-groups with (customer-group "[^"]+")$/')]
     public function theCartPriceRuleHasACustomerGroupCondition(CartPriceRuleInterface $rule, CustomerGroupInterface $group): void
     {
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
@@ -278,10 +253,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition stores with (store "[^"]+")$/
-     * @Given /^the (cart rule) has a condition stores with (store "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition stores with (store "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition stores with (store "[^"]+")$/')]
     public function theCartPriceRuleHasAStoreCondition(CartPriceRuleInterface $rule, StoreInterface $store): void
     {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
@@ -293,10 +266,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition zones with (zone "[^"]+")$/
-     * @Given /^the (cart rule) has a condition zones with (zone "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition zones with (zone "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition zones with (zone "[^"]+")$/')]
     public function theCartPriceRuleHasAZoneCondition(CartPriceRuleInterface $rule, ZoneInterface $zone): void
     {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
@@ -308,10 +279,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
-     * @Given /^the (cart rule) has a condition currencies with (currency "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition currencies with (currency "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition currencies with (currency "[^"]+")$/')]
     public function theCartPriceRuleHasACurrencyCondition(CartPriceRuleInterface $rule, CurrencyInterface $currency): void
     {
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
@@ -323,10 +292,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition categories with (category "[^"]+")$/
-     * @Given /^the (cart rule) has a condition categories with (category "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition categories with (category "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition categories with (category "[^"]+")$/')]
     public function theCartPriceRuleHasACategoriesCondition(CartPriceRuleInterface $rule, CategoryInterface $category): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -336,10 +303,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/
-     * @Given /^the (cart rule) has a condition categories with (category "[^"]+") and it is recursive$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/')]
+    #[Given('/^the (cart rule) has a condition categories with (category "[^"]+") and it is recursive$/')]
     public function theCartPriceRuleHasACategoriesConditionAndItIsRecursive(CartPriceRuleInterface $rule, CategoryInterface $category): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -350,11 +315,9 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition products with (product "[^"]+")$/
-     * @Given /^the (cart rule) has a condition products with (product "[^"]+")$/
-     * @Given /^the (cart rule) has a condition products with (product "[^"]+") and (product "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition products with (product "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition products with (product "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition products with (product "[^"]+") and (product "[^"]+")$/')]
     public function theCartPriceRuleHasAProductCondition(CartPriceRuleInterface $rule, ProductInterface $product, ?ProductInterface $product2 = null): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -373,11 +336,9 @@ final class CartPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
-     * @Given /^the (cart rule) has a condition products with (product "[^"]+") which includes variants$/
-     * @Given /^the (cart rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/')]
+    #[Given('/^the (cart rule) has a condition products with (product "[^"]+") which includes variants$/')]
+    #[Given('/^the (cart rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/')]
     public function theCartPriceRuleHasAProductWithVariantsCondition(CartPriceRuleInterface $rule, ProductInterface $product, ?ProductInterface $product2 = null): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -396,12 +357,10 @@ final class CartPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+")$/
-     * @Given /^the (cart rule) has a condition not combinable with (cart rule "[^"]+")$/
-     * @Given /^the (cart rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
-     * @Given /^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition not combinable with (cart rule "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/')]
+    #[Given('/^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/')]
     public function theCartPriceRuleHasANotCombinableCondition(CartPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, ?CartPriceRuleInterface $notCombinable2 = null): void
     {
         $this->assertConditionForm(NotCombinableConfigurationType::class, 'not_combinable');
@@ -419,10 +378,8 @@ final class CartPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('not_combinable', $configuration));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/
-     * @Given /^the (cart rule) has a action discount-percent with ([^"]+)% discount$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/')]
+    #[Given('/^the (cart rule) has a action discount-percent with ([^"]+)% discount$/')]
     public function theCartPriceRuleHasADiscountPercentAction(CartPriceRuleInterface $rule, $discount): void
     {
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
@@ -432,12 +389,10 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/
-     * @Given /^the (cart rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/
-     * @Given /^the (cart rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/
-     * @Given /^the (cart rule) has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/')]
+    #[Given('/^the (cart rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/')]
+    #[Given('/^the (cart rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/')]
+    #[Given('/^the (cart rule) has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/')]
     public function theCartPriceRuleHasADiscountAmountAction(CartPriceRuleInterface $rule, $amount, CurrencyInterface $currency, string $appliedOn = 'total'): void
     {
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
@@ -449,10 +404,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a action free-shipping$/
-     * @Given /^the (cart rule) has a action free-shipping$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a action free-shipping$/')]
+    #[Given('/^the (cart rule) has a action free-shipping$/')]
     public function theCartPriceRuleHasAFreeShippingAction(CartPriceRuleInterface $rule): void
     {
         $this->assertActionForm(FreeShippingConfigurationType::class, 'freeShipping');
@@ -460,10 +413,8 @@ final class CartPriceRuleContext implements Context
         $this->addAction($rule, $this->createActionWithForm('freeShipping'));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a action gift-product with (product "[^"]+")$/
-     * @Given /^the (cart rule) has a action gift-product with (product "[^"]+")$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a action gift-product with (product "[^"]+")$/')]
+    #[Given('/^the (cart rule) has a action gift-product with (product "[^"]+")$/')]
     public function theCartPriceRuleHasAGiftProductAction(CartPriceRuleInterface $rule, ProductInterface $product): void
     {
         $this->assertActionForm(GiftProductConfigurationType::class, 'giftProduct');
@@ -473,10 +424,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a action surcharge-percent with ([^"]+)% discount$/
-     * @Given /^the (cart rule) has a action surcharge-percent with ([^"]+)% discount$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a action surcharge-percent with ([^"]+)% discount$/')]
+    #[Given('/^the (cart rule) has a action surcharge-percent with ([^"]+)% discount$/')]
     public function theCartPriceRuleHasASurchargePercentAction(CartPriceRuleInterface $rule, $surcharge): void
     {
         $this->assertActionForm(SurchargePercentConfigurationType::class, 'surchargePercent');
@@ -486,10 +435,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a action surcharge with ([^"]+) in (currency "[^"]+") off$/
-     * @Given /^the (cart rule) has a action surcharge with ([^"]+) in (currency "[^"]+") off$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a action surcharge with ([^"]+) in (currency "[^"]+") off$/')]
+    #[Given('/^the (cart rule) has a action surcharge with ([^"]+) in (currency "[^"]+") off$/')]
     public function theCartPriceRuleHasASurchargeAmountAction(CartPriceRuleInterface $rule, $amount, CurrencyInterface $currency): void
     {
         $this->assertActionForm(SurchargeAmountConfigurationType::class, 'surchargeAmount');
@@ -500,19 +447,15 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a action voucher credit$/
-     * @Given /^the (cart rule) has a action voucher credit$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a action voucher credit$/')]
+    #[Given('/^the (cart rule) has a action voucher credit$/')]
     public function theCartPriceRuleHasAVoucherCreditAction(CartPriceRuleInterface $rule): void
     {
         $this->addAction($rule, $this->createActionWithForm('voucherCredit'));
     }
 
-    /**
-     * @Given /^the voucher code "([^"]+)" is a credit voucher with credit "([^"]+)" in (currency "[^"]+")$/
-     * @Given /^the voucher code "([^"]+)" is a credit voucher with credit "([^"]+)" in (currency "[^"]+") and credit used "([^"]+)"$/
-     */
+    #[Given('/^the voucher code "([^"]+)" is a credit voucher with credit "([^"]+)" in (currency "[^"]+")$/')]
+    #[Given('/^the voucher code "([^"]+)" is a credit voucher with credit "([^"]+)" in (currency "[^"]+") and credit used "([^"]+)"$/')]
     public function theVoucherCodeIsACreditCodeWithCreditInCurrency($voucherCode, int $credit, CurrencyInterface $currency, ?int $used = null): void
     {
         $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
@@ -535,10 +478,8 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (cart rule "[^"]+") has a cart-item-action action$/
-     * @Given /^the (cart rule) has a cart-item-action action$/
-     */
+    #[Given('/^the (cart rule "[^"]+") has a cart-item-action action$/')]
+    #[Given('/^the (cart rule) has a cart-item-action action$/')]
     public function theCartPriceRuleHasACartItemActionAction(CartPriceRuleInterface $rule): void
     {
         $this->assertActionForm(CartItemActionConfigurationType::class, 'cartItemAction');
@@ -555,17 +496,14 @@ final class CartPriceRuleContext implements Context
      * Detaches all managed entities so the next cart calculation reloads the cart price rules
      * (and their JSON "configuration") fresh from the database, exercising the serialize/
      * deserialize round-trip of nested conditions/actions.
-     *
-     * @Given /^the cart price rules are reloaded from the database$/
      */
+    #[Given('/^the cart price rules are reloaded from the database$/')]
     public function theCartPriceRulesAreReloadedFromTheDatabase(): void
     {
         $this->objectManager->clear();
     }
 
-    /**
-     * @Given /^the (cart item action) has a condition amount with value "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (cart item action) has a condition amount with value "([^"]+)" to "([^"]+)"$/')]
     public function theCartItemActionHasAAmountCondition(ActionInterface $action, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -576,10 +514,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart item action) has a condition products with (product "[^"]+")$/
-     * @Given /^the (cart item action) has a condition products with (product "[^"]+") and (product "[^"]+")$/
-     */
+    #[Given('/^the (cart item action) has a condition products with (product "[^"]+")$/')]
+    #[Given('/^the (cart item action) has a condition products with (product "[^"]+") and (product "[^"]+")$/')]
     public function theCartItemActionHasAProductCondition(ActionInterface $action, ProductInterface $product, ?ProductInterface $product2 = null): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -598,9 +534,7 @@ final class CartPriceRuleContext implements Context
         $this->actionAddCondition($action, $this->createConditionWithForm('products', $configuration));
     }
 
-    /**
-     * @Given /^the (cart item action) has a condition categories with (category "[^"]+")$/
-     */
+    #[Given('/^the (cart item action) has a condition categories with (category "[^"]+")$/')]
     public function theCartItemActionHasACategoriesCondition(ActionInterface $action, CategoryInterface $category): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -610,9 +544,7 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart item action) has a action discount-percent with ([^"]+)% discount$/
-     */
+    #[Given('/^the (cart item action) has a action discount-percent with ([^"]+)% discount$/')]
     public function theCartItemActionHasADiscountPercentAction(ActionInterface $action, $discount): void
     {
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
@@ -622,10 +554,8 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (cart item action) has a action discount with ([^"]+) in (currency "[^"]+") off$/
-     * @Given /^the (cart item action) has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/
-     */
+    #[Given('/^the (cart item action) has a action discount with ([^"]+) in (currency "[^"]+") off$/')]
+    #[Given('/^the (cart item action) has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/')]
     public function theCartItemActionHasADiscountAmountAction(ActionInterface $action, $amount, CurrencyInterface $currency, string $appliedOn = 'total'): void
     {
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');

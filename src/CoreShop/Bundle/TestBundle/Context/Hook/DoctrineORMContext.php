@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use Behat\Hook\BeforeScenario;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -28,9 +29,7 @@ class DoctrineORMContext implements Context
     ) {
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeDatabase(): void
     {
         $this->entityManager->getConnection()->getConfiguration()->setMiddlewares(

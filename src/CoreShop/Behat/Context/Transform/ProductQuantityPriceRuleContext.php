@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
@@ -32,9 +33,7 @@ final class ProductQuantityPriceRuleContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^quantity price rule "([^"]+)"$/
-     */
+    #[Transform('/^quantity price rule "([^"]+)"$/')]
     public function getProductQuantityPriceRuleByProductAndName($ruleName): ProductQuantityPriceRuleInterface
     {
         $rule = $this->productQuantityPriceRuleRepository->findOneBy(['name' => $ruleName]);
@@ -44,9 +43,7 @@ final class ProductQuantityPriceRuleContext implements Context
         return $rule;
     }
 
-    /**
-     * @Transform /^(quantity price rule)$/
-     */
+    #[Transform('/^(quantity price rule)$/')]
     public function getLatestSpecificProductQuantityPriceRule(): ProductQuantityPriceRuleInterface
     {
         $resource = $this->sharedStorage->get('product-quantity-price-rule');
@@ -56,9 +53,7 @@ final class ProductQuantityPriceRuleContext implements Context
         return $resource;
     }
 
-    /**
-     * @Transform /^(price range)$/
-     */
+    #[Transform('/^(price range)$/')]
     public function getPriceRange(): QuantityRangeInterface
     {
         $resource = $this->sharedStorage->get('quantity-price-rule-range');

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationService;
 use CoreShop\Component\Core\Model\CategoryInterface;
@@ -35,9 +36,7 @@ final class CategoryContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a configuration$/
-     */
+    #[Given('/^the site has a configuration$/')]
     public function thisSiteHasAFixture(): void
     {
         $configurations = [
@@ -65,9 +64,7 @@ final class CategoryContext implements Context
         }
     }
 
-    /**
-     * @Given /^the site has a category "([^"]+)"$/
-     */
+    #[Given('/^the site has a category "([^"]+)"$/')]
     public function theSiteHasACategory(string $categoryName): void
     {
         $category = $this->createCategory($categoryName);
@@ -75,9 +72,7 @@ final class CategoryContext implements Context
         $this->saveCategory($category);
     }
 
-    /**
-     * @Given /^the site has two categories "([^"]+)" and "([^"]+)"$/
-     */
+    #[Given('/^the site has two categories "([^"]+)" and "([^"]+)"$/')]
     public function theSiteHasTwoCategories(string $categoryName, string $categoryName2): void
     {
         $category = $this->createCategory($categoryName);
@@ -87,10 +82,8 @@ final class CategoryContext implements Context
         $this->saveCategory($category2);
     }
 
-    /**
-     * @Given /^the (category) is child of (category "[^"]+")$/
-     * @Given /^the (category "[^"]+") is child of (category "[^"]+")$/
-     */
+    #[Given('/^the (category) is child of (category "[^"]+")$/')]
+    #[Given('/^the (category "[^"]+") is child of (category "[^"]+")$/')]
     public function categoryIsChildOfAnotherCategory(CategoryInterface $child, CategoryInterface $parent): void
     {
         $child->setParent($parent);

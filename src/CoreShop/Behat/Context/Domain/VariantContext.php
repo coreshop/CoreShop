@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
@@ -31,9 +32,7 @@ final class VariantContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the (attribute group "[^"]+") should have (\d+) attributes$/
-     */
+    #[Then('/^the (attribute group "[^"]+") should have (\d+) attributes$/')]
     public function theAttributeGroupShouldHaveXAttributes(AttributeGroupInterface $attributeGroup, int $count): void
     {
         Assert::eq(
@@ -47,10 +46,8 @@ final class VariantContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should have (\d+) variants$/
-     * @Then /^the (product) should have (\d+) variants$/
-     */
+    #[Then('/^the (product "[^"]+") should have (\d+) variants$/')]
+    #[Then('/^the (product) should have (\d+) variants$/')]
     public function theProductShouldHaveVariants(ProductInterface $product, int $count): void
     {
         Assert::eq(count($product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true)), $count);

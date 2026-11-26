@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -30,9 +31,7 @@ final class IndexConditionContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the (condition) rendered for "([^"]+)" should look like "([^"]+)"$/
-     */
+    #[Then('/^the (condition) rendered for "([^"]+)" should look like "([^"]+)"$/')]
     public function theConditionForTypeShouldLookLike(ConditionInterface $condition, $rendererType, $expected): void
     {
         $is = $this->render($rendererType, $condition);

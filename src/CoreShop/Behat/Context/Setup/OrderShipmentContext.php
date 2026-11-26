@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
@@ -36,10 +37,8 @@ final class OrderShipmentContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^I create a shipment for (my order)$/
-     * @Given /^I create another shipment for (my order)$/
-     */
+    #[Given('/^I create a shipment for (my order)$/')]
+    #[Given('/^I create another shipment for (my order)$/')]
     public function iCreateAFullShipmentForOrder(OrderInterface $order): void
     {
         $items = $order->getItems();
@@ -56,9 +55,7 @@ final class OrderShipmentContext implements Context
         $this->sharedStorage->set('orderShipment', $orderShipment);
     }
 
-    /**
-     * @Given /^I apply shipment transition "([^"]+)" to (latest order shipment)$/
-     */
+    #[Given('/^I apply shipment transition "([^"]+)" to (latest order shipment)$/')]
     public function iApplyShipmentTransitionToShipment($shipmentTransition, OrderShipmentInterface $shipment): void
     {
         $this->stateMachineApplier->apply($shipment, ShipmentTransitions::IDENTIFIER, $shipmentTransition);

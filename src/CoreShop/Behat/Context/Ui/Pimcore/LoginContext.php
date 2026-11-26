@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Pimcore\LoginPageInterface;
 use CoreShop\Behat\Page\Pimcore\PWAPageInterface;
 use Webmozart\Assert\Assert;
@@ -30,17 +32,13 @@ final class LoginContext implements Context
     ) {
     }
 
-    /**
-     * @When I want to log into Pimcore backend
-     */
+    #[When('I want to log into Pimcore backend')]
     public function iWantToLogIn(): void
     {
         $this->adminLoginPage->open();
     }
 
-    /**
-     * @When I log into the Pimcore backend
-     */
+    #[When('I log into the Pimcore backend')]
     public function ILogIntoPimcoreBackend(): void
     {
         $this->adminLoginPage->open();
@@ -50,36 +48,28 @@ final class LoginContext implements Context
         $this->iShouldBeLoggedIn();
     }
 
-    /**
-     * @When I specify the username as :username
-     * @When I do not specify the username
-     */
+    #[When('I specify the username as :username')]
+    #[When('I do not specify the username')]
     public function iSpecifyTheUsername(?string $username = null): void
     {
         $this->adminLoginPage->specifyUsername($username);
     }
 
-    /**
-     * @When I specify the password as :password
-     * @When I do not specify the password
-     */
+    #[When('I specify the password as :password')]
+    #[When('I do not specify the password')]
     public function iSpecifyThePasswordAs(?string $password = null): void
     {
         $this->adminLoginPage->specifyPassword($password);
     }
 
-    /**
-     * @When I log in
-     * @When I try to log in
-     */
+    #[When('I log in')]
+    #[When('I try to log in')]
     public function iLogIn(): void
     {
         $this->adminLoginPage->logIn();
     }
 
-    /**
-     * @Then I should be logged in
-     */
+    #[Then('I should be logged in')]
     public function iShouldBeLoggedIn(): void
     {
         $this->pwaPage->waitTillLoaded();
@@ -88,9 +78,7 @@ final class LoginContext implements Context
         Assert::true($this->pwaPage->hasLogoutButton());
     }
 
-    /**
-     * @When I open Pimcore
-     */
+    #[When('I open Pimcore')]
     public function iLoadPimcore(): void
     {
         $this->pwaPage->open();

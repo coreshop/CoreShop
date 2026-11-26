@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -37,26 +38,20 @@ final class CurrencyContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a currency "([^"]+)" with iso "([^"]+)"$/
-     */
+    #[Given('/^the site has a currency "([^"]+)" with iso "([^"]+)"$/')]
     public function theSiteHasACurrency($name, $iso): void
     {
         $this->createCurrency($name, $iso);
     }
 
-    /**
-     * @Given /^I am using (currency "[^"]+")$/
-     */
+    #[Given('/^I am using (currency "[^"]+")$/')]
     public function iAmUsingCurrency(CurrencyInterface $currency): void
     {
         $this->fixedCurrencyContext->setCurrency($currency);
     }
 
-    /**
-     * @Given /^the (currency "[^"]+") is valid for (store "[^"]+")$/
-     * @Given /^the (currency) is valid for (store "[^"]+")$/
-     */
+    #[Given('/^the (currency "[^"]+") is valid for (store "[^"]+")$/')]
+    #[Given('/^the (currency) is valid for (store "[^"]+")$/')]
     public function currencyIsValidForStore(CurrencyInterface $currency, StoreInterface $store): void
     {
         foreach ($currency->getCountries() as $country) {

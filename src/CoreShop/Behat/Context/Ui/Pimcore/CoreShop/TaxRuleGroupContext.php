@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class TaxRuleGroupContext implements Context
     ) {
     }
 
-    /**
-     * @When tax-rule-groups tab is open
-     */
+    #[When('tax-rule-groups tab is open')]
     public function taxRuleGroupsTabIsOpen(): void
     {
         Assert::true($this->taxRuleGroupPage->isActiveOpen());

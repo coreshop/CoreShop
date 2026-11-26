@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -32,9 +33,7 @@ final class ManufacturerContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a manufacturer "([^"]+)"$/
-     */
+    #[Given('/^the site has a manufacturer "([^"]+)"$/')]
     public function thereIsAManufacturer($name): void
     {
         /**

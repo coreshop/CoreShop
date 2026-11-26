@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
@@ -52,11 +53,9 @@ final class CartContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^I add the (product "[^"]+") to my cart$/
-     * @Given /^I add the (product "[^"]+") x (\d+) to my cart$/
-     * @Given /^I add another (product "[^"]+") to my cart$/
-     */
+    #[Given('/^I add the (product "[^"]+") to my cart$/')]
+    #[Given('/^I add the (product "[^"]+") x (\d+) to my cart$/')]
+    #[Given('/^I add another (product "[^"]+") to my cart$/')]
     public function addProductToCart(ProductInterface $product, int $quantity = 1): void
     {
         $cart = $this->cartContext->getCart();
@@ -68,9 +67,7 @@ final class CartContext implements Context
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @Given /^I change the quantity of (product "[^"]+") to (.*)$/
-     */
+    #[Given('/^I change the quantity of (product "[^"]+") to (.*)$/')]
     public function changeProductQuantityInCart(ProductInterface $product, float $quantity): void
     {
         $cart = $this->cartContext->getCart();
@@ -88,10 +85,8 @@ final class CartContext implements Context
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @Given /^I add the (product "[^"]+") to my cart from add-to-cart-form/
-     * @Given /^I add another (product "[^"]+") to my cart from add-to-cart-form/
-     */
+    #[Given('/^I add the (product "[^"]+") to my cart from add-to-cart-form/')]
+    #[Given('/^I add another (product "[^"]+") to my cart from add-to-cart-form/')]
     public function addProductToCartFromAddToCartFormForm(ProductInterface $product): void
     {
         $cart = $this->cartContext->getCart();
@@ -111,12 +106,10 @@ final class CartContext implements Context
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @Given /^I add the (product "[^"]+" with unit "[^"]+") to my cart$/
-     * @Given /^I add the (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/
-     * @Given /^I add another (product "[^"]+" with unit "[^"]+") to my cart$/
-     * @Given /^I add another (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/
-     */
+    #[Given('/^I add the (product "[^"]+" with unit "[^"]+") to my cart$/')]
+    #[Given('/^I add the (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/')]
+    #[Given('/^I add another (product "[^"]+" with unit "[^"]+") to my cart$/')]
+    #[Given('/^I add another (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/')]
     public function addProductInUnitToCart(array $productAndUnit, float $quantity = 1.0): void
     {
         $cart = $this->cartContext->getCart();
@@ -133,10 +126,8 @@ final class CartContext implements Context
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @Given /^I remove the (product "[^"]+") from my cart$/
-     * @Given /^I remove another (product "[^"]+") from my cart$/
-     */
+    #[Given('/^I remove the (product "[^"]+") from my cart$/')]
+    #[Given('/^I remove another (product "[^"]+") from my cart$/')]
     public function removeProductFromCart(ProductInterface $product): void
     {
         $cart = $this->cartContext->getCart();
@@ -150,10 +141,8 @@ final class CartContext implements Context
         }
     }
 
-    /**
-     * @Given /^the cart belongs to (customer "[^"]+")$/
-     * @Given /^the cart belongs to (guest "[^"]+")$/
-     */
+    #[Given('/^the cart belongs to (customer "[^"]+")$/')]
+    #[Given('/^the cart belongs to (guest "[^"]+")$/')]
     public function theCartBelongsToCustomer(CustomerInterface $customer): void
     {
         $this->cartContext->getCart()->setCustomer($customer);
@@ -161,9 +150,7 @@ final class CartContext implements Context
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
 
-    /**
-     * @Given /^the cart ships to (customer "[^"]+") first address$/
-     */
+    #[Given('/^the cart ships to (customer "[^"]+") first address$/')]
     public function theCartShipsToCustomersFirstAddress(CustomerInterface $customer): void
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
@@ -174,9 +161,7 @@ final class CartContext implements Context
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
 
-    /**
-     * @Given /^the cart ships to (customer "[^"]+") address with postcode "([^"]+)"$/
-     */
+    #[Given('/^the cart ships to (customer "[^"]+") address with postcode "([^"]+)"$/')]
     public function theCartShipsToCustomersAddressWithPostcode(CustomerInterface $customer, $postcode): void
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
@@ -191,9 +176,7 @@ final class CartContext implements Context
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
 
-    /**
-     * @Given /^the cart invoices to (customer "[^"]+") address with postcode "([^"]+)"$/
-     */
+    #[Given('/^the cart invoices to (customer "[^"]+") address with postcode "([^"]+)"$/')]
     public function theCartInvoicesToCustomersAddressWithPostcode(CustomerInterface $customer, $postcode): void
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
@@ -208,9 +191,7 @@ final class CartContext implements Context
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
 
-    /**
-     * @Given /^(my cart) uses (currency "[^"]+")$/
-     */
+    #[Given('/^(my cart) uses (currency "[^"]+")$/')]
     public function myCartIsUsingCurrency(OrderInterface $cart, CurrencyInterface $currency): void
     {
         $cart->setCurrency($currency);
@@ -218,9 +199,7 @@ final class CartContext implements Context
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @Given /^(my cart) uses (carrier "[^"]+")$/
-     */
+    #[Given('/^(my cart) uses (carrier "[^"]+")$/')]
     public function myCartIsUsingCarrier(OrderInterface $cart, CarrierInterface $carrier): void
     {
         $cart->setCarrier($carrier);
@@ -228,9 +207,7 @@ final class CartContext implements Context
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @Given /^(my cart) uses (store "[^"]+")$/
-     */
+    #[Given('/^(my cart) uses (store "[^"]+")$/')]
     public function myCartIsUsingStore(OrderInterface $cart, StoreInterface $store): void
     {
         $cart->setStore($store);
@@ -238,9 +215,7 @@ final class CartContext implements Context
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @Given /^I refresh (my cart)$/
-     */
+    #[Given('/^I refresh (my cart)$/')]
     public function iRefreshMyCart(OrderInterface $cart): void
     {
         $this->cartManager->persistCart($cart);

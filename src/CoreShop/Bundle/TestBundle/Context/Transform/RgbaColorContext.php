@@ -18,14 +18,13 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use Pimcore\Model\DataObject\Data\RgbaColor;
 
 final class RgbaColorContext implements Context
 {
-    /**
-     * @Transform /^color #([a-f0-9]{6}|[a-f0-9]{3})$/
-     * @Transform /^color #([a-f0-9]{6}|[a-f0-9]{3}) and opacity (\d+)$/
-     */
+    #[Transform('/^color #([a-f0-9]{6}|[a-f0-9]{3})$/')]
+    #[Transform('/^color #([a-f0-9]{6}|[a-f0-9]{3}) and opacity (\d+)$/')]
     public function hex(string $color, int $opacity = 255): RgbaColor
     {
         if (strlen($color) === 6) {

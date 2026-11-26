@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Pimcore\CoreShop\ZonePageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class ZoneContext implements Context
     ) {
     }
 
-    /**
-     * @When zones tab is open
-     */
+    #[When('zones tab is open')]
     public function zonesTabIsOpen(): void
     {
         Assert::true($this->zonePage->isActiveOpen());

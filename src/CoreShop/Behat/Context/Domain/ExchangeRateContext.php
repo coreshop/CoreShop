@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use Webmozart\Assert\Assert;
@@ -29,9 +30,7 @@ final class ExchangeRateContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^price "([^"]+)" of (currency "[^"]+") should exchange to price "([^"]+)" in (currency "[^"]+")$/
-     */
+    #[Then('/^price "([^"]+)" of (currency "[^"]+") should exchange to price "([^"]+)" in (currency "[^"]+")$/')]
     public function priceOfCurrencyShouldExchangeToPriceInCurrency($fromPrice, CurrencyInterface $fromCurrency, $toPrice, CurrencyInterface $toCurrency): void
     {
         Assert::same(

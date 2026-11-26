@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
+use Behat\Step\When;
 use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreAssetChoiceType;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\Asset;
@@ -34,9 +36,7 @@ final class PimcoreAssetFormContext implements Context
     ) {
     }
 
-    /**
-     * @When /^I submit the asset id as string to the asset choice form$/
-     */
+    #[When('/^I submit the asset id as string to the asset choice form$/')]
     public function iSubmitTheAssetIdAsStringToTheAssetChoiceForm(): void
     {
         $form = $this->formFactory->create(PimcoreAssetChoiceType::class);
@@ -47,9 +47,7 @@ final class PimcoreAssetFormContext implements Context
         $this->resolvedAsset = $form->getData();
     }
 
-    /**
-     * @Then /^the asset should have been resolved$/
-     */
+    #[Then('/^the asset should have been resolved$/')]
     public function theAssetShouldHaveBeenResolved(): void
     {
         Assert::isInstanceOf($this->resolvedAsset, Asset::class);

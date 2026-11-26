@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
+use Behat\Step\When;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
@@ -47,9 +49,7 @@ final class PaymentController implements Context
     ) {
     }
 
-    /**
-     * @Then /^I simulate the concurrent requests for notify and capture for the (latest order payment)$/
-     */
+    #[Then('/^I simulate the concurrent requests for notify and capture for the (latest order payment)$/')]
     public function iOpenCartSummaryPage(PaymentInterface $payment): void
     {
         $context = RequestContext::fromUri(getenv('PANTHER_EXTERNAL_BASE_URI'));
@@ -111,41 +111,31 @@ final class PaymentController implements Context
         );
     }
 
-    /**
-     * @When /^I open the revise page of (my order) for the (latest order payment)$/
-     */
+    #[When('/^I open the revise page of (my order) for the (latest order payment)$/')]
     public function iOpenTheRevisePageOfMyOrderForThePayment(OrderInterface $order, PaymentInterface $payment): void
     {
         $this->openRevisePage((string) $order->getToken(), ['paymentId' => $payment->getId()]);
     }
 
-    /**
-     * @When /^I open the revise page for the order token "([^"]+)"$/
-     */
+    #[When('/^I open the revise page for the order token "([^"]+)"$/')]
     public function iOpenTheRevisePageForTheOrderToken(string $token): void
     {
         $this->openRevisePage($token);
     }
 
-    /**
-     * @Then /^the revise page should show the message "([^"]+)"$/
-     */
+    #[Then('/^the revise page should show the message "([^"]+)"$/')]
     public function theRevisePageShouldShowTheMessage(string $message): void
     {
         Assert::contains($this->getRevisePageContent(), htmlspecialchars($this->translator->trans($message, [], null, 'en'), \ENT_QUOTES));
     }
 
-    /**
-     * @Then /^the revise page should not show the message "([^"]+)"$/
-     */
+    #[Then('/^the revise page should not show the message "([^"]+)"$/')]
     public function theRevisePageShouldNotShowTheMessage(string $message): void
     {
         Assert::notContains($this->getRevisePageContent(), htmlspecialchars($this->translator->trans($message, [], null, 'en'), \ENT_QUOTES));
     }
 
-    /**
-     * @Then the revise page should not be found
-     */
+    #[Then('the revise page should not be found')]
     public function theRevisePageShouldNotBeFound(): void
     {
         Assert::notNull($this->revisePageResponse, 'The revise page has not been opened.');

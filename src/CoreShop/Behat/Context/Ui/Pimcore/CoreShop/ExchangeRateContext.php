@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class ExchangeRateContext implements Context
     ) {
     }
 
-    /**
-     * @When exchange-rates tab is open
-     */
+    #[When('exchange-rates tab is open')]
     public function exchangeRatesTabIsOpen(): void
     {
         Assert::true($this->exchangeRatePage->isActiveOpen());

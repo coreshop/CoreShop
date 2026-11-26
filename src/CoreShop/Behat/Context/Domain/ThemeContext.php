@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class ThemeContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the current theme name should be "([^"]+)"$/
-     */
+    #[Then('/^the current theme name should be "([^"]+)"$/')]
     public function currentThemeNameIs(string $currentThemeName): void
     {
         $theme = $this->themeResolver->resolveTheme();

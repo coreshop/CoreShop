@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Resource\Metadata\Registry;
 use Doctrine\ORM\EntityManagerInterface;
 use Webmozart\Assert\Assert;
@@ -30,9 +31,7 @@ final class ResourceContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the (class "[^"]+") is registered as Pimcore Resource$/
-     */
+    #[Then('/^the (class "[^"]+") is registered as Pimcore Resource$/')]
     public function theClassIsRegisteredAsPimcoreResource(): void
     {
         $car = $this->metadataRegistry->get('app.car');
@@ -40,9 +39,7 @@ final class ResourceContext implements Context
         Assert::eq($car->getClass('model'), 'Pimcore\Model\DataObject\Car');
     }
 
-    /**
-     * @Then /^the "([^"]+)" translation entity should map its locale column with a length of (\d+)$/
-     */
+    #[Then('/^the "([^"]+)" translation entity should map its locale column with a length of (\d+)$/')]
     public function theTranslationEntityShouldMapItsLocaleColumnWithALengthOf(
         string $resourceAlias,
         int $expectedLength,

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
@@ -31,10 +32,8 @@ final class CustomerContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^customer "([^"]+)"$/
-     * @Transform /^email "([^"]+)"$/
-     */
+    #[Transform('/^customer "([^"]+)"$/')]
+    #[Transform('/^email "([^"]+)"$/')]
     public function getCustomerByEmail($email): CustomerInterface
     {
         $customer = $this->customerRepository->findCustomerByEmail($email);
@@ -44,9 +43,7 @@ final class CustomerContext implements Context
         return $customer;
     }
 
-    /**
-     * @Transform /^guest "([^"]+)"$/
-     */
+    #[Transform('/^guest "([^"]+)"$/')]
     public function getGuestByEmail($email): CustomerInterface
     {
         $customer = $this->customerRepository->findGuestByEmail($email);
@@ -56,9 +53,7 @@ final class CustomerContext implements Context
         return $customer;
     }
 
-    /**
-     * @Transform /^customer$/
-     */
+    #[Transform('/^customer$/')]
     public function customer(): CustomerInterface
     {
         $customer = $this->sharedStorage->get('customer');

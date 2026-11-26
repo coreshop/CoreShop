@@ -19,6 +19,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface  as CoreCategoryInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
@@ -38,17 +39,13 @@ final class FilterContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a filter "([^"]+)" for (index "[^"]+")$/
-     */
+    #[Given('/^the site has a filter "([^"]+)" for (index "[^"]+")$/')]
     public function theSiteHasAFilterForIndex($name, IndexInterface $index): void
     {
         $this->createFilter($name, $index);
     }
 
-    /**
-     * @Given /the (filter) has following conditions:/
-     */
+    #[Given('/the (filter) has following conditions:/')]
     public function theFilterHasFollowingConditions(FilterInterface $filter, TableNode $table): void
     {
         $hash = $table->getHash();
@@ -72,11 +69,9 @@ final class FilterContext implements Context
         $this->saveFilter($filter);
     }
 
-    /**
-     * @Given /the (filter) has a category condition without category$/
-     * @Given /the (filter) has a category condition with (category "[^"]+")$/
-     * @Given /the (filter) has a category condition with (category "[^"]+") and it (includes all subcategories)$/
-     */
+    #[Given('/the (filter) has a category condition without category$/')]
+    #[Given('/the (filter) has a category condition with (category "[^"]+")$/')]
+    #[Given('/the (filter) has a category condition with (category "[^"]+") and it (includes all subcategories)$/')]
     public function theFilterHasACategoryConditionWithCategory(FilterInterface $filter, ?CategoryInterface $category = null, $includeAllChilds = ''): void
     {
         $condition = $this->filterConditionFactory->createNew();
@@ -94,11 +89,9 @@ final class FilterContext implements Context
         $this->saveFilter($filter);
     }
 
-    /**
-     * @Given /the (filter) has a condition with label "([^"]+)" and type "([^"]+)"$/
-     * @Given /the (filter) has a condition with label "([^"]+)" and type "([^"]+)" and a preselect for "([^"]+)"$/
-     * @Given /the (filter) has a condition with label "([^"]+)" and type "([^"]+)" on field "([^"]+)"$/
-     */
+    #[Given('/the (filter) has a condition with label "([^"]+)" and type "([^"]+)"$/')]
+    #[Given('/the (filter) has a condition with label "([^"]+)" and type "([^"]+)" and a preselect for "([^"]+)"$/')]
+    #[Given('/the (filter) has a condition with label "([^"]+)" and type "([^"]+)" on field "([^"]+)"$/')]
     public function theFilterHasNameSelect(FilterInterface $filter, string $label, string $type, ?string $preselect = null, ?string $field = null)
     {
         /**
@@ -129,9 +122,7 @@ final class FilterContext implements Context
         $this->saveFilter($filter);
     }
 
-    /**
-     * @Given /the (filter) gets added to (category "[^"]+")$/
-     */
+    #[Given('/the (filter) gets added to (category "[^"]+")$/')]
     public function theFilterAddedToCategory(FilterInterface $filter, ?CoreCategoryInterface $category = null): void
     {
         /**

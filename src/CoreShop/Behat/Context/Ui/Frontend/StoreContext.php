@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\When;
 use CoreShop\Behat\Service\StoreContextSetterInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
@@ -28,11 +30,8 @@ final class StoreContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^I changed (?:|back )my current (store to "([^"]+)")$/
-     *
-     * @When /^I change (?:|back )my current (store to "([^"]+)")$/
-     */
+    #[Given('/^I changed (?:|back )my current (store to "([^"]+)")$/')]
+    #[When('/^I change (?:|back )my current (store to "([^"]+)")$/')]
     public function iChangeMyCurrentStoreTo(StoreInterface $store): void
     {
         $this->storeContextSetter->setStore($store);

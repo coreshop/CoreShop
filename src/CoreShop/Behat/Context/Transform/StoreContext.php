@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Webmozart\Assert\Assert;
@@ -29,10 +30,8 @@ final class StoreContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^store(?:|s) "([^"]+)"$/
-     * @Transform /^store to "([^"]+)"$/
-     */
+    #[Transform('/^store(?:|s) "([^"]+)"$/')]
+    #[Transform('/^store to "([^"]+)"$/')]
     public function getStoreByName($name): StoreInterface
     {
         /**

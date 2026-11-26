@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CompaniesConfigurationType;
@@ -71,9 +72,7 @@ final class ProductPriceRuleContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^adding a product price rule named "([^"]+)"$/
-     */
+    #[Given('/^adding a product price rule named "([^"]+)"$/')]
     public function addingAProductPriceRule($ruleName): void
     {
         /**
@@ -88,10 +87,8 @@ final class ProductPriceRuleContext implements Context
         $this->sharedStorage->set('product-price-rule', $rule);
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") is active$/
-     * @Given /^the (price rule) is active$/
-     */
+    #[Given('/^the (price rule "[^"]+") is active$/')]
+    #[Given('/^the (price rule) is active$/')]
     public function theProductPriceRuleIsActive(ProductPriceRuleInterface $rule): void
     {
         $rule->setActive(true);
@@ -100,10 +97,8 @@ final class ProductPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") is inactive$/
-     * @Given /^the (price rule) is inactive$/
-     */
+    #[Given('/^the (price rule "[^"]+") is inactive$/')]
+    #[Given('/^the (price rule) is inactive$/')]
     public function theProductPriceRuleIsInActive(ProductPriceRuleInterface $rule): void
     {
         $rule->setActive(false);
@@ -112,10 +107,8 @@ final class ProductPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") is stop propagation$/
-     * @Given /^the (price rule) is stop propagation$/
-     */
+    #[Given('/^the (price rule "[^"]+") is stop propagation$/')]
+    #[Given('/^the (price rule) is stop propagation$/')]
     public function theProductPriceRuleIsStopPropagation(ProductPriceRuleInterface $rule): void
     {
         $rule->setStopPropagation(true);
@@ -124,10 +117,8 @@ final class ProductPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") is not stop propagation$/
-     * @Given /^the (price rule) is not stop propagation$/
-     */
+    #[Given('/^the (price rule "[^"]+") is not stop propagation$/')]
+    #[Given('/^the (price rule) is not stop propagation$/')]
     public function theProductPriceRuleIsNotStopPropagation(ProductPriceRuleInterface $rule): void
     {
         $rule->setStopPropagation(false);
@@ -136,10 +127,8 @@ final class ProductPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has priority "([\d]+)"$/
-     * @Given /^the (price rule) has priority "([\d]+)"$/
-     */
+    #[Given('/^the (price rule "[^"]+") has priority "([\d]+)"$/')]
+    #[Given('/^the (price rule) has priority "([\d]+)"$/')]
     public function theProductPriceRuleHasPriority(ProductPriceRuleInterface $rule, int $priority): void
     {
         $rule->setPriority($priority);
@@ -148,10 +137,8 @@ final class ProductPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition countries with (country "[^"]+")$/
-     * @Given /^the (price rule) has a condition countries with (country "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition countries with (country "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition countries with (country "[^"]+")$/')]
     public function theProductPriceRuleHasACountriesCondition(
         ProductPriceRuleInterface $rule,
         CountryInterface $country,
@@ -165,10 +152,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
-     * @Given /^the (price rule) has a condition customers with (customer "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition customers with (customer "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition customers with (customer "[^"]+")$/')]
     public function theProductPriceRuleHasACustomerCondition(
         ProductPriceRuleInterface $rule,
         CustomerInterface $customer,
@@ -182,10 +167,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition companies with (company "[^"]+")$/
-     * @Given /^the (price rule) has a condition companies with (company "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition companies with (company "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition companies with (company "[^"]+")$/')]
     public function theProductPriceRuleHasACompanyCondition(
         ProductPriceRuleInterface $rule,
         CompanyInterface $company,
@@ -199,10 +182,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition guest$/
-     * @Given /^the (price rule) has a condition guest$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition guest$/')]
+    #[Given('/^the (price rule) has a condition guest$/')]
     public function theProductPriceRuleHasAGuestCondition(ProductPriceRuleInterface $rule): void
     {
         $this->assertConditionForm(EmptyConfigurationFormType::class, 'guest');
@@ -210,10 +191,8 @@ final class ProductPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('guest', []));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
-     * @Given /^the (price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/')]
+    #[Given('/^the (price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/')]
     public function theProductPriceRuleHasATimeSpanCondition(ProductPriceRuleInterface $rule, $from, $to): void
     {
         $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
@@ -227,10 +206,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
-     * @Given /^the (price rule) has a condition customer-groups with (customer-group "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition customer-groups with (customer-group "[^"]+")$/')]
     public function theProductPriceRuleHasACustomerGroupCondition(
         ProductPriceRuleInterface $rule,
         CustomerGroupInterface $group,
@@ -244,10 +221,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition stores with (store "[^"]+")$/
-     * @Given /^the (price rule) has a condition stores with (store "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition stores with (store "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition stores with (store "[^"]+")$/')]
     public function theProductPriceRuleHasAStoreCondition(ProductPriceRuleInterface $rule, StoreInterface $store): void
     {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
@@ -259,10 +234,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
-     * @Given /^the (price rule) has a condition zones with (zone "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition zones with (zone "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition zones with (zone "[^"]+")$/')]
     public function theProductPriceRuleHasAZoneCondition(ProductPriceRuleInterface $rule, ZoneInterface $zone): void
     {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
@@ -274,10 +247,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
-     * @Given /^the (price rule) has a condition currencies with (currency "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition currencies with (currency "[^"]+")$/')]
     public function theProductPriceRuleHasACurrencyCondition(
         ProductPriceRuleInterface $rule,
         CurrencyInterface $currency,
@@ -291,10 +262,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition categories with (category "[^"]+")$/
-     * @Given /^the (price rule) has a condition categories with (category "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition categories with (category "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition categories with (category "[^"]+")$/')]
     public function theProductPriceRuleHasACategoriesCondition(
         ProductPriceRuleInterface $rule,
         CategoryInterface $category,
@@ -306,10 +275,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/
-     * @Given /^the (price rule) has a condition categories with (category "[^"]+") and it is recursive$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/')]
+    #[Given('/^the (price rule) has a condition categories with (category "[^"]+") and it is recursive$/')]
     public function theProductPriceRuleHasACategoriesConditionAndItIsRecursive(
         ProductPriceRuleInterface $rule,
         CategoryInterface $category,
@@ -322,11 +289,9 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition products with (product "[^"]+")$/
-     * @Given /^the (price rule) has a condition products with (product "[^"]+")$/
-     * @Given /^the (price rule) has a condition products with (product "[^"]+") and (product "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition products with (product "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition products with (product "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition products with (product "[^"]+") and (product "[^"]+")$/')]
     public function theProductPriceRuleHasAProductCondition(
         ProductPriceRuleInterface $rule,
         ProductInterface $product,
@@ -348,11 +313,9 @@ final class ProductPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
-     * @Given /^the (price rule) has a condition products with (product "[^"]+") which includes variants$/
-     * @Given /^the (price rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/')]
+    #[Given('/^the (price rule) has a condition products with (product "[^"]+") which includes variants$/')]
+    #[Given('/^the (price rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/')]
     public function theProductPriceRuleHasAProductConditionWhichIncludesVariants(
         ProductPriceRuleInterface $rule,
         ProductInterface $product,
@@ -374,10 +337,8 @@ final class ProductPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/
-     * @Given /^the (price rule) has a action discount-percent with ([^"]+)% discount$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/')]
+    #[Given('/^the (price rule) has a action discount-percent with ([^"]+)% discount$/')]
     public function theProductPriceRuleHasADiscountPercentAction(ProductPriceRuleInterface $rule, $discount): void
     {
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
@@ -387,10 +348,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/
-     * @Given /^the (price rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/')]
+    #[Given('/^the (price rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/')]
     public function theProductPriceRuleHasADiscountAmountAction(
         ProductPriceRuleInterface $rule,
         $amount,
@@ -404,10 +363,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a action discount-price of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (price rule) has a action discount-price of ([^"]+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a action discount-price of ([^"]+) in (currency "[^"]+")$/')]
+    #[Given('/^the (price rule) has a action discount-price of ([^"]+) in (currency "[^"]+")$/')]
     public function theProductPriceRuleHasADiscountPrice(
         ProductPriceRuleInterface $rule,
         $price,
@@ -421,10 +378,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (price rule) has a action price of ([^"]+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/')]
+    #[Given('/^the (price rule) has a action price of ([^"]+) in (currency "[^"]+")$/')]
     public function theProductPriceRuleHasAPrice(ProductPriceRuleInterface $rule, $price, CurrencyInterface $currency): void
     {
         $this->assertActionForm(PriceConfigurationType::class, 'price');
@@ -435,19 +390,15 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a action not-discountable$/
-     * @Given /^the (price rule) has a action not-discountable$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a action not-discountable$/')]
+    #[Given('/^the (price rule) has a action not-discountable$/')]
     public function theProductPriceRuleHasAActionNotDiscountable(ProductPriceRuleInterface $rule): void
     {
         $this->addAction($rule, $this->createActionWithForm('notDiscountableCustomAttributes'));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition quantity with min (\d+) and max (\d+)$/
-     * @Given /^the (price rule) has a condition quantity with min (\d+) and max (\d+)$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition quantity with min (\d+) and max (\d+)$/')]
+    #[Given('/^the (price rule) has a condition quantity with min (\d+) and max (\d+)$/')]
     public function theProductPriceRuleHasAQuantityCondition(
         ProductPriceRuleInterface $rule,
         int $min,
@@ -463,10 +414,8 @@ final class ProductPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('quantity', $configuration));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition nested with operator "([^"]+)" with (product "[^"]+")$/
-     * @Given /^the (price rule) has a condition nested with operator "([^"]+)" with (product "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition nested with operator "([^"]+)" with (product "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition nested with operator "([^"]+)" with (product "[^"]+")$/')]
     public function theProductsPriceRuleHasANestedConditionWithProduct(ProductPriceRuleInterface $rule, $operator, ProductInterface $product): void
     {
         $this->assertConditionForm(ProductPriceNestedConfigurationType::class, 'nested');
@@ -486,10 +435,8 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition nested with operator "([^"]+)" with (customer-group "[^"]+") and (country "[^"]+")$/
-     * @Given /^the (price rule) has a condition nested with operator "([^"]+)" with (customer-group "[^"]+") and (country "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition nested with operator "([^"]+)" with (customer-group "[^"]+") and (country "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition nested with operator "([^"]+)" with (customer-group "[^"]+") and (country "[^"]+")$/')]
     public function theProductsPriceRuleHasANestedConditionWithCustomerGroupAndCountry(
         ProductPriceRuleInterface $rule,
         string $operator,
@@ -517,12 +464,10 @@ final class ProductPriceRuleContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (price rule "[^"]+") has a condition not combinable with (cart rule "[^"]+")$/
-     * @Given /^the (price rule) has a condition not combinable with (cart rule "[^"]+")$/
-     * @Given /^the (price rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
-     * @Given /^the (price rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
-     */
+    #[Given('/^the (price rule "[^"]+") has a condition not combinable with (cart rule "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition not combinable with (cart rule "[^"]+")$/')]
+    #[Given('/^the (price rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/')]
+    #[Given('/^the (price rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/')]
     public function theCartPriceRuleHasANotCombinableCondition(ProductPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, ?CartPriceRuleInterface $notCombinable2 = null): void
     {
         $this->assertConditionForm(NotCombinableConfigurationType::class, 'not_combinable_with_cart_price_voucher_rule');

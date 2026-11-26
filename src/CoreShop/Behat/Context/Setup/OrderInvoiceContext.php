@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
@@ -36,10 +37,8 @@ final class OrderInvoiceContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^I create a invoice for (my order)$/
-     * @Given /^I create another invoice for (my order)$/
-     */
+    #[Given('/^I create a invoice for (my order)$/')]
+    #[Given('/^I create another invoice for (my order)$/')]
     public function iCreateAInvoiceForOrder(OrderInterface $order): void
     {
         $items = $order->getItems();
@@ -56,9 +55,7 @@ final class OrderInvoiceContext implements Context
         $this->sharedStorage->set('orderInvoice', $orderInvoice);
     }
 
-    /**
-     * @Given /^I apply invoice transition "([^"]+)" to (latest order invoice)$/
-     */
+    #[Given('/^I apply invoice transition "([^"]+)" to (latest order invoice)$/')]
     public function iApplyInvoiceTransitionToInvoice($invoiceTransition, OrderInvoiceInterface $invoice): void
     {
         $this->stateMachineApplier->apply($invoice, InvoiceTransitions::IDENTIFIER, $invoiceTransition);

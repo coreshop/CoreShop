@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
@@ -31,9 +32,7 @@ final class CurrencyContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^currency "([^"]+)"$/
-     */
+    #[Transform('/^currency "([^"]+)"$/')]
     public function getCurrencyByIso($iso): CurrencyInterface
     {
         /**
@@ -50,9 +49,7 @@ final class CurrencyContext implements Context
         return reset($currencies);
     }
 
-    /**
-     * @Transform /^currency$/
-     */
+    #[Transform('/^currency$/')]
     public function latestCurrency(): CurrencyInterface
     {
         return $this->sharedStorage->get('currency');

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Pimcore\Model\DataObject\Concrete;
@@ -31,18 +32,14 @@ final class CacheContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the (cache item) should be a DataObject$/
-     */
+    #[Then('/^the (cache item) should be a DataObject$/')]
     public function theCacheItemShouldBeADataObject(CacheItem $cacheItem): void
     {
         Assert::true($cacheItem->get() instanceof Concrete);
     }
 
-    /**
-     * @Then /^the (cache item) should have an object-var "([^"]+)" with value "([^"]+)"/
-     * @Then /^the (cache item) should have an object-var "([^"]+)" with value of (tax rule group)/
-     */
+    #[Then('/^the (cache item) should have an object-var "([^"]+)" with value "([^"]+)"/')]
+    #[Then('/^the (cache item) should have an object-var "([^"]+)" with value of (tax rule group)/')]
     public function theCacheItemShouldHaveAObjectVarWithValue(CacheItem $cacheItem, string $property, mixed $value): void
     {
         Assert::true($cacheItem->get() instanceof Concrete);
@@ -59,9 +56,7 @@ final class CacheContext implements Context
         Assert::same((string) $objectValue, (string) $value);
     }
 
-    /**
-     * @Then /^the (cache object) should have an object-var "([^"]+)" of type ResourceInterface/
-     */
+    #[Then('/^the (cache object) should have an object-var "([^"]+)" of type ResourceInterface/')]
     public function theCacheItemShouldHaveAObjectVarOfTypeResource(Concrete $cacheObject, string $property): void
     {
         $objectValue = $cacheObject->getObjectVar($property);
@@ -69,10 +64,8 @@ final class CacheContext implements Context
         Assert::isInstanceOf($objectValue, ResourceInterface::class);
     }
 
-    /**
-     * @Then /^the (cache item) serialized should have a property "([^"]+)" with value "([^"]+)"/
-     * @Then /^the (cache item) serialized should have a property "([^"]+)" with value of (tax rule group)/
-     */
+    #[Then('/^the (cache item) serialized should have a property "([^"]+)" with value "([^"]+)"/')]
+    #[Then('/^the (cache item) serialized should have a property "([^"]+)" with value of (tax rule group)/')]
     public function theCacheItemSerializedShouldLookLikeTheKnownOne(CacheItem $cacheItem, string $property, mixed $value): void
     {
         $itemData = $cacheItem->get();

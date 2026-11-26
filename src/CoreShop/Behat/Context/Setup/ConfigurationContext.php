@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Component\Core\Configuration\ConfigurationService;
 use CoreShop\Component\Core\Model\StoreInterface;
 
@@ -28,10 +29,8 @@ final class ConfigurationContext implements Context
     ) {
     }
 
-    /**
-     * @Given configuration guest checkout is enabled
-     * @Given /^configuration guest checkout is enabled for (store "[^"]+")$/
-     */
+    #[Given('configuration guest checkout is enabled')]
+    #[Given('/^configuration guest checkout is enabled for (store "[^"]+")$/')]
     public function configurationGuestCheckoutIsEnabled(?StoreInterface $store = null): void
     {
         if ($store !== null) {

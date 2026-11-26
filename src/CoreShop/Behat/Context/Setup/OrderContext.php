@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
@@ -38,9 +39,7 @@ final class OrderContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^I create an order from (my cart)$/
-     */
+    #[Given('/^I create an order from (my cart)$/')]
     public function transformCartToOrder(OrderInterface $cart): void
     {
         $cart->setStore($this->storeContext->getStore());
@@ -50,33 +49,25 @@ final class OrderContext implements Context
         $this->sharedStorage->set('order', $cart);
     }
 
-    /**
-     * @Given /^I apply payment transition "([^"]+)" to (latest order payment)$/
-     */
+    #[Given('/^I apply payment transition "([^"]+)" to (latest order payment)$/')]
     public function iApplyPaymentStateToLatestOrderPayment($paymentTransition, PaymentInterface $payment): void
     {
         $this->stateMachineApplier->apply($payment, PaymentTransitions::IDENTIFIER, $paymentTransition);
     }
 
-    /**
-     * @Given /^I apply transition "([^"]+)" to (my order)$/
-     */
+    #[Given('/^I apply transition "([^"]+)" to (my order)$/')]
     public function iApplyTransitionToOrder($transition, OrderInterface $order): void
     {
         $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, $transition);
     }
 
-    /**
-     * @Given /^I apply order invoice transition "([^"]+)" to (my order)$/
-     */
+    #[Given('/^I apply order invoice transition "([^"]+)" to (my order)$/')]
     public function iApplyTransitionToOrderInvoice($transition, OrderInterface $order): void
     {
         $this->stateMachineApplier->apply($order, OrderInvoiceTransitions::IDENTIFIER, $transition);
     }
 
-    /**
-     * @Given /^I apply order shipment transition "([^"]+)" to (my order)$/
-     */
+    #[Given('/^I apply order shipment transition "([^"]+)" to (my order)$/')]
     public function iApplyTransitionToOrderShipment($transition, OrderInterface $order): void
     {
         $this->stateMachineApplier->apply($order, OrderShipmentTransitions::IDENTIFIER, $transition);

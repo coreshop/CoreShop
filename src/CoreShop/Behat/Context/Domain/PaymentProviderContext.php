@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
@@ -41,9 +42,7 @@ final class PaymentProviderContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be a payment provider "([^"]+)"$/
-     */
+    #[Then('/^there should be a payment provider "([^"]+)"$/')]
     public function thereShouldBeAPaymentProvider($name): void
     {
         $paymentProviders = $this->paymentProviderRepository->findBy(['identifier' => $name]);
@@ -55,10 +54,8 @@ final class PaymentProviderContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (payment-provider-rule "[^"]+") should be valid for (my cart) with (payment provider "[^"]+")$/
-     * @Then /^the (payment-provider-rule) should be valid for (my cart) with (payment provider "[^"]+")$/
-     */
+    #[Then('/^the (payment-provider-rule "[^"]+") should be valid for (my cart) with (payment provider "[^"]+")$/')]
+    #[Then('/^the (payment-provider-rule) should be valid for (my cart) with (payment provider "[^"]+")$/')]
     public function thePaymentProviderRuleShouldBeValid(PaymentProviderRuleInterface $rule, OrderInterface $cart, PaymentProviderInterface $paymentProvider): void
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
@@ -69,10 +66,8 @@ final class PaymentProviderContext implements Context
         ]));
     }
 
-    /**
-     * @Then /^the (payment-provider-rule "[^"]+") should be invalid for (my cart) with (payment provider "[^"]+")$/
-     * @Then /^the (payment-provider-rule) should be invalid for (my cart) with (payment provider "[^"]+")$/
-     */
+    #[Then('/^the (payment-provider-rule "[^"]+") should be invalid for (my cart) with (payment provider "[^"]+")$/')]
+    #[Then('/^the (payment-provider-rule) should be invalid for (my cart) with (payment provider "[^"]+")$/')]
     public function thePaymentProviderRuleShouldBeInvalid(PaymentProviderRuleInterface $rule, OrderInterface $cart, PaymentProviderInterface $paymentProvider): void
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
@@ -83,17 +78,13 @@ final class PaymentProviderContext implements Context
         ]));
     }
 
-    /**
-     * @Then /^payment for (my cart) with (payment provider "[^"]+") should be priced at "([^"]+)"$/
-     */
+    #[Then('/^payment for (my cart) with (payment provider "[^"]+") should be priced at "([^"]+)"$/')]
     public function paymentShouldBePriced(OrderInterface $cart, PaymentProviderInterface $paymentProvider, int $price): void
     {
         Assert::same($price, $this->paymentProviderPriceCalculator->getPrice($paymentProvider, $cart, $this->cartContextResolver->resolveCartContext($cart)));
     }
 
-    /**
-     * @Then /^the (payment provider "[^"]+") should be valid for (my cart)$/
-     */
+    #[Then('/^the (payment provider "[^"]+") should be valid for (my cart)$/')]
     public function paymentProviderShouldBeValidForMyCart(PaymentProviderInterface $paymentProvider, OrderInterface $cart): void
     {
         $ruleResult = $this->paymentRuleValidator->isPaymentProviderRuleValid($paymentProvider, $cart);

@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use Behat\Hook\BeforeScenario;
+use Behat\Hook\BeforeSuite;
 use CoreShop\Behat\Service\Setup;
 use CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListenerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,9 +32,7 @@ final class CoreShopSetupContext implements Context
     ) {
     }
 
-    /**
-     * @BeforeSuite
-     */
+    #[BeforeSuite]
     public static function setupPimcore(): void
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {
@@ -42,9 +42,7 @@ final class CoreShopSetupContext implements Context
         Setup::setupCoreShop();
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeIndexTables(): void
     {
         $connection = $this->entityManager->getConnection();
@@ -66,9 +64,7 @@ final class CoreShopSetupContext implements Context
         }
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function clearNotificationRuleListener(): void
     {
         $this->notificationRuleListener->clear();

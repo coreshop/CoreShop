@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class ProductUnitContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be a unit "([^"]+)"$/
-     */
+    #[Then('/^there should be a unit "([^"]+)"$/')]
     public function thereShouldBeAUnit($name): void
     {
         $unit = $this->unitRepository->findByName($name);

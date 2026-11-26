@@ -18,15 +18,14 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use Webmozart\Assert\Assert;
 
 final class CustomerGroupContext implements Context
 {
-    /**
-     * @Then /^the (customer "[^"]+") should be in (customer-group "[^"]+")$/
-     */
+    #[Then('/^the (customer "[^"]+") should be in (customer-group "[^"]+")$/')]
     public function theCustomerShouldBeInCustomerGroup(ProductInterface $product, CategoryInterface $category): void
     {
         Assert::oneOf($category, $product->getCategories());

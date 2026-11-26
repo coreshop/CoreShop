@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Component\Locale\Context\FixedLocaleContext;
 
 final class LocaleContext implements Context
@@ -27,9 +28,7 @@ final class LocaleContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site operates on locale "([^"]+)"$/
-     */
+    #[Given('/^the site operates on locale "([^"]+)"$/')]
     public function setLocale($locale): void
     {
         $this->fixedLocaleContext->setLocale($locale);

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
@@ -37,18 +38,14 @@ final class TaxRuleGroupContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a tax rule group "([^"]+)"$/
-     */
+    #[Given('/^the site has a tax rule group "([^"]+)"$/')]
     public function theSiteHasATaxRuleGroup($name): void
     {
         $this->createTaxRuleGroup($name);
     }
 
-    /**
-     * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
-     * @Given /^the ([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
-     */
+    #[Given('/^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/')]
+    #[Given('/^the ([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/')]
     public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**
@@ -64,10 +61,8 @@ final class TaxRuleGroupContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/
-     * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/
-     */
+    #[Given('/^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/')]
+    #[Given('/^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/')]
     public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**
@@ -83,10 +78,8 @@ final class TaxRuleGroupContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/
-     * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/
-     */
+    #[Given('/^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/')]
+    #[Given('/^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/')]
     public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**

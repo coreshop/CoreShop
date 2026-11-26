@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
@@ -32,10 +33,8 @@ final class ProductContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^product(?:|s) "([^"]+)"$/
-     * @Transform /^"([^"]+)" product(?:|s)$/
-     */
+    #[Transform('/^product(?:|s) "([^"]+)"$/')]
+    #[Transform('/^"([^"]+)" product(?:|s)$/')]
     public function getProductByName($productName)
     {
         /**
@@ -60,10 +59,8 @@ final class ProductContext implements Context
         return $this->productRepository->forceFind($product->getId());
     }
 
-    /**
-     * @Transform /^product with key "([^"]+)"$/
-     * @Transform /^variant with key "([^"]+)"$/
-     */
+    #[Transform('/^product with key "([^"]+)"$/')]
+    #[Transform('/^variant with key "([^"]+)"$/')]
     public function getProductByKey($productName)
     {
         /**
@@ -88,9 +85,7 @@ final class ProductContext implements Context
         return $this->productRepository->forceFind($product->getId());
     }
 
-    /**
-     * @Transform /^product(?:|s) "([^"]+)" with unit "([^"]+)"$/
-     */
+    #[Transform('/^product(?:|s) "([^"]+)" with unit "([^"]+)"$/')]
     public function getProductWithUnitName($productName, $productUnit): array
     {
         /**
@@ -110,9 +105,7 @@ final class ProductContext implements Context
         throw new \Exception(sprintf('Unit %s in product %s not found', $productUnit, $productName));
     }
 
-    /**
-     * @Transform /^products "([^"]+)", "([^"]+)"$/
-     */
+    #[Transform('/^products "([^"]+)", "([^"]+)"$/')]
     public function getProductsByName(string $product1, string $product2): array
     {
         $products = [];
@@ -124,18 +117,14 @@ final class ProductContext implements Context
         return $products;
     }
 
-    /**
-     * @Transform /^product/
-     */
+    #[Transform('/^product/')]
     public function product(): ProductInterface
     {
         return $this->sharedStorage->get('product');
     }
 
-    /**
-     * @Transform /^variant(?:|s)/
-     * @Transform /^variant(?:|s)/
-     */
+    #[Transform('/^variant(?:|s)/')]
+    #[Transform('/^variant(?:|s)/')]
     public function variant(): ProductInterface
     {
         return $this->sharedStorage->get('variant');

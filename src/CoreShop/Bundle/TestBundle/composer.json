@@ -26,7 +26,7 @@
     "require": {
         "pimcore/pimcore": "^2026.2",
         "coreshop/pimcore": "^2026.1",
-        "behat/behat": "^3.8",
+        "behat/behat": "^3.17",
         "robertfausk/behat-panther-extension": "^1.0",
         "behat/mink": "^1.8",
         "dbrekelmans/bdi": "^1.0.0",

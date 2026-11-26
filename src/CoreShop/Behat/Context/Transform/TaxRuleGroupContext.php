@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
@@ -31,9 +32,7 @@ final class TaxRuleGroupContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^tax rule group "([^"]+)"$/
-     */
+    #[Transform('/^tax rule group "([^"]+)"$/')]
     public function getTaxRuleGroupByName($name): TaxRuleGroupInterface
     {
         /**
@@ -50,9 +49,7 @@ final class TaxRuleGroupContext implements Context
         return reset($groups);
     }
 
-    /**
-     * @Transform /^tax rule group$/
-     */
+    #[Transform('/^tax rule group$/')]
     public function theTaxRuleGroup(): TaxRuleGroupInterface
     {
         return $this->sharedStorage->get('taxRuleGroup');

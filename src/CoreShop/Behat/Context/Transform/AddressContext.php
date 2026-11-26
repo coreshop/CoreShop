@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 
 final class AddressContext implements Context
@@ -27,9 +28,7 @@ final class AddressContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^address$/
-     */
+    #[Transform('/^address$/')]
     public function address()
     {
         return $this->sharedStorage->get('address');

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Cache;
 
@@ -28,25 +29,19 @@ final class CacheContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^cache item "([^"]+)"$/
-     */
+    #[Transform('/^cache item "([^"]+)"$/')]
     public function cacheItemByKey($key): mixed
     {
         return Cache::getHandler()->getItem($key);
     }
 
-    /**
-     * @Transform /^cache item$/
-     */
+    #[Transform('/^cache item$/')]
     public function cacheItem(): mixed
     {
         return $this->sharedStorage->get('cache_item');
     }
 
-    /**
-     * @Transform /^cache object$/
-     */
+    #[Transform('/^cache object$/')]
     public function cacheObject(): mixed
     {
         return $this->sharedStorage->get('cache_object');

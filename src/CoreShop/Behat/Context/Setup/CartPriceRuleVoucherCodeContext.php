@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Order\Generator\CodeGeneratorCheckerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
@@ -31,12 +32,10 @@ final class CartPriceRuleVoucherCodeContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for (cart rule "[^"]+") with prefix "([^"]+)" and suffix "([^"]+)"$/
-     * @Given /^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for the (cart rule) with prefix "([^"]+)" and suffix "([^"]+)"$/
-     * @Given /^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for (cart rule "[^"]+")$/
-     * @Given /^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for the (cart rule)$/
-     */
+    #[Given('/^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for (cart rule "[^"]+") with prefix "([^"]+)" and suffix "([^"]+)"$/')]
+    #[Given('/^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for the (cart rule) with prefix "([^"]+)" and suffix "([^"]+)"$/')]
+    #[Given('/^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for (cart rule "[^"]+")$/')]
+    #[Given('/^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for the (cart rule)$/')]
     public function iWantToGenerateCodes(int $numberOfCodes, int $lenghtPerCode, string $chars, CartPriceRuleInterface $cartPriceRule, ?string $prefix = null, ?string $suffix = null): void
     {
         $generator = new CartPriceRuleVoucherGenerator();

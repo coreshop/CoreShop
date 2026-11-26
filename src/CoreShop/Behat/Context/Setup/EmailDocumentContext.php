@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\Document\Email;
 
@@ -28,9 +29,7 @@ final class EmailDocumentContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has an email document "([^"]+)"$/
-     */
+    #[Given('/^the site has an email document "([^"]+)"$/')]
     public function theSiteHasAnEmailDocument(string $key): void
     {
         $emailDocument = new Email();

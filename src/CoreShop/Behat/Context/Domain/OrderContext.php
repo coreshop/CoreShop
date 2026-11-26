@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
@@ -33,9 +34,7 @@ final class OrderContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be one product in (my order)$/
-     */
+    #[Then('/^there should be one product in (my order)$/')]
     public function thereShouldBeOneProductInTheOrder(OrderInterface $order): void
     {
         Assert::eq(
@@ -48,9 +47,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) total should be "([^"]+)" including tax$/
-     */
+    #[Then('/^(the order) total should be "([^"]+)" including tax$/')]
     public function orderTotalShouldBeIncludingTax(OrderInterface $order, $total): void
     {
         Assert::eq(
@@ -64,9 +61,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) total should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^(the order) total should be "([^"]+)" excluding tax$/')]
     public function orderTotalShouldBeExcludingTax(OrderInterface $order, $total): void
     {
         Assert::eq(
@@ -80,9 +75,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) subtotal should be "([^"]+)" including tax$/
-     */
+    #[Then('/^(the order) subtotal should be "([^"]+)" including tax$/')]
     public function orderSubtotalShouldBeIncludingTax(OrderInterface $order, $total): void
     {
         Assert::eq(
@@ -96,9 +89,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) subtotal should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^(the order) subtotal should be "([^"]+)" excluding tax$/')]
     public function orderSubtotalShouldBeExcludingTax(OrderInterface $order, $total): void
     {
         Assert::eq(
@@ -112,9 +103,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) total tax should be "([^"]+)"$/
-     */
+    #[Then('/^(the order) total tax should be "([^"]+)"$/')]
     public function orderTotalTaxShouldBe(OrderInterface $order, $total): void
     {
         Assert::eq(
@@ -128,9 +117,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) should weigh ([^"]+)kg$/
-     */
+    #[Then('/^(the order) should weigh ([^"]+)kg$/')]
     public function orderShouldWeigh(OrderInterface $order, $kg): void
     {
         Assert::eq(
@@ -144,9 +131,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) shipping should be "([^"]+)" including tax$/
-     */
+    #[Then('/^(the order) shipping should be "([^"]+)" including tax$/')]
     public function orderShippingShouldBeIncludingTax(OrderInterface $order, $shipping): void
     {
         Assert::eq(
@@ -160,9 +145,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) shipping should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^(the order) shipping should be "([^"]+)" excluding tax$/')]
     public function orderShippingShouldBeExcludingTax(OrderInterface $order, $shipping): void
     {
         Assert::eq(
@@ -176,9 +159,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) shipping tax rate should be "([^"]+)"$/
-     */
+    #[Then('/^(the order) shipping tax rate should be "([^"]+)"$/')]
     public function orderShippingTaxShouldBe(OrderInterface $order, $shippingTaxRate): void
     {
         Assert::eq(
@@ -192,9 +173,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) state should be "([^"]+)"$/
-     */
+    #[Then('/^(the order) state should be "([^"]+)"$/')]
     public function orderStateShouldBeState(OrderInterface $order, $state): void
     {
         Assert::eq(
@@ -208,9 +187,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) payment state should be "([^"]+)"$/
-     */
+    #[Then('/^(the order) payment state should be "([^"]+)"$/')]
     public function orderPaymentStateShouldBeState(OrderInterface $order, $state): void
     {
         Assert::eq(
@@ -224,9 +201,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) shipping state should be "([^"]+)"$/
-     */
+    #[Then('/^(the order) shipping state should be "([^"]+)"$/')]
     public function orderShippingStateShouldBeState(OrderInterface $order, $state): void
     {
         Assert::eq(
@@ -240,9 +215,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^(the order) invoice state should be "([^"]+)"$/
-     */
+    #[Then('/^(the order) invoice state should be "([^"]+)"$/')]
     public function orderInvoiceStateShouldBeState(OrderInterface $order, $state): void
     {
         Assert::eq(
@@ -256,9 +229,7 @@ final class OrderContext implements Context
         );
     }
 
-    /**
-     * @Then /^I should not be able to apply transition "([^"]+)" to (my order)$/
-     */
+    #[Then('/^I should not be able to apply transition "([^"]+)" to (my order)$/')]
     public function iShouldNotBeAbleToApplyTransition($transition, OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderTransitions::IDENTIFIER);
@@ -266,9 +237,7 @@ final class OrderContext implements Context
         Assert::false($workflow->can($order, $transition));
     }
 
-    /**
-     * @Then /^I should be able to apply transition "([^"]+)" to (my order)$/
-     */
+    #[Then('/^I should be able to apply transition "([^"]+)" to (my order)$/')]
     public function iShouldBeAbleToApplyTransition($transition, OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderTransitions::IDENTIFIER);
@@ -276,9 +245,7 @@ final class OrderContext implements Context
         Assert::true($workflow->can($order, $transition));
     }
 
-    /**
-     * @Then /^I should not be able to apply payment transition "([^"]+)" to (my order)$/
-     */
+    #[Then('/^I should not be able to apply payment transition "([^"]+)" to (my order)$/')]
     public function iShouldNotBeAbleToApplyPaymentTransition($transition, OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderPaymentTransitions::IDENTIFIER);
@@ -286,9 +253,7 @@ final class OrderContext implements Context
         Assert::false($workflow->can($order, $transition));
     }
 
-    /**
-     * @Then /^I should be able to apply payment transition "([^"]+)" to (my order)$/
-     */
+    #[Then('/^I should be able to apply payment transition "([^"]+)" to (my order)$/')]
     public function iShouldBeAbleToApplyPaymentTransition($transition, OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderPaymentTransitions::IDENTIFIER);
@@ -296,9 +261,7 @@ final class OrderContext implements Context
         Assert::true($workflow->can($order, $transition));
     }
 
-    /**
-     * @Then /^I should not be able to apply shipping transition "([^"]+)" to (my order)$/
-     */
+    #[Then('/^I should not be able to apply shipping transition "([^"]+)" to (my order)$/')]
     public function iShouldNotBeAbleToApplyShippingTransition($transition, OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderShipmentTransitions::IDENTIFIER);
@@ -306,9 +269,7 @@ final class OrderContext implements Context
         Assert::false($workflow->can($order, $transition));
     }
 
-    /**
-     * @Then /^I should be able to apply shipping transition "([^"]+)" to (my order)$/
-     */
+    #[Then('/^I should be able to apply shipping transition "([^"]+)" to (my order)$/')]
     public function iShouldBeAbleToApplyShippingTransition($transition, OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderShipmentTransitions::IDENTIFIER);
@@ -316,9 +277,7 @@ final class OrderContext implements Context
         Assert::true($workflow->can($order, $transition));
     }
 
-    /**
-     * @Then /^I should not be able to apply invoice transition "([^"]+)" to (my order)$/
-     */
+    #[Then('/^I should not be able to apply invoice transition "([^"]+)" to (my order)$/')]
     public function iShouldNotBeAbleToApplyInvoiceTransition($transition, OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderInvoiceTransitions::IDENTIFIER);
@@ -326,9 +285,7 @@ final class OrderContext implements Context
         Assert::false($workflow->can($order, $transition));
     }
 
-    /**
-     * @Then /^I should be able to apply invoice transition "([^"]+)" to (my order)$/
-     */
+    #[Then('/^I should be able to apply invoice transition "([^"]+)" to (my order)$/')]
     public function iShouldBeAbleToApplyInvoiceTransition($transition, OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderInvoiceTransitions::IDENTIFIER);
@@ -336,9 +293,7 @@ final class OrderContext implements Context
         Assert::true($workflow->can($order, $transition));
     }
 
-    /**
-     * @Then /^(the order) should be immutable$/
-     */
+    #[Then('/^(the order) should be immutable$/')]
     public function theOrderShouldBeImmutable(OrderInterface $order): void
     {
         Assert::true(

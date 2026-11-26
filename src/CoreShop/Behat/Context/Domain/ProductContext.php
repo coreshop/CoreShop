@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
@@ -36,42 +37,34 @@ final class ProductContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should be priced at "([^"]+)"$/
-     * @Then /^the (product) should be priced at "([^"]+)"$/
-     * @Then /^the (variant) should be priced at "([^"]+)"$/
-     * @Then /^the (version) should be priced at "([^"]+)"$/
-     */
+    #[Then('/^the (product "[^"]+") should be priced at "([^"]+)"$/')]
+    #[Then('/^the (product) should be priced at "([^"]+)"$/')]
+    #[Then('/^the (variant) should be priced at "([^"]+)"$/')]
+    #[Then('/^the (version) should be priced at "([^"]+)"$/')]
     public function productShouldBePriced(ProductInterface $product, int $price): void
     {
         Assert::same($price, $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), true));
     }
 
-    /**
-     * @Then /^the (product "[^"]+") discount-price should be "([^"]+)"$/
-     * @Then /^the (product) discount-price should be "([^"]+)"$/
-     * @Then /^the (variant) discount-price should be "([^"]+)"$/
-     */
+    #[Then('/^the (product "[^"]+") discount-price should be "([^"]+)"$/')]
+    #[Then('/^the (product) discount-price should be "([^"]+)"$/')]
+    #[Then('/^the (variant) discount-price should be "([^"]+)"$/')]
     public function productsDiscountPriceShouldBe(ProductInterface $product, int $price): void
     {
         Assert::same($price, $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext()));
     }
 
-    /**
-     * @Then /^the (product "[^"]+") retail-price should be "([^"]+)"$/
-     * @Then /^the (product) retail-price should be "([^"]+)"$/
-     * @Then /^the (variant) retail-price should be "([^"]+)"$/
-     */
+    #[Then('/^the (product "[^"]+") retail-price should be "([^"]+)"$/')]
+    #[Then('/^the (product) retail-price should be "([^"]+)"$/')]
+    #[Then('/^the (variant) retail-price should be "([^"]+)"$/')]
     public function productsRetailPriceShouldBe(ProductInterface $product, int $price): void
     {
         Assert::same($price, $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
     }
 
-    /**
-     * @Then /^the (product "[^"]+") discount should be "([^"]+)"$/
-     * @Then /^the (product) discount should be "([^"]+)"$/
-     * @Then /^the (variant) discount should be "([^"]+)"$/
-     */
+    #[Then('/^the (product "[^"]+") discount should be "([^"]+)"$/')]
+    #[Then('/^the (product) discount should be "([^"]+)"$/')]
+    #[Then('/^the (variant) discount should be "([^"]+)"$/')]
     public function productDiscountShouldBe(ProductInterface $product, int $discount): void
     {
         $productPrice = $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), false);
@@ -80,11 +73,9 @@ final class ProductContext implements Context
         Assert::same($discount, $productDiscount);
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
-     * @Then /^the (product) should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
-     * @Then /^the (variant) should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
-     */
+    #[Then('/^the (product "[^"]+") should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/')]
+    #[Then('/^the (product) should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/')]
+    #[Then('/^the (variant) should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/')]
     public function productPricesShouldBe(ProductInterface $product, int $price, int $discountPrice, int $retailPrice, int $discount): void
     {
         $this->productShouldBePriced($product, $price);
@@ -93,11 +84,9 @@ final class ProductContext implements Context
         $this->productDiscountShouldBe($product, $discount);
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
-     * @Then /^the (product) should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
-     * @Then /^the (variant) should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
-     */
+    #[Then('/^the (product "[^"]+") should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/')]
+    #[Then('/^the (product) should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/')]
+    #[Then('/^the (variant) should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/')]
     public function productPricesShouldBeExceptDiscountPrice(ProductInterface $product, int $price, int $retailPrice, int $discount): void
     {
         $this->productShouldBePriced($product, $price);
@@ -105,31 +94,25 @@ final class ProductContext implements Context
         $this->productDiscountShouldBe($product, $discount);
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should be priced at "([^"]+)" including tax$/
-     * @Then /^the (product) should be priced at "([^"]+)" including tax$/
-     * @Then /^the (variant) should be priced at "([^"]+)" including tax$/
-     */
+    #[Then('/^the (product "[^"]+") should be priced at "([^"]+)" including tax$/')]
+    #[Then('/^the (product) should be priced at "([^"]+)" including tax$/')]
+    #[Then('/^the (variant) should be priced at "([^"]+)" including tax$/')]
     public function productTaxedPriceShouldBe(ProductInterface $product, int $price): void
     {
         Assert::same($price, $this->taxedProductPriceCalculator->getPrice($product, $this->shopperContext->getContext()));
     }
 
-    /**
-     * @Then /^the (product "[^"]+") retail-price should be "([^"]+)" including tax$/
-     * @Then /^the (product) retail-price should be "([^"]+)" including tax$/
-     * @Then /^the (variant) retail-price should be "([^"]+)" including tax$/
-     */
+    #[Then('/^the (product "[^"]+") retail-price should be "([^"]+)" including tax$/')]
+    #[Then('/^the (product) retail-price should be "([^"]+)" including tax$/')]
+    #[Then('/^the (variant) retail-price should be "([^"]+)" including tax$/')]
     public function productTaxedRetailPriceShouldBe(ProductInterface $product, int $price): void
     {
         Assert::same($price, $this->taxedProductPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should have (tax rule group "[^"]+")$/
-     * @Then /^the (product) should have (tax rule group "[^"]+")$/
-     * @Then /^the (variant) should have (tax rule group "[^"]+")$/
-     */
+    #[Then('/^the (product "[^"]+") should have (tax rule group "[^"]+")$/')]
+    #[Then('/^the (product) should have (tax rule group "[^"]+")$/')]
+    #[Then('/^the (variant) should have (tax rule group "[^"]+")$/')]
     public function theProductShouldHaveTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup): void
     {
         $taxRule = $product->getStoreValuesOfType('taxRule', $this->shopperContext->getStore());
@@ -137,11 +120,9 @@ final class ProductContext implements Context
         Assert::eq($taxRule?->getId(), $taxRuleGroup->getId());
     }
 
-    /**
-     * @Then /^the (products "[^"]+") default unit should be (unit "[^"]+")$/
-     * @Then /^the (products) default unit should be (unit "[^"]+")$/
-     * @Then /^the (variants) default unit should be (unit "[^"]+")$/
-     */
+    #[Then('/^the (products "[^"]+") default unit should be (unit "[^"]+")$/')]
+    #[Then('/^the (products) default unit should be (unit "[^"]+")$/')]
+    #[Then('/^the (variants) default unit should be (unit "[^"]+")$/')]
     public function theProductsDefaultUnitShouldBe(ProductInterface $product, ProductUnitInterface $unit): void
     {
         $unitDefinitions = $product->getUnitDefinitions();
@@ -161,11 +142,9 @@ final class ProductContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
-     * @Then /^the (product) should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
-     * @Then /^the (variant) should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
-     */
+    #[Then('/^the (product "[^"]+") should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/')]
+    #[Then('/^the (product) should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/')]
+    #[Then('/^the (variant) should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/')]
     public function theProductsShouldHaveAnAdditionalUnitWithConversionRate(ProductInterface $product, ProductUnitInterface $unit, $conversionRate): void
     {
         $unitDefinitions = $product->getUnitDefinitions();
@@ -191,9 +170,7 @@ final class ProductContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product) and the (copied-object) should have it's own price$/
-     */
+    #[Then('/^the (product) and the (copied-object) should have it\'s own price$/')]
     public function bothProductsShouldHaveItsOwnPrice(ProductInterface $originalProduct, ProductInterface $copiedObject): void
     {
         $storeValues = $originalProduct->getStoreValues();

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class TaxRateContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be a tax rate "([^"]+)" with "([^"]+)%" rate$/
-     */
+    #[Then('/^there should be a tax rate "([^"]+)" with "([^"]+)%" rate$/')]
     public function thereShouldBeATaxRate($name, $rate): void
     {
         $rates = $this->taxRateRepository->findByName($name, 'en');

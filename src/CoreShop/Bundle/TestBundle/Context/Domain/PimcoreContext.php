@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Listing;
@@ -25,9 +26,7 @@ use Webmozart\Assert\Assert;
 
 final class PimcoreContext implements Context
 {
-    /**
-     * @Then /^iterating the (class|behat-class "[^"]+") should return (\d+) objects$/
-     */
+    #[Then('/^iterating the (class|behat-class "[^"]+") should return (\d+) objects$/')]
     public function iteratingTheClassShouldReturn(ClassDefinition $definition, int $count): void
     {
         $list = $this->getListingFromClassDefinition($definition);
@@ -37,9 +36,7 @@ final class PimcoreContext implements Context
         Assert::eq($this->countBatchListingObjects($batchListing), $count);
     }
 
-    /**
-     * @Then /^iterating the (class|behat-class "[^"]+") with a offset of (\d+) should return (\d+) objects$/
-     */
+    #[Then('/^iterating the (class|behat-class "[^"]+") with a offset of (\d+) should return (\d+) objects$/')]
     public function iteratingTheClassWithAOffsetShouldReturn(ClassDefinition $definition, int $offset, int $count): void
     {
         $list = $this->getListingFromClassDefinition($definition);
@@ -51,9 +48,7 @@ final class PimcoreContext implements Context
         Assert::eq($this->countBatchListingObjects($batchListing), $count);
     }
 
-    /**
-     * @Then /^iterating the (class|behat-class "[^"]+") with a offset of (\d+) and limit of (\d+) should return (\d+) objects$/
-     */
+    #[Then('/^iterating the (class|behat-class "[^"]+") with a offset of (\d+) and limit of (\d+) should return (\d+) objects$/')]
     public function iteratingTheClassWithAOffsetAndLimitShouldReturn(ClassDefinition $definition, int $offset, int $limit, int $count): void
     {
         $list = $this->getListingFromClassDefinition($definition);

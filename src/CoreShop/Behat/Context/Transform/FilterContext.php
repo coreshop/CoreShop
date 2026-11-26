@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 
 final class FilterContext implements Context
@@ -27,9 +28,7 @@ final class FilterContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^filter$/
-     */
+    #[Transform('/^filter$/')]
     public function filter()
     {
         return $this->sharedStorage->get('filter');

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Pimcore\CoreShop\TaxRatePageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class TaxRateContext implements Context
     ) {
     }
 
-    /**
-     * @When tax-rates tab is open
-     */
+    #[When('tax-rates tab is open')]
     public function taxRatesTabIsOpen(): void
     {
         Assert::true($this->taxRatePage->isActiveOpen());

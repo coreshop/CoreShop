@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Frontend\CategoryPageInterface;
 use CoreShop\Behat\Page\Frontend\HomePageInterface;
 use Webmozart\Assert\Assert;
@@ -30,75 +32,57 @@ final class CategoryContext implements Context
     ) {
     }
 
-    /**
-     * @When /^I switch to category "([^"]+)" on left menu$/
-     */
+    #[When('/^I switch to category "([^"]+)" on left menu$/')]
     public function iOpenCategoryLeft($name): void
     {
         $this->homePage->switchToCategoryOnMenuLeft($name);
     }
 
-    /**
-     * @When /^I switch to category "([^"]+)" on main menu$/
-     */
+    #[When('/^I switch to category "([^"]+)" on main menu$/')]
     public function iOpenCategoryMain($name): void
     {
         $this->homePage->switchToCategoryOnMenuLeft($name);
     }
 
-    /**
-     * @Then I should see :numberOfProducts products in the category list
-     */
+    #[Then('I should see :numberOfProducts products in the category list')]
     public function iShouldSeeProductsInTheCategoryList(int $numberOfProducts): void
     {
         Assert::same(count($this->categoryPage->getProductsInCategory()), $numberOfProducts);
     }
 
-    /**
-     * @Then /^I switch to view to "([^"]+)"$/
-     */
+    #[Then('/^I switch to view to "([^"]+)"$/')]
     public function iSwitchView($name): void
     {
         $this->categoryPage->switchView($name);
     }
 
-    /**
-     * @Then I should see :numberOfProducts products in the category grid
-     */
+    #[Then('I should see :numberOfProducts products in the category grid')]
     public function iShouldSeeProductsInTheCategoryGrid(int $numberOfProducts): void
     {
         Assert::same(count($this->categoryPage->getProductsInCategoryGrid()), $numberOfProducts);
     }
 
-    /**
-     * @Then /^I change order to "([^"]+)"$/
-     */
+    #[Then('/^I change order to "([^"]+)"$/')]
     public function changeOrder($order): void
     {
         $this->categoryPage->changeOrder($order);
     }
 
-    /**
-     * @Then /^I should see products in order "([^"]+)" in list$/
-     */
+    #[Then('/^I should see products in order "([^"]+)" in list$/')]
     public function iShouldNamesInList(string $products): void
     {
         $product = explode(',', $products);
         Assert::same($this->categoryPage->getProductsInCategory(), $product);
     }
 
-    /**
-     * @Then /^I should see products in order "([^"]+)" in grid$/
-     */
+    #[Then('/^I should see products in order "([^"]+)" in grid$/')]
     public function iShouldNamesInGrid(string $products): void
     {
         $product = explode(',', $products);
         Assert::same($this->categoryPage->getProductsInCategoryGrid(), $product);
     }
 
-    /**
-     * @Then /^I should see a filter with label in order "([^"]+)" in grid$/
-     */
+    #[Then('/^I should see a filter with label in order "([^"]+)" in grid$/')]
     public function iShouldSeeFilter(string $products): void
     {
         $product = explode(',', $products);

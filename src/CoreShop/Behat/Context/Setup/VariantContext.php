@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Variant\Model\AttributeColorInterface;
@@ -38,9 +39,7 @@ final class VariantContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a attribute group "([^"]+)"$/
-     */
+    #[Given('/^the site has a attribute group "([^"]+)"$/')]
     public function thereIsAAttributeGroup($name): void
     {
         /**
@@ -57,12 +56,10 @@ final class VariantContext implements Context
         $this->sharedStorage->set('attribute-group', $attributeGroup);
     }
 
-    /**
-     * @Given /^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group "[^"]+")$/
-     * @Given /^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group "[^"]+") with sorting (\d+)$/
-     * @Given /^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group)$/
-     * @Given /^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group) with sorting (\d+)$/
-     */
+    #[Given('/^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group "[^"]+")$/')]
+    #[Given('/^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group "[^"]+") with sorting (\d+)$/')]
+    #[Given('/^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group)$/')]
+    #[Given('/^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group) with sorting (\d+)$/')]
     public function thereIsAColorAttributeInGroup(string $name, string $hex, AttributeGroupInterface $group, float $sorting = 0): void
     {
         /**
@@ -82,12 +79,10 @@ final class VariantContext implements Context
         $this->sharedStorage->set('attribute', $attribute);
     }
 
-    /**
-     * @Given /^the site has a value attribute "([^"]+)" in (attribute group "[^"]+")$/
-     * @Given /^the site has a value attribute "([^"]+)" in (attribute group "[^"]+") with sorting (\d+)$/
-     * @Given /^the site has a value attribute "([^"]+)" in (attribute group)$/
-     * @Given /^the site has a value attribute "([^"]+)" in (attribute group) with sorting (\d+)$/
-     */
+    #[Given('/^the site has a value attribute "([^"]+)" in (attribute group "[^"]+")$/')]
+    #[Given('/^the site has a value attribute "([^"]+)" in (attribute group "[^"]+") with sorting (\d+)$/')]
+    #[Given('/^the site has a value attribute "([^"]+)" in (attribute group)$/')]
+    #[Given('/^the site has a value attribute "([^"]+)" in (attribute group) with sorting (\d+)$/')]
     public function thereIsAValueAttributeInGroup(string $name, AttributeGroupInterface $group, float $sorting = 1): void
     {
         /**
@@ -106,10 +101,8 @@ final class VariantContext implements Context
         $this->sharedStorage->set('attribute', $attribute);
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is allowed (attribute group "[^"]+")$/
-     * @Given /^the (product) is allowed (attribute group "[^"]+")$/
-     */
+    #[Given('/^the (product "[^"]+") is allowed (attribute group "[^"]+")$/')]
+    #[Given('/^the (product) is allowed (attribute group "[^"]+")$/')]
     public function theProductIsAllowedAttributeGroup(
         ProductVariantAwareInterface $product,
         AttributeGroupInterface $group,
@@ -122,10 +115,8 @@ final class VariantContext implements Context
         $product->save();
     }
 
-    /**
-     * @Given /^the (variant "[^"]+") uses (attribute color "[^"]+")$/
-     * @Given /^the (variant) uses (attribute color "[^"]+")$/
-     */
+    #[Given('/^the (variant "[^"]+") uses (attribute color "[^"]+")$/')]
+    #[Given('/^the (variant) uses (attribute color "[^"]+")$/')]
     public function theVariantUsesAttributeColor(
         ProductVariantAwareInterface $product,
         AttributeColorInterface $attributeColor,
@@ -138,10 +129,8 @@ final class VariantContext implements Context
         $product->save();
     }
 
-    /**
-     * @Given /^the (variant "[^"]+") uses (attribute value "[^"]+")$/
-     * @Given /^the (variant) uses (attribute value "[^"]+")$/
-     */
+    #[Given('/^the (variant "[^"]+") uses (attribute value "[^"]+")$/')]
+    #[Given('/^the (variant) uses (attribute value "[^"]+")$/')]
     public function theVariantUsesAttributeValue(
         ProductVariantAwareInterface $product,
         AttributeValueInterface $attributeValue,
@@ -154,10 +143,8 @@ final class VariantContext implements Context
         $product->save();
     }
 
-    /**
-     * @Given /^the (variant "[^"]+") uses (attribute color "[^"]+") and (attribute value "[^"]+")$/
-     * @Given /^the (variant) uses (attribute color "[^"]+") and (attribute value "[^"]+")$/
-     */
+    #[Given('/^the (variant "[^"]+") uses (attribute color "[^"]+") and (attribute value "[^"]+")$/')]
+    #[Given('/^the (variant) uses (attribute color "[^"]+") and (attribute value "[^"]+")$/')]
     public function theVariantUsesAttributeColorAndAttributeValue(
         ProductVariantAwareInterface $product,
         AttributeColorInterface $attributeColor,

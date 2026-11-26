@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 
 final class IndexConditionContext implements Context
@@ -27,25 +28,19 @@ final class IndexConditionContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^condition$/
-     */
+    #[Transform('/^condition$/')]
     public function condition()
     {
         return $this->sharedStorage->get('index_condition');
     }
 
-    /**
-     * @Transform /^condition "([^"]+)"$/
-     */
+    #[Transform('/^condition "([^"]+)"$/')]
     public function conditionWithIdentifier($identifier)
     {
         return $this->sharedStorage->get('index_condition_' . $identifier);
     }
 
-    /**
-     * @Transform /^conditions "([^"]+)"$/
-     */
+    #[Transform('/^conditions "([^"]+)"$/')]
     public function conditionsWithIdentifiers($identifiers): array
     {
         $conditions = [];
