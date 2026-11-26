@@ -26,6 +26,13 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType }
 
+    CoreShop\Bundle\CoreBundle\Form\Extension\StudioRuleMoneyTypeExtension:
+        arguments:
+            - '@request_stack'
+            - '%coreshop.currency.decimal_factor%'
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType }
+
     CoreShop\Bundle\CoreBundle\Form\Extension\ProductQuantityRangeTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityRangeType }
