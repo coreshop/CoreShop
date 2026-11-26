@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element\ElementInterface;
@@ -29,36 +30,28 @@ class PropertyContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the (element) has a text property with name "([^"]+)" value "([^"]+)"$/
-     */
+    #[Given('/^the (element) has a text property with name "([^"]+)" value "([^"]+)"$/')]
     public function theElementHasATextPropertyWithValue(ElementInterface $element, string $name, string $value): void
     {
         $element->setProperty($name, 'text', $value, false, false);
         $element->save();
     }
 
-    /**
-     * @Given /^the (element) has a text property with name "([^"]+)" value "([^"]+)" that inherits$/
-     */
+    #[Given('/^the (element) has a text property with name "([^"]+)" value "([^"]+)" that inherits$/')]
     public function theElementHasATextPropertyWithValueWithInheritances(ElementInterface $element, string $name, string $value): void
     {
         $element->setProperty($name, 'text', $value, false, true);
         $element->save();
     }
 
-    /**
-     * @Given /^the (element) has a object property with name "([^"]+)" and (object)$/
-     */
+    #[Given('/^the (element) has a object property with name "([^"]+)" and (object)$/')]
     public function theElementHasATextPropertyWithObject(ElementInterface $element, string $name, Concrete $object): void
     {
         $element->setProperty($name, 'object', $object, false, false);
         $element->save();
     }
 
-    /**
-     * @Given /^the (element) has a object property with name "([^"]+)" and (object) that inherits$/
-     */
+    #[Given('/^the (element) has a object property with name "([^"]+)" and (object) that inherits$/')]
     public function theElementHasATextPropertyWithObjectWithInheritance(ElementInterface $element, string $name, Concrete $object): void
     {
         $element->setProperty($name, 'object', $object, false, true);

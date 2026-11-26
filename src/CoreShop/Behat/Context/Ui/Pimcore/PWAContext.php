@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Pimcore\PWAPageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,17 +30,13 @@ final class PWAContext implements Context
     ) {
     }
 
-    /**
-     * @When I open resource ":application", ":resource"
-     */
+    #[When('I open resource ":application", ":resource"')]
     public function iOpenResource(string $application, string $resource): void
     {
         $this->pwaPage->openResource($application, $resource);
     }
 
-    /**
-     * @Given the panel with id ":id" should be open
-     */
+    #[Given('the panel with id ":id" should be open')]
     public function thePanelWithIdShouldBeOpen(string $id): void
     {
         Assert::true($this->pwaPage->hasPimcoreTabWithId($id));

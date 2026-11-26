@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,17 +29,13 @@ final class CartPriceRuleVoucherCodeContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the generation of the codes failed$/
-     */
+    #[Then('/^the generation of the codes failed$/')]
     public function theGenerationOfTheCodesFailed(): void
     {
         Assert::false($this->sharedStorage->get('code-generation-possible'));
     }
 
-    /**
-     * @Then /^the generation of the codes succeeded/
-     */
+    #[Then('/^the generation of the codes succeeded/')]
     public function theGenerationOfTheCodesSucceeded(): void
     {
         Assert::true($this->sharedStorage->get('code-generation-possible'));

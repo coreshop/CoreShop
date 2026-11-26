@@ -19,6 +19,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Step\Given;
 use Carbon\Carbon;
 use CoreShop\Bundle\CoreBundle\Form\Type\Payment\Rule\Action\AdditionAmountActionConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Payment\Rule\Action\DiscountAmountActionConfigurationType;
@@ -81,10 +82,8 @@ final class PaymentContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^There is a payment provider "([^"]+)" using factory "([^"]+)"$/
-     * @Given /^the site has a payment provider "([^"]+)" using factory "([^"]+)"$/
-     */
+    #[Given('/^There is a payment provider "([^"]+)" using factory "([^"]+)"$/')]
+    #[Given('/^the site has a payment provider "([^"]+)" using factory "([^"]+)"$/')]
     public function thereIsAPaymentProviderUsingFactory($name, $factory): void
     {
         /**
@@ -114,10 +113,8 @@ final class PaymentContext implements Context
         $this->sharedStorage->set('payment-provider', $paymentProvider);
     }
 
-    /**
-     * @Given /^I create a payment for (my order) with (payment provider "[^"]+") and amount ([^"]+)$/
-     * @Given /^I create a payment for (my order) with (payment provider "[^"]+")$/
-     */
+    #[Given('/^I create a payment for (my order) with (payment provider "[^"]+") and amount ([^"]+)$/')]
+    #[Given('/^I create a payment for (my order) with (payment provider "[^"]+")$/')]
     public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount = null): void
     {
         /**
@@ -139,9 +136,7 @@ final class PaymentContext implements Context
         $this->sharedStorage->set('orderPayment', $payment);
     }
 
-    /**
-     * @Given /^There is a payment provider "([^"]*)"$/
-     */
+    #[Given('/^There is a payment provider "([^"]*)"$/')]
     public function thereIsAPaymentProvider($arg1)
     {
         throw new PendingException();
@@ -196,9 +191,7 @@ final class PaymentContext implements Context
         $this->sharedStorage->set('paymentProvider', $paymentProvider);
     }
 
-    /**
-     * @Given /^adding a payment-provider-rule named "([^"]+)"$/
-     */
+    #[Given('/^adding a payment-provider-rule named "([^"]+)"$/')]
     public function addingAPaymentProviderRule($ruleName): void
     {
         /**
@@ -213,10 +206,8 @@ final class PaymentContext implements Context
         $this->sharedStorage->set('payment-provider-rule', $rule);
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") is active$/
-     * @Given /^the (payment-provider-rule) is active$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") is active$/')]
+    #[Given('/^the (payment-provider-rule) is active$/')]
     public function thePaymentProviderRuleIsActive(PaymentProviderRuleInterface $rule): void
     {
         $rule->setActive(true);
@@ -224,10 +215,8 @@ final class PaymentContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") is inactive$/
-     * @Given /^the (payment-provider-rule) is inactive$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") is inactive$/')]
+    #[Given('/^the (payment-provider-rule) is inactive$/')]
     public function thePaymentProviderRuleIsInActive(PaymentProviderRuleInterface $rule): void
     {
         $rule->setActive(false);
@@ -236,10 +225,8 @@ final class PaymentContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") belongs to (payment provider "[^"]+")$/
-     * @Given /^the (payment-provider-rule) belongs to (payment provider "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") belongs to (payment provider "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) belongs to (payment provider "[^"]+")$/')]
     public function addingPaymentProviderRule(PaymentProviderRuleInterface $paymentProviderRule, PaymentProviderInterface $paymentProvider): void
     {
         /**
@@ -257,10 +244,8 @@ final class PaymentContext implements Context
         $this->savePaymentProvider($paymentProvider);
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)"$/
-     * @Given /^the (payment-provider-rule) has a condition amount from "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)"$/')]
+    #[Given('/^the (payment-provider-rule) has a condition amount from "([^"]+)" to "([^"]+)"$/')]
     public function thePaymentProviderRuleHasAAmountCondition(PaymentProviderRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -272,10 +257,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)" which is net$/
-     * @Given /^the (payment-provider-rule) has a condition amount from "([^"]+)" to "([^"]+)" which is net$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)" which is net$/')]
+    #[Given('/^the (payment-provider-rule) has a condition amount from "([^"]+)" to "([^"]+)" which is net$/')]
     public function thePaymentProviderRuleHasAAmountConditionWhichIsNet(PaymentProviderRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -287,10 +270,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)"$/
-     * @Given /^the (payment-provider-rule) has a condition amount from total "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)"$/')]
+    #[Given('/^the (payment-provider-rule) has a condition amount from total "([^"]+)" to "([^"]+)"$/')]
     public function thePaymentProviderRuleHasAAmountFromTotalCondition(PaymentProviderRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -303,10 +284,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/
-     * @Given /^the (payment-provider-rule) has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/')]
+    #[Given('/^the (payment-provider-rule) has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/')]
     public function thePaymentProviderRuleHasAAmountFromTotalConditionWhichIsNet(PaymentProviderRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -319,10 +298,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition categories with (category "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition categories with (category "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition categories with (category "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition categories with (category "[^"]+")$/')]
     public function thePaymentProviderRuleHasACategoriesCondition(PaymentProviderRuleInterface $rule, CategoryInterface $category): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -332,10 +309,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/
-     * @Given /^the (payment-provider-rule) has a condition categories with (category "[^"]+") and it is recursive$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/')]
+    #[Given('/^the (payment-provider-rule) has a condition categories with (category "[^"]+") and it is recursive$/')]
     public function thePaymentProviderRuleHasACategoriesConditionAndItIsRecursive(PaymentProviderRuleInterface $rule, CategoryInterface $category): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -346,10 +321,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition categories with (categories "[^"]+", "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition categories with (categories "[^"]+", "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition categories with (categories "[^"]+", "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition categories with (categories "[^"]+", "[^"]+")$/')]
     public function thePaymentProviderRuleHasACategoriesConditionWithTwoCategories(PaymentProviderRuleInterface $rule, array $categories): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -361,10 +334,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition products with (product "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition products with (product "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition products with (product "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition products with (product "[^"]+")$/')]
     public function thepaymentProviderRuleHasAProductsCondition(PaymentProviderRuleInterface $rule, ProductInterface $product): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -375,10 +346,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
-     * @Given /^the (payment-provider-rule) has a condition products with (product "[^"]+") which includes variants$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/')]
+    #[Given('/^the (payment-provider-rule) has a condition products with (product "[^"]+") which includes variants$/')]
     public function thePaymentProviderRuleHasAProductsWithVariantsCondition(PaymentProviderRuleInterface $rule, ProductInterface $product): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -389,10 +358,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition products with (products "[^"]+", "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition products with (products "[^"]+", "[^"]+")$/')]
     public function thePaymentProviderRuleHasAProductsConditionWithTwoProducts(PaymentProviderRuleInterface $rule, array $products): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -405,10 +372,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+") which includes variants$/
-     * @Given /^the (payment-provider-rule) has a condition products with (products "[^"]+", "[^"]+") which includes variants$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+") which includes variants$/')]
+    #[Given('/^the (payment-provider-rule) has a condition products with (products "[^"]+", "[^"]+") which includes variants$/')]
     public function thePaymentProviderRuleHasAProductsConditionWithTwoProductsWithVariants(PaymentProviderRuleInterface $rule, array $products): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -421,10 +386,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition countries with (country "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition countries with (country "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition countries with (country "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition countries with (country "[^"]+")$/')]
     public function thePaymentProviderRuleHasACountriesCondition(PaymentProviderRuleInterface $rule, CountryInterface $country): void
     {
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
@@ -434,10 +397,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition customers with (customer "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition customers with (customer "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition customers with (customer "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition customers with (customer "[^"]+")$/')]
     public function thePaymentProviderRuleHasACustomersCondition(PaymentProviderRuleInterface $rule, CustomerInterface $customer): void
     {
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
@@ -447,10 +408,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition customer-groups with (customer-group "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition customer-groups with (customer-group "[^"]+")$/')]
     public function thePaymentProviderRuleHasACustomerGroupsCondition(PaymentProviderRuleInterface $rule, CustomerGroupInterface $customerGroup): void
     {
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
@@ -460,10 +419,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition guest$/
-     * @Given /^the (payment-provider-rule) has a condition guest$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition guest$/')]
+    #[Given('/^the (payment-provider-rule) has a condition guest$/')]
     public function thePaymentProviderRuleHasAGuestCondition(PaymentProviderRuleInterface $rule): void
     {
         $this->assertConditionForm(EmptyConfigurationFormType::class, 'guest');
@@ -471,10 +428,8 @@ final class PaymentContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('guest', []));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition zones with (zone "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition zones with (zone "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition zones with (zone "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition zones with (zone "[^"]+")$/')]
     public function thePaymentProviderRuleHasAZonesCondition(PaymentProviderRuleInterface $rule, ZoneInterface $zone): void
     {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
@@ -484,10 +439,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition stores with (store "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition stores with (store "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition stores with (store "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition stores with (store "[^"]+")$/')]
     public function thePaymentProviderRuleHasAStoresCondition(PaymentProviderRuleInterface $rule, StoreInterface $store): void
     {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
@@ -497,10 +450,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition currencies with (currency "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition currencies with (currency "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition currencies with (currency "[^"]+")$/')]
     public function thePaymentProviderRuleHasACurrenciesCondition(PaymentProviderRuleInterface $rule, CurrencyInterface $currency): void
     {
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
@@ -510,10 +461,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a action price of ([^"]+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a action price of ([^"]+) in (currency "[^"]+")$/')]
     public function thePaymentProviderRuleHasAPriceAction(PaymentProviderRuleInterface $rule, $price, CurrencyInterface $currency): void
     {
         $this->assertActionForm(PriceActionConfigurationType::class, 'price');
@@ -523,10 +472,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a condition carriers with (carrier "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a condition carriers with (carrier "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a condition carriers with (carrier "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a condition carriers with (carrier "[^"]+")$/')]
     public function thePaymentProviderRuleHasACarriersCondition(PaymentProviderRuleInterface $rule, CarrierInterface $carrier): void
     {
         $this->assertConditionForm(CarriersConfigurationType::class, 'carriers');
@@ -536,10 +483,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a action additional-amount of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a action additional-amount of ([^"]+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a action additional-amount of ([^"]+) in (currency "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a action additional-amount of ([^"]+) in (currency "[^"]+")$/')]
     public function thePaymentProviderRuleHasAAdditionalAmountAction(PaymentProviderRuleInterface $rule, $amount, CurrencyInterface $currency): void
     {
         $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
@@ -550,10 +495,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a action additional-percent of ([^"]+)%$/
-     * @Given /^the (payment-provider-rule) has a action additional-percent of ([^"]+)%$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a action additional-percent of ([^"]+)%$/')]
+    #[Given('/^the (payment-provider-rule) has a action additional-percent of ([^"]+)%$/')]
     public function thePaymentProviderRuleHasAAdditionalPercentAction(PaymentProviderRuleInterface $rule, $amount): void
     {
         $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
@@ -563,10 +506,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a action discount-amount of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (payment-provider-rule) has a action discount-amount of ([^"]+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a action discount-amount of ([^"]+) in (currency "[^"]+")$/')]
+    #[Given('/^the (payment-provider-rule) has a action discount-amount of ([^"]+) in (currency "[^"]+")$/')]
     public function thePaymentProviderRuleHasADiscountAmountAction(PaymentProviderRuleInterface $rule, $amount, CurrencyInterface $currency): void
     {
         $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
@@ -577,10 +518,8 @@ final class PaymentContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (payment-provider-rule "[^"]+") has a action discount-percent of ([^"]+)%$/
-     * @Given /^the (payment-provider-rule) has a action discount-percent of ([^"]+)%$/
-     */
+    #[Given('/^the (payment-provider-rule "[^"]+") has a action discount-percent of ([^"]+)%$/')]
+    #[Given('/^the (payment-provider-rule) has a action discount-percent of ([^"]+)%$/')]
     public function thePaymentProviderRuleHasADiscountPercentAction(PaymentProviderRuleInterface $rule, $amount): void
     {
         $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');

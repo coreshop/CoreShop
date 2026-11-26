@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Hook;
 
+use Behat\Hook\BeforeScenario;
 use CoreShop\Bundle\TestBundle\Context\Hook\PimcoreDaoContext as BasePimcoreDaoContext;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -34,9 +35,7 @@ final class PimcoreDaoContext extends BasePimcoreDaoContext
         parent::__construct($this->kernel, $this->connection);
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeSlugs(): void
     {
         Cache::clearAll();
@@ -46,9 +45,7 @@ final class PimcoreDaoContext extends BasePimcoreDaoContext
         $this->connection->executeQuery('DELETE FROM object_url_slugs');
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeObjects(): void
     {
         Cache::clearAll();

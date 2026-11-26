@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject\Concrete;
@@ -30,9 +31,7 @@ final class CacheContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the (product "[^"]+") is cached with key "([^"]+)"$/
-     */
+    #[Given('/^the (product "[^"]+") is cached with key "([^"]+)"$/')]
     public function iCacheObjectWithKey(mixed $object, string $key): void
     {
         if ($object instanceof Concrete) {
@@ -45,9 +44,7 @@ final class CacheContext implements Context
         $this->sharedStorage->set('cache_key', $key);
     }
 
-    /**
-     * @Given /^I restore the object from the cache$/
-     */
+    #[Given('/^I restore the object from the cache$/')]
     public function iRestoreTheObjectFromTheCache(): void
     {
         $cacheItem = Cache::getHandler()->getItem($this->sharedStorage->get('cache_key'));
@@ -57,9 +54,7 @@ final class CacheContext implements Context
         $this->sharedStorage->set('cache_item', $cacheItem);
     }
 
-    /**
-     * @Given /^I restore the object with Pimcore Cache Helper/
-     */
+    #[Given('/^I restore the object with Pimcore Cache Helper/')]
     public function iRestoreTheObjectWithPimcoreCacheHelper(): void
     {
         $obj = Cache::getHandler()->load($this->sharedStorage->get('cache_key'));

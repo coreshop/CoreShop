@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
@@ -30,9 +31,7 @@ final class CategoryContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be a category "([^"]+)"$/
-     */
+    #[Then('/^there should be a category "([^"]+)"$/')]
     public function thereShouldBeACategoryNamed($name): void
     {
         $categories = $this->categoryRepository->findBy(['name' => $name]);
@@ -44,9 +43,7 @@ final class CategoryContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (category "[^"]+") should be child of (category "[^"]+")$/
-     */
+    #[Then('/^the (category "[^"]+") should be child of (category "[^"]+")$/')]
     public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent): void
     {
         Assert::eq(
@@ -56,9 +53,7 @@ final class CategoryContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should be in (category "[^"]+")$/
-     */
+    #[Then('/^the (product "[^"]+") should be in (category "[^"]+")$/')]
     public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category): void
     {
         Assert::oneOf($category, $product->getCategories());

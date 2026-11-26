@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -31,9 +32,7 @@ final class IndexContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^index "([^"]+)"$/
-     */
+    #[Transform('/^index "([^"]+)"$/')]
     public function getIndexByName($name): IndexInterface
     {
         /**
@@ -50,9 +49,7 @@ final class IndexContext implements Context
         return reset($indexes);
     }
 
-    /**
-     * @Transform /^index$/
-     */
+    #[Transform('/^index$/')]
     public function index(): IndexInterface
     {
         return $this->sharedStorage->get('index');

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\Document;
 use Webmozart\Assert\Assert;
@@ -29,9 +30,7 @@ final class DocumentContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^document "([^"]+)"$/
-     */
+    #[Transform('/^document "([^"]+)"$/')]
     public function getDocumentByFullPath(string $fullPath): Document
     {
         $document = Document::getByPath($fullPath);
@@ -41,9 +40,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-page "([^"]+)"$/
-     */
+    #[Transform('/^document-page "([^"]+)"$/')]
     public function getDocumentPageByFullPath(string $fullPath): Document\Page
     {
         $document = Document\Page::getByPath($fullPath);
@@ -53,9 +50,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-page-snippet "([^"]+)"$/
-     */
+    #[Transform('/^document-page-snippet "([^"]+)"$/')]
     public function getDocumentPageSnippetByFullPath(string $fullPath): Document\PageSnippet
     {
         $document = Document\PageSnippet::getByPath($fullPath);
@@ -65,9 +60,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-snippet "([^"]+)"$/
-     */
+    #[Transform('/^document-snippet "([^"]+)"$/')]
     public function getDocumentSnippetByFullPath(string $fullPath): Document\Snippet
     {
         $document = Document\Snippet::getByPath($fullPath);
@@ -77,9 +70,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-link "([^"]+)"$/
-     */
+    #[Transform('/^document-link "([^"]+)"$/')]
     public function getDocumentLinkByFullPath(string $fullPath): Document\Link
     {
         $document = Document\Link::getByPath($fullPath);
@@ -89,9 +80,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-hardlink "([^"]+)"$/
-     */
+    #[Transform('/^document-hardlink "([^"]+)"$/')]
     public function getDocumentHardlinkByFullPath(string $fullPath): Document\Hardlink
     {
         $document = Document\Hardlink::getByPath($fullPath);
@@ -101,9 +90,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-folder "([^"]+)"$/
-     */
+    #[Transform('/^document-folder "([^"]+)"$/')]
     public function getDocumentFolderByFullPath(string $fullPath): Document\Folder
     {
         $document = Document\Folder::getByPath($fullPath);
@@ -113,9 +100,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-email "([^"]+)"$/
-     */
+    #[Transform('/^document-email "([^"]+)"$/')]
     public function getDocumentEmailByFullPath(string $fullPath): Document\Email
     {
         $document = Document\Email::getByPath($fullPath);
@@ -125,9 +110,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document/
-     */
+    #[Transform('/^document/')]
     public function document(): Document
     {
         $document = $this->sharedStorage->get('document');
@@ -137,9 +120,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-page-snippet/
-     */
+    #[Transform('/^document-page-snippet/')]
     public function documentPageSnippet(): Document\PageSnippet
     {
         $document = $this->sharedStorage->get('document');
@@ -149,9 +130,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-snippet/
-     */
+    #[Transform('/^document-snippet/')]
     public function documentSnippet(): Document\Snippet
     {
         $document = $this->sharedStorage->get('document');
@@ -161,9 +140,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-page/
-     */
+    #[Transform('/^document-page/')]
     public function documentPage(): Document\Page
     {
         $document = $this->sharedStorage->get('document');
@@ -173,9 +150,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-link/
-     */
+    #[Transform('/^document-link/')]
     public function documentLink(): Document\Link
     {
         $document = $this->sharedStorage->get('document');
@@ -185,9 +160,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-hardlink/
-     */
+    #[Transform('/^document-hardlink/')]
     public function documentHardLink(): Document\Hardlink
     {
         $document = $this->sharedStorage->get('document');
@@ -197,9 +170,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-folder/
-     */
+    #[Transform('/^document-folder/')]
     public function documentFolder(): Document\Folder
     {
         $document = $this->sharedStorage->get('document');
@@ -209,9 +180,7 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Transform /^document-email/
-     */
+    #[Transform('/^document-email/')]
     public function documentEmail(): Document\Email
     {
         $document = $this->sharedStorage->get('document');

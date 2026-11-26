@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\Then;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Context\FixedCountryContext;
 use CoreShop\Component\Address\Model\ZoneInterface;
@@ -41,10 +43,8 @@ final class CountryContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the (country "[^"]+") is valid for (store "[^"]+")$/
-     * @Given /^the (country) is valid for (store "[^"]+")$/
-     */
+    #[Given('/^the (country "[^"]+") is valid for (store "[^"]+")$/')]
+    #[Given('/^the (country) is valid for (store "[^"]+")$/')]
     public function currencyIsValidForStore(CountryInterface $country, StoreInterface $store): void
     {
         $store->addCountry($country);
@@ -53,9 +53,7 @@ final class CountryContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (country "[^"]+") is invalid for (store "[^"]+")$/
-     */
+    #[Given('/^the (country "[^"]+") is invalid for (store "[^"]+")$/')]
     public function currencyIsInValidForStore(CountryInterface $country, StoreInterface $store): void
     {
         $store->removeCountry($country);
@@ -64,17 +62,13 @@ final class CountryContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the site has a country "([^"]+)" with (currency "[^"]+")$/
-     */
+    #[Given('/^the site has a country "([^"]+)" with (currency "[^"]+")$/')]
     public function theSiteHasACountry($name, CurrencyInterface $currency): void
     {
         $this->createCountry($name, $currency);
     }
 
-    /**
-     * @Then /^the (country "[^"]+") is in (zone "[^"]+")$/
-     */
+    #[Then('/^the (country "[^"]+") is in (zone "[^"]+")$/')]
     public function theCountryIsInZone(CountryInterface $country, ZoneInterface $zone): void
     {
         $country->setZone($zone);
@@ -82,9 +76,7 @@ final class CountryContext implements Context
         $this->saveCountry($country);
     }
 
-    /**
-     * @Then /^the (country "[^"]+") is active$/
-     */
+    #[Then('/^the (country "[^"]+") is active$/')]
     public function theCountryIsActive(CountryInterface $country): void
     {
         $country->setActive(true);
@@ -92,18 +84,14 @@ final class CountryContext implements Context
         $this->saveCountry($country);
     }
 
-    /**
-     * @Given /^I am in (country "[^"]+")$/
-     */
+    #[Given('/^I am in (country "[^"]+")$/')]
     public function iAmInCountry(CountryInterface $country): void
     {
         $this->fixedCountryContext->setCountry($country);
     }
 
-    /**
-     * @Given /^the (countries) address format is "(.*)"$/
-     * @Given /^the (countries "[^"]+") address format is "(.*)"$/
-     */
+    #[Given('/^the (countries) address format is "(.*)"$/')]
+    #[Given('/^the (countries "[^"]+") address format is "(.*)"$/')]
     public function theCountriesAddressFormatIs(CountryInterface $country, $format): void
     {
         $country->setAddressFormat(str_replace("'", '"', $format));
@@ -111,9 +99,7 @@ final class CountryContext implements Context
         $this->saveCountry($country);
     }
 
-    /**
-     * @Given /^I downloaded the GeoLite2 DB$/
-     */
+    #[Given('/^I downloaded the GeoLite2 DB$/')]
     public function iDownloadedTheGeoLite2DB(): void
     {
         $process = new Process(

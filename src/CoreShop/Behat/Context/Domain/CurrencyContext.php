@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
@@ -34,9 +35,7 @@ final class CurrencyContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the site should be using (currency "[^"]+")$/
-     */
+    #[Then('/^the site should be using (currency "[^"]+")$/')]
     public function theSiteShouldBeUsingCurrency(CurrencyInterface $currency): void
     {
         Assert::same(
@@ -50,9 +49,7 @@ final class CurrencyContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (store "[^"]+") should have "([^"]+)" currencies$/
-     */
+    #[Then('/^the (store "[^"]+") should have "([^"]+)" currencies$/')]
     public function theStoreShouldHaveXCurrencies(StoreInterface $store, $countOfCurrencies): void
     {
         $validCurrencies = $this->currencyRepository->findActiveForStore($store);
@@ -68,9 +65,7 @@ final class CurrencyContext implements Context
         );
     }
 
-    /**
-     * @Then /^the amount "([^"]+)" of (currency "[^"]+") in language "([^"]+)" should be formatted "([^"]+)"$/
-     */
+    #[Then('/^the amount "([^"]+)" of (currency "[^"]+") in language "([^"]+)" should be formatted "([^"]+)"$/')]
     public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat): void
     {
         $format = $this->moneyFormatter->format((int) $amount, $currency->getIsoCode(), $locale);

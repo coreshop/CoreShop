@@ -19,6 +19,9 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Step\Given;
+use Behat\Step\Then;
+use Behat\Step\When;
 use CoreShop\Bundle\IndexBundle\Form\Type\IndexType;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
@@ -52,27 +55,21 @@ final class IndexContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a index "([^"]+)" for (class "[^"]+") with type "([^"]+)"$/
-     * @Given /^the site has a index "([^"]+)" for (behat-class "[^"]+") with type "([^"]+)"$/
-     */
+    #[Given('/^the site has a index "([^"]+)" for (class "[^"]+") with type "([^"]+)"$/')]
+    #[Given('/^the site has a index "([^"]+)" for (behat-class "[^"]+") with type "([^"]+)"$/')]
     public function theSiteHasAIndexForClassWithType($name, ClassDefinition $class, $type): void
     {
         $this->createIndex($name, $class->getName(), $type);
     }
 
-    /**
-     * @Given /the (index) allows version changes$/
-     */
+    #[Given('/the (index) allows version changes$/')]
     public function theIndexAllowsVersionChanges(IndexInterface $index): void
     {
         $index->setIndexLastVersion(true);
         $this->saveIndex($index);
     }
 
-    /**
-     * @Given /the (index) has following fields:/
-     */
+    #[Given('/the (index) has following fields:/')]
     public function theIndexHasFollowingFields(IndexInterface $index, TableNode $table): void
     {
         $hash = $table->getHash();
@@ -124,17 +121,14 @@ final class IndexContext implements Context
 
     /**
      * Submits the index form the way the Studio index editor does: columns as a plain list.
-     *
-     * @Given /^I save the (index) with following columns:$/
      */
+    #[Given('/^I save the (index) with following columns:$/')]
     public function iSaveTheIndexWithFollowingColumns(IndexInterface $index, TableNode $table): void
     {
         $this->submitIndexForm($index, $this->getColumnsPayloadFromTable($table), true);
     }
 
-    /**
-     * @When /^I try to save the (index) with following columns:$/
-     */
+    #[When('/^I try to save the (index) with following columns:$/')]
     public function iTryToSaveTheIndexWithFollowingColumns(IndexInterface $index, TableNode $table): void
     {
         $this->submitIndexForm($index, $this->getColumnsPayloadFromTable($table), false);
@@ -142,9 +136,8 @@ final class IndexContext implements Context
 
     /**
      * Loads the index like the resource controller does and submits its columns unchanged.
-     *
-     * @When /^I save the (index) again without changes$/
      */
+    #[When('/^I save the (index) again without changes$/')]
     public function iSaveTheIndexAgainWithoutChanges(IndexInterface $index): void
     {
         $index = $this->reloadIndex($index);
@@ -175,9 +168,7 @@ final class IndexContext implements Context
         $this->submitIndexForm($index, $columns, true);
     }
 
-    /**
-     * @Given /the (index) has an index for columns "([^"]+)"/
-     */
+    #[Given('/the (index) has an index for columns "([^"]+)"/')]
     public function theIndexHasAnIndexForColumn(IndexInterface $index, $columns): void
     {
         $tableIndex = new TableIndex();
@@ -187,9 +178,7 @@ final class IndexContext implements Context
         $this->addIndexToIndex($index, $tableIndex);
     }
 
-    /**
-     * @Given /the (index) has an localized index for columns "([^"]+)"/
-     */
+    #[Given('/the (index) has an localized index for columns "([^"]+)"/')]
     public function theIndexHasAnLocalizedIndexForColumn(IndexInterface $index, $columns): void
     {
         $tableIndex = new TableIndex();
@@ -346,9 +335,7 @@ final class IndexContext implements Context
         return $reloaded;
     }
 
-    /**
-     * @Then /I generate (index "[^"]+") for products$/
-     */
+    #[Then('/I generate (index "[^"]+") for products$/')]
     public function iGenerateIndex(IndexInterface $index)
     {
         $class = $index->getClass();

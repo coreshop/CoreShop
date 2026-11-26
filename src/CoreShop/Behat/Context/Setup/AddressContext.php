@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
@@ -32,9 +33,7 @@ final class AddressContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^there is an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
-     */
+    #[Given('/^there is an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/')]
     public function thereIsAnAddress(CountryInterface $country, $postcode, $city, $street, $nr): void
     {
         $this->createAddress($country, $postcode, $city, $street, $nr);

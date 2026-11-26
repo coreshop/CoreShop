@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\Then;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
@@ -40,9 +42,7 @@ final class CustomerContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a customer "([^"]+)"$/
-     */
+    #[Given('/^the site has a customer "([^"]+)"$/')]
     public function theSiteHasACustomer(string $email, bool $isGuest = false): void
     {
         $customer = $this->createCustomer($email, $isGuest);
@@ -50,9 +50,7 @@ final class CustomerContext implements Context
         $this->saveCustomer($customer);
     }
 
-    /**
-     * @Given /^the site has a guest "([^"]+)"$/
-     */
+    #[Given('/^the site has a guest "([^"]+)"$/')]
     public function theSiteHasAGuest(string $email): void
     {
         $customer = $this->createCustomer($email, true);
@@ -60,10 +58,8 @@ final class CustomerContext implements Context
         $this->saveCustomer($customer);
     }
 
-    /**
-     * @Given /^the site has a customer "([^"]+)" with password "([^"]+)"$/
-     * @Given /^the site has a customer "([^"]+)" with password "([^"]+)" and name "([^"]+)" "([^"]+)"$/
-     */
+    #[Given('/^the site has a customer "([^"]+)" with password "([^"]+)"$/')]
+    #[Given('/^the site has a customer "([^"]+)" with password "([^"]+)" and name "([^"]+)" "([^"]+)"$/')]
     public function theSiteHasACustomerWithPassword(string $email, string $password, ?string $firstname = null, ?string $lastname = null): void
     {
         $customer = $this->createCustomer($email);
@@ -81,18 +77,14 @@ final class CustomerContext implements Context
         $this->saveCustomer($customer);
     }
 
-    /**
-     * @Then /^the (customer "[^"]+") was deleted$/
-     */
+    #[Then('/^the (customer "[^"]+") was deleted$/')]
     public function accountWasDeleted(CustomerInterface $customer): void
     {
         $customer->delete();
     }
 
-    /**
-     * @Then /^the (customer "[^"]+") is in (customer-group "[^"]+")$/
-     * @Then /^([^"]+) is in (customer-group "[^"]+")$/
-     */
+    #[Then('/^the (customer "[^"]+") is in (customer-group "[^"]+")$/')]
+    #[Then('/^([^"]+) is in (customer-group "[^"]+")$/')]
     public function theCustomerIsInGroup(CustomerInterface $customer, CustomerGroupInterface $group): void
     {
         $customer->setCustomerGroups([$group]);
@@ -100,26 +92,20 @@ final class CustomerContext implements Context
         $this->saveCustomer($customer);
     }
 
-    /**
-     * @Given /^I am (customer "[^"]+")$/
-     */
+    #[Given('/^I am (customer "[^"]+")$/')]
     public function iAmCustomer(CustomerInterface $customer): void
     {
         $this->fixedCustomerContext->setCustomer($customer);
     }
 
-    /**
-     * @Given /^I am (guest "[^"]+")$/
-     */
+    #[Given('/^I am (guest "[^"]+")$/')]
     public function iAmGuest(CustomerInterface $customer): void
     {
         $this->fixedCustomerContext->setCustomer($customer);
     }
 
-    /**
-     * @Given /^the (customer "[^"]+") has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
-     * @Given /^the (customer) has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
-     */
+    #[Given('/^the (customer "[^"]+") has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/')]
+    #[Given('/^the (customer) has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/')]
     public function theCustomerHasAnAddress(
         CustomerInterface $customer,
         CountryInterface $country,
@@ -148,10 +134,8 @@ final class CustomerContext implements Context
         $this->sharedStorage->set('address', $address);
     }
 
-    /**
-     * @Then /^the (customer "[^"]+") address is (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
-     * @Then /^the (customer) address is (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
-     */
+    #[Then('/^the (customer "[^"]+") address is (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/')]
+    #[Then('/^the (customer) address is (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/')]
     public function theCustomersAddress(
         CustomerInterface $customer,
         CountryInterface $country,

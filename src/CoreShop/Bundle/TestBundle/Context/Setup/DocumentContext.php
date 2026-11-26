@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\Document;
 
@@ -28,9 +29,7 @@ final class DocumentContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^there is a document-page at path "([^"]+)" with key "([^"]+)"$/
-     */
+    #[Given('/^there is a document-page at path "([^"]+)" with key "([^"]+)"$/')]
     public function theSiteHasADocumentAtPath(string $path, string $key): void
     {
         $document = $this->createDocumentByType('page', $path, $key);
@@ -62,10 +61,8 @@ final class DocumentContext implements Context
         return $document;
     }
 
-    /**
-     * @Given /^the (documents) controller is "([^"]+)"$/
-     * @Given /^the (document "([^"]+)") controller is "([^"]+)"$/
-     */
+    #[Given('/^the (documents) controller is "([^"]+)"$/')]
+    #[Given('/^the (document "([^"]+)") controller is "([^"]+)"$/')]
     public function theDocumentsControllerIs(Document\PageSnippet $document, string $controller): void
     {
         $document->setController($controller);
@@ -73,10 +70,8 @@ final class DocumentContext implements Context
         $this->saveDocument($document);
     }
 
-    /**
-     * @Given /^the (documents) template is "([^"]+)"$/
-     * @Given /^the (document "([^"]+)") template is "([^"]+)"$/
-     */
+    #[Given('/^the (documents) template is "([^"]+)"$/')]
+    #[Given('/^the (document "([^"]+)") template is "([^"]+)"$/')]
     public function theDocumentsTemplateIs(Document\PageSnippet $document, string $template): void
     {
         $document->setTemplate($template);
@@ -84,10 +79,8 @@ final class DocumentContext implements Context
         $this->saveDocument($document);
     }
 
-    /**
-     * @Given /^the (documents) pretty-url is "([^"]+)"$/
-     * @Given /^the (document "([^"]+)") pretty-url is "([^"]+)"$/
-     */
+    #[Given('/^the (documents) pretty-url is "([^"]+)"$/')]
+    #[Given('/^the (document "([^"]+)") pretty-url is "([^"]+)"$/')]
     public function theDocumentsPrettyUrl(Document\Page $document, string $prettyUrl): void
     {
         $document->setPrettyUrl($prettyUrl);
@@ -95,10 +88,8 @@ final class DocumentContext implements Context
         $this->saveDocument($document);
     }
 
-    /**
-     * @Given /^the (document) has a editable with name "([^"]+)"), type "([^"]+)") and data "([^"]+)")$/
-     * @Given /^the (document "([^"]+)") has a editable with name "([^"]+)"), type "([^"]+)") and data "([^"]+)")$/
-     */
+    #[Given('/^the (document) has a editable with name "([^"]+)"), type "([^"]+)") and data "([^"]+)")$/')]
+    #[Given('/^the (document "([^"]+)") has a editable with name "([^"]+)"), type "([^"]+)") and data "([^"]+)")$/')]
     public function theDocumentHasEditable(Document\PageSnippet $document, string $name, string $type, string $data)
     {
         /**

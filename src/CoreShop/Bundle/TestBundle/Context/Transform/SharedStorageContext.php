@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\DataObject\Concrete;
 
@@ -28,33 +29,25 @@ final class SharedStorageContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^(it|its|theirs|them|he)$/
-     */
+    #[Transform('/^(it|its|theirs|them|he)$/')]
     public function getLatestResource(): mixed
     {
         return $this->sharedStorage->getLatestResource();
     }
 
-    /**
-     * @Transform /^(?:this|that|the) ([^"]+)$/
-     */
+    #[Transform('/^(?:this|that|the) ([^"]+)$/')]
     public function getResource(string $resource): mixed
     {
         return $this->sharedStorage->get(str_replace([' ', '-', '\''], '_', $resource));
     }
 
-    /**
-     * @Transform /^(object)$/
-     */
+    #[Transform('/^(object)$/')]
     public function getLatestObject(): ?object
     {
         return $this->getLatestResource() instanceof Concrete ? $this->getLatestResource() : null;
     }
 
-    /**
-     * @Transform /^(copied-object)$/
-     */
+    #[Transform('/^(copied-object)$/')]
     public function getCopiedObject(): ?object
     {
         return $this->sharedStorage->get('copied-object');

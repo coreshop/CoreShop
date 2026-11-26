@@ -18,6 +18,9 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\Then;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Frontend\ProductPageInterface;
 use CoreShop\Behat\Page\Frontend\WishlistPageInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
@@ -34,18 +37,14 @@ final class WishlistContext implements Context
     ) {
     }
 
-    /**
-     * @When I see the summary of my wishlist
-     */
+    #[When('I see the summary of my wishlist')]
     public function iOpenWishlistSummaryPage(): void
     {
         $this->wishlistPage->open();
     }
 
-    /**
-     * @Then my wishlist should be empty
-     * @Then wishlist should be empty with no value
-     */
+    #[Then('my wishlist should be empty')]
+    #[Then('wishlist should be empty with no value')]
     public function iShouldBeNotifiedThatMyWishlistIsEmpty(): void
     {
         $this->wishlistPage->open();
@@ -53,10 +52,8 @@ final class WishlistContext implements Context
         Assert::true($this->wishlistPage->isEmpty());
     }
 
-    /**
-     * @Given /^I add this (product) to the wishlist$/
-     * @Given /^I add (product "[^"]+") to the wishlist$/
-     */
+    #[Given('/^I add this (product) to the wishlist$/')]
+    #[Given('/^I add (product "[^"]+") to the wishlist$/')]
     public function iAddProductToTheWishlist(ProductInterface $product): void
     {
         $path = null;
@@ -71,44 +68,33 @@ final class WishlistContext implements Context
         $this->sharedStorage->set('product', $product);
     }
 
-    /**
-     * @Given I removed product :productName from the wishlist
-     *
-     * @When I remove product :productName from the wishlist
-     */
+    #[Given('I removed product :productName from the wishlist')]
+    #[When('I remove product :productName from the wishlist')]
     public function iRemoveProductFromTheWishlist(string $productName): void
     {
         $this->wishlistPage->open();
         $this->wishlistPage->removeProduct($productName);
     }
 
-    /**
-     * @Then /^I should be(?: on| redirected to) the wishlist summary page$/
-     */
+    #[Then('/^I should be(?: on| redirected to) the wishlist summary page$/')]
     public function shouldBeOnMyCartSummaryPage(): void
     {
         $this->wishlistPage->verify();
     }
 
-    /**
-     * @Then this wishlist item should have name :itemName
-     */
+    #[Then('this wishlist item should have name :itemName')]
     public function thisProductShouldHaveName($itemName): void
     {
         Assert::true($this->wishlistPage->hasItemNamed($itemName));
     }
 
-    /**
-     * @Then I can see the share wishlist link
-     */
+    #[Then('I can see the share wishlist link')]
     public function iCanSeeTheShareWishlistLink(): void
     {
         Assert::true($this->wishlistPage->hasShareWishlistLink());
     }
 
-    /**
-     * @Given I visit the share wishlist link
-     */
+    #[Given('I visit the share wishlist link')]
     public function iVisitTheShareWishlistLink(): void
     {
         $this->wishlistPage->open();

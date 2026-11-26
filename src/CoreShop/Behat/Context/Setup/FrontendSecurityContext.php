@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SecurityServiceInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\UserInterface;
@@ -38,9 +39,7 @@ final class FrontendSecurityContext implements Context
     ) {
     }
 
-    /**
-     * @Given I am logged in as :email
-     */
+    #[Given('I am logged in as :email')]
     public function iAmLoggedInAs($email): void
     {
         $user = $this->userRepository->findByLoginIdentifier($email);
@@ -49,9 +48,7 @@ final class FrontendSecurityContext implements Context
         $this->securityService->logIn($user);
     }
 
-    /**
-     * @Given I am a logged in customer
-     */
+    #[Given('I am a logged in customer')]
     public function iAmLoggedInCustomer(): void
     {
         $customer = $this->customerFactory->createNew();

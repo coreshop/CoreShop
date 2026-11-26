@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListenerInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class NotificationContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the notification rule for "([^"]+)" should have been fired$/
-     */
+    #[Then('/^the notification rule for "([^"]+)" should have been fired$/')]
     public function thereShouldBeOneProductInTheOrder($type): void
     {
         Assert::true(

@@ -19,6 +19,7 @@ namespace CoreShop\Bundle\TestBundle\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate;
@@ -40,9 +41,7 @@ class ClassContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^I enable inheritance for class "([^"]+)"$/
-     */
+    #[Given('/^I enable inheritance for class "([^"]+)"$/')]
     public function iEnableInheritanceForPimcoreClass($className): void
     {
         $definitionUpdater = new ClassUpdate($className);
@@ -50,9 +49,7 @@ class ClassContext implements Context
         $definitionUpdater->save();
     }
 
-    /**
-     * @Given /^I enable variants for class "([^"]+)"$/
-     */
+    #[Given('/^I enable variants for class "([^"]+)"$/')]
     public function iEnableVariantsForPimcoreClass($className): void
     {
         $definitionUpdater = new ClassUpdate($className);
@@ -60,25 +57,19 @@ class ClassContext implements Context
         $definitionUpdater->save();
     }
 
-    /**
-     * @Given /^I enable pimcore inheritance$/
-     */
+    #[Given('/^I enable pimcore inheritance$/')]
     public function enableInheritance(): void
     {
         DataObject\AbstractObject::setGetInheritedValues(true);
     }
 
-    /**
-     * @Given /^I disable pimcore inheritance$/
-     */
+    #[Given('/^I disable pimcore inheritance$/')]
     public function disableInheritance(): void
     {
         DataObject\AbstractObject::setGetInheritedValues(false);
     }
 
-    /**
-     * @Given /^there is a pimcore class "([^"]+)"$/
-     */
+    #[Given('/^there is a pimcore class "([^"]+)"$/')]
     public function createClassNamed($className): void
     {
         $name = $this->classStorage->set($className);
@@ -162,9 +153,7 @@ class ClassContext implements Context
         $this->sharedStorage->set('pimcore_definition_class', $classDefinition::class);
     }
 
-    /**
-     * @Given /^there is a pimcore brick "([^"]+)"$/
-     */
+    #[Given('/^there is a pimcore brick "([^"]+)"$/')]
     public function createBrickNamed($brickName): void
     {
         $name = $this->classStorage->set($brickName);
@@ -222,9 +211,7 @@ class ClassContext implements Context
         $this->sharedStorage->set('pimcore_definition_class', $brickDefinition::class);
     }
 
-    /**
-     * @Given /^there is a pimcore field-collection "([^"]+)"$/
-     */
+    #[Given('/^there is a pimcore field-collection "([^"]+)"$/')]
     public function createCollectionNamed($collection): void
     {
         $name = $this->classStorage->set($collection);
@@ -280,9 +267,7 @@ class ClassContext implements Context
         $this->sharedStorage->set('pimcore_definition_class', $collectionDefinition::class);
     }
 
-    /**
-     * @Given /^the (definitions) parent class is set to "([^"]+)"$/
-     */
+    #[Given('/^the (definitions) parent class is set to "([^"]+)"$/')]
     public function definitionsParentClassIsSetTo($definition, $parentClass): void
     {
         $definitionUpdater = $this->getUpdater($definition);
@@ -290,9 +275,7 @@ class ClassContext implements Context
         $definitionUpdater->save();
     }
 
-    /**
-     * @Given /^the (definition) is allowed for (behat-class "[^"]+") in field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) is allowed for (behat-class "[^"]+") in field "([^"]+)"$/')]
     public function theDefinitionIsAllowedForClass($definition, ClassDefinition $class, $field): void
     {
         if (!$definition instanceof Objectbrick\Definition) {
@@ -309,9 +292,7 @@ class ClassContext implements Context
         $definitionUpdater->save();
     }
 
-    /**
-     * @Given /^the (definition) has a input field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) has a input field "([^"]+)"$/')]
     public function definitionHasInputField($definition, $name): void
     {
         $jsonDefinition = sprintf('
@@ -341,9 +322,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^the (definition) has a numeric field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) has a numeric field "([^"]+)"$/')]
     public function definitionHasNumberField($definition, $name): void
     {
         $jsonDefinition = sprintf('
@@ -382,9 +361,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^the (definition) has a numeric integer field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) has a numeric integer field "([^"]+)"$/')]
     public function definitionHasIntegerField($definition, $name): void
     {
         $jsonDefinition = sprintf('
@@ -423,9 +400,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^the (definition) has a relation field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) has a relation field "([^"]+)"$/')]
     public function definitionHasRelationField($definition, $name): void
     {
         $jsonDefinition = sprintf('
@@ -462,9 +437,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^the (definition) has a checkbox field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) has a checkbox field "([^"]+)"$/')]
     public function definitionHasCheckboxField($definition, $name): void
     {
         $jsonDefinition = sprintf('
@@ -492,9 +465,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^the (definition) has a localized input field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) has a localized input field "([^"]+)"$/')]
     public function definitionHasLocalizedInputField($definition, $name): void
     {
         $jsonDefinition = sprintf('
@@ -552,9 +523,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^the (definition) has a localized textarea field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) has a localized textarea field "([^"]+)"$/')]
     public function definitionHasLocalizedTextareaField($definition, $name): void
     {
         $jsonDefinition = sprintf('
@@ -610,9 +579,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^the (definition) has a brick field "([^"]+)"$/
-     */
+    #[Given('/^the (definition) has a brick field "([^"]+)"$/')]
     public function definitionHasABrickField($definition, $name): void
     {
         if (!$definition instanceof ClassDefinition) {
@@ -645,9 +612,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^the (definition) has a field-collection field "([^"]+)" for (field-collection "[^"]+")$/
-     */
+    #[Given('/^the (definition) has a field-collection field "([^"]+)" for (field-collection "[^"]+")$/')]
     public function definitionHasAFieldCollectionField($definition, $name, Fieldcollection\Definition $fieldCollectionDefinition): void
     {
         if (!$definition instanceof ClassDefinition) {
@@ -687,9 +652,7 @@ class ClassContext implements Context
         $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
     }
 
-    /**
-     * @Given /^there is an instance of (class|behat-class "[^"]+") with key "([^"]+)"$/
-     */
+    #[Given('/^there is an instance of (class|behat-class "[^"]+") with key "([^"]+)"$/')]
     public function thereIsAnInstanceofClassWithKey(ClassDefinition $definition, $key): void
     {
         /**
@@ -707,9 +670,7 @@ class ClassContext implements Context
         $this->sharedStorage->set('object-instance', $instance);
     }
 
-    /**
-     * @Given /^there are (\d+) instances of (class|behat-class "[^"]+") with key-prefix "([^"]+)"$/
-     */
+    #[Given('/^there are (\d+) instances of (class|behat-class "[^"]+") with key-prefix "([^"]+)"$/')]
     public function thereAreCountInstancesOfClassWithKey(int $count, ClassDefinition $definition, $key): void
     {
         /**
@@ -728,9 +689,7 @@ class ClassContext implements Context
         }
     }
 
-    /**
-     * @Given /^I reload the (object-instance) into object-instance-2$/
-     */
+    #[Given('/^I reload the (object-instance) into object-instance-2$/')]
     public function iReloadTheObjectInstanceIntoObjectInstance2(Concrete $dataObject): void
     {
         $newInstance = $dataObject::getById($dataObject->getId(), ['force' => true]);
@@ -738,38 +697,30 @@ class ClassContext implements Context
         $this->sharedStorage->set('object-instance-2', $newInstance);
     }
 
-    /**
-     * @Given /^the (object-instance) is published$/
-     */
+    #[Given('/^the (object-instance) is published$/')]
     public function theObjectInstanceIsPublished(Concrete $instance): void
     {
         $instance->setPublished(true);
         $instance->save();
     }
 
-    /**
-     * @Given /^the (object-instance) is not published$/
-     */
+    #[Given('/^the (object-instance) is not published$/')]
     public function theObjectInstanceIsNotPublished(Concrete $instance): void
     {
         $instance->setPublished(false);
         $instance->save();
     }
 
-    /**
-     * @Given /the (object-instance) has following values:/
-     * @Given /I change the (object-instance) values:/
-     * @Given /I change the (object-instance-2) values:/
-     */
+    #[Given('/the (object-instance) has following values:/')]
+    #[Given('/I change the (object-instance) values:/')]
+    #[Given('/I change the (object-instance-2) values:/')]
     public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table): void
     {
         $this->setObjectValuesFromTable($object, $table);
         $object->save();
     }
 
-    /**
-     * @Given /the (object-instance) has following values as version:/
-     */
+    #[Given('/the (object-instance) has following values as version:/')]
     public function theObjectInstanceHasFollowingValuesAsVersion(Concrete $object, TableNode $table): void
     {
         $this->setObjectValuesFromTable($object, $table);

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
@@ -29,9 +30,7 @@ final class LinkGeneratorContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the generated url for (object) should be "([^"]+)"/
-     */
+    #[Then('/^the generated url for (object) should be "([^"]+)"/')]
     public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url): void
     {
         $generatedUrl = $object->getClass()->getLinkGenerator()->generate($object, ['_locale' => 'en']);
@@ -47,9 +46,7 @@ final class LinkGeneratorContext implements Context
         );
     }
 
-    /**
-     * @Then /^the generated url for (object) with route "([^"]+)" should be "([^"]+)"/
-     */
+    #[Then('/^the generated url for (object) with route "([^"]+)" should be "([^"]+)"/')]
     public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url): void
     {
         $generatedUrl = $object->getClass()->getLinkGenerator()->generate($object, ['_locale' => 'en', 'route' => $routeName]);
@@ -65,9 +62,7 @@ final class LinkGeneratorContext implements Context
         );
     }
 
-    /**
-     * @Then /^the generated url for route "([^"]+)" should be "([^"]+)"/
-     */
+    #[Then('/^the generated url for route "([^"]+)" should be "([^"]+)"/')]
     public function theGeneratedUrlForRouteShouldBe($route, $url): void
     {
         $generatedUrl = $this->router->generate($route, ['_locale' => 'en']);

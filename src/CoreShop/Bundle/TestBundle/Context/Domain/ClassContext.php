@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -31,9 +32,7 @@ final class ClassContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be a pimcore class "([^"]+)"$/
-     */
+    #[Then('/^there should be a pimcore class "([^"]+)"$/')]
     public function thereShouldBeAPimcoreClass($name): void
     {
         $definition = ClassDefinition::getByName($this->classStorage->get($name));
@@ -44,9 +43,7 @@ final class ClassContext implements Context
         );
     }
 
-    /**
-     * @Then /^there should be a pimcore brick "([^"]+)"$/
-     */
+    #[Then('/^there should be a pimcore brick "([^"]+)"$/')]
     public function thereShouldBeAPimcoreBrick($name): void
     {
         $definition = Objectbrick\Definition::getByKey($this->classStorage->get($name));
@@ -57,9 +54,7 @@ final class ClassContext implements Context
         );
     }
 
-    /**
-     * @Then /^there should be a pimcore field-collection "([^"]+)"$/
-     */
+    #[Then('/^there should be a pimcore field-collection "([^"]+)"$/')]
     public function thereShouldBeAPimcoreCollection($name): void
     {
         $definition = Fieldcollection\Definition::getByKey($this->classStorage->get($name));
@@ -70,9 +65,7 @@ final class ClassContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (definition) should have a field named "([^"]+)"$/
-     */
+    #[Then('/^the (definition) should have a field named "([^"]+)"$/')]
     public function theDefinitionShouldHaveAField($definition, $name): void
     {
         if ($definition instanceof Objectbrick\Definition) {
@@ -94,9 +87,7 @@ final class ClassContext implements Context
         );
     }
 
-    /**
-     * @Then /^an instance of (definition) should implement "([^"]+)"$/
-     */
+    #[Then('/^an instance of (definition) should implement "([^"]+)"$/')]
     public function anInstanceofDefinitionShouldImplement($definition, $class): void
     {
         if ($definition instanceof ClassDefinition) {

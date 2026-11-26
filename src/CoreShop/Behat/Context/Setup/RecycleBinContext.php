@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use Pimcore\Model\DataObject;
@@ -32,10 +33,8 @@ final class RecycleBinContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^I recycle the (product "[^"]+")$/
-     * @Then /^I recycle the (product)$/
-     */
+    #[Then('/^I recycle the (product "[^"]+")$/')]
+    #[Then('/^I recycle the (product)$/')]
     public function IAddTheObjectToTheBin(Concrete $concrete): void
     {
         /**
@@ -53,10 +52,8 @@ final class RecycleBinContext implements Context
         );
     }
 
-    /**
-     * @Then /^I restore the recycled (product "[^"]+")$/
-     * @Then /^I restore the recycled (product)$/
-     */
+    #[Then('/^I restore the recycled (product "[^"]+")$/')]
+    #[Then('/^I restore the recycled (product)$/')]
     public function iRestoreTheRecycledProduct(Concrete $concrete): void
     {
         $key = 'data_object_recycle_' . $concrete->getId();

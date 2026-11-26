@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -31,9 +32,7 @@ final class ManufacturerContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^manufacturer "([^"]+)"$/
-     */
+    #[Transform('/^manufacturer "([^"]+)"$/')]
     public function getManufacturerByName($name): ManufacturerInterface
     {
         /**
@@ -50,9 +49,7 @@ final class ManufacturerContext implements Context
         return reset($manufacturers);
     }
 
-    /**
-     * @Transform /^manufacturer/
-     */
+    #[Transform('/^manufacturer/')]
     public function manufacturer()
     {
         return $this->sharedStorage->get('manufacturer');

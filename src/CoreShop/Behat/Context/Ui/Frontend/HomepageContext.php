@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Frontend\HomePageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,26 +30,20 @@ final class HomepageContext implements Context
     ) {
     }
 
-    /**
-     * @When I check latest products
-     * @When I visit the homepage
-     */
+    #[When('I check latest products')]
+    #[When('I visit the homepage')]
     public function iCheckLatestProducts(): void
     {
         $this->homePage->open();
     }
 
-    /**
-     * @Then I should be redirected to the homepage
-     */
+    #[Then('I should be redirected to the homepage')]
     public function iShouldBeRedirectedToTheHomepage(): void
     {
         $this->homePage->verify();
     }
 
-    /**
-     * @Then I should see :numberOfProducts products in the list
-     */
+    #[Then('I should see :numberOfProducts products in the list')]
     public function iShouldSeeProductsInTheList(int $numberOfProducts): void
     {
         Assert::same(count($this->homePage->getLatestProductsNames()), $numberOfProducts);

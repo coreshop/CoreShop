@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
@@ -29,9 +30,7 @@ final class ZoneContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^zone(?:|s) "([^"]+)"$/
-     */
+    #[Transform('/^zone(?:|s) "([^"]+)"$/')]
     public function getZoneByName(string $name): ZoneInterface
     {
         /**

@@ -18,15 +18,14 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
 final class RecycleBinContext implements Context
 {
-    /**
-     * @Then /^the recycled (product) does not exist anymore$/
-     */
+    #[Then('/^the recycled (product) does not exist anymore$/')]
     public function theRecycledProductDoesNotExistAnymore(Concrete $concrete): void
     {
         Assert::null(DataObject::getById($concrete->getId(), ['force' => true]));

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Frontend\HomePageInterface;
 
 final class UserContext implements Context
@@ -27,9 +28,7 @@ final class UserContext implements Context
     ) {
     }
 
-    /**
-     * @When I log out
-     */
+    #[When('I log out')]
     public function iLogOut(): void
     {
         $this->homePage->logOut();

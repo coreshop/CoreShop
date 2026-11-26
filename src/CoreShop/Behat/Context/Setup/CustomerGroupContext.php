@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -32,9 +33,7 @@ final class CustomerGroupContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a customer-group "([^"]+)"$/
-     */
+    #[Given('/^the site has a customer-group "([^"]+)"$/')]
     public function theSiteHasACustomerGroup(string $name): void
     {
         $group = $this->createCustomerGroup($name);

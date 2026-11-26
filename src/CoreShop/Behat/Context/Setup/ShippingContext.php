@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
@@ -75,18 +76,14 @@ final class ShippingContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a carrier "([^"]+)"$/
-     * @Given /^the site has another carrier "([^"]+)"$/
-     */
+    #[Given('/^the site has a carrier "([^"]+)"$/')]
+    #[Given('/^the site has another carrier "([^"]+)"$/')]
     public function theSiteHasACarrier($name): void
     {
         $this->createCarrier($name);
     }
 
-    /**
-     * @Given /^the site has a carrier "([^"]+)" and ships for (\d+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the site has a carrier "([^"]+)" and ships for (\d+) in (currency "[^"]+")$/')]
     public function theSiteHasACarrierAndShipsForX($name, int $price, CurrencyInterface $currency): void
     {
         $carrier = $this->createCarrier($name);
@@ -119,10 +116,8 @@ final class ShippingContext implements Context
         $this->sharedStorage->set('shipping-rule', $rule);
     }
 
-    /**
-     * @Given /^the (carrier "[^"]+") is disabled for (store "[^"]+")$/
-     * @Given /^the (carrier) is disabled for  (store "[^"]+")$/
-     */
+    #[Given('/^the (carrier "[^"]+") is disabled for (store "[^"]+")$/')]
+    #[Given('/^the (carrier) is disabled for  (store "[^"]+")$/')]
     public function theCarrierIsDisabledForStore(CarrierInterface $carrier, StoreInterface $store): void
     {
         $carrier->removeStore($store);
@@ -130,10 +125,8 @@ final class ShippingContext implements Context
         $this->saveCarrier($carrier);
     }
 
-    /**
-     * @Given /^the (carrier "[^"]+") is enabled for (store "[^"]+")$/
-     * @Given /^the (carrier) is enabled for  (store "[^"]+")$/
-     */
+    #[Given('/^the (carrier "[^"]+") is enabled for (store "[^"]+")$/')]
+    #[Given('/^the (carrier) is enabled for  (store "[^"]+")$/')]
     public function theCarrierIsEnabledForStore(CarrierInterface $carrier, StoreInterface $store): void
     {
         $carrier->addStore($store);
@@ -141,10 +134,8 @@ final class ShippingContext implements Context
         $this->saveCarrier($carrier);
     }
 
-    /**
-     * @Given /^the (carrier "[^"]+") has (tax rule group "[^"]+")$/
-     * @Given /^the (carrier) has the (tax rule group "[^"]+")$/
-     */
+    #[Given('/^the (carrier "[^"]+") has (tax rule group "[^"]+")$/')]
+    #[Given('/^the (carrier) has the (tax rule group "[^"]+")$/')]
     public function theCarrierHasTheTaxRuleGroup(CarrierInterface $carrier, TaxRuleGroupInterface $taxRuleGroup): void
     {
         $carrier->setTaxRule($taxRuleGroup);
@@ -152,9 +143,7 @@ final class ShippingContext implements Context
         $this->saveCarrier($carrier);
     }
 
-    /**
-     * @Given /^adding a shipping rule named "([^"]+)"$/
-     */
+    #[Given('/^adding a shipping rule named "([^"]+)"$/')]
     public function addingAShippingRule($ruleName): void
     {
         /**
@@ -169,10 +158,8 @@ final class ShippingContext implements Context
         $this->sharedStorage->set('shipping-rule', $rule);
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") is active$/
-     * @Given /^the (shipping rule) is active$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") is active$/')]
+    #[Given('/^the (shipping rule) is active$/')]
     public function theShippingRuleIsActive(ShippingRuleInterface $rule): void
     {
         $rule->setActive(true);
@@ -181,10 +168,8 @@ final class ShippingContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") is inactive$/
-     * @Given /^the (shipping rule) is inactive$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") is inactive$/')]
+    #[Given('/^the (shipping rule) is inactive$/')]
     public function theShippingRuleIsInActive(ShippingRuleInterface $rule): void
     {
         $rule->setActive(false);
@@ -193,10 +178,8 @@ final class ShippingContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") belongs to (carrier "[^"]+")$/
-     * @Given /^the (shipping rule) belongs to (carrier "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") belongs to (carrier "[^"]+")$/')]
+    #[Given('/^the (shipping rule) belongs to (carrier "[^"]+")$/')]
     public function addingShippingRuleToCarrier(ShippingRuleInterface $shippingRule, CarrierInterface $carrier): void
     {
         /**
@@ -211,10 +194,8 @@ final class ShippingContext implements Context
         $this->saveCarrier($carrier);
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)"$/
-     * @Given /^the (shipping rule) has a condition amount from "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)"$/')]
+    #[Given('/^the (shipping rule) has a condition amount from "([^"]+)" to "([^"]+)"$/')]
     public function theShippingRuleHasAAmountCondition(ShippingRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -226,10 +207,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)" which is net$/
-     * @Given /^the (shipping rule) has a condition amount from "([^"]+)" to "([^"]+)" which is net$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)" which is net$/')]
+    #[Given('/^the (shipping rule) has a condition amount from "([^"]+)" to "([^"]+)" which is net$/')]
     public function theShippingRuleHasAAmountConditionWhichIsNet(ShippingRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -241,10 +220,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)"$/
-     * @Given /^the (shipping rule) has a condition amount from total "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)"$/')]
+    #[Given('/^the (shipping rule) has a condition amount from total "([^"]+)" to "([^"]+)"$/')]
     public function theShippingRuleHasAAmountFromTotalCondition(ShippingRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -257,10 +234,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/
-     * @Given /^the (shipping rule) has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/')]
+    #[Given('/^the (shipping rule) has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/')]
     public function theShippingRuleHasAAmountFromTotalConditionWhichIsNet(ShippingRuleInterface $rule, $minAmount, $maxAmount): void
     {
         $this->assertConditionForm(AmountConfigurationType::class, 'amount');
@@ -273,10 +248,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition postcode with "([^"]+)"$/
-     * @Given /^the (shipping rule) has a condition postcode with "([^"]+)"$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition postcode with "([^"]+)"$/')]
+    #[Given('/^the (shipping rule) has a condition postcode with "([^"]+)"$/')]
     public function theShippingRuleHasAPostcodeCondition(ShippingRuleInterface $rule, $postcodes): void
     {
         $this->assertConditionForm(PostcodeConfigurationType::class, 'postcodes');
@@ -287,10 +260,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition postcode exclusion with "([^"]+)"$/
-     * @Given /^the (shipping rule) has a condition postcode exclusion with "([^"]+)"$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition postcode exclusion with "([^"]+)"$/')]
+    #[Given('/^the (shipping rule) has a condition postcode exclusion with "([^"]+)"$/')]
     public function theShippingRuleHasAPostcodeExclusionCondition(ShippingRuleInterface $rule, $postcodes): void
     {
         $this->assertConditionForm(PostcodeConfigurationType::class, 'postcodes');
@@ -301,10 +272,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition weight from "([^"]+)" to "([^"]+)"$/
-     * @Given /^the (shipping rule) has a condition weight from "([^"]+)" to "([^"]+)"$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition weight from "([^"]+)" to "([^"]+)"$/')]
+    #[Given('/^the (shipping rule) has a condition weight from "([^"]+)" to "([^"]+)"$/')]
     public function theShippingRuleHasAWeightCondition(ShippingRuleInterface $rule, $minWeight, $maxWeight): void
     {
         $this->assertConditionForm(WeightConfigurationType::class, 'weight');
@@ -315,10 +284,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition dimension with ([^"]+)x([^"]+)x([^"]+)$/
-     * @Given /^the (shipping rule) has a condition dimension with ([^"]+)x([^"]+)x([^"]+)$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition dimension with ([^"]+)x([^"]+)x([^"]+)$/')]
+    #[Given('/^the (shipping rule) has a condition dimension with ([^"]+)x([^"]+)x([^"]+)$/')]
     public function theShippingRuleHasADimensionCondition(ShippingRuleInterface $rule, $width, $height, $depth): void
     {
         $this->assertConditionForm(DimensionConfigurationType::class, 'dimension');
@@ -330,10 +297,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition categories with (category "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition categories with (category "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition categories with (category "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition categories with (category "[^"]+")$/')]
     public function theShippingRuleHasACategoriesCondition(ShippingRuleInterface $rule, CategoryInterface $category): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -343,10 +308,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/
-     * @Given /^the (shipping rule) has a condition categories with (category "[^"]+") and it is recursive$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/')]
+    #[Given('/^the (shipping rule) has a condition categories with (category "[^"]+") and it is recursive$/')]
     public function theShippingRuleHasACategoriesConditionAndItIsRecursive(ShippingRuleInterface $rule, CategoryInterface $category): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -357,10 +320,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition categories with (categories "[^"]+", "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition categories with (categories "[^"]+", "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition categories with (categories "[^"]+", "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition categories with (categories "[^"]+", "[^"]+")$/')]
     public function theShippingRuleHasACategoriesConditionWithTwoCategories(ShippingRuleInterface $rule, array $categories): void
     {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
@@ -372,10 +333,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition products with (product "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition products with (product "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition products with (product "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition products with (product "[^"]+")$/')]
     public function theShippingRuleHasAProductsCondition(ShippingRuleInterface $rule, ProductInterface $product): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -386,10 +345,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
-     * @Given /^the (shipping rule) has a condition products with (product "[^"]+") which includes variants$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/')]
+    #[Given('/^the (shipping rule) has a condition products with (product "[^"]+") which includes variants$/')]
     public function theShippingRuleHasAProductsWithVariantsCondition(ShippingRuleInterface $rule, ProductInterface $product): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -400,10 +357,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition products with (products "[^"]+", "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition products with (products "[^"]+", "[^"]+")$/')]
     public function theShippingRuleHasAProductsConditionWithTwoProducts(ShippingRuleInterface $rule, array $products): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -416,10 +371,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+") which includes variants$/
-     * @Given /^the (shipping rule) has a condition products with (products "[^"]+", "[^"]+") which includes variants$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+") which includes variants$/')]
+    #[Given('/^the (shipping rule) has a condition products with (products "[^"]+", "[^"]+") which includes variants$/')]
     public function theShippingRuleHasAProductsConditionWithTwoProductsWithVariants(ShippingRuleInterface $rule, array $products): void
     {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
@@ -432,10 +385,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition countries with (country "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition countries with (country "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition countries with (country "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition countries with (country "[^"]+")$/')]
     public function theShippingRuleHasACountriesCondition(ShippingRuleInterface $rule, CountryInterface $country): void
     {
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
@@ -445,10 +396,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition customers with (customer "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition customers with (customer "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition customers with (customer "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition customers with (customer "[^"]+")$/')]
     public function theShippingRuleHasACustomersCondition(ShippingRuleInterface $rule, CustomerInterface $customer): void
     {
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
@@ -458,10 +407,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition customer-groups with (customer-group "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition customer-groups with (customer-group "[^"]+")$/')]
     public function theShippingRuleHasACustomerGroupsCondition(ShippingRuleInterface $rule, CustomerGroupInterface $customerGroup): void
     {
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
@@ -471,10 +418,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition guest$/
-     * @Given /^the (shipping rule) has a condition guest$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition guest$/')]
+    #[Given('/^the (shipping rule) has a condition guest$/')]
     public function theShippingRuleHasAGuestCondition(ShippingRuleInterface $rule): void
     {
         $this->assertConditionForm(EmptyConfigurationFormType::class, 'guest');
@@ -482,10 +427,8 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('guest', []));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition zones with (zone "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition zones with (zone "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition zones with (zone "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition zones with (zone "[^"]+")$/')]
     public function theShippingRuleHasAZonesCondition(ShippingRuleInterface $rule, ZoneInterface $zone): void
     {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
@@ -495,10 +438,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition stores with (store "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition stores with (store "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition stores with (store "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition stores with (store "[^"]+")$/')]
     public function theShippingRuleHasAStoresCondition(ShippingRuleInterface $rule, StoreInterface $store): void
     {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
@@ -508,10 +449,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
-     * @Given /^the (shipping rule) has a condition currencies with (currency "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a condition currencies with (currency "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a condition currencies with (currency "[^"]+")$/')]
     public function theShippingRuleHasACurrenciesCondition(ShippingRuleInterface $rule, CurrencyInterface $currency): void
     {
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
@@ -521,10 +460,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (shipping rule) has a action price of ([^"]+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a action price of ([^"]+) in (currency "[^"]+")$/')]
     public function theShippingRuleHasAPriceAction(ShippingRuleInterface $rule, $price, CurrencyInterface $currency): void
     {
         $this->assertActionForm(PriceActionConfigurationType::class, 'price');
@@ -535,10 +472,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a action additional-amount of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (shipping rule) has a action additional-amount of ([^"]+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a action additional-amount of ([^"]+) in (currency "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a action additional-amount of ([^"]+) in (currency "[^"]+")$/')]
     public function theShippingRuleHasAAdditionalAmountAction(ShippingRuleInterface $rule, $amount, CurrencyInterface $currency): void
     {
         $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
@@ -549,10 +484,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a action additional-percent of ([^"]+)%$/
-     * @Given /^the (shipping rule) has a action additional-percent of ([^"]+)%$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a action additional-percent of ([^"]+)%$/')]
+    #[Given('/^the (shipping rule) has a action additional-percent of ([^"]+)%$/')]
     public function theShippingRuleHasAAdditionalPercentAction(ShippingRuleInterface $rule, $amount): void
     {
         $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
@@ -562,10 +495,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a action discount-amount of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (shipping rule) has a action discount-amount of ([^"]+) in (currency "[^"]+")$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a action discount-amount of ([^"]+) in (currency "[^"]+")$/')]
+    #[Given('/^the (shipping rule) has a action discount-amount of ([^"]+) in (currency "[^"]+")$/')]
     public function theShippingRuleHasADiscountAmountAction(ShippingRuleInterface $rule, $amount, CurrencyInterface $currency): void
     {
         $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
@@ -576,10 +507,8 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (shipping rule "[^"]+") has a action discount-percent of ([^"]+)%$/
-     * @Given /^the (shipping rule) has a action discount-percent of ([^"]+)%$/
-     */
+    #[Given('/^the (shipping rule "[^"]+") has a action discount-percent of ([^"]+)%$/')]
+    #[Given('/^the (shipping rule) has a action discount-percent of ([^"]+)%$/')]
     public function theShippingRuleHasADiscountPercentAction(ShippingRuleInterface $rule, $amount): void
     {
         $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
@@ -589,9 +518,7 @@ final class ShippingContext implements Context
         ]));
     }
 
-    /**
-     * @Given /^the (carrier) uses the tax calculation strategy "([^"]+)"$/
-     */
+    #[Given('/^the (carrier) uses the tax calculation strategy "([^"]+)"$/')]
     public function theCarrierUsedTheTaxCalculationStrategy(CarrierInterface $carrier, string $strategyKey): void
     {
         $carrier->setTaxCalculationStrategy($strategyKey);

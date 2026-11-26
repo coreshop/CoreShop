@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -31,10 +32,8 @@ final class ExchangeRateContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the (currency "[^"]+") has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
-     * @Given /^the (currency) has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
-     */
+    #[Given('/^the (currency "[^"]+") has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/')]
+    #[Given('/^the (currency) has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/')]
     public function currencyHasExchangeRateTo(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency, float $rate): void
     {
         /**

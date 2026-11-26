@@ -19,6 +19,7 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Step\Then;
 use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
@@ -42,9 +43,7 @@ final class FilterContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be a filter with name "([^"]+)"$/
-     */
+    #[Then('/^there should be a filter with name "([^"]+)"$/')]
     public function thereShouldBeAFilter($name): void
     {
         $filters = $this->filterRepository->findBy(['name' => $name]);
@@ -56,9 +55,7 @@ final class FilterContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (filter) should have (\d+) conditions$/
-     */
+    #[Then('/^the (filter) should have (\d+) conditions$/')]
     public function theFilterShouldHaveXConditions(FilterInterface $filter, $count): void
     {
         Assert::eq(
@@ -68,10 +65,8 @@ final class FilterContext implements Context
         );
     }
 
-    /**
-     * @Then /the (filter) should have the values for (select) condition "([^"]+)":/
-     * @Then /the (filter) should have the values for (multiselect) condition "([^"]+)":/
-     */
+    #[Then('/the (filter) should have the values for (select) condition "([^"]+)":/')]
+    #[Then('/the (filter) should have the values for (multiselect) condition "([^"]+)":/')]
     public function theFilterShouldHaveFollowingValuesForSelect(
         FilterInterface $filter,
         $conditionType,
@@ -111,10 +106,8 @@ final class FilterContext implements Context
         Assert::count($diff, 0);
     }
 
-    /**
-     * @Then /the (filter) should have (\d+) values with count (\d+) for (relational_select) condition "([^"]+)"/
-     * @Then /the (filter) should have (\d+) values with count (\d+) for (relational_multiselect) condition "([^"]+)"/
-     */
+    #[Then('/the (filter) should have (\d+) values with count (\d+) for (relational_select) condition "([^"]+)"/')]
+    #[Then('/the (filter) should have (\d+) values with count (\d+) for (relational_multiselect) condition "([^"]+)"/')]
     public function theFilterShouldHaveXValuesWithCountXForTypeAndField(
         FilterInterface $filter,
         $countOfValues,
@@ -148,9 +141,7 @@ final class FilterContext implements Context
         Assert::eq($values[0], $countPerValue);
     }
 
-    /**
-     * @Then /the (filter) should have (\d+) item(?:|s)$/
-     */
+    #[Then('/the (filter) should have (\d+) item(?:|s)$/')]
     public function theFilterShouldHaveXItemsForCategoryCondition(FilterInterface $filter, $countOfValues): void
     {
         $listing = $this->getFilterListing($filter);
@@ -158,9 +149,7 @@ final class FilterContext implements Context
         Assert::eq($listing->count(), $countOfValues);
     }
 
-    /**
-     * @Then /the (filter) should have (\d+) item(?:|s) with params:$/
-     */
+    #[Then('/the (filter) should have (\d+) item(?:|s) with params:$/')]
     public function theFilterShouldHaveXItemsForCategoryConditionWithParams(FilterInterface $filter, $countOfValues, TableNode $node): void
     {
         $params = [];
@@ -174,10 +163,8 @@ final class FilterContext implements Context
         Assert::eq($listing->count(), $countOfValues);
     }
 
-    /**
-     * @Then /the (filter) should have (\d+) item(?:|s) for (manufacturer "[^"]+") in field "([^"]+)"$/
-     * @Then /the (filter) should have (\d+) item(?:|s) for value "([^"]+)" in field "([^"]+)"$/
-     */
+    #[Then('/the (filter) should have (\d+) item(?:|s) for (manufacturer "[^"]+") in field "([^"]+)"$/')]
+    #[Then('/the (filter) should have (\d+) item(?:|s) for value "([^"]+)" in field "([^"]+)"$/')]
     public function theFilterShouldHaveXItemsForCategoryWithObjectCondition(FilterInterface $filter, $countOfValues, $value, string $field): void
     {
         if ($value instanceof ResourceInterface) {
@@ -203,9 +190,7 @@ final class FilterContext implements Context
         Assert::eq($listing->count(), $countOfValues);
     }
 
-    /**
-     * @Then /^if I query the (filter) with a simple order for field "([^"]+)" and direction "([^"]+)" I should get two products "([^"]+)" and "([^"]+)"$/
-     */
+    #[Then('/^if I query the (filter) with a simple order for field "([^"]+)" and direction "([^"]+)" I should get two products "([^"]+)" and "([^"]+)"$/')]
     public function ifIQueryWithASimpleOrder(FilterInterface $filter, $orderKey, $orderDir, $firstResult, $secondResult): void
     {
         $filteredList = $this->filterListFactory->createList($filter, new ParameterBag());
@@ -229,9 +214,7 @@ final class FilterContext implements Context
         Assert::eq([$firstResult, $secondResult], $result);
     }
 
-    /**
-     * @Then /^the raw result for the (filter) should look like:$/
-     */
+    #[Then('/^the raw result for the (filter) should look like:$/')]
     public function theRawResultForTheFilterShouldLookLike(FilterInterface $filter, TableNode $table): void
     {
         $parameterBag = new ParameterBag();

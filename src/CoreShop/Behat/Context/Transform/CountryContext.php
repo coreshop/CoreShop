@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
@@ -31,10 +32,8 @@ final class CountryContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^country "([^"]+)"$/
-     * @Transform /^countries "([^"]+)"$/
-     */
+    #[Transform('/^country "([^"]+)"$/')]
+    #[Transform('/^countries "([^"]+)"$/')]
     public function getCountryByName($name): CountryInterface
     {
         /**
@@ -51,10 +50,8 @@ final class CountryContext implements Context
         return reset($countries);
     }
 
-    /**
-     * @Transform /^country$/
-     * @Transform /^countries$/
-     */
+    #[Transform('/^country$/')]
+    #[Transform('/^countries$/')]
     public function country(): CountryInterface
     {
         return $this->sharedStorage->get('country');

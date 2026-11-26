@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Pimcore\CoreShop\StatePageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class StateContext implements Context
     ) {
     }
 
-    /**
-     * @When states tab is open
-     */
+    #[When('states tab is open')]
     public function statesTabIsOpen(): void
     {
         Assert::true($this->statePage->isActiveOpen());

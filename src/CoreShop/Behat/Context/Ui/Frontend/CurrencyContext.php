@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Frontend\HomePageInterface;
 
 final class CurrencyContext implements Context
@@ -27,11 +29,8 @@ final class CurrencyContext implements Context
     ) {
     }
 
-    /**
-     * @When I switch to currency :currencyCode
-     *
-     * @Given I changed my currency to :currencyCode
-     */
+    #[When('I switch to currency :currencyCode')]
+    #[Given('I changed my currency to :currencyCode')]
     public function iSwitchTheCurrencyToTheCurrency($currencyCode): void
     {
         $this->homePage->open();

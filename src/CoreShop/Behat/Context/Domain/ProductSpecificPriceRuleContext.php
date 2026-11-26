@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
@@ -32,19 +33,15 @@ final class ProductSpecificPriceRuleContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the (specific price rule "[^"]+") for (product "[^"]+") should be valid$/
-     * @Then /^the (specific price rule) should be valid for (product "[^"]+")$/
-     */
+    #[Then('/^the (specific price rule "[^"]+") for (product "[^"]+") should be valid$/')]
+    #[Then('/^the (specific price rule) should be valid for (product "[^"]+")$/')]
     public function theSpecificPriceRuleForProductShouldBeValid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product): void
     {
         Assert::true($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, $this->shopperContext->getContext()));
     }
 
-    /**
-     * @Then /^the (specific price rule "[^"]+") for (product "[^"]+") should be invalid$/
-     * @Then /^the (specific price rule) should be invalid for (product "[^"]+")$/
-     */
+    #[Then('/^the (specific price rule "[^"]+") for (product "[^"]+") should be invalid$/')]
+    #[Then('/^the (specific price rule) should be invalid for (product "[^"]+")$/')]
     public function theSpecificPriceRuleForProductShouldBeInvalid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product): void
     {
         Assert::false($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, $this->shopperContext->getContext()));

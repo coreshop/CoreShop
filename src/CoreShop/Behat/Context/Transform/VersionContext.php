@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 
 final class VersionContext implements Context
@@ -27,9 +28,7 @@ final class VersionContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^version/
-     */
+    #[Transform('/^version/')]
     public function version()
     {
         return $this->sharedStorage->get('product-version');

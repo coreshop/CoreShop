@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\Then;
 use CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand;
 use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
@@ -40,9 +42,7 @@ final class InstallerContext implements Context
     ) {
     }
 
-    /**
-     * @Given I run CoreShop Install Fixtures Data command
-     */
+    #[Given('I run CoreShop Install Fixtures Data command')]
     public function iRunCoreShopInstallFixturesCommand(): void
     {
         $installCommand = new InstallFixturesCommand(
@@ -60,9 +60,7 @@ final class InstallerContext implements Context
         $this->tester = new CommandTester($this->command);
     }
 
-    /**
-     * @Given I run CoreShop Install Demo Data command
-     */
+    #[Given('I run CoreShop Install Demo Data command')]
     public function iRunCoreShopInstallSampleDataCommand(): void
     {
         $installCommand = new InstallDemoCommand(
@@ -80,25 +78,19 @@ final class InstallerContext implements Context
         $this->tester = new CommandTester($this->command);
     }
 
-    /**
-     * @Given I confirm loading Fixtures Data command
-     */
+    #[Given('I confirm loading Fixtures Data command')]
     public function iConfirmLoadingFixtures(): void
     {
         $this->iExecuteCommandAndConfirm('coreshop:install:fixtures');
     }
 
-    /**
-     * @Given I confirm loading Demo Data command
-     */
+    #[Given('I confirm loading Demo Data command')]
     public function iConfirmLoadingDemo(): void
     {
         $this->iExecuteCommandAndConfirm('coreshop:install:demo');
     }
 
-    /**
-     * @Then the command should finish successfully
-     */
+    #[Then('the command should finish successfully')]
     public function commandSuccess(): void
     {
         Assert::same($this->tester->getStatusCode(), 0);

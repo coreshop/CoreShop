@@ -22,6 +22,7 @@ use Behat\Mink\Exception\Exception as MinkException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
+use Behat\Step\Given;
 use Facebook\WebDriver\Exception\WebDriverException;
 
 final class LogContext implements Context
@@ -32,9 +33,7 @@ final class LogContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^screenshot$/
-     */
+    #[Given('/^screenshot$/')]
     public function screenshot(): void
     {
         $session = $this->getSession();
@@ -46,9 +45,7 @@ final class LogContext implements Context
         }
     }
 
-    /**
-     * @Given /^html log/
-     */
+    #[Given('/^html log/')]
     public function htmlLog(): void
     {
         $session = $this->getSession();

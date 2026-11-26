@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use Webmozart\Assert\Assert;
@@ -29,9 +30,7 @@ final class CustomerContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^I should be logged in with (email "[^"]+")$/
-     */
+    #[Then('/^I should be logged in with (email "[^"]+")$/')]
     public function iShouldBeLoggedInWithEmail(CustomerInterface $customer): void
     {
         Assert::same(
@@ -45,9 +44,7 @@ final class CustomerContext implements Context
         );
     }
 
-    /**
-     * @Then /^It should throw an error deleting the (customer "[^"]+")$/
-     */
+    #[Then('/^It should throw an error deleting the (customer "[^"]+")$/')]
     public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer): void
     {
         Assert::throws(function () use ($customer): void {
@@ -55,9 +52,7 @@ final class CustomerContext implements Context
         });
     }
 
-    /**
-     * @Then /^It should not throw an error deleting the (customer "[^"]+")$/
-     */
+    #[Then('/^It should not throw an error deleting the (customer "[^"]+")$/')]
     public function itShouldNotThrowAnErrorDeletingTheCustomer(CustomerInterface $customer): void
     {
         $customer->delete();

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -34,9 +35,7 @@ final class ZoneContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a zone "([^"]+)"$/
-     */
+    #[Given('/^the site has a zone "([^"]+)"$/')]
     public function theSiteHasAZone($name): void
     {
         $this->createZone($name);

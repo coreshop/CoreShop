@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use Pimcore\Twig\Extension\Templating\HeadMeta;
@@ -33,10 +34,8 @@ final class SEOContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should have meta title "([^"]+)"$/
-     * @Then /^the (product) should have meta title "([^"]+)"$/
-     */
+    #[Then('/^the (product "[^"]+") should have meta title "([^"]+)"$/')]
+    #[Then('/^the (product) should have meta title "([^"]+)"$/')]
     public function productShouldHaveMetaTitle(ProductInterface $product, string $title): void
     {
         $this->seoPresentation->updateSeoMetadata($product);
@@ -45,10 +44,8 @@ final class SEOContext implements Context
         Assert::same($this->headTitle->toString(), sprintf('<title>%s</title>', $title));
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should have meta description "([^"]+)"$/
-     * @Then /^the (product) should have meta description "([^"]+)"$/
-     */
+    #[Then('/^the (product "[^"]+") should have meta description "([^"]+)"$/')]
+    #[Then('/^the (product) should have meta description "([^"]+)"$/')]
     public function productShouldHaveMetaDescription(ProductInterface $product, string $description): void
     {
         $this->seoPresentation->updateSeoMetadata($product);

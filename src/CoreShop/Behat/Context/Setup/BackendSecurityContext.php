@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\PimcoreSecurityServiceInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\User;
@@ -30,9 +31,7 @@ final class BackendSecurityContext implements Context
     ) {
     }
 
-    /**
-     * @Given I am a logged in admin
-     */
+    #[Given('I am a logged in admin')]
     public function iAmLoggedInAdmin(): void
     {
         $user = new User();

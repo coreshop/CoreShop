@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
@@ -34,9 +35,7 @@ final class PaymentContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^payment provider "([^"]+)"$/
-     */
+    #[Transform('/^payment provider "([^"]+)"$/')]
     public function getPaymentProviderByTitle($title): PaymentProviderInterface
     {
         /**
@@ -53,17 +52,13 @@ final class PaymentContext implements Context
         return reset($paymentProviders);
     }
 
-    /**
-     * @Transform /^payment provider/
-     */
+    #[Transform('/^payment provider/')]
     public function paymentProvider(): PaymentProviderInterface
     {
         return $this->sharedStorage->get('payment-provider');
     }
 
-    /**
-     * @Transform /^payment-provider-rule "([^"]+)"$/
-     */
+    #[Transform('/^payment-provider-rule "([^"]+)"$/')]
     public function getPaymentProviderRuleByName(string $ruleName): PaymentProviderRuleInterface
     {
         $rule = $this->paymentRuleRepository->findOneBy(['name' => $ruleName]);
@@ -73,9 +68,7 @@ final class PaymentContext implements Context
         return $rule;
     }
 
-    /**
-     * @Transform /^payment-provider-rule$/
-     */
+    #[Transform('/^payment-provider-rule$/')]
     public function getLatestPaymentProviderRule(): PaymentProviderRuleInterface
     {
         $resource = $this->sharedStorage->get('payment-provider-rule');

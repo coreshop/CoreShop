@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Webmozart\Assert\Assert;
@@ -29,17 +30,13 @@ final class MenuContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^the menu "([^"]+)" should have a child with ID "([^"]+)"$/
-     */
+    #[Then('/^the menu "([^"]+)" should have a child with ID "([^"]+)"$/')]
     public function menuHasAChild(string $menu, string $childId): void
     {
         Assert::isInstanceOf($this->menuProvider->get($menu)->getChild($childId), ItemInterface::class);
     }
 
-    /**
-     * @Then /^the menu "([^"]+)" child with id "([^"]+)" should have a child with ID "([^"]+)"$/
-     */
+    #[Then('/^the menu "([^"]+)" child with id "([^"]+)" should have a child with ID "([^"]+)"$/')]
     public function menuChildHasAChild(string $menu, string $parentId, string $childId): void
     {
         $this->menuHasAChild($menu, $parentId);

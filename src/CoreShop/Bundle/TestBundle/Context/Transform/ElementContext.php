@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\Element\ElementInterface;
 
@@ -28,9 +29,7 @@ final class ElementContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^element$/
-     */
+    #[Transform('/^element$/')]
     public function element(): ElementInterface
     {
         if ($this->sharedStorage->has('document')) {

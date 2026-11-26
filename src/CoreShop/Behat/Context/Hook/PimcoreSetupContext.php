@@ -18,13 +18,12 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use Behat\Hook\BeforeSuite;
 use CoreShop\Behat\Service\Setup;
 
 final class PimcoreSetupContext implements Context
 {
-    /**
-     * @BeforeSuite
-     */
+    #[BeforeSuite]
     public static function setupPimcore(): void
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
@@ -31,9 +32,7 @@ final class CategoryContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^category(?:|s) "([^"]+)"$/
-     */
+    #[Transform('/^category(?:|s) "([^"]+)"$/')]
     public function getCategoryByName($categoryName): CategoryInterface
     {
         /**
@@ -58,9 +57,7 @@ final class CategoryContext implements Context
         return reset($objects);
     }
 
-    /**
-     * @Transform /^categories "([^"]+)", "([^"]+)"$/
-     */
+    #[Transform('/^categories "([^"]+)", "([^"]+)"$/')]
     public function getCategoriesByName($category1, $category2): array
     {
         $categories = [];
@@ -72,9 +69,7 @@ final class CategoryContext implements Context
         return $categories;
     }
 
-    /**
-     * @Transform /^category$/
-     */
+    #[Transform('/^category$/')]
     public function category(): CategoryInterface
     {
         return $this->sharedStorage->get('category');

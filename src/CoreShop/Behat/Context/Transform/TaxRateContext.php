@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
 use Webmozart\Assert\Assert;
@@ -29,9 +30,7 @@ final class TaxRateContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^tax rate "([^"]+)"$/
-     */
+    #[Transform('/^tax rate "([^"]+)"$/')]
     public function getTaxRateByName($name): TaxRateInterface
     {
         /**

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Address\Context\CompositeCountryContext;
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
@@ -37,9 +38,7 @@ final class CountryContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be a country "([^"]+)"$/
-     */
+    #[Then('/^there should be a country "([^"]+)"$/')]
     public function thereShouldBeACountryCalled($name): void
     {
         $countries = $this->countryRepository->findByName($name, 'en');
@@ -51,9 +50,7 @@ final class CountryContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (country "[^"]+") should use (currency "[^"]+")$/
-     */
+    #[Then('/^the (country "[^"]+") should use (currency "[^"]+")$/')]
     public function theCountryShouldUseCurrency(CountryInterface $country, CurrencyInterface $currency): void
     {
         Assert::eq(
@@ -68,9 +65,7 @@ final class CountryContext implements Context
         );
     }
 
-    /**
-     * @Then /^I (?:|still )should be in (country "[^"]+")$/
-     */
+    #[Then('/^I (?:|still )should be in (country "[^"]+")$/')]
     public function iShouldBeInCountry(CountryInterface $country): void
     {
         $actualCountry = $this->countryContext->getCountry();
@@ -88,9 +83,7 @@ final class CountryContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (address) should format to "([^"]+)"$/
-     */
+    #[Then('/^the (address) should format to "([^"]+)"$/')]
     public function theAddressShouldFormatTo(AddressInterface $address, $formattedAddress): void
     {
         $actualFormattedAddress = $this->addressFormatter->formatAddress($address);
@@ -106,9 +99,7 @@ final class CountryContext implements Context
         );
     }
 
-    /**
-     * @Then /^there should be a sample country context with priority 1 loaded by attribute as country context$/
-     */
+    #[Then('/^there should be a sample country context with priority 1 loaded by attribute as country context$/')]
     public function thereShouldBeASampleCountryContextLoadedByAttributeAsCountryContext(): void
     {
         $reflection = new \ReflectionClass($this->compositeCountryContext);

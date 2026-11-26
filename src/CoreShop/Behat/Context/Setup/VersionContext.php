@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Db;
 use Pimcore\Model\DataObject\Concrete;
@@ -30,10 +31,8 @@ final class VersionContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^I remember the (product "[^"]+") Version$/
-     * @Then /^I remember the (product) Version$/
-     */
+    #[Then('/^I remember the (product "[^"]+") Version$/')]
+    #[Then('/^I remember the (product) Version$/')]
     public function iRememberTheProductVersion(Concrete $concrete): void
     {
         $concrete->saveVersion();
@@ -41,9 +40,7 @@ final class VersionContext implements Context
         $this->sharedStorage->set('data_object_version_' . $concrete->getId(), $concrete->getLatestVersion(null, true)->getId());
     }
 
-    /**
-     * @Then /^I restore the remembered (product) Version$/
-     */
+    #[Then('/^I restore the remembered (product) Version$/')]
     public function iRestoreTheRememberedProductVersion(Concrete $concrete): void
     {
         $key = 'data_object_version_' . $concrete->getId();
@@ -71,9 +68,7 @@ final class VersionContext implements Context
         $this->sharedStorage->set('product', $data);
     }
 
-    /**
-     * @Then /^I reset the restored Version$/
-     */
+    #[Then('/^I reset the restored Version$/')]
     public function iResetTheRestoredVersion(Concrete $concrete): void
     {
         $product = $this->sharedStorage->get('product');

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
@@ -38,9 +39,7 @@ final class StoreContext implements Context
     ) {
     }
 
-    /**
-     * @Given the site operates on a store in "Austria"
-     */
+    #[Given('the site operates on a store in "Austria"')]
     public function storeOperatesOnASingleStoreInAustria(): void
     {
         $store = $this->createStore('Austria');
@@ -49,9 +48,7 @@ final class StoreContext implements Context
         $this->saveStore($store);
     }
 
-    /**
-     * @Given the site operates on a store in "Austria" with gross values
-     */
+    #[Given('the site operates on a store in "Austria" with gross values')]
     public function storeOperatesOnASingleStoreInAustriaWithGrossValues(): void
     {
         $store = $this->createStore('Austria', null, null, true);
@@ -60,17 +57,13 @@ final class StoreContext implements Context
         $this->saveStore($store);
     }
 
-    /**
-     * @Given /^I am in (store "[^"]+")$/
-     */
+    #[Given('/^I am in (store "[^"]+")$/')]
     public function iAmInStore(StoreInterface $store): void
     {
         $this->fixedStoreContext->setStore($store);
     }
 
-    /**
-     * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+")$/
-     */
+    #[Given('/^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+")$/')]
     public function siteHasAStoreWithCountryAndCurrency($name, CountryInterface $country, CurrencyInterface $currency): void
     {
         $store = $this->createStore($name, $currency, $country);
@@ -78,9 +71,7 @@ final class StoreContext implements Context
         $this->saveStore($store);
     }
 
-    /**
-     * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+") and gross values$/
-     */
+    #[Given('/^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+") and gross values$/')]
     public function siteHasAStoreWithCountryAndCurrencyAndGrossValues($name, CountryInterface $country, CurrencyInterface $currency): void
     {
         $store = $this->createStore($name, $currency, $country, true);
@@ -88,9 +79,7 @@ final class StoreContext implements Context
         $this->saveStore($store);
     }
 
-    /**
-     * @Given /^the (store "[^"]+") uses theme "([^"]+)"$/
-     */
+    #[Given('/^the (store "[^"]+") uses theme "([^"]+)"$/')]
     public function theStoreusesTheme(StoreInterface $store, $template): void
     {
         $store->setTemplate($template);
@@ -98,9 +87,7 @@ final class StoreContext implements Context
         $this->saveStore($store);
     }
 
-    /**
-     * @Given /^the (store "[^"]+") is the default store$/
-     */
+    #[Given('/^the (store "[^"]+") is the default store$/')]
     public function theStoreIsDefault(StoreInterface $store): void
     {
         $store->setIsDefault(true);

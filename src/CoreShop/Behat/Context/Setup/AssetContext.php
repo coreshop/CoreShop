@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Model\Asset;
 
@@ -28,9 +29,7 @@ final class AssetContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has an asset "([^"]+)"$/
-     */
+    #[Given('/^the site has an asset "([^"]+)"$/')]
     public function theSiteHasAnAsset(string $filename): void
     {
         $asset = Asset::create(1, [

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Variant\Model\AttributeColorInterface;
@@ -35,9 +36,7 @@ final class VariantContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^attribute group "([^"]+)"$/
-     */
+    #[Transform('/^attribute group "([^"]+)"$/')]
     public function getAttributeGroup($name): AttributeGroupInterface
     {
         /**
@@ -54,9 +53,7 @@ final class VariantContext implements Context
         return reset($attributeGroups);
     }
 
-    /**
-     * @Transform /^attribute color "([^"]+)"$/
-     */
+    #[Transform('/^attribute color "([^"]+)"$/')]
     public function getAttributeColor($name): AttributeColorInterface
     {
         /**
@@ -73,9 +70,7 @@ final class VariantContext implements Context
         return reset($attributes);
     }
 
-    /**
-     * @Transform /^attribute value "([^"]+)"$/
-     */
+    #[Transform('/^attribute value "([^"]+)"$/')]
     public function getAttributeValue($name): AttributeValueInterface
     {
         /**
@@ -92,9 +87,7 @@ final class VariantContext implements Context
         return reset($attributes);
     }
 
-    /**
-     * @Transform /^attribute group/
-     */
+    #[Transform('/^attribute group/')]
     public function attributeGroup()
     {
         return $this->sharedStorage->get('attribute-group');

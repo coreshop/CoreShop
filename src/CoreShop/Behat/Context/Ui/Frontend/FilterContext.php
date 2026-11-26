@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Behat\Page\Frontend\CategoryPageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,26 +29,20 @@ final class FilterContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^I should see a filter with label "([^"]+)"$/
-     */
+    #[Then('/^I should see a filter with label "([^"]+)"$/')]
     public function iShouldSeeFilter(string $label): void
     {
         Assert::same(strtolower($this->categoryPage->getFilterLabel()), strtolower($label));
     }
 
-    /**
-     * @Then /^I select filter option "([^"]+)"$/
-     */
+    #[Then('/^I select filter option "([^"]+)"$/')]
     public function iSelectOption(string $label): void
     {
         $this->categoryPage->iSelectFilterOption($label);
         $this->categoryPage->clickFilterSubmit();
     }
 
-    /**
-     * @Then /^I type in search field "([^"]+)"$/
-     */
+    #[Then('/^I type in search field "([^"]+)"$/')]
     public function iTypeinSearchField(string $query): void
     {
         $this->categoryPage->setSearchField($query);

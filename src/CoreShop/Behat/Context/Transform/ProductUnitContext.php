@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
@@ -31,10 +32,8 @@ final class ProductUnitContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^unit "([^"]+)"$/
-     * @Transform /^product-unit "([^"]+)"$/
-     */
+    #[Transform('/^unit "([^"]+)"$/')]
+    #[Transform('/^product-unit "([^"]+)"$/')]
     public function getUnitByName(string $name): ProductUnitInterface
     {
         $unit = $this->unitRepository->findByName($name);
@@ -44,10 +43,8 @@ final class ProductUnitContext implements Context
         return $unit;
     }
 
-    /**
-     * @Transform /^unit/
-     * @Transform /^product-unit/
-     */
+    #[Transform('/^unit/')]
+    #[Transform('/^product-unit/')]
     public function unit(): ProductUnitInterface
     {
         return $this->sharedStorage->get('product-unit');

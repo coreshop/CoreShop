@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
@@ -32,17 +33,13 @@ final class TaxRateContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the site has a tax rate "([^"]+)" with "([^"]+)%" rate$/
-     */
+    #[Given('/^the site has a tax rate "([^"]+)" with "([^"]+)%" rate$/')]
     public function theSiteHasATaxRate($name, float $rate): void
     {
         $this->createTaxRate($name, $rate);
     }
 
-    /**
-     * @Given /^the (tax rate "[^"]+") is active$/
-     */
+    #[Given('/^the (tax rate "[^"]+") is active$/')]
     public function theTaxRateIsActive(TaxRateInterface $taxRate): void
     {
         $taxRate->setActive(true);

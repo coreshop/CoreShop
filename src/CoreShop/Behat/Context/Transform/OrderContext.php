@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderShipmentInterface;
@@ -31,34 +32,26 @@ final class OrderContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^the order/
-     * @Transform /^my order/
-     */
+    #[Transform('/^the order/')]
+    #[Transform('/^my order/')]
     public function order(): OrderInterface
     {
         return $this->sharedStorage->get('order');
     }
 
-    /**
-     * @Transform /^latest order invoice/
-     */
+    #[Transform('/^latest order invoice/')]
     public function latestOrderInvoice(): OrderInvoiceInterface
     {
         return $this->sharedStorage->get('orderInvoice');
     }
 
-    /**
-     * @Transform /^latest order shipment/
-     */
+    #[Transform('/^latest order shipment/')]
     public function latestOrderShipment(): OrderShipmentInterface
     {
         return $this->sharedStorage->get('orderShipment');
     }
 
-    /**
-     * @Transform /^latest order payment/
-     */
+    #[Transform('/^latest order payment/')]
     public function latestOrderPayment(): OrderPaymentInterface
     {
         return $this->sharedStorage->get('orderPayment');

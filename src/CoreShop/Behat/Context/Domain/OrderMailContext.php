@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
+use Behat\Step\When;
 use CoreShop\Behat\Service\OrderMailProcessorSpy;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Notification\Rule\Action\Order\OrderMailActionProcessor;
@@ -40,9 +42,7 @@ final class OrderMailContext implements Context
         $this->orderMailProcessor = new OrderMailProcessorSpy();
     }
 
-    /**
-     * @When /^the order mail action with the email document as string id is applied to (my order)$/
-     */
+    #[When('/^the order mail action with the email document as string id is applied to (my order)$/')]
     public function theOrderMailActionIsAppliedWithStringDocumentId(OrderInterface $order): void
     {
         $emailDocument = $this->sharedStorage->get('email_document');
@@ -59,9 +59,7 @@ final class OrderMailContext implements Context
         ]);
     }
 
-    /**
-     * @Then /^the email document should have been sent as order mail$/
-     */
+    #[Then('/^the email document should have been sent as order mail$/')]
     public function theEmailDocumentShouldHaveBeenSent(): void
     {
         $emailDocument = $this->sharedStorage->get('email_document');

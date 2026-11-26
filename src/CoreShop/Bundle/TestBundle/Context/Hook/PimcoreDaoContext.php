@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TestBundle\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use Behat\Hook\BeforeScenario;
+use Behat\Hook\BeforeStep;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject;
@@ -37,26 +39,20 @@ class PimcoreDaoContext implements Context
     ) {
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function setKernel(): void
     {
         \Pimcore::setKernel($this->kernel);
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function clearRuntimeCacheScenario(): void
     {
         //Clearing it here is totally fine, since each scenario has its own separated context of objects
         \Pimcore\Cache\RuntimeCache::clear();
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeObjects(): void
     {
         /**
@@ -75,9 +71,7 @@ class PimcoreDaoContext implements Context
         $this->connection->executeQuery('DELETE FROM objects WHERE id <> 1');
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeDocuments(): void
     {
         /**
@@ -103,9 +97,7 @@ class PimcoreDaoContext implements Context
         $this->connection->executeQuery('DELETE FROM documents_translations WHERE id <> 1');
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeAssets(): void
     {
         /**
@@ -120,18 +112,14 @@ class PimcoreDaoContext implements Context
         }
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeTables(): void
     {
         $this->connection->executeQuery('DELETE FROM sites');
         $this->connection->executeQuery('DELETE FROM object_url_slugs');
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeBricks(): void
     {
         $list = new Objectbrick\Definition\Listing();
@@ -151,9 +139,7 @@ class PimcoreDaoContext implements Context
         }
     }
 
-    /**
-     * @BeforeStep
-     */
+    #[BeforeStep]
     public function clearRuntimeCacheStep(): void
     {
         //We should not clear Pimcore Objects here, otherwise we lose the reference to it
@@ -170,9 +156,7 @@ class PimcoreDaoContext implements Context
         \Pimcore\Cache\RuntimeCache::clear($keepItems);
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeClasses(): void
     {
         $list = new ClassDefinition\Listing();
@@ -191,9 +175,7 @@ class PimcoreDaoContext implements Context
         }
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function clearBehatAdminUser(): void
     {
         $user = User::getByName('behat-admin');
@@ -203,9 +185,7 @@ class PimcoreDaoContext implements Context
         }
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function clearSlugs(): void
     {
         $this->connection->executeQuery('DELETE FROM `object_url_slugs`');
@@ -218,17 +198,13 @@ class PimcoreDaoContext implements Context
         }
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function disableGlobalInheritance(): void
     {
         DataObject\AbstractObject::setGetInheritedValues(false);
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function purgeFieldCollections(): void
     {
         $list = new Fieldcollection\Definition\Listing();

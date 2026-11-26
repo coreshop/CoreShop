@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\ClassStorageInterface;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Pimcore\Cache\RuntimeCache;
@@ -34,9 +35,7 @@ final class PimcoreClassContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^class "([^"]+)"$/
-     */
+    #[Transform('/^class "([^"]+)"$/')]
     public function class($name): ClassDefinition
     {
         RuntimeCache::clear();
@@ -55,17 +54,13 @@ final class PimcoreClassContext implements Context
         return $classDefinition;
     }
 
-    /**
-     * @Transform /^behat-class "([^"]+)"$/
-     */
+    #[Transform('/^behat-class "([^"]+)"$/')]
     public function behatClass($name): ClassDefinition
     {
         return $this->class($this->classStorage->get($name));
     }
 
-    /**
-     * @Transform /^field-collection "([^"]+)"$/
-     */
+    #[Transform('/^field-collection "([^"]+)"$/')]
     public function fieldCollection($name): Definition
     {
         $name = $this->classStorage->get($name);
@@ -77,34 +72,26 @@ final class PimcoreClassContext implements Context
         return $definition;
     }
 
-    /**
-     * @Transform /^object-instance$/
-     */
+    #[Transform('/^object-instance$/')]
     public function objectInstance(): Concrete
     {
         return $this->sharedStorage->get('object-instance');
     }
 
-    /**
-     * @Transform /^object-instance-2$/
-     */
+    #[Transform('/^object-instance-2$/')]
     public function objectInstance2(): Concrete
     {
         return $this->sharedStorage->get('object-instance-2');
     }
 
-    /**
-     * @Transform /^object-instance "([^"]+)"$/
-     */
+    #[Transform('/^object-instance "([^"]+)"$/')]
     public function objectInstanceWithKey($key): Concrete
     {
         return Concrete::getByPath('/' . $key);
     }
 
-    /**
-     * @Transform /^definition/
-     * @Transform /^definitions/
-     */
+    #[Transform('/^definition/')]
+    #[Transform('/^definitions/')]
     public function definition(): ClassDefinition|Definition
     {
         RuntimeCache::clear();

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use Behat\Transformation\Transform;
 use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -31,9 +32,7 @@ final class ProductSpecificPriceRuleContext implements Context
     ) {
     }
 
-    /**
-     * @Transform /^specific price rule "([^"]+)"$/
-     */
+    #[Transform('/^specific price rule "([^"]+)"$/')]
     public function getPriceRuleByProductAndName(string $ruleName): ProductSpecificPriceRuleInterface
     {
         $rule = $this->productSpecificPriceRuleRepository->findOneBy(['name' => $ruleName]);
@@ -43,9 +42,7 @@ final class ProductSpecificPriceRuleContext implements Context
         return $rule;
     }
 
-    /**
-     * @Transform /^(specific price rule)$/
-     */
+    #[Transform('/^(specific price rule)$/')]
     public function getLatestSpecificPriceRule(): ProductSpecificPriceRuleInterface
     {
         $resource = $this->sharedStorage->getLatestResource();

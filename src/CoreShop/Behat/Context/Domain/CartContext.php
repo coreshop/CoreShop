@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
@@ -37,9 +38,7 @@ final class CartContext implements Context
     ) {
     }
 
-    /**
-     * @Then /^there should be one product in my cart$/
-     */
+    #[Then('/^there should be one product in my cart$/')]
     public function thereShouldBeOneProductInTheCart(): void
     {
         Assert::eq(
@@ -52,9 +51,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^there should be two products in my cart$/
-     */
+    #[Then('/^there should be two products in my cart$/')]
     public function thereShouldBeTwoProductsInTheCart(): void
     {
         Assert::eq(
@@ -67,9 +64,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should not be in my cart$/
-     */
+    #[Then('/^the (product "[^"]+") should not be in my cart$/')]
     public function theProductShouldNotBeInMyCart(ProductInterface $product): void
     {
         $cart = $this->cartContext->getCart();
@@ -92,9 +87,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should be in my cart$/
-     */
+    #[Then('/^the (product "[^"]+") should be in my cart$/')]
     public function theProductShouldBeInMyCart(ProductInterface $product): void
     {
         /**
@@ -123,9 +116,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product "[^"]+") should be in my cart as gift$/
-     */
+    #[Then('/^the (product "[^"]+") should be in my cart as gift$/')]
     public function theProductShouldBeInMyCartAsGift(ProductInterface $product): void
     {
         /**
@@ -154,9 +145,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart total should be "([^"]+)" including tax$/
-     */
+    #[Then('/^the cart total should be "([^"]+)" including tax$/')]
     public function cartTotalShouldBeIncludingTax($total): void
     {
         Assert::eq(
@@ -170,9 +159,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart total should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^the cart total should be "([^"]+)" excluding tax$/')]
     public function cartTotalShouldBeExcludingTax($total): void
     {
         Assert::eq(
@@ -186,9 +173,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart subtotal should be "([^"]+)" including tax$/
-     */
+    #[Then('/^the cart subtotal should be "([^"]+)" including tax$/')]
     public function cartSubtotalShouldBeIncludingTax($total): void
     {
         Assert::eq(
@@ -202,9 +187,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart subtotal should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^the cart subtotal should be "([^"]+)" excluding tax$/')]
     public function cartSubtotalShouldBeExcludingTax($total): void
     {
         Assert::eq(
@@ -218,9 +201,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart total tax should be "([^"]+)"$/
-     */
+    #[Then('/^the cart total tax should be "([^"]+)"$/')]
     public function cartTotalTaxShouldBe($totalTax): void
     {
         Assert::eq(
@@ -234,9 +215,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item taxes should be "([^"]+)"$/
-     */
+    #[Then('/^the cart item taxes should be "([^"]+)"$/')]
     public function cartItemTaxesShouldBe($totalTax): void
     {
         $cart = $this->cartContext->getCart();
@@ -267,9 +246,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart should weigh ([^"]+)kg$/
-     */
+    #[Then('/^the cart should weigh ([^"]+)kg$/')]
     public function cartShouldWeigh($kg): void
     {
         $cart = $this->cartContext->getCart();
@@ -290,9 +267,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart shipping should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^the cart shipping should be "([^"]+)" excluding tax$/')]
     public function cartShippingCostShouldBeExcludingTax($shipping): void
     {
         $cart = $this->cartContext->getCart();
@@ -310,9 +285,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart shipping should be "([^"]+)" including tax$/
-     */
+    #[Then('/^the cart shipping should be "([^"]+)" including tax$/')]
     public function cartShippingCostShouldBeIncludingTax($shipping): void
     {
         $cart = $this->cartContext->getCart();
@@ -330,10 +303,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (carts) shipping tax rate should be "([^"]+)"$/
-     * @Then /^the (loaded carts) shipping tax rate should be "([^"]+)"$/
-     */
+    #[Then('/^the (carts) shipping tax rate should be "([^"]+)"$/')]
+    #[Then('/^the (loaded carts) shipping tax rate should be "([^"]+)"$/')]
     public function cartShippingTaxRateShouldBe(OrderInterface $cart, $shippingTaxRate): void
     {
         Assert::eq(
@@ -347,9 +318,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart should use (carrier "[^"]+")$/
-     */
+    #[Then('/^the cart should use (carrier "[^"]+")$/')]
     public function cartShouldUseCarrier(CarrierInterface $carrier): void
     {
         $cart = $this->cartContext->getCart();
@@ -368,9 +337,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart should not have a carrier$/
-     */
+    #[Then('/^the cart should not have a carrier$/')]
     public function cartShouldNotHaveACarrier(): void
     {
         $cart = $this->cartContext->getCart();
@@ -383,9 +350,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart discount should be "([^"]+)" including tax$/
-     */
+    #[Then('/^the cart discount should be "([^"]+)" including tax$/')]
     public function cartDiscountShouldBeIncludingTax($total): void
     {
         Assert::eq(
@@ -399,9 +364,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item discount should be "([^"]+)" including tax$/
-     */
+    #[Then('/^the cart item discount should be "([^"]+)" including tax$/')]
     public function cartItemDiscountShouldBeIncludingTax($total): void
     {
         $cartItems = $this->cartContext->getCart()->getItems();
@@ -422,9 +385,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart discount should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^the cart discount should be "([^"]+)" excluding tax$/')]
     public function cartDiscountShouldBeExcludingTax($total): void
     {
         Assert::eq(
@@ -438,9 +399,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item discount should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^the cart item discount should be "([^"]+)" excluding tax$/')]
     public function cartItemDiscountShouldBeExcludingTax($total): void
     {
         $cartItems = $this->cartContext->getCart()->getItems();
@@ -461,9 +420,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^there should be no product in (my cart)$/
-     */
+    #[Then('/^there should be no product in (my cart)$/')]
     public function thereShouldBeNoProductInMyCart(OrderInterface $cart): void
     {
         Assert::eq(
@@ -476,9 +433,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the first item in (my cart) should have (unit "([^"]+)")$/
-     */
+    #[Then('/^the first item in (my cart) should have (unit "([^"]+)")$/')]
     public function theFirstItemInMyCartShouldHaveUnit(OrderInterface $cart, ProductUnitInterface $unit): void
     {
         Assert::minCount(
@@ -508,9 +463,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product "[^"]+") in (my cart) should have (unit "([^"]+)")$/
-     */
+    #[Then('/^the (product "[^"]+") in (my cart) should have (unit "([^"]+)")$/')]
     public function theProductInMyCartShouldHaveUnit(ProductInterface $product, OrderInterface $cart, ProductUnitInterface $unit): void
     {
         /**
@@ -554,9 +507,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the (product "[^"]+") in (my cart) should have no unit$/
-     */
+    #[Then('/^the (product "[^"]+") in (my cart) should have no unit$/')]
     public function theProductInMyCartShouldHaveNoUnit(ProductInterface $product, OrderInterface $cart): void
     {
         /**
@@ -590,9 +541,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the second item in (my cart) should have (unit "([^"]+)")$/
-     */
+    #[Then('/^the second item in (my cart) should have (unit "([^"]+)")$/')]
     public function theSecondItemInMyCartShouldHaveUnit(OrderInterface $cart, ProductUnitInterface $unit): void
     {
         Assert::minCount(
@@ -622,9 +571,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^there should be a violation message in my (add-to-cart-form) with message "([^"]+)"$/
-     */
+    #[Then('/^there should be a violation message in my (add-to-cart-form) with message "([^"]+)"$/')]
     public function thereShouldBeCartFormViolation(FormInterface $addToCartForm, $message): void
     {
         Assert::greaterThan($addToCartForm->getErrors()->count(), 0);
@@ -637,10 +584,8 @@ final class CartContext implements Context
         }
     }
 
-    /**
-     * @Then /^the cart item with (product) should have discount-price with "(\d+)" including tax$/
-     * @Then /^the cart item with (product "[^"]+") should have discount-price with "(\d+)" including tax$/
-     */
+    #[Then('/^the cart item with (product) should have discount-price with "(\d+)" including tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have discount-price with "(\d+)" including tax$/')]
     public function theCartItemWithProductShouldHaveADiscountPriceWithTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -656,10 +601,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have discount-price with "(\d+)" excluding tax$/
-     * @Then /^the cart item with (product "[^"]+") should have discount-price with "(\d+)" excluding tax$/
-     */
+    #[Then('/^the cart item with (product) should have discount-price with "(\d+)" excluding tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have discount-price with "(\d+)" excluding tax$/')]
     public function theCartItemWithProductShouldHaveADiscountPriceWithoutTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -675,10 +618,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have discount with "(\d+)" including tax$/
-     * @Then /^the cart item with (product "[^"]+") should have discount with "(\d+)" including tax$/
-     */
+    #[Then('/^the cart item with (product) should have discount with "(\d+)" including tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have discount with "(\d+)" including tax$/')]
     public function theCartItemWithProductShouldHaveADiscountWithTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -694,10 +635,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have discount with "(\d+)" excluding tax$/
-     * @Then /^the cart item with (product "[^"]+") should have discount with "(\d+)" excluding tax$/
-     */
+    #[Then('/^the cart item with (product) should have discount with "(\d+)" excluding tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have discount with "(\d+)" excluding tax$/')]
     public function theCartItemWithProductShouldHaveADiscountWithoutTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -713,10 +652,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have total with "(\d+)" including tax$/
-     * @Then /^the cart item with (product "[^"]+") should have total with "(\d+)" including tax$/
-     */
+    #[Then('/^the cart item with (product) should have total with "(\d+)" including tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have total with "(\d+)" including tax$/')]
     public function theCartItemWithProductShouldHaveATotalWithTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -732,10 +669,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have total with "(\d+)" excluding tax$/
-     * @Then /^the cart item with (product "[^"]+") should have total with "(\d+)" excluding tax$/
-     */
+    #[Then('/^the cart item with (product) should have total with "(\d+)" excluding tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have total with "(\d+)" excluding tax$/')]
     public function theCartItemWithProductShouldHaveATotalWithoutTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -751,10 +686,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have retail-price with "(\d+)" including tax$/
-     * @Then /^the cart item with (product "[^"]+") should have retail-price with "(\d+)" including tax$/
-     */
+    #[Then('/^the cart item with (product) should have retail-price with "(\d+)" including tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have retail-price with "(\d+)" including tax$/')]
     public function theCartItemWithProductShouldHaveARetailWithTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -770,10 +703,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have retail-price with "(\d+)" excluding tax$/
-     * @Then /^the cart item with (product "[^"]+") should have retail-price with "(\d+)" excluding tax$/
-     */
+    #[Then('/^the cart item with (product) should have retail-price with "(\d+)" excluding tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have retail-price with "(\d+)" excluding tax$/')]
     public function theCartItemWithProductShouldHaveARetalWithoutTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -789,10 +720,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have converted discount-price with "(\d+)" including tax$/
-     * @Then /^the cart item with (product "[^"]+") should have converted discount-price with "(\d+)" including tax$/
-     */
+    #[Then('/^the cart item with (product) should have converted discount-price with "(\d+)" including tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have converted discount-price with "(\d+)" including tax$/')]
     public function theCartItemWithProductShouldHaveAConvertedDiscountPriceWithTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -808,10 +737,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have converted discount-price with "(\d+)" excluding tax$/
-     * @Then /^the cart item with (product "[^"]+") should have converted discount-price with "(\d+)" excluding tax$/
-     */
+    #[Then('/^the cart item with (product) should have converted discount-price with "(\d+)" excluding tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have converted discount-price with "(\d+)" excluding tax$/')]
     public function theCartItemWithProductShouldHaveAConvertedDiscountPriceWithoutTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -827,10 +754,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have converted discount with "(\d+)" including tax$/
-     * @Then /^the cart item with (product "[^"]+") should have converted discount with "(\d+)" including tax$/
-     */
+    #[Then('/^the cart item with (product) should have converted discount with "(\d+)" including tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have converted discount with "(\d+)" including tax$/')]
     public function theCartItemWithProductShouldHaveAConvertedDiscountWithTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -846,10 +771,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have converted discount with "(\d+)" excluding tax$/
-     * @Then /^the cart item with (product "[^"]+") should have converted discount with "(\d+)" excluding tax$/
-     */
+    #[Then('/^the cart item with (product) should have converted discount with "(\d+)" excluding tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have converted discount with "(\d+)" excluding tax$/')]
     public function theCartItemWithProductShouldHaveAConvertedDiscountWithoutTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -865,10 +788,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have converted total with "(\d+)" including tax$/
-     * @Then /^the cart item with (product "[^"]+") should have converted total with "(\d+)" including tax$/
-     */
+    #[Then('/^the cart item with (product) should have converted total with "(\d+)" including tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have converted total with "(\d+)" including tax$/')]
     public function theCartItemWithProductShouldHaveConvertedATotalWithTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -884,10 +805,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have converted total with "(\d+)" excluding tax$/
-     * @Then /^the cart item with (product "[^"]+") should have converted total with "(\d+)" excluding tax$/
-     */
+    #[Then('/^the cart item with (product) should have converted total with "(\d+)" excluding tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have converted total with "(\d+)" excluding tax$/')]
     public function theCartItemWithProductShouldHaveAConvertedTotalWithoutTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -903,10 +822,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have converted retail-price with "(\d+)" including tax$/
-     * @Then /^the cart item with (product "[^"]+") should have converted retail-price with "(\d+)" including tax$/
-     */
+    #[Then('/^the cart item with (product) should have converted retail-price with "(\d+)" including tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have converted retail-price with "(\d+)" including tax$/')]
     public function theCartItemWithProductShouldHaveAConvertedRetailWithTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -922,10 +839,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have converted retail-price with "(\d+)" excluding tax$/
-     * @Then /^the cart item with (product "[^"]+") should have converted retail-price with "(\d+)" excluding tax$/
-     */
+    #[Then('/^the cart item with (product) should have converted retail-price with "(\d+)" excluding tax$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have converted retail-price with "(\d+)" excluding tax$/')]
     public function theCartItemWithProductShouldHaveAConvertedRetalWithoutTax(ProductInterface $product, int $price): void
     {
         $cart = $this->cartContext->getCart();
@@ -941,10 +856,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should have a custom attribute named "([^"]+)"$/
-     * @Then /^the cart item with (product "[^"]+") should have a custom attribute named "([^"]+)"$/
-     */
+    #[Then('/^the cart item with (product) should have a custom attribute named "([^"]+)"$/')]
+    #[Then('/^the cart item with (product "[^"]+") should have a custom attribute named "([^"]+)"$/')]
     public function theCartItemWithProductShouldHaveACustomAttributeNamed(ProductInterface $product, string $attributeName): void
     {
         $cart = $this->cartContext->getCart();
@@ -959,10 +872,8 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart item with (product) should not have a custom attribute named "([^"]+)"$/
-     * @Then /^the cart item with (product "[^"]+") should not have a custom attribute named "([^"]+)"$/
-     */
+    #[Then('/^the cart item with (product) should not have a custom attribute named "([^"]+)"$/')]
+    #[Then('/^the cart item with (product "[^"]+") should not have a custom attribute named "([^"]+)"$/')]
     public function theCartItemWithProductShouldNotHaveACustomAttributeNamed(ProductInterface $product, string $attributeName): void
     {
         $cart = $this->cartContext->getCart();
@@ -977,9 +888,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart converted shipping should be "([^"]+)" excluding tax$/
-     */
+    #[Then('/^the cart converted shipping should be "([^"]+)" excluding tax$/')]
     public function cartConvertedShippingCostShouldBeExcludingTax($shipping): void
     {
         $cart = $this->cartContext->getCart();
@@ -997,9 +906,7 @@ final class CartContext implements Context
         );
     }
 
-    /**
-     * @Then /^the cart converted shipping should be "([^"]+)" including tax$/
-     */
+    #[Then('/^the cart converted shipping should be "([^"]+)" including tax$/')]
     public function cartConvertedShippingCostShouldBeIncludingTax($shipping): void
     {
         $cart = $this->cartContext->getCart();

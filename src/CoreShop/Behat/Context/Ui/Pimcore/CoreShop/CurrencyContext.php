@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\When;
 use CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +29,7 @@ final class CurrencyContext implements Context
     ) {
     }
 
-    /**
-     * @When currencies tab is open
-     */
+    #[When('currencies tab is open')]
     public function currenciesTabIsOpen(): void
     {
         Assert::true($this->currencyPage->isActiveOpen());
