@@ -27,6 +27,7 @@ import { OrderCreationExtensionModule } from './modules/extension/order-creation
 import { ReportsModule } from './modules/reports'
 import { SettingsModule } from './modules/settings'
 import { PimcoreRelationWidgetModule } from './modules/pimcore-relation-widget'
+import { MoneyWidgetModule } from './modules/money-widget'
 import { CustomerAddressSelectWidget } from './modules/extension/order-creation/widgets/CustomerAddressSelectWidget'
 import { useAssignToNewCompanyNavItem } from './components/AssignToNewCompanyButton'
 import { useAssignToExistingCompanyNavItem } from './components/AssignToExistingCompanyButton'
@@ -112,6 +113,7 @@ const plugin: IAbstractPlugin = {
         moduleSystem.registerModule(CoreBundleIconModule)
         moduleSystem.registerModule(CoreBundleMenuModule)
         moduleSystem.registerModule(PimcoreRelationWidgetModule)
+        moduleSystem.registerModule(MoneyWidgetModule)
         moduleSystem.registerModule(ReportsModule)
         moduleSystem.registerModule(SettingsModule)
     }

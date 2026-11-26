@@ -177,6 +177,20 @@ registry.register('coreshop_pimcore_relation', (field) => ({
 
 Resolution follows Symfony semantics: widget resolvers are checked from the most specific block prefix to the least specific one.
 
+### Money Fields (`coreshop_money`)
+
+Rule configurations are loaded and saved in Studio with their stored values, so money arrives as an integer in
+minor units (`772` for 7.72), while `MoneyType` itself expects the display value. CoreBundle therefore:
+
+- registers a `coreshop_money` widget (`money-widget` module) that shows and edits the decimal value but keeps
+  the integer as the form value, and
+- adds `StudioRuleMoneyTypeExtension`, which treats integers submitted to `MoneyType` fields inside a rule
+  condition or action (`AbstractConfigurableRuleElementType`) as minor units when the request goes to the Studio
+  API (`/pimcore-studio/api/`).
+
+The classic admin keeps submitting display values, and Studio data types that send display values themselves
+(store values, quantity price ranges) are not inside a rule element, so both are unaffected.
+
 ### Rule Config Performance Pattern
 
 Rule `get-config` endpoints can embed schema payloads for all conditions/actions.
