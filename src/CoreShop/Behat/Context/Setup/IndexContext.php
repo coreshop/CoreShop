@@ -274,6 +274,10 @@ final class IndexContext implements Context
                 $column['interpreter'] = $row['interpreter'];
             }
 
+            if (($row['interpreterConfig'] ?? '') !== '') {
+                $column['interpreterConfig'] = json_decode($row['interpreterConfig'], true, 512, \JSON_THROW_ON_ERROR);
+            }
+
             $columns[] = $column;
         }
 
