@@ -6,5 +6,6 @@ CoreShop\Component\Address\Model\Country:
             - Type: { type: boolean, groups: [coreshop] }
         addressFormat:
             - NotBlank: { groups: [coreshop] }
+            - CoreShop\Bundle\AddressBundle\Validator\Constraints\AddressFormat: { groups: [coreshop] }
         translations:
             - Valid: ~
