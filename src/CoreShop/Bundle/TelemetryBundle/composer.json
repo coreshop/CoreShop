@@ -25,7 +25,7 @@
         }
     ],
     "require": {
-        "pimcore/pimcore": "^2026.2",
+        "pimcore/pimcore": "^2026.3",
         "symfony/http-client": "^6.4.14 || ^7.2",
         "symfony/uid": "^6.4 || ^7.0"
     },

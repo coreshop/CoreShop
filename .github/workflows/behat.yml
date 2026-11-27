@@ -101,7 +101,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [ 8.4, 8.5 ]
-        pimcore: [ ^2026.2 ]
+        pimcore: [ ^2026.3 ]
         dependencies: [ highest ]
         # The suites are spread over the shards by scenario count. More shards only help while no
         # single suite is longer than an even share, and the cart suite alone holds a good quarter
