@@ -26,6 +26,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use Twig\Sandbox\SecurityError;
 use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
@@ -105,6 +106,20 @@ final class CountryContext implements Context
                 $actualFormattedAddress,
             ),
         );
+    }
+
+    /**
+     * @Then /^formatting the (address) should be blocked by the sandbox$/
+     */
+    public function formattingTheAddressShouldBeBlockedByTheSandbox(AddressInterface $address): void
+    {
+        try {
+            $result = $this->addressFormatter->formatAddress($address);
+        } catch (SecurityError) {
+            return;
+        }
+
+        throw new \RuntimeException(sprintf('Expected the address format to be blocked by the sandbox, but it rendered "%s".', $result));
     }
 
     /**

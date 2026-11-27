@@ -27,6 +27,7 @@
   "require": {
     "coreshop/resource": "^4.0",
     "pimcore/pimcore": "^11.0",
+    "twig/twig": "^3.14.1",
     "laminas/laminas-stdlib": "^3.6"
   },
   "require-dev": {

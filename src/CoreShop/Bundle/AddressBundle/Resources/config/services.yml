@@ -33,9 +33,18 @@ services:
             - '@CoreShop\Component\Address\Context\RequestBased\CachedCountryContext.inner'
 
     CoreShop\Component\Address\Formatter\AddressFormatterInterface: '@CoreShop\Component\Address\Formatter\AddressFormatter'
+    coreshop.address.formatter.twig:
+        class: Twig\Environment
+        public: false
+        factory: ['CoreShop\Component\Address\Formatter\AddressFormatSandboxFactory', 'create']
+        arguments:
+            - '@translator'
+            - null
+            - '%kernel.cache_dir%/coreshop/address_format_twig'
+
     CoreShop\Component\Address\Formatter\AddressFormatter:
         arguments:
-            - '@twig'
+            - '@coreshop.address.formatter.twig'
             - '@translator'
 
     CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension:
@@ -44,6 +53,12 @@ services:
             - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\AddressBundle\Validator\Constraints\AddressFormatValidator:
+        arguments:
+            - '@coreshop.address.formatter.twig'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_address_format }
 
     CoreShop\Bundle\AddressBundle\Validator\Constraints\ValidAddressIdentifierValidator:
         arguments:

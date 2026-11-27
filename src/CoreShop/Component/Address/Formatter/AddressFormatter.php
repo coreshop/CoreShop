@@ -24,10 +24,30 @@ use Twig\Environment;
 
 class AddressFormatter implements AddressFormatterInterface
 {
+    private Environment $twig;
+
+    /**
+     * @param Environment $twig A sandboxed environment (see AddressFormatSandboxFactory). Any other
+     *                          environment is replaced by the default sandbox, since the address
+     *                          format is user-editable and must never be rendered unrestricted.
+     */
     public function __construct(
-        private Environment $twig,
+        Environment $twig,
         private TranslatorInterface $translator,
     ) {
+        if (!AddressFormatSandboxFactory::isSandboxed($twig)) {
+            trigger_deprecation(
+                'coreshop/address',
+                '4.1',
+                'Passing a non-sandboxed Twig environment to "%s" is deprecated and ignored for security reasons. Use "%s::create()" instead.',
+                self::class,
+                AddressFormatSandboxFactory::class,
+            );
+
+            $twig = AddressFormatSandboxFactory::create($translator);
+        }
+
+        $this->twig = $twig;
     }
 
     public function formatAddress(AddressInterface $address, bool $asHtml = true): string
@@ -46,7 +66,7 @@ class AddressFormatter implements AddressFormatterInterface
             $objectVars['salutation'] = $this->translator->trans($translationKey);
         }
 
-        $convertedAddress = $this->twig->createTemplate($address->getCountry()->getAddressFormat())->render($objectVars);
+        $convertedAddress = $this->twig->createTemplate((string) $address->getCountry()?->getAddressFormat())->render($objectVars);
 
         if ($asHtml) {
             $convertedAddress = \nl2br($convertedAddress);
