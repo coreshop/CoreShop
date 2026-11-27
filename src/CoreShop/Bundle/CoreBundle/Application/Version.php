@@ -21,9 +21,9 @@ final class Version
 {
     public const string MAJOR_VERSION = '2026';
 
-    public const string MINOR_VERSION = '2';
+    public const string MINOR_VERSION = '3';
 
-    public const string RELEASE_VERSION = '3';
+    public const string RELEASE_VERSION = '0';
 
     public const string EXTRA_VERSION = '';
 
