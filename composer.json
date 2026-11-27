@@ -126,6 +126,7 @@
     "symfony/serializer": "^6.4.14 || ^7.2",
     "symfony/twig-bundle": "^6.4.14 || ^7.2",
     "symfony/webpack-encore-bundle": "^2.4",
+    "twig/twig": "^3.29",
     "webmozart/assert": "^2.4"
   },
     "suggest": {

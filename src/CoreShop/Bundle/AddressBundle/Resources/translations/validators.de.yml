@@ -1,0 +1,3 @@
+coreshop:
+    address_format:
+        invalid: 'Die Adressformatierung ist ungültig oder verwendet eine nicht erlaubte Twig-Funktion: %error%'
