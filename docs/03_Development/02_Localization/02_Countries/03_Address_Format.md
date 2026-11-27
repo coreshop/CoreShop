@@ -17,14 +17,15 @@ already translated.
 ## Sandbox
 
 Because the address format can be edited by back-office users, it is **never** rendered through the application's Twig
-environment. `CoreShop\Component\Address\Formatter\AddressFormatSandboxFactory` creates an isolated Twig environment
-(service `coreshop.address.formatter.twig`) that is globally sandboxed with a strict allow-list:
+environment. `CoreShop\Component\Address\Formatter\AddressFormatSandboxFactory` creates a `Twig\Sandbox\Sandbox`
+(service `coreshop.address.formatter.sandbox`) on a dedicated environment with a strict allow-list policy:
 
 | Kind | Allowed |
 |---|---|
 | Tags | `if`, `for`, `set`, `apply` |
 | Filters | `abs`, `capitalize`, `default`, `e`, `escape`, `first`, `format`, `join`, `last`, `length`, `lower`, `nl2br`, `replace`, `slice`, `split`, `striptags`, `title`, `trans`, `trim`, `upper` |
 | Functions | none |
+| Tests | `defined`, `empty`, `null`, `none`, `same as`, `odd`, `even`, `divisible by`, `iterable` |
 | Methods | `CountryInterface::getName/getIsoCode`, `StateInterface::getName/getIsoCode`, `AddressIdentifierInterface::getName` |
 
 Output is HTML-escaped. Anything else (e.g. `map`, `filter`, `sort`, `raw`, `include`, `source()`, arbitrary method
@@ -33,7 +34,7 @@ format cannot be stored.
 
 ### Customizing the policy
 
-To allow more, decorate the `coreshop.address.formatter.twig` service and pass your own
+To allow more, override the `coreshop.address.formatter.sandbox` service and pass your own (strict)
 `Twig\Sandbox\SecurityPolicyInterface` as second argument to `AddressFormatSandboxFactory::create()`. Never pass the
-application's `@twig` service to the `AddressFormatter`: a non-sandboxed environment is ignored and replaced by the
-default sandbox.
+application's `@twig` service to the `AddressFormatter`: a Twig environment is ignored and replaced by the default
+sandbox.

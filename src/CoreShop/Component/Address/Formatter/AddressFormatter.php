@@ -20,33 +20,37 @@ namespace CoreShop\Component\Address\Formatter;
 use CoreShop\Component\Address\Model\AddressInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Sandbox\SandboxInterface;
 
 class AddressFormatter implements AddressFormatterInterface
 {
-    private Environment $twig;
+    private SandboxInterface $sandbox;
 
     /**
-     * @param Environment $twig A globally sandboxed environment (see AddressFormatSandboxFactory).
-     *                          Any other environment is replaced by an isolated sandbox, since the
-     *                          address format is user-editable and must never be rendered unrestricted.
+     * @param SandboxInterface|Environment $sandbox The sandbox the address format is rendered in
+     *                                              (see AddressFormatSandboxFactory). A Twig environment
+     *                                              is ignored and replaced by the default sandbox, since the
+     *                                              address format is user-editable and must never be rendered
+     *                                              unrestricted.
      */
     public function __construct(
-        Environment $twig,
+        SandboxInterface|Environment $sandbox,
         private TranslatorInterface $translator,
     ) {
-        if (!AddressFormatSandboxFactory::isSandboxed($twig)) {
+        if ($sandbox instanceof Environment) {
             trigger_deprecation(
                 'coreshop/address',
-                '5.1',
-                'Passing a non-sandboxed Twig environment to "%s" is deprecated and ignored for security reasons. Use "%s::create()" instead.',
+                '5.0',
+                'Passing a Twig environment to "%s" is deprecated and ignored for security reasons. Pass a "%s" created by "%s::create()" instead.',
                 self::class,
+                SandboxInterface::class,
                 AddressFormatSandboxFactory::class,
             );
 
-            $twig = AddressFormatSandboxFactory::create($translator);
+            $sandbox = AddressFormatSandboxFactory::create($translator);
         }
 
-        $this->twig = $twig;
+        $this->sandbox = $sandbox;
     }
 
     public function formatAddress(AddressInterface $address, bool $asHtml = true): string
@@ -65,7 +69,7 @@ class AddressFormatter implements AddressFormatterInterface
             $objectVars['salutation'] = $this->translator->trans($translationKey);
         }
 
-        $convertedAddress = $this->twig->createTemplate((string) $address->getCountry()?->getAddressFormat())->render($objectVars);
+        $convertedAddress = $this->sandbox->createTemplate((string) $address->getCountry()?->getAddressFormat())->render($objectVars);
 
         if ($asHtml) {
             $convertedAddress = \nl2br($convertedAddress);
