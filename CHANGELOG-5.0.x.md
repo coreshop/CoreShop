@@ -1,3 +1,8 @@
+## 5.0.4
+* [AddressBundle] Render country address formats in a Twig sandbox by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3305
+* [Composer] require PHP 8.3 for the Payment and PayumPayment components by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3290
+* [CI] Add a stable required-check gate to the package and license workflows by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3287
+
 ## 5.0.3
 * [Frontend] Fix negative/zero page and perPage query params by @andrew72ru in https://github.com/coreshop/CoreShop/pull/3251
 * [Docs] Fix Elasticsearch client configuration key and link client bundles by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3238
