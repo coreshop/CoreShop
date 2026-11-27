@@ -2,14 +2,15 @@
 
 ## Country address formats are rendered in a Twig sandbox
 
-The country address format is now rendered in an isolated, sandboxed Twig environment (service
-`coreshop.address.formatter.twig`) instead of the application's `@twig` service. Only a small allow-list of tags,
+The country address format is now rendered in a dedicated `Twig\Sandbox\Sandbox` (service
+`coreshop.address.formatter.sandbox`) instead of the application's `@twig` service. CoreShop now requires
+`twig/twig` `^3.29`. Only a small allow-list of tags,
 filters and methods is available, see [Address Format](docs/03_Development/02_Localization/02_Countries/03_Address_Format.md).
 Saving a country with a format that uses anything else now fails validation.
 
 Check your existing address formats: formats using e.g. `raw`, `map`, `include`, functions or custom Twig extensions
 will now throw a `Twig\Sandbox\SecurityError` when rendered. If you construct `AddressFormatter` yourself, pass
-`AddressFormatSandboxFactory::create($translator)` instead of `@twig`; a non-sandboxed environment is ignored.
+`AddressFormatSandboxFactory::create($translator)` instead of `@twig`; a Twig environment is ignored (deprecated).
 
 ## Classic-Admin internals moved to `AdminClass/` subnamespace
 

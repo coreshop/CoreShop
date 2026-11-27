@@ -23,17 +23,18 @@ use CoreShop\Component\Address\Model\StateInterface;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Twig\Extension\SandboxExtension;
 use Twig\Loader\ArrayLoader;
+use Twig\Sandbox\Sandbox;
+use Twig\Sandbox\SandboxInterface;
 use Twig\Sandbox\SecurityPolicy;
 use Twig\Sandbox\SecurityPolicyInterface;
 
 /**
- * Creates the Twig environment used to render a country's address format.
+ * Creates the Twig sandbox used to render a country's address format.
  *
  * The address format is editable by back-office users, so it must never be rendered
- * through the application's Twig environment. This environment is isolated (own loader,
- * no application extensions/globals) and globally sandboxed with a strict allow-list.
+ * through the application's Twig environment. The sandbox uses a dedicated environment
+ * (own loader, no application extensions/globals) and a strict allow-list policy.
  */
 final class AddressFormatSandboxFactory
 {
@@ -64,6 +65,8 @@ final class AddressFormatSandboxFactory
 
     public const ALLOWED_FUNCTIONS = [];
 
+    public const ALLOWED_TESTS = ['defined', 'empty', 'null', 'none', 'same as', 'odd', 'even', 'divisible by', 'iterable'];
+
     public const ALLOWED_METHODS = [
         CountryInterface::class => ['getName', 'getIsoCode'],
         StateInterface::class => ['getName', 'getIsoCode'],
@@ -74,20 +77,24 @@ final class AddressFormatSandboxFactory
 
     public static function createSecurityPolicy(): SecurityPolicyInterface
     {
-        return new SecurityPolicy(
+        $policy = new SecurityPolicy(
             self::ALLOWED_TAGS,
             self::ALLOWED_FILTERS,
             self::ALLOWED_METHODS,
             self::ALLOWED_PROPERTIES,
             self::ALLOWED_FUNCTIONS,
+            self::ALLOWED_TESTS,
         );
+        $policy->setStrict(true);
+
+        return $policy;
     }
 
     public static function create(
         ?TranslatorInterface $translator = null,
         ?SecurityPolicyInterface $securityPolicy = null,
         string|false $cache = false,
-    ): Environment {
+    ): SandboxInterface {
         $environment = new Environment(new ArrayLoader(), [
             'autoescape' => 'html',
             'strict_variables' => false,
@@ -98,17 +105,6 @@ final class AddressFormatSandboxFactory
             $environment->addExtension(new TranslationExtension($translator));
         }
 
-        $environment->addExtension(new SandboxExtension($securityPolicy ?? self::createSecurityPolicy(), true));
-
-        return $environment;
-    }
-
-    public static function isSandboxed(Environment $environment): bool
-    {
-        if (!$environment->hasExtension(SandboxExtension::class)) {
-            return false;
-        }
-
-        return $environment->getExtension(SandboxExtension::class)->isSandboxedGlobally();
+        return new Sandbox($environment, $securityPolicy ?? self::createSecurityPolicy());
     }
 }

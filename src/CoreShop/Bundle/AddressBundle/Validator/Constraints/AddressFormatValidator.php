@@ -20,9 +20,9 @@ namespace CoreShop\Bundle\AddressBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Twig\Environment;
 use Twig\Error\Error;
 use Twig\Error\SyntaxError;
+use Twig\Sandbox\SandboxInterface;
 use Twig\Sandbox\SecurityError;
 
 /**
@@ -32,7 +32,7 @@ use Twig\Sandbox\SecurityError;
 final class AddressFormatValidator extends ConstraintValidator
 {
     public function __construct(
-        private Environment $twig,
+        private SandboxInterface $sandbox,
     ) {
     }
 
@@ -52,7 +52,7 @@ final class AddressFormatValidator extends ConstraintValidator
 
         try {
             // The sandbox checks tags, filters and functions when the template is rendered.
-            $this->twig->createTemplate($value)->render([]);
+            $this->sandbox->createTemplate($value)->render([]);
         } catch (SecurityError|SyntaxError $error) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('%error%', $error->getRawMessage())
