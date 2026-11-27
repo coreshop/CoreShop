@@ -1,3 +1,6 @@
+## 4.1.14
+* [AddressBundle] Render country address formats in a Twig sandbox by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3306
+
 ## 4.1.13
 * Fix open redirect vulnerabilities in redirect parameter handling by @Copilot in https://github.com/coreshop/CoreShop/pull/2963
 * add permission to check to order/order-payment controller by @dpfaffenbauer in https://github.com/coreshop/CoreShop/pull/3101
