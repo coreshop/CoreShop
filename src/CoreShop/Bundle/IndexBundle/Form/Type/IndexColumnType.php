@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -78,7 +79,10 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
+                // See AbstractConfigurableIndexColumnElementType: the form may belong to another column.
                 if (!isset($data['getter'])) {
+                    $event->getForm()->remove('getterConfig');
+
                     return;
                 }
 
@@ -109,11 +113,36 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
+                // See AbstractConfigurableIndexColumnElementType: the form may belong to another column.
                 if (!isset($data['interpreter'])) {
+                    $event->getForm()->remove('interpreterConfig');
+
                     return;
                 }
 
                 $this->addInterpreterConfigurationFields($event->getForm(), $this->interpreterTypeRegistry->get($data['interpreter'], 'default'));
+            })
+        ;
+
+        /*
+         * A column without getter / interpreter has no configuration for it either: drop what
+         * the stored column at this position had.
+         */
+        $builder
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event): void {
+                $column = $event->getData();
+
+                if (!$column instanceof IndexColumnInterface) {
+                    return;
+                }
+
+                if (!$event->getForm()->has('getterConfig')) {
+                    $column->setGetterConfig([]);
+                }
+
+                if (!$event->getForm()->has('interpreterConfig')) {
+                    $column->setInterpreterConfig([]);
+                }
             })
         ;
     }

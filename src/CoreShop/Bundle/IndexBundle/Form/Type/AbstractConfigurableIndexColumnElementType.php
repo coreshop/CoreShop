@@ -19,6 +19,7 @@ namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -63,15 +64,26 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
-                if (!isset($data['objectType'])) {
-                    return;
-                }
+                // The form may have been built for another column: entries of the columns collection
+                // are matched by position, so after a column was removed (or its type changed) the
+                // submitted column meets the configuration form of the one stored at its position.
+                // Without a configuration of its own, that form must go, or it validates and maps
+                // the other column's configuration.
+                if (!isset($data['objectType']) || !$this->formTypeRegistry->has($data['objectType'], 'default')) {
+                    $event->getForm()->remove('configuration');
 
-                if (!$this->formTypeRegistry->has($data['objectType'], 'default')) {
                     return;
                 }
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['objectType'], 'default'));
+            })
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event): void {
+                $column = $event->getData();
+
+                // No configuration form means no configuration: drop what the stored column had.
+                if ($column instanceof IndexColumnInterface && !$event->getForm()->has('configuration')) {
+                    $column->setConfiguration([]);
+                }
             })
         ;
     }

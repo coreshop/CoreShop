@@ -20,13 +20,37 @@ namespace CoreShop\Component\Address\Formatter;
 use CoreShop\Component\Address\Model\AddressInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Sandbox\SandboxInterface;
 
 class AddressFormatter implements AddressFormatterInterface
 {
+    private SandboxInterface $sandbox;
+
+    /**
+     * @param SandboxInterface|Environment $sandbox The sandbox the address format is rendered in
+     *                                              (see AddressFormatSandboxFactory). A Twig environment
+     *                                              is ignored and replaced by the default sandbox, since the
+     *                                              address format is user-editable and must never be rendered
+     *                                              unrestricted.
+     */
     public function __construct(
-        private Environment $twig,
+        SandboxInterface|Environment $sandbox,
         private TranslatorInterface $translator,
     ) {
+        if ($sandbox instanceof Environment) {
+            trigger_deprecation(
+                'coreshop/address',
+                '5.1',
+                'Passing a Twig environment to "%s" is deprecated and ignored for security reasons. Pass a "%s" created by "%s::create()" instead.',
+                self::class,
+                SandboxInterface::class,
+                AddressFormatSandboxFactory::class,
+            );
+
+            $sandbox = AddressFormatSandboxFactory::create($translator);
+        }
+
+        $this->sandbox = $sandbox;
     }
 
     public function formatAddress(AddressInterface $address, bool $asHtml = true): string
@@ -45,7 +69,7 @@ class AddressFormatter implements AddressFormatterInterface
             $objectVars['salutation'] = $this->translator->trans($translationKey);
         }
 
-        $convertedAddress = $this->twig->createTemplate($address->getCountry()->getAddressFormat())->render($objectVars);
+        $convertedAddress = $this->sandbox->createTemplate((string) $address->getCountry()?->getAddressFormat())->render($objectVars);
 
         if ($asHtml) {
             $convertedAddress = \nl2br($convertedAddress);
